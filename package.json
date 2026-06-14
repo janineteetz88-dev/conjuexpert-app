@@ -1,1 +1,9 @@
-{"type":"module"}
+{
+  "type": "module",
+  "scripts": {
+    "build:app": "node scripts/build-index.mjs"
+  },
+  "devDependencies": {
+    "@babel/standalone": "^7.29.0"
+  }
+}
