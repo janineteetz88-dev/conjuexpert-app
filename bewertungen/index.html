@@ -357,12 +357,53 @@ function updateSummary(){
   if(!box)return;
   var sum=0,c=0;
   for(var i=0;i<REVIEWS.length;i++){var s=parseInt(REVIEWS[i].stars,10);if(s>=1&&s<=5){sum+=s;c++;}}
-  if(!c){box.hidden=true;return;}
+  if(!c){box.hidden=true;updateStructuredData(0,0);return;}
   var avg=sum/c;
   document.getElementById('rsNum').textContent=avg.toFixed(1).replace('.',',');
   document.getElementById('rsFill').style.width=(avg/5*100).toFixed(1)+'%';
   document.getElementById('rsCount').textContent=c+' '+(c===1?L().count1:L().count);
   box.hidden=false;
+  updateStructuredData(avg,c);
+}
+
+/* Schema.org AggregateRating + Review aus den echten Live-Daten generieren.
+   Komplett automatisch — kein fester Wert, kein Pflegeaufwand. Aktualisiert sich
+   bei jedem Laden und nach jeder neuen Bewertung von selbst. */
+function updateStructuredData(avg,count){
+  var el=document.getElementById('reviewsLd');
+  if(!count){ if(el)el.parentNode.removeChild(el); return; }
+  var revItems=[];
+  for(var j=0;j<REVIEWS.length&&revItems.length<20;j++){
+    var r=REVIEWS[j],st=parseInt(r.stars,10);
+    if(!(st>=1&&st<=5)||!r.body)continue;
+    var item={
+      "@type":"Review",
+      "reviewRating":{"@type":"Rating","ratingValue":st,"bestRating":5,"worstRating":1},
+      "author":{"@type":"Person","name":(r.name||'').trim()||'Anonym'},
+      "reviewBody":String(r.body)
+    };
+    if(r.created_at)item.datePublished=String(r.created_at).slice(0,10);
+    revItems.push(item);
+  }
+  var data={
+    "@context":"https://schema.org",
+    "@type":"SoftwareApplication",
+    "name":"ConjuExpert",
+    "applicationCategory":"EducationalApplication",
+    "operatingSystem":"Web, iOS, Android (PWA)",
+    "url":"https://conjuexpert.app/",
+    "aggregateRating":{
+      "@type":"AggregateRating",
+      "ratingValue":avg.toFixed(1),
+      "bestRating":5,
+      "worstRating":1,
+      "ratingCount":count,
+      "reviewCount":count
+    },
+    "review":revItems
+  };
+  if(!el){el=document.createElement('script');el.type='application/ld+json';el.id='reviewsLd';document.head.appendChild(el);}
+  el.textContent=JSON.stringify(data);
 }
 
 /* bei Sprachwechsel: Karten + Zusammenfassung in der neuen Sprache neu aufbauen */
