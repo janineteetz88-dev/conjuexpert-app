@@ -3283,14 +3283,23 @@ function addVocabKnown(lang, term) {
 }
 function isVocabKnown(lang, term) {const t = norm(term || "");return !!t && getVocabKnown().some((x) => x.lang === lang && norm(x.term) === t);}
 const VOCAB_TEMPLATES = {
-  de: ["Einkaufen", "Arztbesuch", "Behörde", "Arbeit", "Reisen", "Restaurant", "Familie", "Freizeit"],
-  en: ["Shopping", "Doctor", "Authorities", "Work", "Travel", "Restaurant", "Family", "Free time"],
-  es: ["Compras", "Médico", "Trámites", "Trabajo", "Viajes", "Restaurante", "Familia", "Ocio"],
-  nl: ["Winkelen", "Dokter", "Overheid", "Werk", "Reizen", "Restaurant", "Familie", "Vrije tijd"],
-  fr: ["Achats", "Médecin", "Démarches", "Travail", "Voyages", "Restaurant", "Famille", "Loisirs"]
+  de: ["Einkaufen", "Arztbesuch", "Behörde", "Arbeit", "Reisen", "Restaurant", "Familie", "Freizeit", "Adjektive"],
+  en: ["Shopping", "Doctor", "Authorities", "Work", "Travel", "Restaurant", "Family", "Free time", "Adjectives"],
+  es: ["Compras", "Médico", "Trámites", "Trabajo", "Viajes", "Restaurante", "Familia", "Ocio", "Adjetivos"],
+  nl: ["Winkelen", "Dokter", "Overheid", "Werk", "Reizen", "Restaurant", "Familie", "Vrije tijd", "Bijvoeglijke naamwoorden"],
+  fr: ["Achats", "Médecin", "Démarches", "Travail", "Voyages", "Restaurant", "Famille", "Loisirs", "Adjectifs"]
 };
 function templateCats() {return VOCAB_TEMPLATES[UILANG] || VOCAB_TEMPLATES.en;}
-const VOCAB_TOPICS = ["shopping and groceries", "seeing a doctor, pharmacy and health", "government offices and bureaucracy", "work and the office", "travel and transport", "restaurants and ordering food", "family and home life", "free time, hobbies and sport"];
+const VOCAB_TOPICS = ["shopping and groceries", "seeing a doctor, pharmacy and health", "government offices and bureaucracy", "work and the office", "travel and transport", "restaurants and ordering food", "family and home life", "free time, hobbies and sport", "common everyday adjectives"];
+/* "Adjektive"-style topic detection (across the 5 UI languages + variants), so
+   French/Spanish adjectives are generated with BOTH gender forms (beau / belle). */
+const ADJ_NAMES = new Set(["adjektive", "adjektiv", "adjectives", "adjective", "adjetivos", "adjetivo", "adjectifs", "adjectif", "bijvoeglijke naamwoorden", "bijvoeglijk naamwoord", "adjectieven"]);
+function isAdjTopic(name) {return ADJ_NAMES.has((name || "").trim().toLowerCase());}
+function adjFormsNote(langCode, targetNameStr, isAdj) {
+  if (!isAdj || (langCode !== "fr" && langCode !== "es")) return "";
+  const ex = langCode === "fr" ? '"beau / belle", "grand / grande", "heureux / heureuse"' : '"bueno / buena", "alto / alta", "trabajador / trabajadora"';
+  return ` These are ${targetNameStr} ADJECTIVES: for each term give BOTH the masculine and feminine form, separated by " / " (e.g. ${ex}); if the two forms are identical, write the word once.`;
+}
 function generalCat() {return { de: "Allgemein", en: "General", es: "General", nl: "Algemeen", fr: "Général" }[UILANG] || "General";}
 const GENERAL_LABELS = ["allgemein", "general", "général", "algemeen", "generale", "généralités"];
 function isGeneralCat(c) {return GENERAL_LABELS.indexOf((c || "").trim().toLowerCase()) >= 0;}
@@ -3331,7 +3340,7 @@ function VocabView({ lang }) {
     const topic = VOCAB_TOPICS[idx] || catName;
     const lvl = skill === "advanced" ? "advanced C1-level" : skill === "intermediate" ? "intermediate B1-level" : "basic A1–A2";
     setSeeding(catName);
-    window.aiComplete(`List 5 useful ${lvl} ${targetName()} words or short phrases about "${topic}". For each, give the ${targetName()} term and its ${nativeName} translation. Avoid duplicates. Reply with ONLY a minified JSON array, nothing else: [{"t":"<${targetName()} term>","n":"<${nativeName} translation>"}]`).
+    window.aiComplete(`List 5 useful ${lvl} ${targetName()} words or short phrases about "${topic}".${adjFormsNote(lang, targetName(), isAdjTopic(catName))} For each, give the ${targetName()} term and its ${nativeName} translation. Avoid duplicates. Reply with ONLY a minified JSON array, nothing else: [{"t":"<${targetName()} term>","n":"<${nativeName} translation>"}]`).
     then((txt) => {
       let arr = null;
       try {let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();const a = s.indexOf("["), b = s.lastIndexOf("]");if (a >= 0 && b > a) s = s.slice(a, b + 1);arr = JSON.parse(s);} catch (_) {arr = null;}
@@ -3358,7 +3367,7 @@ function VocabView({ lang }) {
     if (already >= 3) {persist(seedKey, true); return;}
     const lvl = skill === "advanced" ? "advanced C1-level" : skill === "intermediate" ? "intermediate B1-level" : "basic A1–A2";
     setSeeding(catName);
-    window.aiComplete(`List 5 useful ${lvl} ${targetName()} words or short phrases about "${catName}". For each, give the ${targetName()} term and its ${nativeName} translation. Avoid duplicates. Reply with ONLY a minified JSON array: [{"t":"<${targetName()} term>","n":"<${nativeName} translation>"}]`).
+    window.aiComplete(`List 5 useful ${lvl} ${targetName()} words or short phrases about "${catName}".${adjFormsNote(lang, targetName(), isAdjTopic(catName))} For each, give the ${targetName()} term and its ${nativeName} translation. Avoid duplicates. Reply with ONLY a minified JSON array: [{"t":"<${targetName()} term>","n":"<${nativeName} translation>"}]`).
     then((txt) => {
       let arr = null;
       try {let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();const a = s.indexOf("["), b = s.lastIndexOf("]");if (a >= 0 && b > a) s = s.slice(a, b + 1);arr = JSON.parse(s);} catch (_) {}
@@ -3393,8 +3402,9 @@ function VocabView({ lang }) {
     // Avoid both what's already saved AND words the user dismissed (= knows).
     const avoidList = [...new Set([...getVocab().filter((it) => it.lang === lang).map((it) => it.term), ...known])].filter(Boolean).slice(0, 60);
     const avoid = avoidList.length ? ` The learner already knows these — do NOT include any of them: ${avoidList.join(", ")}.` : "";
+    const adjNote = adjFormsNote(lang, targetName(), isAdjTopic(catName) || isAdjTopic(cat));
     setSeeding(cat || "all");
-    window.aiComplete(`Suggest 10 useful ${lvl} ${targetName()} words or short phrases about "${topic}".${avoid} For each give the ${targetName()} term and its ${nativeName} translation. Reply with ONLY a minified JSON array, nothing else: [{"t":"...","n":"..."}]`).
+    window.aiComplete(`Suggest 10 useful ${lvl} ${targetName()} words or short phrases about "${topic}".${avoid}${adjNote} For each give the ${targetName()} term and its ${nativeName} translation. Reply with ONLY a minified JSON array, nothing else: [{"t":"...","n":"..."}]`).
     then((txt) => {
       let arr = null;
       try {let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();const a = s.indexOf("["), b = s.lastIndexOf("]");if (a >= 0 && b > a) s = s.slice(a, b + 1);arr = JSON.parse(s);} catch (_) {arr = null;}
