@@ -3957,6 +3957,39 @@ function TourGate({ onDone }) {
 
 }
 
+/* ---------- Contextual first-open feature hints (per section) ----------
+   Shown a few seconds after a user opens a section (Quiz / Learn / Saved) for
+   the very first time, because most people click the welcome tour away too
+   fast. One key per kind in window.UI (all 5 UI languages). */
+const FEATURE_HINTS = {
+  quiz:  { icon: "◆", col: "#34c759" },
+  learn: { icon: "✦", col: "#0a84ff" },
+  saved: { icon: "★", col: "#ffb300" } };
+function FeatureHint({ kind, onClose }) {
+  const meta = FEATURE_HINTS[kind] || FEATURE_HINTS.quiz;
+  return (
+    <div className="namegate" onClick={onClose}>
+      <div className="namecard hintcard" onClick={(e) => e.stopPropagation()}>
+        <button className="namex" onClick={onClose} title={tr("tour_skip")}>×</button>
+        <div className="tourhead-row">
+          <span className="tourbadge" style={{ background: meta.col }}>{meta.icon}</span>
+          <h2 className="namehead" style={{ margin: 0 }}>{tr("hint_" + kind + "_h")}</h2>
+        </div>
+        <ul className="hintlist" style={{ "--col": meta.col }}>
+          {[1, 2, 3].map((n, i) => {
+            const txt = tr("hint_" + kind + "_" + n);
+            if (!txt || txt === "hint_" + kind + "_" + n) return null;
+            return <li key={n} style={{ animationDelay: 0.06 + i * 0.09 + "s" }} dangerouslySetInnerHTML={{ __html: txt }}></li>;
+          })}
+        </ul>
+        <button className="namebtn" onClick={onClose}>
+          <span className="cta-rainbow"></span>
+          <span className="cta-label">{tr("got_it")}</span>
+        </button>
+      </div>
+    </div>);
+}
+
 const UI_LOCALE = { de:"de-DE", en:"en-GB", es:"es-ES", nl:"nl-NL", fr:"fr-FR" };
 function fmtDate(iso) {
   const d = typeof iso === "string" ? new Date(iso) : iso;
@@ -5040,6 +5073,9 @@ function App() {
   function setSkl(s) {setSkill(s);persist("kunju-skill", s);}
   function commitName(n) {setName(n);persist("kunju-name", n);setShowOnboard(false);if (recall("kunju-tour", null) === null) setShowTour(true);}
   function finishTour() {persist("kunju-tour", true);setShowTour(false);startTrial();}
+  // Contextual first-open hint per section (Quiz / Learn / Saved).
+  const [featureHint, setFeatureHint] = useState(null);
+  function closeFeatureHint() { if (featureHint) persist("kunju-hint-" + featureHint, true); setFeatureHint(null); }
   UILANG = uiFromNative(native);
 
   // --- Monetization ---
@@ -5181,6 +5217,19 @@ function App() {
     const hasAccess = onTrial || (supaUser && !premExpired && isPremium);
     if (!hasAccess) { setTab("conjugate"); setShowPaywall(true); }
   }, [authResolved, supaUser, isPremium, premiumUntil, trialExpiry]);
+
+  // First time a user opens a section, pop a short explainer a few seconds in
+  // (most people skip the welcome tour too fast). Once per section, persisted.
+  useEffect(() => {
+    const TAB_HINT = { quiz: "quiz", grammar: "learn", saved: "saved" };
+    const kind = TAB_HINT[tab];
+    if (!kind) return;
+    if (recall("kunju-hint-" + kind, false)) return;
+    // Don't compete with the name gate, the welcome tour or the paywall.
+    if (showOnboard || showTour || showPaywall) return;
+    const id = setTimeout(() => setFeatureHint(kind), 2600);
+    return () => clearTimeout(id);
+  }, [tab, showOnboard, showTour, showPaywall]);
 
   // Auto-detect expired premium and show paywall once per session
   useEffect(() => {
@@ -5504,6 +5553,9 @@ function App() {
       onSubmit={commitName} onClose={() => setShowOnboard(false)} />
       }
       {!showOnboard && showTour && <TourGate onDone={finishTour} />}
+
+      {featureHint && !showOnboard && !showTour && !showPaywall &&
+        <FeatureHint kind={featureHint} onClose={closeFeatureHint} />}
 
       {showOffer && !showOnboard &&
         <WelcomeOffer
