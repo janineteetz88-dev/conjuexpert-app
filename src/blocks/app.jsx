@@ -5650,5 +5650,42 @@ function App() {
 
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+  render() {
+    if (!this.state.error) return this.props.children;
+    return (
+      <div style={{
+        display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
+        minHeight:"100dvh", padding:"32px 22px", textAlign:"center",
+        fontFamily:"system-ui,sans-serif", color:"#14151a", background:"#f3f4f8"
+      }}>
+        <div style={{fontSize:"40px", marginBottom:"16px"}}>⚠️</div>
+        <h2 style={{margin:"0 0 10px", fontSize:"20px"}}>Oops — die App ist abgestürzt</h2>
+        <p style={{margin:"0 0 24px", color:"#707888", fontSize:"15px", maxWidth:"340px"}}>
+          Ein unerwarteter Fehler ist aufgetreten. Deine gespeicherten Daten bleiben erhalten.
+        </p>
+        <button
+          onClick={() => { this.setState({ error: null }); }}
+          style={{
+            background:"#0a84ff", color:"#fff", border:"none", borderRadius:"14px",
+            padding:"12px 28px", fontSize:"15px", fontWeight:600, cursor:"pointer"
+          }}
+        >
+          App neu starten
+        </button>
+      </div>
+    );
+  }
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <ErrorBoundary><App /></ErrorBoundary>
+);
 
