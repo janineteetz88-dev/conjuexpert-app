@@ -3240,9 +3240,9 @@ function LearnView({ lang, engine, sound, native, setNative, onStudy }) {
         </div>
       }
 
-      <a href="/blog/" className="learn-blog-btn" target="_blank" rel="noopener">
+      <a href="/blog/#lernen" className="learn-blog-btn" target="_blank" rel="noopener">
         <span className="gg"></span>
-        <span>{{de:"Weiter im Blog stöbern",en:"Explore the Blog",es:"Explorar el Blog",nl:"Verder op de Blog",fr:"Explorer le Blog"}[UILANG] || "Weiter im Blog stöbern"} →</span>
+        <span>{{de:"Stöbere weiter im Blog unter „Lerntipps“",en:"Browse more on the blog under “Learning”",es:"Sigue explorando el blog en «Consejos»",nl:"Blader verder op de blog onder ‘Leertips’",fr:"Continue sur le blog dans « Conseils »"}[UILANG] || "Stöbere weiter im Blog unter „Lerntipps“"} →</span>
       </a>
     </div>);
 
