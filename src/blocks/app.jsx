@@ -1523,7 +1523,7 @@ function WordSentence({ text, fromName, toName, cachePrefix, big, accent, saveLa
 
 }
 
-function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, isActive, onTab }) {
+function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, isActive, onTab, onHint }) {
   const eng = window.CONJ[lang];
   const tenseOpts = useMemo(() => {const r = eng.conjugate(eng.samples[0]);return r && r.tenses ? r.tenses.map((t) => ({ id: t.id, label: t.label })) : [];}, [lang]);
   const pool = useMemo(() => {
@@ -1536,6 +1536,8 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
   }, [lang, favs, skill]);
 
   const [mode, setMode] = useState("cards");
+  // First time the user opens a given quiz mode, ask for its explainer popup.
+  useEffect(() => { if (isActive && onHint) onHint("quiz_" + mode); }, [mode, isActive]);
   const allTenseIds = useMemo(() => tenseOpts.map((t) => t.id), [tenseOpts]);
   const [tenseSel, setTenseSel] = useState([]);
   const [mistMode, setMistMode] = useState(false);
@@ -3592,8 +3594,10 @@ function VocabView({ lang }) {
 }
 
 /* ---------- Saved verbs (heart tab) ---------- */
-function SavedTab({ lang, favs, toggleFav, pickVerb, onActivity }) {
+function SavedTab({ lang, favs, toggleFav, pickVerb, onActivity, onHint }) {
   const [sub, setSub] = useState(() => recall("kunju-saved-sub", "verbs"));
+  // First time the user opens each Saved area (Verbs / Vocabulary), explain it.
+  useEffect(() => { if (onHint) onHint("saved_" + sub); }, [sub]);
   function pick(s) {setSub(s);persist("kunju-saved-sub", s);}
   return (
     <div className="view" style={{ gap: 0 }}>
@@ -3985,16 +3989,22 @@ function TourGate({ onDone }) {
 
 }
 
-/* ---------- Contextual first-open feature hints (per section) ----------
-   Shown a few seconds after a user opens a section (Quiz / Learn / Saved) for
-   the very first time, because most people click the welcome tour away too
-   fast. One key per kind in window.UI (all 5 UI languages). */
+/* ---------- Contextual first-open feature hints ----------
+   Shown shortly after a user first opens a section or a specific quiz mode /
+   Saved sub-area, because most people click the welcome tour away too fast.
+   One key set per kind in window.UI (all 5 UI languages):
+   learn · quiz_cards/choice/type/speak/texte · saved_verbs/saved_vocab. */
 const FEATURE_HINTS = {
-  quiz:  { icon: "◆", col: "#34c759" },
-  learn: { icon: "✦", col: "#0a84ff" },
-  saved: { icon: "★", col: "#ffb300" } };
+  learn:       { icon: "✦",  col: "#0a84ff" },
+  quiz_cards:  { icon: "🃏", col: "#34c759" },
+  quiz_choice: { icon: "◉",  col: "#34c759" },
+  quiz_type:   { icon: "⌨",  col: "#34c759" },
+  quiz_speak:  { icon: "🎤", col: "#34c759" },
+  quiz_texte:  { icon: "📖", col: "#34c759" },
+  saved_verbs: { icon: "★",  col: "#ffb300" },
+  saved_vocab: { icon: "📒", col: "#ffb300" } };
 function FeatureHint({ kind, onClose }) {
-  const meta = FEATURE_HINTS[kind] || FEATURE_HINTS.quiz;
+  const meta = FEATURE_HINTS[kind] || FEATURE_HINTS.learn;
   return (
     <div className="namegate" onClick={onClose}>
       <div className="namecard hintcard" onClick={(e) => e.stopPropagation()}>
@@ -4004,7 +4014,7 @@ function FeatureHint({ kind, onClose }) {
           <h2 className="namehead" style={{ margin: 0 }}>{tr("hint_" + kind + "_h")}</h2>
         </div>
         <ul className="hintlist" style={{ "--col": meta.col }}>
-          {[1, 2, 3].map((n, i) => {
+          {[1, 2, 3, 4].map((n, i) => {
             const txt = tr("hint_" + kind + "_" + n);
             if (!txt || txt === "hint_" + kind + "_" + n) return null;
             return <li key={n} style={{ animationDelay: 0.06 + i * 0.09 + "s" }} dangerouslySetInnerHTML={{ __html: txt }}></li>;
@@ -5116,8 +5126,10 @@ function App() {
   function setSkl(s) {setSkill(s);persist("kunju-skill", s);}
   function commitName(n) {setName(n);persist("kunju-name", n);setShowOnboard(false);if (recall("kunju-tour", null) === null) setShowTour(true);}
   function finishTour() {persist("kunju-tour", true);setShowTour(false);startTrial();}
-  // Contextual first-open hint per section (Quiz / Learn / Saved).
+  // Contextual first-open hints (learn tab · each quiz mode · each Saved area).
   const [featureHint, setFeatureHint] = useState(null);
+  const [pendingHint, setPendingHint] = useState(null);
+  function requestHint(kind) { if (kind && !recall("kunju-hint-" + kind, false)) setPendingHint(kind); }
   function closeFeatureHint() { if (featureHint) persist("kunju-hint-" + featureHint, true); setFeatureHint(null); }
   UILANG = uiFromNative(native);
   useEffect(() => { window.__toast = (msg) => setToastMsg(msg); return () => { window.__toast = null; }; }, []);
@@ -5262,18 +5274,18 @@ function App() {
     if (!hasAccess) { setTab("conjugate"); setShowPaywall(true); }
   }, [authResolved, supaUser, isPremium, premiumUntil, trialExpiry]);
 
-  // First time a user opens a section, pop a short explainer a few seconds in
-  // (most people skip the welcome tour too fast). Once per section, persisted.
+  // Learn is a whole-tab hint; quiz modes & Saved areas request theirs from
+  // inside their views (see requestHint passed down below).
+  useEffect(() => { if (tab === "grammar") requestHint("learn"); }, [tab]);
+
+  // Show a requested hint shortly after, unless a bigger modal is up. Once each.
   useEffect(() => {
-    const TAB_HINT = { quiz: "quiz", grammar: "learn", saved: "saved" };
-    const kind = TAB_HINT[tab];
-    if (!kind) return;
-    if (recall("kunju-hint-" + kind, false)) return;
-    // Don't compete with the name gate, the welcome tour or the paywall.
-    if (showOnboard || showTour || showPaywall) return;
-    const id = setTimeout(() => setFeatureHint(kind), 2600);
+    if (!pendingHint) return;
+    if (recall("kunju-hint-" + pendingHint, false)) { setPendingHint(null); return; }
+    if (showOnboard || showTour || showPaywall || featureHint) return;
+    const id = setTimeout(() => { setFeatureHint(pendingHint); setPendingHint(null); }, 1600);
     return () => clearTimeout(id);
-  }, [tab, showOnboard, showTour, showPaywall]);
+  }, [pendingHint, showOnboard, showTour, showPaywall, featureHint]);
 
   // Auto-detect expired premium and show paywall once per session
   useEffect(() => {
@@ -5579,10 +5591,10 @@ function App() {
         deconj={deconj} activeInf={activeInf} onViewInf={viewInfinitive} onTab={handleTabSwitch} />
         }
         <div style={{display: tab === "quiz" ? "contents" : "none"}}>
-          <QuizView lang={lang} favs={favs} toggleFav={toggleFav} sound={t.sound} skill={skill} onStudy={pickVerb} onActivity={onActivity} isActive={tab === "quiz"} onTab={handleTabSwitch} />
+          <QuizView lang={lang} favs={favs} toggleFav={toggleFav} sound={t.sound} skill={skill} onStudy={pickVerb} onActivity={onActivity} isActive={tab === "quiz"} onTab={handleTabSwitch} onHint={requestHint} />
         </div>
         {tab === "grammar" && <LearnView lang={lang} engine={engine} sound={t.sound} native={native} setNative={setNat} onStudy={pickVerb} />}
-        {tab === "saved" && <SavedTab lang={lang} favs={favs} toggleFav={toggleFav} pickVerb={pickVerb} onActivity={onActivity} />}
+        {tab === "saved" && <SavedTab lang={lang} favs={favs} toggleFav={toggleFav} pickVerb={pickVerb} onActivity={onActivity} onHint={requestHint} />}
       </main>
 
       <AppTweaks t={t} setTweak={setTweak} name={name} commitName={commitName} />
