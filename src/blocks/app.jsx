@@ -1599,6 +1599,8 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
   const [readIdx, setReadIdx] = useState(0);            // index of the sentence currently being read
   const [useMyWords, setUseMyWords] = useState(() => recall("kunju-texte-mywords", false)); // weave the learner's saved words into the story
   const useMyWordsRef = useRef(recall("kunju-texte-mywords", false));
+  const [clozeMyWords, setClozeMyWords] = useState(() => recall("kunju-quiz-mywords", false)); // weave saved vocab into quiz example sentences
+  const clozeMyWordsRef = useRef(recall("kunju-quiz-mywords", false));
   const [ttsRate, setTtsRateState] = useState(() => recall("kunju-ttsrate", 1.0)); // read-aloud speed
   const [voices, setVoices] = useState(() => (window.speechSynthesis ? window.speechSynthesis.getVoices() : []) || []);
   const ttsBase = ((window.CONJ[lang] && window.CONJ[lang].ttsLang) || lang).toLowerCase().split("-")[0];
@@ -1733,7 +1735,11 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
     const advConn = skill === "advanced" ? ` Make it a more complex sentence that naturally uses a subordinating connector (e.g. German: obwohl/trotzdem/damit/während/sodass; Spanish: aunque/a pesar de que/para que; French: bien que/quoique/afin que/pourtant; Dutch: hoewel/zodat/terwijl), like "Trotz der Umstände hielten sie durch."` : "";
     const theme = allThemes.find((t) => t.id === curTopic);
     const topicTxt = theme && theme.topic ? ` The sentence should relate to: ${theme.topic}.` : "";
-    const key = `kunju-cloze6-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}`;
+    // Optionally weave one of the learner's saved words into the example sentence.
+    const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
+    const myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
+    const myWordTxt = myWord ? ` If it fits naturally, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence.` : "";
+    const key = `kunju-cloze6-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {setCloze(cached);return;}
     if (!window.__hasAI()) {setCloze(null);return;}
@@ -1746,7 +1752,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
     const clozeStyle = isProverb ? "" : clozeStyles[Math.floor(Math.random() * clozeStyles.length)];
     const prompt = isProverb
       ? `Give ONE of the MOST FAMOUS, standard ${targetName} proverbs ("Sprichwort") — the kind every native speaker knows and that appears in proverb collections (e.g. for German: "Übung macht den Meister", "Morgenstund hat Gold im Mund", "Wer A sagt, muss auch B sagen"). It must be a real, complete proverb in standard ${targetName}, NOT regional slang, NOT an everyday idiom, NOT invented. Pick a varied one (variety #${provN}). Wrap its main conjugated verb in **double asterisks**. Then give its meaning in ${nativeName}. Do NOT use double-quote characters. Reply with ONLY minified JSON: {"t":"<the proverb with **verb**>","n":"<${nativeName} meaning>"}`
-      : `Write ONE short, natural ${lvl} sentence in ${targetName} (max 9 words) ${(splitLang && isCompound) ? `that correctly expresses the ${qq.tenseLabel} of "${qq.verb}" for "${qq.pronoun}" — its parts are ${qq.answer.split(" ").map((p) => `"${p}"`).join(" + ")}. Use natural ${targetName} word order: the finite/auxiliary verb stays in SECOND position and the participle or infinitive moves to the END of the clause (e.g. "Ich habe das Buch gestern gelesen").` : `that CONTAINS exactly the verb form "${qq.answer}" (the ${qq.tenseLabel} of "${qq.verb}", ${qq.pronoun}).`}${clozeStyle}${advConn}${splitLang ? ` IMPORTANT: if "${qq.verb}" is a separable-prefix verb (trennbares Verb / scheidbaar werkwoord), split the prefix to the END of the main clause in simple tenses (e.g. "ausbreiten" → "Das Feuer breitete sich schnell aus", NEVER "ausbreitete").` : ""}${topicTxt} End with proper punctuation (. ! or ?). Before replying, silently PROOFREAD and guarantee the sentence is 100% correct standard ${targetName} (verb position, separable-prefix split, case government, agreement, word order); if anything is off, fix it and output only the corrected sentence. Then give a natural ${nativeName} translation of the WHOLE sentence. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`;
+      : `Write ONE short, natural ${lvl} sentence in ${targetName} (max 9 words) ${(splitLang && isCompound) ? `that correctly expresses the ${qq.tenseLabel} of "${qq.verb}" for "${qq.pronoun}" — its parts are ${qq.answer.split(" ").map((p) => `"${p}"`).join(" + ")}. Use natural ${targetName} word order: the finite/auxiliary verb stays in SECOND position and the participle or infinitive moves to the END of the clause (e.g. "Ich habe das Buch gestern gelesen").` : `that CONTAINS exactly the verb form "${qq.answer}" (the ${qq.tenseLabel} of "${qq.verb}", ${qq.pronoun}).`}${clozeStyle}${advConn}${splitLang ? ` IMPORTANT: if "${qq.verb}" is a separable-prefix verb (trennbares Verb / scheidbaar werkwoord), split the prefix to the END of the main clause in simple tenses (e.g. "ausbreiten" → "Das Feuer breitete sich schnell aus", NEVER "ausbreitete").` : ""}${topicTxt}${myWordTxt} End with proper punctuation (. ! or ?). Before replying, silently PROOFREAD and guarantee the sentence is 100% correct standard ${targetName} (verb position, separable-prefix split, case government, agreement, word order); if anything is off, fix it and output only the corrected sentence. Then give a natural ${nativeName} translation of the WHOLE sentence. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`;
     window.aiComplete(prompt).
     then((txt) => {
       if (clozeTokenRef.current !== myTok) return; // stale response — a newer question is active
@@ -1938,6 +1944,9 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
     const tid = topicOverride || (topicsSel.length ? topicsSel[Math.floor(Math.random() * topicsSel.length)] : "random");
     const theme = allThemes.find((t) => t.id === tid);
     const topic = theme && theme.topic ? theme.topic : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)];
+    const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
+    const myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
+    const myWordTxt = myWord ? ` Its ${targetName} translation should, if it fits naturally, include the saved word "${myWord}".` : "";
     const pool = tenseSel.length ? tenseSel : tenseOpts.map((t) => t.id);
     const chosenId = pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
     const chosen = chosenId ? (tenseOpts.find((t) => t.id === chosenId) || {}) : {};
@@ -1950,7 +1959,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
     const lvlTxt = skill === "advanced" ? " Use richer C1-level vocabulary and a more complex structure that naturally uses a subordinating connector (in the target language e.g. Spanish: aunque, a pesar de que, para que, sin que, mientras; German: obwohl, trotzdem, damit, während, sodass; French: bien que, quoique, afin que, pourtant; Dutch: hoewel, ofschoon, zodat, terwijl)." : skill === "intermediate" ? " Use everyday B1-level vocabulary." : " Use very simple A1\u2013A2 vocabulary and a short, easy structure (max 7 words).";
     const STYLES = [" Make it a normal statement.", " Make it a QUESTION ending with '?'.", " Make it an EXCLAMATION ending with '!'.", " Make it a short line of spoken dialogue (question or exclamation), as in a real conversation."];
     const styleTxt = STYLES[Math.floor(Math.random() * STYLES.length)];
-    window.aiComplete(`Write ONE short, natural everyday sentence (max 10 words) in ${nativeName} about ${topic}.${tenseTxt}${lvlTxt}${styleTxt} Make it specific and fresh, NOT a clichéd textbook line (variety seed ${seed}).${avoidTxt} Both sentences MUST end with proper punctuation (. ! or ?). Then give its natural ${targetName} translation. Do NOT use any double-quote (") character inside either sentence. Reply with ONLY minified JSON and nothing else: {"n":"...","t":"..."}`).
+    window.aiComplete(`Write ONE short, natural everyday sentence (max 10 words) in ${nativeName} about ${topic}.${tenseTxt}${lvlTxt}${styleTxt}${myWordTxt} Make it specific and fresh, NOT a clichéd textbook line (variety seed ${seed}).${avoidTxt} Both sentences MUST end with proper punctuation (. ! or ?). Then give its natural ${targetName} translation. Do NOT use any double-quote (") character inside either sentence. Reply with ONLY minified JSON and nothing else: {"n":"...","t":"..."}`).
     then((txt) => {
       if (genTokenRef.current !== myTok) return;
       let j = null;
@@ -2313,6 +2322,12 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
         <div className="qfilter-block">
           <div className="recent-title qfilter-lbl">{tr("which_verbs")}</div>
           <OneDropdown lang={lang} options={groups.map((g) => ({ id: g.id, label: groupLabel(g) }))} valueId={selGroup} onPick={setSelGroup} />
+        </div>}
+        {mode !== "texte" && mode !== "speed" &&
+        <div className="qfilter-block">
+          <div className="recent-title qfilter-lbl">{tr("texte_mywords_lbl")}</div>
+          <button className={"modebtn" + (clozeMyWords ? " on" : "")} style={{ width: "100%" }} title={tr("texte_mywords")}
+            onClick={() => { const nv = !clozeMyWords; setClozeMyWords(nv); clozeMyWordsRef.current = nv; persist("kunju-quiz-mywords", nv); const sm = (mode === "type" && typeMode === "sentence") || (mode === "speak" && spkMode === "sentence"); if (q) { if (sm) genSentence(); else fetchCloze(q); } }}>★ {tr("texte_mywords")}{clozeMyWords ? " ✓" : ""}</button>
         </div>}
         {mode !== "choice" && mode !== "texte" &&
         <div className="qfilter-block">
