@@ -4910,6 +4910,8 @@ function PlanSelect({ plan, setPlan, onNext, onClose, onLogin, onCouponLogin, su
 
         <button className="plansel-cta" onClick={onNext}>{tr("plan_cta")}</button>
 
+        {!showCode && <button className="plansel-coupon-cta" onClick={()=>setShowCode(true)} style={{width:"100%",marginTop:"10px",padding:"13px",borderRadius:"14px",border:"1.6px dashed #c9a6ff",background:"rgba(165,87,255,0.08)",color:"var(--text)",fontFamily:"var(--font-display)",fontWeight:700,fontSize:"14.5px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:"8px"}}>🎁 {tr("plan_coupon")}</button>}
+
         <div className="plansel-footer">
           <div className="trust-badges">
             <span className="trust-badge"><span className="trust-icon">🔒</span>Stripe</span>
@@ -4920,7 +4922,6 @@ function PlanSelect({ plan, setPlan, onNext, onClose, onLogin, onCouponLogin, su
           </div>
           <div className="plansel-footer-links">
             <button className="plansel-footer-btn" onClick={onLogin}>{tr("plan_have_account")} <b>{tr("sign_in")}</b></button>
-            {!showCode && <button className="plansel-footer-btn plansel-coupon-btn" onClick={()=>setShowCode(true)}>{tr("plan_coupon")}</button>}
           </div>
         </div>
 
