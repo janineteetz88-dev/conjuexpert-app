@@ -4441,14 +4441,44 @@ function InstallBanner({ onInstall, onDismiss }) {
 }
 
 function IOSInstallBanner({ onDismiss }) {
+  const [help, setHelp] = useState(false);
   return (
-    <div className="install-bar" role="banner" style={{flexWrap:"wrap",gap:"8px 10px"}}>
-      <span className="install-bar-icon">📱</span>
-      <span className="install-bar-text" style={{minWidth:"180px"}}>
-        {tr("ios_homescreen")}
-        <small>{tr("ios_share")}</small>
-      </span>
-      <button className="install-bar-x" onClick={onDismiss} aria-label={tr("ios_close")}>✕</button>
+    <React.Fragment>
+      <div className="install-bar" role="banner" style={{flexWrap:"wrap",gap:"8px 10px"}}>
+        <span className="install-bar-icon">📱</span>
+        <span className="install-bar-text" style={{minWidth:"180px"}}>
+          {tr("ios_homescreen")}
+          <small>{tr("ios_share")}</small>
+        </span>
+        <button className="install-bar-btn" onClick={() => setHelp(true)}>{tr("ios_how")}</button>
+        <button className="install-bar-x" onClick={onDismiss} aria-label={tr("ios_close")}>✕</button>
+      </div>
+      {help && <IOSHelpModal onClose={() => setHelp(false)} />}
+    </React.Fragment>
+  );
+}
+
+/* Short step-by-step explainer for adding the app to the iOS home screen
+   (Safari can't trigger this from a tap — the user must use the Share menu). */
+function IOSHelpModal({ onClose }) {
+  return (
+    <div className="namegate" onClick={onClose}>
+      <div className="namecard hintcard" onClick={(e) => e.stopPropagation()}>
+        <button className="namex" onClick={onClose} title={tr("ios_close")}>×</button>
+        <div className="tourhead-row">
+          <span className="tourbadge" style={{ background: "#0a84ff" }}>📱</span>
+          <h2 className="namehead" style={{ margin: 0 }}>{tr("ios_help_title")}</h2>
+        </div>
+        <ul className="hintlist" style={{ "--col": "#0a84ff" }}>
+          {[1, 2, 3].map((n, i) =>
+            <li key={n} style={{ animationDelay: 0.06 + i * 0.09 + "s" }} dangerouslySetInnerHTML={{ __html: tr("ios_help_" + n) }}></li>
+          )}
+        </ul>
+        <button className="namebtn" onClick={onClose}>
+          <span className="cta-rainbow"></span>
+          <span className="cta-label">{tr("got_it")}</span>
+        </button>
+      </div>
     </div>
   );
 }
