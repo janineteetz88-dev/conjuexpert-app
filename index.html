@@ -10092,6 +10092,7 @@ function AuxExample({
 }
 function LearnContent({
   data,
+  loading,
   engine,
   sound,
   lang,
@@ -10156,7 +10157,7 @@ function LearnContent({
     className: "irrchip-go"
   }, "\u2197")))), /*#__PURE__*/React.createElement("p", {
     className: "irrnote"
-  }, tr("irr_note"))), (d.explain_t || d.explain_n) && /*#__PURE__*/React.createElement("div", {
+  }, tr("irr_note"))), loading && !data && /*#__PURE__*/React.createElement(LearnSkeleton, null), (d.explain_t || d.explain_n) && /*#__PURE__*/React.createElement("div", {
     className: "lcard explain"
   }, /*#__PURE__*/React.createElement("div", {
     className: "lcard-tag"
@@ -10328,7 +10329,16 @@ function LearnView({
     single: true,
     isOn: id => id === selTense,
     onToggle: id => setSelTense(id)
-  })), loading && /*#__PURE__*/React.createElement(LearnSkeleton, null), error && !loading && /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React.createElement(LearnContent, {
+    data: data,
+    loading: loading,
+    engine: engine,
+    sound: sound,
+    lang: lang,
+    selTense: selTense,
+    selLabel: curLabel,
+    onStudy: onStudy
+  }), error && !loading && /*#__PURE__*/React.createElement("div", {
     className: "learn-fallback"
   }, /*#__PURE__*/React.createElement("div", {
     className: "errorbox"
@@ -10346,15 +10356,7 @@ function LearnView({
     dangerouslySetInnerHTML: {
       __html: tp.body
     }
-  }))))), !loading && /*#__PURE__*/React.createElement(LearnContent, {
-    data: data,
-    engine: engine,
-    sound: sound,
-    lang: lang,
-    selTense: selTense,
-    selLabel: curLabel,
-    onStudy: onStudy
-  }), /*#__PURE__*/React.createElement("a", {
+  }))))), /*#__PURE__*/React.createElement("a", {
     href: "/blog/",
     className: "learn-blog-btn",
     target: "_blank",

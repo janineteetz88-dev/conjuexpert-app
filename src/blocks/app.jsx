@@ -3043,7 +3043,7 @@ function AuxExample({ lang, tenseId, tenseLabel, sample, sampleForms, pronouns }
 
 }
 
-function LearnContent({ data, engine, sound, lang, selTense, selLabel, onStudy }) {
+function LearnContent({ data, loading, engine, sound, lang, selTense, selLabel, onStudy }) {
   const d = data || {};
   const hint = tenseHint(lang, selTense);
   const sample = REG_SAMPLE[lang];
@@ -3080,6 +3080,9 @@ function LearnContent({ data, engine, sound, lang, selTense, selLabel, onStudy }
         </div>
         <p className="irrnote">{tr("irr_note")}</p>
       </div>
+
+      {/* Only the AI-generated explanation block shows a loading state. */}
+      {loading && !data && <LearnSkeleton />}
 
       {(d.explain_t || d.explain_n) &&
       <div className="lcard explain">
@@ -3194,7 +3197,9 @@ function LearnView({ lang, engine, sound, native, setNative, onStudy }) {
         <TenseDropdown lang={lang} tenses={tenseOpts} single={true} isOn={(id) => id === selTense} onToggle={(id) => setSelTense(id)} />
       </div>
 
-      {loading && <LearnSkeleton />}
+      {/* Locally-computed parts (formation table, irregulars, auxiliary) render
+         instantly; only the AI-written explanation streams in afterwards. */}
+      <LearnContent data={data} loading={loading} engine={engine} sound={sound} lang={lang} selTense={selTense} selLabel={curLabel} onStudy={onStudy} />
 
       {error && !loading &&
       <div className="learn-fallback">
@@ -3209,8 +3214,6 @@ function LearnView({ lang, engine, sound, native, setNative, onStudy }) {
           </div>
         </div>
       }
-
-      {!loading && <LearnContent data={data} engine={engine} sound={sound} lang={lang} selTense={selTense} selLabel={curLabel} onStudy={onStudy} />}
 
       <a href="/blog/" className="learn-blog-btn" target="_blank" rel="noopener">
         <span className="gg"></span>
