@@ -14332,7 +14332,8 @@ function PaymentSuccess({
 }
 function WelcomeOffer({
   onSecure,
-  onTrial
+  onTrial,
+  afterTrial
 }) {
   const A_PRICE = A_PRICE_BONUS;
   const A_SAVE = +(A_EQ - A_PRICE_BONUS).toFixed(2);
@@ -14431,7 +14432,7 @@ function WelcomeOffer({
   })), /*#__PURE__*/React.createElement("button", {
     className: "mghost",
     onClick: onTrial
-  }, tr("offer_trial"))));
+  }, afterTrial ? tr("paywall_later") : tr("offer_trial"))));
 }
 function PaywallSheet({
   onUpgrade,
@@ -16080,6 +16081,20 @@ function App() {
     setShowPaywall(true);
   }, [isPremium, premiumUntil]);
 
+  // After the 24h trial ends, show the welcome-bonus offer (24,99 €/yr) once,
+  // as long as we're still inside the 7-day bonus window and not yet premium.
+  const welcomeOfferShown = useRef(false);
+  useEffect(() => {
+    if (welcomeOfferShown.current) return;
+    if (showOnboard || showTour || showPaywall) return;
+    if (isPremium) return;
+    if (!bonusActive) return; // 7-day window over
+    if (!trialExpiry || Date.now() < trialExpiry) return; // still inside the 24h trial
+    if (recall("kunju-welcomeoffer-seen", false)) return; // show once
+    welcomeOfferShown.current = true;
+    setShowOffer(true);
+  }, [showOnboard, showTour, showPaywall, isPremium, bonusActive, trialExpiry]);
+
   // Auth: listen for Supabase login/logout
   useEffect(() => {
     function onAuth(e) {
@@ -16642,13 +16657,17 @@ function App() {
   }), featureHint && !showOnboard && !showTour && !showPaywall && /*#__PURE__*/React.createElement(FeatureHint, {
     kind: featureHint,
     onClose: closeFeatureHint
-  }), showOffer && !showOnboard && /*#__PURE__*/React.createElement(WelcomeOffer, {
+  }), showOffer && !showOnboard && !showTour && !showPaywall && /*#__PURE__*/React.createElement(WelcomeOffer, {
+    afterTrial: true,
     onSecure: () => {
-      persist("kunju-offer-seen", Date.now());
+      persist("kunju-welcomeoffer-seen", true);
       setShowOffer(false);
       setShowPlanSelect(true);
     },
-    onTrial: startTrial
+    onTrial: () => {
+      persist("kunju-welcomeoffer-seen", true);
+      setShowOffer(false);
+    }
   }), showPaywall && /*#__PURE__*/React.createElement(PaywallSheet, {
     onUpgrade: () => {
       setShowPaywall(false);
