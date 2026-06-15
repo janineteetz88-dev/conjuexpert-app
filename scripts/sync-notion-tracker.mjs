@@ -84,8 +84,8 @@ async function ensureProperties() {
   const db = await notionFetch(`/databases/${DB_ID}`);
   const existing = Object.keys(db.properties || {});
   const toAdd = {};
-  if (!existing.includes("Blog-Link")) toAdd["Blog-Link"] = { url: {} };
-  if (!existing.includes("Notion-Seite")) toAdd["Notion-Seite"] = { url: {} };
+  if (!existing.includes("Live-Link")) toAdd["Live-Link"] = { url: {} };
+  if (!existing.includes("Notion-Quelle")) toAdd["Notion-Quelle"] = { url: {} };
   if (Object.keys(toAdd).length > 0) {
     await notionFetch(`/databases/${DB_ID}`, "PATCH", { properties: toAdd });
     console.log(`   ✓ Spalten angelegt: ${Object.keys(toAdd).join(", ")}`);
@@ -98,7 +98,7 @@ function parseEntry(page) {
     id: page.id,
     title: props["Thema"]?.title?.[0]?.plain_text || props["Titel"]?.title?.[0]?.plain_text || props["Name"]?.title?.[0]?.plain_text || "",
     status: props["Status"]?.select?.name || "",
-    url: props["Link"]?.url || props["URL"]?.url || "",
+    url: props["Live-Link"]?.url || props["Link"]?.url || props["URL"]?.url || "",
     datePublished: props["Veröffentlicht am"]?.date?.start || "",
   };
 }
@@ -107,11 +107,10 @@ async function createEntry(article) {
   const props = {
     "Thema": { title: [{ text: { content: article.title } }] },
     "Status": { select: { name: "Veröffentlicht" } },
-    "Link": { url: article.url },
-    "Blog-Link": { url: article.url },
+    "Live-Link": { url: article.url },
   };
   if (article.datePublished) props["Veröffentlicht am"] = { date: { start: article.datePublished } };
-  if (article.notionUrl) props["Notion-Seite"] = { url: article.notionUrl };
+  if (article.notionUrl) props["Notion-Quelle"] = { url: article.notionUrl };
   return notionFetch("/pages", "POST", { parent: { database_id: DB_ID }, properties: props });
 }
 

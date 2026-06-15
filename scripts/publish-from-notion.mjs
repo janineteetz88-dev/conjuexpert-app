@@ -181,6 +181,7 @@ for (const page of freigegeben) {
   if (!htmlExists(spoke.slug)) {
     // Notion-Seite hat eine verknüpfte Page-URL — Notion Page ID extrahieren
     const notionUrl =
+      page.properties["Live-Link"]?.url ||
       page.properties["Link"]?.url ||
       page.url ||
       "";
