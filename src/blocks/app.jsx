@@ -4719,7 +4719,7 @@ function PaymentSuccess({ name, onClose }) {
   );
 }
 
-function WelcomeOffer({ onSecure, onTrial }) {
+function WelcomeOffer({ onSecure, onTrial, afterTrial }) {
   const A_PRICE = A_PRICE_BONUS;
   const A_SAVE  = +(A_EQ - A_PRICE_BONUS).toFixed(2);
   const A_DISC  = Math.round(A_SAVE / A_EQ * 100);
@@ -4750,7 +4750,7 @@ function WelcomeOffer({ onSecure, onTrial }) {
           <span className="offer-savings">{tr("offer_save", {save: fEur(A_SAVE), disc: A_DISC})}</span>
         </div>
         <div style={{width:"100%"}}><RCTA label={tr("offer_secure")} onClick={onSecure} ref={ctaRef} /></div>
-        <button className="mghost" onClick={onTrial}>{tr("offer_trial")}</button>
+        <button className="mghost" onClick={onTrial}>{afterTrial ? tr("paywall_later") : tr("offer_trial")}</button>
       </div>
     </div>
   );
@@ -5481,6 +5481,20 @@ function App() {
     setShowPaywall(true);
   }, [isPremium, premiumUntil]);
 
+  // After the 24h trial ends, show the welcome-bonus offer (24,99 €/yr) once,
+  // as long as we're still inside the 7-day bonus window and not yet premium.
+  const welcomeOfferShown = useRef(false);
+  useEffect(() => {
+    if (welcomeOfferShown.current) return;
+    if (showOnboard || showTour || showPaywall) return;
+    if (isPremium) return;
+    if (!bonusActive) return;                              // 7-day window over
+    if (!trialExpiry || Date.now() < trialExpiry) return;  // still inside the 24h trial
+    if (recall("kunju-welcomeoffer-seen", false)) return;  // show once
+    welcomeOfferShown.current = true;
+    setShowOffer(true);
+  }, [showOnboard, showTour, showPaywall, isPremium, bonusActive, trialExpiry]);
+
   // Auth: listen for Supabase login/logout
   useEffect(() => {
     function onAuth(e) {
@@ -5796,10 +5810,11 @@ function App() {
       {featureHint && !showOnboard && !showTour && !showPaywall &&
         <FeatureHint kind={featureHint} onClose={closeFeatureHint} />}
 
-      {showOffer && !showOnboard &&
+      {showOffer && !showOnboard && !showTour && !showPaywall &&
         <WelcomeOffer
-          onSecure={() => { persist("kunju-offer-seen", Date.now()); setShowOffer(false); setShowPlanSelect(true); }}
-          onTrial={startTrial}
+          afterTrial={true}
+          onSecure={() => { persist("kunju-welcomeoffer-seen", true); setShowOffer(false); setShowPlanSelect(true); }}
+          onTrial={() => { persist("kunju-welcomeoffer-seen", true); setShowOffer(false); }}
         />
       }
       {showPaywall &&
