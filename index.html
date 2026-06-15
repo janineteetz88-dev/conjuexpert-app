@@ -3212,9 +3212,14 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   window.UI = {
     en: {
       tagline: "conjugate · quiz · learn", hi: "Hi, {name} 👋", ready: "Ready when you are, {name}",
-      hint_quiz_h: "How the Quiz works", hint_quiz_1: "Each mode trains a different skill — <b>Cards</b> to flip, <b>Choice</b>, <b>Type</b>, <b>Speak</b> or <b>Texts</b>. Just pick one to start.", hint_quiz_2: "Every round comes with fresh AI example sentences — tap any word to save it.", hint_quiz_3: "Saved words land under <b>Saved</b>, where you can practice them anytime.",
+      hint_quiz_cards_h: "Cards: memorise verbs, relaxed", hint_quiz_cards_1: "Pick a tense &amp; favourite topic, plus the direction (mother tongue ↔ target language).", hint_quiz_cards_2: "See the verb + tense, work out the form in your head — tap the card to flip it.", hint_quiz_cards_3: "Tap unknown words in the example sentence → translate &amp; save them.", hint_quiz_cards_4: "No pressure, no typing: perfect for getting to know forms and quick review.",
+      hint_quiz_choice_h: "Choice: spot the right form fast", hint_quiz_choice_1: "A perfect way into a new tense.", hint_quiz_choice_2: "Pick a tense &amp; favourite topic.", hint_quiz_choice_3: "Verb + required tense + four options — tap the right one for instant feedback.", hint_quiz_choice_4: "Tap unknown words in the example sentence → translate &amp; save them.",
+      hint_quiz_type_h: "Type: write conjugations actively", hint_quiz_type_1: "Writing it yourself anchors the forms most — alongside <b>Speak</b>, the most intensive mode.", hint_quiz_type_2: "Pick tense, topic &amp; direction — and whether to drill single verbs or translate a whole sentence.", hint_quiz_type_3: "Tap unknown words in the example sentence → translate &amp; save them.",
+      hint_quiz_speak_h: "Speak: say it out loud", hint_quiz_speak_1: "Saying it yourself anchors the forms most — alongside <b>Type</b>, the most intensive mode.", hint_quiz_speak_2: "Pick tense, topic &amp; direction — and whether to drill single verbs or a whole sentence.", hint_quiz_speak_3: "Tap the microphone to start and to stop the voice input.", hint_quiz_speak_4: "Tap unknown words → translate &amp; save them.",
+      hint_quiz_texte_h: "Texts: quiz your reading &amp; listening", hint_quiz_texte_1: "Choose a favourite topic, tense and which kind of verbs to practise.", hint_quiz_texte_2: "Comprehension questions are waiting for you at the end.", hint_quiz_texte_3: "Tap any word in the text → translate &amp; save it.", hint_quiz_texte_4: "Tip: turn on “Use my saved words” — your own words appear in the story.",
       hint_learn_h: "Welcome to Learn", hint_learn_1: "Every tense is explained bilingually, with auto-generated examples.", hint_learn_2: "Use the tense selector at the top like a <b>cheat sheet</b> to jump between forms.", hint_learn_3: "Tap any example word to save it to your vocabulary.",
-      hint_saved_h: "Your Saved area", hint_saved_1: "Two lists: saved <b>Verbs</b> and your own <b>Vocabulary</b>.", hint_saved_2: "In Vocabulary you can add a new topic and generate fresh words anytime with ✨.", hint_saved_3: "Your saved verbs &amp; words can be picked and practiced right in the <b>Quiz</b>.",
+      hint_saved_verbs_h: "Saved verbs", hint_saved_verbs_1: "Every verb you saved with ☆ while conjugating gathers here.", hint_saved_verbs_2: "Tap a verb to reopen its full conjugation.", hint_saved_verbs_3: "Pick them right in the <b>Quiz</b> and practise on purpose.", hint_saved_verbs_4: "That's how you build your own personal practice list.",
+      hint_saved_vocab_h: "Your vocabulary", hint_saved_vocab_1: "Create your own topic (e.g. “Doctor's visit”) &amp; choose the practice direction.", hint_saved_vocab_2: "✨ MEGA FEATURE: generate new words — under “New” type e.g. “Adjectives” and tap “Suggest 10 new words”.", hint_saved_vocab_3: "Your saved words can also be woven into the quiz texts.",
       tab_conjugate: "Conjugate", tab_quiz: "Quiz", tab_learn: "Learn", conjugate: "Conjugate",
       saved: "Saved verbs", recent: "Recent", clear: "clear",
       empty_title: "Type a verb to conjugate", empty_sub: "All tenses across {n} languages — type a verb or hit 🎲 to start.",
@@ -3242,9 +3247,14 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
     },
     de: {
       tagline: "konjugieren · quiz · lernen", hi: "Hi, {name} 👋", ready: "Bereit, wenn du es bist, {name}",
-      hint_quiz_h: "So funktioniert das Quiz", hint_quiz_1: "Jeder Modus trainiert etwas anderes — <b>Karten</b> zum Umdrehen, <b>Auswahl</b>, <b>Tippen</b>, <b>Sprechen</b> oder <b>Texte</b>. Tipp einfach einen an.", hint_quiz_2: "Jede Runde hat frische KI-Beispielsätze — tippe ein Wort an, um es zu speichern.", hint_quiz_3: "Gemerkte Wörter landen unter <b>Gemerkt</b> und lassen sich dort jederzeit üben.",
+      hint_quiz_cards_h: "Karten: Verben entspannt einprägen", hint_quiz_cards_1: "Zeitform &amp; Lieblingsthema wählen, dazu die Richtung (Muttersprache ↔ Lernsprache).", hint_quiz_cards_2: "Verb + Zeitform ansehen, Form im Kopf überlegen — tippe die Karte zum Umdrehen.", hint_quiz_cards_3: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.", hint_quiz_cards_4: "Kein Druck, kein Tippen: ideal zum Kennenlernen und schnellen Wiederholen.",
+      hint_quiz_choice_h: "Auswahl: die richtige Form schnell erkennen", hint_quiz_choice_1: "Perfekter Einstieg in eine neue Zeitform.", hint_quiz_choice_2: "Zeitform &amp; Lieblingsthema wählen.", hint_quiz_choice_3: "Verb + geforderte Zeitform + vier Varianten — tippe die richtige an, sofortige Rückmeldung.", hint_quiz_choice_4: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.",
+      hint_quiz_type_h: "Tippen: Konjugationen aktiv schreiben", hint_quiz_type_1: "Selbst Schreiben verankert die Formen mit am stärksten — neben <b>Sprechen</b> der intensivste Modus.", hint_quiz_type_2: "Zeitform, Lieblingsthema &amp; Richtung wählen — einzelne Verben oder ganzen Satz übersetzen.", hint_quiz_type_3: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.",
+      hint_quiz_speak_h: "Sprechen: laut aussprechen", hint_quiz_speak_1: "Selbst Sprechen verankert die Formen mit am stärksten — neben <b>Schreiben</b> der intensivste Modus.", hint_quiz_speak_2: "Zeitform, Lieblingsthema &amp; Richtung wählen — einzelne Verben oder ganzen Satz.", hint_quiz_speak_3: "Mikrofon antippen zum Starten und Beenden der Spracheingabe.", hint_quiz_speak_4: "Unbekannte Wörter antippen → übersetzen &amp; speichern.",
+      hint_quiz_texte_h: "Quizze dein Lese- &amp; Hörverständnis", hint_quiz_texte_1: "Lieblingsthema, Zeitform &amp; Art der Verben wählen.", hint_quiz_texte_2: "Am Ende warten Verständnisfragen auf dich.", hint_quiz_texte_3: "Jedes Wort im Text antippen → übersetzen &amp; speichern.", hint_quiz_texte_4: "Tipp: „Gemerkte Wörter einbauen“ aktivieren — deine Wörter erscheinen in der Geschichte.",
       hint_learn_h: "Willkommen im Lernbereich", hint_learn_1: "Jede Zeitform wird zweisprachig erklärt — mit automatisch erzeugten Beispielen.", hint_learn_2: "Nutze die Zeitform-Auswahl oben wie einen <b>Spickzettel</b>, um zwischen den Formen zu springen.", hint_learn_3: "Tipp ein Beispielwort an, um es in deinen Wortschatz zu legen.",
-      hint_saved_h: "Dein Bereich „Gemerkt“", hint_saved_1: "Zwei Listen: gemerkte <b>Verben</b> und dein eigener <b>Wortschatz</b>.", hint_saved_2: "Im Wortschatz kannst du ein neues Thema anlegen und jederzeit mit ✨ neue Wörter generieren.", hint_saved_3: "Deine gemerkten Verben &amp; Wörter lassen sich direkt im <b>Quiz</b> auswählen und üben.",
+      hint_saved_verbs_h: "Gemerkte Verben", hint_saved_verbs_1: "Alle Verben, die du beim Konjugieren mit ☆ gespeichert hast.", hint_saved_verbs_2: "Verb antippen → volle Konjugation wieder öffnen.", hint_saved_verbs_3: "Direkt im <b>Quiz</b> auswählen &amp; gezielt üben.", hint_saved_verbs_4: "So baust du dir deine persönliche Übungsliste auf.",
+      hint_saved_vocab_h: "Dein Wortschatz", hint_saved_vocab_1: "Eigenes Thema anlegen (z. B. „Arztbesuch“) &amp; Übungsrichtung wählen.", hint_saved_vocab_2: "✨ MEGA-FEATURE: neue Wörter generieren — unter „Neu“ z. B. „Adjektive“ eingeben und „10 neue Wörter vorschlagen“ tippen.", hint_saved_vocab_3: "Gemerkte Wörter lassen sich zusätzlich in die Quiz-Texte einbauen.",
       tab_conjugate: "Konjugieren", tab_quiz: "Quiz", tab_learn: "Lernen", conjugate: "Konjugieren",
       saved: "Gespeicherte Verben", recent: "Zuletzt", clear: "löschen",
       empty_title: "Verb eingeben zum Konjugieren", empty_sub: "Alle Zeitformen in {n} Sprachen — tippe ein Verb oder 🎲 zum Start.",
@@ -3272,9 +3282,14 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
     },
     es: {
       tagline: "conjugar · quiz · aprender", hi: "¡Hola, {name}! 👋", ready: "Cuando quieras, {name}",
-      hint_quiz_h: "Cómo funciona el Quiz", hint_quiz_1: "Cada modo entrena algo distinto — <b>Tarjetas</b> para girar, <b>Opción</b>, <b>Escribir</b>, <b>Hablar</b> o <b>Textos</b>. Elige uno para empezar.", hint_quiz_2: "Cada ronda trae frases de ejemplo nuevas con IA — toca una palabra para guardarla.", hint_quiz_3: "Las palabras guardadas van a <b>Guardados</b>, donde puedes practicarlas cuando quieras.",
+      hint_quiz_cards_h: "Tarjetas: memoriza verbos sin estrés", hint_quiz_cards_1: "Elige tiempo verbal &amp; tema favorito, además del sentido (lengua materna ↔ idioma que aprendes).", hint_quiz_cards_2: "Mira el verbo + tiempo, piensa la forma en tu cabeza — toca la tarjeta para girarla.", hint_quiz_cards_3: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.", hint_quiz_cards_4: "Sin presión, sin escribir: ideal para conocer las formas y repasar rápido.",
+      hint_quiz_choice_h: "Opción: reconocer rápido la forma correcta", hint_quiz_choice_1: "Una entrada perfecta a un tiempo verbal nuevo.", hint_quiz_choice_2: "Elige tiempo verbal &amp; tema favorito.", hint_quiz_choice_3: "Verbo + tiempo requerido + cuatro variantes — toca la correcta y recibe respuesta al instante.", hint_quiz_choice_4: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.",
+      hint_quiz_type_h: "Escribir: conjuga de forma activa", hint_quiz_type_1: "Escribirlo tú mismo es lo que más fija las formas — junto a <b>Hablar</b>, el modo más intensivo.", hint_quiz_type_2: "Elige tiempo, tema &amp; sentido — y si practicas verbos sueltos o traduces una frase entera.", hint_quiz_type_3: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.",
+      hint_quiz_speak_h: "Hablar: dilo en voz alta", hint_quiz_speak_1: "Decirlo tú mismo es lo que más fija las formas — junto a <b>Escribir</b>, el modo más intensivo.", hint_quiz_speak_2: "Elige tiempo, tema &amp; sentido — y si practicas verbos sueltos o una frase entera.", hint_quiz_speak_3: "Toca el micrófono para empezar y para terminar la entrada de voz.", hint_quiz_speak_4: "Toca las palabras desconocidas → traducir &amp; guardar.",
+      hint_quiz_texte_h: "Textos: pon a prueba tu comprensión lectora &amp; auditiva", hint_quiz_texte_1: "Elige tema favorito, tiempo verbal &amp; qué tipo de verbos practicar.", hint_quiz_texte_2: "Al final te esperan preguntas de comprensión.", hint_quiz_texte_3: "Toca cualquier palabra del texto → traducir &amp; guardar.", hint_quiz_texte_4: "Consejo: activa “Usar mis palabras” — tus propias palabras aparecen en la historia.",
       hint_learn_h: "Bienvenido a Aprender", hint_learn_1: "Cada tiempo verbal se explica de forma bilingüe, con ejemplos generados automáticamente.", hint_learn_2: "Usa el selector de tiempos de arriba como una <b>chuleta</b> para saltar entre formas.", hint_learn_3: "Toca cualquier palabra de ejemplo para guardarla en tu vocabulario.",
-      hint_saved_h: "Tu área de Guardados", hint_saved_1: "Dos listas: <b>Verbos</b> guardados y tu propio <b>Vocabulario</b>.", hint_saved_2: "En Vocabulario puedes añadir un tema nuevo y generar palabras nuevas cuando quieras con ✨.", hint_saved_3: "Tus verbos y palabras guardados se pueden elegir y practicar en el <b>Quiz</b>.",
+      hint_saved_verbs_h: "Verbos guardados", hint_saved_verbs_1: "Aquí se reúnen todos los verbos que guardaste con ☆ al conjugar.", hint_saved_verbs_2: "Toca un verbo para volver a abrir su conjugación completa.", hint_saved_verbs_3: "Elígelos directamente en el <b>Quiz</b> y practica con intención.", hint_saved_verbs_4: "Así creas tu propia lista de práctica personal.",
+      hint_saved_vocab_h: "Tu vocabulario", hint_saved_vocab_1: "Crea tu propio tema (p. ej. “Visita al médico”) &amp; elige el sentido de práctica.", hint_saved_vocab_2: "✨ SÚPER FUNCIÓN: genera palabras nuevas — en “Nueva” escribe p. ej. “Adjetivos” y toca “Sugerir 10 palabras nuevas”.", hint_saved_vocab_3: "Tus palabras guardadas también pueden incluirse en los textos del quiz.",
       tab_conjugate: "Conjugar", tab_quiz: "Quiz", tab_learn: "Aprender", conjugate: "Conjugar",
       saved: "Verbos guardados", recent: "Recientes", clear: "borrar",
       empty_title: "Escribe un verbo para conjugar", empty_sub: "Todos los tiempos en {n} idiomas — escribe un verbo o pulsa 🎲.",
@@ -3302,9 +3317,14 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
     },
     nl: {
       tagline: "vervoegen · quiz · leren", hi: "Hoi, {name} 👋", ready: "Klaar wanneer jij het bent, {name}",
-      hint_quiz_h: "Zo werkt de Quiz", hint_quiz_1: "Elke modus traint iets anders — <b>Kaarten</b> om te draaien, <b>Keuze</b>, <b>Typen</b>, <b>Spreken</b> of <b>Teksten</b>. Kies er een om te starten.", hint_quiz_2: "Elke ronde heeft nieuwe AI-voorbeeldzinnen — tik op een woord om het op te slaan.", hint_quiz_3: "Opgeslagen woorden komen onder <b>Bewaard</b>, waar je ze altijd kunt oefenen.",
+      hint_quiz_cards_h: "Kaarten: werkwoorden ontspannen inprenten", hint_quiz_cards_1: "Kies tijd &amp; favoriet thema, plus de richting (moedertaal ↔ doeltaal).", hint_quiz_cards_2: "Bekijk werkwoord + tijd, bedenk de vorm in je hoofd — tik de kaart om te draaien.", hint_quiz_cards_3: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.", hint_quiz_cards_4: "Geen druk, geen typen: ideaal om vormen te leren kennen en snel te herhalen.",
+      hint_quiz_choice_h: "Keuze: de juiste vorm snel herkennen", hint_quiz_choice_1: "Een perfecte start in een nieuwe tijd.", hint_quiz_choice_2: "Kies tijd &amp; favoriet thema.", hint_quiz_choice_3: "Werkwoord + gevraagde tijd + vier varianten — tik de juiste aan voor directe feedback.", hint_quiz_choice_4: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.",
+      hint_quiz_type_h: "Typen: vervoegingen actief schrijven", hint_quiz_type_1: "Zelf schrijven verankert de vormen het sterkst — naast <b>Spreken</b> de intensiefste modus.", hint_quiz_type_2: "Kies tijd, thema &amp; richting — en of je losse werkwoorden oefent of een hele zin vertaalt.", hint_quiz_type_3: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.",
+      hint_quiz_speak_h: "Spreken: zeg het hardop", hint_quiz_speak_1: "Zelf spreken verankert de vormen het sterkst — naast <b>Typen</b> de intensiefste modus.", hint_quiz_speak_2: "Kies tijd, thema &amp; richting — en of je losse werkwoorden oefent of een hele zin.", hint_quiz_speak_3: "Tik op de microfoon om te beginnen en te stoppen met de spraakinvoer.", hint_quiz_speak_4: "Tik onbekende woorden → vertalen &amp; opslaan.",
+      hint_quiz_texte_h: "Teksten: test je lees- &amp; luistervaardigheid", hint_quiz_texte_1: "Kies favoriet thema, tijd &amp; welk soort werkwoorden je wilt oefenen.", hint_quiz_texte_2: "Aan het eind wachten begripsvragen op je.", hint_quiz_texte_3: "Tik elk woord in de tekst aan → vertalen &amp; opslaan.", hint_quiz_texte_4: "Tip: zet “Mijn woorden gebruiken” aan — je eigen woorden verschijnen in het verhaal.",
       hint_learn_h: "Welkom bij Leren", hint_learn_1: "Elke tijd wordt tweetalig uitgelegd, met automatisch gegenereerde voorbeelden.", hint_learn_2: "Gebruik de tijdkiezer bovenaan als een <b>spiekbriefje</b> om tussen vormen te springen.", hint_learn_3: "Tik op een voorbeeldwoord om het aan je woordenschat toe te voegen.",
-      hint_saved_h: "Jouw Bewaard-gedeelte", hint_saved_1: "Twee lijsten: opgeslagen <b>Werkwoorden</b> en je eigen <b>Woordenschat</b>.", hint_saved_2: "In Woordenschat kun je een nieuw thema toevoegen en altijd nieuwe woorden genereren met ✨.", hint_saved_3: "Je opgeslagen werkwoorden &amp; woorden kun je direct in de <b>Quiz</b> kiezen en oefenen.",
+      hint_saved_verbs_h: "Opgeslagen werkwoorden", hint_saved_verbs_1: "Hier verzamelen zich alle werkwoorden die je tijdens het vervoegen met ☆ opsloeg.", hint_saved_verbs_2: "Tik een werkwoord aan om de volledige vervoeging weer te openen.", hint_saved_verbs_3: "Kies ze direct in de <b>Quiz</b> en oefen gericht.", hint_saved_verbs_4: "Zo bouw je je eigen persoonlijke oefenlijst op.",
+      hint_saved_vocab_h: "Jouw woordenschat", hint_saved_vocab_1: "Maak een eigen thema (bijv. “Doktersbezoek”) &amp; kies de oefenrichting.", hint_saved_vocab_2: "✨ MEGA-FEATURE: genereer nieuwe woorden — onder “Nieuw” typ je bijv. “Bijvoeglijke naamwoorden” en tik “10 nieuwe woorden voorstellen”.", hint_saved_vocab_3: "Je opgeslagen woorden kunnen ook in de quizteksten worden verwerkt.",
       tab_conjugate: "Vervoegen", tab_quiz: "Quiz", tab_learn: "Leren", conjugate: "Vervoegen",
       saved: "Opgeslagen werkwoorden", recent: "Recent", clear: "wissen",
       empty_title: "Typ een werkwoord om te vervoegen", empty_sub: "Alle tijden in {n} talen — typ een werkwoord of tik 🎲.",
@@ -3332,9 +3352,14 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
     },
     fr: {
       tagline: "conjuguer · quiz · apprendre", hi: "Salut, {name} 👋", ready: "Quand tu veux, {name}",
-      hint_quiz_h: "Comment marche le Quiz", hint_quiz_1: "Chaque mode entraîne une compétence différente — <b>Cartes</b> à retourner, <b>Choix</b>, <b>Saisie</b>, <b>Parler</b> ou <b>Textes</b>. Choisis-en un pour commencer.", hint_quiz_2: "Chaque tour propose de nouvelles phrases d'exemple générées par IA — touche un mot pour l'enregistrer.", hint_quiz_3: "Les mots enregistrés arrivent dans <b>Favoris</b>, où tu peux les réviser à tout moment.",
+      hint_quiz_cards_h: "Cartes : mémoriser les verbes en douceur", hint_quiz_cards_1: "Choisis un temps &amp; un thème favori, ainsi que le sens (langue maternelle ↔ langue apprise).", hint_quiz_cards_2: "Regarde le verbe + le temps, trouve la forme dans ta tête — touche la carte pour la retourner.", hint_quiz_cards_3: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.", hint_quiz_cards_4: "Sans pression, sans saisie : idéal pour découvrir les formes et réviser vite.",
+      hint_quiz_choice_h: "Choix : reconnaître vite la bonne forme", hint_quiz_choice_1: "Une entrée parfaite dans un nouveau temps.", hint_quiz_choice_2: "Choisis un temps &amp; un thème favori.", hint_quiz_choice_3: "Verbe + temps demandé + quatre variantes — touche la bonne pour un retour immédiat.", hint_quiz_choice_4: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.",
+      hint_quiz_type_h: "Saisie : écrire les conjugaisons activement", hint_quiz_type_1: "Écrire soi-même ancre le plus les formes — avec <b>Parler</b>, le mode le plus intensif.", hint_quiz_type_2: "Choisis le temps, le thème &amp; le sens — et si tu travailles des verbes seuls ou traduis une phrase entière.", hint_quiz_type_3: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.",
+      hint_quiz_speak_h: "Parler : prononce à voix haute", hint_quiz_speak_1: "Parler soi-même ancre le plus les formes — avec <b>Saisie</b>, le mode le plus intensif.", hint_quiz_speak_2: "Choisis le temps, le thème &amp; le sens — et si tu travailles des verbes seuls ou une phrase entière.", hint_quiz_speak_3: "Touche le micro pour démarrer et pour arrêter la saisie vocale.", hint_quiz_speak_4: "Touche les mots inconnus → traduire &amp; enregistrer.",
+      hint_quiz_texte_h: "Textes : teste ta compréhension écrite &amp; orale", hint_quiz_texte_1: "Choisis un thème favori, un temps &amp; quel type de verbes pratiquer.", hint_quiz_texte_2: "À la fin, des questions de compréhension t'attendent.", hint_quiz_texte_3: "Touche n'importe quel mot du texte → traduire &amp; enregistrer.", hint_quiz_texte_4: "Astuce : active « Utiliser mes mots » — tes propres mots apparaissent dans l'histoire.",
       hint_learn_h: "Bienvenue dans Apprendre", hint_learn_1: "Chaque temps est expliqué en bilingue, avec des exemples générés automatiquement.", hint_learn_2: "Utilise le sélecteur de temps en haut comme un <b>aide-mémoire</b> pour passer d'une forme à l'autre.", hint_learn_3: "Touche un mot d'exemple pour l'enregistrer dans ton vocabulaire.",
-      hint_saved_h: "Ton espace Favoris", hint_saved_1: "Deux listes : les <b>Verbes</b> enregistrés et ton propre <b>Vocabulaire</b>.", hint_saved_2: "Dans Vocabulaire, tu peux ajouter un nouveau thème et générer de nouveaux mots quand tu veux avec ✨.", hint_saved_3: "Tes verbes et mots enregistrés peuvent être choisis et révisés directement dans le <b>Quiz</b>.",
+      hint_saved_verbs_h: "Verbes enregistrés", hint_saved_verbs_1: "Ici se réunissent tous les verbes que tu as enregistrés avec ☆ en conjuguant.", hint_saved_verbs_2: "Touche un verbe pour rouvrir sa conjugaison complète.", hint_saved_verbs_3: "Sélectionne-les directement dans le <b>Quiz</b> et entraîne-toi de façon ciblée.", hint_saved_verbs_4: "C'est ainsi que tu construis ta propre liste d'entraînement.",
+      hint_saved_vocab_h: "Ton vocabulaire", hint_saved_vocab_1: "Crée ton propre thème (p. ex. « Visite chez le médecin ») &amp; choisis le sens d'entraînement.", hint_saved_vocab_2: "✨ SUPER FONCTION : génère de nouveaux mots — sous « Nouvelle » tape p. ex. « Adjectifs » et touche « Suggérer 10 nouveaux mots ».", hint_saved_vocab_3: "Tes mots enregistrés peuvent aussi être intégrés aux textes du quiz.",
       tab_conjugate: "Conjuguer", tab_quiz: "Quiz", tab_learn: "Apprendre", conjugate: "Conjuguer",
       saved: "Verbes enregistrés", recent: "Récents", clear: "effacer",
       empty_title: "Saisis un verbe à conjuguer", empty_sub: "Tous les temps en {n} langues — saisis un verbe ou appuie sur 🎲.",
@@ -7651,7 +7676,8 @@ function QuizView({
   onStudy,
   onActivity,
   isActive,
-  onTab
+  onTab,
+  onHint
 }) {
   const eng = window.CONJ[lang];
   const tenseOpts = useMemo(() => {
@@ -7672,6 +7698,10 @@ function QuizView({
     return base;
   }, [lang, favs, skill]);
   const [mode, setMode] = useState("cards");
+  // First time the user opens a given quiz mode, ask for its explainer popup.
+  useEffect(() => {
+    if (isActive && onHint) onHint("quiz_" + mode);
+  }, [mode, isActive]);
   const allTenseIds = useMemo(() => tenseOpts.map(t => t.id), [tenseOpts]);
   const [tenseSel, setTenseSel] = useState([]);
   const [mistMode, setMistMode] = useState(false);
@@ -11483,9 +11513,14 @@ function SavedTab({
   favs,
   toggleFav,
   pickVerb,
-  onActivity
+  onActivity,
+  onHint
 }) {
   const [sub, setSub] = useState(() => recall("kunju-saved-sub", "verbs"));
+  // First time the user opens each Saved area (Verbs / Vocabulary), explain it.
+  useEffect(() => {
+    if (onHint) onHint("saved_" + sub);
+  }, [sub]);
   function pick(s) {
     setSub(s);
     persist("kunju-saved-sub", s);
@@ -12345,21 +12380,42 @@ function TourGate({
   }, last ? tr("tour_start") : tr("tour_next")))));
 }
 
-/* ---------- Contextual first-open feature hints (per section) ----------
-   Shown a few seconds after a user opens a section (Quiz / Learn / Saved) for
-   the very first time, because most people click the welcome tour away too
-   fast. One key per kind in window.UI (all 5 UI languages). */
+/* ---------- Contextual first-open feature hints ----------
+   Shown shortly after a user first opens a section or a specific quiz mode /
+   Saved sub-area, because most people click the welcome tour away too fast.
+   One key set per kind in window.UI (all 5 UI languages):
+   learn · quiz_cards/choice/type/speak/texte · saved_verbs/saved_vocab. */
 const FEATURE_HINTS = {
-  quiz: {
-    icon: "◆",
-    col: "#34c759"
-  },
   learn: {
     icon: "✦",
     col: "#0a84ff"
   },
-  saved: {
+  quiz_cards: {
+    icon: "🃏",
+    col: "#34c759"
+  },
+  quiz_choice: {
+    icon: "◉",
+    col: "#34c759"
+  },
+  quiz_type: {
+    icon: "⌨",
+    col: "#34c759"
+  },
+  quiz_speak: {
+    icon: "🎤",
+    col: "#34c759"
+  },
+  quiz_texte: {
+    icon: "📖",
+    col: "#34c759"
+  },
+  saved_verbs: {
     icon: "★",
+    col: "#ffb300"
+  },
+  saved_vocab: {
+    icon: "📒",
     col: "#ffb300"
   }
 };
@@ -12367,7 +12423,7 @@ function FeatureHint({
   kind,
   onClose
 }) {
-  const meta = FEATURE_HINTS[kind] || FEATURE_HINTS.quiz;
+  const meta = FEATURE_HINTS[kind] || FEATURE_HINTS.learn;
   return /*#__PURE__*/React.createElement("div", {
     className: "namegate",
     onClick: onClose
@@ -12395,7 +12451,7 @@ function FeatureHint({
     style: {
       "--col": meta.col
     }
-  }, [1, 2, 3].map((n, i) => {
+  }, [1, 2, 3, 4].map((n, i) => {
     const txt = tr("hint_" + kind + "_" + n);
     if (!txt || txt === "hint_" + kind + "_" + n) return null;
     return /*#__PURE__*/React.createElement("li", {
@@ -15263,8 +15319,12 @@ function App() {
     setShowTour(false);
     startTrial();
   }
-  // Contextual first-open hint per section (Quiz / Learn / Saved).
+  // Contextual first-open hints (learn tab · each quiz mode · each Saved area).
   const [featureHint, setFeatureHint] = useState(null);
+  const [pendingHint, setPendingHint] = useState(null);
+  function requestHint(kind) {
+    if (kind && !recall("kunju-hint-" + kind, false)) setPendingHint(kind);
+  }
   function closeFeatureHint() {
     if (featureHint) persist("kunju-hint-" + featureHint, true);
     setFeatureHint(null);
@@ -15464,22 +15524,26 @@ function App() {
     }
   }, [authResolved, supaUser, isPremium, premiumUntil, trialExpiry]);
 
-  // First time a user opens a section, pop a short explainer a few seconds in
-  // (most people skip the welcome tour too fast). Once per section, persisted.
+  // Learn is a whole-tab hint; quiz modes & Saved areas request theirs from
+  // inside their views (see requestHint passed down below).
   useEffect(() => {
-    const TAB_HINT = {
-      quiz: "quiz",
-      grammar: "learn",
-      saved: "saved"
-    };
-    const kind = TAB_HINT[tab];
-    if (!kind) return;
-    if (recall("kunju-hint-" + kind, false)) return;
-    // Don't compete with the name gate, the welcome tour or the paywall.
-    if (showOnboard || showTour || showPaywall) return;
-    const id = setTimeout(() => setFeatureHint(kind), 2600);
+    if (tab === "grammar") requestHint("learn");
+  }, [tab]);
+
+  // Show a requested hint shortly after, unless a bigger modal is up. Once each.
+  useEffect(() => {
+    if (!pendingHint) return;
+    if (recall("kunju-hint-" + pendingHint, false)) {
+      setPendingHint(null);
+      return;
+    }
+    if (showOnboard || showTour || showPaywall || featureHint) return;
+    const id = setTimeout(() => {
+      setFeatureHint(pendingHint);
+      setPendingHint(null);
+    }, 1600);
     return () => clearTimeout(id);
-  }, [tab, showOnboard, showTour, showPaywall]);
+  }, [pendingHint, showOnboard, showTour, showPaywall, featureHint]);
 
   // Auto-detect expired premium and show paywall once per session
   useEffect(() => {
@@ -15998,7 +16062,8 @@ function App() {
     onStudy: pickVerb,
     onActivity: onActivity,
     isActive: tab === "quiz",
-    onTab: handleTabSwitch
+    onTab: handleTabSwitch,
+    onHint: requestHint
   })), tab === "grammar" && /*#__PURE__*/React.createElement(LearnView, {
     lang: lang,
     engine: engine,
@@ -16011,7 +16076,8 @@ function App() {
     favs: favs,
     toggleFav: toggleFav,
     pickVerb: pickVerb,
-    onActivity: onActivity
+    onActivity: onActivity,
+    onHint: requestHint
   })), /*#__PURE__*/React.createElement(AppTweaks, {
     t: t,
     setTweak: setTweak,

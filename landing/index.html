@@ -104,6 +104,15 @@ header.nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(1.5) blur(1
 .nav-links a:hover{color:var(--ink)}
 .nav .btn{padding:11px 20px;font-size:14.5px}
 @media(max-width:860px){.nav-links{display:none}}
+/* phones: keep brand + lang switch + CTA from overflowing (right button was cut off on iPhone) */
+@media(max-width:600px){
+  header.nav .wrap{padding:0 14px}
+  .nav-in{height:62px;gap:8px}
+  .nav-right{gap:8px;flex:none}
+  .brand{min-width:0;flex:0 1 auto}
+  .brand-name{font-size:16.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nav .btn{padding:9px 13px;font-size:13.5px}
+}
 
 /* hero */
 .hero{position:relative;padding:84px 0 30px}
