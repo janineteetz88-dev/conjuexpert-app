@@ -10908,6 +10908,311 @@ function adjFormsNote(langCode, targetNameStr, isAdj) {
   const ex = langCode === "fr" ? '"beau / belle", "grand / grande", "heureux / heureuse"' : '"bueno / buena", "alto / alta", "trabajador / trabajadora"';
   return ` These are ${targetNameStr} ADJECTIVES: for each term give BOTH the masculine and feminine form, separated by " / " (e.g. ${ex}); if the two forms are identical, write the word once.`;
 }
+/* 50 common adjectives, one concept per row with the form in each language
+   (es/fr carry both gender forms where they differ). The vocab seeder reads
+   term = row[learningLang], translation = row[motherTongueCode]. Static, so
+   the "Adjektive" topic fills instantly & offline; more come via AI / input. */
+const ADJ_STATIC = [{
+  de: "gut",
+  en: "good",
+  es: "bueno / buena",
+  fr: "bon / bonne",
+  nl: "goed"
+}, {
+  de: "schlecht",
+  en: "bad",
+  es: "malo / mala",
+  fr: "mauvais / mauvaise",
+  nl: "slecht"
+}, {
+  de: "groß",
+  en: "big",
+  es: "grande",
+  fr: "grand / grande",
+  nl: "groot"
+}, {
+  de: "klein",
+  en: "small",
+  es: "pequeño / pequeña",
+  fr: "petit / petite",
+  nl: "klein"
+}, {
+  de: "neu",
+  en: "new",
+  es: "nuevo / nueva",
+  fr: "nouveau / nouvelle",
+  nl: "nieuw"
+}, {
+  de: "alt",
+  en: "old",
+  es: "viejo / vieja",
+  fr: "vieux / vieille",
+  nl: "oud"
+}, {
+  de: "jung",
+  en: "young",
+  es: "joven",
+  fr: "jeune",
+  nl: "jong"
+}, {
+  de: "schön",
+  en: "beautiful",
+  es: "bonito / bonita",
+  fr: "beau / belle",
+  nl: "mooi"
+}, {
+  de: "hässlich",
+  en: "ugly",
+  es: "feo / fea",
+  fr: "laid / laide",
+  nl: "lelijk"
+}, {
+  de: "lang",
+  en: "long",
+  es: "largo / larga",
+  fr: "long / longue",
+  nl: "lang"
+}, {
+  de: "kurz",
+  en: "short",
+  es: "corto / corta",
+  fr: "court / courte",
+  nl: "kort"
+}, {
+  de: "hoch",
+  en: "high",
+  es: "alto / alta",
+  fr: "haut / haute",
+  nl: "hoog"
+}, {
+  de: "niedrig",
+  en: "low",
+  es: "bajo / baja",
+  fr: "bas / basse",
+  nl: "laag"
+}, {
+  de: "einfach",
+  en: "easy",
+  es: "fácil",
+  fr: "facile",
+  nl: "makkelijk"
+}, {
+  de: "schwierig",
+  en: "difficult",
+  es: "difícil",
+  fr: "difficile",
+  nl: "moeilijk"
+}, {
+  de: "glücklich",
+  en: "happy",
+  es: "feliz",
+  fr: "heureux / heureuse",
+  nl: "gelukkig"
+}, {
+  de: "traurig",
+  en: "sad",
+  es: "triste",
+  fr: "triste",
+  nl: "verdrietig"
+}, {
+  de: "schnell",
+  en: "fast",
+  es: "rápido / rápida",
+  fr: "rapide",
+  nl: "snel"
+}, {
+  de: "langsam",
+  en: "slow",
+  es: "lento / lenta",
+  fr: "lent / lente",
+  nl: "langzaam"
+}, {
+  de: "teuer",
+  en: "expensive",
+  es: "caro / cara",
+  fr: "cher / chère",
+  nl: "duur"
+}, {
+  de: "billig",
+  en: "cheap",
+  es: "barato / barata",
+  fr: "bon marché",
+  nl: "goedkoop"
+}, {
+  de: "heiß",
+  en: "hot",
+  es: "caliente",
+  fr: "chaud / chaude",
+  nl: "heet"
+}, {
+  de: "kalt",
+  en: "cold",
+  es: "frío / fría",
+  fr: "froid / froide",
+  nl: "koud"
+}, {
+  de: "sauber",
+  en: "clean",
+  es: "limpio / limpia",
+  fr: "propre",
+  nl: "schoon"
+}, {
+  de: "schmutzig",
+  en: "dirty",
+  es: "sucio / sucia",
+  fr: "sale",
+  nl: "vuil"
+}, {
+  de: "stark",
+  en: "strong",
+  es: "fuerte",
+  fr: "fort / forte",
+  nl: "sterk"
+}, {
+  de: "schwach",
+  en: "weak",
+  es: "débil",
+  fr: "faible",
+  nl: "zwak"
+}, {
+  de: "reich",
+  en: "rich",
+  es: "rico / rica",
+  fr: "riche",
+  nl: "rijk"
+}, {
+  de: "arm",
+  en: "poor",
+  es: "pobre",
+  fr: "pauvre",
+  nl: "arm"
+}, {
+  de: "voll",
+  en: "full",
+  es: "lleno / llena",
+  fr: "plein / pleine",
+  nl: "vol"
+}, {
+  de: "leer",
+  en: "empty",
+  es: "vacío / vacía",
+  fr: "vide",
+  nl: "leeg"
+}, {
+  de: "offen",
+  en: "open",
+  es: "abierto / abierta",
+  fr: "ouvert / ouverte",
+  nl: "open"
+}, {
+  de: "geschlossen",
+  en: "closed",
+  es: "cerrado / cerrada",
+  fr: "fermé / fermée",
+  nl: "gesloten"
+}, {
+  de: "hell",
+  en: "bright",
+  es: "claro / clara",
+  fr: "clair / claire",
+  nl: "helder"
+}, {
+  de: "dunkel",
+  en: "dark",
+  es: "oscuro / oscura",
+  fr: "sombre",
+  nl: "donker"
+}, {
+  de: "schwer",
+  en: "heavy",
+  es: "pesado / pesada",
+  fr: "lourd / lourde",
+  nl: "zwaar"
+}, {
+  de: "leicht",
+  en: "light",
+  es: "ligero / ligera",
+  fr: "léger / légère",
+  nl: "licht"
+}, {
+  de: "wichtig",
+  en: "important",
+  es: "importante",
+  fr: "important / importante",
+  nl: "belangrijk"
+}, {
+  de: "interessant",
+  en: "interesting",
+  es: "interesante",
+  fr: "intéressant / intéressante",
+  nl: "interessant"
+}, {
+  de: "langweilig",
+  en: "boring",
+  es: "aburrido / aburrida",
+  fr: "ennuyeux / ennuyeuse",
+  nl: "saai"
+}, {
+  de: "lustig",
+  en: "funny",
+  es: "divertido / divertida",
+  fr: "drôle",
+  nl: "grappig"
+}, {
+  de: "nett",
+  en: "nice",
+  es: "simpático / simpática",
+  fr: "sympathique",
+  nl: "aardig"
+}, {
+  de: "freundlich",
+  en: "friendly",
+  es: "amable",
+  fr: "aimable",
+  nl: "vriendelijk"
+}, {
+  de: "wütend",
+  en: "angry",
+  es: "enfadado / enfadada",
+  fr: "fâché / fâchée",
+  nl: "boos"
+}, {
+  de: "müde",
+  en: "tired",
+  es: "cansado / cansada",
+  fr: "fatigué / fatiguée",
+  nl: "moe"
+}, {
+  de: "gesund",
+  en: "healthy",
+  es: "sano / sana",
+  fr: "sain / saine",
+  nl: "gezond"
+}, {
+  de: "krank",
+  en: "sick",
+  es: "enfermo / enferma",
+  fr: "malade",
+  nl: "ziek"
+}, {
+  de: "trocken",
+  en: "dry",
+  es: "seco / seca",
+  fr: "sec / sèche",
+  nl: "droog"
+}, {
+  de: "nass",
+  en: "wet",
+  es: "mojado / mojada",
+  fr: "mouillé / mouillée",
+  nl: "nat"
+}, {
+  de: "gefährlich",
+  en: "dangerous",
+  es: "peligroso / peligrosa",
+  fr: "dangereux / dangereuse",
+  nl: "gevaarlijk"
+}];
 function generalCat() {
   return {
     de: "Allgemein",
@@ -10953,10 +11258,48 @@ function VocabView({
   function targetName() {
     return window.CONJ[lang].name;
   }
+
+  // Pre-fill the "Adjektive" topic with the static list (instant, offline,
+  // correct gender forms). Once per learning+mother-tongue pair.
+  function seedAdjectives(catName) {
+    const seedKey = `kunju-vadj-${lang}-${nativeName}`;
+    if (recall(seedKey, false)) return;
+    const code = uiFromNative(nativeName);
+    if (code === lang) {
+      persist(seedKey, true);
+      return;
+    } // mother tongue = target → nothing to learn
+    const have = getVocab();
+    const additions = [];
+    ADJ_STATIC.forEach((a, i) => {
+      const term = (a[lang] || "").trim(),
+        nat = (a[code] || a.en || "").trim();
+      if (!term || !nat || norm(term) === norm(nat)) return;
+      if (isVocabKnown(lang, term)) return;
+      if (have.some(x => x.lang === lang && norm(x.term) === norm(term)) || additions.some(x => norm(x.term) === norm(term))) return;
+      additions.push({
+        id: Date.now() + "-adj" + i,
+        lang,
+        term,
+        trans: nat,
+        cat: catName,
+        kind: "word",
+        created: Date.now() + i,
+        seed: true,
+        nat: nativeName
+      });
+    });
+    if (additions.length) persistItems([...additions, ...getVocab()]);
+    persist(seedKey, true);
+  }
   function seedCategory(catName) {
     if (!catName || catName === "all") return;
     const idx = templateCats().indexOf(catName);
     if (idx < 0) return; // only auto-fill template categories
+    if (isAdjTopic(catName)) {
+      seedAdjectives(catName);
+      return;
+    } // static, no AI
     const seedKey = `kunju-vseed-${lang}-${catName}-${skill}-${nativeName}`;
     if (recall(seedKey, false)) return;
     if (!window.__hasAI()) return;
