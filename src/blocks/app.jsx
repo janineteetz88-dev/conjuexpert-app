@@ -3465,6 +3465,39 @@ function VocabView({ lang }) {
   // starter words auto-load when a template category is opened (per category + level, once)
   useEffect(() => {if (cat && templateCats().indexOf(cat) >= 0) seedCategory(cat); /* eslint-disable-next-line */}, [cat, lang]);
 
+  // One-time auto-refresh: upgrade existing single-form FR/ES adjectives to BOTH
+  // gender forms (beau → "beau / belle"). Static map first (instant/offline),
+  // then AI for any remaining adjectives in an "Adjektive" category.
+  useEffect(() => {
+    if (lang !== "fr" && lang !== "es") return;
+    const flag = `kunju-adjfix-${lang}-v1`;
+    if (recall(flag, false)) return;
+    const map = {};
+    ADJ_STATIC.forEach((a) => {const v = a[lang];if (v && v.indexOf(" / ") >= 0) map[norm(v.split(" / ")[0])] = v;});
+    let changed = false;
+    const next = getVocab().map((it) => {
+      if (it.lang !== lang || !it.term || it.term.indexOf(" / ") >= 0) return it;
+      const dbl = map[norm(it.term)];
+      if (dbl) {changed = true;return { ...it, term: dbl, kind: "word" };}
+      return it;
+    });
+    if (changed) {saveVocab(next);setItems(next);}
+    persist(flag, true);
+    if (window.__hasAI && window.__hasAI()) {
+      const tName = window.CONJ[lang].name;
+      next.filter((it) => it.lang === lang && it.term && it.term.indexOf(" / ") < 0 && isAdjTopic(it.cat)).slice(0, 20).forEach((it) => {
+        window.aiComplete(`The ${tName} adjective "${it.term}": give its masculine and feminine forms separated by " / " (e.g. "beau / belle"). If both forms are identical, reply with the word once. Reply with ONLY that, nothing else.`).
+        then((r) => {
+          const out = String(r || "").trim().replace(/^["'«»]+|["'«»]+$/g, "").split("\n")[0].trim();
+          if (!out || norm(out) === norm(it.term) || out.indexOf(" / ") < 0) return;
+          const upd = getVocab().map((x) => x.id === it.id ? { ...x, term: out } : x);
+          saveVocab(upd);setItems(upd);
+        }).catch(() => {});
+      });
+    }
+    /* eslint-disable-next-line */
+  }, [lang]);
+
   function suggestMore() {
     if (seeding) return;
     const isTpl = templateCats().indexOf(cat) >= 0;
