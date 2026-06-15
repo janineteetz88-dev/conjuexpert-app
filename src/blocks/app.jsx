@@ -1360,20 +1360,21 @@ function themeLabel(id) {
   const m = THEME_LABELS[UILANG] || THEME_LABELS.en; return m[id] || id;
 }
 
-/* Verb-group filters for the quiz (per language). */
+/* Verb-group filters for the quiz (per language). "words" = practice with the
+   learner's saved vocabulary woven into the example sentences. */
 const VERB_GROUPS = {
-  es: [{ id: "all" }, { id: "saved" }, { id: "irregular" }, { id: "ar", suf: "ar" }, { id: "er", suf: "er" }, { id: "ir", suf: "ir" }],
-  fr: [{ id: "all" }, { id: "saved" }, { id: "irregular" }, { id: "er", suf: "er" }, { id: "ir", suf: "ir" }, { id: "re", suf: "re" }],
-  de: [{ id: "all" }, { id: "saved" }, { id: "irregular" }, { id: "regular" }],
-  nl: [{ id: "all" }, { id: "saved" }, { id: "irregular" }, { id: "regular" }],
-  en: [{ id: "all" }, { id: "saved" }, { id: "irregular" }, { id: "regular" }]
+  es: [{ id: "all" }, { id: "words" }, { id: "saved" }, { id: "irregular" }, { id: "ar", suf: "ar" }, { id: "er", suf: "er" }, { id: "ir", suf: "ir" }],
+  fr: [{ id: "all" }, { id: "words" }, { id: "saved" }, { id: "irregular" }, { id: "er", suf: "er" }, { id: "ir", suf: "ir" }, { id: "re", suf: "re" }],
+  de: [{ id: "all" }, { id: "words" }, { id: "saved" }, { id: "irregular" }, { id: "regular" }],
+  nl: [{ id: "all" }, { id: "words" }, { id: "saved" }, { id: "irregular" }, { id: "regular" }],
+  en: [{ id: "all" }, { id: "words" }, { id: "saved" }, { id: "irregular" }, { id: "regular" }]
 };
 const GROUP_LABELS = {
-  de: { all: "Alle", saved: "Gespeicherte Verben", irregular: "Unregelmäßig", regular: "Regelmäßig" },
-  en: { all: "All", saved: "Saved verbs", irregular: "Irregular", regular: "Regular" },
-  es: { all: "Todos", saved: "Verbos guardados", irregular: "Irregulares", regular: "Regulares" },
-  nl: { all: "Alle", saved: "Bewaarde werkwoorden", irregular: "Onregelmatig", regular: "Regelmatig" },
-  fr: { all: "Tous", saved: "Verbes mémorisés", irregular: "Irréguliers", regular: "Réguliers" }
+  de: { all: "Alle", words: "Gespeicherte Wörter", saved: "Gespeicherte Verben", irregular: "Unregelmäßig", regular: "Regelmäßig" },
+  en: { all: "All", words: "Saved words", saved: "Saved verbs", irregular: "Irregular", regular: "Regular" },
+  es: { all: "Todos", words: "Palabras guardadas", saved: "Verbos guardados", irregular: "Irregulares", regular: "Regulares" },
+  nl: { all: "Alle", words: "Bewaarde woorden", saved: "Bewaarde werkwoorden", irregular: "Onregelmatig", regular: "Regelmatig" },
+  fr: { all: "Tous", words: "Mots mémorisés", saved: "Verbes mémorisés", irregular: "Irréguliers", regular: "Réguliers" }
 };
 function groupLabel(g) {
   if (g.suf) return "-" + g.suf;
@@ -1542,10 +1543,14 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
   const [tenseSel, setTenseSel] = useState([]);
   const [mistMode, setMistMode] = useState(false);
   const allTensesOn = tenseSel.length > 0 && tenseSel.length === allTenseIds.length;
-  const [selGroup, setSelGroup] = useState("all");
+  const [selGroup, setSelGroup] = useState(() => recall("kunju-quiz-group", "all"));
   const groups = VERB_GROUPS[lang] || [{ id: "all" }];
+  function pickGroup(id) {
+    setSelGroup(id); persist("kunju-quiz-group", id);
+    clozeMyWordsRef.current = (id === "words"); // saved vocab → into example sentences
+  }
   const filteredPool = useMemo(() => {
-    if (selGroup === "all") return pool;
+    if (selGroup === "all" || selGroup === "words") return pool; // "words" keeps all verbs; saved vocab goes into the sentences
     if (selGroup === "saved") {const f = (favs || []).filter((x) => x.lang === lang).map((x) => x.verb).filter((v) => pool.includes(v));return f.length ? f : pool;}
     const irr = new Set(window.CONJ[lang].irregulars || []);
     if (selGroup === "irregular") {const f = pool.filter((v) => irr.has(v));return f.length ? f : pool;}
@@ -1599,8 +1604,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
   const [readIdx, setReadIdx] = useState(0);            // index of the sentence currently being read
   const [useMyWords, setUseMyWords] = useState(() => recall("kunju-texte-mywords", false)); // weave the learner's saved words into the story
   const useMyWordsRef = useRef(recall("kunju-texte-mywords", false));
-  const [clozeMyWords, setClozeMyWords] = useState(() => recall("kunju-quiz-mywords", false)); // weave saved vocab into quiz example sentences
-  const clozeMyWordsRef = useRef(recall("kunju-quiz-mywords", false));
+  const clozeMyWordsRef = useRef(recall("kunju-quiz-group", "all") === "words"); // driven by the "Welche Wörter?" group = "words"
   const [ttsRate, setTtsRateState] = useState(() => recall("kunju-ttsrate", 1.0)); // read-aloud speed
   const [voices, setVoices] = useState(() => (window.speechSynthesis ? window.speechSynthesis.getVoices() : []) || []);
   const ttsBase = ((window.CONJ[lang] && window.CONJ[lang].ttsLang) || lang).toLowerCase().split("-")[0];
@@ -2321,13 +2325,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
         {groups.length > 1 &&
         <div className="qfilter-block">
           <div className="recent-title qfilter-lbl">{tr("which_verbs")}</div>
-          <OneDropdown lang={lang} options={groups.map((g) => ({ id: g.id, label: groupLabel(g) }))} valueId={selGroup} onPick={setSelGroup} />
-        </div>}
-        {mode !== "texte" && mode !== "speed" &&
-        <div className="qfilter-block">
-          <div className="recent-title qfilter-lbl">{tr("texte_mywords_lbl")}</div>
-          <button className={"modebtn" + (clozeMyWords ? " on" : "")} style={{ width: "100%" }} title={tr("texte_mywords")}
-            onClick={() => { const nv = !clozeMyWords; setClozeMyWords(nv); clozeMyWordsRef.current = nv; persist("kunju-quiz-mywords", nv); const sm = (mode === "type" && typeMode === "sentence") || (mode === "speak" && spkMode === "sentence"); if (q) { if (sm) genSentence(); else fetchCloze(q); } }}>★ {tr("texte_mywords")}{clozeMyWords ? " ✓" : ""}</button>
+          <OneDropdown lang={lang} options={groups.map((g) => ({ id: g.id, label: groupLabel(g) }))} valueId={selGroup} onPick={pickGroup} />
         </div>}
         {mode !== "choice" && mode !== "texte" &&
         <div className="qfilter-block">
