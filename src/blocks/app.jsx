@@ -2906,6 +2906,27 @@ Rules:
 Keep every field short.`;
 }
 
+/* Assemble a ready-to-render grammar lesson from the pre-written static set
+   (window.GRAMMAR_STATIC). Target-language parts are stored once; the parts
+   that depend on the learner's mother tongue come from `n[<ui code>]`.
+   Returns the same shape the AI explainer produces, or null if not covered. */
+function staticGrammar(lang, tid, native) {
+  const G = window.GRAMMAR_STATIC && window.GRAMMAR_STATIC[lang] && window.GRAMMAR_STATIC[lang][tid];
+  if (!G) return null;
+  const code = uiFromNative(native);
+  const n = G.n && (G.n[code] || G.n.en);
+  if (!n) return null;
+  const signals = (G.signals || []).map((s, i) => ({ w: s.w, t: (n.signals || [])[i] || "" }));
+  const examples = (G.examples || []).map((e, i) => ({ s: e.s, n: (n.examples || [])[i] || "" }));
+  const compare = G.compare && G.compare.with ?
+  { with: G.compare.with, rows: n.compare_rows || [], note: n.compare_note || "" } :
+  { with: "", rows: [] };
+  return {
+    name: G.name, explain_t: G.explain_t, explain_n: n.explain_n || "",
+    mnemonic: n.mnemonic || "", signals, examples,
+    use: n.use || [], avoid: n.avoid || [], compare };
+}
+
 function parseLLMJSON(text) {
   let s = String(text || "").trim();
   s = s.replace(/^```(?:json)?/i, "").replace(/```$/, "").trim();
@@ -3043,7 +3064,7 @@ function AuxExample({ lang, tenseId, tenseLabel, sample, sampleForms, pronouns }
 
 }
 
-function LearnContent({ data, engine, sound, lang, selTense, selLabel, onStudy }) {
+function LearnContent({ data, loading, engine, sound, lang, selTense, selLabel, onStudy }) {
   const d = data || {};
   const hint = tenseHint(lang, selTense);
   const sample = REG_SAMPLE[lang];
@@ -3080,6 +3101,9 @@ function LearnContent({ data, engine, sound, lang, selTense, selLabel, onStudy }
         </div>
         <p className="irrnote">{tr("irr_note")}</p>
       </div>
+
+      {/* Only the AI-generated explanation block shows a loading state. */}
+      {loading && !data && <LearnSkeleton />}
 
       {(d.explain_t || d.explain_n) &&
       <div className="lcard explain">
@@ -3172,6 +3196,10 @@ function LearnView({ lang, engine, sound, native, setNative, onStudy }) {
     const key = `kunju-gram-v2-${lang}-${selTense}-${level}-${native}`;
     const cached = recall(key, null);
     if (cached) {setData(cached);setError(null);setLoading(false);return;}
+    // Pre-written lesson for the common tenses → shows instantly, no AI wait,
+    // works offline. Rarer tenses still fall through to the AI explainer.
+    const stat = staticGrammar(lang, selTense, native);
+    if (stat) {setData(stat);setError(null);setLoading(false);return;}
     if (!window.__hasAI()) {setData(null);setError("offline");setLoading(false);return;}
     let cancelled = false;
     setLoading(true);setError(null);setData(null);
@@ -3194,7 +3222,9 @@ function LearnView({ lang, engine, sound, native, setNative, onStudy }) {
         <TenseDropdown lang={lang} tenses={tenseOpts} single={true} isOn={(id) => id === selTense} onToggle={(id) => setSelTense(id)} />
       </div>
 
-      {loading && <LearnSkeleton />}
+      {/* Locally-computed parts (formation table, irregulars, auxiliary) render
+         instantly; only the AI-written explanation streams in afterwards. */}
+      <LearnContent data={data} loading={loading} engine={engine} sound={sound} lang={lang} selTense={selTense} selLabel={curLabel} onStudy={onStudy} />
 
       {error && !loading &&
       <div className="learn-fallback">
@@ -3209,8 +3239,6 @@ function LearnView({ lang, engine, sound, native, setNative, onStudy }) {
           </div>
         </div>
       }
-
-      {!loading && <LearnContent data={data} engine={engine} sound={sound} lang={lang} selTense={selTense} selLabel={curLabel} onStudy={onStudy} />}
 
       <a href="/blog/" className="learn-blog-btn" target="_blank" rel="noopener">
         <span className="gg"></span>
