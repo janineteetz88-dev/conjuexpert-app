@@ -2906,6 +2906,27 @@ Rules:
 Keep every field short.`;
 }
 
+/* Assemble a ready-to-render grammar lesson from the pre-written static set
+   (window.GRAMMAR_STATIC). Target-language parts are stored once; the parts
+   that depend on the learner's mother tongue come from `n[<ui code>]`.
+   Returns the same shape the AI explainer produces, or null if not covered. */
+function staticGrammar(lang, tid, native) {
+  const G = window.GRAMMAR_STATIC && window.GRAMMAR_STATIC[lang] && window.GRAMMAR_STATIC[lang][tid];
+  if (!G) return null;
+  const code = uiFromNative(native);
+  const n = G.n && (G.n[code] || G.n.en);
+  if (!n) return null;
+  const signals = (G.signals || []).map((s, i) => ({ w: s.w, t: (n.signals || [])[i] || "" }));
+  const examples = (G.examples || []).map((e, i) => ({ s: e.s, n: (n.examples || [])[i] || "" }));
+  const compare = G.compare && G.compare.with ?
+  { with: G.compare.with, rows: n.compare_rows || [], note: n.compare_note || "" } :
+  { with: "", rows: [] };
+  return {
+    name: G.name, explain_t: G.explain_t, explain_n: n.explain_n || "",
+    mnemonic: n.mnemonic || "", signals, examples,
+    use: n.use || [], avoid: n.avoid || [], compare };
+}
+
 function parseLLMJSON(text) {
   let s = String(text || "").trim();
   s = s.replace(/^```(?:json)?/i, "").replace(/```$/, "").trim();
@@ -3175,6 +3196,10 @@ function LearnView({ lang, engine, sound, native, setNative, onStudy }) {
     const key = `kunju-gram-v2-${lang}-${selTense}-${level}-${native}`;
     const cached = recall(key, null);
     if (cached) {setData(cached);setError(null);setLoading(false);return;}
+    // Pre-written lesson for the common tenses → shows instantly, no AI wait,
+    // works offline. Rarer tenses still fall through to the AI explainer.
+    const stat = staticGrammar(lang, selTense, native);
+    if (stat) {setData(stat);setError(null);setLoading(false);return;}
     if (!window.__hasAI()) {setData(null);setError("offline");setLoading(false);return;}
     let cancelled = false;
     setLoading(true);setError(null);setData(null);
