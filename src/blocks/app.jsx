@@ -860,7 +860,7 @@ async function shareApp() {
   try {
     if (navigator.share) { await navigator.share(shareData); return; }
     await navigator.clipboard.writeText(s.text + "\n\n👉 conjuexpert.app");
-    alert(s.copied);
+    if (window.__toast) window.__toast(s.copied);
   } catch (e) {
     if (e && e.name !== "AbortError") {
       try { await navigator.clipboard.writeText("https://conjuexpert.app"); } catch {}
@@ -883,7 +883,7 @@ async function shareConjugation(result, langCode, meaning) {
   try {
     if (navigator.share) {await navigator.share({ title: result.infinitive, text });return;}
     await navigator.clipboard.writeText(text);
-    alert("Copied to clipboard — paste it into WhatsApp etc.");
+    if (window.__toast) window.__toast("Copied to clipboard — paste it into WhatsApp etc.");
   } catch (e) {}
 }
 
@@ -5077,8 +5077,23 @@ function GoalFlow({ step, setStep, name, lang, onClose, onCreate }) {
     </div>);
 }
 
+function Toast({ msg, onDone }) {
+  useEffect(() => { const t = setTimeout(onDone, 2800); return () => clearTimeout(t); }, []);
+  return (
+    <div style={{
+      position:"fixed", bottom:"88px", left:"50%", transform:"translateX(-50%)",
+      background:"rgba(20,21,26,0.93)", color:"#fff", borderRadius:"14px",
+      padding:"11px 20px", fontSize:"14px", fontWeight:500, lineHeight:1.4,
+      zIndex:9999, maxWidth:"calc(100vw - 40px)", textAlign:"center",
+      boxShadow:"0 8px 28px rgba(0,0,0,0.35)", whiteSpace:"pre-wrap",
+      animation:"fade 0.18s ease", pointerEvents:"none",
+    }}>{msg}</div>
+  );
+}
+
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [toastMsg, setToastMsg] = useState(null);
   const [lang, setLang] = useState(() => recall("kunju-lang", "de"));
   const [verb, setVerb] = useState("");
   const [result, setResult] = useState(null);
@@ -5105,6 +5120,7 @@ function App() {
   const [featureHint, setFeatureHint] = useState(null);
   function closeFeatureHint() { if (featureHint) persist("kunju-hint-" + featureHint, true); setFeatureHint(null); }
   UILANG = uiFromNative(native);
+  useEffect(() => { window.__toast = (msg) => setToastMsg(msg); return () => { window.__toast = null; }; }, []);
 
   // --- Monetization ---
   const [isPremium, setIsPremium] = useState(() => recall("kunju-premium", false));
@@ -5220,7 +5236,7 @@ function App() {
       if (error) throw new Error(error);
       window.location.href = url;
     } catch (e) {
-      alert(tr("pay_error"));
+      setToastMsg(tr("pay_error"));
     }
   }
 
@@ -5322,9 +5338,9 @@ function App() {
           window.__supa.functions.invoke("create-checkout-session", {
             body: { plan, userId: user.id, email: user.email },
           }).then(({ data, error }) => {
-            if (error || !data?.url) { alert(tr("pay_error")); return; }
+            if (error || !data?.url) { setToastMsg(tr("pay_error")); return; }
             window.location.href = data.url;
-          }).catch(() => alert(tr("pay_error")));
+          }).catch(() => setToastMsg(tr("pay_error")));
         }
       }
     }
@@ -5646,6 +5662,7 @@ function App() {
         />
       }
     </div>
+    {toastMsg && <Toast msg={toastMsg} onDone={() => setToastMsg(null)} />}
     </div>);
 
 }
