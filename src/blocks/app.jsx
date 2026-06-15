@@ -3254,6 +3254,21 @@ function LearnView({ lang, engine, sound, native, setNative, onStudy }) {
 function vocabKey() {return "kunju-vocab";}
 function getVocab() {return recall(vocabKey(), []);}
 function saveVocab(list) {persist(vocabKey(), list);}
+/* Words the user dismissed ("weggeklickt") count as KNOWN — keep them out of
+   future AI suggestions so they never reappear. Stored per learning language. */
+function vocabKnownKey() {return "kunju-vocab-known";}
+function getVocabKnown() {return recall(vocabKnownKey(), []);}
+function knownTerms(lang) {return getVocabKnown().filter((x) => x.lang === lang).map((x) => x.term).filter(Boolean);}
+function addVocabKnown(lang, term) {
+  const t = (term || "").trim();
+  if (!t) return;
+  const cur = getVocabKnown();
+  const have = new Set(cur.map((x) => x.lang + "|" + norm(x.term)));
+  if (have.has(lang + "|" + norm(t))) return;
+  cur.push({ lang, term: t });
+  persist(vocabKnownKey(), cur);
+}
+function isVocabKnown(lang, term) {const t = norm(term || "");return !!t && getVocabKnown().some((x) => x.lang === lang && norm(x.term) === t);}
 const VOCAB_TEMPLATES = {
   de: ["Einkaufen", "Arztbesuch", "Behörde", "Arbeit", "Reisen", "Restaurant", "Familie", "Freizeit"],
   en: ["Shopping", "Doctor", "Authorities", "Work", "Travel", "Restaurant", "Family", "Free time"],
@@ -3314,6 +3329,7 @@ function VocabView({ lang }) {
       arr.slice(0, 5).forEach((e, i) => {
         const term = (e && (e.t || e.term) || "").trim(), nat = (e && (e.n || e.trans) || "").trim();
         if (!term || !nat) return;
+        if (isVocabKnown(lang, term)) return; // user dismissed it earlier → knows it
         if (list.some((x) => x.lang === lang && norm(x.term) === norm(term)) || additions.some((x) => norm(x.term) === norm(term))) return;
         additions.push({ id: Date.now() + "-" + i, lang, term, trans: nat, cat: catName, kind: term.indexOf(" ") >= 0 ? "phrase" : "word", created: Date.now() + i, seed: true, nat: nativeName });
       });
@@ -3340,6 +3356,7 @@ function VocabView({ lang }) {
       arr.slice(0, 5).forEach((e, i) => {
         const term = (e && (e.t || e.term) || "").trim(), nat = (e && (e.n || e.trans) || "").trim();
         if (!term || !nat) return;
+        if (isVocabKnown(lang, term)) return; // user dismissed it earlier → knows it
         if (list.some((x) => x.lang === lang && norm(x.term) === norm(term)) || additions.some((x) => norm(x.term) === norm(term))) return;
         additions.push({id: Date.now() + "-" + i, lang, term, trans: nat, cat: catName, kind: term.indexOf(" ") >= 0 ? "phrase" : "word", created: Date.now() + i, seed: true, nat: nativeName});
       });
@@ -3358,8 +3375,11 @@ function VocabView({ lang }) {
     const topic = idx >= 0 ? VOCAB_TOPICS[idx] : catName || "useful everyday vocabulary";
     if (!window.__hasAI()) return;
     const lvl = skill === "advanced" ? "advanced C1-level" : skill === "intermediate" ? "intermediate B1-level" : "basic A1–A2";
-    const existing = getVocab().filter((it) => it.lang === lang).map((it) => it.term).slice(0, 40);
-    const avoid = existing.length ? ` Do NOT repeat any of these: ${existing.join(", ")}.` : "";
+    const known = knownTerms(lang);
+    const knownSet = new Set(known.map((t) => norm(t)));
+    // Avoid both what's already saved AND words the user dismissed (= knows).
+    const avoidList = [...new Set([...getVocab().filter((it) => it.lang === lang).map((it) => it.term), ...known])].filter(Boolean).slice(0, 60);
+    const avoid = avoidList.length ? ` The learner already knows these — do NOT include any of them: ${avoidList.join(", ")}.` : "";
     setSeeding(cat || "all");
     window.aiComplete(`Suggest 10 useful ${lvl} ${targetName()} words or short phrases about "${topic}".${avoid} For each give the ${targetName()} term and its ${nativeName} translation. Reply with ONLY a minified JSON array, nothing else: [{"t":"...","n":"..."}]`).
     then((txt) => {
@@ -3372,6 +3392,7 @@ function VocabView({ lang }) {
       arr.slice(0, 10).forEach((e, i) => {
         const term = (e && (e.t || e.term) || "").trim(), nat = (e && (e.n || e.trans) || "").trim();
         if (!term || !nat) return;
+        if (knownSet.has(norm(term))) return; // dismissed earlier → skip
         if (list.some((x) => x.lang === lang && norm(x.term) === norm(term)) || additions.some((x) => norm(x.term) === norm(term))) return;
         additions.push({ id: Date.now() + "-s" + i, lang, term, trans: nat, cat: useCat, kind: term.indexOf(" ") >= 0 ? "phrase" : "word", created: Date.now() + i, seed: true, nat: nativeName });
       });
@@ -3401,7 +3422,7 @@ function VocabView({ lang }) {
     }).
     catch(() => setBusy(false));
   }
-  function remove(id) {persistItems(items.filter((x) => x.id !== id));}
+  function remove(id) {const it = items.find((x) => x.id === id);if (it) addVocabKnown(lang, it.term);persistItems(items.filter((x) => x.id !== id));}
   function addCustomCat() {setAddingCat(true);setNewCatVal("");}
   function commitNewCat() {
     const name = newCatVal.trim();
