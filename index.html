@@ -6355,7 +6355,8 @@ function TenseCard({
   langCode,
   engineName,
   hl,
-  hint
+  hint,
+  onLearn
 }) {
   const [open, setOpen] = useState(openDefault);
   const [tenseEx, setTenseEx] = useState(null);
@@ -6466,7 +6467,37 @@ function TenseCard({
     className: "tcard-title"
   }, tense.label, hint && /*#__PURE__*/React.createElement("span", {
     className: "tcard-hint"
-  }, hint)), /*#__PURE__*/React.createElement("span", {
+  }, hint)), onLearn && /*#__PURE__*/React.createElement("span", {
+    role: "button",
+    tabIndex: 0,
+    title: tr("tab_learn"),
+    onClick: e => {
+      e.stopPropagation();
+      onLearn(tense.id);
+    },
+    onKeyDown: e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.stopPropagation();
+        onLearn(tense.id);
+      }
+    },
+    style: {
+      flex: "none",
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "4px",
+      marginRight: "8px",
+      fontSize: "11px",
+      fontWeight: 700,
+      color: "var(--tc)",
+      background: "color-mix(in srgb, var(--tc) 12%, var(--surface))",
+      border: "1px solid color-mix(in srgb, var(--tc) 32%, var(--border))",
+      borderRadius: "999px",
+      padding: "3px 9px",
+      cursor: "pointer",
+      whiteSpace: "nowrap"
+    }
+  }, "\u2726 ", tr("tab_learn")), /*#__PURE__*/React.createElement("span", {
     className: "tcard-caret"
   }, open ? "−" : "+")), /*#__PURE__*/React.createElement("div", {
     className: "tcard-body"
@@ -6617,7 +6648,8 @@ function ConjugateView({
   deconj,
   activeInf,
   onViewInf,
-  onTab
+  onTab,
+  onLearnTense
 }) {
   const inputRef = useRef(null);
   const diceRef = useRef([]);
@@ -6945,7 +6977,8 @@ function ConjugateView({
           langCode: lang,
           engineName: engine.name,
           hl: hlCells && hlCells[t2.id],
-          hint: hint
+          hint: hint,
+          onLearn: onLearnTense
         });
       }));
     }));
@@ -10717,7 +10750,9 @@ function LearnView({
   sound,
   native,
   setNative,
-  onStudy
+  onStudy,
+  jumpTense,
+  onJumpDone
 }) {
   const tenseOpts = useMemo(() => {
     const r = engine.conjugate(engine.samples[0]);
@@ -10726,12 +10761,24 @@ function LearnView({
       label: t.label
     })) : [];
   }, [lang]);
-  const [selTense, setSelTense] = useState(tenseOpts[0] ? tenseOpts[0].id : null);
+  const [selTense, setSelTense] = useState(() => jumpTense && tenseOpts.some(t => t.id === jumpTense) ? jumpTense : tenseOpts[0] ? tenseOpts[0].id : null);
+  // Jump straight to a specific tense when opened from the Conjugate card.
+  useEffect(() => {
+    if (jumpTense && tenseOpts.some(t => t.id === jumpTense)) {
+      setSelTense(jumpTense);
+    }
+    if (jumpTense && onJumpDone) onJumpDone(); /* eslint-disable-next-line */
+  }, [jumpTense]);
   const [level, setLevel] = useState(() => recall("kunju-level", "A2"));
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const langMounted = useRef(false);
   useEffect(() => {
+    if (!langMounted.current) {
+      langMounted.current = true;
+      return;
+    }
     if (tenseOpts.length) setSelTense(tenseOpts[0].id);
   }, [lang]);
   const curLabel = (tenseOpts.find(t => t.id === selTense) || {}).label;
@@ -16052,6 +16099,12 @@ function App() {
     }
     setTab(id);
   }
+  // Jump from a Conjugate card straight into the Learn tab at that tense.
+  const [learnJump, setLearnJump] = useState(null);
+  function goToLearnTense(tenseId) {
+    setLearnJump(tenseId);
+    setTab("grammar");
+  }
 
   // After auth resolves: enforce tab access — kick users who got in before auth was ready
   useEffect(() => {
@@ -16604,7 +16657,8 @@ function App() {
     deconj: deconj,
     activeInf: activeInf,
     onViewInf: viewInfinitive,
-    onTab: handleTabSwitch
+    onTab: handleTabSwitch,
+    onLearnTense: goToLearnTense
   }), /*#__PURE__*/React.createElement("div", {
     style: {
       display: tab === "quiz" ? "contents" : "none"
@@ -16626,7 +16680,9 @@ function App() {
     sound: t.sound,
     native: native,
     setNative: setNat,
-    onStudy: pickVerb
+    onStudy: pickVerb,
+    jumpTense: learnJump,
+    onJumpDone: () => setLearnJump(null)
   }), tab === "saved" && /*#__PURE__*/React.createElement(SavedTab, {
     lang: lang,
     favs: favs,
