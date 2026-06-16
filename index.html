@@ -4794,22 +4794,69 @@ const TENSE_HINTS = {
 function tenseHint(lang, id) {
   return (TENSE_HINTS[lang] || {})[id] || "";
 }
-/* French imparfait / futur / conditionnel endings are fully regular per person
-   (only the stem changes). A single fixed ending like "-ais" mismatches nous/
-   vous/ils, so derive the ending that matches THIS form from the answer. */
-const FR_PERSON_ENDINGS = {
-  past: ["ais", "ait", "ions", "iez", "aient"],
-  conditional: ["ais", "ait", "ions", "iez", "aient"],
-  future: ["ai", "as", "ons", "ez", "ont", "a"]
+/* For tenses whose regular endings change per person, a single fixed hint
+   (e.g. FR "-ais", DE "-te") mismatches the shown form. Derive the ending that
+   matches THIS form from the answer's suffix. `pre` is the prefix shown before
+   the ending. Falls back to the static tenseHint when nothing matches. */
+const PERSON_ENDINGS = {
+  fr: {
+    past: {
+      pre: "-",
+      ends: ["ais", "ait", "ions", "iez", "aient"]
+    },
+    conditional: {
+      pre: "Inf. + -",
+      ends: ["ais", "ait", "ions", "iez", "aient"]
+    },
+    future: {
+      pre: "Inf. + -",
+      ends: ["ai", "as", "ons", "ez", "ont", "a"]
+    }
+  },
+  es: {
+    imperfect: {
+      pre: "-",
+      ends: ["ábamos", "abais", "aban", "abas", "aba", "íamos", "íais", "ían", "ías", "ía"]
+    },
+    future: {
+      pre: "Inf. + -",
+      ends: ["emos", "éis", "án", "ás", "é", "á"]
+    },
+    conditional: {
+      pre: "Inf. + -",
+      ends: ["íamos", "íais", "ían", "ías", "ía"]
+    }
+  },
+  de: {
+    present: {
+      pre: "-",
+      ends: ["en", "st", "t", "e"]
+    },
+    past: {
+      pre: "-",
+      ends: ["test", "tet", "ten", "te"]
+    }
+  },
+  nl: {
+    present: {
+      pre: "-",
+      ends: ["en", "t"]
+    },
+    past: {
+      pre: "-",
+      ends: ["ten", "den", "te", "de"]
+    }
+  }
 };
 function quizHint(lang, q) {
-  if (lang === "fr" && q && q.answer && FR_PERSON_ENDINGS[q.tenseId]) {
+  const cfg = q && PERSON_ENDINGS[lang] && PERSON_ENDINGS[lang][q.tenseId];
+  if (cfg && q.answer) {
     const a = q.answer.toLowerCase().trim();
     let best = "";
-    FR_PERSON_ENDINGS[q.tenseId].forEach(e => {
+    cfg.ends.forEach(e => {
       if (a.endsWith(e) && e.length > best.length) best = e;
     });
-    if (best) return (q.tenseId === "past" ? "-" : "Inf. + -") + best;
+    if (best) return cfg.pre + best;
   }
   return tenseHint(lang, q ? q.tenseId : null);
 }
