@@ -930,7 +930,7 @@ function Tabs({ tab, setTab }) {
 }
 
 /* ---------- Tense card ---------- */
-function TenseCard({ tense, pronouns, color, openDefault, ttsLang, highlight, sound, verb, langCode, engineName, hl, hint }) {
+function TenseCard({ tense, pronouns, color, openDefault, ttsLang, highlight, sound, verb, langCode, engineName, hl, hint, onLearn }) {
   const [open, setOpen] = useState(openDefault);
   const [tenseEx, setTenseEx] = useState(null);
   const native = recall("kunju-native", "German");
@@ -989,6 +989,14 @@ function TenseCard({ tense, pronouns, color, openDefault, ttsLang, highlight, so
       <button className="tcard-head" onClick={() => setOpen((o) => !o)}>
         <span className="tcard-dot"></span>
         <span className="tcard-title">{tense.label}{hint && <span className="tcard-hint">{hint}</span>}</span>
+        {onLearn &&
+          <span role="button" tabIndex={0} title={tr("tab_learn")}
+            onClick={(e) => { e.stopPropagation(); onLearn(tense.id); }}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.stopPropagation(); onLearn(tense.id); } }}
+            style={{ flex: "none", display: "inline-flex", alignItems: "center", gap: "4px", marginRight: "8px", fontSize: "11px", fontWeight: 700, color: "var(--tc)", background: "color-mix(in srgb, var(--tc) 12%, var(--surface))", border: "1px solid color-mix(in srgb, var(--tc) 32%, var(--border))", borderRadius: "999px", padding: "3px 9px", cursor: "pointer", whiteSpace: "nowrap" }}>
+            ✦ {tr("tab_learn")}
+          </span>
+        }
         <span className="tcard-caret">{open ? "−" : "+"}</span>
       </button>
       <div className="tcard-body">
@@ -1075,7 +1083,7 @@ function DeconjBanner({ deconj, lang, activeInf, onView }) {
 }
 
 /* ---------- Conjugate view ---------- */
-function ConjugateView({ engine, lang, verb, setVerb, result, onConjugate, t, favs, toggleFav, history, clearHistory, pickVerb, adVisible, onAdClick, onAdDismiss, name, translating, deconj, activeInf, onViewInf, onTab }) {
+function ConjugateView({ engine, lang, verb, setVerb, result, onConjugate, t, favs, toggleFav, history, clearHistory, pickVerb, adVisible, onAdClick, onAdDismiss, name, translating, deconj, activeInf, onViewInf, onTab, onLearnTense }) {
   const inputRef = useRef(null);
   const diceRef = useRef([]);
   const [hidden, setHidden] = useState({});
@@ -1234,7 +1242,7 @@ function ConjugateView({ engine, lang, verb, setVerb, result, onConjugate, t, fa
                         return <TenseCard key={t2.id} tense={t2} pronouns={result.pronouns} color={RAINBOW[i % RAINBOW.length]}
                           openDefault={true} ttsLang={engine.ttsLang} highlight={t.highlight && result.isIrregular} sound={t.sound}
                           verb={result.infinitive} langCode={lang} engineName={engine.name} hl={hlCells && hlCells[t2.id]}
-                          hint={hint} />;
+                          hint={hint} onLearn={onLearnTense} />;
                       })}
                     </React.Fragment>);
                 })}
@@ -3195,15 +3203,18 @@ function LearnContent({ data, loading, engine, sound, lang, selTense, selLabel, 
 
 }
 
-function LearnView({ lang, engine, sound, native, setNative, onStudy }) {
+function LearnView({ lang, engine, sound, native, setNative, onStudy, jumpTense, onJumpDone }) {
   const tenseOpts = useMemo(() => {const r = engine.conjugate(engine.samples[0]);return r && r.tenses ? r.tenses.map((t) => ({ id: t.id, label: t.label })) : [];}, [lang]);
-  const [selTense, setSelTense] = useState(tenseOpts[0] ? tenseOpts[0].id : null);
+  const [selTense, setSelTense] = useState(() => (jumpTense && tenseOpts.some((t) => t.id === jumpTense)) ? jumpTense : (tenseOpts[0] ? tenseOpts[0].id : null));
+  // Jump straight to a specific tense when opened from the Conjugate card.
+  useEffect(() => { if (jumpTense && tenseOpts.some((t) => t.id === jumpTense)) { setSelTense(jumpTense); } if (jumpTense && onJumpDone) onJumpDone(); /* eslint-disable-next-line */ }, [jumpTense]);
   const [level, setLevel] = useState(() => recall("kunju-level", "A2"));
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {if (tenseOpts.length) setSelTense(tenseOpts[0].id);}, [lang]);
+  const langMounted = useRef(false);
+  useEffect(() => {if (!langMounted.current) { langMounted.current = true; return; } if (tenseOpts.length) setSelTense(tenseOpts[0].id);}, [lang]);
   const curLabel = (tenseOpts.find((t) => t.id === selTense) || {}).label;
 
   useEffect(() => {
@@ -5447,6 +5458,9 @@ function App() {
     if ((id === "quiz" || id === "saved") && !hasPaidAccess()) { setShowPaywall(true); return; }
     setTab(id);
   }
+  // Jump from a Conjugate card straight into the Learn tab at that tense.
+  const [learnJump, setLearnJump] = useState(null);
+  function goToLearnTense(tenseId) { setLearnJump(tenseId); setTab("grammar"); }
 
   // After auth resolves: enforce tab access — kick users who got in before auth was ready
   useEffect(() => {
@@ -5786,12 +5800,12 @@ function App() {
         <ConjugateView engine={engine} lang={lang} verb={verb} setVerb={setVerb} result={result} onConjugate={onConjugate}
         t={t} favs={favs} toggleFav={toggleFav} history={history} clearHistory={clearHistory} pickVerb={pickVerb}
         adVisible={adVisible} onAdClick={onAdClick} onAdDismiss={onAdDismiss} name={name} translating={translating}
-        deconj={deconj} activeInf={activeInf} onViewInf={viewInfinitive} onTab={handleTabSwitch} />
+        deconj={deconj} activeInf={activeInf} onViewInf={viewInfinitive} onTab={handleTabSwitch} onLearnTense={goToLearnTense} />
         }
         <div style={{display: tab === "quiz" ? "contents" : "none"}}>
           <QuizView lang={lang} favs={favs} toggleFav={toggleFav} sound={t.sound} skill={skill} onStudy={pickVerb} onActivity={onActivity} isActive={tab === "quiz"} onTab={handleTabSwitch} onHint={requestHint} />
         </div>
-        {tab === "grammar" && <LearnView lang={lang} engine={engine} sound={t.sound} native={native} setNative={setNat} onStudy={pickVerb} />}
+        {tab === "grammar" && <LearnView lang={lang} engine={engine} sound={t.sound} native={native} setNative={setNat} onStudy={pickVerb} jumpTense={learnJump} onJumpDone={() => setLearnJump(null)} />}
         {tab === "saved" && <SavedTab lang={lang} favs={favs} toggleFav={toggleFav} pickVerb={pickVerb} onActivity={onActivity} onHint={requestHint} />}
       </main>
 
