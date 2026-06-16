@@ -36,6 +36,23 @@ const TENSE_HINTS = {
   nl: { present: "- / -t", past: "-te / -de", perfect: "hebben/zijn + ge-…", pluperfect: "had + ge-…", future: "zullen + Inf.", subjunctive: "-e", conditional: "zou + Inf.", imperative: "stam!", gerund: "-end" }
 };
 function tenseHint(lang, id) {return (TENSE_HINTS[lang] || {})[id] || "";}
+/* French imparfait / futur / conditionnel endings are fully regular per person
+   (only the stem changes). A single fixed ending like "-ais" mismatches nous/
+   vous/ils, so derive the ending that matches THIS form from the answer. */
+const FR_PERSON_ENDINGS = {
+  past:        ["ais", "ait", "ions", "iez", "aient"],
+  conditional: ["ais", "ait", "ions", "iez", "aient"],
+  future:      ["ai", "as", "ons", "ez", "ont", "a"]
+};
+function quizHint(lang, q) {
+  if (lang === "fr" && q && q.answer && FR_PERSON_ENDINGS[q.tenseId]) {
+    const a = q.answer.toLowerCase().trim();
+    let best = "";
+    FR_PERSON_ENDINGS[q.tenseId].forEach((e) => { if (a.endsWith(e) && e.length > best.length) best = e; });
+    if (best) return (q.tenseId === "past" ? "-" : "Inf. + -") + best;
+  }
+  return tenseHint(lang, q ? q.tenseId : null);
+}
 const FR_ETRE_TENSES = new Set(["perfect", "pluperfect", "conditionalPast"]);
 const DE_NL_AUX_TENSES = new Set(["perfect", "pluperfect"]);
 function auxHint(lang, tenseId, answer) {
@@ -2435,7 +2452,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
           <div className={"quizcard quizmodern " + state} style={{ "--lc": LANG_META[lang].color }}>
             <div className="cards-cue cards-cue-top">💬 {tr("cards_hint_type")}</div>
             <div className="qm-top" data-typequiz="true">
-              <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
+              <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
               {q.isIrregular && <span className="flashtag">{tr("irregular")}</span>}
               <button className={"starbtn qm-star" + (favs.some((x) => x.lang === lang && x.verb === q.verb) ? " on" : "")} title="Save verb" onClick={() => toggleFav(lang, q.verb)}>{favs.some((x) => x.lang === lang && x.verb === q.verb) ? "★" : "☆"}</button>
             </div>
@@ -2599,7 +2616,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
           <div className={"quizcard quizmodern " + state} style={{ "--lc": LANG_META[lang].color }}>
             <div className="cards-cue cards-cue-top">💬 {tr("cards_hint")}</div>
             <div className="qm-top">
-              <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
+              <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
               {q.isIrregular && <span className="flashtag">{tr("irregular")}</span>}
               <button className={"starbtn qm-star" + (favs.some((x) => x.lang === lang && x.verb === q.verb) ? " on" : "")} title="Save verb" onClick={() => toggleFav(lang, q.verb)}>{favs.some((x) => x.lang === lang && x.verb === q.verb) ? "★" : "☆"}</button>
             </div>
@@ -2707,7 +2724,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
             <React.Fragment>
                 <div className="cards-cue cards-cue-top">💬 {tr("cards_hint")}</div>
                     <div className="flashtop">
-                  <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
+                  <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
                   {q.isIrregular && <span className="flashtag">{tr("irregular")}</span>}
                   <button className={"starbtn qm-star" + (favs.some((x) => x.lang === lang && x.verb === q.verb) ? " on" : "")} title="Save verb" onClick={(e) => {e.stopPropagation();toggleFav(lang, q.verb);}}>{favs.some((x) => x.lang === lang && x.verb === q.verb) ? "★" : "☆"}</button>
                 </div>
@@ -2807,7 +2824,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
           <React.Fragment>
                 <div className="cards-cue cards-cue-top">💬 {tr("cards_hint_speak")}</div>
                 <div className="qm-top">
-                  <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
+                  <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
                   {q.isIrregular && <span className="flashtag">{tr("irregular")}</span>}
                   <button className={"starbtn qm-star" + (favs.some((x) => x.lang === lang && x.verb === q.verb) ? " on" : "")} title="Save verb" onClick={() => toggleFav(lang, q.verb)}>{favs.some((x) => x.lang === lang && x.verb === q.verb) ? "★" : "☆"}</button>
                 </div>
