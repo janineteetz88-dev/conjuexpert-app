@@ -4041,7 +4041,7 @@ function TourMock({ kind }) {
   if (kind === "trial") {
     return (
       <div className="tmock" key="trial" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"14px",paddingTop:"4px"}}>
-        <div style={{fontSize:"48px",lineHeight:1}}>🎁</div>
+        <div style={{fontSize:"48px",lineHeight:1}}>👑</div>
         <div style={{fontSize:"42px",fontWeight:900,letterSpacing:"-0.04em",color:"var(--col)",lineHeight:1}}>24h</div>
         {[tr("tour_feat1"), tr("tour_feat2"), tr("tour_feat3")].map((t, i) =>
           <div key={i} className="tm-row" style={{animationDelay: 0.2 + i * 0.13 + "s", gap:"8px"}}>
@@ -4122,10 +4122,10 @@ function TourMock({ kind }) {
 function TourGate({ onDone }) {
   const [i, setI] = useState(0);
   const slides = [
-  { kind: "trial", icon: "🎁", title: tr("offer_trial_b"), text: tr("tour_trial_sub"), col: "#0a84ff" },
+  { kind: "trial", icon: "👑", title: tr("offer_trial_b"), text: tr("tour_trial_sub"), col: "#e7156b" },
   { kind: "conjugate", icon: "▦", title: tr("tab_conjugate"), text: tr("tour_conj"), col: "#ff3b5c" },
   { kind: "quiz", icon: "◆", title: tr("tab_quiz"), text: tr("tour_quiz"), col: "#34c759" },
-  { kind: "learn", icon: "✦", title: tr("tab_learn"), text: tr("tour_learn"), col: "#0a84ff" },
+  { kind: "learn", icon: "✦", title: tr("tab_learn"), text: tr("tour_learn"), col: "#00bcd4" },
   { kind: "saved", icon: "★", title: tr("tab_saved"), text: tr("tour_saved"), col: "#ffb300" },
   { kind: "goals", icon: "🎯", title: tr("tour_goals_h"), text: tr("tour_goal"), col: "#7a5cff" }];
 
