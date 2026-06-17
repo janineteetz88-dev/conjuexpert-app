@@ -75,6 +75,36 @@
 
 
   <url>
+    <loc>https://conjuexpert.app/konjugation/de/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://conjuexpert.app/konjugation/es/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://conjuexpert.app/konjugation/en/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://conjuexpert.app/konjugation/fr/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://conjuexpert.app/konjugation/nl/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://conjuexpert.app/konjugation/es/hablar/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
@@ -399,7 +429,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/es/soñar/</loc>
+    <loc>https://conjuexpert.app/konjugation/es/so%C3%B1ar/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -453,13 +483,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/es/reír/</loc>
+    <loc>https://conjuexpert.app/konjugation/es/re%C3%ADr/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/es/oír/</loc>
+    <loc>https://conjuexpert.app/konjugation/es/o%C3%ADr/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -483,7 +513,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/être/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/%C3%AAtre/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -615,13 +645,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/écrire/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/%C3%A9crire/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/connaître/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/conna%C3%AEtre/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -651,7 +681,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/naître/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/na%C3%AEtre/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -693,7 +723,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/découvrir/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/d%C3%A9couvrir/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -717,7 +747,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/préférer/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/pr%C3%A9f%C3%A9rer/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -843,7 +873,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/émettre/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/%C3%A9mettre/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -933,7 +963,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/prévenir/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/pr%C3%A9venir/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -993,7 +1023,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/décrire/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/d%C3%A9crire/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1011,7 +1041,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/reconnaître/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/reconna%C3%AEtre/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1023,7 +1053,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/élire/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/%C3%A9lire/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1059,13 +1089,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/débattre/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/d%C3%A9battre/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/déplaire/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/d%C3%A9plaire/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1089,13 +1119,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/détruire/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/d%C3%A9truire/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/réduire/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/r%C3%A9duire/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1107,7 +1137,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/séduire/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/s%C3%A9duire/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1137,7 +1167,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/décevoir/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/d%C3%A9cevoir/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1155,7 +1185,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/éteindre/</loc>
+    <loc>https://conjuexpert.app/konjugation/fr/%C3%A9teindre/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1491,19 +1521,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/mögen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/m%C3%B6gen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/müssen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/m%C3%BCssen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/können/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/k%C3%B6nnen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1521,7 +1551,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/dürfen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/d%C3%BCrfen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1545,13 +1575,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/schließen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/schlie%C3%9Fen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/genießen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/genie%C3%9Fen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1695,7 +1725,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/übernehmen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/%C3%BCbernehmen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1743,7 +1773,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/übergeben/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/%C3%BCbergeben/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1791,7 +1821,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/übertragen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/%C3%BCbertragen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1857,7 +1887,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/überlassen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/%C3%BCberlassen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1869,19 +1899,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/beschließen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/beschlie%C3%9Fen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/entschließen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/entschlie%C3%9Fen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/verschließen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/verschlie%C3%9Fen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1893,7 +1923,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/übertreffen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/%C3%BCbertreffen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1941,7 +1971,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/überfahren/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/%C3%BCberfahren/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -2031,31 +2061,31 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/heißen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/hei%C3%9Fen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/stoßen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/sto%C3%9Fen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/fließen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/flie%C3%9Fen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/gießen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/gie%C3%9Fen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/schießen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/schie%C3%9Fen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -2109,7 +2139,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/lügen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/l%C3%BCgen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -2163,13 +2193,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/reißen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/rei%C3%9Fen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/de/beißen/</loc>
+    <loc>https://conjuexpert.app/konjugation/de/bei%C3%9Fen/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
