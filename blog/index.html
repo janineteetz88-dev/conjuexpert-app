@@ -54,6 +54,7 @@
 </head>
 <body>
 
+<!-- CHROME:HEADER -->
 <header class="nav">
   <div class="wrap nav-in">
     <a class="brand" href="/" aria-label="ConjuExpert Startseite">
@@ -77,6 +78,7 @@
     </div>
   </div>
 </header>
+<!-- /CHROME:HEADER -->
 
 <main id="top">
 
@@ -307,6 +309,7 @@
 
 </main>
 
+<!-- CHROME:FOOTER -->
 <footer>
   <div class="wrap">
     <div class="foot">
@@ -322,7 +325,7 @@
       </div>
       <div class="links">
         <div>
-          <h4>Blog</h4>
+          <h4><span data-l="de">Blog</span><span data-l="en">Blog</span></h4>
           <ul>
             <li><a href="/blog/#grammatik" data-l="de">Grammatik</a><a href="/blog/#grammatik" data-l="en">Grammar</a></li>
             <li><a href="/blog/#lernen" data-l="de">Lerntipps</a><a href="/blog/#lernen" data-l="en">Learning</a></li>
@@ -337,6 +340,15 @@
             <li><a href="/bewertungen/" data-l="de">Rezensionen</a><a href="/bewertungen/" data-l="en">Reviews</a></li>
           </ul>
         </div>
+        <div>
+          <h4><span data-l="de">Wichtiges</span><span data-l="en">Legal</span></h4>
+          <ul>
+            <li><a href="/agb.html">AGB</a></li>
+            <li><a href="/impressum.html">Impressum</a></li>
+            <li><a href="/datenschutz.html" data-l="de">Datenschutz</a><a href="/datenschutz.html" data-l="en">Privacy</a></li>
+            <li><a href="/barrierefreiheit.html" data-l="de">Barrierefreiheit</a><a href="/barrierefreiheit.html" data-l="en">Accessibility</a></li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="foot-bottom">
@@ -345,6 +357,7 @@
     </div>
   </div>
 </footer>
+<!-- /CHROME:FOOTER -->
 
 <script src="/blog/image-slot.js" defer></script>
 <script>
@@ -414,5 +427,6 @@ if (langsel) {
   });
 }
 </script>
+<script src="/blog/blog-chrome.js" defer></script>
 </body>
 </html>
