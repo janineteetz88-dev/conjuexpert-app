@@ -1187,7 +1187,7 @@ function ConjugateView({ engine, lang, verb, setVerb, result, onConjugate, t, fa
       <div className="inputrow">
         <div className="inputfield">
           <span className="inputlead" style={{ "--lc": LANG_META[lang].color }}>{LANG_META[lang].code}</span>
-          <input ref={inputRef} value={verb} placeholder={translating ? "↔ translating…" : "…"}
+          <input ref={inputRef} value={verb} aria-label="Verb eingeben" placeholder={translating ? "↔ translating…" : "…"}
           disabled={translating}
           onChange={(e) => setVerb(e.target.value)}
           onKeyDown={(e) => {if (e.key === "Enter") onConjugate(verb);}}
@@ -2489,7 +2489,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
                 {cloze.native && (skill === "beginner" || state !== "idle") && <div className="clozenative">{cloze.native}</div>}
               </div>)}
             <div className="quizinput">
-              <input ref={inRef} value={val} placeholder="…" disabled={state !== "idle"}
+              <input ref={inRef} value={val} aria-label="Antwort eingeben" placeholder="…" disabled={state !== "idle"}
             onChange={(e) => setVal(e.target.value)}
             onKeyDown={(e) => {if (e.key === "Enter") {state === "idle" ? check() : next();}}}
             autoComplete="off" autoCapitalize="off" spellCheck="false" style={{ height: "40px" }} />
@@ -2515,7 +2515,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
                   </div>
                 </div>
                 <div className="quizinput">
-                  <input ref={inRef} value={val} placeholder="…" disabled={state !== "idle"}
+                  <input ref={inRef} value={val} aria-label="Antwort eingeben" placeholder="…" disabled={state !== "idle"}
               onChange={(e) => setVal(e.target.value)}
               onKeyDown={(e) => {if (e.key === "Enter") {state === "idle" ? check() : next();}}}
               autoComplete="off" autoCapitalize="off" spellCheck="false" />
@@ -3676,7 +3676,7 @@ function VocabView({ lang }) {
           <div className="qm-top"><span className="flashtense">{cur.cat}</span><span className="flashtense vockind">{cur.kind === "phrase" ? tr("vocab_phrase") : tr("vocab_word")}</span></div>
           <div className="qm-prompt"><span className="flashverb">{cur.trans}</span></div>
           <div className="quizinput">
-            <input value={practice.val} placeholder="…" disabled={practice.state !== "idle"}
+            <input value={practice.val} aria-label="Antwort eingeben" placeholder="…" disabled={practice.state !== "idle"}
             onChange={(e) => setPractice((p) => ({ ...p, val: e.target.value }))}
             onKeyDown={(e) => {if (e.key === "Enter") {practice.state === "idle" ? checkPractice() : nextPractice();}}}
             autoComplete="off" autoCapitalize="off" spellCheck="false" />
@@ -3712,7 +3712,7 @@ function VocabView({ lang }) {
           <button className={"vocdirbtn" + (dir === "target" ? " on" : "")} onClick={() => setDir("target")}>{targetName()} → {nativeLabel(nativeName)}</button>
         </div>
         <div className="vocaddrow">
-          <input className="vocinput" value={text} placeholder={busy ? "↔ …" : tr("vocab_add_ph")} disabled={busy}
+          <input className="vocinput" value={text} aria-label={tr("vocab_add_ph")} placeholder={busy ? "↔ …" : tr("vocab_add_ph")} disabled={busy}
           onChange={(e) => setText(e.target.value)} onKeyDown={(e) => {if (e.key === "Enter") addEntry();}}
           autoComplete="off" spellCheck="false" />
           <button className="vocaddbtn" onClick={addEntry} disabled={busy || !text.trim()}>+</button>
@@ -3755,7 +3755,7 @@ function VocabView({ lang }) {
               <div style={{fontSize:"12.5px",color:"var(--muted)",lineHeight:1.4}}>Die KI schlägt danach automatisch<br/>5 passende Startwörter vor ✨</div>
             </div>
             <div style={{padding:"16px 18px 18px",display:"flex",flexDirection:"column",gap:"10px"}}>
-              <input autoFocus className="nameinput" value={newCatVal}
+              <input autoFocus className="nameinput" aria-label="Kategoriename" value={newCatVal}
                 onChange={e => setNewCatVal(e.target.value)}
                 onKeyDown={e => { if (e.key === "Enter" && newCatVal.trim()) commitNewCat(); if (e.key === "Escape") setAddingCat(false); }}
                 placeholder="z. B. Reisen, Kochen, Sport…"
@@ -3945,7 +3945,7 @@ function SavedView({ lang, favs, toggleFav, pickVerb, onActivity }) {
       <div className="quizcard quizmodern" style={{ "--lc": LANG_META[lang].color }}>
           <div className="qm-top"><span className="flashtense">{tr("vocab_translate") || "→"}</span><span className="flashtag">{LANG_META[lang].code}</span></div>
           <div className="qm-prompt"><span className="flashverb">{pr.q.prompt || "…"}</span></div>
-          <div className="quizinput"><input value={pr.val} disabled={pr.state !== "idle"} placeholder="…" autoFocus
+          <div className="quizinput"><input value={pr.val} aria-label="Antwort eingeben" disabled={pr.state !== "idle"} placeholder="…" autoFocus
         onChange={(e) => setPr((p) => ({ ...p, val: e.target.value }))}
         onKeyDown={(e) => {if (e.key === "Enter") {pr.state === "idle" ? vbCheck() : vbNext();}}} /></div>
           {pr.state === "correct" && <div className="feedback ok">✓ {pr.msg}</div>}
@@ -4039,7 +4039,7 @@ function NameGate({ initial, onSubmit, onClose, editing, native, setNative, skil
         <p className="namebrand">Conju<b>Expert</b></p>
         <span className="brand-mark big">{RAINBOW.slice(0, 5).map((c, i) => <i key={i} style={{ background: c }}></i>)}</span>
         <p className="namesub">{tr("welcome_sub")}</p>
-        <input ref={ref} className="nameinput" value={val} placeholder={tr("your_name")} maxLength={24}
+        <input ref={ref} className="nameinput" value={val} aria-label={tr("your_name")} placeholder={tr("your_name")} maxLength={24}
         onChange={(e) => setVal(e.target.value)}
         onKeyDown={(e) => {if (e.key === "Enter" && val.trim()) onSubmit(val.trim());}}
         autoComplete="off" autoCapitalize="words" spellCheck="false" />
@@ -4510,10 +4510,10 @@ function LoginModal({ onClose, fromPayment }) {
           </div>
         ) : (
           <form onSubmit={submit} style={{ width: "100%" }}>
-            <input ref={emailRef} type="email" placeholder="E-Mail" value={email} onChange={e => setEmail(e.target.value)} required
+            <input ref={emailRef} type="email" name="email" aria-label="E-Mail" placeholder="E-Mail" value={email} onChange={e => setEmail(e.target.value)} required
               className="nameinput" style={{ marginBottom: "10px", fontWeight: 400, fontSize: "16px" }} autoComplete="email" />
             {mode !== "reset" && (
-              <input type="password" placeholder={tr("login_pw_ph")} value={pw} onChange={e => setPw(e.target.value)} required minLength="6"
+              <input type="password" name="password" aria-label={tr("login_pw_ph")} placeholder={tr("login_pw_ph")} value={pw} onChange={e => setPw(e.target.value)} required minLength="6"
                 className="nameinput" style={{ marginBottom: mode === "login" ? "6px" : "14px", fontWeight: 400, fontSize: "16px" }} autoComplete={mode === "login" ? "current-password" : "new-password"} />
             )}
             {mode === "login" && (
@@ -4989,7 +4989,7 @@ function PlanSelect({ plan, setPlan, onNext, onClose, onLogin, onCouponLogin, su
               </div>
             ) : (
               <>
-                <input value={code} onChange={e=>setCode(e.target.value.toUpperCase())}
+                <input value={code} aria-label="Code" onChange={e=>setCode(e.target.value.toUpperCase())}
                   placeholder={tr("coupon_ph")}
                   autoFocus
                   style={{width:"100%",padding:"12px 14px",borderRadius:"12px",border:"1.5px solid var(--border)",fontSize:"16px",fontFamily:"monospace",fontWeight:700,background:"var(--surface)",color:"var(--text)",outline:"none",letterSpacing:"0.08em",textAlign:"center"}}
@@ -5202,7 +5202,7 @@ function Zieltafel({ name, lang, daily, goal, onClose, onAdjustGoal, onQuiz }) {
           ))}
           {loading && <div style={{display:"flex",gap:"13px"}}><span className="zt-av">{(name||"J").slice(0,1).toUpperCase()}</span><div className="zt-body"><p style={{color:"var(--muted)",fontStyle:"italic"}}>…</p></div></div>}
         </div>
-        <div className="zt-chatin"><input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key==="Enter" && send()} placeholder="Antworte hier …" disabled={loading} /><button className="zt-send" onClick={() => send()} disabled={loading || !input.trim()}>↑</button></div>
+        <div className="zt-chatin"><input value={input} aria-label="Nachricht" onChange={e => setInput(e.target.value)} onKeyDown={e => e.key==="Enter" && send()} placeholder="Antworte hier …" disabled={loading} /><button className="zt-send" onClick={() => send()} disabled={loading || !input.trim()}>↑</button></div>
         <div className="zt-acts"><button className="zt-act primary" onClick={onClose}>Weiter üben</button><button className="zt-act" onClick={onQuiz}>Zum Quiz →</button></div>
       </div>
     </div>

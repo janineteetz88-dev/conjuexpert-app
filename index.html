@@ -6,6 +6,7 @@
 <title>ConjuExpert – Verben konjugieren in 5 Sprachen | KI-Quiz & Lernen</title>
 <link rel="manifest" href="manifest.webmanifest" />
 <meta name="theme-color" content="#f5e4c3" />
+<meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="ConjuExpert" />
@@ -4308,6 +4309,7 @@ function TweakSlider({
   }, /*#__PURE__*/React.createElement("input", {
     type: "range",
     className: "twk-slider",
+    "aria-label": label,
     min: min,
     max: max,
     step: step,
@@ -4453,6 +4455,7 @@ function TweakText({
   }, /*#__PURE__*/React.createElement("input", {
     className: "twk-field",
     type: "text",
+    "aria-label": label,
     value: value,
     placeholder: placeholder,
     onChange: e => onChange(e.target.value)
@@ -4503,6 +4506,7 @@ function TweakNumber({
     onPointerDown: onScrubStart
   }, label), /*#__PURE__*/React.createElement("input", {
     type: "number",
+    "aria-label": label,
     value: value,
     min: min,
     max: max,
@@ -4560,6 +4564,7 @@ function TweakColor({
     }, /*#__PURE__*/React.createElement("span", null, label)), /*#__PURE__*/React.createElement("input", {
       type: "color",
       className: "twk-swatch",
+      "aria-label": label,
       value: value,
       onChange: e => onChange(e.target.value)
     }));
@@ -6860,6 +6865,7 @@ function ConjugateView({
   }, LANG_META[lang].code), /*#__PURE__*/React.createElement("input", {
     ref: inputRef,
     value: verb,
+    "aria-label": "Verb eingeben",
     placeholder: translating ? "↔ translating…" : "…",
     disabled: translating,
     onChange: e => setVerb(e.target.value),
@@ -9460,6 +9466,7 @@ function QuizView({
   }, /*#__PURE__*/React.createElement("input", {
     ref: inRef,
     value: val,
+    "aria-label": "Antwort eingeben",
     placeholder: "\u2026",
     disabled: state !== "idle",
     onChange: e => setVal(e.target.value),
@@ -9524,6 +9531,7 @@ function QuizView({
   }, /*#__PURE__*/React.createElement("input", {
     ref: inRef,
     value: val,
+    "aria-label": "Antwort eingeben",
     placeholder: "\u2026",
     disabled: state !== "idle",
     onChange: e => setVal(e.target.value),
@@ -11867,6 +11875,7 @@ function VocabView({
       className: "quizinput"
     }, /*#__PURE__*/React.createElement("input", {
       value: practice.val,
+      "aria-label": "Antwort eingeben",
       placeholder: "\u2026",
       disabled: practice.state !== "idle",
       onChange: e => setPractice(p => ({
@@ -11932,6 +11941,7 @@ function VocabView({
   }, /*#__PURE__*/React.createElement("input", {
     className: "vocinput",
     value: text,
+    "aria-label": tr("vocab_add_ph"),
     placeholder: busy ? "↔ …" : tr("vocab_add_ph"),
     disabled: busy,
     onChange: e => setText(e.target.value),
@@ -12049,6 +12059,7 @@ function VocabView({
   }, /*#__PURE__*/React.createElement("input", {
     autoFocus: true,
     className: "nameinput",
+    "aria-label": "Kategoriename",
     value: newCatVal,
     onChange: e => setNewCatVal(e.target.value),
     onKeyDown: e => {
@@ -12415,6 +12426,7 @@ function SavedView({
     className: "quizinput"
   }, /*#__PURE__*/React.createElement("input", {
     value: pr.val,
+    "aria-label": "Antwort eingeben",
     disabled: pr.state !== "idle",
     placeholder: "\u2026",
     autoFocus: true,
@@ -12645,6 +12657,7 @@ function NameGate({
     ref: ref,
     className: "nameinput",
     value: val,
+    "aria-label": tr("your_name"),
     placeholder: tr("your_name"),
     maxLength: 24,
     onChange: e => setVal(e.target.value),
@@ -13836,6 +13849,8 @@ function LoginModal({
   }, /*#__PURE__*/React.createElement("input", {
     ref: emailRef,
     type: "email",
+    name: "email",
+    "aria-label": "E-Mail",
     placeholder: "E-Mail",
     value: email,
     onChange: e => setEmail(e.target.value),
@@ -13849,6 +13864,8 @@ function LoginModal({
     autoComplete: "email"
   }), mode !== "reset" && /*#__PURE__*/React.createElement("input", {
     type: "password",
+    name: "password",
+    "aria-label": tr("login_pw_ph"),
     placeholder: tr("login_pw_ph"),
     value: pw,
     onChange: e => setPw(e.target.value),
@@ -15007,6 +15024,7 @@ function PlanSelect({
     }
   }, tr("coupon_sign_in"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("input", {
     value: code,
+    "aria-label": "Code",
     onChange: e => setCode(e.target.value.toUpperCase()),
     placeholder: tr("coupon_ph"),
     autoFocus: true,
@@ -15578,6 +15596,7 @@ function Zieltafel({
     className: "zt-chatin"
   }, /*#__PURE__*/React.createElement("input", {
     value: input,
+    "aria-label": "Nachricht",
     onChange: e => setInput(e.target.value),
     onKeyDown: e => e.key === "Enter" && send(),
     placeholder: "Antworte hier \u2026",

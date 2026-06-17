@@ -312,7 +312,7 @@ function TweakRow({ label, value, children, inline = false }) {
 function TweakSlider({ label, value, min = 0, max = 100, step = 1, unit = '', onChange }) {
   return (
     <TweakRow label={label} value={`${value}${unit}`}>
-      <input type="range" className="twk-slider" min={min} max={max} step={step}
+      <input type="range" className="twk-slider" aria-label={label} min={min} max={max} step={step}
              value={value} onChange={(e) => onChange(Number(e.target.value))} />
     </TweakRow>
   );
@@ -418,7 +418,7 @@ function TweakSelect({ label, value, options, onChange }) {
 function TweakText({ label, value, placeholder, onChange }) {
   return (
     <TweakRow label={label}>
-      <input className="twk-field" type="text" value={value} placeholder={placeholder}
+      <input className="twk-field" type="text" aria-label={label} value={value} placeholder={placeholder}
              onChange={(e) => onChange(e.target.value)} />
     </TweakRow>
   );
@@ -451,7 +451,7 @@ function TweakNumber({ label, value, min, max, step = 1, unit = '', onChange }) 
   return (
     <div className="twk-num">
       <span className="twk-num-lbl" onPointerDown={onScrubStart}>{label}</span>
-      <input type="number" value={value} min={min} max={max} step={step}
+      <input type="number" aria-label={label} value={value} min={min} max={max} step={step}
              onChange={(e) => onChange(clamp(Number(e.target.value)))} />
       {unit && <span className="twk-num-unit">{unit}</span>}
     </div>
@@ -489,7 +489,7 @@ function TweakColor({ label, value, options, onChange }) {
     return (
       <div className="twk-row twk-row-h">
         <div className="twk-lbl"><span>{label}</span></div>
-        <input type="color" className="twk-swatch" value={value}
+        <input type="color" className="twk-swatch" aria-label={label} value={value}
                onChange={(e) => onChange(e.target.value)} />
       </div>
     );
