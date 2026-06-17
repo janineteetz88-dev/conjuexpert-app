@@ -36,6 +36,40 @@ const TENSE_HINTS = {
   nl: { present: "- / -t", past: "-te / -de", perfect: "hebben/zijn + ge-…", pluperfect: "had + ge-…", future: "zullen + Inf.", subjunctive: "-e", conditional: "zou + Inf.", imperative: "stam!", gerund: "-end" }
 };
 function tenseHint(lang, id) {return (TENSE_HINTS[lang] || {})[id] || "";}
+/* For tenses whose regular endings change per person, a single fixed hint
+   (e.g. FR "-ais", DE "-te") mismatches the shown form. Derive the ending that
+   matches THIS form from the answer's suffix. `pre` is the prefix shown before
+   the ending. Falls back to the static tenseHint when nothing matches. */
+const PERSON_ENDINGS = {
+  fr: {
+    past:        { pre: "-",        ends: ["ais", "ait", "ions", "iez", "aient"] },
+    conditional: { pre: "Inf. + -", ends: ["ais", "ait", "ions", "iez", "aient"] },
+    future:      { pre: "Inf. + -", ends: ["ai", "as", "ons", "ez", "ont", "a"] }
+  },
+  es: {
+    imperfect:   { pre: "-",        ends: ["ábamos", "abais", "aban", "abas", "aba", "íamos", "íais", "ían", "ías", "ía"] },
+    future:      { pre: "Inf. + -", ends: ["emos", "éis", "án", "ás", "é", "á"] },
+    conditional: { pre: "Inf. + -", ends: ["íamos", "íais", "ían", "ías", "ía"] }
+  },
+  de: {
+    present:     { pre: "-", ends: ["en", "st", "t", "e"] },
+    past:        { pre: "-", ends: ["test", "tet", "ten", "te"] }
+  },
+  nl: {
+    present:     { pre: "-", ends: ["en", "t"] },
+    past:        { pre: "-", ends: ["ten", "den", "te", "de"] }
+  }
+};
+function quizHint(lang, q) {
+  const cfg = q && PERSON_ENDINGS[lang] && PERSON_ENDINGS[lang][q.tenseId];
+  if (cfg && q.answer) {
+    const a = q.answer.toLowerCase().trim();
+    let best = "";
+    cfg.ends.forEach((e) => { if (a.endsWith(e) && e.length > best.length) best = e; });
+    if (best) return cfg.pre + best;
+  }
+  return tenseHint(lang, q ? q.tenseId : null);
+}
 const FR_ETRE_TENSES = new Set(["perfect", "pluperfect", "conditionalPast"]);
 const DE_NL_AUX_TENSES = new Set(["perfect", "pluperfect"]);
 function auxHint(lang, tenseId, answer) {
@@ -2437,7 +2471,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
           <div className={"quizcard quizmodern " + state} style={{ "--lc": LANG_META[lang].color }}>
             <div className="cards-cue cards-cue-top">💬 {tr("cards_hint_type")}</div>
             <div className="qm-top" data-typequiz="true">
-              <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
+              <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
               {q.isIrregular && <span className="flashtag">{tr("irregular")}</span>}
               <button className={"starbtn qm-star" + (favs.some((x) => x.lang === lang && x.verb === q.verb) ? " on" : "")} title="Save verb" onClick={() => toggleFav(lang, q.verb)}>{favs.some((x) => x.lang === lang && x.verb === q.verb) ? "★" : "☆"}</button>
             </div>
@@ -2601,7 +2635,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
           <div className={"quizcard quizmodern " + state} style={{ "--lc": LANG_META[lang].color }}>
             <div className="cards-cue cards-cue-top">💬 {tr("cards_hint")}</div>
             <div className="qm-top">
-              <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
+              <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
               {q.isIrregular && <span className="flashtag">{tr("irregular")}</span>}
               <button className={"starbtn qm-star" + (favs.some((x) => x.lang === lang && x.verb === q.verb) ? " on" : "")} title="Save verb" onClick={() => toggleFav(lang, q.verb)}>{favs.some((x) => x.lang === lang && x.verb === q.verb) ? "★" : "☆"}</button>
             </div>
@@ -2709,7 +2743,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
             <React.Fragment>
                 <div className="cards-cue cards-cue-top">💬 {tr("cards_hint")}</div>
                     <div className="flashtop">
-                  <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
+                  <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
                   {q.isIrregular && <span className="flashtag">{tr("irregular")}</span>}
                   <button className={"starbtn qm-star" + (favs.some((x) => x.lang === lang && x.verb === q.verb) ? " on" : "")} title="Save verb" onClick={(e) => {e.stopPropagation();toggleFav(lang, q.verb);}}>{favs.some((x) => x.lang === lang && x.verb === q.verb) ? "★" : "☆"}</button>
                 </div>
@@ -2809,7 +2843,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
           <React.Fragment>
                 <div className="cards-cue cards-cue-top">💬 {tr("cards_hint_speak")}</div>
                 <div className="qm-top">
-                  <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{tenseHint(lang, q.tenseId) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
+                  <span className="flashtense">{q.tenseLabel}{skill !== "advanced" && (quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) ? <span className="flashhint-inline">{quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)}</span> : null}</span>
                   {q.isIrregular && <span className="flashtag">{tr("irregular")}</span>}
                   <button className={"starbtn qm-star" + (favs.some((x) => x.lang === lang && x.verb === q.verb) ? " on" : "")} title="Save verb" onClick={() => toggleFav(lang, q.verb)}>{favs.some((x) => x.lang === lang && x.verb === q.verb) ? "★" : "☆"}</button>
                 </div>
@@ -4042,9 +4076,9 @@ function NameGate({ initial, onSubmit, onClose, editing, native, setNative, skil
 function TourMock({ kind }) {
   if (kind === "trial") {
     return (
-      <div className="tmock" key="trial" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"14px",paddingTop:"4px"}}>
-        <div style={{fontSize:"48px",lineHeight:1}}>👑</div>
-        <div style={{fontSize:"42px",fontWeight:900,letterSpacing:"-0.04em",color:"var(--col)",lineHeight:1}}>24h</div>
+      <div className="tmock" key="trial" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"12px",paddingTop:"2px"}}>
+        <div style={{fontSize:"44px",lineHeight:1}}>🎁</div>
+        <div style={{fontSize:"15.5px",fontWeight:800,letterSpacing:"-0.01em",color:"var(--text)",lineHeight:1.3,textAlign:"center",fontFamily:"var(--font-display)"}}>{tr("tour_trial_head")}</div>
         {[tr("tour_feat1"), tr("tour_feat2"), tr("tour_feat3")].map((t, i) =>
           <div key={i} className="tm-row" style={{animationDelay: 0.2 + i * 0.13 + "s", gap:"8px"}}>
             <span style={{color:"var(--col)",fontWeight:800}}>✓</span><span>{t}</span>
@@ -4124,7 +4158,7 @@ function TourMock({ kind }) {
 function TourGate({ onDone }) {
   const [i, setI] = useState(0);
   const slides = [
-  { kind: "trial", icon: "👑", title: tr("offer_trial_b"), text: tr("tour_trial_sub"), col: "#e7156b" },
+  { kind: "trial", icon: "🎁", title: tr("offer_trial_b"), text: tr("tour_trial_sub"), col: "#e7156b" },
   { kind: "conjugate", icon: "▦", title: tr("tab_conjugate"), text: tr("tour_conj"), col: "#ff3b5c" },
   { kind: "quiz", icon: "◆", title: tr("tab_quiz"), text: tr("tour_quiz"), col: "#34c759" },
   { kind: "learn", icon: "✦", title: tr("tab_learn"), text: tr("tour_learn"), col: "#00bcd4" },
@@ -4140,10 +4174,12 @@ function TourGate({ onDone }) {
         <div className="tourstage" style={{ "--col": s.col }}>
           <TourMock kind={s.kind} />
         </div>
-        <div className="tourhead-row">
-          <span className="tourbadge" style={{ background: s.col }}>{s.icon}</span>
-          <h2 className="namehead" style={{ margin: 0 }}>{s.title}</h2>
-        </div>
+        {s.kind !== "trial" &&
+          <div className="tourhead-row">
+            <span className="tourbadge" style={{ background: s.col }}>{s.icon}</span>
+            <h2 className="namehead" style={{ margin: 0 }}>{s.title}</h2>
+          </div>
+        }
         <p className="namesub">{s.text}</p>
         <div className="tourdots">{slides.map((_, k) => <span key={k} className={"tourdot" + (k === i ? " on" : "")}></span>)}</div>
         <button className="namebtn" onClick={() => last ? onDone() : setI(i + 1)}>
