@@ -4260,7 +4260,9 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 <script>
 /* ===== ConjuExpert AI bridge — Cloudflare Worker proxy ===== */
 (function(){
-  var WORKER = 'https://bitter-bird-3204.janine-teetz88.workers.dev';
+  // Same-Origin-Route (Cloudflare-Worker an conjuexpert.app/api/ai* gebunden).
+  // Ermoeglicht WAF-Rate-Limiting + entfernt die oeffentliche workers.dev-URL.
+  var WORKER = '/api/ai';
   var queue = [], busy = false, lastCall = 0, INTERVAL = 300;
   function delay(ms){ return new Promise(function(r){setTimeout(r,ms);}); }
   async function callWorker(prompt, attempt){
