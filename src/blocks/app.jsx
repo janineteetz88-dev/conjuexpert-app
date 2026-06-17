@@ -4046,7 +4046,7 @@ function NameGate({ initial, onSubmit, onClose, editing, native, setNative, skil
         <div className="namefield">
           <label className="namelabel">{tr("mother_tongue")}</label>
           <div className="nativewrap">
-            <select className="nativesel" value={native} onChange={(e) => setNative(e.target.value)}>
+            <select className="nativesel" aria-label={tr("mother_tongue")} value={native} onChange={(e) => setNative(e.target.value)}>
               {NATIVE_LANGS.map((l) => <option key={l.name} value={l.name}>{l.label}</option>)}
             </select>
             <span className="nativecaret">▾</span>
