@@ -88,11 +88,15 @@ body {
   --shadow: 0 18px 50px -22px rgba(30, 35, 60, 0.35);
   --shadow-sm: 0 6px 18px -10px rgba(30, 35, 60, 0.3);
 }
-/* React root: full width + flex so .phone centres on desktop */
+/* React root: full width + flex so .phone centres on desktop.
+   min-height reserves the final viewport height already at first paint so the
+   empty #root -> mounted .phone transition does not shift the footer (CLS). */
 #root {
   width: 100%;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 #approot[data-theme="dark"] {
   --bg: #0a0c14;
@@ -4423,6 +4427,7 @@ function TweakSelect({
     label: label
   }, /*#__PURE__*/React.createElement("select", {
     className: "twk-field",
+    "aria-label": label,
     value: value,
     onChange: e => onChange(e.target.value)
   }, options.map(o => {
@@ -12654,6 +12659,7 @@ function NameGate({
     className: "nativewrap"
   }, /*#__PURE__*/React.createElement("select", {
     className: "nativesel",
+    "aria-label": tr("mother_tongue"),
     value: native,
     onChange: e => setNative(e.target.value)
   }, NATIVE_LANGS.map(l => /*#__PURE__*/React.createElement("option", {
