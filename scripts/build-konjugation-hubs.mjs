@@ -202,7 +202,7 @@ ${STYLE}
 </main>
 
 <footer class="site-footer">
-  <p>© ConjuExpert · <a href="https://conjuexpert.app/landing/">Über uns</a> · <a href="https://conjuexpert.app/agb.html">AGB</a> · <a href="https://conjuexpert.app/datenschutz.html">Datenschutz</a> · <a href="https://conjuexpert.app/impressum.html">Impressum</a></p>
+  <p>© ConjuExpert · <a href="https://conjuexpert.app/landing/">Über uns</a> · <a href="https://conjuexpert.app/agb.html">AGB</a> · <a href="https://conjuexpert.app/datenschutz.html">Datenschutz</a> · <a href="https://conjuexpert.app/impressum.html">Impressum</a> · <a href="https://conjuexpert.app/barrierefreiheit.html">Barrierefreiheit</a></p>
 </footer>
 
 ${MARK_SCRIPT}

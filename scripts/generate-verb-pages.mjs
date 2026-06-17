@@ -525,7 +525,7 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
 </main>
 
 <footer class="site-footer">
-  <p>© ConjuExpert · <a href="${SITE}/landing/">Über uns</a> · <a href="${SITE}/agb.html">AGB</a> · <a href="${SITE}/datenschutz.html">Datenschutz</a> · <a href="${SITE}/impressum.html">Impressum</a></p>
+  <p>© ConjuExpert · <a href="${SITE}/landing/">Über uns</a> · <a href="${SITE}/agb.html">AGB</a> · <a href="${SITE}/datenschutz.html">Datenschutz</a> · <a href="${SITE}/impressum.html">Impressum</a> · <a href="${SITE}/barrierefreiheit.html">Barrierefreiheit</a></p>
 </footer>
 
 </body>
