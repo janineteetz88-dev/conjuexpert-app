@@ -56,7 +56,7 @@ body {
     radial-gradient(1200px 600px at 20% -10%, #ffe9f0 0%, transparent 55%),
     radial-gradient(1000px 600px at 110% 10%, #e6f0ff 0%, transparent 50%),
     #eef0f4;
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: flex-start; justify-content: center;
   /* iOS Safari: use height (not min-height) + overflow:hidden so the page never grows beyond the viewport */
   height: 100dvh;
   overflow: hidden;
@@ -79,6 +79,9 @@ body {
    to the viewport width on iOS Safari instead of falling back to max-width:440px */
 #approot {
   width: 100%;
+  /* Endhöhe schon beim ersten Paint belegen + body verankert oben (align-items:flex-start)
+     -> #approot kann sich nicht mehr re-zentrieren, wenn der React-Inhalt mountet (CLS) */
+  min-height: 100dvh;
   --bg: #f3f4f8;
   --surface: #ffffff;
   --surface-2: #f7f8fb;
