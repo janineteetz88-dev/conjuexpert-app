@@ -214,8 +214,10 @@ function pickVoice(lang) {
   const baseM = voices.filter((v) => (v.lang || "").toLowerCase().split("-")[0] === base);
   let pool = exact.length ? exact : baseM;
   if (!pool.length) return null;
-  // narrow to the requested gender; if none is detected by name, at least avoid the opposite gender
-  const gender = savedGender(base);
+  // narrow to the requested gender; if none is detected by name, at least avoid the opposite gender.
+  // Default to a female voice when the user hasn't explicitly chosen one (Auto) — softly: if no
+  // female voice exists we keep the full pool so the best available voice is still used.
+  const gender = savedGender(base) || "f";
   if (gender) {
     const gm = pool.filter((v) => voiceGender(v.name) === gender);
     if (gm.length) { pool = gm; }
