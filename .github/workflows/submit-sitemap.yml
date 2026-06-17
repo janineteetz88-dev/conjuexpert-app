@@ -22,7 +22,7 @@ jobs:
       - name: Submit sitemap
         env:
           GSC_SA_KEY: ${{ secrets.GSC_SA_KEY }}
-          # For a Domain property change to: sc-domain:conjuexpert.app
-          SITE_URL: 'https://conjuexpert.app/'
+          # Domain property (conjuexpert.app ist als Domain-Property in der GSC).
+          SITE_URL: 'sc-domain:conjuexpert.app'
           SITEMAP_URL: 'https://conjuexpert.app/sitemap.xml'
         run: node scripts/submit-sitemap.mjs
