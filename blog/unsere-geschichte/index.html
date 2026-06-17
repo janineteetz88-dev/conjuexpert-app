@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-lang="de">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -95,24 +95,31 @@
 </head>
 <body>
 
+<!-- CHROME:HEADER -->
 <header class="nav">
   <div class="wrap nav-in">
     <a class="brand" href="/blog/" aria-label="ConjuExpert Blog">
       <span class="brand-mark" data-mark></span>
       <span class="brand-name">Conju<b>Expert</b> <span class="sub">Blog</span></span>
     </a>
-    <nav class="nav-links" aria-label="Navigation">
-      <a href="/blog/">Alle Artikel</a>
-      <a href="/blog/#lernen">Lerntipps</a>
-      <a href="/">Zur Website</a>
+    <nav class="nav-links" aria-label="Blog-Navigation">
+      <a href="/blog/" data-l="de">Alle Artikel</a><a href="/blog/" data-l="en">All articles</a>
+      <a href="/blog/#grammatik" data-l="de">Grammatik</a><a href="/blog/#grammatik" data-l="en">Grammar</a>
+      <a href="/blog/#lernen" data-l="de">Lerntipps</a><a href="/blog/#lernen" data-l="en">Learning</a>
+      <a href="/blog/#produkt" data-l="de">News</a><a href="/blog/#produkt" data-l="en">News</a>
     </nav>
     <div class="nav-right">
+      <div class="langsw" role="group" aria-label="Interface-Sprache">
+        <button data-set="de" class="on" aria-pressed="true">DE</button><button data-set="en" aria-pressed="false">EN</button>
+      </div>
       <a class="btn btn-primary btn-sm" href="/?utm_source=blog&amp;utm_medium=nav&amp;utm_content=unsere-geschichte">
-        <span class="g"></span><span class="l">App öffnen</span>
+        <span class="g"></span>
+        <span class="l"><span data-l="de">App öffnen</span><span data-l="en">Open app</span></span>
       </a>
     </div>
   </div>
 </header>
+<!-- /CHROME:HEADER -->
 
 <main id="top">
   <article style="position:relative">
@@ -303,36 +310,44 @@
   </article>
 </main>
 
+<!-- CHROME:FOOTER -->
 <footer>
   <div class="wrap">
     <div class="foot">
       <div>
-        <a class="brand" href="/"><span class="brand-mark" data-mark></span><span class="brand-name">Conju<b>Expert</b></span></a>
-        <p style="color:var(--muted);font-size:14.5px;max-width:30ch;margin:14px 0 0">Der KI-Konjugationstrainer für 5 Sprachen - Quiz, Merken &amp; Lernen.</p>
+        <a class="brand" href="/" aria-label="ConjuExpert Startseite">
+          <span class="brand-mark" data-mark></span>
+          <span class="brand-name">Conju<b>Expert</b></span>
+        </a>
+        <p style="color:var(--muted);font-size:14.5px;max-width:30ch;margin:14px 0 0">
+          <span data-l="de">Der KI-Konjugationstrainer für 5 Sprachen - Quiz, Merken &amp; Lernen.</span>
+          <span data-l="en">The AI conjugation trainer for 5 languages - quiz, save &amp; learn.</span>
+        </p>
       </div>
       <div class="links">
         <div>
-          <h4>Blog</h4>
+          <h4><span data-l="de">Blog</span><span data-l="en">Blog</span></h4>
           <ul>
-            <li><a href="/blog/">Alle Artikel</a></li>
-            <li><a href="/blog/#lernen">Lerntipps</a></li>
-            <li><a href="/blog/#grammatik">Grammatik</a></li>
+            <li><a href="/blog/#grammatik" data-l="de">Grammatik</a><a href="/blog/#grammatik" data-l="en">Grammar</a></li>
+            <li><a href="/blog/#lernen" data-l="de">Lerntipps</a><a href="/blog/#lernen" data-l="en">Learning</a></li>
+            <li><a href="/blog/#produkt" data-l="de">Produkt-News</a><a href="/blog/#produkt" data-l="en">Product news</a></li>
           </ul>
         </div>
         <div>
           <h4>ConjuExpert</h4>
           <ul>
+            <li><a href="/" data-l="de">Funktionen</a><a href="/" data-l="en">Features</a></li>
             <li><a href="/">App</a></li>
-            <li><a href="/bewertungen/">Rezensionen</a></li>
+            <li><a href="/bewertungen/" data-l="de">Rezensionen</a><a href="/bewertungen/" data-l="en">Reviews</a></li>
           </ul>
         </div>
         <div>
-          <h4>Wichtiges</h4>
+          <h4><span data-l="de">Wichtiges</span><span data-l="en">Legal</span></h4>
           <ul>
             <li><a href="/agb.html">AGB</a></li>
             <li><a href="/impressum.html">Impressum</a></li>
-            <li><a href="/datenschutz.html">Datenschutz</a></li>
-            <li><a href="/barrierefreiheit.html">Barrierefreiheit</a></li>
+            <li><a href="/datenschutz.html" data-l="de">Datenschutz</a><a href="/datenschutz.html" data-l="en">Privacy</a></li>
+            <li><a href="/barrierefreiheit.html" data-l="de">Barrierefreiheit</a><a href="/barrierefreiheit.html" data-l="en">Accessibility</a></li>
           </ul>
         </div>
       </div>
@@ -343,6 +358,7 @@
     </div>
   </div>
 </footer>
+<!-- /CHROME:FOOTER -->
 
 <script>
 document.documentElement.classList.add('js');
@@ -355,5 +371,6 @@ document.querySelectorAll('[data-mark]').forEach(function(m) {
   }
 });
 </script>
+<script src="/blog/blog-chrome.js" defer></script>
 </body>
 </html>
