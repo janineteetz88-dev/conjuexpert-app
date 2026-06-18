@@ -44,6 +44,11 @@ import {
   mergeSitemap,
   metasToClusters,
 } from "./lib/clusters-upsert.mjs";
+import {
+  upsertBlogCards,
+  buildCardFromArticle,
+} from "./lib/blog-index.mjs";
+import { estimateReadTime, blocksToHtml } from "./notion-to-html.mjs";
 
 /* ─── Konstanten / Flags ─────────────────────────────────────────────────── */
 
@@ -62,6 +67,7 @@ const BASE_LIVE = "https://conjuexpert.app";
 
 const CLUSTERS_PATH = join(ROOT, "src/data/clusters.js");
 const SITEMAP_PATH = join(ROOT, "sitemap.xml");
+const BLOG_INDEX_PATH = join(ROOT, "blog/index.html");
 
 const KEY = process.env.NOTION_API_KEY;
 
@@ -348,6 +354,36 @@ async function main() {
       log(`\n🗺️   sitemap.xml: ${added} neue <url> ergänzt`);
     } else {
       log(`\n🗺️   sitemap.xml unverändert (alle Slugs bereits vorhanden)`);
+    }
+  }
+
+  // 9b) /blog-Startseite (blog/index.html): neue Karten generisch einsortieren.
+  if (deployed.length) {
+    const cards = deployed.map(({ article }) => {
+      // Lesezeit aus dem gerenderten Content (gleiche Heuristik wie der Artikel).
+      const contentHtml = blocksToHtml(article.contentBlocks || []);
+      const readMin = estimateReadTime(contentHtml);
+      return buildCardFromArticle({
+        meta: article.meta,
+        title: article.title,
+        readMin,
+      });
+    });
+
+    const byCat = (c) => cards.filter((k) => k.cat === c).map((k) => k.slug).join(", ") || "–";
+    const summary = `learn: ${byCat("learn")}; gram: ${byCat("gram")}; prod: ${byCat("prod")}`;
+
+    if (DRY_RUN) {
+      log(`\n🏠  (dry-run) /blog: würde ${cards.length} Karten einfügen/aktualisieren (${summary})`);
+    } else {
+      const srcIdx = readFileSync(BLOG_INDEX_PATH, "utf8");
+      const nextIdx = upsertBlogCards(srcIdx, cards);
+      if (nextIdx !== srcIdx) {
+        writeFileSync(BLOG_INDEX_PATH, nextIdx, "utf8");
+        log(`\n🏠  blog/index.html: ${cards.length} Karten eingefügt/aktualisiert (${summary})`);
+      } else {
+        log(`\n🏠  blog/index.html unverändert (idempotent)`);
+      }
     }
   }
 
