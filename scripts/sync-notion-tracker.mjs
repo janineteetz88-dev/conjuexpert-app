@@ -29,6 +29,9 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ARGS = process.argv.slice(2);
 const DRY_RUN = !ARGS.includes("--create");
 const DB_ID = "f78defbe1d0543309b443fc134ad9127";
+// Der Tracker hat versehentlich eine 2. (leere) Data Source -> /databases/{id}/* wirft
+// multiple_data_sources_for_database. Wir arbeiten daher direkt mit der echten Data Source.
+const DATA_SOURCE_ID = "675fdfec-f644-4fd4-9f7e-340b85966013";
 
 
 
@@ -46,15 +49,16 @@ function extractDate(html) {
 /* ─── Notion-Abfrage ─────────────────────────────────────────────────────── */
 
 const NOTION_VERSION = "2022-06-28";
+const NOTION_VERSION_DS = "2025-09-03"; // data_sources-API (Multi-Source-DBs)
 
-async function notionFetch(path, method = "GET", body = null) {
+async function notionFetch(path, method = "GET", body = null, version = NOTION_VERSION) {
   const key = process.env.NOTION_API_KEY;
   if (!key) throw new Error("NOTION_API_KEY nicht gesetzt");
   const opts = {
     method,
     headers: {
       "Authorization": `Bearer ${key}`,
-      "Notion-Version": NOTION_VERSION,
+      "Notion-Version": version,
       "Content-Type": "application/json",
     },
   };
@@ -73,7 +77,7 @@ async function getTrackerEntries() {
   do {
     const body = { page_size: 100 };
     if (cursor) body.start_cursor = cursor;
-    const data = await notionFetch(`/databases/${DB_ID}/query`, "POST", body);
+    const data = await notionFetch(`/data_sources/${DATA_SOURCE_ID}/query`, "POST", body, NOTION_VERSION_DS);
     entries.push(...data.results);
     cursor = data.has_more ? data.next_cursor : null;
   } while (cursor);
@@ -81,13 +85,13 @@ async function getTrackerEntries() {
 }
 
 async function ensureProperties() {
-  const db = await notionFetch(`/databases/${DB_ID}`);
+  const db = await notionFetch(`/data_sources/${DATA_SOURCE_ID}`, "GET", null, NOTION_VERSION_DS);
   const existing = Object.keys(db.properties || {});
   const toAdd = {};
   if (!existing.includes("Live-Link")) toAdd["Live-Link"] = { url: {} };
   if (!existing.includes("Notion-Quelle")) toAdd["Notion-Quelle"] = { url: {} };
   if (Object.keys(toAdd).length > 0) {
-    await notionFetch(`/databases/${DB_ID}`, "PATCH", { properties: toAdd });
+    await notionFetch(`/data_sources/${DATA_SOURCE_ID}`, "PATCH", { properties: toAdd }, NOTION_VERSION_DS);
     console.log(`   ✓ Spalten angelegt: ${Object.keys(toAdd).join(", ")}`);
   }
 }
@@ -111,7 +115,7 @@ async function createEntry(article) {
   };
   if (article.datePublished) props["Veröffentlicht am"] = { date: { start: article.datePublished } };
   if (article.notionUrl) props["Notion-Quelle"] = { url: article.notionUrl };
-  return notionFetch("/pages", "POST", { parent: { database_id: DB_ID }, properties: props });
+  return notionFetch("/pages", "POST", { parent: { type: "data_source_id", data_source_id: DATA_SOURCE_ID }, properties: props }, NOTION_VERSION_DS);
 }
 
 async function updateDate(pageId, datePublished) {

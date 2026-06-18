@@ -52,7 +52,13 @@ jobs:
           git diff --staged --quiet || git commit -m "auto: Blog-Pipeline — gerenderte Artikel, clusters.js & sitemap.xml"
           git diff HEAD~1..HEAD --name-only 2>/dev/null | grep -E 'clusters\.js|^blog/|sitemap\.xml' && git push || true
 
+      # Bei Dry-Run read-only (ohne --create) -> legt keine Tracker-Zeilen/Spalten an.
       - name: Notion-Tracker abgleichen
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-        run: node scripts/sync-notion-tracker.mjs --create
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+            node scripts/sync-notion-tracker.mjs
+          else
+            node scripts/sync-notion-tracker.mjs --create
+          fi
