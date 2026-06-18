@@ -188,6 +188,19 @@ function livePublishedSlugs(metas) {
   return set;
 }
 
+/* ─── Tageslimit: wie viele Blog-Artikel wurden HEUTE bereits live geschaltet ─
+   Quelle: sitemap.xml — mergeSitemap setzt lastmod=heute NUR bei neu ergänzten
+   Slugs (bestehende bleiben), daher ist <loc>/blog/…</loc> + <lastmod>heute</lastmod>
+   ein stabiler Tages-Zähler über alle stündlichen Läufe hinweg. */
+export function publishedBlogToday(sitemapXml, todayStr) {
+  const re = /<loc>https:\/\/conjuexpert\.app\/blog\/[^<]+<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/g;
+  let n = 0, m;
+  while ((m = re.exec(sitemapXml)) !== null) {
+    if (m[1].trim() === todayStr) n++;
+  }
+  return n;
+}
+
 /* ─── Sortierung: Nummer ↑, dann Hub vor Spoke im selben Cluster ─────────── */
 
 export function sortArticles(items) {
@@ -277,26 +290,42 @@ async function main() {
   // Sortieren.
   const sorted = sortArticles(articles);
 
-  // publishedSlugs = bereits live ∪ alle in DIESEM Lauf gültig gerenderten.
+  // Tageslimit: max. N NEUE Artikel pro Kalendertag online schalten.
+  // Bereits live geschaltete (HTML existiert) werden weiterhin aktualisiert
+  // (Refresh, idempotent) und zählen NICHT gegen das Tagesbudget.
+  const MAX_PER_DAY = Number(process.env.MAX_PER_DAY) || 3;
+  const sitemapNow = existsSync(SITEMAP_PATH) ? readFileSync(SITEMAP_PATH, "utf8") : "";
+  const alreadyToday = publishedBlogToday(sitemapNow, today());
+  const budget = Math.max(0, MAX_PER_DAY - alreadyToday);
+  const alreadyLive = sorted.filter((a) => htmlExists(a.meta.slug));
+  const newOnes = sorted.filter((a) => !htmlExists(a.meta.slug));
+  const newToPublish = newOnes.slice(0, budget);
+  const deferred = newOnes.slice(budget);
+  const toPublish = sortArticles([...alreadyLive, ...newToPublish]);
+  if (deferred.length) {
+    log(`\n⏳  Tageslimit ${MAX_PER_DAY}/Tag erreicht (heute schon ${alreadyToday} online) → ${deferred.length} verschoben: ${deferred.map((a) => a.meta.slug).join(", ")}`);
+  }
+
+  // publishedSlugs = bereits live ∪ in DIESEM Lauf gerenderte (verschobene NICHT → keine 404-Links).
   const published = livePublishedSlugs(sorted);
-  for (const a of sorted) published.add(a.meta.slug);
+  for (const a of toPublish) published.add(a.meta.slug);
 
   // allArticles: slug → { title }
   const allArticles = {};
-  for (const a of sorted) allArticles[a.meta.slug] = { title: a.title };
+  for (const a of toPublish) allArticles[a.meta.slug] = { title: a.title };
 
   log(`\n📝  Plan (Reihenfolge nach Nummer, Hub-first):`);
-  for (const a of sorted) {
+  for (const a of toPublish) {
     log(`    #${a.nummer === Infinity ? "?" : a.nummer} [${a.meta.typ || "?"}] ${a.meta.slug}  "${a.title}"  → blog/${a.meta.slug.replace(/^\/blog\//, "")}/index.html`);
   }
-  if (!sorted.length) {
+  if (!toPublish.length) {
     log("    (nichts zu rendern)");
   }
 
   // PASS 2: Rendern + schreiben.
   const renderedSlugs = [];
   const deployed = []; // { article, slug } für Writeback
-  for (const a of sorted) {
+  for (const a of toPublish) {
     let html;
     try {
       html = renderArticle({
@@ -327,7 +356,7 @@ async function main() {
 
   // 7) clusters.js upserten.
   const derived = metasToClusters(
-    sorted.map((a) => ({ meta: a.meta, title: a.title, live: true }))
+    toPublish.map((a) => ({ meta: a.meta, title: a.title, live: true }))
   );
   if (derived.length) {
     const { clusters: existing } = await import(CLUSTERS_PATH + `?t=${Date.now()}`);
@@ -464,7 +493,7 @@ async function main() {
     }
   }
 
-  log(`\n✅  Fertig. Gerendert: ${renderedSlugs.length}/${sorted.length}\n`);
+  log(`\n✅  Fertig. Gerendert: ${renderedSlugs.length}/${toPublish.length}` + (deferred.length ? ` · verschoben (Tageslimit): ${deferred.length}` : "") + `\n`);
 }
 
 // Nur ausführen, wenn direkt gestartet (nicht bei `import` aus den Unit-Tests).
