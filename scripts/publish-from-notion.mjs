@@ -47,6 +47,7 @@ import {
 import {
   upsertBlogCards,
   buildCardFromArticle,
+  reconcileBlogCardsFromClusters,
 } from "./lib/blog-index.mjs";
 import { estimateReadTime, blocksToHtml } from "./notion-to-html.mjs";
 
@@ -357,8 +358,16 @@ async function main() {
     }
   }
 
-  // 9b) /blog-Startseite (blog/index.html): neue Karten generisch einsortieren.
-  if (deployed.length) {
+  // 9b) /blog-Startseite (blog/index.html):
+  //     (a) Karten der in DIESEM Lauf gerenderten Artikel einsortieren/aktualisieren,
+  //     (b) anschließend aus clusters.js REKONZILIEREN (Backfill: alle live-Artikel,
+  //         die noch KEINE Karte haben, werden ergänzt — bestehende bleiben unangetastet).
+  //     Reihenfolge so, dass am Ende EIN konsistenter blog/index.html geschrieben wird.
+  {
+    const srcIdx = readFileSync(BLOG_INDEX_PATH, "utf8");
+    let nextIdx = srcIdx;
+
+    // (a) Karten der gerade gerenderten Artikel.
     const cards = deployed.map(({ article }) => {
       // Lesezeit aus dem gerenderten Content (gleiche Heuristik wie der Artikel).
       const contentHtml = blocksToHtml(article.contentBlocks || []);
@@ -369,18 +378,43 @@ async function main() {
         readMin,
       });
     });
-
     const byCat = (c) => cards.filter((k) => k.cat === c).map((k) => k.slug).join(", ") || "–";
-    const summary = `learn: ${byCat("learn")}; gram: ${byCat("gram")}; prod: ${byCat("prod")}`;
+    const renderedSummary = `learn: ${byCat("learn")}; gram: ${byCat("gram")}; prod: ${byCat("prod")}`;
+
+    if (cards.length) {
+      if (DRY_RUN) {
+        log(`\n🏠  (dry-run) /blog: würde ${cards.length} Karten einfügen/aktualisieren (${renderedSummary})`);
+      } else {
+        nextIdx = upsertBlogCards(nextIdx, cards);
+      }
+    }
+
+    // (b) Reconcile aus clusters.js (Backfill bereits live veröffentlichter Artikel).
+    const { clusters, GLOBAL_PILLAR } = await import(CLUSTERS_PATH + `?t=${Date.now()}`);
+    const recOpts = {
+      readArticleHtml: (slug) => {
+        const p = join(slugDir(slug), "index.html");
+        return existsSync(p) ? readFileSync(p, "utf8") : null;
+      },
+      articleHtmlExists: (slug) => htmlExists(slug),
+    };
 
     if (DRY_RUN) {
-      log(`\n🏠  (dry-run) /blog: würde ${cards.length} Karten einfügen/aktualisieren (${summary})`);
+      // Dry-Run gegen die (potentiell schon mit gerenderten Karten ergänzte)
+      // In-Memory-Variante simulieren, damit die Zählung realistisch ist.
+      const simBase = upsertBlogCards(srcIdx, cards);
+      const rec = reconcileBlogCardsFromClusters(simBase, { clusters, GLOBAL_PILLAR }, recOpts);
+      log(`\n🏠  (dry-run) /blog reconcile: würde ${rec.added.length} fehlende Karten ergänzen (${rec.summary})`);
     } else {
-      const srcIdx = readFileSync(BLOG_INDEX_PATH, "utf8");
-      const nextIdx = upsertBlogCards(srcIdx, cards);
+      const rec = reconcileBlogCardsFromClusters(nextIdx, { clusters, GLOBAL_PILLAR }, recOpts);
+      nextIdx = rec.html;
+
       if (nextIdx !== srcIdx) {
         writeFileSync(BLOG_INDEX_PATH, nextIdx, "utf8");
-        log(`\n🏠  blog/index.html: ${cards.length} Karten eingefügt/aktualisiert (${summary})`);
+        const parts = [];
+        if (cards.length) parts.push(`${cards.length} gerenderte Karten (${renderedSummary})`);
+        if (rec.added.length) parts.push(`${rec.added.length} reconcile-Karten (${rec.summary})`);
+        log(`\n🏠  blog/index.html aktualisiert: ${parts.join("; ") || "—"}`);
       } else {
         log(`\n🏠  blog/index.html unverändert (idempotent)`);
       }
