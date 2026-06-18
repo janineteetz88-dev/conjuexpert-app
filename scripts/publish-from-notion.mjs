@@ -44,6 +44,12 @@ import {
   mergeSitemap,
   metasToClusters,
 } from "./lib/clusters-upsert.mjs";
+import {
+  upsertBlogCards,
+  buildCardFromArticle,
+  reconcileBlogCardsFromClusters,
+} from "./lib/blog-index.mjs";
+import { estimateReadTime, blocksToHtml } from "./notion-to-html.mjs";
 
 /* ─── Konstanten / Flags ─────────────────────────────────────────────────── */
 
@@ -62,6 +68,7 @@ const BASE_LIVE = "https://conjuexpert.app";
 
 const CLUSTERS_PATH = join(ROOT, "src/data/clusters.js");
 const SITEMAP_PATH = join(ROOT, "sitemap.xml");
+const BLOG_INDEX_PATH = join(ROOT, "blog/index.html");
 
 const KEY = process.env.NOTION_API_KEY;
 
@@ -348,6 +355,69 @@ async function main() {
       log(`\n🗺️   sitemap.xml: ${added} neue <url> ergänzt`);
     } else {
       log(`\n🗺️   sitemap.xml unverändert (alle Slugs bereits vorhanden)`);
+    }
+  }
+
+  // 9b) /blog-Startseite (blog/index.html):
+  //     (a) Karten der in DIESEM Lauf gerenderten Artikel einsortieren/aktualisieren,
+  //     (b) anschließend aus clusters.js REKONZILIEREN (Backfill: alle live-Artikel,
+  //         die noch KEINE Karte haben, werden ergänzt — bestehende bleiben unangetastet).
+  //     Reihenfolge so, dass am Ende EIN konsistenter blog/index.html geschrieben wird.
+  {
+    const srcIdx = readFileSync(BLOG_INDEX_PATH, "utf8");
+    let nextIdx = srcIdx;
+
+    // (a) Karten der gerade gerenderten Artikel.
+    const cards = deployed.map(({ article }) => {
+      // Lesezeit aus dem gerenderten Content (gleiche Heuristik wie der Artikel).
+      const contentHtml = blocksToHtml(article.contentBlocks || []);
+      const readMin = estimateReadTime(contentHtml);
+      return buildCardFromArticle({
+        meta: article.meta,
+        title: article.title,
+        readMin,
+      });
+    });
+    const byCat = (c) => cards.filter((k) => k.cat === c).map((k) => k.slug).join(", ") || "–";
+    const renderedSummary = `learn: ${byCat("learn")}; gram: ${byCat("gram")}; prod: ${byCat("prod")}`;
+
+    if (cards.length) {
+      if (DRY_RUN) {
+        log(`\n🏠  (dry-run) /blog: würde ${cards.length} Karten einfügen/aktualisieren (${renderedSummary})`);
+      } else {
+        nextIdx = upsertBlogCards(nextIdx, cards);
+      }
+    }
+
+    // (b) Reconcile aus clusters.js (Backfill bereits live veröffentlichter Artikel).
+    const { clusters, GLOBAL_PILLAR } = await import(CLUSTERS_PATH + `?t=${Date.now()}`);
+    const recOpts = {
+      readArticleHtml: (slug) => {
+        const p = join(slugDir(slug), "index.html");
+        return existsSync(p) ? readFileSync(p, "utf8") : null;
+      },
+      articleHtmlExists: (slug) => htmlExists(slug),
+    };
+
+    if (DRY_RUN) {
+      // Dry-Run gegen die (potentiell schon mit gerenderten Karten ergänzte)
+      // In-Memory-Variante simulieren, damit die Zählung realistisch ist.
+      const simBase = upsertBlogCards(srcIdx, cards);
+      const rec = reconcileBlogCardsFromClusters(simBase, { clusters, GLOBAL_PILLAR }, recOpts);
+      log(`\n🏠  (dry-run) /blog reconcile: würde ${rec.added.length} fehlende Karten ergänzen (${rec.summary})`);
+    } else {
+      const rec = reconcileBlogCardsFromClusters(nextIdx, { clusters, GLOBAL_PILLAR }, recOpts);
+      nextIdx = rec.html;
+
+      if (nextIdx !== srcIdx) {
+        writeFileSync(BLOG_INDEX_PATH, nextIdx, "utf8");
+        const parts = [];
+        if (cards.length) parts.push(`${cards.length} gerenderte Karten (${renderedSummary})`);
+        if (rec.added.length) parts.push(`${rec.added.length} reconcile-Karten (${rec.summary})`);
+        log(`\n🏠  blog/index.html aktualisiert: ${parts.join("; ") || "—"}`);
+      } else {
+        log(`\n🏠  blog/index.html unverändert (idempotent)`);
+      }
     }
   }
 
