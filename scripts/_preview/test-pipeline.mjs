@@ -25,6 +25,12 @@ import {
   metasToClusters,
 } from "../lib/clusters-upsert.mjs";
 import { sortArticles } from "../publish-from-notion.mjs";
+import {
+  upsertBlogCards,
+  catFromMeta,
+  thumbForCard,
+  shortenSummary,
+} from "../lib/blog-index.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -393,6 +399,120 @@ console.log("[7] Sortierung (Nummer ↑, Hub vor Spoke)");
   eq(sorted[1].meta.slug, "/blog/a", "gleiche Nummer: Hub vor Spoke");
   eq(sorted[2].meta.slug, "/blog/b", "gleiche Nummer: Spoke danach");
   eq(sorted[3].meta.slug, "/blog/last", "Nummer 3 zuletzt");
+}
+
+/* Test 8: upsertBlogCards — richtige Sektion, idempotent, additiv, de-only-EN-Fallback */
+console.log("[8] upsertBlogCards (Sektion + idempotent + additiv)");
+{
+  const indexPath = join(__dirname, "..", "..", "blog", "index.html");
+  const src = readFileSync(indexPath, "utf8");
+
+  const countPosts = (h) => (h.match(/<a class="post"/g) || []).length;
+  const before = countPosts(src);
+
+  const cards = [
+    {
+      slug: "/blog/aktiv-erinnern-lernmethode",
+      titleDe: "Aktiv erinnern: die Lernmethode, die wirklich hält",
+      summaryDe: "So nutzt du Active Recall beim Verben lernen.",
+      cat: "learn",
+      lang: "all",
+      langTag: "5 Sprachen",
+      colorVar: "--muted",
+      thumb: "learn-1.png",
+      readMin: 7,
+    },
+    {
+      slug: "/blog/futur-simple-franzoesisch",
+      titleDe: "Futur simple Französisch: Bildung & Ausnahmen",
+      summaryDe: "Endungen, unregelmäßige Stämme und ein Merktrick.",
+      cat: "gram",
+      lang: "fr",
+      langTag: "FR",
+      colorVar: "--fr",
+      thumb: "gram-es-2.png",
+      readMin: 6,
+    },
+    {
+      slug: "/blog/app-vergleich-2026",
+      titleDe: "Der große Sprachlern-App-Vergleich 2026",
+      summaryDe: "Welche App passt zu dir? Ein ehrlicher Überblick.",
+      cat: "prod",
+      lang: "all",
+      langTag: "5 Sprachen",
+      colorVar: "--muted",
+      thumb: "prod-1.png",
+      readMin: 8,
+    },
+  ];
+
+  const out1 = upsertBlogCards(src, cards);
+
+  // genau 3 neue .post-Karten
+  eq(countPosts(out1) - before, 3, "genau 3 neue .post-Karten");
+
+  // bestehende Karten weiterhin vorhanden
+  assert(out1.includes('href="/blog/subjuntivo-spanisch/"'), "bestehende Karte erhalten (subjuntivo)");
+  assert(out1.includes('href="/blog/unsere-geschichte/"'), "bestehende Karte erhalten (unsere-geschichte)");
+  assert(out1.includes('href="/blog/unregelmaessige-verben-spanisch/"'), "bestehende Karte erhalten (unregelmaessige)");
+
+  // hrefs der neuen Karten vorhanden
+  assert(out1.includes('href="/blog/aktiv-erinnern-lernmethode/"'), "learn-href vorhanden");
+  assert(out1.includes('href="/blog/futur-simple-franzoesisch/"'), "gram-href vorhanden");
+  assert(out1.includes('href="/blog/app-vergleich-2026/"'), "prod-href vorhanden");
+
+  // data-cat korrekt gesetzt
+  assert(/href="\/blog\/aktiv-erinnern-lernmethode\/" data-cat="learn"/.test(out1), "learn: data-cat=learn");
+  assert(/href="\/blog\/futur-simple-franzoesisch\/" data-cat="gram"/.test(out1), "gram: data-cat=gram");
+  assert(/href="\/blog\/app-vergleich-2026\/" data-cat="prod"/.test(out1), "prod: data-cat=prod");
+
+  // Karte landet in der RICHTIGEN Sektion:
+  // Sektion-Range per id finden und prüfen, dass der href darin liegt.
+  function sectionContains(html, id, href) {
+    const m = new RegExp(`<section\\b[^>]*\\bid="${id}"[^>]*>`).exec(html);
+    if (!m) return false;
+    let pos = m.index + m[0].length;
+    let depth = 1;
+    const re = /<(\/?)section\b[^>]*>/g;
+    re.lastIndex = pos;
+    let t, end = html.length;
+    while ((t = re.exec(html)) !== null) {
+      depth += t[1] === "/" ? -1 : 1;
+      if (depth === 0) { end = t.index; break; }
+    }
+    return html.slice(m.index, end).includes(href);
+  }
+  assert(sectionContains(out1, "lernen", '/blog/aktiv-erinnern-lernmethode/'), "learn-Karte in #lernen");
+  assert(sectionContains(out1, "grammatik", '/blog/futur-simple-franzoesisch/'), "gram-Karte in #grammatik");
+  assert(sectionContains(out1, "produkt", '/blog/app-vergleich-2026/'), "prod-Karte in #produkt");
+  // negativ: learn-Karte NICHT in #grammatik
+  assert(!sectionContains(out1, "grammatik", '/blog/aktiv-erinnern-lernmethode/'), "learn-Karte NICHT in #grammatik");
+
+  // de-only → EN-Fallback (deutscher Text in beiden data-l-Spans)
+  assert(
+    out1.includes('<span data-l="de">Futur simple Französisch: Bildung &amp; Ausnahmen</span><span data-l="en">Futur simple Französisch: Bildung &amp; Ausnahmen</span>'),
+    "de-only-EN-Fallback im h3"
+  );
+
+  // Idempotenz: zweimaliges Anwenden = identisch, keine Duplikate
+  const out2 = upsertBlogCards(out1, cards);
+  eq(out2, out1, "upsertBlogCards idempotent (zweiter Lauf identisch)");
+  eq(countPosts(out2), countPosts(out1), "keine Duplikate beim zweiten Lauf");
+
+  // Mapping-Helfer deterministisch
+  eq(catFromMeta({ cluster: "methodik / sprachen-lernen" }), "learn", "catFromMeta: methodik → learn");
+  eq(catFromMeta({ cluster: "lernmethode" }), "learn", "catFromMeta: lernmethode → learn");
+  eq(catFromMeta({ cluster: "spanisch-verben" }), "gram", "catFromMeta: verb-cluster → gram");
+  eq(catFromMeta({ cluster: "app-vergleich" }), "prod", "catFromMeta: app-vergleich → prod");
+
+  eq(thumbForCard("learn", "nl", "/blog/x"), "learn-nl.png", "thumb: learn+nl");
+  eq(thumbForCard("learn", "de", "/blog/x"), "learn-1.png", "thumb: learn default");
+  eq(thumbForCard("gram", "es", "/blog/x"), "gram-es-1.png", "thumb: gram+es");
+  eq(thumbForCard("prod", "es", "/blog/x"), "prod-es.png", "thumb: prod+es");
+  eq(thumbForCard("prod", null, "/blog/x"), "prod-1.png", "thumb: prod default");
+
+  assert(shortenSummary("a".repeat(200)).length <= 111, "shortenSummary kürzt auf ~110");
+  eq(shortenSummary("kurz"), "kurz", "shortenSummary lässt kurze Texte unangetastet");
 }
 
 /* ─── Ergebnis ───────────────────────────────────────────────────────────── */
