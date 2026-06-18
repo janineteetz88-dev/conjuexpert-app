@@ -1,0 +1,406 @@
+/**
+ * test-pipeline.mjs  —  LOKALE UNIT-TESTS (ohne Notion-API / ohne Key)
+ *
+ * Verifiziert die reinen Funktionen der Schritt-2-Pipeline anhand der Fixtures.
+ * Die Fixtures (Markdown) werden in Notion-ähnliche Block-Shapes übersetzt
+ * (inkl. toggle- UND ▸-Bullet-FAQ), um den Produktionspfad
+ * (blocksToMetaText → parseMetaBlock → extractFaqAndContent → normalizeFaq)
+ * realistisch durchzuspielen.
+ *
+ * Aufruf:  node scripts/_preview/test-pipeline.mjs
+ */
+
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { parseMetaBlock, validateMeta } from "../lib/meta-block.mjs";
+import { normalizeFaq } from "../lib/faq.mjs";
+import { blocksToMetaText, extractFaqAndContent } from "../lib/notion-adapt.mjs";
+import {
+  mergeClusterArrays,
+  renderClustersFile,
+  upsertClusters,
+  mergeSitemap,
+  metasToClusters,
+} from "../lib/clusters-upsert.mjs";
+import { sortArticles } from "../publish-from-notion.mjs";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+/* ─── Mini-Test-Framework ────────────────────────────────────────────────── */
+
+let passed = 0;
+let failed = 0;
+const failures = [];
+
+function assert(cond, msg) {
+  if (cond) {
+    passed++;
+  } else {
+    failed++;
+    failures.push(msg);
+    console.error(`  ✗ ${msg}`);
+  }
+}
+function eq(a, b, msg) {
+  assert(a === b, `${msg} (erwartet ${JSON.stringify(b)}, war ${JSON.stringify(a)})`);
+}
+
+/* ─── Markdown-Fixture → Notion-Block-Shapes ─────────────────────────────── */
+/*
+ * Deckt die in den Fixtures vorkommenden Konstrukte ab, inkl. beider FAQ-Formate:
+ *   - "**Meta…**"-Header (paragraph) + "- …"-Bullets (bulleted_list_item)
+ *   - ## / ### Headings, Absätze, <callout>, > quote, - bullet
+ *   - FAQ: <details><summary>**Q**</summary>A</details>  → toggle + _children
+ *   - FAQ: "- ▸ **Q**" + eingerückte Antwort            → bulleted_list_item + _children
+ *   - inline **bold**, *italic*, `code`, [text](url)
+ */
+
+function plain(t) {
+  return { plain_text: t, annotations: {}, href: null };
+}
+function annotated(t, ann) {
+  return { plain_text: t, annotations: ann, href: null };
+}
+
+function inlineToRichText(text) {
+  const out = [];
+  const re = /(`[^`]+`)|(\[[^\]]+\]\([^)]+\))|(\*\*[^*]+\*\*)|(\*[^*]+\*)/g;
+  let last = 0;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) out.push(plain(text.slice(last, m.index)));
+    const tok = m[0];
+    if (tok.startsWith("`")) out.push(annotated(tok.slice(1, -1), { code: true }));
+    else if (tok.startsWith("[")) {
+      const lm = tok.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+      out.push({ plain_text: lm[1], annotations: {}, href: lm[2] });
+    } else if (tok.startsWith("**")) out.push(annotated(tok.slice(2, -2), { bold: true }));
+    else out.push(annotated(tok.slice(1, -1), { italic: true }));
+    last = re.lastIndex;
+  }
+  if (last < text.length) out.push(plain(text.slice(last)));
+  return out.filter((t) => t.plain_text !== "");
+}
+
+function fixtureToBlocks(md) {
+  const text = md.replace(/<\/content>\s*$/i, "").trimEnd();
+  const lines = text.split(/\r?\n/);
+  const blocks = [];
+  let i = 0;
+  let paraBuf = [];
+
+  const flushPara = () => {
+    const t = paraBuf.join(" ").trim();
+    if (t) blocks.push({ type: "paragraph", paragraph: { rich_text: inlineToRichText(t) } });
+    paraBuf = [];
+  };
+
+  while (i < lines.length) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (trimmed === "") { flushPara(); i++; continue; }
+
+    // <details> … </details>  → toggle-Block mit _children (FAQ-Format 1)
+    if (/^<details[\s>]/i.test(trimmed)) {
+      flushPara();
+      // sammle bis </details>
+      const inner = [];
+      i++;
+      while (i < lines.length && !/<\/details>/i.test(lines[i])) { inner.push(lines[i]); i++; }
+      if (i < lines.length) i++; // </details>
+      const innerText = inner.join("\n");
+      const sumM = innerText.match(/<summary>([\s\S]*?)<\/summary>/i);
+      const qRaw = sumM ? sumM[1] : "";
+      const q = qRaw.replace(/^\*\*/, "").replace(/\*\*$/, "").trim();
+      const aRaw = innerText.replace(/<summary>[\s\S]*?<\/summary>/i, "").trim();
+      blocks.push({
+        type: "toggle",
+        toggle: { rich_text: inlineToRichText(q) },
+        _children: aRaw
+          ? [{ type: "paragraph", paragraph: { rich_text: inlineToRichText(aRaw.replace(/\n/g, " ")) } }]
+          : [],
+      });
+      continue;
+    }
+
+    // "- ▸ **Q**" + eingerückte Antwortzeile(n)  → bulleted_list_item + _children (FAQ-Format 2)
+    if (/^[-*]\s+▸/.test(trimmed)) {
+      flushPara();
+      const qLine = trimmed.replace(/^[-*]\s+/, ""); // "▸ **Q**"
+      // Folgezeilen, die eingerückt sind (mit Tab/Spaces) ODER keine neue Bullet sind = Antwort
+      i++;
+      const ansBuf = [];
+      while (i < lines.length) {
+        const l = lines[i];
+        if (l.trim() === "") break;
+        if (/^[-*]\s+▸/.test(l.trim())) break;
+        ansBuf.push(l.trim());
+        i++;
+      }
+      const rt = inlineToRichText(qLine); // enthält "▸ " + bold-Frage
+      blocks.push({
+        type: "bulleted_list_item",
+        bulleted_list_item: { rich_text: rt },
+        _children: ansBuf.length
+          ? [{ type: "paragraph", paragraph: { rich_text: inlineToRichText(ansBuf.join(" ")) } }]
+          : [],
+      });
+      continue;
+    }
+
+    if (/^###\s+/.test(trimmed)) {
+      flushPara();
+      blocks.push({ type: "heading_3", heading_3: { rich_text: inlineToRichText(trimmed.replace(/^###\s+/, "")) } });
+      i++; continue;
+    }
+    if (/^##\s+/.test(trimmed)) {
+      flushPara();
+      blocks.push({ type: "heading_2", heading_2: { rich_text: inlineToRichText(trimmed.replace(/^##\s+/, "")) } });
+      i++; continue;
+    }
+
+    if (/^<callout/i.test(trimmed)) {
+      flushPara();
+      const buf = [];
+      const startRest = trimmed.replace(/^<callout[^>]*>/i, "");
+      if (!/<\/callout>/i.test(trimmed)) {
+        if (startRest.trim()) buf.push(startRest.trim());
+        i++;
+        while (i < lines.length && !/<\/callout>/i.test(lines[i])) { buf.push(lines[i]); i++; }
+        if (i < lines.length) { const end = lines[i].replace(/<\/callout>.*$/i, ""); if (end.trim()) buf.push(end); i++; }
+      } else { buf.push(startRest.replace(/<\/callout>.*$/i, "")); i++; }
+      blocks.push({ type: "callout", callout: { rich_text: inlineToRichText(buf.join("\n").trim().replace(/\n/g, " ")) }, _children: [] });
+      continue;
+    }
+
+    if (/^>\s?/.test(trimmed)) {
+      flushPara();
+      const buf = [];
+      while (i < lines.length && /^>\s?/.test(lines[i].trim())) { buf.push(lines[i].trim().replace(/^>\s?/, "")); i++; }
+      blocks.push({ type: "quote", quote: { rich_text: inlineToRichText(buf.join(" ").trim()) } });
+      continue;
+    }
+
+    if (/^[-*]\s+/.test(trimmed)) {
+      flushPara();
+      while (i < lines.length && /^[-*]\s+/.test(lines[i].trim()) && !/^[-*]\s+▸/.test(lines[i].trim())) {
+        blocks.push({ type: "bulleted_list_item", bulleted_list_item: { rich_text: inlineToRichText(lines[i].trim().replace(/^[-*]\s+/, "")) } });
+        i++;
+      }
+      continue;
+    }
+
+    paraBuf.push(trimmed);
+    i++;
+  }
+  flushPara();
+  return blocks;
+}
+
+/* ─── Tests ──────────────────────────────────────────────────────────────── */
+
+const hubMd = readFileSync(join(__dirname, "hub-sprachen-lernen.md"), "utf8");
+const spokeMd = readFileSync(join(__dirname, "spoke-lernmythen.md"), "utf8");
+
+const hubBlocks = fixtureToBlocks(hubMd);
+const spokeBlocks = fixtureToBlocks(spokeMd);
+
+/* Test 1: parseMetaBlock + validateMeta über die Block-Adapter (Hub & Spoke) */
+console.log("\n[1] parseMetaBlock + validateMeta (über blocksToMetaText)");
+{
+  const hubMeta = parseMetaBlock(blocksToMetaText(hubBlocks));
+  const hubV = validateMeta(hubMeta);
+  eq(hubMeta.slug, "/blog/sprachen-lernen", "Hub: slug");
+  eq(hubMeta.typ, "hub", "Hub: typ");
+  eq(hubMeta.pillarUp, "/blog/verben-konjugieren-lernen", "Hub: pillarUp");
+  assert(hubMeta.cluster && hubMeta.cluster.length > 0, "Hub: cluster gesetzt");
+  assert(hubMeta.metaDescription && hubMeta.metaDescription.length > 20, "Hub: metaDescription gesetzt");
+  assert(hubMeta.downOrSiblings.length >= 5, `Hub: Spokes-Liste (war ${hubMeta.downOrSiblings.length})`);
+  assert(hubV.ok, `Hub: validateMeta ok (${hubV.errors.join("; ")})`);
+
+  const spokeMeta = parseMetaBlock(blocksToMetaText(spokeBlocks));
+  const spokeV = validateMeta(spokeMeta);
+  eq(spokeMeta.slug, "/blog/lernmythen-sprachenlernen", "Spoke: slug");
+  eq(spokeMeta.typ, "spoke", "Spoke: typ");
+  eq(spokeMeta.pillarUp, "/blog/sprachen-lernen", "Spoke: pillarUp");
+  assert(spokeV.ok, `Spoke: validateMeta ok (${spokeV.errors.join("; ")})`);
+}
+
+/* Test 2: kaputter Meta-Block → Validierungsfehler */
+console.log("[2] kaputter Meta-Block → validateMeta-Fehler");
+{
+  const broken = `**Meta (für Blog-Engine & Freigabe)**
+- **Typ:** Spoke · **Säule:** Anwendung
+- **Keyword:** Irgendwas`;
+  const m = parseMetaBlock(broken);
+  const v = validateMeta(m);
+  assert(!v.ok, "kaputter Block: validateMeta NICHT ok");
+  assert(v.errors.some((e) => /Slug/i.test(e)), "Fehler nennt Slug");
+  assert(v.errors.some((e) => /Cluster/i.test(e)), "Fehler nennt Cluster");
+  assert(v.errors.some((e) => /Description/i.test(e)), "Fehler nennt Meta-Description");
+}
+
+/* Test 3: normalizeFaq auf BEIDEN Formaten → gleiche Struktur */
+console.log("[3] normalizeFaq: toggle (Hub) & ▸-Bullet (Spoke)");
+{
+  const { faqBlocks: hubFaq } = extractFaqAndContent(hubBlocks);
+  const { faqBlocks: spokeFaq } = extractFaqAndContent(spokeBlocks);
+
+  assert(hubFaq.every((b) => b.type === "toggle"), "Hub-FAQ sind toggle-Blöcke");
+  assert(spokeFaq.every((b) => b.type === "bulleted_list_item"), "Spoke-FAQ sind bulleted_list_item-Blöcke");
+
+  const hubItems = normalizeFaq(hubFaq);
+  const spokeItems = normalizeFaq(spokeFaq);
+
+  eq(hubItems.length, 4, "Hub: 4 FAQ-Items");
+  eq(spokeItems.length, 3, "Spoke: 3 FAQ-Items");
+
+  for (const set of [["Hub", hubItems], ["Spoke", spokeItems]]) {
+    const [label, items] = set;
+    for (const it of items) {
+      assert(typeof it.q === "string" && it.q.length > 3, `${label}: q vorhanden`);
+      assert(!/^▸/.test(it.q), `${label}: q ohne ▸-Marker ("${it.q.slice(0, 20)}")`);
+      assert(!/^\*\*/.test(it.q), `${label}: q ohne **-Marker`);
+      assert(typeof it.a_html === "string" && it.a_html.length > 10, `${label}: a_html vorhanden`);
+      assert(typeof it.a_text === "string" && it.a_text.length > 10, `${label}: a_text vorhanden`);
+    }
+  }
+  // gleiche Schlüssel-Struktur
+  const keys = (o) => Object.keys(o).sort().join(",");
+  eq(keys(hubItems[0]), keys(spokeItems[0]), "gleiche Item-Struktur (Keys)");
+}
+
+/* Test 4: extractFaqAndContent entfernt Meta-Block + FAQ-Heading aus Content */
+console.log("[4] extractFaqAndContent: Meta + FAQ aus Content entfernt");
+{
+  const { contentBlocks, faqBlocks } = extractFaqAndContent(hubBlocks);
+  // kein Meta-Header mehr im Content
+  const hasMeta = contentBlocks.some((b) =>
+    b.type === "paragraph" && (b.paragraph.rich_text || []).map((t) => t.plain_text).join("").includes("Meta (für Blog-Engine")
+  );
+  assert(!hasMeta, "Content enthält keinen Meta-Block mehr");
+  // keine FAQ-Heading mehr
+  const hasFaqH = contentBlocks.some((b) =>
+    (b.type === "heading_2" || b.type === "heading_3") &&
+    /FAQ/i.test((b.heading_2?.rich_text || b.heading_3?.rich_text || []).map((t) => t.plain_text).join(""))
+  );
+  assert(!hasFaqH, "Content enthält keine FAQ-Heading mehr");
+  // keine toggle im Content
+  assert(!contentBlocks.some((b) => b.type === "toggle"), "Content enthält keine toggle (FAQ) mehr");
+  assert(faqBlocks.length === 4, "4 FAQ-Blöcke abgetrennt");
+  // erster Content-Block sollte der erste Callout/Absatz sein
+  assert(contentBlocks.length > 5, "Content hat noch substanzielle Blöcke");
+}
+
+/* Test 5: clusters.js-Upsert — Verb-Cluster bleiben, Methodik kommt dazu, idempotent */
+console.log("[5] clusters.js Upsert (erhalten + ergänzen + idempotent)");
+{
+  const clustersPath = join(__dirname, "..", "..", "src", "data", "clusters.js");
+  const src = readFileSync(clustersPath, "utf8");
+  const { clusters: existing, GLOBAL_PILLAR } = await import(clustersPath);
+
+  const hubMeta = parseMetaBlock(blocksToMetaText(hubBlocks));
+  const spokeMeta = parseMetaBlock(blocksToMetaText(spokeBlocks));
+  const derived = metasToClusters([
+    { meta: hubMeta, title: "Sprachen lernen", live: true },
+    { meta: spokeMeta, title: "Lernmythen", live: true },
+  ]);
+  assert(derived.length >= 1, "mindestens ein abgeleiteter Cluster");
+
+  const out1 = upsertClusters(src, existing, derived);
+
+  // Verb-Cluster-IDs müssen erhalten bleiben
+  for (const id of ["spanisch-verben", "deutsch-verben", "franzoesisch-verben", "englisch-verben", "niederlaendisch-verben"]) {
+    assert(out1.includes(`id: "${id}"`), `Verb-Cluster erhalten: ${id}`);
+  }
+  // bestehende Verb-Spokes erhalten
+  assert(out1.includes("/blog/subjuntivo-spanisch"), "bestehender Spoke erhalten (subjuntivo)");
+  assert(out1.includes("/blog/passe-compose-imparfait"), "bestehender Spoke erhalten (passe-compose)");
+  // GLOBAL_PILLAR unangetastet
+  assert(out1.includes("export const GLOBAL_PILLAR"), "GLOBAL_PILLAR erhalten");
+  assert(out1.includes("/blog/verben-konjugieren-lernen"), "GLOBAL_PILLAR-Slug erhalten");
+  // Methodik-Cluster + Hub-Slug ergänzt
+  assert(out1.includes("/blog/sprachen-lernen"), "Hub-Slug ergänzt");
+  assert(out1.includes("/blog/lernmythen-sprachenlernen"), "Spoke-Slug ergänzt");
+
+  // Das Ergebnis muss valides JS sein → re-importierbar via data URL
+  const mod1 = await import("data:text/javascript;base64," + Buffer.from(out1).toString("base64"));
+  assert(Array.isArray(mod1.clusters), "Ergebnis ist valides JS-Modul (clusters Array)");
+  assert(mod1.clusters.length === existing.length + derived.length, `Cluster-Anzahl = alt+neu (${mod1.clusters.length})`);
+
+  // Idempotenz: nochmal anwenden (auf das schon-gemergte Ergebnis) ändert nichts.
+  const out2 = upsertClusters(out1, mod1.clusters, derived);
+  eq(out2, out1, "Upsert idempotent (zweiter Lauf identisch)");
+
+  // Nicht-destruktiv bei ID-Kollision: bestehende Verb-Spokes bleiben erhalten,
+  // wenn ein abgeleiteter Cluster dieselbe id wie ein Verb-Cluster trägt.
+  const collide = [{ id: "spanisch-verben", lang: "es", label: "Spanisch", color: "#ff9f0a", hub: null, spokes: [{ slug: "/blog/neuer-es-spoke", title: "Neu", live: true }] }];
+  const merged = mergeClusterArrays(existing, collide);
+  const sp = merged.find((c) => c.id === "spanisch-verben");
+  eq(merged.filter((c) => c.id === "spanisch-verben").length, 1, "keine doppelte spanisch-verben-id");
+  assert(sp.spokes.some((s) => s.slug === "/blog/subjuntivo-spanisch"), "bestehender Verb-Spoke erhalten bei Kollision");
+  assert(sp.spokes.some((s) => s.slug === "/blog/neuer-es-spoke"), "neuer Spoke ergänzt bei Kollision");
+  eq(sp.hub?.slug, "/blog/spanisch-verben-konjugieren", "Verb-Hub bleibt bei Kollision");
+  eq(sp.verbPages, "/konjugation/es/", "verbPages bleibt bei Kollision");
+}
+
+/* Test 6: sitemap-Merge — keine Duplikate, valides XML */
+console.log("[6] sitemap-Merge (dedupe + valides XML)");
+{
+  const sitemapPath = join(__dirname, "..", "..", "sitemap.xml");
+  const src = readFileSync(sitemapPath, "utf8");
+  const slugs = ["/blog/sprachen-lernen", "/blog/lernmythen-sprachenlernen", "/blog/unregelmaessige-verben-spanisch"];
+  const TODAY = "2026-06-18";
+
+  const out1 = mergeSitemap(src, slugs, TODAY);
+  // neue Slugs vorhanden
+  assert(out1.includes("https://conjuexpert.app/blog/sprachen-lernen/"), "neue URL sprachen-lernen");
+  assert(out1.includes("https://conjuexpert.app/blog/lernmythen-sprachenlernen/"), "neue URL lernmythen");
+  // bereits vorhandene Slug NICHT dupliziert
+  const countUnreg = (out1.match(/blog\/unregelmaessige-verben-spanisch\//g) || []).length;
+  // (kommt im <loc> einmal vor — keine zweite Ergänzung)
+  const locUnreg = (out1.match(/<loc>https:\/\/conjuexpert\.app\/blog\/unregelmaessige-verben-spanisch\/<\/loc>/g) || []).length;
+  eq(locUnreg, 1, "vorhandene URL nicht dupliziert");
+  // genau 2 neue <url> ergänzt
+  const before = (src.match(/<loc>/g) || []).length;
+  const after = (out1.match(/<loc>/g) || []).length;
+  eq(after - before, 2, "genau 2 neue <loc>");
+  // valides XML: schließt mit </urlset>, lastmod gesetzt
+  assert(out1.trimEnd().endsWith("</urlset>"), "XML endet mit </urlset>");
+  assert(out1.includes(`<lastmod>${TODAY}</lastmod>`), "lastmod=heute gesetzt");
+  // grobe Wohlgeformtheit: gleiche Anzahl <url> wie </url>
+  eq((out1.match(/<url>/g) || []).length, (out1.match(/<\/url>/g) || []).length, "<url>/</url> balanciert");
+
+  // Idempotenz
+  const out2 = mergeSitemap(out1, slugs, TODAY);
+  eq(out2, out1, "sitemap-Merge idempotent");
+}
+
+/* Test 7: Sortierung — Nummer aufsteigend, Hub vor Spoke im selben Cluster */
+console.log("[7] Sortierung (Nummer ↑, Hub vor Spoke)");
+{
+  const items = [
+    { nummer: 2, meta: { typ: "spoke", cluster: "methodik", slug: "/blog/b" } },
+    { nummer: 2, meta: { typ: "hub", cluster: "methodik", slug: "/blog/a" } },
+    { nummer: 1, meta: { typ: "spoke", cluster: "x", slug: "/blog/first" } },
+    { nummer: 3, meta: { typ: "hub", cluster: "y", slug: "/blog/last" } },
+  ];
+  const sorted = sortArticles(items);
+  eq(sorted[0].meta.slug, "/blog/first", "Nummer 1 zuerst");
+  eq(sorted[1].meta.slug, "/blog/a", "gleiche Nummer: Hub vor Spoke");
+  eq(sorted[2].meta.slug, "/blog/b", "gleiche Nummer: Spoke danach");
+  eq(sorted[3].meta.slug, "/blog/last", "Nummer 3 zuletzt");
+}
+
+/* ─── Ergebnis ───────────────────────────────────────────────────────────── */
+
+console.log(`\n${failed === 0 ? "✅" : "❌"}  Tests: ${passed} grün, ${failed} rot`);
+if (failed > 0) {
+  console.log("\nFehlgeschlagen:");
+  for (const f of failures) console.log("  - " + f);
+  process.exit(1);
+}
+console.log();

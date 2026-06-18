@@ -6,6 +6,15 @@ on:
   schedule:
     - cron: "0 * * * *"
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry-run (keine File-Writes, kein Writeback)"
+        type: boolean
+        default: true
+      writeback:
+        description: "Notion-Writeback (Status → Veröffentlicht). Nur bei explizitem true."
+        type: boolean
+        default: false
 
 jobs:
   sync:
@@ -21,18 +30,27 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Freigegeben → live schalten + Notion aktualisieren
+      # Sicherheitsleitplanke: Writeback nur, wenn der Lauf MANUELL mit
+      # writeback=true gestartet wurde. Schedule/Push setzen WRITEBACK NIE.
+      - name: Freigegeben → rendern + (optional) live + Notion aktualisieren
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-        run: node scripts/publish-from-notion.mjs
+          WRITEBACK: ${{ (github.event_name == 'workflow_dispatch' && inputs.writeback) && '1' || '0' }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+            node scripts/publish-from-notion.mjs --dry-run
+          else
+            node scripts/publish-from-notion.mjs
+          fi
 
       - name: Änderungen committen und pushen
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run != true }}
         run: |
           git config user.email "github-actions@github.com"
           git config user.name "GitHub Actions"
-          git add src/data/clusters.js
-          git diff --staged --quiet || git commit -m "auto: Freigegeben-Artikel live geschaltet"
-          git diff HEAD~1..HEAD --name-only 2>/dev/null | grep clusters.js && git push || true
+          git add src/data/clusters.js blog sitemap.xml
+          git diff --staged --quiet || git commit -m "auto: Blog-Pipeline — gerenderte Artikel, clusters.js & sitemap.xml"
+          git diff HEAD~1..HEAD --name-only 2>/dev/null | grep -E 'clusters\.js|^blog/|sitemap\.xml' && git push || true
 
       - name: Notion-Tracker abgleichen
         env:
