@@ -342,3 +342,165 @@ export function shortenSummary(text, max = 110) {
   const base = lastSpace > 40 ? cut.slice(0, lastSpace) : cut;
   return base.replace(/[\s.,;:–—-]+$/, "") + "…";
 }
+
+/* ─── Reconcile aus clusters.js (Backfill + ongoing, selbstheilend) ───────── */
+
+// "/blog/foo/" → "foo" (nackter Slug-Name, ohne /blog/ und Slashes).
+function bareSlug(slug) {
+  return String(slug || "")
+    .trim()
+    .replace(/^\/+/, "")
+    .replace(/\/+$/, "")
+    .replace(/^blog\//, "");
+}
+
+// Prüft, ob die Startseite bereits irgendwo eine Karte mit href="/blog/<slug>/" hat.
+export function hasCardForHref(indexHtml, slug) {
+  const href = slugToHref(slug);
+  const re = new RegExp(
+    `<a\\b[^>]*\\bclass="post"[^>]*\\bhref="${escapeRegExp(href)}"`,
+    "i"
+  );
+  return re.test(String(indexHtml || ""));
+}
+
+/**
+ * Kategorie aus einem clusters.js-Cluster + Slug ableiten (analog catFromMeta).
+ *
+ * Regeln (bestätigt):
+ *   - Methodik / Lernmethode  → 'learn'
+ *   - App-/Produkt-Signal     → 'prod'
+ *   - sonst (Verb-Cluster)    → 'gram'
+ */
+export function catFromCluster(cluster, slug) {
+  const id = String(cluster?.id || "").toLowerCase();
+  const s = String(slug || "").toLowerCase();
+  const hay = `${id} ${s}`;
+
+  if (/methodik|lernmethode/.test(hay)) return "learn";
+
+  const prodSignal =
+    /app-vergleich|app vergleich|sprachlern-app|app-news|produkt/.test(hay);
+  if (prodSignal) return "prod";
+
+  return "gram";
+}
+
+// <meta name="description" content="..."> aus einem Artikel-HTML extrahieren.
+export function extractMetaDescription(html) {
+  if (!html) return "";
+  const m = String(html).match(
+    /<meta\s+name="description"\s+content="([^"]*)"/i
+  );
+  if (m) return m[1];
+  // robust gegen umgedrehte Attribut-Reihenfolge
+  const m2 = String(html).match(
+    /<meta\s+content="([^"]*)"\s+name="description"/i
+  );
+  return m2 ? m2[1] : "";
+}
+
+// Knapper Fallback-Text aus dem Titel, wenn keine Meta-Description vorhanden ist.
+function fallbackSummaryFromTitle(title) {
+  const t = String(title || "").trim();
+  if (!t) return "";
+  return shortenSummary(`${t} — jetzt im Blog lesen.`);
+}
+
+/**
+ * Reconciliation der /blog-Startseiten-Karten aus clusters.js.
+ *
+ *   reconcileBlogCardsFromClusters(indexHtml, { clusters, GLOBAL_PILLAR }, opts)
+ *     → { html, added: [{ slug, cat }], summary }
+ *
+ * Iteriert über ALLE live-Artikel (cluster.hub falls live, cluster.spokes[]
+ * mit live:true) plus GLOBAL_PILLAR (falls dessen HTML existiert). Für jeden
+ * Artikel: existiert auf der Startseite noch KEINE Karte mit href="/blog/<slug>/",
+ * wird eine ergänzt. Bereits vorhandene Karten (kuratiert ODER generiert) bleiben
+ * UNANGETASTET — nicht überschrieben, nicht dupliziert. Idempotent & selbstheilend.
+ *
+ * opts (Dependency Injection — der Aufrufer liefert das File-IO):
+ *   readArticleHtml(slug) → string|null   (liest blog/<slug>/index.html; null falls fehlt)
+ *   articleHtmlExists(slug) → boolean      (ob blog/<slug>/index.html existiert)
+ *
+ * Werden sie nicht übergeben, arbeitet die Funktion rein in-memory:
+ *   - readArticleHtml → null  ⇒ Beschreibung kommt aus dem Titel-Fallback
+ *   - articleHtmlExists → false ⇒ GLOBAL_PILLAR wird übersprungen
+ * So bleibt das Modul ohne fs testbar; den echten Dateizugriff injiziert
+ * publish-from-notion.mjs.
+ */
+export function reconcileBlogCardsFromClusters(
+  indexHtml,
+  { clusters, GLOBAL_PILLAR } = {},
+  opts = {}
+) {
+  let html = String(indexHtml || "");
+
+  const readArticleHtml =
+    typeof opts.readArticleHtml === "function" ? opts.readArticleHtml : () => null;
+  const articleHtmlExists =
+    typeof opts.articleHtmlExists === "function"
+      ? opts.articleHtmlExists
+      : () => false;
+
+  // 1) Liste aller live-Artikel sammeln (mit Cluster-Kontext).
+  const live = [];
+  for (const cluster of clusters || []) {
+    if (cluster?.hub && cluster.hub.live && cluster.hub.slug) {
+      live.push({ slug: cluster.hub.slug, title: cluster.hub.title, cluster });
+    }
+    for (const spoke of cluster?.spokes || []) {
+      if (spoke && spoke.live && spoke.slug) {
+        live.push({ slug: spoke.slug, title: spoke.title, cluster });
+      }
+    }
+  }
+  // GLOBAL_PILLAR nur, wenn dessen HTML existiert.
+  if (GLOBAL_PILLAR && GLOBAL_PILLAR.slug && articleHtmlExists(GLOBAL_PILLAR.slug)) {
+    live.push({ slug: GLOBAL_PILLAR.slug, title: GLOBAL_PILLAR.title, cluster: null });
+  }
+
+  // 2) Fehlende Karten bestimmen + bauen.
+  const cardsToAdd = [];
+  const added = [];
+  for (const item of live) {
+    if (hasCardForHref(html, item.slug)) continue; // existiert → nie anfassen
+
+    const cat = catFromCluster(item.cluster, item.slug);
+    // Sprache: Methodik-Cluster ohne klare Sprache → neutral/"all".
+    const langCode = cat === "learn" ? null : (item.cluster?.lang || null);
+
+    // Beschreibung aus dem Artikel-HTML; sonst Fallback aus dem Titel.
+    let summaryDe = "";
+    const articleHtml = readArticleHtml(item.slug);
+    const desc = extractMetaDescription(articleHtml);
+    summaryDe = desc
+      ? shortenSummary(desc)
+      : fallbackSummaryFromTitle(item.title);
+
+    cardsToAdd.push({
+      slug: item.slug,
+      titleDe: item.title || bareSlug(item.slug),
+      summaryDe,
+      cat,
+      lang: dataLangForLang(langCode),
+      langTag: langTagForLang(langCode),
+      colorVar: colorVarForLang(langCode),
+      thumb: thumbForCard(cat, langCode, item.slug),
+      readMin: 5,
+    });
+    added.push({ slug: item.slug, cat });
+  }
+
+  // 3) Einfügen über die bestehende, idempotente upsert-Logik.
+  if (cardsToAdd.length) {
+    html = upsertBlogCards(html, cardsToAdd);
+  }
+
+  const byCat = (c) =>
+    added.filter((a) => a.cat === c).map((a) => bareSlug(a.slug)).join(", ") ||
+    "–";
+  const summary = `learn: ${byCat("learn")}; gram: ${byCat("gram")}; prod: ${byCat("prod")}`;
+
+  return { html, added, summary };
+}
