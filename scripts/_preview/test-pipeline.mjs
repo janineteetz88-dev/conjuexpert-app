@@ -24,7 +24,7 @@ import {
   mergeSitemap,
   metasToClusters,
 } from "../lib/clusters-upsert.mjs";
-import { sortArticles } from "../publish-from-notion.mjs";
+import { sortArticles, publishedBlogToday } from "../publish-from-notion.mjs";
 import {
   upsertBlogCards,
   catFromMeta,
@@ -535,47 +535,47 @@ console.log("[9] reconcileBlogCardsFromClusters (Backfill + erhalten + idempoten
   // Synthetisches clusters-Objekt (Methodik-Cluster gibt es auf diesem Branch
   // in clusters.js noch nicht). Enthält bewusst auch einen bereits live
   // kuratierten Spoke (subjuntivo-spanisch), der NICHT angefasst werden darf.
+  // Synthetische test-*-Slugs, die garantiert NICHT in der echten blog/index.html
+  // vorkommen (sonst koppeln die Asserts an den Live-Stand). subjuntivo-spanisch
+  // ist bewusst ein bereits kuratierter Slug (Probe: darf nicht erneut ergänzt werden).
   const clusters = [
     {
       id: "methodik-sprachen-lernen",
       lang: null,
       label: "Methodik",
-      hub: { slug: "/blog/sprachen-lernen", title: "Sprachen lernen", live: true },
+      hub: { slug: "/blog/test-recon-hub", title: "Test Hub", live: true },
       spokes: [
-        { slug: "/blog/lernmythen-sprachenlernen", title: "Lernmythen", live: true },
-        { slug: "/blog/aktiv-erinnern-lernmethode", title: "Aktiv erinnern", live: true },
-        { slug: "/blog/geplanter-lern-spoke", title: "Geplant", live: false }, // NICHT live → keine Karte
+        { slug: "/blog/test-recon-spoke-a", title: "Lernmythen", live: true },
+        { slug: "/blog/test-recon-spoke-b", title: "Aktiv erinnern", live: true },
+        { slug: "/blog/test-recon-geplant", title: "Geplant", live: false }, // NICHT live → keine Karte
       ],
     },
     {
       id: "spanisch-verben",
       lang: "es",
       label: "Spanisch",
-      hub: { slug: "/blog/spanisch-verben-konjugieren", title: "Spanische Verben", live: false }, // hub nicht live
+      hub: { slug: "/blog/test-recon-verb-hub", title: "Spanische Verben", live: false }, // hub nicht live
       spokes: [
         { slug: "/blog/subjuntivo-spanisch", title: "Subjuntivo Spanisch", live: true }, // existiert bereits als Karte!
-        { slug: "/blog/preterito-spanisch", title: "Pretérito Spanisch", live: true },   // neu → gram
+        { slug: "/blog/test-recon-verb", title: "Pretérito Spanisch", live: true },       // neu → gram
       ],
     },
   ];
-  const GLOBAL_PILLAR = { slug: "/blog/verben-konjugieren-lernen", title: "Verben konjugieren" };
+  const GLOBAL_PILLAR = { slug: "/blog/test-recon-pillar", title: "Verben konjugieren" };
 
-  // Stub-IO: Beschreibung kommt aus einem Stub-HTML; GLOBAL_PILLAR-HTML "existiert" hier nicht
-  // (→ wird übersprungen, wie es die Spec verlangt, wenn dessen HTML fehlt).
   const stubHtml = (slug) =>
     `<meta name="description" content="Stub-Beschreibung für ${slug}.">`;
   const recOpts = {
     readArticleHtml: (slug) => stubHtml(slug),
-    // 404-Gate: alle synthetischen Artikel "existieren" als HTML, nur GLOBAL_PILLAR nicht.
-    articleHtmlExists: (slug) => slug !== "/blog/verben-konjugieren-lernen",
+    // 404-Gate: alle synthetischen Artikel "existieren" als HTML, nur der Pillar nicht.
+    articleHtmlExists: (slug) => slug !== "/blog/test-recon-pillar",
   };
 
   const r1 = reconcileBlogCardsFromClusters(src, { clusters, GLOBAL_PILLAR }, recOpts);
   const out1 = r1.html;
 
-  // Erwartet ergänzt: hub sprachen-lernen (learn), lernmythen (learn), aktiv-erinnern (learn),
-  // preterito-spanisch (gram). NICHT: subjuntivo (existiert), geplanter (nicht live),
-  // spanisch-verben-konjugieren (hub nicht live), GLOBAL_PILLAR (HTML fehlt).
+  // Erwartet ergänzt: hub (learn), spoke-a (learn), spoke-b (learn), test-recon-verb (gram).
+  // NICHT: subjuntivo (existiert), geplant (nicht live), verb-hub (nicht live), pillar (HTML fehlt).
   eq(r1.added.length, 4, "genau 4 fehlende Karten ergänzt");
   eq(countPosts(out1) - before, 4, "genau 4 neue .post-Karten");
 
@@ -596,15 +596,15 @@ console.log("[9] reconcileBlogCardsFromClusters (Backfill + erhalten + idempoten
   }
 
   // Methodik-Cluster → learn-Karten in #lernen
-  assert(sectionContains(out1, "lernen", "/blog/sprachen-lernen/"), "hub → learn in #lernen");
-  assert(sectionContains(out1, "lernen", "/blog/lernmythen-sprachenlernen/"), "spoke → learn in #lernen");
-  assert(sectionContains(out1, "lernen", "/blog/aktiv-erinnern-lernmethode/"), "spoke → learn in #lernen");
-  assert(/href="\/blog\/sprachen-lernen\/" data-cat="learn"/.test(out1), "hub: data-cat=learn");
+  assert(sectionContains(out1, "lernen", "/blog/test-recon-hub/"), "hub → learn in #lernen");
+  assert(sectionContains(out1, "lernen", "/blog/test-recon-spoke-a/"), "spoke → learn in #lernen");
+  assert(sectionContains(out1, "lernen", "/blog/test-recon-spoke-b/"), "spoke → learn in #lernen");
+  assert(/href="\/blog\/test-recon-hub\/" data-cat="learn"/.test(out1), "hub: data-cat=learn");
 
   // Verb-Cluster (live spoke) → gram in #grammatik
-  assert(sectionContains(out1, "grammatik", "/blog/preterito-spanisch/"), "verb-spoke → gram in #grammatik");
-  assert(/href="\/blog\/preterito-spanisch\/" data-cat="gram"/.test(out1), "verb-spoke: data-cat=gram");
-  assert(!sectionContains(out1, "lernen", "/blog/preterito-spanisch/"), "verb-spoke NICHT in #lernen");
+  assert(sectionContains(out1, "grammatik", "/blog/test-recon-verb/"), "verb-spoke → gram in #grammatik");
+  assert(/href="\/blog\/test-recon-verb\/" data-cat="gram"/.test(out1), "verb-spoke: data-cat=gram");
+  assert(!sectionContains(out1, "lernen", "/blog/test-recon-verb/"), "verb-spoke NICHT in #lernen");
 
   // bereits existierende Karten unangetastet & NICHT dupliziert
   assert(hasCardForHref(src, "/blog/subjuntivo-spanisch"), "Vorbedingung: subjuntivo-Karte existiert bereits");
@@ -616,12 +616,12 @@ console.log("[9] reconcileBlogCardsFromClusters (Backfill + erhalten + idempoten
   assert(out1.includes('href="/blog/unsere-geschichte/"'), "kuratierte Karte erhalten (unsere-geschichte)");
 
   // nicht-live + nicht-existierender Pillar NICHT ergänzt
-  assert(!out1.includes('href="/blog/geplanter-lern-spoke/"'), "nicht-live Spoke nicht ergänzt");
-  assert(!out1.includes('href="/blog/spanisch-verben-konjugieren/"'), "nicht-live Hub nicht ergänzt");
-  assert(!hasCardForHref(out1, "/blog/verben-konjugieren-lernen"), "GLOBAL_PILLAR ohne HTML nicht ergänzt");
+  assert(!out1.includes('href="/blog/test-recon-geplant/"'), "nicht-live Spoke nicht ergänzt");
+  assert(!out1.includes('href="/blog/test-recon-verb-hub/"'), "nicht-live Hub nicht ergänzt");
+  assert(!hasCardForHref(out1, "/blog/test-recon-pillar"), "GLOBAL_PILLAR ohne HTML nicht ergänzt");
 
   // Beschreibung aus Stub-Meta übernommen (gekürzt)
-  assert(out1.includes("Stub-Beschreibung für /blog/sprachen-lernen"), "summary aus Meta-Description (Stub)");
+  assert(out1.includes("Stub-Beschreibung für /blog/test-recon-hub"), "summary aus Meta-Description (Stub)");
 
   // summary-Log-Format
   assert(/learn: .+; gram: .+; prod: .+/.test(r1.summary), "summary-Format korrekt");
@@ -631,7 +631,7 @@ console.log("[9] reconcileBlogCardsFromClusters (Backfill + erhalten + idempoten
     readArticleHtml: stubHtml,
     articleHtmlExists: () => true,
   });
-  assert(hasCardForHref(r1b.html, "/blog/verben-konjugieren-lernen"), "GLOBAL_PILLAR ergänzt wenn HTML existiert");
+  assert(hasCardForHref(r1b.html, "/blog/test-recon-pillar"), "GLOBAL_PILLAR ergänzt wenn HTML existiert");
 
   // Idempotenz: zweimaliges Anwenden = bit-identisch
   const r2 = reconcileBlogCardsFromClusters(out1, { clusters, GLOBAL_PILLAR }, recOpts);
@@ -642,7 +642,7 @@ console.log("[9] reconcileBlogCardsFromClusters (Backfill + erhalten + idempoten
   // Fallback-Beschreibung aus Titel, wenn kein HTML/Meta
   const rFallback = reconcileBlogCardsFromClusters(src, { clusters, GLOBAL_PILLAR }, {
     readArticleHtml: () => null, // kein HTML-Inhalt → Titel-Fallback in der Beschreibung
-    articleHtmlExists: (slug) => slug !== "/blog/verben-konjugieren-lernen",
+    articleHtmlExists: (slug) => slug !== "/blog/test-recon-pillar",
   });
   assert(rFallback.html.includes("Lernmythen"), "Fallback-Karte trägt Titel");
   assert(rFallback.added.length === 4, "Fallback: trotzdem 4 Karten ergänzt");
@@ -656,6 +656,30 @@ console.log("[9] reconcileBlogCardsFromClusters (Backfill + erhalten + idempoten
   // extractMetaDescription
   eq(extractMetaDescription('<meta name="description" content="Hallo Welt">'), "Hallo Welt", "extractMetaDescription liest content");
   eq(extractMetaDescription("<html>no meta</html>"), "", "extractMetaDescription leer ohne meta");
+}
+
+/* Test 10: Tageslimit — publishedBlogToday + Budget-Slicing */
+console.log("[10] Tageslimit (publishedBlogToday + Budget)");
+{
+  const TODAY = "2026-06-18";
+  const sm = `<?xml version="1.0"?><urlset>
+  <url><loc>https://conjuexpert.app/blog/a/</loc><lastmod>2026-06-18</lastmod></url>
+  <url><loc>https://conjuexpert.app/blog/b/</loc><lastmod>2026-06-18</lastmod></url>
+  <url><loc>https://conjuexpert.app/blog/c/</loc><lastmod>2026-06-01</lastmod></url>
+  <url><loc>https://conjuexpert.app/konjugation/es/hablar/</loc><lastmod>2026-06-18</lastmod></url>
+  </urlset>`;
+  eq(publishedBlogToday(sm, TODAY), 2, "zählt genau 2 heutige /blog/-Artikel (konjugation/ ignoriert)");
+  eq(publishedBlogToday(sm, "2026-06-01"), 1, "zählt 1 für anderes Datum");
+  eq(publishedBlogToday("", TODAY), 0, "leere Sitemap → 0");
+
+  // Budget-Slicing wie in main(): budget = max(0, MAX - alreadyToday)
+  const MAX = 3;
+  const sliceCount = (alreadyToday, newCount) =>
+    Math.min(newCount, Math.max(0, MAX - alreadyToday));
+  eq(sliceCount(0, 5), 3, "0 heute, 5 neu → 3 online");
+  eq(sliceCount(2, 5), 1, "2 heute, 5 neu → 1 online");
+  eq(sliceCount(3, 5), 0, "3 heute → 0 weitere");
+  eq(sliceCount(10, 5), 0, "10 heute (Backfill) → 0 weitere");
 }
 
 /* ─── Ergebnis ───────────────────────────────────────────────────────────── */
