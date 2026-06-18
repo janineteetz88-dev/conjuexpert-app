@@ -91,8 +91,12 @@ async function ensureProperties() {
   if (!existing.includes("Live-Link")) toAdd["Live-Link"] = { url: {} };
   if (!existing.includes("Notion-Quelle")) toAdd["Notion-Quelle"] = { url: {} };
   if (Object.keys(toAdd).length > 0) {
-    await notionFetch(`/data_sources/${DATA_SOURCE_ID}`, "PATCH", { properties: toAdd }, NOTION_VERSION_DS);
-    console.log(`   ✓ Spalten angelegt: ${Object.keys(toAdd).join(", ")}`);
+    if (DRY_RUN) {
+      console.log(`   (dry-run) würde Spalten anlegen: ${Object.keys(toAdd).join(", ")}`);
+    } else {
+      await notionFetch(`/data_sources/${DATA_SOURCE_ID}`, "PATCH", { properties: toAdd }, NOTION_VERSION_DS);
+      console.log(`   ✓ Spalten angelegt: ${Object.keys(toAdd).join(", ")}`);
+    }
   }
 }
 
