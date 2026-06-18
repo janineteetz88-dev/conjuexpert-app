@@ -586,4 +586,19 @@ export async function generateHtmlFromNotion(notionPageId, spoke, cluster, GLOBA
   });
 }
 
-export { LANG_MAP, blocksToHtml, esc };
+export {
+  LANG_MAP,
+  BASE_URL,
+  blocksToHtml,
+  blockToHtml,
+  rtToHtml,
+  esc,
+  estimateReadTime,
+  formatDate,
+  today,
+  // Live-API-Helfer (für den generischen Produktionspfad in publish-from-notion.mjs).
+  // In dieser Umgebung ohne NOTION_API_KEY nicht lauffähig — nur in CI.
+  nFetch,
+  fetchPage,
+  fetchBlocks,
+};
