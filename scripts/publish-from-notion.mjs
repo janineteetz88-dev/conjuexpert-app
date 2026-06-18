@@ -52,7 +52,12 @@ const ARGS = process.argv.slice(2);
 const DRY_RUN = ARGS.includes("--dry-run");
 const WRITEBACK = process.env.WRITEBACK === "1";
 const DB_ID = "f78defbe1d0543309b443fc134ad9127";
+// Echte Tabelle des Trackers. Der DB hängt versehentlich eine 2. (leere) Data Source an,
+// daher /databases/{id}/query nicht nutzbar — wir fragen die Data Source direkt ab.
+const DATA_SOURCE_ID = "675fdfec-f644-4fd4-9f7e-340b85966013";
 const NOTION_VERSION = "2022-06-28";
+// data_sources-API (Multi-Source-DBs) gibt es erst ab dieser Version — nur für die Query.
+const NOTION_VERSION_DS = "2025-09-03";
 const BASE_LIVE = "https://conjuexpert.app";
 
 const CLUSTERS_PATH = join(ROOT, "src/data/clusters.js");
@@ -67,12 +72,12 @@ const warn = (...a) => console.warn("⚠️ ", ...a);
 
 /* ─── Notion: Tracker-Query (POST, daher eigener Helfer mit Body) ────────── */
 
-async function notionQuery(path, method, body) {
+async function notionQuery(path, method, body, version = NOTION_VERSION) {
   const opts = {
     method,
     headers: {
       Authorization: `Bearer ${KEY}`,
-      "Notion-Version": NOTION_VERSION,
+      "Notion-Version": version,
       "Content-Type": "application/json",
     },
   };
@@ -91,7 +96,7 @@ async function getFreigegebene() {
       filter: { property: "Status", select: { equals: "Freigegeben" } },
     };
     if (cursor) body.start_cursor = cursor;
-    const data = await notionQuery(`/databases/${DB_ID}/query`, "POST", body);
+    const data = await notionQuery(`/data_sources/${DATA_SOURCE_ID}/query`, "POST", body, NOTION_VERSION_DS);
     entries.push(...data.results);
     cursor = data.has_more ? data.next_cursor : null;
   } while (cursor);
