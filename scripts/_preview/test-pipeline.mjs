@@ -28,8 +28,12 @@ import { sortArticles } from "../publish-from-notion.mjs";
 import {
   upsertBlogCards,
   catFromMeta,
+  catFromCluster,
   thumbForCard,
   shortenSummary,
+  reconcileBlogCardsFromClusters,
+  hasCardForHref,
+  extractMetaDescription,
 } from "../lib/blog-index.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -513,6 +517,140 @@ console.log("[8] upsertBlogCards (Sektion + idempotent + additiv)");
 
   assert(shortenSummary("a".repeat(200)).length <= 111, "shortenSummary kürzt auf ~110");
   eq(shortenSummary("kurz"), "kurz", "shortenSummary lässt kurze Texte unangetastet");
+}
+
+/* Test 9: reconcileBlogCardsFromClusters — Backfill aus clusters.js */
+console.log("[9] reconcileBlogCardsFromClusters (Backfill + erhalten + idempotent)");
+{
+  const indexPath = join(__dirname, "..", "..", "blog", "index.html");
+  const src = readFileSync(indexPath, "utf8");
+
+  const countPosts = (h) => (h.match(/<a class="post"/g) || []).length;
+  const before = countPosts(src);
+
+  // Synthetisches clusters-Objekt (Methodik-Cluster gibt es auf diesem Branch
+  // in clusters.js noch nicht). Enthält bewusst auch einen bereits live
+  // kuratierten Spoke (subjuntivo-spanisch), der NICHT angefasst werden darf.
+  const clusters = [
+    {
+      id: "methodik-sprachen-lernen",
+      lang: null,
+      label: "Methodik",
+      hub: { slug: "/blog/sprachen-lernen", title: "Sprachen lernen", live: true },
+      spokes: [
+        { slug: "/blog/lernmythen-sprachenlernen", title: "Lernmythen", live: true },
+        { slug: "/blog/aktiv-erinnern-lernmethode", title: "Aktiv erinnern", live: true },
+        { slug: "/blog/geplanter-lern-spoke", title: "Geplant", live: false }, // NICHT live → keine Karte
+      ],
+    },
+    {
+      id: "spanisch-verben",
+      lang: "es",
+      label: "Spanisch",
+      hub: { slug: "/blog/spanisch-verben-konjugieren", title: "Spanische Verben", live: false }, // hub nicht live
+      spokes: [
+        { slug: "/blog/subjuntivo-spanisch", title: "Subjuntivo Spanisch", live: true }, // existiert bereits als Karte!
+        { slug: "/blog/preterito-spanisch", title: "Pretérito Spanisch", live: true },   // neu → gram
+      ],
+    },
+  ];
+  const GLOBAL_PILLAR = { slug: "/blog/verben-konjugieren-lernen", title: "Verben konjugieren" };
+
+  // Stub-IO: Beschreibung kommt aus einem Stub-HTML; GLOBAL_PILLAR-HTML "existiert" hier nicht
+  // (→ wird übersprungen, wie es die Spec verlangt, wenn dessen HTML fehlt).
+  const stubHtml = (slug) =>
+    `<meta name="description" content="Stub-Beschreibung für ${slug}.">`;
+  const recOpts = {
+    readArticleHtml: (slug) => stubHtml(slug),
+    articleHtmlExists: () => false, // GLOBAL_PILLAR übersprungen
+  };
+
+  const r1 = reconcileBlogCardsFromClusters(src, { clusters, GLOBAL_PILLAR }, recOpts);
+  const out1 = r1.html;
+
+  // Erwartet ergänzt: hub sprachen-lernen (learn), lernmythen (learn), aktiv-erinnern (learn),
+  // preterito-spanisch (gram). NICHT: subjuntivo (existiert), geplanter (nicht live),
+  // spanisch-verben-konjugieren (hub nicht live), GLOBAL_PILLAR (HTML fehlt).
+  eq(r1.added.length, 4, "genau 4 fehlende Karten ergänzt");
+  eq(countPosts(out1) - before, 4, "genau 4 neue .post-Karten");
+
+  // korrekte Sektion / data-cat / href
+  function sectionContains(html, id, href) {
+    const m = new RegExp(`<section\\b[^>]*\\bid="${id}"[^>]*>`).exec(html);
+    if (!m) return false;
+    let pos = m.index + m[0].length;
+    let depth = 1;
+    const re = /<(\/?)section\b[^>]*>/g;
+    re.lastIndex = pos;
+    let t, end = html.length;
+    while ((t = re.exec(html)) !== null) {
+      depth += t[1] === "/" ? -1 : 1;
+      if (depth === 0) { end = t.index; break; }
+    }
+    return html.slice(m.index, end).includes(href);
+  }
+
+  // Methodik-Cluster → learn-Karten in #lernen
+  assert(sectionContains(out1, "lernen", "/blog/sprachen-lernen/"), "hub → learn in #lernen");
+  assert(sectionContains(out1, "lernen", "/blog/lernmythen-sprachenlernen/"), "spoke → learn in #lernen");
+  assert(sectionContains(out1, "lernen", "/blog/aktiv-erinnern-lernmethode/"), "spoke → learn in #lernen");
+  assert(/href="\/blog\/sprachen-lernen\/" data-cat="learn"/.test(out1), "hub: data-cat=learn");
+
+  // Verb-Cluster (live spoke) → gram in #grammatik
+  assert(sectionContains(out1, "grammatik", "/blog/preterito-spanisch/"), "verb-spoke → gram in #grammatik");
+  assert(/href="\/blog\/preterito-spanisch\/" data-cat="gram"/.test(out1), "verb-spoke: data-cat=gram");
+  assert(!sectionContains(out1, "lernen", "/blog/preterito-spanisch/"), "verb-spoke NICHT in #lernen");
+
+  // bereits existierende Karten unangetastet & NICHT dupliziert
+  assert(hasCardForHref(src, "/blog/subjuntivo-spanisch"), "Vorbedingung: subjuntivo-Karte existiert bereits");
+  eq(r1.added.filter((a) => a.slug === "/blog/subjuntivo-spanisch").length, 0, "subjuntivo NICHT erneut ergänzt");
+  eq((out1.match(/href="\/blog\/subjuntivo-spanisch\/"/g) || []).length,
+     (src.match(/href="\/blog\/subjuntivo-spanisch\/"/g) || []).length,
+     "subjuntivo-Karte nicht dupliziert");
+  // kuratierte Karten bleiben
+  assert(out1.includes('href="/blog/unsere-geschichte/"'), "kuratierte Karte erhalten (unsere-geschichte)");
+
+  // nicht-live + nicht-existierender Pillar NICHT ergänzt
+  assert(!out1.includes('href="/blog/geplanter-lern-spoke/"'), "nicht-live Spoke nicht ergänzt");
+  assert(!out1.includes('href="/blog/spanisch-verben-konjugieren/"'), "nicht-live Hub nicht ergänzt");
+  assert(!hasCardForHref(out1, "/blog/verben-konjugieren-lernen"), "GLOBAL_PILLAR ohne HTML nicht ergänzt");
+
+  // Beschreibung aus Stub-Meta übernommen (gekürzt)
+  assert(out1.includes("Stub-Beschreibung für /blog/sprachen-lernen"), "summary aus Meta-Description (Stub)");
+
+  // summary-Log-Format
+  assert(/learn: .+; gram: .+; prod: .+/.test(r1.summary), "summary-Format korrekt");
+
+  // GLOBAL_PILLAR ergänzt, WENN HTML existiert
+  const r1b = reconcileBlogCardsFromClusters(src, { clusters, GLOBAL_PILLAR }, {
+    readArticleHtml: stubHtml,
+    articleHtmlExists: () => true,
+  });
+  assert(hasCardForHref(r1b.html, "/blog/verben-konjugieren-lernen"), "GLOBAL_PILLAR ergänzt wenn HTML existiert");
+
+  // Idempotenz: zweimaliges Anwenden = bit-identisch
+  const r2 = reconcileBlogCardsFromClusters(out1, { clusters, GLOBAL_PILLAR }, recOpts);
+  eq(r2.html, out1, "reconcile idempotent (zweiter Lauf bit-identisch)");
+  eq(r2.added.length, 0, "zweiter Lauf ergänzt nichts mehr");
+  eq(countPosts(r2.html), countPosts(out1), "keine Duplikate beim zweiten Lauf");
+
+  // Fallback-Beschreibung aus Titel, wenn kein HTML/Meta
+  const rFallback = reconcileBlogCardsFromClusters(src, { clusters, GLOBAL_PILLAR }, {
+    readArticleHtml: () => null,
+    articleHtmlExists: () => false,
+  });
+  assert(rFallback.html.includes("Lernmythen"), "Fallback-Karte trägt Titel");
+  assert(rFallback.added.length === 4, "Fallback: trotzdem 4 Karten ergänzt");
+
+  // catFromCluster-Helfer deterministisch
+  eq(catFromCluster({ id: "methodik-sprachen-lernen" }, "/blog/x"), "learn", "catFromCluster: methodik → learn");
+  eq(catFromCluster({ id: "x" }, "/blog/aktiv-erinnern-lernmethode"), "learn", "catFromCluster: lernmethode im slug → learn");
+  eq(catFromCluster({ id: "spanisch-verben" }, "/blog/preterito-spanisch"), "gram", "catFromCluster: verb → gram");
+  eq(catFromCluster({ id: "produkt" }, "/blog/sprachlern-app-vergleich"), "prod", "catFromCluster: app-signal → prod");
+
+  // extractMetaDescription
+  eq(extractMetaDescription('<meta name="description" content="Hallo Welt">'), "Hallo Welt", "extractMetaDescription liest content");
+  eq(extractMetaDescription("<html>no meta</html>"), "", "extractMetaDescription leer ohne meta");
 }
 
 /* ─── Ergebnis ───────────────────────────────────────────────────────────── */
