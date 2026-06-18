@@ -50,15 +50,96 @@ export function normalizeFaq(input) {
   return normalizeFromRawSection(String(input || ""));
 }
 
-// (a) Toggle / <details> Blocks
+// Hilfen für Block-basierte FAQ
+function plainOf(richText) {
+  return (richText || []).map((t) => t.plain_text).join("");
+}
+
+// Entfernt führendes "▸ " und umschließende **fett**-Marker aus einer Frage.
+function cleanQuestion(s) {
+  return String(s || "")
+    .replace(/^[▸▶►•·]\s*/, "")
+    .trim()
+    .replace(/^\*\*/, "")
+    .replace(/\*\*$/, "")
+    .trim();
+}
+
+/**
+ * (a) Notion-Block-FAQ — deckt BEIDE Notion-Formate ab:
+ *   1) toggle: Frage in toggle.rich_text, Antwort in _children
+ *   2) bulleted_list_item: "▸ **Frage**" + Antwort.
+ *      Antwort kann in _children stehen (eingerückte Unter-Blöcke) ODER
+ *      — wenn Frage und Antwort in derselben Bullet stehen — hinter der
+ *      ersten Zeile/dem fett gesetzten Frage-Teil.
+ */
 function normalizeFromBlocks(blocks) {
   const items = [];
   for (const b of blocks || []) {
-    if (b.type !== "toggle") continue;
-    const q = (b.toggle?.rich_text || []).map((t) => t.plain_text).join("").trim();
-    if (!q) continue;
-    const a_html = b._children ? blocksToHtml(b._children) : "";
-    items.push({ q, a_html, a_text: htmlToText(a_html) });
+    if (b.type === "toggle") {
+      const q = plainOf(b.toggle?.rich_text).trim();
+      if (!q) continue;
+      const a_html = b._children ? blocksToHtml(b._children) : "";
+      items.push({ q, a_html, a_text: htmlToText(a_html) });
+      continue;
+    }
+
+    if (b.type === "bulleted_list_item") {
+      const rt = b.bulleted_list_item?.rich_text || [];
+      const full = plainOf(rt).trim();
+      if (!full) continue;
+
+      // Frage = bis zum Ende des ersten fett gesetzten Segments (oder erste Zeile).
+      let q = "";
+      let aInline = "";
+
+      // Bevorzugt strukturell: erstes fettes rich_text-Segment ist die Frage.
+      const firstBoldEnd = rt.findIndex((t) => t.annotations && t.annotations.bold);
+      if (firstBoldEnd !== -1) {
+        // Sammle zusammenhängende fette Segmente am Anfang als Frage.
+        let i = 0;
+        // optionales führendes Marker-Segment "▸ " überspringen
+        const qParts = [];
+        let started = false;
+        for (; i < rt.length; i++) {
+          const t = rt[i];
+          const isBold = t.annotations && t.annotations.bold;
+          if (isBold) {
+            started = true;
+            qParts.push(t.plain_text);
+          } else if (!started) {
+            // führender Nicht-Fett-Text (z. B. "▸ ") überspringen
+            continue;
+          } else {
+            break;
+          }
+        }
+        q = cleanQuestion(qParts.join(""));
+        aInline = plainOf(rt.slice(i)).trim();
+      } else {
+        // Fallback: erste Zeile = Frage, Rest = Antwort
+        const nl = full.indexOf("\n");
+        if (nl !== -1) {
+          q = cleanQuestion(full.slice(0, nl));
+          aInline = full.slice(nl + 1).trim();
+        } else {
+          q = cleanQuestion(full);
+          aInline = "";
+        }
+      }
+
+      if (!q) continue;
+
+      // Antwort: eingerückte Kinder bevorzugt, sonst Inline-Rest.
+      let a_html = "";
+      if (b._children && b._children.length) {
+        a_html = blocksToHtml(b._children);
+      } else if (aInline) {
+        a_html = inlineMdToHtml(aInline);
+      }
+      items.push({ q, a_html, a_text: htmlToText(a_html) });
+      continue;
+    }
   }
   return items;
 }

@@ -596,4 +596,9 @@ export {
   estimateReadTime,
   formatDate,
   today,
+  // Live-API-Helfer (für den generischen Produktionspfad in publish-from-notion.mjs).
+  // In dieser Umgebung ohne NOTION_API_KEY nicht lauffähig — nur in CI.
+  nFetch,
+  fetchPage,
+  fetchBlocks,
 };
