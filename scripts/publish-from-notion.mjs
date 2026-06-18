@@ -1,47 +1,84 @@
 #!/usr/bin/env node
 /**
- * publish-from-notion.mjs
+ * publish-from-notion.mjs  —  generischer, meta-block-getriebener Produktionspfad
  *
- * Liest Notion-Datenbank, findet "Freigegeben"-Artikel,
- * setzt sie in clusters.js auf live: true und updated Notion auf "Veröffentlicht".
+ * Ablauf (siehe Schritt-2-Spezifikation):
+ *   1. Notion-Tracker-DB nach Status=="Freigegeben" abfragen.
+ *   2. Sortieren: Nummer aufsteigend, dann Hubs vor Spokes innerhalb des Clusters.
+ *   3. Pro Eintrag den verlinkten Entwurf (Feld "Entwurf (Notion)") laden.
+ *   4. Meta-Block aus den führenden Draft-Blöcken parsen + validieren
+ *      (ungültig → WARNEN + ÜBERSPRINGEN).
+ *   5. FAQ + Content aus den Blöcken trennen (beide Notion-Formate).
+ *   6. Zwei-Pass-Rendern: erst alle gültigen Slugs sammeln (→ publishedSlugs),
+ *      dann rendern (Links nur auf published Slugs).
+ *   7. clusters.js upserten (Verb-Cluster/GLOBAL_PILLAR unangetastet).
+ *   8. blog/<slug>/index.html schreiben.
+ *   9. sitemap.xml mergen (dedupe).
+ *  10. Writeback (GATED via WRITEBACK=1): Live-URL/Datum/Status setzen,
+ *      nur bei Erfolg, nur wenn Status noch "Freigegeben", idempotent.
  *
- * Aufruf: node scripts/publish-from-notion.mjs [--dry-run]
+ * Flags:  --dry-run  → keine File-Writes, kein Writeback; nur Plan ausgeben.
+ *
+ * KRITISCH: Ohne NOTION_API_KEY ist der Live-Pfad nicht lauffähig. In dieser
+ * Umgebung dient --dry-run + Unit-Tests (scripts/_preview/test-pipeline.mjs)
+ * zur Verifikation; der echte Lauf passiert in CI.
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
-import { generateHtmlFromNotion } from "./notion-to-html.mjs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import {
+  fetchPage,
+  fetchBlocks,
+  nFetch,
+  today,
+} from "./notion-to-html.mjs";
+
+import { parseMetaBlock, validateMeta } from "./lib/meta-block.mjs";
+import { normalizeFaq } from "./lib/faq.mjs";
+import { renderArticle } from "./lib/render-article.mjs";
+import { blocksToMetaText, extractFaqAndContent } from "./lib/notion-adapt.mjs";
+import {
+  upsertClusters,
+  mergeSitemap,
+  metasToClusters,
+} from "./lib/clusters-upsert.mjs";
+
+/* ─── Konstanten / Flags ─────────────────────────────────────────────────── */
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ARGS = process.argv.slice(2);
 const DRY_RUN = ARGS.includes("--dry-run");
+const WRITEBACK = process.env.WRITEBACK === "1";
 const DB_ID = "f78defbe1d0543309b443fc134ad9127";
 const NOTION_VERSION = "2022-06-28";
+const BASE_LIVE = "https://conjuexpert.app";
 
-const key = process.env.NOTION_API_KEY;
-if (!key) {
-  console.error("❌  NOTION_API_KEY nicht gesetzt.");
-  process.exit(0);
-}
+const CLUSTERS_PATH = join(ROOT, "src/data/clusters.js");
+const SITEMAP_PATH = join(ROOT, "sitemap.xml");
 
-/* ─── Notion API ─────────────────────────────────────────────────────────── */
+const KEY = process.env.NOTION_API_KEY;
 
-async function notionFetch(path, method = "GET", body = null) {
+/* ─── kleine Logger ──────────────────────────────────────────────────────── */
+
+const log = (...a) => console.log(...a);
+const warn = (...a) => console.warn("⚠️ ", ...a);
+
+/* ─── Notion: Tracker-Query (POST, daher eigener Helfer mit Body) ────────── */
+
+async function notionQuery(path, method, body) {
   const opts = {
     method,
     headers: {
-      Authorization: `Bearer ${key}`,
+      Authorization: `Bearer ${KEY}`,
       "Notion-Version": NOTION_VERSION,
       "Content-Type": "application/json",
     },
   };
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(`https://api.notion.com/v1${path}`, opts);
-  if (!res.ok) {
-    const txt = await res.text();
-    throw new Error(`Notion ${res.status}: ${txt}`);
-  }
+  if (!res.ok) throw new Error(`Notion ${res.status}: ${await res.text()}`);
   return res.json();
 }
 
@@ -54,184 +91,314 @@ async function getFreigegebene() {
       filter: { property: "Status", select: { equals: "Freigegeben" } },
     };
     if (cursor) body.start_cursor = cursor;
-    const data = await notionFetch(`/databases/${DB_ID}/query`, "POST", body);
+    const data = await notionQuery(`/databases/${DB_ID}/query`, "POST", body);
     entries.push(...data.results);
     cursor = data.has_more ? data.next_cursor : null;
   } while (cursor);
   return entries;
 }
 
-async function setVeroeffentlicht(pageId) {
-  return notionFetch(`/pages/${pageId}`, "PATCH", {
-    properties: {
-      Status: { select: { name: "Veröffentlicht" } },
-    },
-  });
-}
+/* ─── Tracker-Eintrag-Parsing (defensiv, mit Fallback-Feldnamen) ─────────── */
 
-function parseTitle(page) {
-  const props = page.properties;
-  return (
-    props["Thema"]?.title?.[0]?.plain_text ||
-    props["Titel"]?.title?.[0]?.plain_text ||
-    props["Name"]?.title?.[0]?.plain_text ||
-    ""
-  );
-}
-
-/* ─── clusters.js Hilfsfunktionen ─────────────────────────────────────────── */
-
-const CLUSTERS_PATH = join(ROOT, "src/data/clusters.js");
-
-function findSpokeByTitle(clusters, title) {
-  const norm = (s) => s.toLowerCase().trim().replace(/[^a-z0-9äöüß\s]/g, "");
-  const nt = norm(title);
-  for (const cluster of clusters) {
-    // Exakter Match zuerst
-    let spoke = cluster.spokes.find((s) => norm(s.title) === nt);
-    if (spoke) return { cluster, spoke };
-    // Partial match: clusters-Titel ist Anfang des Notion-Titels (z.B. "Ser vs. Estar" in "Ser vs. Estar: Wann welches?")
-    spoke = cluster.spokes.find((s) => nt.startsWith(norm(s.title)) || norm(s.title).startsWith(nt));
-    if (spoke) return { cluster, spoke };
+function prop(page, names) {
+  for (const n of names) {
+    if (page.properties && page.properties[n] !== undefined) return page.properties[n];
   }
+  return undefined;
+}
+
+function readTitle(page) {
+  const p = prop(page, ["Thema", "Titel", "Name"]);
+  return p?.title?.[0]?.plain_text || "";
+}
+
+function readStatus(page) {
+  const p = prop(page, ["Status"]);
+  return p?.select?.name || p?.status?.name || "";
+}
+
+function readNummer(page) {
+  const p = prop(page, ["Nummer", "Nr", "Nr."]);
+  if (!p) return Number.POSITIVE_INFINITY;
+  if (typeof p.number === "number") return p.number;
+  // evtl. als Text/Title
+  const txt = p.rich_text?.[0]?.plain_text || p.title?.[0]?.plain_text || "";
+  const n = parseFloat(txt);
+  return Number.isFinite(n) ? n : Number.POSITIVE_INFINITY;
+}
+
+function readDraftUrl(page) {
+  const p = prop(page, ["Entwurf (Notion)", "Entwurf", "Draft", "Notion-Quelle"]);
+  return p?.url || p?.rich_text?.[0]?.plain_text || "";
+}
+
+// Notion-Page-ID (32 hex) aus einer URL ziehen.
+function extractPageId(url) {
+  if (!url) return null;
+  const m = String(url).match(/([0-9a-f]{32})(?:[?#].*)?$/i);
+  if (m) return m[1];
+  // mit Bindestrichen (UUID)
+  const m2 = String(url).match(/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i);
+  if (m2) return m2[1].replace(/-/g, "");
   return null;
 }
 
-function setLiveInFile(slug) {
-  let src = readFileSync(CLUSTERS_PATH, "utf8");
-  const escapedSlug = slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const pat = new RegExp(
-    `(slug:\\s*"${escapedSlug}"[^}]*?)live:\\s*false`,
-    "s"
-  );
-  if (!pat.test(src)) return false;
-  src = src.replace(pat, "$1live: true");
-  writeFileSync(CLUSTERS_PATH, src, "utf8");
-  return true;
+/* ─── Page-Titel des Entwurfs lesen ──────────────────────────────────────── */
+
+function readDraftTitle(draftPage, fallback) {
+  const props = draftPage?.properties || {};
+  for (const key of Object.keys(props)) {
+    if (props[key]?.type === "title" && props[key].title?.length) {
+      return props[key].title.map((t) => t.plain_text).join("").trim();
+    }
+  }
+  return fallback || "";
+}
+
+/* ─── Slug-Helfer ────────────────────────────────────────────────────────── */
+
+function slugDir(slug) {
+  // "/blog/foo" → ROOT/blog/foo
+  return join(ROOT, slug.replace(/^\//, ""));
 }
 
 function htmlExists(slug) {
-  const file = join(ROOT, slug.replace(/^\//, ""), "index.html");
-  return existsSync(file);
+  return existsSync(join(slugDir(slug), "index.html"));
 }
 
-/* ─── Hauptlogik ─────────────────────────────────────────────────────────── */
+/* ─── Bereits live veröffentlichte Slugs (aus dem Dateisystem) ───────────── */
 
-console.log(`\n🚀  Notion → ConjuExpert Publish (${new Date().toISOString().slice(0, 10)})`);
-console.log(DRY_RUN ? "   Modus: Dry-run\n" : "   Modus: Live\n");
-
-const { clusters, GLOBAL_PILLAR } = await import(CLUSTERS_PATH);
-
-// API-Verbindungstest
-try {
-  const testRes = await notionFetch(`/databases/${DB_ID}/query`, "POST", { page_size: 1 });
-  if (testRes.object === "error") {
-    console.error(`❌  Notion API Fehler: ${testRes.status} ${testRes.code} — ${testRes.message}`);
-    process.exit(0);
+function livePublishedSlugs(metas) {
+  const set = new Set();
+  for (const m of metas) {
+    if (m.meta?.slug && htmlExists(m.meta.slug)) set.add(m.meta.slug);
   }
-  const firstTitle = testRes.results?.[0]?.properties?.["Thema"]?.title?.[0]?.plain_text || "?";
-  const firstStatus = testRes.results?.[0]?.properties?.["Status"]?.select?.name || "?";
-  console.log(`✓  Notion API OK — erster Eintrag: "${firstTitle}" | Status: "${firstStatus}"`);
-} catch (e) {
-  console.error(`❌  Notion API nicht erreichbar: ${e.message}`);
-  process.exit(0);
+  return set;
 }
 
-let freigegeben;
-try {
-  freigegeben = await getFreigegebene();
-} catch (e) {
-  console.error(`❌  Notion-Abfrage fehlgeschlagen: ${e.message}`);
-  process.exit(0);
+/* ─── Sortierung: Nummer ↑, dann Hub vor Spoke im selben Cluster ─────────── */
+
+export function sortArticles(items) {
+  return items.slice().sort((a, b) => {
+    if (a.nummer !== b.nummer) return a.nummer - b.nummer;
+    // gleicher Cluster: Hub vor Spoke
+    const sameCluster = (a.meta?.cluster || "") === (b.meta?.cluster || "");
+    if (sameCluster) {
+      const rank = (t) => (t === "hub" ? 0 : 1);
+      const ra = rank(a.meta?.typ);
+      const rb = rank(b.meta?.typ);
+      if (ra !== rb) return ra - rb;
+    }
+    return 0;
+  });
 }
 
-console.log(`📋  Freigegeben in Notion: ${freigegeben.length}`);
+/* ─── Hauptlauf ──────────────────────────────────────────────────────────── */
 
-let published = 0;
-let noHtml = 0;
-let notFound = 0;
+async function main() {
+  log(`\n🚀  publish-from-notion (${today()})`);
+  log(`    Modus: ${DRY_RUN ? "DRY-RUN" : "LIVE"} · Writeback: ${WRITEBACK ? "AN (WRITEBACK=1)" : "AUS"}\n`);
 
-for (const page of freigegeben) {
-  const title = parseTitle(page);
-  if (!title) continue;
+  if (!KEY) {
+    warn("NOTION_API_KEY nicht gesetzt — Live-API-Pfad hier nicht lauffähig.");
+    warn("Für lokale Verifikation: node scripts/_preview/test-pipeline.mjs");
+    log("\nAbbruch (kein Key).\n");
+    return;
+  }
 
-  const match = findSpokeByTitle(clusters, title);
+  // 1) Freigegebene Tracker-Einträge.
+  let tracker;
+  try {
+    tracker = await getFreigegebene();
+  } catch (e) {
+    console.error(`❌  Notion-Abfrage fehlgeschlagen: ${e.message}`);
+    process.exit(1);
+  }
+  log(`📋  Freigegeben: ${tracker.length}`);
 
-  if (!match) {
-    // Pillar-Artikel prüfen: ist schon live → nur Notion auf Veröffentlicht setzen
-    const norm = (s) => s.toLowerCase().trim().replace(/[^a-z0-9äöüß\s]/g, "");
-    if (GLOBAL_PILLAR && norm(title).startsWith(norm(GLOBAL_PILLAR.title?.split(":")[0] || ""))) {
-      if (htmlExists(GLOBAL_PILLAR.slug)) {
-        console.log(`✓   Pillar bereits live, setze Notion → Veröffentlicht: "${title}"`);
-        if (!DRY_RUN) await setVeroeffentlicht(page.id);
-        published++;
-      } else {
-        console.log(`⚠️   Pillar-HTML fehlt für: "${title}"`);
-        noHtml++;
-      }
+  // 2) Pro Eintrag Entwurf laden + Meta parsen (PASS 1: sammeln/validieren).
+  const articles = []; // { trackerPage, title, meta, contentBlocks, faqItems, nummer, draftId }
+  for (const page of tracker) {
+    const trackerTitle = readTitle(page);
+    const nummer = readNummer(page);
+    const draftUrl = readDraftUrl(page);
+    const draftId = extractPageId(draftUrl);
+
+    if (!draftId) {
+      warn(`Übersprungen (kein Entwurf-Link): "${trackerTitle || page.id}"`);
       continue;
     }
-    console.log(`⚠️   Kein clusters.js-Eintrag für: "${title}"`);
-    notFound++;
-    continue;
+
+    let draftPage, blocks;
+    try {
+      draftPage = await fetchPage(draftId, KEY);
+      blocks = await fetchBlocks(draftId, KEY);
+    } catch (e) {
+      warn(`Entwurf nicht ladbar (${draftId}): ${e.message}`);
+      continue;
+    }
+
+    const metaText = blocksToMetaText(blocks);
+    const meta = parseMetaBlock(metaText);
+    const v = validateMeta(meta);
+    if (!v.ok) {
+      warn(`Meta ungültig → ÜBERSPRUNGEN: "${trackerTitle}" — ${v.errors.join("; ")}`);
+      continue;
+    }
+
+    const { contentBlocks, faqBlocks } = extractFaqAndContent(blocks);
+    const faqItems = normalizeFaq(faqBlocks);
+    const title = readDraftTitle(draftPage, meta.keyword || trackerTitle);
+
+    articles.push({
+      trackerPage: page,
+      trackerTitle,
+      title,
+      meta,
+      contentBlocks,
+      faqItems,
+      nummer,
+      draftId,
+    });
   }
 
-  const { spoke } = match;
+  // Sortieren.
+  const sorted = sortArticles(articles);
 
-  if (!htmlExists(spoke.slug)) {
-    // Notion-Seite hat eine verknüpfte Page-URL — Notion Page ID extrahieren
-    const notionUrl =
-      page.properties["Live-Link"]?.url ||
-      page.properties["Link"]?.url ||
-      page.url ||
-      "";
-    const pageIdMatch = notionUrl.match(/([a-f0-9]{32})$/);
-    const cleanId = page.id.replace(/-/g, "");
+  // publishedSlugs = bereits live ∪ alle in DIESEM Lauf gültig gerenderten.
+  const published = livePublishedSlugs(sorted);
+  for (const a of sorted) published.add(a.meta.slug);
 
-    console.log(`📄  Generiere HTML aus Notion für: "${title}"`);
-    if (!DRY_RUN) {
-      try {
-        const html = await generateHtmlFromNotion(cleanId, spoke, match.cluster, GLOBAL_PILLAR, key);
-        const dir = join(ROOT, spoke.slug.replace(/^\//, ""));
-        mkdirSync(dir, { recursive: true });
-        writeFileSync(join(dir, "index.html"), html, "utf8");
-        console.log(`   ✓ HTML erstellt: ${spoke.slug}/index.html`);
-        // Weiter mit live schalten
-      } catch (e) {
-        console.error(`   ✗ HTML-Generierung fehlgeschlagen: ${e.message}`);
-        noHtml++;
-        continue;
-      }
-    } else {
-      console.log(`   (Dry-run — kein HTML geschrieben)`);
-      published++;
+  // allArticles: slug → { title }
+  const allArticles = {};
+  for (const a of sorted) allArticles[a.meta.slug] = { title: a.title };
+
+  log(`\n📝  Plan (Reihenfolge nach Nummer, Hub-first):`);
+  for (const a of sorted) {
+    log(`    #${a.nummer === Infinity ? "?" : a.nummer} [${a.meta.typ || "?"}] ${a.meta.slug}  "${a.title}"  → blog/${a.meta.slug.replace(/^\/blog\//, "")}/index.html`);
+  }
+  if (!sorted.length) {
+    log("    (nichts zu rendern)");
+  }
+
+  // PASS 2: Rendern + schreiben.
+  const renderedSlugs = [];
+  const deployed = []; // { article, slug } für Writeback
+  for (const a of sorted) {
+    let html;
+    try {
+      html = renderArticle({
+        meta: a.meta,
+        title: a.title,
+        contentBlocks: a.contentBlocks,
+        faqItems: a.faqItems,
+        publishedSlugs: published,
+        allArticles,
+      });
+    } catch (e) {
+      warn(`Render fehlgeschlagen für ${a.meta.slug}: ${e.message}`);
       continue;
+    }
+
+    const outDir = slugDir(a.meta.slug);
+    const outFile = join(outDir, "index.html");
+    if (DRY_RUN) {
+      log(`    (dry-run) würde schreiben: ${outFile} (${html.length} bytes)`);
+    } else {
+      mkdirSync(outDir, { recursive: true });
+      writeFileSync(outFile, html, "utf8");
+      log(`    ✓ geschrieben: ${a.meta.slug}/index.html`);
+    }
+    renderedSlugs.push(a.meta.slug);
+    deployed.push({ article: a, slug: a.meta.slug });
+  }
+
+  // 7) clusters.js upserten.
+  const derived = metasToClusters(
+    sorted.map((a) => ({ meta: a.meta, title: a.title, live: true }))
+  );
+  if (derived.length) {
+    const { clusters: existing } = await import(CLUSTERS_PATH + `?t=${Date.now()}`);
+    const src = readFileSync(CLUSTERS_PATH, "utf8");
+    const next = upsertClusters(src, existing, derived);
+    if (DRY_RUN) {
+      log(`\n🗂️   (dry-run) clusters.js Upsert: ${derived.length} Cluster (${derived.map((c) => c.id).join(", ")})`);
+    } else if (next !== src) {
+      writeFileSync(CLUSTERS_PATH, next, "utf8");
+      log(`\n🗂️   clusters.js aktualisiert: ${derived.map((c) => c.id).join(", ")}`);
+    } else {
+      log(`\n🗂️   clusters.js unverändert (idempotent)`);
     }
   }
 
-  if (spoke.live) {
-    console.log(`✓   Bereits live, setze Notion → Veröffentlicht: "${title}"`);
-    if (!DRY_RUN) await setVeroeffentlicht(page.id);
-    published++;
-    continue;
+  // 9) sitemap.xml mergen.
+  if (renderedSlugs.length) {
+    const srcMap = readFileSync(SITEMAP_PATH, "utf8");
+    const nextMap = mergeSitemap(srcMap, renderedSlugs, today());
+    const added = (nextMap.match(/<loc>/g) || []).length - (srcMap.match(/<loc>/g) || []).length;
+    if (DRY_RUN) {
+      log(`\n🗺️   (dry-run) sitemap.xml: ${added} neue <url> (von ${renderedSlugs.length} Slugs, Rest bereits vorhanden)`);
+    } else if (nextMap !== srcMap) {
+      writeFileSync(SITEMAP_PATH, nextMap, "utf8");
+      log(`\n🗺️   sitemap.xml: ${added} neue <url> ergänzt`);
+    } else {
+      log(`\n🗺️   sitemap.xml unverändert (alle Slugs bereits vorhanden)`);
+    }
   }
 
-  console.log(`🟢  Live schalten: "${title}" (${spoke.slug})`);
-  if (!DRY_RUN) {
-    const ok = setLiveInFile(spoke.slug);
-    if (ok) {
-      await setVeroeffentlicht(page.id);
-      published++;
-    } else {
-      console.error(`   ✗  Konnte live: true nicht setzen in clusters.js`);
+  // 10) Writeback (GATED).
+  log(`\n✍️   Writeback:`);
+  if (!WRITEBACK) {
+    log(`    writeback skipped (WRITEBACK != 1)`);
+  } else if (DRY_RUN) {
+    for (const d of deployed) {
+      log(`    (dry-run) würde setzen: ${d.slug} → Live-URL=${BASE_LIVE}${d.slug}/, Veröffentlicht am=${today()}, Status=Veröffentlicht`);
     }
   } else {
-    published++;
+    for (const d of deployed) {
+      const page = d.article.trackerPage;
+      // Idempotenz + Sicherheit: aktuellen Status frisch prüfen.
+      let fresh;
+      try {
+        fresh = await fetchPage(page.id, KEY);
+      } catch (e) {
+        warn(`Writeback-Statusprüfung fehlgeschlagen für ${d.slug}: ${e.message}`);
+        continue;
+      }
+      const status = readStatus(fresh);
+      if (status === "Veröffentlicht") {
+        log(`    ⏭  bereits Veröffentlicht: ${d.slug}`);
+        continue;
+      }
+      if (status !== "Freigegeben") {
+        warn(`Status ist "${status}" (nicht "Freigegeben") → kein Writeback: ${d.slug}`);
+        continue;
+      }
+      try {
+        await notionQuery(`/pages/${page.id}`, "PATCH", {
+          properties: {
+            "Live-URL": { url: `${BASE_LIVE}${d.slug}/` },
+            "Veröffentlicht am": { date: { start: today() } },
+            "Status": { select: { name: "Veröffentlicht" } },
+          },
+        });
+        log(`    ✓ ${d.slug} → Veröffentlicht`);
+      } catch (e) {
+        warn(`Writeback fehlgeschlagen für ${d.slug}: ${e.message}`);
+      }
+    }
   }
+
+  log(`\n✅  Fertig. Gerendert: ${renderedSlugs.length}/${sorted.length}\n`);
 }
 
-console.log(`\n✅  Ergebnis:`);
-console.log(`   Veröffentlicht: ${published}`);
-if (noHtml > 0) console.log(`   HTML fehlt noch: ${noHtml}`);
-if (notFound > 0) console.log(`   Nicht in clusters.js: ${notFound}`);
-console.log();
+// Nur ausführen, wenn direkt gestartet (nicht bei `import` aus den Unit-Tests).
+const INVOKED_DIRECTLY =
+  process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+
+if (INVOKED_DIRECTLY) {
+  main().catch((e) => {
+    console.error("❌  Unerwarteter Fehler:", e);
+    process.exit(1);
+  });
+}
