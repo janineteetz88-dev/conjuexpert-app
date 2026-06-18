@@ -12,7 +12,7 @@ on:
         type: boolean
         default: true
       writeback:
-        description: "Notion-Writeback (Status → Veröffentlicht). Nur bei explizitem true."
+        description: "(ohne Wirkung — Writeback läuft jetzt automatisch bei jedem Lauf)"
         type: boolean
         default: false
 
@@ -30,12 +30,14 @@ jobs:
         with:
           node-version: "20"
 
-      # Sicherheitsleitplanke: Writeback nur, wenn der Lauf MANUELL mit
-      # writeback=true gestartet wurde. Schedule/Push setzen WRITEBACK NIE.
-      - name: Freigegeben → rendern + (optional) live + Notion aktualisieren
+      # Auto-Writeback: jeder reguläre Lauf (Schedule/Push) setzt Status → "Veröffentlicht"
+      # + "Veröffentlicht am" (Datum). Sicherheit bleibt im Skript: nur bei erfolgreichem
+      # Deploy, idempotent, ausschließlich Status=="Freigegeben". Ein Dry-Run-Dispatch
+      # schreibt trotz WRITEBACK=1 NICHTS (DRY_RUN überschreibt im Skript).
+      - name: Freigegeben → rendern + live + Notion aktualisieren
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-          WRITEBACK: ${{ (github.event_name == 'workflow_dispatch' && inputs.writeback) && '1' || '0' }}
+          WRITEBACK: '1'
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
             node scripts/publish-from-notion.mjs --dry-run
