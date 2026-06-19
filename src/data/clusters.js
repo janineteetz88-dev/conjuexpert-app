@@ -176,7 +176,7 @@ export const clusters = [
     color: "#34c759",
     hub: null,
     spokes: [
-      { slug: "/blog/trennbare-verben-deutsch", title: "Trennbare Verben Deutsch: das Trenn-System (v2)", live: true },
+      { slug: "/blog/trennbare-verben-deutsch", title: "Trennbare Verben Deutsch: das Trenn-System", live: true },
     ],
   },
 ];
