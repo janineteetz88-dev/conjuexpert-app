@@ -155,7 +155,11 @@ export const clusters = [
     lang: "de",
     label: "Methodik",
     color: "#34c759",
-    hub: null,
+    hub: {
+      slug: "/blog/spanisch-verben-konjugieren",
+      title: "✍️ [Entwurf] Spanische Verben konjugieren — der große Überblick",
+      live: true,
+    },
     spokes: [
       { slug: "/blog/preterito-indefinido-spanisch", title: "Vergangenheit auf Spanisch erzählen: pretérito indefinido einfach erklärt", live: true },
     ],
@@ -165,7 +169,11 @@ export const clusters = [
     lang: "de",
     label: "Methodik",
     color: "#34c759",
-    hub: null,
+    hub: {
+      slug: "/blog/franzoesisch-verben-konjugieren",
+      title: "✍️ Französische Verben konjugieren — der große Überblick",
+      live: true,
+    },
     spokes: [
       { slug: "/blog/passe-compose-imparfait", title: "Passé composé vs. imparfait: So triffst du die richtige Wahl", live: true },
     ],
