@@ -118,6 +118,7 @@ export const clusters = [
       live: true,
     },
     spokes: [
+      { slug: "/blog/t-kofschip", title: "’t kofschip: -te oder -de im Niederländischen sicher wählen", live: true },
     ],
   },
   {
