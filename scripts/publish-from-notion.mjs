@@ -35,7 +35,7 @@ import {
   today,
 } from "./notion-to-html.mjs";
 
-import { parseMetaBlock, validateMeta } from "./lib/meta-block.mjs";
+import { parseMetaBlock, validateMeta, cleanMetaDescription } from "./lib/meta-block.mjs";
 import { normalizeFaq } from "./lib/faq.mjs";
 import { renderArticle } from "./lib/render-article.mjs";
 import { blocksToMetaText, extractFaqAndContent } from "./lib/notion-adapt.mjs";
@@ -157,14 +157,22 @@ function extractPageId(url) {
 
 /* ─── Page-Titel des Entwurfs lesen ──────────────────────────────────────── */
 
+// Entfernt führende Arbeits-Marker aus Entwurfstiteln (z. B. "✍️ [Entwurf] …"),
+// damit sie nicht als H1/Title in den Live-Artikel leaken.
+function sanitizeTitle(s) {
+  let t = String(s || "");
+  t = t.replace(/^(?:[\u{1F000}-\u{1FAFF}\u{2190}-\u{27BF}\u{2B00}-\u{2BFF}️‍\s]|\[[^\]]*\])+/u, "");
+  return t.replace(/\s{2,}/g, " ").trim();
+}
+
 function readDraftTitle(draftPage, fallback) {
   const props = draftPage?.properties || {};
   for (const key of Object.keys(props)) {
     if (props[key]?.type === "title" && props[key].title?.length) {
-      return props[key].title.map((t) => t.plain_text).join("").trim();
+      return sanitizeTitle(props[key].title.map((t) => t.plain_text).join(""));
     }
   }
-  return fallback || "";
+  return sanitizeTitle(fallback);
 }
 
 /* ─── Slug-Helfer ────────────────────────────────────────────────────────── */
@@ -266,9 +274,16 @@ async function main() {
     const metaText = blocksToMetaText(blocks);
     const meta = parseMetaBlock(metaText);
     const v = validateMeta(meta);
-    if (!v.ok) {
-      warn(`Meta ungültig → ÜBERSPRUNGEN: "${trackerTitle}" — ${v.errors.join("; ")}`);
+    // Meta-Description ist NICHT mehr allein ein Ausschlussgrund: fehlt NUR sie,
+    // Warnung loggen + Fallback (Titel) nutzen statt den Artikel zu überspringen.
+    const hardErrors = v.errors.filter((e) => !/Meta-Description/i.test(e));
+    if (hardErrors.length) {
+      warn(`Meta ungültig → ÜBERSPRUNGEN: "${trackerTitle}" — ${hardErrors.join("; ")}`);
       continue;
+    }
+    if (!meta.metaDescription || !String(meta.metaDescription).trim()) {
+      meta.metaDescription = cleanMetaDescription(trackerTitle);
+      warn(`Meta-Description fehlte → Fallback (Titel) genutzt: "${trackerTitle}"`);
     }
 
     const { contentBlocks, faqBlocks } = extractFaqAndContent(blocks);
