@@ -159,6 +159,26 @@ export const clusters = [
       { slug: "/blog/preterito-indefinido-spanisch", title: "Vergangenheit auf Spanisch erzählen: pretérito indefinido einfach erklärt", live: true },
     ],
   },
+  {
+    id: "fr-grammatik",
+    lang: "de",
+    label: "Methodik",
+    color: "#34c759",
+    hub: null,
+    spokes: [
+      { slug: "/blog/passe-compose-imparfait", title: "Passé composé vs. imparfait: So triffst du die richtige Wahl", live: true },
+    ],
+  },
+  {
+    id: "de-grammatik",
+    lang: "de",
+    label: "Methodik",
+    color: "#34c759",
+    hub: null,
+    spokes: [
+      { slug: "/blog/trennbare-verben-deutsch", title: "Trennbare Verben Deutsch: das Trenn-System (v2)", live: true },
+    ],
+  },
 ];
 
 /** Hilfsfunktion: Findet Cluster und Spoke für einen gegebenen Slug. */
