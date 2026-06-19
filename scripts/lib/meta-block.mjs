@@ -30,12 +30,22 @@ function normalizeTyp(val) {
   return v.trim() || null;
 }
 
-// Aus einem Wert wie "/blog/a · /blog/b · /blog/c" eine bereinigte Slug-Liste machen.
+// Aus einem Wert wie "/blog/a · /blog/b" ODER "a, b" eine bereinigte Liste machen.
+// (Kanonisch trennt mit " · ", das v2-Format mit ", ".)
 function splitList(val) {
   return String(val || "")
-    .split("·")
+    .split(/·|,/)
     .map((s) => stripBold(s).trim())
     .filter(Boolean);
+}
+
+// Bare-Slug ("trennbare-verben-deutsch") → "/blog/trennbare-verben-deutsch".
+// Bereits absolute Pfade ("/blog/…", "/konjugation/…") bleiben unverändert.
+function toBlogSlug(s) {
+  const v = stripBold(String(s || "")).trim();
+  if (!v) return v;
+  if (v.startsWith("/")) return v;
+  return "/blog/" + v.replace(/^\/+/, "");
 }
 
 // Extrahiert einen Slug aus z. B. "Hoch (Global-Pillar)"-Werten:
@@ -97,6 +107,10 @@ export function parseMetaBlock(rawText) {
     sprache: null,
     keyword: null,
     metaDescription: null,
+    // v2-Format (Zitat-Block): Pillar/Hub getrennt + relatedVerbs.
+    pillar: null,
+    hub: null,
+    relatedVerbs: [],
   };
 
   if (start === -1) return meta;
@@ -133,9 +147,17 @@ export function parseMetaBlock(rawText) {
     } else if (L.startsWith("hoch")) {
       // "Hoch (Global-Pillar)" ODER "Hoch (Pillar/Hub)"
       meta.pillarUp = extractSlug(value);
-    } else if (L.startsWith("runter") || L.startsWith("seitwärts") || L.startsWith("seitwarts")) {
-      // "Runter (Spokes)" (Hub) ODER "Seitwärts (Geschwister)" (Spoke)
+    } else if (L.startsWith("runter") || L.startsWith("seitwärts") || L.startsWith("seitwarts") || L.startsWith("geschwister")) {
+      // "Runter (Spokes)" (Hub) · "Seitwärts (Geschwister)" (Spoke) · v2: "Geschwister"
       meta.downOrSiblings = splitList(value);
+    } else if (L === "pillar") {
+      // v2: eigenes Pillar-Feld (Global-Pillar des Clusters)
+      meta.pillar = extractSlug(value);
+    } else if (L === "hub") {
+      // v2: eigenes Hub-Feld (Cluster-Überblick)
+      meta.hub = extractSlug(value);
+    } else if (L.startsWith("relatedverbs") || L === "related verbs") {
+      meta.relatedVerbs = splitList(value);
     } else if (L.startsWith("sprache")) {
       meta.sprache = value.trim();
     } else if (L === "keyword") {
@@ -145,6 +167,20 @@ export function parseMetaBlock(rawText) {
     }
     // Unbekannte Labels (z. B. "Status") werden ignoriert.
   }
+
+  // ── v2-Normalisierung (rückwärtskompatibel) ──────────────────────────────
+  // Slug ggf. zu absolutem /blog/-Pfad machen.
+  if (meta.slug) meta.slug = toBlogSlug(meta.slug);
+  // pillarUp aus Pillar/Hub ableiten, falls nicht direkt über "Hoch" gesetzt:
+  // Hub → Pillar (eine Ebene hoch), Spoke → Hub (eine Ebene hoch).
+  if (!meta.pillarUp) {
+    meta.pillarUp = meta.typ === "hub" ? (meta.pillar || meta.hub) : (meta.hub || meta.pillar);
+  }
+  if (meta.pillarUp) meta.pillarUp = toBlogSlug(meta.pillarUp);
+  // Geschwister/Spokes ggf. zu absoluten /blog/-Pfaden normalisieren.
+  meta.downOrSiblings = (meta.downOrSiblings || []).map((s) =>
+    /^\/konjugation\//.test(s) ? s : toBlogSlug(s)
+  );
 
   return meta;
 }
