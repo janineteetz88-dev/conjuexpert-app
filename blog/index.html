@@ -555,6 +555,11 @@
 <!-- /CHROME:FOOTER -->
 
 <script src="/blog/image-slot.js" defer></script>
+<style>
+.morerow{margin:16px 0 0;text-align:left}
+.moretoggle{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--blue);background:none;border:0;cursor:pointer;padding:8px 0}
+.moretoggle:hover{text-decoration:underline}
+</style>
 <script>
 document.documentElement.classList.add('js');
 
@@ -605,6 +610,7 @@ function applyFilter() {
     var vis = Array.prototype.some.call(posts, function(p) { return p.style.display !== 'none'; });
     t.style.display = vis ? '' : 'none';
   });
+  limitSections();
 }
 document.querySelectorAll('.filt').forEach(function(f) {
   f.addEventListener('click', function() {
@@ -621,6 +627,47 @@ if (langsel) {
     applyFilter();
   });
 }
+
+// Startseite: pro Sektion nur 2 Artikel zeigen, Rest über "(mehr)".
+var POST_LIMIT = 2;
+function limitSections() {
+  document.querySelectorAll('.topic:not(.fdw)').forEach(function(t) {
+    if (t.style.display === 'none') return;
+    var posts = Array.prototype.filter.call(t.querySelectorAll('.post'), function(p) {
+      return p.style.display !== 'none';
+    });
+    var expanded = t.dataset.expanded === '1';
+    if (!expanded) {
+      posts.forEach(function(p, i) { if (i >= POST_LIMIT) p.style.display = 'none'; });
+    }
+    var hidden = posts.length - POST_LIMIT;
+    var btn = t.querySelector('.moretoggle');
+    if (hidden > 0) {
+      if (!btn) {
+        var row = document.createElement('div');
+        row.className = 'morerow';
+        btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'moretoggle';
+        btn.addEventListener('click', function() {
+          t.dataset.expanded = t.dataset.expanded === '1' ? '0' : '1';
+          applyFilter();
+        });
+        row.appendChild(btn);
+        t.appendChild(row);
+      }
+      btn.parentNode.style.display = '';
+      btn.innerHTML = expanded
+        ? '<span data-l="de">weniger anzeigen ▲</span><span data-l="en">show less ▲</span>'
+        : '<span data-l="de">mehr anzeigen (' + hidden + ') ▾</span><span data-l="en">show more (' + hidden + ') ▾</span>';
+    } else if (btn) {
+      btn.parentNode.style.display = 'none';
+    }
+  });
+}
+
+// Initial anwenden (zeigt je Sektion nur 2 Karten + (mehr)).
+applyFilter();
 </script>
 <script src="/blog/blog-chrome.js" defer></script>
 </body>
