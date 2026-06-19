@@ -34,6 +34,29 @@ function isMetaHeaderText(s) {
   return META_HEADER_RE.test(String(s || "").trim());
 }
 
+/**
+ * Erster Intro-Absatz im Kopf (vor der ersten H1), der NICHT selbst eine
+ * Meta-/Slug-Zeile ist. Mit { italicOnly:true } nur kursive Absätze (*…*) —
+ * der typische unbeschriftete Standfirst. Dient als Meta-Description-Fallback.
+ */
+function firstHeadIntro(list, { italicOnly = false } = {}) {
+  for (const b of list || []) {
+    if (b.type === "heading_1") break; // Kopf endet an der H1
+    if (b.type !== "paragraph") continue;
+    const rt = b.paragraph?.rich_text || [];
+    const t = plainOf(rt).trim();
+    if (!t) continue;
+    if (/^\s*\*?\*?\s*Meta-Description:/i.test(t)) continue;
+    if (/Slug:/i.test(t)) continue;
+    if (italicOnly) {
+      const isItalic = rt.some((x) => x.plain_text?.trim() && x.annotations?.italic);
+      if (!isItalic) continue;
+    }
+    return t;
+  }
+  return "";
+}
+
 /* ─── Meta-Block aus führenden Blöcken → Text ────────────────────────────── */
 
 /**
@@ -57,14 +80,22 @@ export function blocksToMetaText(blocks) {
   if (start === -1) return blocksToMetaTextV2(list);
 
   const lines = ["**Meta (für Blog-Engine & Freigabe)**"];
+  let hasDesc = false;
   for (let i = start + 1; i < list.length; i++) {
     const b = list[i];
     if (b.type === "bulleted_list_item") {
-      lines.push(`- ${richToMd(b.bulleted_list_item?.rich_text)}`);
+      const md = richToMd(b.bulleted_list_item?.rich_text);
+      if (/Meta-Description:/i.test(md)) hasDesc = true;
+      lines.push(`- ${md}`);
       continue;
     }
     // erster Nicht-Bullet-Block beendet den Meta-Block.
     break;
+  }
+  // Fallback: kein "Meta-Description:"-Bullet → kursiven Intro-Absatz nehmen.
+  if (!hasDesc) {
+    const intro = firstHeadIntro(list, { italicOnly: true }) || firstHeadIntro(list);
+    if (intro) lines.push(`- **Meta-Description:** ${intro}`);
   }
   return lines.join("\n");
 }
@@ -111,19 +142,11 @@ function blocksToMetaTextV2(list) {
     }
   }
 
-  // Fallback: Kein explizites "Meta-Description:" → Standfirst nehmen
-  // (erster nicht-leerer Absatz vor der ersten H1, der nicht selbst Meta ist).
+  // Fallback: Kein explizites "Meta-Description:" → kursiven Intro-Absatz nehmen
+  // (erster kursiver Standfirst im Kopf vor der H1; sonst erster Intro-Absatz).
   if (!descMd) {
-    for (const b of list) {
-      if (b.type === "heading_1") break;
-      if (b.type === "paragraph") {
-        const t = plainOf(b.paragraph?.rich_text).trim();
-        if (t && !/^Meta-Description:/i.test(t) && !/Slug:/i.test(t)) {
-          descMd = `**Meta-Description:** ${t}`;
-          break;
-        }
-      }
-    }
+    const intro = firstHeadIntro(list, { italicOnly: true }) || firstHeadIntro(list);
+    if (intro) descMd = `**Meta-Description:** ${intro}`;
   }
 
   const out = ["**Meta (für Blog-Engine & Freigabe)**", `- ${metaMd.trim()}`];

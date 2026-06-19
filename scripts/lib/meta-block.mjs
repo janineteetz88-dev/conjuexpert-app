@@ -22,6 +22,26 @@ function stripBold(s) {
     .trim();
 }
 
+// Meta-Description säubern: Markdown-Auszeichnung entfernen, Whitespace
+// normalisieren und optional auf ~160 Zeichen an der Wortgrenze kürzen.
+export function cleanMetaDescription(s) {
+  let t = String(s || "").trim();
+  t = t.replace(/\[([^\]]+)\]\([^)]*\)/g, "$1"); // [Text](url) → Text
+  t = t.replace(/\*\*([^*]+)\*\*/g, "$1");        // **fett**
+  t = t.replace(/(\*|_)([^*_]+)\1/g, "$2");        // *kursiv* / _kursiv_
+  t = t.replace(/`([^`]+)`/g, "$1");               // `code`
+  t = t.replace(/[*_`]/g, "");                      // Markdown-Reste
+  t = t.replace(/\s+/g, " ").trim();
+  const MAX = 160;
+  if (t.length > MAX) {
+    let cut = t.slice(0, MAX);
+    const sp = cut.lastIndexOf(" ");
+    if (sp > 100) cut = cut.slice(0, sp);
+    t = cut.replace(/[\s.,;:–—-]+$/, "") + "…";
+  }
+  return t;
+}
+
 // "Hub/Pillar" → "hub", "Spoke" → "spoke"
 function normalizeTyp(val) {
   const v = String(val || "").toLowerCase();
@@ -163,7 +183,7 @@ export function parseMetaBlock(rawText) {
     } else if (L === "keyword") {
       meta.keyword = value.trim();
     } else if (L.startsWith("meta-description") || L.startsWith("meta description") || L.startsWith("metadescription")) {
-      meta.metaDescription = value.trim();
+      meta.metaDescription = cleanMetaDescription(value);
     }
     // Unbekannte Labels (z. B. "Status") werden ignoriert.
   }
