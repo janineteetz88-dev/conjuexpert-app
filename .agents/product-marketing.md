@@ -20,7 +20,7 @@ Erwachsene mit wenig Zeit.
 
 ## Die Gründerin
 
-**Janine Kreiser**, Gründerin von ConjuExpert. Entstanden 2024 aus einem
+**Janine Kreiser**, Gründerin von ConjuExpert. Entstanden im Sommer 2026 aus einem
 8-wöchigen Urlaub auf Gran Canaria — ihr Mann wollte Spanisch lernen, keine
 App löste das Problem wirklich. Also baute sie eine.
 
