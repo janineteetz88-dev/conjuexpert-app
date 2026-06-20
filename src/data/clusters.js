@@ -157,12 +157,14 @@ export const clusters = [
     color: "#34c759",
     hub: {
       slug: "/blog/spanisch-verben-konjugieren",
-      title: "✍️ [Entwurf] Spanische Verben konjugieren — der große Überblick",
+      title: "Spanische Verben konjugieren — der große Überblick",
       live: true,
     },
     spokes: [
       { slug: "/blog/preterito-indefinido-spanisch", title: "Vergangenheit auf Spanisch erzählen: pretérito indefinido einfach erklärt", live: true },
       { slug: "/blog/ser-vs-estar", title: "ser oder estar? Wann du welches ‚sein' brauchst", live: true },
+      { slug: "/blog/subjuntivo-spanisch", title: "Subjuntivo im Spanischen: endlich verstehen, wann (und wie) er kommt", live: true },
+      { slug: "/blog/unregelmaessige-verben-spanisch", title: "Unregelmäßige Verben Spanisch: drei Muster, die fast alles erklären", live: true },
     ],
   },
   {
@@ -172,7 +174,7 @@ export const clusters = [
     color: "#34c759",
     hub: {
       slug: "/blog/franzoesisch-verben-konjugieren",
-      title: "✍️ Französische Verben konjugieren — der große Überblick",
+      title: "Französische Verben konjugieren — der große Überblick",
       live: true,
     },
     spokes: [
@@ -200,6 +202,26 @@ export const clusters = [
       live: true,
     },
     spokes: [
+    ],
+  },
+  {
+    id: "brand",
+    lang: "de",
+    label: "Methodik",
+    color: "#34c759",
+    hub: null,
+    spokes: [
+      { slug: "/blog/unsere-geschichte", title: "Wie ConjuExpert entstand — die Gründerstory (v2)", live: true },
+    ],
+  },
+  {
+    id: "lerntipps",
+    lang: "de",
+    label: "Methodik",
+    color: "#34c759",
+    hub: null,
+    spokes: [
+      { slug: "/blog/sprachlern-app-vergleich", title: "Duolingo, Babbel, Busuu & Co.: Was diese Apps wirklich können — und wo sie schweigen (v2)", live: true },
     ],
   },
 ];
