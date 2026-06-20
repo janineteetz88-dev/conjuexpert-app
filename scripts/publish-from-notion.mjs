@@ -58,6 +58,12 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ARGS = process.argv.slice(2);
 const DRY_RUN = ARGS.includes("--dry-run");
 const WRITEBACK = process.env.WRITEBACK === "1";
+
+// Handgebaute Artikel: NIEMALS von der Pipeline (über)schreiben. Diese Seiten
+// werden von Hand gepflegt; die Engine lässt sie unangetastet.
+const PROTECTED_SLUGS = new Set([
+  "/blog/unsere-geschichte",
+]);
 const DB_ID = "f78defbe1d0543309b443fc134ad9127";
 // Echte Tabelle des Trackers. Der DB hängt versehentlich eine 2. (leere) Data Source an,
 // daher /databases/{id}/query nicht nutzbar — wir fragen die Data Source direkt ab.
@@ -286,6 +292,10 @@ async function main() {
 
     const metaText = blocksToMetaText(blocks);
     const meta = parseMetaBlock(metaText);
+    if (PROTECTED_SLUGS.has(meta.slug)) {
+      log(`    🔒 geschützt (handgebaut) → NICHT angefasst: ${meta.slug}`);
+      continue;
+    }
     const v = validateMeta(meta);
     // Meta-Description ist NICHT mehr allein ein Ausschlussgrund: fehlt NUR sie,
     // Warnung loggen + Fallback (Titel) nutzen statt den Artikel zu überspringen.
