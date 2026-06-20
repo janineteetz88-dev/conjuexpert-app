@@ -1,0 +1,41 @@
+# Blog-Render-Kontrakt (BLOG-RENDERING.md)
+
+> Quelle der Wahrheit für die Blog-Engine (`scripts/notion-to-html.mjs` bzw.
+> `scripts/lib/render-article.mjs`). Spiegelt den Abschnitt „Notion-Block-Typen → HTML"
+> aus `hans-office/.agents/blog-style.md`. Inhalt (Brand Voice, Länge, SEO-Stil)
+> bestimmt die Content-Routine — **dieses** Dokument regelt nur, **wie** die
+> Notion-Bausteine zu HTML werden. Standard und Engine immer synchron halten.
+
+## Pflicht-Mapping (Notion-Baustein → HTML)
+
+| Notion-Baustein | HTML-Ergebnis |
+|---|---|
+| Callout-Block (Beispiele, Störer/CTAs, „Kurz gesagt") | Hinweiskasten `.note` |
+| Toggle-Block (FAQ) | Akkordeon/`<details>`, ans Artikelende |
+| Tabelle (Konjugationen) | Konjugations-Tabelle |
+| Zeile mit Label `**Meta-Description:**` direkt unter der H1 | `<meta name="description">` |
+| Blockzitat oben (Slug · Typ · Cluster · Säule · Pillar · Hub · Geschwister · relatedVerbs) | Front-Matter (nicht im sichtbaren Body rendern) |
+| Normaler Text / H2 / H3 | `<p>` / `<h2>` / `<h3>` |
+
+## Harte Regeln
+
+1. **Meta-Description:** primär die Zeile mit Label `**Meta-Description:**`. Fehlt das
+   Label → Fallback auf den ersten kursiven Intro-Absatz; Markdown entfernen,
+   ~155–160 Zeichen. Kein Artikel darf wegen fehlender Meta-Description übersprungen
+   werden (nur warnen + Fallback).
+2. **Slug-Eindeutigkeit:** gleicher Slug → bestehende Seite überschreiben, NIE neu
+   anlegen (kein Duplicate Content).
+3. **Fonts:** self-hosted via `/fonts/blog.css`. Keine externen Google-Fonts (DSGVO).
+4. **Links:** intern als `https`, nie `http`.
+5. **Callouts ≠ Zitate:** nur Callout-Blöcke werden zu `.note`-Kästen; Zitate (`>`)
+   bleiben Zitate.
+
+## Bei jeder Änderung an `notion-to-html.mjs` / `render-article.mjs`
+
+- Gegen einen v2-Referenzartikel testen (z. B. `unregelmaessige-verben-spanisch`):
+  Meta-Description gesetzt? Callouts = `.note`? FAQ = Toggle? Tabellen ok? Keine
+  externen Fonts?
+- Der Render-Selbsttest (`scripts/render-selftest.mjs`) + der Render-Guard
+  (`scripts/lib/render-guard.mjs`) laufen in CI vor dem Publish und blockieren
+  fehlerhaftes HTML.
+- Standard-Doc (`hans-office/.agents/blog-style.md`) und diese Datei synchron halten.
