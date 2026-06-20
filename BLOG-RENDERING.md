@@ -29,6 +29,14 @@
 4. **Links:** intern als `https`, nie `http`.
 5. **Callouts ≠ Zitate:** nur Callout-Blöcke werden zu `.note`-Kästen; Zitate (`>`)
    bleiben Zitate.
+6. **Quellen automatisch:** Zitiert ein Artikel im Text einen Beleg aus dem
+   verifizierten Belegpool (Notion „Quellen zu Sprache Lernen" — z. B.
+   `(Dunlosky et al., 2013)`, `(Behnke, 2025)`, `(PFH Private Hochschule Göttingen, 2026)`),
+   hängt die Engine automatisch einen `Quellen`-Abschnitt (`<h2 id="quellen">` +
+   `<ol class="sources">`) ans Artikelende — mit verifizierter Angabe + Link, wo
+   vorhanden. Quelle der Wahrheit ist die Beleg-Tabelle `SOURCES` in
+   `render-article.mjs`; nur dort gepflegte Belege werden gelistet, nichts erfunden.
+   Quellenliste NICHT von Hand anlegen.
 
 ## Bei jeder Änderung an `notion-to-html.mjs` / `render-article.mjs`
 
