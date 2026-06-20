@@ -127,18 +127,13 @@ function renderUpLink({ meta, publishedSlugs, allArticles }) {
 
 function cardHtml(slug, lang, allArticles) {
   const title = titleForSlug(slug, allArticles);
-  const langUC = (lang.code || "de").toUpperCase();
   return `
-          <a class="post" href="${esc(slug)}/">
-            <div class="thumb" style="position:relative;overflow:hidden">
-              <div class="glow" style="background:${lang.color};opacity:.35;position:absolute;inset:0;border-radius:inherit"></div>
-              <span class="verb" style="position:relative;z-index:1;color:${lang.color}">${langUC}</span>
-            </div>
-            <div class="body">
-              <span class="cat gram"><span class="d"></span>${esc(lang.label)}</span>
-              <h3>${esc(title)}</h3>
-              <div class="pmeta"><span>${langUC}</span></div>
-            </div>
+          <a class="relcard" href="${esc(slug)}/">
+            <span class="reltxt">
+              <span class="relcat">${esc(lang.label)}</span>
+              <span class="reltitle">${esc(title)}</span>
+            </span>
+            <span class="relgo" aria-hidden="true">→</span>
           </a>`;
 }
 
@@ -155,7 +150,7 @@ function renderRelated({ meta, lang, publishedSlugs, allArticles }) {
     <section class="block related" style="padding:54px 0 0">
       <div class="wrap">
         <span class="sec-tag">Weiterlesen</span>
-        <div class="pair" style="margin-top:18px">${cards}
+        <div class="relgrid">${cards}
         </div>
       </div>
     </section>
@@ -175,7 +170,7 @@ function renderDownSection({ meta, lang, publishedSlugs, allArticles }) {
       <div class="wrap">
         <span class="sec-tag">Weiter in die Tiefe</span>
         <p style="color:var(--muted);margin:10px 0 0;max-width:60ch">Jede Methode hat einen eigenen, ausführlichen Artikel — hier geht es tiefer:</p>
-        <div class="pair" style="margin-top:18px">${cards}
+        <div class="relgrid">${cards}
         </div>
       </div>
     </section>
@@ -308,7 +303,7 @@ export function renderArticle({
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/blog/blog.css?v=5" />
+<link rel="stylesheet" href="/blog/blog.css?v=7" />
 <script type="application/ld+json">${jsonLd}</script>
 <style>
 .art-glow{position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:1000px;height:480px;background:var(--vivid);filter:blur(120px);opacity:.13;z-index:-1;border-radius:50%}
