@@ -95,12 +95,24 @@ async function notionQuery(path, method, body, version = NOTION_VERSION) {
 }
 
 async function getFreigegebene() {
+  // REFRESH_ALL=1: zusätzlich bereits veröffentlichte Artikel laden, damit ein
+  // Template-/Render-Update auf ALLE Live-Artikel angewandt wird (idempotenter
+  // Refresh, budget-frei; Writeback lässt "Veröffentlicht" unangetastet).
+  const refreshAll = process.env.REFRESH_ALL === "1";
+  const statusFilter = refreshAll
+    ? {
+        or: [
+          { property: "Status", select: { equals: "Freigegeben" } },
+          { property: "Status", select: { equals: "Veröffentlicht" } },
+        ],
+      }
+    : { property: "Status", select: { equals: "Freigegeben" } };
   const entries = [];
   let cursor;
   do {
     const body = {
       page_size: 100,
-      filter: { property: "Status", select: { equals: "Freigegeben" } },
+      filter: statusFilter,
     };
     if (cursor) body.start_cursor = cursor;
     const data = await notionQuery(`/data_sources/${DATA_SOURCE_ID}/query`, "POST", body, NOTION_VERSION_DS);
