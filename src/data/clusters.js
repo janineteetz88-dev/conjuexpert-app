@@ -162,6 +162,7 @@ export const clusters = [
     },
     spokes: [
       { slug: "/blog/preterito-indefinido-spanisch", title: "Vergangenheit auf Spanisch erzählen: pretérito indefinido einfach erklärt", live: true },
+      { slug: "/blog/ser-vs-estar", title: "ser oder estar? Wann du welches ‚sein' brauchst", live: true },
     ],
   },
   {
@@ -186,6 +187,19 @@ export const clusters = [
     hub: null,
     spokes: [
       { slug: "/blog/trennbare-verben-deutsch", title: "Trennbare Verben Deutsch: das Trenn-System", live: true },
+    ],
+  },
+  {
+    id: "en-grammatik",
+    lang: "de",
+    label: "Methodik",
+    color: "#34c759",
+    hub: {
+      slug: "/blog/englisch-verben-konjugieren",
+      title: "Englische Verben konjugieren — der große Überblick",
+      live: true,
+    },
+    spokes: [
     ],
   },
 ];
