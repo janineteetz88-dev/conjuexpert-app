@@ -63,6 +63,8 @@ const WRITEBACK = process.env.WRITEBACK === "1";
 // werden von Hand gepflegt; die Engine lässt sie unangetastet.
 const PROTECTED_SLUGS = new Set([
   "/blog/unsere-geschichte",
+  "/blog/karten-quiz-ki-saetze",
+  "/blog/subjuntivo-learn-tab",
 ]);
 const DB_ID = "f78defbe1d0543309b443fc134ad9127";
 // Echte Tabelle des Trackers. Der DB hängt versehentlich eine 2. (leere) Data Source an,
