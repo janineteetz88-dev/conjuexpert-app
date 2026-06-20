@@ -88,16 +88,20 @@ function parseBulletFields(line) {
   // Zeile beginnt mit "- "
   const body = line.replace(/^\s*[-*]\s+/, "");
 
-  // Split nur an " · " gefolgt von einem **Label:**-Muster.
-  const parts = body.split(/\s+·\s+(?=\*\*[^*]+:\*\*)/);
+  // Label-Muster: optional **fett**, Buchstabe + Label-Zeichen, dann ":".
+  // Toleriert fett UND nicht-fett gesetzte Labels (z. B. "**Slug:**" und "Slug:").
+  const LABEL = "(?:\\*\\*)?[A-Za-zÄÖÜäöüß][\\wÄÖÜäöüß ()\\/-]*?:(?:\\*\\*)?";
+  // Split nur an " · " DIREKT vor einem Label (nicht innerhalb von Slug-Listen:
+  // "/blog/a · /blog/b" beginnt mit "/", matcht das Label-Muster also nicht).
+  const parts = body.split(new RegExp(`\\s+·\\s+(?=${LABEL})`));
 
   const fields = {};
   for (const part of parts) {
-    const m = part.match(/^\*\*([^*]+?):\*\*\s*(.*)$/s);
+    const m = part.match(/^\s*\*{0,2}\s*([^*:·]+?)\s*:\s*\*{0,2}\s*(.*)$/s);
     if (!m) continue;
     const label = m[1].trim();
     const value = m[2].trim();
-    fields[label] = value;
+    if (label) fields[label] = value;
   }
   return fields;
 }
