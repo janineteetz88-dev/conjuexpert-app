@@ -38,3 +38,19 @@ Nicht Author-Side (von der Engine generiert, NICHT im Fließtext faken): Breadcr
 - Kein „In diesem Artikel lernst du…" als Opener.
 - Kein direktes Ansprechen des Lesers mit einer rhetorischen Frage als erste Zeile.
 
+## Layout & vertikaler Rhythmus (verbindlich)
+
+- **Eine Quelle der Wahrheit:** Alle Abstände der Artikel-Bausteine stehen
+  zentral in `blog/blog.css` im Block „Vertikaler Rhythmus (ZENTRAL)"
+  (`.artwrap`-spezifische Regeln). **Niemals** Komponenten-Margins pro Artikel
+  inline im `<style>` setzen — sonst driften die Abstände auseinander.
+- **Geteilte Bausteine gehören in `blog.css`**, nicht in jeden Artikel kopiert:
+  `.takeaways`, `.tldr`, `.faq2`, `.note`, `.figure`, `.shots`/`.shot1`,
+  `.ctab`, `.pull`, `.quizcta`, `.authorbox`, Hero/`.slot-cap`, `.gw-*`.
+- **Rhythmus-Richtwerte:** Fließtext-Absatz 26px; Boxen (Takeaways/TL;DR/
+  FAQ/Note) 32px oben & unten; Bilder/Screenshots 32px; Blockzitate 30px;
+  Tabellen 28px; H2 60px oben (mit Trennlinie), H3 42px oben.
+- **Bei jeder CSS-Änderung** den Cache-Buster hochzählen (`blog.css?v=N`) —
+  über alle Blog-Seiten und im Render-Template (`render-article.mjs` /
+  `notion-to-html.mjs`).
+

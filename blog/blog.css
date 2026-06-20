@@ -185,6 +185,31 @@ section.block{padding:80px 0;scroll-margin-top:84px}
 .prose blockquote{margin:30px 0;padding:18px 22px;background:var(--surface-2);border:1px solid var(--border);border-left:4px solid color-mix(in srgb,var(--violet) 45%,var(--border));border-radius:14px;font-size:16.5px;line-height:1.7;color:var(--ink)}
 .prose blockquote b{font-weight:700}
 
+/* ===== Vertikaler Rhythmus (ZENTRAL) =====
+   Einzige Quelle der Wahrheit für die Abstände der Artikel-Bausteine.
+   .artwrap-spezifisch → überschreibt versehentliche Inline-Margins in
+   einzelnen Artikeln (höhere Spezifität). Hier ändern = überall ändern.
+   Komponenten-Abstände NICHT pro Artikel inline setzen. */
+.artwrap .prose p{margin:0 0 26px}
+.artwrap .prose>h2{margin:60px 0 18px}
+.artwrap .prose>h3{margin:42px 0 12px}
+.artwrap .takeaways{margin:32px 0}
+.artwrap .tldr{margin:32px 0}
+.artwrap .faq2{margin:32px 0}
+.artwrap .faq2 details:last-child{margin-bottom:0}
+.artwrap .note{margin:32px 0}
+.artwrap .prose blockquote{margin:30px 0}
+.artwrap .figure{margin:32px 0}
+.artwrap .shots{margin:32px 0}
+.artwrap figure.shot1{margin:32px auto}
+.artwrap .ctab{margin:28px 0}
+.artwrap .conjcard{margin:28px 0}
+.artwrap .quizcta{margin:36px 0}
+.artwrap .authorbox{margin:40px 0}
+.artwrap .pull{margin:32px 0}
+.artwrap .slot-cap{margin:0 0 28px}
+.artwrap .art-hero-slot,.artwrap .art-hero-grad,.artwrap .art-hero{margin:30px 0 10px}
+
 /* conjugation table */
 .conjcard{border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-sm);margin:28px 0;background:var(--surface)}
 .conjcard .ch{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;background:var(--surface-2);border-bottom:1px solid var(--border)}
