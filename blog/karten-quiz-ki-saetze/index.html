@@ -66,6 +66,15 @@
 .gw-prod{background:linear-gradient(140deg,#a557ff,#0a84ff)}
 .gw-es{background:linear-gradient(140deg,#ff9f0a,#ff3b5c)}
 .gw-learn{background:linear-gradient(140deg,#1a9b46,#0a84ff)}
+.prose p{margin:0 0 24px}
+.prose>h2{margin:52px 0 16px}
+.shots{display:flex;gap:18px;margin:32px 0;flex-wrap:wrap;justify-content:center}
+.shots figure{flex:0 1 270px;max-width:300px;margin:0}
+.shots img{display:block;width:100%;height:auto;border-radius:20px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.shots figcaption{font-family:var(--mono);font-size:12px;color:var(--muted);margin:10px 0 0;text-align:center;line-height:1.45}
+figure.shot1{margin:32px auto;max-width:330px}
+figure.shot1 img{display:block;width:100%;height:auto;border-radius:22px;box-shadow:var(--shadow);border:1px solid var(--border)}
+figure.shot1 figcaption{font-family:var(--mono);font-size:12px;color:var(--muted);margin:10px 0 0;text-align:center;line-height:1.45}
 </style>
 </head>
 <body>
@@ -141,19 +150,39 @@
 
       <div class="prose">
 
-        <p>Eine klassische Karteikarte zeigt dir ein Wort und seine Bedeutung. Das reicht, um eine Form <em>wiederzuerkennen</em> — aber nicht, um sie selbst hinzubekommen, wenn du sie brauchst. Genau da setzt das Karten-Quiz an: Statt „Verb → Übersetzung" siehst du einen ganzen Satz mit einer Lücke, und in diese Lücke gehört die richtig konjugierte Form. Du machst also das, was beim Sprechen wirklich passiert — du bildest die Form aktiv, statt sie nur zu erkennen. Dieser eine Unterschied entscheidet darüber, ob eine Verbform im Kopf hängen bleibt oder beim nächsten Mal wieder weg ist. Und weil die Sätze von einer KI aus deinen eigenen Lieblingsthemen gebaut werden, übst du nicht an Lehrbuch-Dialogen vorbei, sondern an Inhalten, die dich tatsächlich interessieren. Das klingt nach einer Kleinigkeit, macht beim Dranbleiben aber den größten Unterschied.</p>
+        <p>Eine klassische Karteikarte zeigt dir ein Wort und seine Bedeutung. Das reicht, um eine Form <i>wiederzuerkennen</i> — aber nicht, um sie selbst hinzubekommen, wenn du sie brauchst. Genau da setzt das Karten-Quiz an: Statt „Verb → Übersetzung" siehst du einen ganzen Satz mit einer Lücke, und in diese Lücke gehört die richtig konjugierte Form. Du machst also das, was beim Sprechen wirklich passiert — du bildest die Form aktiv, statt sie nur zu erkennen. Dieser eine Unterschied entscheidet darüber, ob eine Verbform im Kopf hängen bleibt oder beim nächsten Mal wieder weg ist. Und weil die Sätze von einer KI aus deinen eigenen Lieblingsthemen gebaut werden, übst du nicht an Lehrbuch-Dialogen vorbei, sondern an Inhalten, die dich tatsächlich interessieren. Das klingt nach einer Kleinigkeit, macht beim Dranbleiben aber den größten Unterschied.</p>
+
+        <figure class="shot1">
+          <img src="/blog/img/app-karten-intro.jpg" alt="ConjuExpert Karten-Quiz: Erklärung in drei Schritten beim ersten Start" width="1107" height="1859" loading="lazy" />
+          <figcaption>Beim ersten Start erklärt sich das Karten-Quiz selbst — drei Schritte, kein Druck.</figcaption>
+        </figure>
 
         <h2 id="so-gehts">So funktioniert eine Karte: Lücke, umdrehen, ganzer Satz</h2>
         <p>Eine Runde im Karten-Quiz läuft immer in drei Schritten ab, und jeder Schritt hat einen Zweck. Zuerst erscheint ein Satz in deiner Lernsprache, in dem genau eine Verbform fehlt — daneben steht der Infinitiv als Hinweis. Deine Aufgabe: die passende Form im Kopf bilden, bevor du irgendetwas aufdeckst. Dann drehst du die Karte um. Jetzt siehst du den vollständigen Satz mit der korrekten Form, dazu die Übersetzung, damit du nicht nur die Grammatik, sondern auch die Bedeutung mitnimmst. Und im dritten Schritt entscheidest du ehrlich: saß die Form, oder muss sie nochmal kommen? Diese Selbsteinschätzung ist kein Beiwerk — sie steuert, wie oft dir die Karte wieder begegnet. Nimm ein konkretes Beispiel auf Spanisch:</p>
-        <blockquote>Los fines de semana yo <b>______</b> (cocinar) para toda la familia.<br />→ Los fines de semana yo <b>cocino</b> para toda la familia.<br /><span style="color:var(--muted)">Am Wochenende koche ich für die ganze Familie.</span></blockquote>
-        <p>Du siehst zuerst nur die Lücke und „cocinar". Du bildest <em>cocino</em>, drehst um — und bekommst die Bestätigung im ganzen Satz samt Übersetzung. Bei kniffligeren Formen wird der Effekt noch deutlicher, etwa wenn ein Auslöser den <a class="inline" href="/blog/subjuntivo-spanisch/">Subjuntivo</a> verlangt:</p>
+        <blockquote>Yo <b>…</b> la mesa después de cenar. <span style="color:var(--muted)">— quitar · Pretérito indefinido</span><br />→ Yo <b>quité</b> la mesa después de cenar.<br /><span style="color:var(--muted)">Ich habe den Tisch nach dem Abendessen abgeräumt.</span></blockquote>
+        <div class="shots">
+          <figure>
+            <img src="/blog/img/app-karten-front.jpg" alt="ConjuExpert Karten-Quiz: Lückensatz auf Spanisch – quitar, Person yo, Pretérito indefinido" width="1125" height="1850" loading="lazy" />
+            <figcaption>1 · Der Lückensatz — Form im Kopf bilden, dann zum Umdrehen tippen.</figcaption>
+          </figure>
+          <figure>
+            <img src="/blog/img/app-karten-back.jpg" alt="ConjuExpert Karten-Quiz: Lösung quité im ganzen Satz mit deutscher Übersetzung" width="1125" height="1830" loading="lazy" />
+            <figcaption>2 · Umgedreht — die Lösung im ganzen Satz, zweisprachig erklärt.</figcaption>
+          </figure>
+        </div>
+        <p>Du siehst zuerst nur die Lücke, dazu „quitar" und die Zeitform. Du bildest <em>quité</em>, drehst die Karte um — und bekommst die Bestätigung im ganzen Satz samt Übersetzung („abräumen"). Bei kniffligeren Formen wird der Effekt noch deutlicher, etwa wenn ein Auslöser den <a class="inline" href="/blog/subjuntivo-spanisch/">Subjuntivo</a> verlangt:</p>
         <blockquote>Espero que tú <b>______</b> (tener) un buen viaje.<br />→ Espero que tú <b>tengas</b> un buen viaje.<br /><span style="color:var(--muted)">Ich hoffe, dass du eine gute Reise hast.</span></blockquote>
         <p>Hier reicht „kennen" nicht: Du musst wissen, dass <em>esperar que</em> den Subjuntivo auslöst, und die unregelmäßige Form <em>tengas</em> aktiv bilden. Genau solche Stellen sind es, an denen Verben im echten Gespräch sonst hängen bleiben — und genau die trainiert die Karte gezielt.</p>
 
         <div class="note"><b>💡 Warum „erst raten, dann aufdecken"?</b> Der aktive Abruf vor der Lösung ist einer der am besten belegten Lerneffekte überhaupt (Dunlosky et al., 2013). Das kurze „Ich muss die Form jetzt selbst bilden" bringt mehr als zehnmal Lesen.</div>
 
         <h2 id="ki-saetze">Warum die Sätze aus deinen Lieblingsthemen kommen</h2>
-        <p>Der zweite Baustein ist der Kontext. Du hinterlegst in der App, was dich interessiert — Kochen, Fußball, Reisen, ein bestimmtes Land, deine Arbeit — und die KI baut die Übungssätze rund um diese Themen. Das ist mehr als Deko: Eine Form, die in einem Satz steht, der dich wirklich angeht, bleibt messbar besser hängen als dieselbe Form im x-ten neutralen Beispielsatz. Außerdem siehst du das Verb sofort in seiner natürlichen Umgebung — mit Präposition, mit Objekt, mit der typischen Wortstellung — statt isoliert in einer Tabelle. So lernst du nicht nur <em>cocino</em>, sondern gleich, wie der Satz drumherum klingt. Und weil die Sätze immer neu erzeugt werden, paukst du nie stur dieselben fünf Beispiele, sondern begegnest „deiner" Form in immer neuen, sinnvollen Zusammenhängen. Das hält die Übung frisch und sorgt dafür, dass du die Form später auch dann abrufen kannst, wenn der Satz drumherum ein anderer ist.</p>
+        <p>Der zweite Baustein ist der Kontext. Du hinterlegst in der App, was dich interessiert — Kochen, Fußball, Reisen, ein bestimmtes Land, deine Arbeit — und die KI baut die Übungssätze rund um diese Themen. Das ist mehr als Deko: Eine Form, die in einem Satz steht, der dich wirklich angeht, bleibt messbar besser hängen als dieselbe Form im x-ten neutralen Beispielsatz. Außerdem siehst du das Verb sofort in seiner natürlichen Umgebung — mit Präposition, mit Objekt, mit der typischen Wortstellung — statt isoliert in einer Tabelle. So lernst du nicht nur <em>quité</em>, sondern gleich, wie der Satz drumherum klingt. Und weil die Sätze immer neu erzeugt werden, paukst du nie stur dieselben fünf Beispiele, sondern begegnest „deiner" Form in immer neuen, sinnvollen Zusammenhängen. Das hält die Übung frisch und sorgt dafür, dass du die Form später auch dann abrufen kannst, wenn der Satz drumherum ein anderer ist.</p>
+
+        <figure class="shot1">
+          <img src="/blog/img/app-karten-setup.jpg" alt="ConjuExpert Karten-Quiz: Auswahl von Zeitform, Wörtern, Richtung und Themen vor der Runde" width="1125" height="1810" loading="lazy" />
+          <figcaption>Zeitform, Wörter, Richtung (z. B. ES → DE) und deine Themen wählst du vor jeder Runde.</figcaption>
+        </figure>
 
         <div class="quizcta">
           <span class="qi" style="display:flex;align-items:center;justify-content:center;background:#fff"><img src="/favicon.svg" alt="ConjuExpert" width="60" height="60" /></span>
