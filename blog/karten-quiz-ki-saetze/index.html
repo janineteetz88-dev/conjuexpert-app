@@ -75,6 +75,17 @@
 figure.shot1{margin:32px auto;max-width:330px}
 figure.shot1 img{display:block;width:100%;height:auto;border-radius:22px;box-shadow:var(--shadow);border:1px solid var(--border)}
 figure.shot1 figcaption{font-family:var(--mono);font-size:12px;color:var(--muted);margin:10px 0 0;text-align:center;line-height:1.45}
+/* VORSCHAU: dunklere In-Text-Links + saubere "Weiterlesen"-Karten */
+.prose a.inline{color:#0a4da0;border-bottom-color:color-mix(in srgb,#0a4da0 35%,transparent)}
+.prose a.inline:hover{border-color:#0a4da0;color:#07336d}
+.relgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+@media(max-width:600px){.relgrid{grid-template-columns:1fr}}
+.relcard{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--violet);border-radius:14px;padding:15px 18px;box-shadow:var(--shadow-sm);text-decoration:none;transition:transform .15s,box-shadow .15s}
+.relcard:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.relcard .relcat{display:block;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--violet);margin-bottom:4px}
+.relcard .reltitle{display:block;font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:-.01em;color:var(--ink);line-height:1.25;text-wrap:balance}
+.relcard .relgo{flex:none;color:var(--muted);font-weight:700;font-size:18px}
+.relcard:hover .relgo{color:var(--violet)}
 </style>
 </head>
 <body>
@@ -244,22 +255,20 @@ figure.shot1 figcaption{font-family:var(--mono);font-size:12px;color:var(--muted
     <section class="block related" style="padding:54px 0 0">
       <div class="wrap">
         <span class="sec-tag">Weiterlesen</span>
-        <div class="pair" style="margin-top:18px">
-          <a class="post" href="/blog/active-recall-sprachenlernen/">
-            <div class="thumb" style="position:relative;overflow:hidden"><div class="glow gw-learn"></div><span class="verb">Active Recall</span></div>
-            <div class="body">
-              <span class="cat learn"><span class="d"></span>Lerntipps</span>
-              <h3>Active Recall fürs Sprachenlernen — aktiv abrufen statt nur lesen</h3>
-              <div class="pmeta"><span>Lerntipps</span><span class="dotsep"></span><span>6 min</span></div>
-            </div>
+        <div class="relgrid">
+          <a class="relcard" href="/blog/active-recall-sprachenlernen/">
+            <span class="reltxt">
+              <span class="relcat">Lerntipps</span>
+              <span class="reltitle">Active Recall fürs Sprachenlernen — aktiv abrufen statt nur lesen</span>
+            </span>
+            <span class="relgo" aria-hidden="true">→</span>
           </a>
-          <a class="post" href="/blog/spaced-repetition-sprachenlernen/">
-            <div class="thumb" style="position:relative;overflow:hidden"><div class="glow gw-learn"></div><span class="verb">Wiederholung</span></div>
-            <div class="body">
-              <span class="cat learn"><span class="d"></span>Lerntipps</span>
-              <h3>Spaced Repetition richtig nutzen — der Wiederhol-Rhythmus, der sitzt</h3>
-              <div class="pmeta"><span>Lerntipps</span><span class="dotsep"></span><span>6 min</span></div>
-            </div>
+          <a class="relcard" href="/blog/spaced-repetition-sprachenlernen/">
+            <span class="reltxt">
+              <span class="relcat">Lerntipps</span>
+              <span class="reltitle">Spaced Repetition richtig nutzen — der Wiederhol-Rhythmus, der sitzt</span>
+            </span>
+            <span class="relgo" aria-hidden="true">→</span>
           </a>
         </div>
       </div>
