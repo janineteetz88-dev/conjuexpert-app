@@ -39,10 +39,19 @@ const NEUTRAL_LANG = {
 
 function resolveLang(meta) {
   const s = String(meta.sprache || "").trim();
-  if (!s || /neutral/i.test(s)) return NEUTRAL_LANG;
-  // direkter Treffer in LANG_MAP, sonst neutral
-  for (const [k, v] of Object.entries(LANG_MAP)) {
-    if (k.toLowerCase() === s.toLowerCase()) return v;
+  if (s && !/neutral/i.test(s)) {
+    for (const [k, v] of Object.entries(LANG_MAP)) {
+      if (k.toLowerCase() === s.toLowerCase()) return v;
+    }
+  }
+  // Fallback: Sprache aus dem Cluster-Präfix ableiten (es-/fr-/en-/nl-/de-…),
+  // damit Sprach-Hubs/Spokes nicht fälschlich als "Methodik" (neutral) rendern.
+  const cl = String(meta.cluster || "").trim().toLowerCase();
+  const m = cl.match(/^(es|fr|en|nl|de)\b/);
+  if (m) {
+    const byCode = { es: "Spanisch", fr: "Französisch", en: "Englisch", nl: "Niederländisch", de: "Deutsch" };
+    const v = LANG_MAP[byCode[m[1]]];
+    if (v) return v;
   }
   return NEUTRAL_LANG;
 }
@@ -276,10 +285,11 @@ export function renderArticle({
   const grad = lang.grad;
 
   return `<!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-lang="de">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#f5e4c3" />
 <title>${esc(title)} | ConjuExpert</title>
 <meta name="description" content="${esc(description)}" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
@@ -309,7 +319,7 @@ export function renderArticle({
 .art-hero-grad .hf{font-family:var(--display);font-weight:800;font-size:clamp(26px,5vw,46px);letter-spacing:-.02em;line-height:1.05;text-shadow:0 3px 18px rgba(0,0,0,.28)}
 .slot-cap{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;margin:0 0 28px}
 .cluster-up{margin:14px 0 0}
-.cluster-up .uplink{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--blue);text-decoration:none;border:1px solid var(--border);border-radius:999px;padding:8px 16px;background:var(--surface)}
+.cluster-up .uplink{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink);text-decoration:none;border:1px solid var(--border);border-radius:999px;padding:8px 16px;background:var(--surface)}
 .cluster-up .uplink:hover{background:var(--surface-2)}
 .faq2{margin:8px 0 0}
 .faq2 details{border:1px solid var(--border);border-radius:16px;background:var(--surface);box-shadow:var(--shadow-sm);margin-bottom:12px;overflow:hidden}
@@ -331,14 +341,19 @@ export function renderArticle({
       <span class="brand-mark" data-mark></span>
       <span class="brand-name">Conju<b>Expert</b> <span class="sub">Blog</span></span>
     </a>
-    <nav class="nav-links" aria-label="Navigation">
-      <a href="/blog/">Alle Artikel</a>
-      <a href="/blog/#grammatik">Grammatik</a>
-      <a href="/">Zur Website</a>
+    <nav class="nav-links" aria-label="Blog-Navigation">
+      <a href="/blog/" data-l="de">Alle Artikel</a><a href="/blog/" data-l="en">All articles</a>
+      <a href="/blog/#grammatik" data-l="de">Grammatik</a><a href="/blog/#grammatik" data-l="en">Grammar</a>
+      <a href="/blog/#lernen" data-l="de">Lerntipps</a><a href="/blog/#lernen" data-l="en">Learning</a>
+      <a href="/blog/#produkt" data-l="de">News</a><a href="/blog/#produkt" data-l="en">News</a>
     </nav>
     <div class="nav-right">
+      <div class="langsw" role="group" aria-label="Interface-Sprache">
+        <button data-set="de" class="on" aria-pressed="true">DE</button><button data-set="en" aria-pressed="false">EN</button>
+      </div>
       <a class="btn btn-primary btn-sm" href="/?utm_source=blog&amp;utm_medium=nav&amp;utm_content=${slugKey(slug)}">
-        <span class="g"></span><span class="l">App öffnen</span>
+        <span class="g"></span>
+        <span class="l"><span data-l="de">App öffnen</span><span data-l="en">Open app</span></span>
       </a>
     </div>
   </div>
@@ -364,17 +379,6 @@ export function renderArticle({
           <span class="lngtag" style="position:static">${langUC}</span>
         </div>
       </div>
-    </div>
-
-    <div class="artwrap reveal" data-d="1">
-      <div class="art-hero-grad">
-        <div class="gfill"></div>
-        <div class="hcontent">
-          <p class="hk">${esc(lang.label)} · Methodik</p>
-          <div class="hf">${esc(title)}</div>
-        </div>
-      </div>
-      <p class="slot-cap">${esc(title)}</p>
     </div>
 
     <div class="artwrap">
@@ -453,6 +457,7 @@ document.querySelectorAll('[data-mark]').forEach(function(m) {
   }
 });
 </script>
+<script src="/blog/blog-chrome.js" defer></script>
 </body>
 </html>`;
 }
