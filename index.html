@@ -557,6 +557,22 @@ body {
 /* ===== Small screen responsive fixes ===== */
 @media (max-width: 480px) {
   .usermenu-label { display: none; }
+  /* Kompakter Kopfbereich auf dem Handy — deutlich mehr Platz für den Inhalt */
+  .appbar { padding-top: max(calc(env(safe-area-inset-top, 0px) + 6px), 12px); padding-bottom: 7px; gap: 8px; }
+  .brand-mark { width: 28px; height: 28px; }
+  .brand-name { font-size: 18px; }
+  .langbar { padding-top: 6px; padding-bottom: 6px; gap: 5px; }
+  .langbtn { padding: 4px 2px; border-radius: 12px; }
+  .langflag { font-size: 16px; margin-top: 1px; }
+  .langname { font-size: 9px; margin-top: 0; }
+  .tabs { padding-top: 5px; padding-bottom: 6px; }
+  .tabs-track { gap: 5px; }
+  .tab { min-height: 32px; padding: 4px 4px 3px; font-size: 11px; }
+  .quizmodes { grid-template-columns: repeat(5, 1fr); gap: 5px; }
+  .qmode { padding: 6px 2px 5px; gap: 3px; border-radius: 12px; }
+  .qmode-ic { width: 26px; height: 26px; border-radius: 9px; }
+  .qmode-lb { font-size: 10px; }
+  .quizintro-line { margin: 7px 0 2px; font-size: 12px; }
 }
 @media (max-width: 380px) {
   .brand-name { font-size: 17px; }
@@ -565,11 +581,13 @@ body {
   .streakpill { padding: 5px 8px; gap: 6px; }
   .streakmeta b { font-size: 13px; }
   .streakmeta small { font-size: 10px; }
-  .langbtn { padding: 8px 6px; min-width: 0; }
-  .langflag { font-size: 18px; }
+  .langbtn { padding: 4px 2px; min-width: 0; }
+  .langflag { font-size: 15px; }
   .appbar { gap: 6px; padding-left: 14px; padding-right: 14px; }
-  .tabbar { gap: 0; }
-  .tabbtn { font-size: 10px; padding: 10px 6px; }
+  .tabs-track { gap: 4px; }
+  .tab { font-size: 10px; min-height: 30px; }
+  .qmode-ic { width: 24px; height: 24px; }
+  .qmode-lb { font-size: 9px; }
 }
 @media (max-width: 320px) {
   .brand-name { font-size: 15px; }
