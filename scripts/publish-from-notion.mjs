@@ -38,6 +38,7 @@ import {
 import { parseMetaBlock, validateMeta, cleanMetaDescription } from "./lib/meta-block.mjs";
 import { normalizeFaq } from "./lib/faq.mjs";
 import { renderArticle } from "./lib/render-article.mjs";
+import { auditRenderedHtml } from "./lib/render-guard.mjs";
 import { blocksToMetaText, extractFaqAndContent } from "./lib/notion-adapt.mjs";
 import {
   upsertClusters,
@@ -352,6 +353,7 @@ async function main() {
   // PASS 2: Rendern + schreiben.
   const renderedSlugs = [];
   const deployed = []; // { article, slug } für Writeback
+  const guardFailures = [];
   for (const a of toPublish) {
     let html;
     try {
@@ -365,6 +367,15 @@ async function main() {
       });
     } catch (e) {
       warn(`Render fehlgeschlagen für ${a.meta.slug}: ${e.message}`);
+      continue;
+    }
+
+    // Render-Guard: kaputtes HTML wird NIE geschrieben/veröffentlicht.
+    const problems = auditRenderedHtml(html, { slug: a.meta.slug });
+    if (problems.length) {
+      guardFailures.push(a.meta.slug);
+      warn(`Render-Guard FEHLER → NICHT veröffentlicht: ${a.meta.slug}`);
+      for (const p of problems) warn(`        • ${p}`);
       continue;
     }
 
@@ -521,6 +532,13 @@ async function main() {
   }
 
   log(`\n✅  Fertig. Gerendert: ${renderedSlugs.length}/${toPublish.length}` + (deferred.length ? ` · verschoben (Tageslimit): ${deferred.length}` : "") + `\n`);
+
+  if (guardFailures.length) {
+    console.error(
+      `❌  Render-Guard: ${guardFailures.length} Artikel mit Struktur-/Chrome-Fehlern → NICHT veröffentlicht:\n   - ${guardFailures.join("\n   - ")}\n   Lauf schlägt fehl. Bitte Template/Inhalt prüfen.`
+    );
+    process.exit(1);
+  }
 }
 
 // Nur ausführen, wenn direkt gestartet (nicht bei `import` aus den Unit-Tests).

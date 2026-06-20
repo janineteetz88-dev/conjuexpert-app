@@ -34,6 +34,12 @@ jobs:
         with:
           node-version: "20"
 
+      # Pre-Deploy-Schranke (ohne Notion): prüft die Render-Chrome/Struktur an
+      # Muster-Artikeln. Schlägt sie fehl, bricht der Job ab und der Publish-
+      # Schritt startet nicht — kaputtes Layout kann nicht online gehen.
+      - name: Render-Selbsttest (Chrome/Struktur-Guard)
+        run: node scripts/render-selftest.mjs
+
       # Auto-Writeback: jeder reguläre Lauf (Schedule/Push) setzt Status → "Veröffentlicht"
       # + "Veröffentlicht am" (Datum). Sicherheit bleibt im Skript: nur bei erfolgreichem
       # Deploy, idempotent, ausschließlich Status=="Freigegeben". Ein Dry-Run-Dispatch
