@@ -100,13 +100,30 @@ async function ensureProperties() {
   }
 }
 
+// Aus einer beliebigen URL (Live-URL/Live-Link/Pfad) den /blog/<slug> ziehen.
+function urlToSlug(u) {
+  if (!u) return "";
+  const m = String(u).match(/\/blog\/[^/?#]+/);
+  return m ? m[0] : "";
+}
+
 function parseEntry(page) {
   const props = page.properties;
+  // URL aus allen bekannten Spalten lesen — der Writeback nutzt "Live-URL",
+  // createEntry "Live-Link". Beides (plus Altnamen) berücksichtigen.
+  const url =
+    props["Live-URL"]?.url ||
+    props["Live-Link"]?.url ||
+    props["Link"]?.url ||
+    props["URL"]?.url ||
+    props["Notion-Quelle"]?.url ||
+    "";
   return {
     id: page.id,
     title: props["Thema"]?.title?.[0]?.plain_text || props["Titel"]?.title?.[0]?.plain_text || props["Name"]?.title?.[0]?.plain_text || "",
     status: props["Status"]?.select?.name || "",
-    url: props["Live-Link"]?.url || props["Link"]?.url || props["URL"]?.url || "",
+    url,
+    slug: urlToSlug(url),
     datePublished: props["Veröffentlicht am"]?.date?.start || "",
   };
 }
@@ -217,12 +234,17 @@ const toUpdateDate = [];
 const mismatches = [];
 
 for (const article of repoArticles) {
-  const match = parsed.find(
-    (e) =>
-      e.url === article.url ||
-      e.url === article.url.replace(/\/$/, "") ||
-      (e.title && article.title && e.title.toLowerCase() === article.title.toLowerCase())
-  );
+  // Slug-Eindeutigkeit erzwingen: gleicher Slug → bestehende Zeile, NIE neu
+  // anlegen. Der Slug ist der robusteste Schlüssel (unabhängig von Titel-
+  // Präfixen wie "✍️ [Entwurf]" oder davon, in welcher URL-Spalte die Live-URL
+  // steht) und hat deshalb VORRANG vor URL-/Titel-Treffern.
+  const match =
+    (article.slug && parsed.find((e) => e.slug && e.slug === article.slug)) ||
+    parsed.find(
+      (e) =>
+        (e.url && (e.url === article.url || e.url === article.url.replace(/\/$/, ""))) ||
+        (e.title && article.title && e.title.toLowerCase() === article.title.toLowerCase())
+    );
 
   if (!match) {
     toCreate.push(article);
