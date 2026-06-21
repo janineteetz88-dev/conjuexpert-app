@@ -123,35 +123,45 @@ function isV2MetaDescParagraph(b) {
  * parseMetaBlock() versteht.
  */
 function blocksToMetaTextV2(list) {
-  let metaMd = null;
+  let quoteMd = null;
   for (const b of list) {
-    if (isV2MetaQuote(b)) {
-      const md = richToMd(b.quote?.rich_text);
-      // Nur die Slug-Zeile (falls TL;DR im selben Block per Zeilenumbruch folgt).
-      metaMd = md.split(/\r?\n/).find((ln) => /Slug:/i.test(ln)) || md;
-      break;
+    if (isV2MetaQuote(b)) { quoteMd = richToMd(b.quote?.rich_text); break; }
+  }
+  if (!quoteMd) return "";
+
+  // Jede Zeile des Meta-Zitatblocks, die ein "Label:" trägt, wird zu einem
+  // eigenen Bullet. So funktionieren BEIDE Alt-Varianten rückwärtskompatibel:
+  //   • einzeilig:  "Slug: … · Typ: … · Cluster: …"   → ein Bullet, mehrere Felder
+  //   • mehrzeilig: "Slug: …" ⏎ "Typ: …" ⏎ "Cluster: …" → je ein Bullet
+  // Reine Block-Überschriften ("**Meta-Block**", ohne Doppelpunkt) fallen raus.
+  const bullets = [];
+  let hasDesc = false;
+  for (const raw of quoteMd.split(/\r?\n/)) {
+    const t = raw.trim();
+    if (!t || !t.includes(":")) continue;
+    if (/meta-?description\s*:/i.test(t)) hasDesc = true;
+    bullets.push(`- ${t}`);
+  }
+  if (bullets.length === 0) return "";
+
+  // Fallback: Kein "Meta-Description:" im Zitat → eigener Absatz oder kursiver
+  // Standfirst im Kopf (vor der H1) als Meta-Description.
+  if (!hasDesc) {
+    let descMd = "";
+    for (const b of list) {
+      if (b.type === "paragraph") {
+        const md = richToMd(b.paragraph?.rich_text);
+        if (/^\s*\*?\*?\s*Meta-Description:/i.test(md)) { descMd = md.trim(); break; }
+      }
     }
-  }
-  if (!metaMd) return "";
-
-  let descMd = "";
-  for (const b of list) {
-    if (b.type === "paragraph") {
-      const md = richToMd(b.paragraph?.rich_text);
-      if (/^\s*\*?\*?\s*Meta-Description:/i.test(md)) { descMd = md.trim(); break; }
+    if (!descMd) {
+      const intro = firstHeadIntro(list, { italicOnly: true }) || firstHeadIntro(list);
+      if (intro) descMd = `**Meta-Description:** ${intro}`;
     }
+    if (descMd) bullets.push(`- ${descMd}`);
   }
 
-  // Fallback: Kein explizites "Meta-Description:" → kursiven Intro-Absatz nehmen
-  // (erster kursiver Standfirst im Kopf vor der H1; sonst erster Intro-Absatz).
-  if (!descMd) {
-    const intro = firstHeadIntro(list, { italicOnly: true }) || firstHeadIntro(list);
-    if (intro) descMd = `**Meta-Description:** ${intro}`;
-  }
-
-  const out = ["**Meta (für Blog-Engine & Freigabe)**", `- ${metaMd.trim()}`];
-  if (descMd) out.push(`- ${descMd}`);
-  return out.join("\n");
+  return ["**Meta (für Blog-Engine & Freigabe)**", ...bullets].join("\n");
 }
 
 /**

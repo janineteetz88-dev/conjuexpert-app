@@ -174,11 +174,13 @@ export function parseMetaBlock(rawText) {
     } else if (L.startsWith("runter") || L.startsWith("seitwärts") || L.startsWith("seitwarts") || L.startsWith("geschwister")) {
       // "Runter (Spokes)" (Hub) · "Seitwärts (Geschwister)" (Spoke) · v2: "Geschwister"
       meta.downOrSiblings = splitList(value);
-    } else if (L === "pillar") {
-      // v2: eigenes Pillar-Feld (Global-Pillar des Clusters)
+    } else if (L.startsWith("pillar")) {
+      // v2: Pillar-Feld (Global-Pillar des Clusters). Rückwärtskompatibel auch
+      // für Kombi-Labels wie "Pillar (Hub)", "Pillar/Hub", "Pillar (hoch)" —
+      // der Wert ist in allen Fällen der Hoch-Link und fließt in pillarUp.
       meta.pillar = extractSlug(value);
-    } else if (L === "hub") {
-      // v2: eigenes Hub-Feld (Cluster-Überblick)
+    } else if (L.startsWith("hub")) {
+      // v2: Hub-Feld (Cluster-Überblick). Toleriert auch "Hub (Pillar)" etc.
       meta.hub = extractSlug(value);
     } else if (L.startsWith("relatedverbs") || L === "related verbs") {
       meta.relatedVerbs = splitList(value);

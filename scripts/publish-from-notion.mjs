@@ -534,6 +534,8 @@ async function main() {
             "Live-URL": { url: `${BASE_LIVE}${d.slug}/` },
             "Veröffentlicht am": { date: { start: today() } },
             "Status": { select: { name: "Veröffentlicht" } },
+            // Frisch über diese Pipeline veröffentlicht ⇒ ist auf neuem Standard.
+            "Auf neuem Standard": { checkbox: true },
           },
         });
         log(`    ✓ ${d.slug} → Veröffentlicht`);

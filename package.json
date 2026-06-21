@@ -1,7 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "build:app": "node scripts/build-index.mjs"
+    "build:app": "node scripts/build-index.mjs",
+    "test": "node --test scripts/lib/*.test.mjs"
   },
   "devDependencies": {
     "@babel/standalone": "^7.29.0",
