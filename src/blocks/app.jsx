@@ -2758,7 +2758,7 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
                   <span className="flashpron">{q.pronoun}</span>
                   {cloze && !cloze.loading &&
                 <div className="flashcloze" onClick={(e) => e.stopPropagation()}>
-                      <WordSentence text={cloze.gap} fromName={window.CONJ[lang].name} toName={nativeName} cachePrefix={`kunju-wtr-${lang}-nat`} big={true} accent={true} />
+                      <WordSentence text={cloze.gap} fromName={window.CONJ[lang].name} toName={nativeName} cachePrefix={`kunju-wtr-${lang}-nat`} big={true} accent={true} saveLang={lang} saveDir="fromTarget" />
                     </div>
                 }
                 </div>

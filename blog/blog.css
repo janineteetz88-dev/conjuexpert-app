@@ -51,8 +51,8 @@ html[data-lang="en"] span[data-l~="en"],html[data-lang="en"] a[data-l~="en"],htm
 header.nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(1.5) blur(14px);background:rgba(251,251,253,.78);border-bottom:1px solid var(--border)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
 .brand{display:flex;align-items:center;gap:11px}
-.brand-mark{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;width:32px;height:32px;padding:5px;background:var(--surface);border-radius:10px;box-shadow:var(--shadow-sm);flex:none}
-.brand-mark i{display:block;border-radius:3px}
+.brand-mark{width:34px;height:34px;border-radius:9px;box-shadow:var(--shadow-sm);flex:none;background:#fff url("/favicon.svg") center/cover no-repeat}
+.brand-mark i{display:none}
 .brand-name{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:-.02em;color:var(--pink)}
 .brand-name b{font-weight:700;background:linear-gradient(90deg,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .brand-name .sub{color:var(--muted);font-weight:600}
@@ -64,6 +64,14 @@ header.nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(1.5) blur(1
 .langsw button{border:0;background:transparent;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--muted);padding:8px 11px;cursor:pointer;transition:color .2s,background .2s}
 .langsw button.on{color:#fff;background:linear-gradient(95deg,var(--blue),var(--violet))}
 @media(max-width:860px){.nav-links{display:none}}
+@media(max-width:560px){
+  header.nav .langsw{display:none}
+  .nav-in{gap:10px;height:64px}
+  .brand-name{font-size:18px}
+  .btn-sm{padding:10px 14px;font-size:14px}
+  .quizcta{flex-direction:column;align-items:center;text-align:center;gap:13px}
+  .quizcta .qt{min-width:0}
+}
 
 /* ===== generic section ===== */
 section.block{padding:80px 0;scroll-margin-top:84px}
@@ -129,7 +137,7 @@ section.block{padding:80px 0;scroll-margin-top:84px}
 
 /* ===== article cards ===== */
 .post{display:flex;flex-direction:row;align-items:stretch;background:var(--surface);border:1px solid var(--border);border-radius:22px;overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .3s,box-shadow .3s;position:relative}
-.post > .lngtag{position:absolute;right:13px;top:13px;z-index:4}
+.post > .lngtag{display:none}
 .post:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
 .post .thumb{width:142px;flex:none;aspect-ratio:9/16;height:auto;position:relative;overflow:hidden}
 .related .post .thumb{aspect-ratio:2/3;width:120px}
