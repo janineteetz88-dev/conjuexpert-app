@@ -69,6 +69,16 @@ Deno.serve(async (req) => {
     });
   }
 
+  // Promo-Code nach erfolgreicher Einlösung deaktivieren (Einmal-Nutzung)
+  const { error: deactivateError } = await supaAdmin
+    .from("promo_codes")
+    .update({ active: false })
+    .eq("code", promo.code);
+
+  if (deactivateError) {
+    console.error("promo_codes deactivation failed:", deactivateError.message);
+  }
+
   return new Response(JSON.stringify({ success: true, premium_until: premiumUntil }), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
