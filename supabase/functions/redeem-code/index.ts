@@ -42,12 +42,19 @@ Deno.serve(async (req) => {
 
   const { data: promo, error: promoError } = await supaAdmin
     .from("promo_codes")
-    .select("code, months, active")
+    .select("code, months, active, max_uses, current_uses")
     .eq("code", code.trim().toUpperCase())
     .eq("active", true)
     .single();
 
   if (promoError || !promo) {
+    return new Response(JSON.stringify({ error: "Ungültiger Code" }), {
+      status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  // Nutzungslimit prüfen. max_uses === null bedeutet unbegrenzt nutzbar.
+  if (promo.max_uses !== null && (promo.current_uses ?? 0) >= promo.max_uses) {
     return new Response(JSON.stringify({ error: "Ungültiger Code" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
@@ -69,14 +76,18 @@ Deno.serve(async (req) => {
     });
   }
 
-  // Promo-Code nach erfolgreicher Einlösung deaktivieren (Einmal-Nutzung)
-  const { error: deactivateError } = await supaAdmin
+  // Nutzungszähler erhöhen und nur deaktivieren, wenn das Limit erreicht ist.
+  // max_uses === null => unbegrenzt nutzbar (z. B. öffentlicher Aktionscode),
+  // bleibt also dauerhaft aktiv.
+  const newUses = (promo.current_uses ?? 0) + 1;
+  const reachedLimit = promo.max_uses !== null && newUses >= promo.max_uses;
+  const { error: usageError } = await supaAdmin
     .from("promo_codes")
-    .update({ active: false })
+    .update({ current_uses: newUses, active: reachedLimit ? false : true })
     .eq("code", promo.code);
 
-  if (deactivateError) {
-    console.error("promo_codes deactivation failed:", deactivateError.message);
+  if (usageError) {
+    console.error("promo_codes usage update failed:", usageError.message);
   }
 
   return new Response(JSON.stringify({ success: true, premium_until: premiumUntil }), {
