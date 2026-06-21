@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 290 72" width="290" height="72" role="img" aria-label="ConjuExpert">
+  <defs>
+    <linearGradient id="ceExpert" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0a84ff"/>
+      <stop offset="1" stop-color="#a557ff"/>
+    </linearGradient>
+  </defs>
+  <!-- Wellen-Icon (identisch zu favicon.svg, ohne Hintergrund) -->
+  <g transform="translate(8,9) scale(1.7)">
+    <rect x="2.5"  y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/>
+    <rect x="6.5"  y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/>
+    <rect x="10.5" y="8"  width="3" height="19" rx="1.5" fill="#ffc400"/>
+    <rect x="14.5" y="5"  width="3" height="22" rx="1.5" fill="#34c759"/>
+    <rect x="18.5" y="8"  width="3" height="19" rx="1.5" fill="#00bcd4"/>
+    <rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/>
+    <rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/>
+  </g>
+  <!-- Wortmarke: Space Grotesk (App-Display-Font); "Expert" mit Blau→Lila-Verlauf -->
+  <text x="68" y="48" font-family="'Space Grotesk','Plus Jakarta Sans',system-ui,Arial,sans-serif" font-size="34" letter-spacing="-0.8">
+    <tspan font-weight="600" fill="#111827">Conju</tspan><tspan font-weight="700" fill="url(#ceExpert)">Expert</tspan>
+  </text>
+</svg>
