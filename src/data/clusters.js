@@ -165,6 +165,9 @@ export const clusters = [
       { slug: "/blog/ser-vs-estar", title: "ser oder estar? Wann du welches ‚sein' brauchst", live: true },
       { slug: "/blog/subjuntivo-spanisch", title: "Subjuntivo im Spanischen: endlich verstehen, wann (und wie) er kommt", live: true },
       { slug: "/blog/unregelmaessige-verben-spanisch", title: "Unregelmäßige Verben Spanisch: drei Muster, die fast alles erklären", live: true },
+      { slug: "/blog/indefinido-imperfecto", title: "Pretérito indefinido vs. imperfecto: Welche Vergangenheit wann?", live: true },
+      { slug: "/blog/preterito-perfecto-spanisch", title: "Pretérito perfecto (he hablado): bilden und richtig nutzen", live: true },
+      { slug: "/blog/futuro-ir-a-spanisch", title: "Die Zukunft auf Spanisch: ir a + Infinitiv vs. futuro simple", live: true },
     ],
   },
   {
@@ -222,6 +225,7 @@ export const clusters = [
     hub: null,
     spokes: [
       { slug: "/blog/sprachlern-app-vergleich", title: "Duolingo, Babbel, Busuu & Co.: Was diese Apps wirklich können — und wo sie schweigen (v2)", live: true },
+      { slug: "/blog/mit-der-sprache-umgeben", title: "Sich mit der Sprache umgeben: 10 Challenges (v2)", live: true },
     ],
   },
 ];
