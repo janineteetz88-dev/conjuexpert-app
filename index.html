@@ -373,6 +373,14 @@
   --mono: "JetBrains Mono", ui-monospace, monospace;
   --gap: 17px;
   --pad: 20px;
+  /* Button-/CTA-System — kanonische Tokens (docs/button-system.md) */
+  --brand-pink: #e71583;
+  --brand-violet: #a557ff;
+  --brand-blue: #0a84ff;
+  --danger: #ff3b5c;
+  --success: #1a9b46;
+  --cta-app: linear-gradient(135deg, #e71583, #a557ff);
+  --cta-rainbow: linear-gradient(100deg, #ff3b5c, #ff7a18, #ffc400, #34c759, #00bcd4, #0a84ff, #a557ff);
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
@@ -732,7 +740,7 @@ body {
   transition: transform 0.14s;
 }
 .cta:active { transform: scale(0.97); }
-.cta-rainbow { position: absolute; inset: 0; background: linear-gradient(135deg, #e7156b 0%, #a557ff 100%); }
+.cta-rainbow { position: absolute; inset: 0; background: linear-gradient(135deg, #e71583 0%, #a557ff 100%); }
 #approot[data-accent="soft"] .cta-rainbow { filter: saturate(0.75); }
 #approot[data-accent="mono"] .cta-rainbow { background: linear-gradient(135deg, #2b2f3a, #4a4f60); }
 .cta-label { position: relative; z-index: 2; }
@@ -1508,11 +1516,11 @@ body {
 .micbtn:active { transform: scale(0.92); }
 .micbtn:disabled { opacity: 0.5; }
 .micbtn.on { animation: micpulse 1s ease-in-out infinite; }
-.micbtn.rec { background: #ff3b3b; animation: micpulse 1.1s ease-in-out infinite; }
+.micbtn.rec { background: #ff3b5c; animation: micpulse 1.1s ease-in-out infinite; }
 .micstop { display: inline-block; width: 26px; height: 26px; border-radius: 6px; background: #fff; }
 .micwrap { display: flex; flex-direction: column; align-items: center; gap: 9px; }
 .michint { font-size: 12.5px; color: var(--muted); font-weight: 600; font-family: var(--font-display); }
-.micbtn.rec + .michint, .micwrap .micbtn.rec ~ .michint { color: #ff3b3b; }
+.micbtn.rec + .michint, .micwrap .micbtn.rec ~ .michint { color: #ff3b5c; }
 @keyframes micpulse { 0%,100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--lc, #0a84ff) 50%, transparent); } 50% { box-shadow: 0 0 0 16px transparent; } }
 @keyframes micpulsered { 0%,100% { box-shadow: 0 0 0 0 rgba(255,59,59,0.5); } 50% { box-shadow: 0 0 0 18px transparent; } }
 .micbtn.rec { animation: micpulsered 1.1s ease-in-out infinite; }
@@ -1855,8 +1863,8 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 }
 .offer-price { display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .offer-price-line { font-size: 13px; color: var(--muted); }
-.offer-price-line b { color: #d6143f; font-weight: 700; }
-.offer-price-zahlst { font-size: 14px; font-weight: 700; color: #d6143f; margin-top: 4px; }
+.offer-price-line b { color: #ff3b5c; font-weight: 700; }
+.offer-price-zahlst { font-size: 14px; font-weight: 700; color: #ff3b5c; margin-top: 4px; }
 .offer-price-num { font-size: 44px; font-weight: 700; letter-spacing: -.02em; color: var(--text); line-height: 1; }
 .offer-price-per { font-size: 18px; font-weight: 600; color: var(--muted); }
 .offer-savings { font-size: 12.5px; color: var(--muted); font-family: var(--mono); }
@@ -1962,7 +1970,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 .plansel-features { background: var(--surface-2); border-radius: 14px; padding: 13px 16px; display: flex; flex-direction: column; gap: 10px; }
 .plansel-feature-row { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--text); }
 .plansel-fcheck { width: 20px; height: 20px; border-radius: 50%; background: rgba(26,155,70,.15); color: #1a9b46; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.plansel-cta { width: 100%; padding: 16px; border-radius: 16px; border: none; background: linear-gradient(135deg, #e7156b 0%, #a557ff 100%); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; letter-spacing: -.01em; box-shadow: 0 10px 32px -8px rgba(165,87,255,.5); font-family: var(--font-display); transition: opacity .15s; }
+.plansel-cta { width: 100%; padding: 16px; border-radius: 16px; border: none; background: linear-gradient(135deg, #e71583 0%, #a557ff 100%); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; letter-spacing: -.01em; box-shadow: 0 10px 32px -8px rgba(165,87,255,.5); font-family: var(--font-display); transition: opacity .15s; }
 .plansel-cta:active { opacity: .88; }
 .trust-line { text-align: center; font-size: 11.5px; color: var(--muted); margin: 0; }
 .paysuc-bg { position: absolute; inset: 0; background: rgba(0,0,0,.55); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
@@ -13308,7 +13316,7 @@ function TourGate({
     icon: "🎁",
     title: tr("offer_trial_b"),
     text: tr("tour_trial_sub"),
-    col: "#e7156b"
+    col: "#e71583"
   }, {
     kind: "conjugate",
     icon: "▦",
@@ -13566,7 +13574,7 @@ function AccountDeletedModal({
       padding: "15px",
       borderRadius: "16px",
       border: "none",
-      background: "linear-gradient(135deg,#e7156b,#a557ff)",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
       color: "#fff",
       fontSize: "15px",
       fontWeight: 800,
@@ -13689,7 +13697,7 @@ function UserMenu({
       width: "22px",
       height: "22px",
       borderRadius: "50%",
-      background: "linear-gradient(135deg,#e7156b,#a557ff)",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -14086,7 +14094,7 @@ function GuestMenu({
       padding: "11px",
       borderRadius: "12px",
       border: "none",
-      background: "linear-gradient(135deg,#e7156b,#a557ff)",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
       color: "#fff",
       fontWeight: 700,
       fontSize: "14px",
@@ -14641,7 +14649,7 @@ function BonusBar({
     onClick: onOpen,
     style: {
       width: "100%",
-      background: "linear-gradient(135deg,#e7156b,#a557ff)",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
       border: "none",
       padding: "6px 12px",
       fontSize: "12px",
@@ -14713,7 +14721,7 @@ function ReviewPrompt({
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      background: "linear-gradient(135deg,#e7156b,#ff7a18,#a557ff)",
+      background: "linear-gradient(135deg,#e71583,#ff7a18,#a557ff)",
       padding: "22px 22px 18px",
       textAlign: "center",
       color: "#fff"
@@ -14777,7 +14785,7 @@ function ReviewPrompt({
       border: "none",
       borderRadius: "15px",
       padding: "15px",
-      background: "linear-gradient(135deg,#e7156b,#a557ff)",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
       color: "#fff",
       fontFamily: "var(--font-display)",
       fontWeight: 800,
@@ -14934,7 +14942,7 @@ function WelcomeOffer({
     t: ""
   }), " ", /*#__PURE__*/React.createElement("span", {
     style: {
-      color: "#e7156b",
+      color: "#e71583",
       fontVariantNumeric: "tabular-nums"
     }
   }, cd))), /*#__PURE__*/React.createElement("h2", {
@@ -15406,7 +15414,7 @@ function PlanSelect({
       padding: "11px 24px",
       borderRadius: "12px",
       border: "none",
-      background: "linear-gradient(135deg,#e7156b,#a557ff)",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
       color: "#fff",
       fontWeight: 700,
       fontSize: "14px",
@@ -15441,7 +15449,7 @@ function PlanSelect({
       padding: "13px",
       borderRadius: "12px",
       border: "none",
-      background: !code.trim() || codeState === "loading" ? "var(--border)" : "linear-gradient(135deg,#e7156b,#a557ff)",
+      background: !code.trim() || codeState === "loading" ? "var(--border)" : "linear-gradient(135deg,#e71583,#a557ff)",
       color: !code.trim() || codeState === "loading" ? "var(--muted)" : "#fff",
       fontWeight: 700,
       fontSize: "15px",
