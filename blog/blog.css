@@ -10,6 +10,9 @@
   --pink:#e71583;--violet:#a557ff;--blue:#0a84ff;--green:#1a9b46;--orange:#ff7a18;
   --es:#ff9f0a;--fr:#a557ff;--en:#0a84ff;--nl:#30c95a;--de:#ff3b5c;
   --vivid:linear-gradient(100deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff);
+  /* Button-/CTA-System — kanonische Tokens (docs/button-system.md) */
+  --brand-pink:var(--pink);--brand-violet:var(--violet);--brand-blue:var(--blue);
+  --danger:#ff3b5c;--success:var(--green);--cta-rainbow:var(--vivid);
   --maxw:1180px;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
