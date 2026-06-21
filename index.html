@@ -629,12 +629,12 @@ body {
 #approot[data-accent="mono"] .appbar::after { background: var(--text); opacity: 0.25; }
 .brand { display: flex; align-items: center; gap: 12px; }
 .brand-mark {
-  display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px;
-  width: 34px; height: 34px; padding: 5px; flex-shrink: 0;
-  background: var(--surface-2); border-radius: 11px; align-items: stretch;
-  box-shadow: var(--shadow-sm);
+  display: block;
+  width: 34px; height: 34px; flex-shrink: 0;
+  border-radius: 9px; box-shadow: var(--shadow-sm);
+  background: #fff url("/favicon.svg") center / cover no-repeat;
 }
-.brand-mark i { display: block; border-radius: 3px; }
+.brand-mark i { display: none; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
 .brand-name { font-family: var(--font-display); font-weight: 600; font-size: 20px; letter-spacing: -0.02em; }
 .brand-name b { font-weight: 700; background: linear-gradient(90deg, #0a84ff, #a557ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
