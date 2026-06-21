@@ -5,6 +5,8 @@
   },
   "devDependencies": {
     "@babel/standalone": "^7.29.0",
-    "sharp": "^0.35.2"
+    "fontkit": "^2.0.4",
+    "sharp": "^0.35.2",
+    "wawoff2": "^2.0.1"
   }
 }
