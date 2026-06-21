@@ -51,8 +51,8 @@ html[data-lang="en"] span[data-l~="en"],html[data-lang="en"] a[data-l~="en"],htm
 header.nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(1.5) blur(14px);background:rgba(251,251,253,.78);border-bottom:1px solid var(--border)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
 .brand{display:flex;align-items:center;gap:11px}
-.brand-mark{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;width:32px;height:32px;padding:5px;background:var(--surface);border-radius:10px;box-shadow:var(--shadow-sm);flex:none}
-.brand-mark i{display:block;border-radius:3px}
+.brand-mark{width:34px;height:34px;border-radius:9px;box-shadow:var(--shadow-sm);flex:none;background:#fff url("/favicon.svg") center/cover no-repeat}
+.brand-mark i{display:none}
 .brand-name{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:-.02em;color:var(--pink)}
 .brand-name b{font-weight:700;background:linear-gradient(90deg,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .brand-name .sub{color:var(--muted);font-weight:600}
