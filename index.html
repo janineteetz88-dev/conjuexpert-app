@@ -558,16 +558,18 @@ body {
 @media (max-width: 480px) {
   .usermenu-label { display: none; }
   /* Kompakter Kopfbereich auf dem Handy — deutlich mehr Platz für den Inhalt */
-  .appbar { padding-top: max(calc(env(safe-area-inset-top, 0px) + 6px), 12px); padding-bottom: 7px; gap: 8px; }
-  .brand-mark { width: 28px; height: 28px; }
+  .appbar { padding-top: max(calc(env(safe-area-inset-top, 0px) + 5px), 11px); padding-bottom: 6px; gap: 8px; }
+  .brand-mark { width: 27px; height: 27px; }
   .brand-name { font-size: 18px; }
-  .langbar { padding-top: 6px; padding-bottom: 6px; gap: 5px; }
-  .langbtn { padding: 4px 2px; border-radius: 12px; }
-  .langflag { font-size: 16px; margin-top: 1px; }
+  .bonus-banner { padding: 6px 14px; font-size: 12.5px; }
+  .bonus-banner-cta { padding: 4px 11px; font-size: 11.5px; }
+  .langbar { padding-top: 5px; padding-bottom: 5px; gap: 5px; }
+  .langbtn { padding: 3px 2px; border-radius: 12px; }
+  .langflag { font-size: 15px; margin-top: 1px; }
   .langname { font-size: 9px; margin-top: 0; }
-  .tabs { padding-top: 5px; padding-bottom: 6px; }
+  .tabs { padding-top: 4px; padding-bottom: 5px; }
   .tabs-track { gap: 5px; }
-  .tab { min-height: 32px; padding: 4px 4px 3px; font-size: 11px; }
+  .tab { min-height: 30px; padding: 4px 4px 3px; font-size: 11px; }
   .quizmodes { grid-template-columns: repeat(5, 1fr); gap: 5px; }
   .qmode { padding: 6px 2px 5px; gap: 3px; border-radius: 12px; }
   .qmode-ic { width: 26px; height: 26px; border-radius: 9px; }
@@ -1382,6 +1384,8 @@ body {
 .gsummary .ghl { color: #6a3fd0; font-weight: 700; }
 .gcta { position: relative; border: 0; border-radius: 15px; padding: 15px; width: 100%; font-family: var(--font-display); font-weight: 700; font-size: 15px; color: #fff; cursor: pointer; overflow: hidden; box-shadow: 0 16px 36px -16px rgba(120,40,200,0.5); flex-shrink: 0; }
 .learn-blog-btn { display: flex; align-items: center; justify-content: center; position: relative; border-radius: 15px; padding: 14px 20px; width: 100%; font-family: var(--font-display); font-weight: 700; font-size: 15px; color: #fff; text-decoration: none; overflow: hidden; box-shadow: 0 16px 36px -16px rgba(120,40,200,0.5); margin-top: 20px; flex-shrink: 0; }
+.learn-blog-btn .gg { position: absolute; inset: 0; background: linear-gradient(120deg, #7c3aed, #a557ff 55%, #c06bff); }
+.learn-blog-btn span:not(.gg) { position: relative; z-index: 2; text-shadow: 0 1px 3px rgba(80,20,160,0.35); }
 .goal-sheet > * { flex-shrink: 0; }
 .gcta .gg { position: absolute; inset: 0; background: linear-gradient(100deg, #ff3b5c, #ff7a18, #ffc400, #34c759, #00bcd4, #0a84ff, #a557ff); background-size: 240% 100%; animation: gslide 5s linear infinite; }
 @keyframes gslide { to { background-position: 240% 0; } }
