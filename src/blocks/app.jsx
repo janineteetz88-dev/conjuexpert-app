@@ -4477,9 +4477,10 @@ function LoginModal({ onClose, fromPayment }) {
         onClose();
       } else {
         const fn = firstName.trim();
-        const { error } = await supa.auth.signUp({ email, password: pw, options: fn ? { data: { first_name: fn } } : undefined });
+        if (!fn) { setErr(tr("your_name")); setLoading(false); return; }
+        const { error } = await supa.auth.signUp({ email, password: pw, options: { data: { first_name: fn } } });
         if (error) throw error;
-        if (fn) persist("kunju-name", fn);
+        persist("kunju-name", fn);
         setDone(true);
       }
     } catch(e) { setErr(e.message); }
@@ -4514,7 +4515,7 @@ function LoginModal({ onClose, fromPayment }) {
         ) : (
           <form onSubmit={submit} style={{ width: "100%" }}>
             {mode === "signup" && (
-              <input type="text" name="given-name" aria-label={tr("your_name")} placeholder={tr("your_name")} value={firstName} onChange={e => setFirstName(e.target.value)}
+              <input type="text" name="given-name" aria-label={tr("your_name")} placeholder={tr("your_name")} value={firstName} onChange={e => setFirstName(e.target.value)} required
                 className="nameinput" style={{ marginBottom: "10px", fontWeight: 400, fontSize: "16px" }} autoComplete="given-name" maxLength={40} />
             )}
             <input ref={emailRef} type="email" name="email" aria-label="E-Mail" placeholder="E-Mail" value={email} onChange={e => setEmail(e.target.value)} required

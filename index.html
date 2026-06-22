@@ -14202,19 +14202,24 @@ function LoginModal({
         onClose();
       } else {
         const fn = firstName.trim();
+        if (!fn) {
+          setErr(tr("your_name"));
+          setLoading(false);
+          return;
+        }
         const {
           error
         } = await supa.auth.signUp({
           email,
           password: pw,
-          options: fn ? {
+          options: {
             data: {
               first_name: fn
             }
-          } : undefined
+          }
         });
         if (error) throw error;
-        if (fn) persist("kunju-name", fn);
+        persist("kunju-name", fn);
         setDone(true);
       }
     } catch (e) {
@@ -14299,6 +14304,7 @@ function LoginModal({
     placeholder: tr("your_name"),
     value: firstName,
     onChange: e => setFirstName(e.target.value),
+    required: true,
     className: "nameinput",
     style: {
       marginBottom: "10px",
