@@ -5,7 +5,11 @@
  */
 
 const DB_ID = "f78defbe1d0543309b443fc134ad9127";
-const NOTION_VERSION = "2022-06-28";
+// Echte Tabelle des Trackers. Dem DB hängt versehentlich eine 2. (leere) Data
+// Source an → /databases-Operationen geben 400 multiple_data_sources. Wir
+// adressieren daher direkt die Data Source (Notion-Version 2025-09-03).
+const DATA_SOURCE_ID = "675fdfec-f644-4fd4-9f7e-340b85966013";
+const NOTION_VERSION_DS = "2025-09-03"; // data_sources-API (Multi-Source-DBs)
 const key = process.env.NOTION_API_KEY;
 
 if (!key) { console.error("❌ NOTION_API_KEY fehlt"); process.exit(1); }
@@ -15,7 +19,7 @@ async function notionFetch(path, method = "GET", body = null) {
     method,
     headers: {
       Authorization: `Bearer ${key}`,
-      "Notion-Version": NOTION_VERSION,
+      "Notion-Version": NOTION_VERSION_DS,
       "Content-Type": "application/json",
     },
     body: body ? JSON.stringify(body) : undefined,
@@ -37,7 +41,7 @@ console.log(`\n📝 Lege ${entries.length} Backlog-Einträge in Notion an…\n`)
 for (const e of entries) {
   try {
     await notionFetch("/pages", "POST", {
-      parent: { database_id: DB_ID },
+      parent: { type: "data_source_id", data_source_id: DATA_SOURCE_ID },
       properties: {
         "Thema":   { title: [{ text: { content: e.thema } }] },
         "Status":  { select: { name: "Backlog" } },
