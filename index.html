@@ -641,6 +641,10 @@ body {
 }
 #approot[data-accent="mono"] .appbar::after { background: var(--text); opacity: 0.25; }
 .brand { display: flex; align-items: center; gap: 12px; }
+.appbar-side { flex: 1 1 0; min-width: 0; display: flex; align-items: center; }
+.appbar-left { justify-content: flex-start; }
+.appbar-right { justify-content: flex-end; }
+.appbar-center { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
 .brand-mark {
   display: block;
   width: 34px; height: 34px; flex-shrink: 0;
@@ -13690,7 +13694,7 @@ function UserChip({
       gap: "5px",
       fontFamily: "inherit"
     }
-  }, avatar, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", {
     className: "brand-greet",
     style: {
       pointerEvents: "none",
@@ -14786,7 +14790,7 @@ function InstallBanner({
   }, "ConjuExpert auf deinen Homescreen!", /*#__PURE__*/React.createElement("small", null, "Kein App Store n\xF6tig.")), /*#__PURE__*/React.createElement("button", {
     className: "install-bar-btn",
     onClick: onInstall
-  }, "Installieren"), /*#__PURE__*/React.createElement("button", {
+  }, "So geht’s!"), /*#__PURE__*/React.createElement("button", {
     className: "install-bar-x",
     onClick: onDismiss,
     "aria-label": "Schlie\xDFen"
@@ -17300,26 +17304,8 @@ function App() {
   }, /*#__PURE__*/React.createElement("header", {
     className: "appbar"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "brand",
-    style: {
-      minWidth: 0,
-      flex: 1
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "brand-mark"
-  }, RAINBOW.slice(0, 5).map((c, i) => /*#__PURE__*/React.createElement("i", {
-    key: i,
-    style: {
-      background: c
-    }
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "brand-text"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "brand-name",
-    style: {
-      color: "rgb(231, 21, 131)"
-    }
-  }, "Conju", /*#__PURE__*/React.createElement("b", null, "Expert")), supaUser ? /*#__PURE__*/React.createElement(UserMenu, {
+    className: "appbar-side appbar-left"
+  }, supaUser ? /*#__PURE__*/React.createElement(UserMenu, {
     user: supaUser,
     name: name,
     isPremium: isPremium,
@@ -17351,30 +17337,16 @@ function App() {
     onPin: () => setShowPin(true)
   }) : /*#__PURE__*/React.createElement("span", {
     className: "brand-tag"
-  }, tr("tagline")))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "flex-end",
-      gap: "3px",
-      flexShrink: 0
-    }
+  }, tr("tagline"))), /*#__PURE__*/React.createElement("div", {
+    className: "appbar-center"
   }, /*#__PURE__*/React.createElement("span", {
+    className: "brand-name",
     style: {
-      fontSize: "9px",
-      fontWeight: 800,
-      letterSpacing: "0.07em",
-      textTransform: "uppercase",
-      color: LANG_META[lang].color,
-      lineHeight: 1
+      color: "rgb(231, 21, 131)"
     }
-  }, "\uD83C\uDFAF ", {
-    de: "Ziele",
-    en: "Goals",
-    es: "Metas",
-    nl: "Doelen",
-    fr: "Objectifs"
-  }[UILANG] || "Goals"), /*#__PURE__*/React.createElement("button", {
+  }, "Conju", /*#__PURE__*/React.createElement("b", null, "Expert"))), /*#__PURE__*/React.createElement("div", {
+    className: "appbar-side appbar-right"
+  }, /*#__PURE__*/React.createElement("button", {
     className: "streakpill",
     onClick: () => {
       closeSkHint();
@@ -17412,7 +17384,7 @@ function App() {
     onClose: () => setShowDeletedMsg(false),
     wasPremium: deletedWasPremium
   }), showInstall && /*#__PURE__*/React.createElement(InstallBanner, {
-    onInstall: handleInstall,
+    onInstall: () => setShowPin(true),
     onDismiss: dismissInstall
   }), showIOSInstall && !showInstall && /*#__PURE__*/React.createElement(IOSInstallBanner, {
     onDismiss: dismissIOSInstall
