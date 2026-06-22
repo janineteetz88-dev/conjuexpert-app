@@ -30,6 +30,8 @@ import {
 
 import { renderSourcesSection } from "./sources.mjs";
 
+import { extractKeyTakeaways, addHeadingIdsAndToc } from "./geo-blocks.mjs";
+
 /* ─── Sprache: neutraler Eintrag für sprach-neutrale Methodik-Artikel ────── */
 
 const NEUTRAL_LANG = {
@@ -243,7 +245,17 @@ export function renderArticle({
   const description = meta.metaDescription || "";
   const langUC = lang.code.toUpperCase();
 
-  const contentHtml = blocksToHtml(contentBlocks || []);
+  // GEO-Baustein 1: „Das Wichtigste in Kürze"-Box aus einem markierten Callout
+  // (wird aus dem Body gehoben, damit er nicht doppelt als .note erscheint).
+  const { boxHtml: takeawaysHtml, blocks: bodyBlocks } = extractKeyTakeaways(
+    contentBlocks || [],
+    blocksToHtml
+  );
+  // GEO-Baustein 2: H2-IDs + automatisches Inhaltsverzeichnis aus den H2.
+  const { html: contentHtml, tocHtml } = addHeadingIdsAndToc(
+    blocksToHtml(bodyBlocks),
+    { minToc: 3 }
+  );
   const faqHtml = renderFaqHtml(faqItems || []);
   const sourcesHtml = renderSourcesSection(`${contentHtml} ${faqHtml}`);
 
@@ -329,6 +341,18 @@ export function renderArticle({
 .faq2 details[open] summary .pm{transform:rotate(135deg)}
 .faq2 details[open] summary{border-bottom:1px solid var(--border)}
 .faq2 .a{padding:16px 20px 20px;color:var(--muted);font-size:15.5px;line-height:1.6}
+.keytakeaways{position:relative;margin:18px 0 28px;padding:20px 22px 20px 26px;border:1px solid var(--border);border-radius:18px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.keytakeaways::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:4px;border-radius:4px;background:linear-gradient(180deg,var(--pink),var(--violet))}
+.keytakeaways h2{margin:0 0 10px;font-size:18px}
+.keytakeaways p{margin:0;color:var(--ink);line-height:1.6}
+.keytakeaways ul,.keytakeaways ol{margin:0;padding-left:20px}
+.keytakeaways li{margin:6px 0;color:var(--ink);line-height:1.55}
+.toc{margin:0 0 30px;padding:16px 20px;border:1px solid var(--border);border-radius:16px;background:var(--surface-2)}
+.toc-h{margin:0 0 8px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.toc ol{margin:0;padding-left:20px}
+.toc li{margin:4px 0}
+.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+.toc a:hover{border-bottom-color:var(--pink)}
 </style>
 </head>
 <body>
@@ -382,6 +406,8 @@ export function renderArticle({
     <div class="artwrap">
       <div class="prose">
 
+        ${takeawaysHtml}
+        ${tocHtml}
         ${contentHtml}
         ${faqHtml}
         ${sourcesHtml}

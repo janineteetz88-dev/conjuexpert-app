@@ -16,6 +16,7 @@ import { fileURLToPath } from "node:url";
 
 import { parseMetaBlock, validateMeta } from "../lib/meta-block.mjs";
 import { normalizeFaq } from "../lib/faq.mjs";
+import { slugifyHeading, addHeadingIdsAndToc, extractKeyTakeaways } from "../lib/geo-blocks.mjs";
 import { blocksToMetaText, extractFaqAndContent } from "../lib/notion-adapt.mjs";
 import {
   mergeClusterArrays,
@@ -680,6 +681,59 @@ console.log("[10] Tageslimit (publishedBlogToday + Budget)");
   eq(sliceCount(2, 5), 1, "2 heute, 5 neu → 1 online");
   eq(sliceCount(3, 5), 0, "3 heute → 0 weitere");
   eq(sliceCount(10, 5), 0, "10 heute (Backfill) → 0 weitere");
+}
+
+/* Test 11: GEO-Bausteine — Heading-IDs/TOC + „Das Wichtigste in Kürze"-Box */
+console.log("[11] GEO-Bausteine (TOC + Das-Wichtigste-Box)");
+{
+  // slugifyHeading: lesbar, akzentfrei, eindeutig
+  eq(slugifyHeading("Was ist der Subjuntivo?"), "was-ist-der-subjuntivo", "slug: Satzzeichen weg");
+  eq(slugifyHeading("Présent & Passé — Übung"), "present-passe-ubung", "slug: Akzente/Sonderzeichen normalisiert");
+  eq(slugifyHeading(""), "abschnitt", "slug: leerer Titel → Fallback");
+
+  // addHeadingIdsAndToc: IDs an jede H2, TOC erst ab 3 Überschriften
+  const two = addHeadingIdsAndToc("<h2>Eins</h2><p>x</p><h2>Zwei</h2>", { minToc: 3 });
+  assert(/<h2 id="eins">/.test(two.html) && /<h2 id="zwei">/.test(two.html), "2×H2 bekommen IDs");
+  eq(two.tocHtml, "", "TOC erst ab minToc (2 < 3 → keins)");
+
+  const three = addHeadingIdsAndToc("<h2>Eins</h2><h2>Zwei</h2><h2>Drei</h2>", { minToc: 3 });
+  assert(three.tocHtml.includes('class="toc"'), "3×H2 → TOC erzeugt");
+  eq((three.tocHtml.match(/<li>/g) || []).length, 3, "TOC hat 3 Einträge");
+  assert(three.tocHtml.includes('href="#eins"'), "TOC verlinkt auf H2-Anker");
+
+  // doppelte Titel → eindeutige IDs (kein doppeltes id="x")
+  const dup = addHeadingIdsAndToc("<h2>Beispiel</h2><h2>Beispiel</h2><h2>Beispiel</h2>", { minToc: 3 });
+  assert(/id="beispiel"/.test(dup.html) && /id="beispiel-2"/.test(dup.html) && /id="beispiel-3"/.test(dup.html), "doppelte Titel → eindeutige IDs");
+
+  // bestehende ID wird respektiert (FAQ/Quellen behalten ihren Anker)
+  const keep = addHeadingIdsAndToc('<h2 id="faq">Häufige Fragen</h2>', { minToc: 1 });
+  assert(keep.html.includes('<h2 id="faq">'), "bestehende ID bleibt erhalten");
+
+  // extractKeyTakeaways: markierter Callout → Box (ohne Emoji/„TL;DR"), aus Body entfernt
+  const fakeBTH = (bs) => "<ul>" + bs.map((b) => "<li>" + (b.bulleted_list_item?.rich_text || []).map((t) => t.plain_text).join("") + "</li>").join("") + "</ul>";
+  const blocks = [
+    { type: "callout", callout: { rich_text: [{ plain_text: "🎯 Das Wichtigste in Kürze" }] }, _children: [
+      { type: "bulleted_list_item", bulleted_list_item: { rich_text: [{ plain_text: "Punkt eins" }] } },
+    ] },
+    { type: "paragraph", paragraph: { rich_text: [{ plain_text: "Fließtext" }] } },
+  ];
+  const ex = extractKeyTakeaways(blocks, fakeBTH);
+  assert(ex.boxHtml.includes('class="keytakeaways"'), "Box wird erzeugt");
+  assert(ex.boxHtml.includes("Das Wichtigste in Kürze"), "Box trägt feste Überschrift");
+  assert(!/🎯/.test(ex.boxHtml), "Box ohne Emoji");
+  assert(!/TL;?\s*DR/i.test(ex.boxHtml), "Box ohne TL;DR-Wording");
+  assert(ex.boxHtml.includes("Punkt eins"), "Box übernimmt Stichpunkte aus Kindern");
+  eq(ex.blocks.length, 1, "markierter Callout aus dem Body entfernt");
+
+  // kein markierter Callout → kein Eingriff
+  const noBox = extractKeyTakeaways([{ type: "paragraph", paragraph: { rich_text: [{ plain_text: "nur Text" }] } }], fakeBTH);
+  eq(noBox.boxHtml, "", "ohne Trigger keine Box");
+  eq(noBox.blocks.length, 1, "ohne Trigger Body unverändert");
+
+  // alternativer Trigger „Kurz gesagt" + Inline-Text statt Kinder
+  const inline = extractKeyTakeaways([{ type: "callout", callout: { rich_text: [{ plain_text: "Kurz gesagt: regelmäßig schlägt selten." }] }, _children: [] }], fakeBTH);
+  assert(inline.boxHtml.includes("regelmäßig schlägt selten"), "Inline-Trigger-Text landet in der Box");
+  assert(!inline.boxHtml.includes("Kurz gesagt"), "Trigger-Label aus Box-Text entfernt");
 }
 
 /* ─── Ergebnis ───────────────────────────────────────────────────────────── */
