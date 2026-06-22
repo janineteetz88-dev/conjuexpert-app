@@ -168,6 +168,9 @@ export const clusters = [
       { slug: "/blog/indefinido-imperfecto", title: "Pretérito indefinido vs. imperfecto: Welche Vergangenheit wann?", live: true },
       { slug: "/blog/preterito-perfecto-spanisch", title: "Pretérito perfecto (he hablado): bilden und richtig nutzen", live: true },
       { slug: "/blog/futuro-ir-a-spanisch", title: "Die Zukunft auf Spanisch: ir a + Infinitiv vs. futuro simple", live: true },
+      { slug: "/blog/stammwechsel-spanisch", title: "Stammwechselnde Verben im Spanischen: e→ie, o→ue, e→i sicher konjugieren", live: true },
+      { slug: "/blog/spanische-verbgruppen-ar-er-ir", title: "Die drei spanischen Verbgruppen: -ar, -er, -ir konjugieren", live: true },
+      { slug: "/blog/estar-gerundio", title: "Die Verlaufsform: estar + gerundio (estoy hablando)", live: true },
     ],
   },
   {
