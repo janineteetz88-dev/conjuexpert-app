@@ -14623,6 +14623,51 @@ function PinSheet({
     }
   }, tr("pin_sub")), /*#__PURE__*/React.createElement("div", {
     style: {
+      borderRadius: "18px",
+      padding: "18px 18px",
+      margin: "0 0 16px",
+      background: "linear-gradient(135deg,#6a4ea8,#2f8fb0)",
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 46px)",
+      justifyContent: "space-between",
+      rowGap: "16px"
+    }
+  }, ["#34c759", "#ff9f0a", "#0a84ff", "#1c1c1e", "__FAV__", "#5e5ce6"].map((c, i) => c === "__FAV__" ? /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      position: "relative",
+      width: "46px",
+      height: "46px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      inset: "-7px",
+      borderRadius: "16px",
+      background: "rgba(255,255,255,.55)",
+      filter: "blur(7px)"
+    }
+  }), /*#__PURE__*/React.createElement("img", {
+    src: "/favicon.svg",
+    alt: "ConjuExpert",
+    style: {
+      position: "relative",
+      width: "46px",
+      height: "46px",
+      borderRadius: "12px",
+      display: "block",
+      boxShadow: "0 6px 14px rgba(0,0,0,.3)"
+    }
+  })) : /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      width: "46px",
+      height: "46px",
+      borderRadius: "12px",
+      background: c
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
       display: "flex",
       gap: "10px"
     }
