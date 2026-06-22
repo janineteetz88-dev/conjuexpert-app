@@ -32,6 +32,20 @@ const ACTION_TO_KEY: Record<string, Key> = {
   magiclink: "magic", recovery: "reset",
 };
 
+// Persönliche Anrede pro Sprache (z. B. "Hallo Janine,").
+const HELLO: Record<Lang, string> = { de: "Hallo", en: "Hi", es: "Hola", nl: "Hoi", fr: "Bonjour" };
+
+function escHtml(s: string): string {
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
+}
+
+// Entfernt eine evtl. vorhandene generische Anrede am Anfang des ersten Absatzes,
+// damit wir sie durch die personalisierte Begrüßung ersetzen können.
+function stripLeadingGreeting(s: string): string {
+  const t = s.replace(/^(hallo|hi|hola|hoi|bonjour)\s*[,:]\s*/i, "");
+  return t ? t.charAt(0).toUpperCase() + t.slice(1) : t;
+}
+
 const FOOT: Record<Lang, { privacy: string; terms: string; fallback: string }> = {
   de: { privacy: "Datenschutz", terms: "AGB", fallback: "Falls der Button nicht funktioniert, kopiere diesen Link in deinen Browser:" },
   en: { privacy: "Privacy", terms: "Terms", fallback: "If the button doesn't work, copy this link into your browser:" },
@@ -68,11 +82,16 @@ const C: Record<Key, { accent: string } & Record<Lang, Copy>> = {
   },
 };
 
-function renderHtml(lang: Lang, key: Key, url: string): string {
+function renderHtml(lang: Lang, key: Key, url: string, firstName: string): string {
   const m = C[key][lang];
   const accent = C[key].accent;
   const f = FOOT[lang];
-  const paras = m.paras
+  const name = firstName.trim();
+  // Persönliche Begrüßung als erster Absatz; ist kein Name vorhanden, bleibt es
+  // bei der generischen Anrede ("Hallo,").
+  const greeting = name ? `${HELLO[lang]} ${escHtml(name)},` : `${HELLO[lang]},`;
+  const body = m.paras.map((t, i) => (i === 0 ? stripLeadingGreeting(t) : t)).filter(Boolean);
+  const paras = [greeting, ...body]
     .map((t) => `        <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.55;">${t}</p>`)
     .join("\n");
   return `<!DOCTYPE html>
@@ -181,7 +200,11 @@ Deno.serve(async (req) => {
     `${SUPABASE_URL}/auth/v1/verify?token=${ed.token_hash}` +
     `&type=${action}&redirect_to=${encodeURIComponent(ed.redirect_to ?? "")}`;
 
-  const html = renderHtml(lang, key, url);
+  const md = user.user_metadata ?? {};
+  const firstName = String(
+    md.first_name ?? md.given_name ?? String(md.full_name ?? md.name ?? "").split(" ")[0] ?? "",
+  ).slice(0, 40);
+  const html = renderHtml(lang, key, url, firstName);
   const subject = C[key][lang].subject;
 
   const resendKey = Deno.env.get("RESEND_API_KEY");
