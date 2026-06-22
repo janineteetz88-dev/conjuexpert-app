@@ -34,6 +34,8 @@ const ACTION_TO_KEY: Record<string, Key> = {
 
 // Persönliche Anrede pro Sprache (z. B. "Hallo Janine,").
 const HELLO: Record<Lang, string> = { de: "Hallo", en: "Hi", es: "Hola", nl: "Hoi", fr: "Bonjour" };
+// Personalisierter Header-Eyebrow der Willkommens-Mail (z. B. "Willkommen, Janine").
+const WELCOME: Record<Lang, string> = { de: "Willkommen", en: "Welcome", es: "Bienvenido/a", nl: "Welkom", fr: "Bienvenue" };
 
 function escHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
@@ -90,6 +92,8 @@ function renderHtml(lang: Lang, key: Key, url: string, firstName: string): strin
   // Persönliche Begrüßung als erster Absatz; ist kein Name vorhanden, bleibt es
   // bei der generischen Anrede ("Hallo,").
   const greeting = name ? `${HELLO[lang]} ${escHtml(name)},` : `${HELLO[lang]},`;
+  // "Oben im Header" der Willkommens-Mail ebenfalls personalisieren.
+  const eyebrow = key === "confirm" && name ? `${WELCOME[lang]}, ${escHtml(name)}` : m.eyebrow;
   const body = m.paras.map((t, i) => (i === 0 ? stripLeadingGreeting(t) : t)).filter(Boolean);
   const paras = [greeting, ...body]
     .map((t) => `        <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.55;">${t}</p>`)
@@ -134,7 +138,7 @@ function renderHtml(lang: Lang, key: Key, url: string, firstName: string): strin
             </td>
           </tr>
         </table>
-        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:1px;">${m.eyebrow}</p>
+        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:1px;">${eyebrow}</p>
         <h1 style="margin:0 0 18px;font-size:32px;font-weight:900;color:#111827;letter-spacing:-1px;line-height:1.1;">${m.h1}</h1>
         <div style="text-align:left;">
 ${paras}
