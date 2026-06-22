@@ -12604,7 +12604,8 @@ function InstallBanner({
   }, "\u2715"));
 }
 function IOSInstallBanner({
-  onDismiss
+  onDismiss,
+  onHow
 }) {
   const [help, setHelp] = useState(false);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -12623,7 +12624,7 @@ function IOSInstallBanner({
     }
   }, tr("ios_homescreen"), /*#__PURE__*/React.createElement("small", null, tr("ios_share"))), /*#__PURE__*/React.createElement("button", {
     className: "install-bar-btn",
-    onClick: () => setHelp(true)
+    onClick: onHow
   }, tr("ios_how")), /*#__PURE__*/React.createElement("button", {
     className: "install-bar-x",
     onClick: onDismiss,
@@ -15194,7 +15195,8 @@ function App() {
     onInstall: handleInstall,
     onDismiss: dismissInstall
   }), showIOSInstall && !showInstall && /*#__PURE__*/React.createElement(IOSInstallBanner, {
-    onDismiss: dismissIOSInstall
+    onDismiss: dismissIOSInstall,
+    onHow: () => setShowPin(true)
   }), showPin && /*#__PURE__*/React.createElement(PinSheet, {
     onClose: () => setShowPin(false),
     onAndroid: handleInstall
