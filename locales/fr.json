@@ -1,0 +1,234 @@
+{
+  "_meta": {
+    "source": "Notion Dev-Spec „Customer Journey & Onboarding — Endfassung\" §11 (Pop-ups) + §12 (Mails)",
+    "lang": "fr",
+    "status": "TODO: Übersetzung ausstehend — Werte sind 1:1-Kopie von de.json (Fallback). NICHT maschinell übersetzen; von Janine/Übersetzung befüllen.",
+    "variables": "{name} [Name] · {enddate} [Enddatum/Enddatum, Uhrzeit] · {restzeit} [Restzeit] · {article_title} [Artikel-Titel] · {article_benefit} [1 Satz Nutzen] · {login_link} [Anmelde-Link] · {email} [E-Mail] · {datum} [Datum] · {preis} [Preis] · {streak_days} [X]"
+  },
+  "popup": {
+    "P0": {
+      "title": "Hey! Willkommen bei ConjuExpert",
+      "text": "Konjugiere Verben in 5 Sprachen, übe im Quiz und lern deine Lieblingssprache ganz leicht.",
+      "field_name": "Dein Name",
+      "field_muttersprache": "Deine Muttersprache",
+      "field_niveau": "Dein Niveau (Anfänger/Mittel/Fortgeschritten)",
+      "button1": "Sofort loslegen — 24 h Premiumtarif testen",
+      "button2": "Konto erstellen → 3 Tage Premiumtarif testen 🎁",
+      "login": "Anmelden"
+    },
+    "P1": {
+      "title": "Stark — schon 5 Verben! 🔥",
+      "text": "Leg dir ein kostenloses Konto an: Dein Fortschritt bleibt erhalten und du übst 2 Tage länger mit dem Premiumtarif – Quiz + Merken.",
+      "button_yes": "Konto anlegen",
+      "button_no": "Später"
+    },
+    "P2": {
+      "heading": "TIPP:",
+      "text": "Leg ConjuExpert wie eine App auf deinen Home-Bildschirm — ein Tipp, und du kannst in Sekunden Konjugieren + Quizzen!",
+      "button_yes": "Auf den Home-Bildschirm",
+      "button_no": "Nein danke",
+      "ios_hint": "Tippe unten auf Teilen → „Zum Home-Bildschirm\"."
+    },
+    "P3": {
+      "heading": "Moment – geh nicht ohne deinen Fortschritt!",
+      "text": "Mit einem kostenlosen Konto (10 Sekunden) bleibt alles erhalten — und du sicherst dir für 2 weitere Tage den Premiumtarif (Quizzen + Merken)!",
+      "button_yes": "Fortschritt sichern",
+      "button_no": "Trotzdem gehen"
+    },
+    "P4": {
+      "title": "Kein Problem 🙂",
+      "text": "Dann leg uns wenigstens auf deinen Home-Bildschirm, damit du uns wiederfindest.",
+      "button_yes": "Auf den Home-Bildschirm",
+      "button_no": "Nein danke"
+    },
+    "P5": {
+      "title": "Wie läuft's für dich? 💬",
+      "text": "Sag uns ehrlich: Was gefällt dir am besten — und was sollen wir besser machen?",
+      "anreiz": "🎁 Gib uns dein Feedback und erhalte einen 5 €-Rabattcode auf das Jahres-Abo!",
+      "button": "Feedback geben & 5 € sichern"
+    },
+    "P5b": {
+      "title": "Danke fürs Feedback! 🎁",
+      "text": "Hier ist dein Geschenk: Mit dem Code WILLKOMMEN bekommst du den Premiumtarif für 24,99 €/Jahr statt 29,99 €. Gültig bis zum Ende deines Tests.",
+      "button": "Code sichern"
+    },
+    "P6": {
+      "title": "Dein Test endet bald ⏳",
+      "text": "Deine gemerkten Wörter, deine Serie und dein Ziel speichern wir — bis du den Premiumtarif mit deinem Rabattcode wieder freischaltest. Nutze WILLKOMMEN und spare 5 € auf dein Jahres-Abo!",
+      "button_yes": "Premiumtarif für 24,99 € holen",
+      "button_no": "Später"
+    },
+    "P7": {
+      "title": "Das ist eine Premiumtarif-Funktion 🔒",
+      "text": "Hol dir den Premiumtarif, um wieder mit deinen Lieblingsthemen & Vokabeln zu quizzen!",
+      "button": "Premiumtarif holen"
+    },
+    "P8": {
+      "title": "Schön, dass du wieder da bist! 👋",
+      "text": "Dein Fortschritt ist noch da. Sichere ihn mit einem kostenlosen Konto, bevor er verloren geht.",
+      "button_yes": "Konto anlegen",
+      "button_no": "Später"
+    },
+    "P9": {
+      "title": "Premiumtarif freischalten",
+      "trial_note": "Dein Test läuft noch {restzeit}.",
+      "plan_annual": "Jährlich 24,99 €/Jahr (mit Code · normal 29,99 €) — nur 2,08 €/Monat ⭐",
+      "plan_monthly": "Monatlich 2,99 €/Monat",
+      "button": "Zahlungspflichtig kaufen – 24,99 €",
+      "payment_note": "Zahlung via Kreditkarte",
+      "small": "Konjugieren & Lernen bleiben immer kostenlos.",
+      "links": "AGB · Widerruf · Datenschutz"
+    },
+    "K1": {
+      "title": "Nur noch ein Schritt",
+      "text": "Deine E-Mail genügt — dein Fortschritt wird gesichert und dein Premiumtarif läuft weiter.",
+      "field_email": "E-Mail",
+      "button": "Konto anlegen",
+      "small": "Wir schicken dir nur Wichtiges, kein Spam. Schon dabei? Anmelden"
+    },
+    "K2": {
+      "title": "Geschafft – du bist drin! 🎉",
+      "text": "Dein Fortschritt ist gesichert, und dein Premiumtarif läuft bis {enddate}. Viel Spaß!",
+      "button": "Weiterüben"
+    },
+    "K3": {
+      "title": "Willkommen zurück",
+      "text": "Melde dich an und mach da weiter, wo du aufgehört hast.",
+      "field_email": "E-Mail",
+      "button": "Link zum Anmelden schicken",
+      "a_sent": "Check dein Postfach 📩 — Anmelde-Link an {email}. Nichts da? Spam prüfen / neu senden.",
+      "b_expired": "Dieser Link ist abgelaufen. Wir schicken dir gern einen neuen.",
+      "b_button": "Neuen Link senden",
+      "c_unknown": "Zu dieser E-Mail finden wir kein Konto. Eins anlegen?",
+      "c_button": "Konto anlegen"
+    },
+    "B_Fail": {
+      "title": "Das hat leider nicht geklappt",
+      "text": "Kein Problem – dir wurde nichts berechnet. Dein Zugang bleibt wie er ist. Magst du's nochmal versuchen?",
+      "button_yes": "Nochmal versuchen",
+      "button_no": "Später"
+    },
+    "T_End": {
+      "title": "Dein Premiumtarif-Test ist vorbei",
+      "text": "Deine gemerkten Wörter, deine Serie und dein Ziel sind sicher. Konjugieren, Lernen & Karteikarten-Quiz (20/Tag) bleiben kostenlos. Quiz-Modi, KI-Sätze & Merken wieder freischalten?",
+      "button_yes": "Premiumtarif holen",
+      "button_no": "Erstmal kostenlos weiter"
+    },
+    "T_End_Anon": {
+      "title": "Deine 24 h Premiumtarif-Test sind vorbei ⏳",
+      "text": "Konjugieren & Lernen bleiben kostenlos. Willst du weiter quizzen? Mit einem kostenlosen Konto übst du im Quiz „Karte\" (20 Runden/Tag) — und sicherst dir 2 Tage Premiumtarif gratis dazu.",
+      "button_yes": "Konto anlegen (Quiz + 2 Tage Premium)",
+      "button_no": "Nur nachschlagen & lernen"
+    },
+    "PUSH": {
+      "title": "Sollen wir dich ans Üben erinnern?",
+      "text": "Ein sanfter Stups, damit deine Serie nicht reißt – du entscheidest, wie oft.",
+      "button_yes": "Ja, erinnern",
+      "button_no": "Nein danke"
+    },
+    "S1": {
+      "title": "{streak_days} Tage in Folge! 🔥",
+      "text": "Stark dabei — mach weiter so!",
+      "anon_extra": "Sichere deine Serie mit einem kostenlosen Konto."
+    },
+    "FR1": {
+      "title": "Frisch im Blog",
+      "text": "{article_title} — {article_benefit}. Reinlesen?",
+      "button": "Artikel lesen"
+    },
+    "FR2": {
+      "title": "Lern-Tipps direkt ins Postfach",
+      "text": "Jede Woche ein Kniff, kostenlos.",
+      "field_email": "E-Mail",
+      "button": "Abonnieren"
+    },
+    "FR3": {
+      "title": "Mehr von uns?",
+      "text": "Folge uns für Mini-Lektionen auf Instagram & TikTok.",
+      "button_instagram": "Instagram",
+      "button_tiktok": "TikTok"
+    },
+    "FR4": {
+      "title": "Bereit für mehr?",
+      "text": "Schalte Quiz-Modi, KI-Sätze & Merken frei — Premiumtarif für 29,99 €/Jahr (nur 2,49 €/Monat).",
+      "button": "Premiumtarif ansehen"
+    },
+    "FR5": {
+      "title": "Wusstest du schon?",
+      "text": "Mit dem Premiumtarif passt sich jede Quiz-Runde an deine Fehler an.",
+      "button": "Premiumtarif ansehen"
+    }
+  },
+  "mail": {
+    "M1": {
+      "subject": "Willkommen in der ConjuExpert-Community! 🎉",
+      "body": "Hi {name}, schön, dass du da bist! Dein Premiumtarif-Zugang ist offen bis {enddate} — alle Quiz-Modi, KI-Sätze, Merken & mehr. Leg direkt los! 💪",
+      "cta": "App öffnen"
+    },
+    "M2": {
+      "subject": "Willkommen in der ConjuExpert-Community! 🎉",
+      "body": "Hi {name}, stark, dass du dabei bleibst! Dein Premiumtarif ist jetzt offen bis {enddate} — 2 Tage länger als ohne Konto. Dein Fortschritt ist gesichert. Weiter geht's! 💪",
+      "cta": "Weiterüben"
+    },
+    "M3": {
+      "subject": "Danke! Hier ist dein €5-Geschenk 🎁",
+      "body": "Danke für dein Feedback, {name} — das hilft uns wirklich. Mit Code WILLKOMMEN bekommst du den Premiumtarif für 24,99 €/Jahr statt 29,99 €. Gültig bis zum Ende deines Tests ({enddate}).",
+      "cta": "Premiumtarif sichern"
+    },
+    "M4": {
+      "subject": "Noch 1 Tag Premiumtarif ⏳",
+      "body": "Hi {name}, dein Premiumtarif-Test läuft noch bis {enddate}. Hol nochmal alles raus — und wenn's dir gefällt, sicher dir den Premiumtarif für 24,99 € mit deinem Code, bevor er abläuft.",
+      "cta": "App öffnen"
+    },
+    "M5": {
+      "subject": "Heute läuft dein Premiumtarif-Test ab",
+      "body": "Hi {name}, heute endet dein Test. Deine gemerkten Wörter, deine Serie und dein Ziel bleiben — Quiz-Modi, KI-Sätze & Co. werden danach gesperrt. Sicher dir den Premiumtarif für 24,99 €/Jahr (Code WILLKOMMEN), solange dein Willkommenspreis gilt.",
+      "cta": "Premiumtarif für 24,99 € holen"
+    },
+    "M6": {
+      "subject": "Willkommen im Premiumtarif 🎉",
+      "body": "Hi {name}, dein Premiumtarif ist aktiv — viel Spaß mit allen Quiz-Modi, KI-Sätzen, Merken & Tracking! Deinen Beleg findest du im Anhang. 💛",
+      "cta": "Loslegen"
+    },
+    "M7": {
+      "subject": "Dein Fortschritt wartet auf dich",
+      "body": "Hi {name}, deine Wörter und deine Serie sind noch da. Wenn du weiterüben willst — Quiz-Modi & Co. schaltest du jederzeit mit dem Premiumtarif wieder frei.",
+      "cta": "Weitermachen"
+    },
+    "M_Login": {
+      "subject": "Dein Anmelde-Link für ConjuExpert",
+      "body": "Hi, hier ist dein Link zum Anmelden: {login_link}. Der Link gilt 60 Minuten. Nicht angefordert? Dann ignorier diese Mail einfach."
+    },
+    "A1": {
+      "subject": "Dein Premiumtarif verlängert sich bald",
+      "body": "Hi {name}, dein Jahres-Premiumtarif verlängert sich am {datum} automatisch für {preis}. Du musst nichts tun. Etwas ändern?",
+      "cta": "Abo verwalten"
+    },
+    "A2": {
+      "title": "Schade, dass du gehen willst",
+      "text": "Wenn du kündigst, verlierst du ab {datum} Quiz-Modi, KI-Sätze & Merken. Deine gemerkten Wörter, Serie und dein Ziel speichern wir trotzdem.",
+      "button_keep": "Premiumtarif behalten",
+      "button_cancel": "Trotzdem kündigen",
+      "button_pause": "Lieber pausieren?"
+    },
+    "A3": {
+      "title": "Deine Kündigung ist bestätigt",
+      "text": "Dein Premiumtarif läuft noch bis {datum} — bis dahin voller Zugang. Danach kostenlos weiter. Deine Daten bleiben. Jederzeit willkommen zurück.",
+      "cta": "Premiumtarif behalten"
+    },
+    "A4": {
+      "subject": "Deine Vokabeln warten auf dich",
+      "body": "Hi {name}, deine Wörter und deine Serie sind noch da. Wieder mit deinen Lieblingsthemen quizzen? Premiumtarif jederzeit wieder frei.",
+      "cta": "Premiumtarif holen"
+    },
+    "A5": {
+      "subject": "Kleines Problem mit deiner Zahlung",
+      "body": "Hi {name}, die Verlängerung deines Premiumtarifs hat nicht geklappt. Aktualisiere kurz deine Zahlung, damit dein Zugang nicht unterbrochen wird.",
+      "cta": "Zahlung aktualisieren"
+    },
+    "A6": {
+      "subject": "Dein Premiumtarif läuft weiter 🎉",
+      "body": "Hi {name}, verlängert — Beleg im Anhang. Viel Spaß weiterhin! 💛"
+    }
+  }
+}
