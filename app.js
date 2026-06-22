@@ -1,0 +1,15474 @@
+/* ConjuExpert — ausgelagertes App-Bundle (generiert aus index.html). */
+/* German conjugation engine (v2 — compact strong-verb generator + regular baseline) */
+(function () {
+  window.CONJ = window.CONJ || {};
+  const PRON = ["ich", "du", "er / sie / es", "wir", "ihr", "sie / Sie"];
+
+  // Compact irregular entries. Fields:
+  //   du, er         -> present 2nd/3rd sg (vowel change); presentFull overrides all 6
+  //   praet          -> Präteritum 1st-sg; weak:true => weak (-te) pattern
+  //   konj           -> Konjunktiv II stem (without final -e)
+  //   partizip, aux  -> Partizip II + perfect auxiliary
+  //   impDu, impFull -> imperative overrides
+  const IRR = {
+    sein:    { presentFull: ["bin","bist","ist","sind","seid","sind"], praet: "war", konj: "wär", partizip: "gewesen", aux: "sein", impFull: ["—","sei","—","seien wir","seid","seien Sie"] },
+    haben:   { du: "hast", er: "hat", praet: "hatte", weak: true, konj: "hätt", partizip: "gehabt", aux: "haben", impDu: "hab" },
+    werden:  { du: "wirst", er: "wird", praet: "wurde", weak: true, konj: "würd", partizip: "geworden", aux: "sein", impDu: "werde" },
+    gehen:   { praet: "ging", konj: "ging", partizip: "gegangen", aux: "sein" },
+    kommen:  { praet: "kam", konj: "käm", partizip: "gekommen", aux: "sein" },
+    sehen:   { du: "siehst", er: "sieht", praet: "sah", konj: "säh", partizip: "gesehen", aux: "haben", impDu: "sieh" },
+    essen:   { du: "isst", er: "isst", praet: "aß", konj: "äß", partizip: "gegessen", aux: "haben", impDu: "iss" },
+    fahren:  { du: "fährst", er: "fährt", praet: "fuhr", konj: "führ", partizip: "gefahren", aux: "sein" },
+    geben:   { du: "gibst", er: "gibt", praet: "gab", konj: "gäb", partizip: "gegeben", aux: "haben", impDu: "gib" },
+    nehmen:  { du: "nimmst", er: "nimmt", praet: "nahm", konj: "nähm", partizip: "genommen", aux: "haben", impDu: "nimm" },
+    finden:  { praet: "fand", konj: "fänd", partizip: "gefunden", aux: "haben" },
+    sprechen:{ du: "sprichst", er: "spricht", praet: "sprach", konj: "spräch", partizip: "gesprochen", aux: "haben", impDu: "sprich" },
+    lesen:   { du: "liest", er: "liest", praet: "las", konj: "läs", partizip: "gelesen", aux: "haben", impDu: "lies" },
+    schlafen:{ du: "schläfst", er: "schläft", praet: "schlief", konj: "schlief", partizip: "geschlafen", aux: "haben" },
+    trinken: { praet: "trank", konj: "tränk", partizip: "getrunken", aux: "haben" },
+    fliegen: { praet: "flog", konj: "flög", partizip: "geflogen", aux: "sein" },
+    laufen:  { du: "läufst", er: "läuft", praet: "lief", konj: "lief", partizip: "gelaufen", aux: "sein" },
+    helfen:  { du: "hilfst", er: "hilft", praet: "half", konj: "hülf", partizip: "geholfen", aux: "haben", impDu: "hilf" },
+    treffen: { du: "triffst", er: "trifft", praet: "traf", konj: "träf", partizip: "getroffen", aux: "haben", impDu: "triff" },
+    denken:  { praet: "dachte", weak: true, konj: "dächt", partizip: "gedacht", aux: "haben" },
+    bringen: { praet: "brachte", weak: true, konj: "brächt", partizip: "gebracht", aux: "haben" },
+    wissen:  { presentFull: ["weiß","weißt","weiß","wissen","wisst","wissen"], praet: "wusste", weak: true, konj: "wüsst", partizip: "gewusst", aux: "haben", impDu: "wisse" },
+    kennen:  { praet: "kannte", weak: true, konj: "kennt", partizip: "gekannt", aux: "haben" },
+    stehen:  { praet: "stand", konj: "stünd", partizip: "gestanden", aux: "haben" },
+    verstehen:{ praet: "verstand", konj: "verständ", partizip: "verstanden", aux: "haben" },
+    beginnen:{ praet: "begann", konj: "begänn", partizip: "begonnen", aux: "haben" },
+    bleiben: { praet: "blieb", konj: "blieb", partizip: "geblieben", aux: "sein" },
+    schreiben:{ praet: "schrieb", konj: "schrieb", partizip: "geschrieben", aux: "haben" },
+    fallen:  { du: "fällst", er: "fällt", praet: "fiel", konj: "fiel", partizip: "gefallen", aux: "sein" },
+    halten:  { du: "hältst", er: "hält", praet: "hielt", konj: "hielt", partizip: "gehalten", aux: "haben" },
+    lassen:  { du: "lässt", er: "lässt", praet: "ließ", konj: "ließ", partizip: "gelassen", aux: "haben" },
+    rufen:   { praet: "rief", konj: "rief", partizip: "gerufen", aux: "haben" },
+    schwimmen:{ praet: "schwamm", konj: "schwömm", partizip: "geschwommen", aux: "sein" },
+    singen:  { praet: "sang", konj: "säng", partizip: "gesungen", aux: "haben" },
+    sitzen:  { praet: "saß", konj: "säß", partizip: "gesessen", aux: "haben" },
+    liegen:  { praet: "lag", konj: "läg", partizip: "gelegen", aux: "haben" },
+    ziehen:  { praet: "zog", konj: "zög", partizip: "gezogen", aux: "haben" },
+    tragen:  { du: "trägst", er: "trägt", praet: "trug", konj: "trüg", partizip: "getragen", aux: "haben" },
+    waschen: { du: "wäschst", er: "wäscht", praet: "wusch", konj: "wüsch", partizip: "gewaschen", aux: "haben" },
+    werfen:  { du: "wirfst", er: "wirft", praet: "warf", konj: "würf", partizip: "geworfen", aux: "haben", impDu: "wirf" },
+    gewinnen:{ praet: "gewann", konj: "gewänn", partizip: "gewonnen", aux: "haben" },
+    vergessen:{ du: "vergisst", er: "vergisst", praet: "vergaß", konj: "vergäß", partizip: "vergessen", aux: "haben", impDu: "vergiss" },
+    verlieren:{ praet: "verlor", konj: "verlör", partizip: "verloren", aux: "haben" },
+    bitten:  { praet: "bat", konj: "bät", partizip: "gebeten", aux: "haben" },
+    gefallen:{ du: "gefällst", er: "gefällt", praet: "gefiel", konj: "gefiel", partizip: "gefallen", aux: "haben" },
+    mögen:   { presentFull: ["mag","magst","mag","mögen","mögt","mögen"], praet: "mochte", weak: true, konj: "möcht", partizip: "gemocht", aux: "haben" },
+    müssen:  { presentFull: ["muss","musst","muss","müssen","müsst","müssen"], praet: "musste", weak: true, konj: "müsst", partizip: "gemusst", aux: "haben" },
+    können:  { presentFull: ["kann","kannst","kann","können","könnt","können"], praet: "konnte", weak: true, konj: "könnt", partizip: "gekonnt", aux: "haben" },
+    wollen:  { presentFull: ["will","willst","will","wollen","wollt","wollen"], praet: "wollte", weak: true, konj: "wollt", partizip: "gewollt", aux: "haben" },
+    sollen:  { presentFull: ["soll","sollst","soll","sollen","sollt","sollen"], praet: "sollte", weak: true, konj: "sollt", partizip: "gesollt", aux: "haben" },
+    dürfen:  { presentFull: ["darf","darfst","darf","dürfen","dürft","dürfen"], praet: "durfte", weak: true, konj: "dürft", partizip: "gedurft", aux: "haben" },
+    bekommen:{ praet: "bekam", konj: "bekäm", partizip: "bekommen", aux: "haben" },
+    schlagen:{ du: "schlägst", er: "schlägt", praet: "schlug", konj: "schlüg", partizip: "geschlagen", aux: "haben" },
+    wachsen: { du: "wächst", er: "wächst", praet: "wuchs", konj: "wüchs", partizip: "gewachsen", aux: "sein" },
+    schließen:{ praet: "schloss", konj: "schlöss", partizip: "geschlossen", aux: "haben" },
+    genießen:{ praet: "genoss", konj: "genöss", partizip: "genossen", aux: "haben" },
+    steigen: { praet: "stieg", konj: "stieg", partizip: "gestiegen", aux: "sein" },
+    scheinen:{ praet: "schien", konj: "schien", partizip: "geschienen", aux: "haben" },
+    bieten:  { praet: "bot", konj: "böt", partizip: "geboten", aux: "haben" },
+    fangen:  { du: "fängst", er: "fängt", praet: "fing", konj: "fing", partizip: "gefangen", aux: "haben" },
+    empfehlen:{ du: "empfiehlst", er: "empfiehlt", praet: "empfahl", konj: "empföhl", partizip: "empfohlen", aux: "haben", impDu: "empfiehl" },
+    sterben: { du: "stirbst", er: "stirbt", praet: "starb", konj: "stürb", partizip: "gestorben", aux: "sein", impDu: "stirb" },
+    brechen: { du: "brichst", er: "bricht", praet: "brach", konj: "bräch", partizip: "gebrochen", aux: "haben", impDu: "brich" },
+    schneiden:{ praet: "schnitt", konj: "schnitt", partizip: "geschnitten", aux: "haben" },
+    greifen: { praet: "griff", konj: "griff", partizip: "gegriffen", aux: "haben" },
+    riechen: { praet: "roch", konj: "röch", partizip: "gerochen", aux: "haben" }
+  };
+
+  /* ---- C1 expansion ---- */
+  // Inseparable-prefixed strong verbs derived from a base (no separable prefixes — the engine can't split those).
+  function gp(base, prefix, over) {
+    const b = IRR[base], o = {};
+    if (b.du) o.du = prefix + b.du;
+    if (b.er) o.er = prefix + b.er;
+    o.praet = prefix + b.praet;
+    o.konj = prefix + b.konj;
+    o.partizip = prefix + b.partizip.replace(/^ge/, "");
+    o.aux = b.aux;
+    if (b.weak) o.weak = true;
+    if (b.impDu) o.impDu = prefix + b.impDu;
+    return Object.assign(o, over || {});
+  }
+  Object.assign(IRR, {
+    // prefixed strong verbs (inseparable)
+    bestehen: gp("stehen", "be"), entstehen: gp("stehen", "ent", { aux: "sein" }), gestehen: gp("stehen", "ge"), widerstehen: gp("stehen", "wider"),
+    vergehen: gp("gehen", "ver", { aux: "sein" }), entgehen: gp("gehen", "ent", { aux: "sein" }), begehen: gp("gehen", "be", { aux: "haben" }),
+    entkommen: gp("kommen", "ent"), entstammen: undefined,
+    versprechen: gp("sprechen", "ver"), entsprechen: gp("sprechen", "ent"), besprechen: gp("sprechen", "be"), widersprechen: gp("sprechen", "wider"),
+    unternehmen: gp("nehmen", "unter"), übernehmen: gp("nehmen", "über"), benehmen: gp("nehmen", "be"), entnehmen: gp("nehmen", "ent"), vernehmen: gp("nehmen", "ver"),
+    empfinden: gp("finden", "emp"), erfinden: gp("finden", "er"),
+    vergeben: gp("geben", "ver"), ergeben: gp("geben", "er"), übergeben: gp("geben", "über"),
+    beziehen: gp("ziehen", "be"), erziehen: gp("ziehen", "er"), verziehen: gp("ziehen", "ver"), entziehen: gp("ziehen", "ent"),
+    ertragen: gp("tragen", "er"), betragen: gp("tragen", "be"), vertragen: gp("tragen", "ver"), übertragen: gp("tragen", "über"),
+    verfallen: gp("fallen", "ver", { aux: "sein" }), missfallen: gp("fallen", "miss"), befallen: gp("fallen", "be"),
+    behalten: gp("halten", "be"), enthalten: gp("halten", "ent"), erhalten: gp("halten", "er"), unterhalten: gp("halten", "unter"), verhalten: gp("halten", "ver"),
+    verlassen: gp("lassen", "ver"), entlassen: gp("lassen", "ent"), überlassen: gp("lassen", "über"), unterlassen: gp("lassen", "unter"),
+    beschließen: gp("schließen", "be"), entschließen: gp("schließen", "ent"), verschließen: gp("schließen", "ver"),
+    betreffen: gp("treffen", "be"), übertreffen: gp("treffen", "über"),
+    unterbrechen: gp("brechen", "unter"), verbrechen: gp("brechen", "ver"),
+    entwerfen: gp("werfen", "ent"), bewerfen: gp("werfen", "be"), verwerfen: gp("werfen", "ver"),
+    erfahren: gp("fahren", "er", { aux: "haben" }), befahren: gp("fahren", "be", { aux: "haben" }), überfahren: gp("fahren", "über", { aux: "haben" }), verfahren: gp("fahren", "ver", { aux: "haben" }),
+    verbieten: gp("bieten", "ver"), gebieten: gp("bieten", "ge"),
+    verbringen: gp("bringen", "ver"), erbringen: gp("bringen", "er"),
+    bedenken: gp("denken", "be"), gedenken: gp("denken", "ge"),
+    beschreiben: gp("schreiben", "be"), unterschreiben: gp("schreiben", "unter"), verschreiben: gp("schreiben", "ver"),
+    begreifen: gp("greifen", "be"), ergreifen: gp("greifen", "er"),
+    // standalone strong verbs
+    raten:    { du: "rätst", er: "rät", praet: "riet", konj: "riet", partizip: "geraten", aux: "haben" },
+    laden:    { du: "lädst", er: "lädt", praet: "lud", konj: "lüd", partizip: "geladen", aux: "haben" },
+    heißen:   { praet: "hieß", konj: "hieß", partizip: "geheißen", aux: "haben" },
+    stoßen:   { du: "stößt", er: "stößt", praet: "stieß", konj: "stieß", partizip: "gestoßen", aux: "haben" },
+    fließen:  { praet: "floss", konj: "flöss", partizip: "geflossen", aux: "sein" },
+    gießen:   { praet: "goss", konj: "göss", partizip: "gegossen", aux: "haben" },
+    schießen: { praet: "schoss", konj: "schöss", partizip: "geschossen", aux: "haben" },
+    messen:   { du: "misst", er: "misst", praet: "maß", konj: "mäß", partizip: "gemessen", aux: "haben", impDu: "miss" },
+    treten:   { du: "trittst", er: "tritt", praet: "trat", konj: "trät", partizip: "getreten", aux: "haben", impDu: "tritt" },
+    gelten:   { du: "giltst", er: "gilt", praet: "galt", konj: "gält", partizip: "gegolten", aux: "haben" },
+    stehlen:  { du: "stiehlst", er: "stiehlt", praet: "stahl", konj: "stähl", partizip: "gestohlen", aux: "haben", impDu: "stiehl" },
+    befehlen: { du: "befiehlst", er: "befiehlt", praet: "befahl", konj: "befähl", partizip: "befohlen", aux: "haben", impDu: "befiehl" },
+    werben:   { du: "wirbst", er: "wirbt", praet: "warb", konj: "würb", partizip: "geworben", aux: "haben", impDu: "wirb" },
+    schieben: { praet: "schob", konj: "schöb", partizip: "geschoben", aux: "haben" },
+    heben:    { praet: "hob", konj: "höb", partizip: "gehoben", aux: "haben" },
+    lügen:    { praet: "log", konj: "lög", partizip: "gelogen", aux: "haben" },
+    biegen:   { praet: "bog", konj: "bög", partizip: "gebogen", aux: "haben" },
+    fliehen:  { praet: "floh", konj: "flöh", partizip: "geflohen", aux: "sein" },
+    frieren:  { praet: "fror", konj: "frör", partizip: "gefroren", aux: "haben" },
+    wiegen:   { praet: "wog", konj: "wög", partizip: "gewogen", aux: "haben" },
+    reiten:   { praet: "ritt", konj: "ritt", partizip: "geritten", aux: "sein" },
+    streiten: { praet: "stritt", konj: "stritt", partizip: "gestritten", aux: "haben" },
+    leiden:   { praet: "litt", konj: "litt", partizip: "gelitten", aux: "haben" },
+    schweigen:{ praet: "schwieg", konj: "schwieg", partizip: "geschwiegen", aux: "haben" },
+    reißen:   { praet: "riss", konj: "riss", partizip: "gerissen", aux: "haben" },
+    beißen:   { praet: "biss", konj: "biss", partizip: "gebissen", aux: "haben" },
+    streichen:{ praet: "strich", konj: "strich", partizip: "gestrichen", aux: "haben" },
+    gelingen: { praet: "gelang", konj: "geläng", partizip: "gelungen", aux: "sein" },
+    klingen:  { praet: "klang", konj: "kläng", partizip: "geklungen", aux: "haben" },
+    springen: { praet: "sprang", konj: "spräng", partizip: "gesprungen", aux: "sein" },
+    zwingen:  { praet: "zwang", konj: "zwäng", partizip: "gezwungen", aux: "haben" },
+    sinken:   { praet: "sank", konj: "sänk", partizip: "gesunken", aux: "sein" },
+    binden:   { praet: "band", konj: "bänd", partizip: "gebunden", aux: "haben" },
+    verschwinden: { praet: "verschwand", konj: "verschwänd", partizip: "verschwunden", aux: "sein" },
+    beweisen: { praet: "bewies", konj: "bewies", partizip: "bewiesen", aux: "haben" }
+  });
+  delete IRR.entstammen;
+
+  function clean(v) { return (v || "").trim().toLowerCase(); }
+
+  // Separable prefixes (trennbare Verben): conjugate the base, then move the prefix.
+  const SEP_PREFIXES = ["ab","an","auf","aus","bei","ein","mit","nach","vor","zu","zurück","zusammen","weg","los","her","hin","empor","fort","heim","hoch","weiter","wieder","durch","über","um","unter","entgegen","gegenüber","voran","voraus","vorbei","herein","heraus","hinaus","hinein","herunter","hinunter","herauf","hinauf","herüber","davon","dazu","fest","frei","statt","teil","fern","nieder"];
+  function splitSeparable(verb) {
+    for (const p of SEP_PREFIXES) {
+      if (verb.length > p.length + 2 && verb.startsWith(p)) {
+        const base = verb.slice(p.length);
+        if ((base.endsWith("en") || base.endsWith("n")) && (IRR[base] || stemOf(base))) {
+          // avoid false positives like "unternehmen" (inseparable, already in IRR as whole)
+          if (IRR[verb]) return null;
+          return { prefix: p, base };
+        }
+      }
+    }
+    return null;
+  }
+  function conjugateBase(base) {
+    const reg = regularData(base);
+    const irr = IRR[base];
+    let data = reg, isIrr = false;
+    if (irr) {
+      isIrr = true;
+      data = {
+        present: irr.presentFull || presentForms(base, irr.du, irr.er),
+        praeteritum: praetForms(irr.praet, irr.weak),
+        konjunktiv: konjForms(irr.konj),
+        imperativ: imperativeForms(base, irr.impDu, irr.impFull),
+        partizip: irr.partizip,
+        aux: irr.aux || "haben"
+      };
+    }
+    return { data, isIrr };
+  }
+  // Build tenses for a separable verb by appending the prefix in the right place.
+  function separableTenses(verb, prefix, base) {
+    const { data, isIrr } = conjugateBase(base);
+    // movement/change separable verbs take "sein"; otherwise inherit base aux
+    const SEIN_BASES = ["stehen","kommen","gehen","fahren","reisen","fallen","laufen","fliegen","steigen","ziehen","springen","wachsen","treten","schwimmen"];
+    const auxOverride = (SEIN_BASES.indexOf(base) >= 0 && ["auf","an","ab","ein","aus","mit","zurück","vor","um","weg","los","her","hin","empor","hoch","weiter","heim"].indexOf(prefix) >= 0) ? "sein" : data.aux;
+    const suffix = (arr) => arr.map((f) => f === "—" ? "—" : `${f} … ${prefix}`); // finite verb + prefix at clause end
+    const present = suffix(data.present);
+    const praeteritum = suffix(data.praeteritum);
+    const konjunktiv = suffix(data.konjunktiv);
+    // imperative: "steh früh auf"
+    const imperativ = data.imperativ.map((f) => f === "—" ? "—" : (f.indexOf(" ") >= 0 ? `${f.split(" ")[0]} … ${prefix} ${f.split(" ").slice(1).join(" ")}`.trim() : `${f} … ${prefix}`));
+    // participle: prefix + (ge)...  "aufgestanden", "ausgebreitet"
+    const partizip = prefix + data.partizip;
+    const aux = data.aux;
+    const dataS = { present, praeteritum, konjunktiv, imperativ, partizip, aux: auxOverride };
+    const tenses = buildTenses(verb, dataS);
+    // future/conditional use the full infinitive (attached) → already correct via `verb`
+    if (isIrr) {
+      const regReg = regularData(base);
+      if (regReg) {
+        const regS = { present: regReg.present.map((f) => `${f} … ${prefix}`), praeteritum: regReg.praeteritum.map((f) => `${f} … ${prefix}`), konjunktiv: regReg.konjunktiv.map((f) => `${f} … ${prefix}`), imperativ: imperativ, partizip: prefix + regReg.partizip, aux: regReg.aux };
+        const regT = buildTenses(verb, regS);
+        tenses.forEach((t, i) => { t.reg = regT[i].forms; });
+      }
+    }
+    return tenses;
+  }
+  function stemOf(verb) { if (verb.endsWith("en")) return verb.slice(0, -2); if (verb.endsWith("n")) return verb.slice(0, -1); return null; }
+  function needsE(stem) { return /([dt]|[^aeioulrmnh][mn])$/.test(stem); }
+
+  function presentForms(verb, du, er) {
+    const stem = stemOf(verb), e = needsE(stem) ? "e" : "";
+    return [stem + "e", du || (stem + duEnd(stem)), er || (stem + e + "t"), verb, stem + e + "t", verb];
+  }
+  function duEnd(stem) { if (needsE(stem)) return "est"; if (/([sßxz]|ss|tz)$/.test(stem)) return "t"; return "st"; }
+  function praetForms(praet, weak) {
+    if (weak) { const s = praet.replace(/e$/, ""); return [s + "e", s + "est", s + "e", s + "en", s + "et", s + "en"]; }
+    const e = /([dtszxß]|ss)$/.test(praet) ? "e" : "";
+    return [praet, praet + e + "st", praet, praet + "en", praet + e + "t", praet + "en"];
+  }
+  function konjForms(stem) { return [stem + "e", stem + "est", stem + "e", stem + "en", stem + "et", stem + "en"]; }
+  function imperativeForms(verb, impDu, impFull) {
+    if (impFull) return impFull;
+    const stem = stemOf(verb), e = needsE(stem) ? "e" : "";
+    return ["—", impDu || (stem + (needsE(stem) ? "e" : "")), "—", verb + " wir", stem + e + "t", verb + " Sie"];
+  }
+
+  function regularData(verb) {
+    const stem = stemOf(verb);
+    if (stem == null) return null;
+    const e = needsE(stem) ? "e" : "";
+    const wstem = stem + e + "t"; // weak preterite base: mach->macht, arbeit->arbeitet
+    const noGe = /^(be|ge|er|ver|zer|ent|emp|miss)/.test(verb) || verb.endsWith("ieren");
+    return {
+      present: [stem + "e", stem + duEnd(stem), stem + e + "t", verb, stem + e + "t", verb],
+      praeteritum: [wstem + "e", wstem + "est", wstem + "e", wstem + "en", wstem + "et", wstem + "en"],
+      konjunktiv: [wstem + "e", wstem + "est", wstem + "e", wstem + "en", wstem + "et", wstem + "en"],
+      imperativ: imperativeForms(verb, null, null),
+      partizip: (noGe ? "" : "ge") + stem + e + "t",
+      aux: "haben"
+    };
+  }
+
+  function buildTenses(verb, data) {
+    const auxPres = data.aux === "sein"
+      ? ["bin","bist","ist","sind","seid","sind"]
+      : ["habe","hast","hat","haben","habt","haben"];
+    const perfekt = auxPres.map(a => `${a} ${data.partizip}`);
+    const auxPraet = data.aux === "sein"
+      ? ["war","warst","war","waren","wart","waren"]
+      : ["hatte","hattest","hatte","hatten","hattet","hatten"];
+    const plusquam = auxPraet.map(a => `${a} ${data.partizip}`);
+    const werden = ["werde","wirst","wird","werden","werdet","werden"];
+    const futur = werden.map(w => `${w} ${verb}`);
+    const wuerde = ["würde","würdest","würde","würden","würdet","würden"];
+    const konditional = wuerde.map(w => `${w} ${verb}`);
+    const partizip1 = (verb.endsWith("n") ? verb : verb + "n") + "d";
+    const k1stem = verb.endsWith("en") ? verb.slice(0, -2) : verb.endsWith("n") ? verb.slice(0, -1) : verb;
+    const konjunktiv1 = verb === "sein"
+      ? ["sei","seist","sei","seien","seiet","seien"]
+      : [k1stem + "e", k1stem + "est", k1stem + "e", verb, k1stem + "et", verb];
+    return [
+      { id: "present", label: "Präsens", forms: data.present },
+      { id: "past", label: "Präteritum", forms: data.praeteritum },
+      { id: "perfect", label: "Perfekt", forms: perfekt },
+      { id: "pluperfect", label: "Plusquamperfekt", forms: plusquam },
+      { id: "future", label: "Futur I", forms: futur },
+      { id: "subjunctive", label: "Konjunktiv II", forms: data.konjunktiv },
+      { id: "subjunctive1", label: "Konjunktiv I (indirekte Rede)", forms: konjunktiv1 },
+      { id: "conditional", label: "Konditional (würde)", forms: konditional },
+      { id: "imperative", label: "Imperativ", forms: data.imperativ },
+      { id: "gerund", label: "Partizip I", forms: PRON.map(() => partizip1) }
+    ];
+  }
+
+  function conjugate(input) {
+    const verb = clean(input);
+    if (!verb) return null;
+    const reg = regularData(verb);
+    if (!reg) return { error: "German verbs end in -en or -n. Try e.g. machen, gehen, arbeiten." };
+    const sep = splitSeparable(verb);
+    if (sep) {
+      const tenses = separableTenses(verb, sep.prefix, sep.base);
+      return { isIrregular: !!IRR[sep.base], infinitive: verb, pronouns: PRON, tenses, separable: true };
+    }
+    const irr = IRR[verb];
+    let data = reg, isIrr = false;
+    if (irr) {
+      isIrr = true;
+      data = {
+        present: irr.presentFull || presentForms(verb, irr.du, irr.er),
+        praeteritum: praetForms(irr.praet, irr.weak),
+        konjunktiv: konjForms(irr.konj),
+        imperativ: imperativeForms(verb, irr.impDu, irr.impFull),
+        partizip: irr.partizip,
+        aux: irr.aux || "haben"
+      };
+    }
+    const tenses = buildTenses(verb, data);
+    if (isIrr) { const regT = buildTenses(verb, reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
+    return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
+  }
+
+  window.CONJ.de = {
+    name: "Deutsch", flag: "🇩🇪", ttsLang: "de-DE",
+    placeholder: "z.B. machen, gehen, sprechen…",
+    samples: ["machen", "gehen", "sein", "haben", "sprechen", "essen", "fahren", "nehmen", "geben", "finden", "denken", "bleiben"],
+    irregulars: Object.keys(IRR),
+    conjugate
+  };
+})();
+;
+/* English conjugation engine (v2 — expanded + regular baseline for diff highlight) */
+(function () {
+  window.CONJ = window.CONJ || {};
+  const PRON = ["I", "you", "he / she / it", "we", "you (pl)", "they"];
+
+  // irregular: base -> { past, pp, pres3?, pres? }
+  const IRR = {
+    be: { past: ["was","were","was","were","were","were"], pp: "been", pres: ["am","are","is","are","are","are"] },
+    have: { past: "had", pp: "had", pres3: "has" },
+    do: { past: "did", pp: "done", pres3: "does" },
+    go: { past: "went", pp: "gone" },
+    say: { past: "said", pp: "said" },
+    get: { past: "got", pp: "gotten" },
+    make: { past: "made", pp: "made" },
+    know: { past: "knew", pp: "known" },
+    think: { past: "thought", pp: "thought" },
+    take: { past: "took", pp: "taken" },
+    see: { past: "saw", pp: "seen" },
+    come: { past: "came", pp: "come" },
+    give: { past: "gave", pp: "given" },
+    find: { past: "found", pp: "found" },
+    tell: { past: "told", pp: "told" },
+    feel: { past: "felt", pp: "felt" },
+    become: { past: "became", pp: "become" },
+    leave: { past: "left", pp: "left" },
+    bring: { past: "brought", pp: "brought" },
+    begin: { past: "began", pp: "begun" },
+    keep: { past: "kept", pp: "kept" },
+    hold: { past: "held", pp: "held" },
+    write: { past: "wrote", pp: "written" },
+    stand: { past: "stood", pp: "stood" },
+    hear: { past: "heard", pp: "heard" },
+    let: { past: "let", pp: "let" },
+    mean: { past: "meant", pp: "meant" },
+    set: { past: "set", pp: "set" },
+    meet: { past: "met", pp: "met" },
+    run: { past: "ran", pp: "run" },
+    pay: { past: "paid", pp: "paid" },
+    sit: { past: "sat", pp: "sat" },
+    speak: { past: "spoke", pp: "spoken" },
+    lie: { past: "lay", pp: "lain" },
+    lead: { past: "led", pp: "led" },
+    read: { past: "read", pp: "read" },
+    grow: { past: "grew", pp: "grown" },
+    lose: { past: "lost", pp: "lost" },
+    fall: { past: "fell", pp: "fallen" },
+    send: { past: "sent", pp: "sent" },
+    build: { past: "built", pp: "built" },
+    understand: { past: "understood", pp: "understood" },
+    draw: { past: "drew", pp: "drawn" },
+    break: { past: "broke", pp: "broken" },
+    spend: { past: "spent", pp: "spent" },
+    cut: { past: "cut", pp: "cut" },
+    rise: { past: "rose", pp: "risen" },
+    drive: { past: "drove", pp: "driven" },
+    buy: { past: "bought", pp: "bought" },
+    wear: { past: "wore", pp: "worn" },
+    choose: { past: "chose", pp: "chosen" },
+    eat: { past: "ate", pp: "eaten" },
+    drink: { past: "drank", pp: "drunk" },
+    swim: { past: "swam", pp: "swum" },
+    sing: { past: "sang", pp: "sung" },
+    sleep: { past: "slept", pp: "slept" },
+    teach: { past: "taught", pp: "taught" },
+    catch: { past: "caught", pp: "caught" },
+    fly: { past: "flew", pp: "flown" },
+    forget: { past: "forgot", pp: "forgotten" },
+    fight: { past: "fought", pp: "fought" },
+    win: { past: "won", pp: "won" },
+    hit: { past: "hit", pp: "hit" },
+    put: { past: "put", pp: "put" },
+    cost: { past: "cost", pp: "cost" },
+    sell: { past: "sold", pp: "sold" },
+    throw: { past: "threw", pp: "thrown" },
+    ride: { past: "rode", pp: "ridden" },
+    shake: { past: "shook", pp: "shaken" },
+    steal: { past: "stole", pp: "stolen" },
+    freeze: { past: "froze", pp: "frozen" },
+    blow: { past: "blew", pp: "blown" },
+    bite: { past: "bit", pp: "bitten" },
+    hide: { past: "hid", pp: "hidden" },
+    beat: { past: "beat", pp: "beaten" },
+    bend: { past: "bent", pp: "bent" },
+    lend: { past: "lent", pp: "lent" },
+    shoot: { past: "shot", pp: "shot" },
+    shut: { past: "shut", pp: "shut" },
+    spread: { past: "spread", pp: "spread" },
+    stick: { past: "stuck", pp: "stuck" },
+    tear: { past: "tore", pp: "torn" },
+    wake: { past: "woke", pp: "woken" },
+    lay: { past: "laid", pp: "laid" },
+    light: { past: "lit", pp: "lit" },
+    sink: { past: "sank", pp: "sunk" },
+    sweep: { past: "swept", pp: "swept" },
+    feed: { past: "fed", pp: "fed" }
+  };
+
+  function clean(v) { v = (v || "").trim().toLowerCase(); if (v.startsWith("to ")) v = v.slice(3); return v; }
+  function thirdPerson(b) { if (/(s|sh|ch|x|z|o)$/.test(b)) return b + "es"; if (/[^aeiou]y$/.test(b)) return b.slice(0, -1) + "ies"; return b + "s"; }
+  function gerund(b) { if (b.endsWith("ie")) return b.slice(0, -2) + "ying"; if (b.endsWith("e") && b !== "be" && !b.endsWith("ee")) return b.slice(0, -1) + "ing"; if (/[^aeiou][aeiou][^aeiouwxy]$/.test(b) && b.length <= 4) return b + b.slice(-1) + "ing"; return b + "ing"; }
+  function regPast(b) { if (b.endsWith("e")) return b + "d"; if (/[^aeiou]y$/.test(b)) return b.slice(0, -1) + "ied"; if (/[^aeiou][aeiou][^aeiouwxy]$/.test(b) && b.length <= 4) return b + b.slice(-1) + "ed"; return b + "ed"; }
+
+  function buildTenses(base, irr) {
+    let pres;
+    if (base === "be" && irr && irr.pres) pres = irr.pres.slice();
+    else { const third = irr && irr.pres3 ? irr.pres3 : thirdPerson(base); pres = [base, base, third, base, base, base]; }
+    let past;
+    if (irr) past = Array.isArray(irr.past) ? irr.past.slice() : [irr.past, irr.past, irr.past, irr.past, irr.past, irr.past];
+    else { const p = regPast(base); past = [p, p, p, p, p, p]; }
+    const pp = irr ? irr.pp : regPast(base);
+    const has = ["have","have","has","have","have","have"];
+    const perfect = has.map(h => `${h} ${pp}`);
+    const pastperfect = PRON.map(() => `had ${pp}`);
+    const future = PRON.map(() => `will ${base}`);
+    const cond = PRON.map(() => `would ${base}`);
+    const subj = PRON.map(() => base === "be" ? "be" : base);
+    const ger = gerund(base);
+    const imperative = ["—", base + "!", "—", "let's " + base, base + "!", "—"];
+    const beNow = ["am", "are", "is", "are", "are", "are"];
+    const benPast = ["was", "were", "was", "were", "were", "were"];
+    const presentCont = beNow.map((b) => `${b} ${ger}`);
+    const pastCont = benPast.map((b) => `${b} ${ger}`);
+    const has2 = ["have", "have", "has", "have", "have", "have"];
+    const perfectCont = has2.map((h) => `${h} been ${ger}`);
+    return [
+      { id: "present", label: "Present", forms: pres },
+      { id: "presentCont", label: "Present Continuous", forms: presentCont },
+      { id: "past", label: "Simple Past", forms: past },
+      { id: "pastCont", label: "Past Continuous", forms: pastCont },
+      { id: "perfect", label: "Present Perfect", forms: perfect },
+      { id: "perfectCont", label: "Present Perfect Continuous", forms: perfectCont },
+      { id: "pluperfect", label: "Past Perfect", forms: pastperfect },
+      { id: "future", label: "Future", forms: future },
+      { id: "subjunctive", label: "Subjunctive", forms: subj },
+      { id: "conditional", label: "Conditional", forms: cond },
+      { id: "imperative", label: "Imperative", forms: imperative },
+      { id: "gerund", label: "Gerund / Present Participle", forms: PRON.map(() => ger) }
+    ];
+  }
+
+  function conjugate(input) {
+    const base = clean(input);
+    if (!base) return null;
+    const irr = IRR[base];
+    const isIrr = !!irr;
+    const tenses = buildTenses(base, irr);
+    if (isIrr) { const reg = buildTenses(base, null); tenses.forEach((t, i) => { t.reg = reg[i].forms; }); }
+    return { isIrregular: isIrr, infinitive: "to " + base, pronouns: PRON, tenses };
+  }
+
+  window.CONJ.en = {
+    name: "English", flag: "🇬🇧", ttsLang: "en-US",
+    placeholder: "e.g. to go, speak, run…",
+    samples: ["go", "speak", "have", "make", "think", "run", "eat", "write", "take", "give", "find", "see"],
+    irregulars: Object.keys(IRR),
+    conjugate
+  };
+})();
+;
+/* Spanish conjugation engine (v2 — partial overrides + regular baseline) */
+(function () {
+  window.CONJ = window.CONJ || {};
+  const PRON = ["yo", "tú", "él / ella", "nosotros", "vosotros", "ellos / ellas"];
+
+  // Each IRR entry overrides ONLY the irregular tenses; the rest come from rules.
+  // keys: present, preterite, subjunctive, future, conditional, imperative, gerund, participle
+  const IRR = {
+    ser: {
+      present: ["soy","eres","es","somos","sois","son"],
+      preterite: ["fui","fuiste","fue","fuimos","fuisteis","fueron"],
+      imperfect: ["era","eras","era","éramos","erais","eran"],
+      subjunctive: ["sea","seas","sea","seamos","seáis","sean"],
+      future: ["seré","serás","será","seremos","seréis","serán"],
+      conditional: ["sería","serías","sería","seríamos","seríais","serían"],
+      imperative: ["—","sé","sea","seamos","sed","sean"],
+      participle: "sido", gerund: "siendo"
+    },
+    estar: {
+      present: ["estoy","estás","está","estamos","estáis","están"],
+      preterite: ["estuve","estuviste","estuvo","estuvimos","estuvisteis","estuvieron"],
+      subjunctive: ["esté","estés","esté","estemos","estéis","estén"],
+      imperative: ["—","está","esté","estemos","estad","estén"]
+    },
+    haber: {
+      present: ["he","has","ha","hemos","habéis","han"],
+      preterite: ["hube","hubiste","hubo","hubimos","hubisteis","hubieron"],
+      subjunctive: ["haya","hayas","haya","hayamos","hayáis","hayan"],
+      future: ["habré","habrás","habrá","habremos","habréis","habrán"],
+      conditional: ["habría","habrías","habría","habríamos","habríais","habrían"],
+      imperative: ["—","he","haya","hayamos","habed","hayan"]
+    },
+    tener: {
+      present: ["tengo","tienes","tiene","tenemos","tenéis","tienen"],
+      preterite: ["tuve","tuviste","tuvo","tuvimos","tuvisteis","tuvieron"],
+      subjunctive: ["tenga","tengas","tenga","tengamos","tengáis","tengan"],
+      future: ["tendré","tendrás","tendrá","tendremos","tendréis","tendrán"],
+      conditional: ["tendría","tendrías","tendría","tendríamos","tendríais","tendrían"],
+      imperative: ["—","ten","tenga","tengamos","tened","tengan"]
+    },
+    hacer: {
+      present: ["hago","haces","hace","hacemos","hacéis","hacen"],
+      preterite: ["hice","hiciste","hizo","hicimos","hicisteis","hicieron"],
+      subjunctive: ["haga","hagas","haga","hagamos","hagáis","hagan"],
+      future: ["haré","harás","hará","haremos","haréis","harán"],
+      conditional: ["haría","harías","haría","haríamos","haríais","harían"],
+      imperative: ["—","haz","haga","hagamos","haced","hagan"],
+      participle: "hecho"
+    },
+    ir: {
+      present: ["voy","vas","va","vamos","vais","van"],
+      preterite: ["fui","fuiste","fue","fuimos","fuisteis","fueron"],
+      imperfect: ["iba","ibas","iba","íbamos","ibais","iban"],
+      subjunctive: ["vaya","vayas","vaya","vayamos","vayáis","vayan"],
+      imperative: ["—","ve","vaya","vamos","id","vayan"],
+      gerund: "yendo"
+    },
+    decir: {
+      present: ["digo","dices","dice","decimos","decís","dicen"],
+      preterite: ["dije","dijiste","dijo","dijimos","dijisteis","dijeron"],
+      subjunctive: ["diga","digas","diga","digamos","digáis","digan"],
+      future: ["diré","dirás","dirá","diremos","diréis","dirán"],
+      conditional: ["diría","dirías","diría","diríamos","diríais","dirían"],
+      imperative: ["—","di","diga","digamos","decid","digan"],
+      participle: "dicho", gerund: "diciendo"
+    },
+    poder: {
+      present: ["puedo","puedes","puede","podemos","podéis","pueden"],
+      preterite: ["pude","pudiste","pudo","pudimos","pudisteis","pudieron"],
+      subjunctive: ["pueda","puedas","pueda","podamos","podáis","puedan"],
+      future: ["podré","podrás","podrá","podremos","podréis","podrán"],
+      conditional: ["podría","podrías","podría","podríamos","podríais","podrían"],
+      imperative: ["—","—","—","—","—","—"],
+      gerund: "pudiendo"
+    },
+    querer: {
+      present: ["quiero","quieres","quiere","queremos","queréis","quieren"],
+      preterite: ["quise","quisiste","quiso","quisimos","quisisteis","quisieron"],
+      subjunctive: ["quiera","quieras","quiera","queramos","queráis","quieran"],
+      future: ["querré","querrás","querrá","querremos","querréis","querrán"],
+      conditional: ["querría","querrías","querría","querríamos","querríais","querrían"],
+      imperative: ["—","quiere","quiera","queramos","quered","quieran"]
+    },
+    ver: {
+      present: ["veo","ves","ve","vemos","veis","ven"],
+      preterite: ["vi","viste","vio","vimos","visteis","vieron"],
+      imperfect: ["veía","veías","veía","veíamos","veíais","veían"],
+      subjunctive: ["vea","veas","vea","veamos","veáis","vean"],
+      imperative: ["—","ve","vea","veamos","ved","vean"],
+      participle: "visto"
+    },
+    dar: {
+      present: ["doy","das","da","damos","dais","dan"],
+      preterite: ["di","diste","dio","dimos","disteis","dieron"],
+      subjunctive: ["dé","des","dé","demos","deis","den"],
+      imperative: ["—","da","dé","demos","dad","den"]
+    },
+    saber: {
+      present: ["sé","sabes","sabe","sabemos","sabéis","saben"],
+      preterite: ["supe","supiste","supo","supimos","supisteis","supieron"],
+      subjunctive: ["sepa","sepas","sepa","sepamos","sepáis","sepan"],
+      future: ["sabré","sabrás","sabrá","sabremos","sabréis","sabrán"],
+      conditional: ["sabría","sabrías","sabría","sabríamos","sabríais","sabrían"],
+      imperative: ["—","sabe","sepa","sepamos","sabed","sepan"]
+    },
+    poner: {
+      present: ["pongo","pones","pone","ponemos","ponéis","ponen"],
+      preterite: ["puse","pusiste","puso","pusimos","pusisteis","pusieron"],
+      subjunctive: ["ponga","pongas","ponga","pongamos","pongáis","pongan"],
+      future: ["pondré","pondrás","pondrá","pondremos","pondréis","pondrán"],
+      conditional: ["pondría","pondrías","pondría","pondríamos","pondríais","pondrían"],
+      imperative: ["—","pon","ponga","pongamos","poned","pongan"],
+      participle: "puesto"
+    },
+    salir: {
+      present: ["salgo","sales","sale","salimos","salís","salen"],
+      subjunctive: ["salga","salgas","salga","salgamos","salgáis","salgan"],
+      future: ["saldré","saldrás","saldrá","saldremos","saldréis","saldrán"],
+      conditional: ["saldría","saldrías","saldría","saldríamos","saldríais","saldrían"],
+      imperative: ["—","sal","salga","salgamos","salid","salgan"]
+    },
+    venir: {
+      present: ["vengo","vienes","viene","venimos","venís","vienen"],
+      preterite: ["vine","viniste","vino","vinimos","vinisteis","vinieron"],
+      subjunctive: ["venga","vengas","venga","vengamos","vengáis","vengan"],
+      future: ["vendré","vendrás","vendrá","vendremos","vendréis","vendrán"],
+      conditional: ["vendría","vendrías","vendría","vendríamos","vendríais","vendrían"],
+      imperative: ["—","ven","venga","vengamos","venid","vengan"],
+      gerund: "viniendo"
+    },
+    traer: {
+      present: ["traigo","traes","trae","traemos","traéis","traen"],
+      preterite: ["traje","trajiste","trajo","trajimos","trajisteis","trajeron"],
+      subjunctive: ["traiga","traigas","traiga","traigamos","traigáis","traigan"],
+      imperative: ["—","trae","traiga","traigamos","traed","traigan"],
+      participle: "traído", gerund: "trayendo"
+    },
+    conocer: {
+      present: ["conozco","conoces","conoce","conocemos","conocéis","conocen"],
+      subjunctive: ["conozca","conozcas","conozca","conozcamos","conozcáis","conozcan"],
+      imperative: ["—","conoce","conozca","conozcamos","conoced","conozcan"]
+    },
+    conducir: {
+      present: ["conduzco","conduces","conduce","conducimos","conducís","conducen"],
+      preterite: ["conduje","condujiste","condujo","condujimos","condujisteis","condujeron"],
+      subjunctive: ["conduzca","conduzcas","conduzca","conduzcamos","conduzcáis","conduzcan"],
+      imperative: ["—","conduce","conduzca","conduzcamos","conducid","conduzcan"]
+    },
+    dormir: {
+      present: ["duermo","duermes","duerme","dormimos","dormís","duermen"],
+      preterite: ["dormí","dormiste","durmió","dormimos","dormisteis","durmieron"],
+      subjunctive: ["duerma","duermas","duerma","durmamos","durmáis","duerman"],
+      imperative: ["—","duerme","duerma","durmamos","dormid","duerman"],
+      gerund: "durmiendo"
+    },
+    pedir: {
+      present: ["pido","pides","pide","pedimos","pedís","piden"],
+      preterite: ["pedí","pediste","pidió","pedimos","pedisteis","pidieron"],
+      subjunctive: ["pida","pidas","pida","pidamos","pidáis","pidan"],
+      imperative: ["—","pide","pida","pidamos","pedid","pidan"],
+      gerund: "pidiendo"
+    },
+    sentir: {
+      present: ["siento","sientes","siente","sentimos","sentís","sienten"],
+      preterite: ["sentí","sentiste","sintió","sentimos","sentisteis","sintieron"],
+      subjunctive: ["sienta","sientas","sienta","sintamos","sintáis","sientan"],
+      imperative: ["—","siente","sienta","sintamos","sentid","sientan"],
+      gerund: "sintiendo"
+    },
+    pensar: {
+      present: ["pienso","piensas","piensa","pensamos","pensáis","piensan"],
+      subjunctive: ["piense","pienses","piense","pensemos","penséis","piensen"],
+      imperative: ["—","piensa","piense","pensemos","pensad","piensen"]
+    },
+    volver: {
+      present: ["vuelvo","vuelves","vuelve","volvemos","volvéis","vuelven"],
+      subjunctive: ["vuelva","vuelvas","vuelva","volvamos","volváis","vuelvan"],
+      imperative: ["—","vuelve","vuelva","volvamos","volved","vuelvan"],
+      participle: "vuelto"
+    },
+    contar: {
+      present: ["cuento","cuentas","cuenta","contamos","contáis","cuentan"],
+      subjunctive: ["cuente","cuentes","cuente","contemos","contéis","cuenten"],
+      imperative: ["—","cuenta","cuente","contemos","contad","cuenten"]
+    },
+    jugar: {
+      present: ["juego","juegas","juega","jugamos","jugáis","juegan"],
+      preterite: ["jugué","jugaste","jugó","jugamos","jugasteis","jugaron"],
+      subjunctive: ["juegue","juegues","juegue","juguemos","juguéis","jueguen"],
+      imperative: ["—","juega","juegue","juguemos","jugad","jueguen"]
+    },
+    empezar: {
+      present: ["empiezo","empiezas","empieza","empezamos","empezáis","empiezan"],
+      preterite: ["empecé","empezaste","empezó","empezamos","empezasteis","empezaron"],
+      subjunctive: ["empiece","empieces","empiece","empecemos","empecéis","empiecen"],
+      imperative: ["—","empieza","empiece","empecemos","empezad","empiecen"]
+    },
+    perder: {
+      present: ["pierdo","pierdes","pierde","perdemos","perdéis","pierden"],
+      subjunctive: ["pierda","pierdas","pierda","perdamos","perdáis","pierdan"],
+      imperative: ["—","pierde","pierda","perdamos","perded","pierdan"]
+    },
+    seguir: {
+      present: ["sigo","sigues","sigue","seguimos","seguís","siguen"],
+      preterite: ["seguí","seguiste","siguió","seguimos","seguisteis","siguieron"],
+      subjunctive: ["siga","sigas","siga","sigamos","sigáis","sigan"],
+      imperative: ["—","sigue","siga","sigamos","seguid","sigan"],
+      gerund: "siguiendo"
+    },
+    servir: {
+      present: ["sirvo","sirves","sirve","servimos","servís","sirven"],
+      preterite: ["serví","serviste","sirvió","servimos","servisteis","sirvieron"],
+      subjunctive: ["sirva","sirvas","sirva","sirvamos","sirváis","sirvan"],
+      imperative: ["—","sirve","sirva","sirvamos","servid","sirvan"],
+      gerund: "sirviendo"
+    },
+    leer: {
+      preterite: ["leí","leíste","leyó","leímos","leísteis","leyeron"],
+      participle: "leído", gerund: "leyendo"
+    },
+    oir: {
+      present: ["oigo","oyes","oye","oímos","oís","oyen"],
+      preterite: ["oí","oíste","oyó","oímos","oísteis","oyeron"],
+      subjunctive: ["oiga","oigas","oiga","oigamos","oigáis","oigan"],
+      future: ["oiré","oirás","oirá","oiremos","oiréis","oirán"],
+      conditional: ["oiría","oirías","oiría","oiríamos","oiríais","oirían"],
+      imperative: ["—","oye","oiga","oigamos","oíd","oigan"],
+      participle: "oído", gerund: "oyendo"
+    },
+    caer: {
+      present: ["caigo","caes","cae","caemos","caéis","caen"],
+      preterite: ["caí","caíste","cayó","caímos","caísteis","cayeron"],
+      subjunctive: ["caiga","caigas","caiga","caigamos","caigáis","caigan"],
+      imperative: ["—","cae","caiga","caigamos","caed","caigan"],
+      participle: "caído", gerund: "cayendo"
+    },
+    morir: {
+      present: ["muero","mueres","muere","morimos","morís","mueren"],
+      preterite: ["morí","moriste","murió","morimos","moristeis","murieron"],
+      subjunctive: ["muera","mueras","muera","muramos","muráis","mueran"],
+      imperative: ["—","muere","muera","muramos","morid","mueran"],
+      participle: "muerto", gerund: "muriendo"
+    },
+    cerrar: {
+      present: ["cierro","cierras","cierra","cerramos","cerráis","cierran"],
+      subjunctive: ["cierre","cierres","cierre","cerremos","cerréis","cierren"],
+      imperative: ["—","cierra","cierre","cerremos","cerrad","cierren"]
+    },
+    entender: {
+      present: ["entiendo","entiendes","entiende","entendemos","entendéis","entienden"],
+      subjunctive: ["entienda","entiendas","entienda","entendamos","entendáis","entiendan"],
+      imperative: ["—","entiende","entienda","entendamos","entended","entiendan"]
+    },
+    encontrar: {
+      present: ["encuentro","encuentras","encuentra","encontramos","encontráis","encuentran"],
+      subjunctive: ["encuentre","encuentres","encuentre","encontremos","encontréis","encuentren"],
+      imperative: ["—","encuentra","encuentre","encontremos","encontrad","encuentren"]
+    },
+    mostrar: {
+      present: ["muestro","muestras","muestra","mostramos","mostráis","muestran"],
+      subjunctive: ["muestre","muestres","muestre","mostremos","mostréis","muestren"],
+      imperative: ["—","muestra","muestre","mostremos","mostrad","muestren"]
+    },
+    recordar: {
+      present: ["recuerdo","recuerdas","recuerda","recordamos","recordáis","recuerdan"],
+      subjunctive: ["recuerde","recuerdes","recuerde","recordemos","recordéis","recuerden"],
+      imperative: ["—","recuerda","recuerde","recordemos","recordad","recuerden"]
+    },
+    costar: {
+      present: ["cuesto","cuestas","cuesta","costamos","costáis","cuestan"],
+      subjunctive: ["cueste","cuestes","cueste","costemos","costéis","cuesten"],
+      imperative: ["—","cuesta","cueste","costemos","costad","cuesten"]
+    },
+    comenzar: {
+      present: ["comienzo","comienzas","comienza","comenzamos","comenzáis","comienzan"],
+      preterite: ["comencé","comenzaste","comenzó","comenzamos","comenzasteis","comenzaron"],
+      subjunctive: ["comience","comiences","comience","comencemos","comencéis","comiencen"],
+      imperative: ["—","comienza","comience","comencemos","comenzad","comiencen"]
+    },
+    preferir: {
+      present: ["prefiero","prefieres","prefiere","preferimos","preferís","prefieren"],
+      preterite: ["preferí","preferiste","prefirió","preferimos","preferisteis","prefirieron"],
+      subjunctive: ["prefiera","prefieras","prefiera","prefiramos","prefiráis","prefieran"],
+      imperative: ["—","prefiere","prefiera","prefiramos","preferid","prefieran"],
+      gerund: "prefiriendo"
+    },
+    repetir: {
+      present: ["repito","repites","repite","repetimos","repetís","repiten"],
+      preterite: ["repetí","repetiste","repitió","repetimos","repetisteis","repitieron"],
+      subjunctive: ["repita","repitas","repita","repitamos","repitáis","repitan"],
+      imperative: ["—","repite","repita","repitamos","repetid","repitan"],
+      gerund: "repitiendo"
+    },
+    escribir: { participle: "escrito" },
+    abrir: { participle: "abierto" },
+    romper: { participle: "roto" },
+    parecer: { present: ["parezco","pareces","parece","parecemos","parecéis","parecen"], subjunctive: ["parezca","parezcas","parezca","parezcamos","parezcáis","parezcan"], imperative: ["—","parece","parezca","parezcamos","pareced","parezcan"] },
+    ofrecer: { present: ["ofrezco","ofreces","ofrece","ofrecemos","ofrecéis","ofrecen"], subjunctive: ["ofrezca","ofrezcas","ofrezca","ofrezcamos","ofrezcáis","ofrezcan"], imperative: ["—","ofrece","ofrezca","ofrezcamos","ofreced","ofrezcan"] },
+    producir: { present: ["produzco","produces","produce","producimos","producís","producen"], preterite: ["produje","produjiste","produjo","produjimos","produjisteis","produjeron"], subjunctive: ["produzca","produzcas","produzca","produzcamos","produzcáis","produzcan"], imperative: ["—","produce","produzca","produzcamos","producid","produzcan"] },
+    construir: { present: ["construyo","construyes","construye","construimos","construís","construyen"], preterite: ["construí","construiste","construyó","construimos","construisteis","construyeron"], subjunctive: ["construya","construyas","construya","construyamos","construyáis","construyan"], imperative: ["—","construye","construya","construyamos","construid","construyan"], gerund: "construyendo" },
+    incluir: { present: ["incluyo","incluyes","incluye","incluimos","incluís","incluyen"], preterite: ["incluí","incluiste","incluyó","incluimos","incluisteis","incluyeron"], subjunctive: ["incluya","incluyas","incluya","incluyamos","incluyáis","incluyan"], imperative: ["—","incluye","incluya","incluyamos","incluid","incluyan"], gerund: "incluyendo" },
+    oler: { present: ["huelo","hueles","huele","olemos","oléis","huelen"], subjunctive: ["huela","huelas","huela","olamos","oláis","huelan"], imperative: ["—","huele","huela","olamos","oled","huelan"] },
+    soñar: { present: ["sueño","sueñas","sueña","soñamos","soñáis","sueñan"], subjunctive: ["sueñe","sueñes","sueñe","soñemos","soñéis","sueñen"], imperative: ["—","sueña","sueñe","soñemos","soñad","sueñen"] },
+    almorzar: { present: ["almuerzo","almuerzas","almuerza","almorzamos","almorzáis","almuerzan"], preterite: ["almorcé","almorzaste","almorzó","almorzamos","almorzasteis","almorzaron"], subjunctive: ["almuerce","almuerces","almuerce","almorcemos","almorcéis","almuercen"], imperative: ["—","almuerza","almuerce","almorcemos","almorzad","almuercen"] },
+    probar: { present: ["pruebo","pruebas","prueba","probamos","probáis","prueban"], subjunctive: ["pruebe","pruebes","pruebe","probemos","probéis","prueben"], imperative: ["—","prueba","pruebe","probemos","probad","prueben"] },
+    mover: { present: ["muevo","mueves","mueve","movemos","movéis","mueven"], subjunctive: ["mueva","muevas","mueva","movamos","mováis","muevan"], imperative: ["—","mueve","mueva","movamos","moved","muevan"] },
+    elegir: { present: ["elijo","eliges","elige","elegimos","elegís","eligen"], preterite: ["elegí","elegiste","eligió","elegimos","elegisteis","eligieron"], subjunctive: ["elija","elijas","elija","elijamos","elijáis","elijan"], imperative: ["—","elige","elija","elijamos","elegid","elijan"], gerund: "eligiendo" },
+    mentir: { present: ["miento","mientes","miente","mentimos","mentís","mienten"], preterite: ["mentí","mentiste","mintió","mentimos","mentisteis","mintieron"], subjunctive: ["mienta","mientas","mienta","mintamos","mintáis","mientan"], imperative: ["—","miente","mienta","mintamos","mentid","mientan"], gerund: "mintiendo" },
+    andar: { preterite: ["anduve","anduviste","anduvo","anduvimos","anduvisteis","anduvieron"] },
+    caber: { present: ["quepo","cabes","cabe","cabemos","cabéis","caben"], preterite: ["cupe","cupiste","cupo","cupimos","cupisteis","cupieron"], subjunctive: ["quepa","quepas","quepa","quepamos","quepáis","quepan"], future: ["cabré","cabrás","cabrá","cabremos","cabréis","cabrán"], conditional: ["cabría","cabrías","cabría","cabríamos","cabríais","cabrían"], imperative: ["—","cabe","quepa","quepamos","cabed","quepan"] },
+    valer: { present: ["valgo","vales","vale","valemos","valéis","valen"], subjunctive: ["valga","valgas","valga","valgamos","valgáis","valgan"], future: ["valdré","valdrás","valdrá","valdremos","valdréis","valdrán"], conditional: ["valdría","valdrías","valdría","valdríamos","valdríais","valdrían"], imperative: ["—","vale","valga","valgamos","valed","valgan"] },
+    reír: { present: ["río","ríes","ríe","reímos","reís","ríen"], preterite: ["reí","reíste","rió","reímos","reísteis","rieron"], subjunctive: ["ría","rías","ría","riamos","riáis","rían"], imperative: ["—","ríe","ría","riamos","reíd","rían"], participle: "reído", gerund: "riendo" }
+  };
+  // accent alias
+  IRR["oír"] = IRR.oir;
+
+  const ENDINGS = {
+    ar: { present: ["o","as","a","amos","áis","an"], preterite: ["é","aste","ó","amos","asteis","aron"], imperfect: ["aba","abas","aba","ábamos","abais","aban"], subjunctive: ["e","es","e","emos","éis","en"], conditional: ["ía","ías","ía","íamos","íais","ían"], imperative: ["—","a","e","emos","ad","en"], gerund: "ando", participle: "ado" },
+    er: { present: ["o","es","e","emos","éis","en"], preterite: ["í","iste","ió","imos","isteis","ieron"], imperfect: ["ía","ías","ía","íamos","íais","ían"], subjunctive: ["a","as","a","amos","áis","an"], conditional: ["ía","ías","ía","íamos","íais","ían"], imperative: ["—","e","a","amos","ed","an"], gerund: "iendo", participle: "ido" },
+    ir: { present: ["o","es","e","imos","ís","en"], preterite: ["í","iste","ió","imos","isteis","ieron"], imperfect: ["ía","ías","ía","íamos","íais","ían"], subjunctive: ["a","as","a","amos","áis","an"], conditional: ["ía","ías","ía","íamos","íais","ían"], imperative: ["—","e","a","amos","id","an"], gerund: "iendo", participle: "ido" }
+  };
+
+  function clean(v) { return (v || "").trim().toLowerCase(); }
+
+  // Orthographic adjustment so c/g/z keep their sound before certain endings
+  // (e.g. buscar -> busqué/busque, llegar -> llegué, cruzar -> crucé).
+  function adjStem(stem, ending, group) {
+    const f = ending[0];
+    if (group === "ar") {
+      if (/[eé]/.test(f)) {
+        if (stem.endsWith("z")) return stem.slice(0, -1) + "c";
+        if (stem.endsWith("g")) return stem.slice(0, -1) + "gu";
+        if (stem.endsWith("c")) return stem.slice(0, -1) + "qu";
+      }
+    } else {
+      if (/[aoó]/.test(f)) {
+        if (stem.endsWith("gu")) return stem.slice(0, -2) + "g";
+        if (stem.endsWith("g")) return stem.slice(0, -1) + "j";
+        if (stem.endsWith("c")) return stem.slice(0, -1) + "z";
+      }
+    }
+    return stem;
+  }
+
+  function regularData(verb) {
+    const end = verb.slice(-2), stem = verb.slice(0, -2);
+    const e = ENDINGS[end] || ENDINGS[end.normalize("NFD").replace(/[\u0300-\u036f]/g, "")];
+    if (!e) return null;
+    const map = (arr) => arr.map(s => adjStem(stem, s, end) + s);
+    return {
+      present: map(e.present),
+      preterite: map(e.preterite),
+      subjunctive: map(e.subjunctive),
+      future: ["é","ás","á","emos","éis","án"].map(s => verb + s),
+      conditional: e.conditional.map(s => verb + s),
+      imperative: e.imperative.map(s => s === "—" ? "—" : adjStem(stem, s, end) + s),
+      gerund: stem + e.gerund,
+      imperfect: e.imperfect.map(s => stem + s),
+      participle: stem + e.participle
+    };
+  }
+
+  function tensesFrom(d) {
+    const haber = ["he","has","ha","hemos","habéis","han"];
+    const perfect = haber.map(h => `${h} ${d.participle}`);
+    const haberImp = ["había","habías","había","habíamos","habíais","habían"];
+    const pluscuam = haberImp.map(h => `${h} ${d.participle}`);
+    const estar = ["estoy","estás","está","estamos","estáis","están"];
+    const presenteContinuo = estar.map(e => `${e} ${d.gerund}`);
+    const perfectoContinuo = haber.map(h => `${h} estado ${d.gerund}`);
+    // Imperfecto de subjuntivo: from 3rd-person-plural preterite minus -ron + -ra endings
+    const accentLast = (s) => {const m = { a: "á", e: "é", i: "í", o: "ó", u: "ú" };return s.replace(/([aeiou])([^aeiou]*)$/, (mm, v, rest) => m[v] + rest);};
+    let impSubj = null;
+    const p3 = d.preterite && d.preterite[5];
+    if (p3 && p3 !== "—" && /ron$/.test(p3)) {
+      const stem = p3.replace(/ron$/, "");
+      impSubj = [stem + "ra", stem + "ras", stem + "ra", accentLast(stem) + "ramos", stem + "rais", stem + "ran"];
+    }
+    const out = [
+      { id: "present", label: "Presente", forms: d.present },
+      { id: "imperfect", label: "Pretérito imperfecto", forms: d.imperfect },
+      { id: "past", label: "Pretérito (indefinido)", forms: d.preterite },
+      { id: "perfect", label: "Pretérito perfecto", forms: perfect },
+      { id: "pluperfect", label: "Pretérito pluscuamperfecto", forms: pluscuam },
+      { id: "future", label: "Futuro", forms: d.future },
+      { id: "subjunctive", label: "Subjuntivo (presente)", forms: d.subjunctive },
+      { id: "subjunctiveImp", label: "Subjuntivo imperfecto", forms: impSubj || d.subjunctive },
+      { id: "conditional", label: "Condicional", forms: d.conditional },
+      { id: "imperative", label: "Imperativo", forms: d.imperative },
+      { id: "continuous", label: "Presente continuo (gerundio)", forms: presenteContinuo },
+      { id: "continuousPerfect", label: "Perfecto continuo (gerundio)", forms: perfectoContinuo }
+    ];
+    return out;
+  }
+
+  const KEYS = ["present","preterite","imperfect","subjunctive","future","conditional","imperative","gerund","participle"];
+
+  function conjugate(input) {
+    const verb = clean(input);
+    if (!verb) return null;
+    const irr = IRR[verb];
+    const reg = regularData(verb);
+    if (!reg && !irr) return { error: "Spanish verbs end in -ar, -er or -ir. Try e.g. hablar, comer, vivir." };
+    let d, isIrr = false;
+    if (irr) { isIrr = true; d = Object.assign({}, reg || {}); KEYS.forEach(k => { if (irr[k]) d[k] = irr[k]; }); }
+    else d = reg;
+    const tenses = tensesFrom(d);
+    if (isIrr && reg) { const regT = tensesFrom(reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
+    return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
+  }
+
+  window.CONJ.es = {
+    name: "Español", flag: "🇪🇸", ttsLang: "es-ES",
+    placeholder: "p.ej. hablar, comer, vivir…",
+    samples: ["hablar", "comer", "vivir", "ser", "tener", "hacer", "ir", "querer", "poder", "venir", "pensar", "dormir"],
+    irregulars: Object.keys(IRR),
+    conjugate
+  };
+})();
+;
+/* Dutch conjugation engine (v2 — partial overrides + regular baseline) */
+(function () {
+  window.CONJ = window.CONJ || {};
+  const PRON = ["ik", "jij", "hij / zij", "wij", "jullie", "zij"];
+
+  // IRR fields: presentFull?, pastSg, pastPl, participle, aux, subj?, imp?
+  const IRR = {
+    zijn:    { presentFull: ["ben","bent","is","zijn","zijn","zijn"], pastSg: "was", pastPl: "waren", participle: "geweest", aux: "zijn", subj: ["zij","zij","zij","zijn","zijn","zijn"], imp: "wees" },
+    hebben:  { presentFull: ["heb","hebt","heeft","hebben","hebben","hebben"], pastSg: "had", pastPl: "hadden", participle: "gehad", aux: "hebben", imp: "heb" },
+    worden:  { pastSg: "werd", pastPl: "werden", participle: "geworden", aux: "zijn" },
+    gaan:    { presentFull: ["ga","gaat","gaat","gaan","gaan","gaan"], pastSg: "ging", pastPl: "gingen", participle: "gegaan", aux: "zijn", subj: ["ga","ga","ga","gaan","gaan","gaan"], imp: "ga" },
+    doen:    { presentFull: ["doe","doet","doet","doen","doen","doen"], pastSg: "deed", pastPl: "deden", participle: "gedaan", aux: "hebben", imp: "doe" },
+    zien:    { presentFull: ["zie","ziet","ziet","zien","zien","zien"], pastSg: "zag", pastPl: "zagen", participle: "gezien", aux: "hebben", imp: "zie" },
+    komen:   { presentFull: ["kom","komt","komt","komen","komen","komen"], pastSg: "kwam", pastPl: "kwamen", participle: "gekomen", aux: "zijn", imp: "kom" },
+    staan:   { presentFull: ["sta","staat","staat","staan","staan","staan"], pastSg: "stond", pastPl: "stonden", participle: "gestaan", aux: "hebben", subj: ["sta","sta","sta","staan","staan","staan"], imp: "sta" },
+    geven:   { pastSg: "gaf", pastPl: "gaven", participle: "gegeven", aux: "hebben" },
+    nemen:   { pastSg: "nam", pastPl: "namen", participle: "genomen", aux: "hebben" },
+    eten:    { pastSg: "at", pastPl: "aten", participle: "gegeten", aux: "hebben" },
+    lopen:   { pastSg: "liep", pastPl: "liepen", participle: "gelopen", aux: "zijn" },
+    lezen:   { pastSg: "las", pastPl: "lazen", participle: "gelezen", aux: "hebben" },
+    vinden:  { pastSg: "vond", pastPl: "vonden", participle: "gevonden", aux: "hebben" },
+    blijven: { pastSg: "bleef", pastPl: "bleven", participle: "gebleven", aux: "zijn" },
+    schrijven:{ pastSg: "schreef", pastPl: "schreven", participle: "geschreven", aux: "hebben" },
+    rijden:  { pastSg: "reed", pastPl: "reden", participle: "gereden", aux: "hebben" },
+    drinken: { pastSg: "dronk", pastPl: "dronken", participle: "gedronken", aux: "hebben" },
+    zingen:  { pastSg: "zong", pastPl: "zongen", participle: "gezongen", aux: "hebben" },
+    zwemmen: { pastSg: "zwom", pastPl: "zwommen", participle: "gezwommen", aux: "hebben" },
+    beginnen:{ pastSg: "begon", pastPl: "begonnen", participle: "begonnen", aux: "zijn" },
+    brengen: { pastSg: "bracht", pastPl: "brachten", participle: "gebracht", aux: "hebben" },
+    denken:  { pastSg: "dacht", pastPl: "dachten", participle: "gedacht", aux: "hebben" },
+    kopen:   { pastSg: "kocht", pastPl: "kochten", participle: "gekocht", aux: "hebben" },
+    vallen:  { pastSg: "viel", pastPl: "vielen", participle: "gevallen", aux: "zijn" },
+    houden:  { pastSg: "hield", pastPl: "hielden", participle: "gehouden", aux: "hebben" },
+    laten:   { pastSg: "liet", pastPl: "lieten", participle: "gelaten", aux: "hebben" },
+    slapen:  { pastSg: "sliep", pastPl: "sliepen", participle: "geslapen", aux: "hebben" },
+    spreken: { pastSg: "sprak", pastPl: "spraken", participle: "gesproken", aux: "hebben" },
+    begrijpen:{ pastSg: "begreep", pastPl: "begrepen", participle: "begrepen", aux: "hebben" },
+    helpen:  { pastSg: "hielp", pastPl: "hielpen", participle: "geholpen", aux: "hebben" },
+    krijgen: { pastSg: "kreeg", pastPl: "kregen", participle: "gekregen", aux: "hebben" },
+    roepen:  { pastSg: "riep", pastPl: "riepen", participle: "geroepen", aux: "hebben" },
+    sluiten: { pastSg: "sloot", pastPl: "sloten", participle: "gesloten", aux: "hebben" },
+    verliezen:{ pastSg: "verloor", pastPl: "verloren", participle: "verloren", aux: "hebben" },
+    winnen:  { pastSg: "won", pastPl: "wonnen", participle: "gewonnen", aux: "hebben" },
+    dragen:  { pastSg: "droeg", pastPl: "droegen", participle: "gedragen", aux: "hebben" },
+    vragen:  { pastSg: "vroeg", pastPl: "vroegen", participle: "gevraagd", aux: "hebben" },
+    zeggen:  { pastSg: "zei", pastPl: "zeiden", participle: "gezegd", aux: "hebben" },
+    liggen:  { pastSg: "lag", pastPl: "lagen", participle: "gelegen", aux: "hebben" },
+    zitten:  { pastSg: "zat", pastPl: "zaten", participle: "gezeten", aux: "hebben" },
+    kijken:  { pastSg: "keek", pastPl: "keken", participle: "gekeken", aux: "hebben" },
+    vergeten:{ pastSg: "vergat", pastPl: "vergaten", participle: "vergeten", aux: "zijn" },
+    trekken: { pastSg: "trok", pastPl: "trokken", participle: "getrokken", aux: "hebben" },
+    kunnen:  { presentFull: ["kan","kunt","kan","kunnen","kunnen","kunnen"], pastSg: "kon", pastPl: "konden", participle: "gekund", aux: "hebben", imp: "kun" },
+    mogen:   { presentFull: ["mag","mag","mag","mogen","mogen","mogen"], pastSg: "mocht", pastPl: "mochten", participle: "gemogen", aux: "hebben", imp: "mag" },
+    moeten:  { presentFull: ["moet","moet","moet","moeten","moeten","moeten"], pastSg: "moest", pastPl: "moesten", participle: "gemoeten", aux: "hebben", imp: "moet" },
+    willen:  { presentFull: ["wil","wilt","wil","willen","willen","willen"], pastSg: "wilde", pastPl: "wilden", participle: "gewild", aux: "hebben", imp: "wil" },
+    zullen:  { presentFull: ["zal","zult","zal","zullen","zullen","zullen"], pastSg: "zou", pastPl: "zouden", participle: "—", aux: "hebben", imp: "—" },
+    weten:   { presentFull: ["weet","weet","weet","weten","weten","weten"], pastSg: "wist", pastPl: "wisten", participle: "geweten", aux: "hebben", imp: "weet" },
+    vliegen: { pastSg: "vloog", pastPl: "vlogen", participle: "gevlogen", aux: "zijn" },
+    kiezen:  { pastSg: "koos", pastPl: "kozen", participle: "gekozen", aux: "hebben" },
+    bieden:  { pastSg: "bood", pastPl: "boden", participle: "geboden", aux: "hebben" },
+    genieten:{ pastSg: "genoot", pastPl: "genoten", participle: "genoten", aux: "hebben" },
+    schieten:{ pastSg: "schoot", pastPl: "schoten", participle: "geschoten", aux: "hebben" },
+    breken:  { pastSg: "brak", pastPl: "braken", participle: "gebroken", aux: "hebben" },
+    steken:  { pastSg: "stak", pastPl: "staken", participle: "gestoken", aux: "hebben" },
+    stijgen: { pastSg: "steeg", pastPl: "stegen", participle: "gestegen", aux: "zijn" },
+    schijnen:{ pastSg: "scheen", pastPl: "schenen", participle: "geschenen", aux: "hebben" },
+    verdwijnen:{ pastSg: "verdween", pastPl: "verdwenen", participle: "verdwenen", aux: "zijn" },
+    snijden: { pastSg: "sneed", pastPl: "sneden", participle: "gesneden", aux: "hebben" },
+    springen:{ pastSg: "sprong", pastPl: "sprongen", participle: "gesprongen", aux: "zijn" },
+    sterven: { pastSg: "stierf", pastPl: "stierven", participle: "gestorven", aux: "zijn" },
+    zoeken:  { pastSg: "zocht", pastPl: "zochten", participle: "gezocht", aux: "hebben" },
+    verkopen:{ pastSg: "verkocht", pastPl: "verkochten", participle: "verkocht", aux: "hebben" },
+    lachen:  { pastSg: "lachte", pastPl: "lachten", participle: "gelachen", aux: "hebben" }
+  };
+
+  /* ---- C1 expansion ---- */
+  Object.assign(IRR, {
+    wijzen:   { pastSg: "wees", pastPl: "wezen", participle: "gewezen", aux: "hebben" },
+    wegen:    { pastSg: "woog", pastPl: "wogen", participle: "gewogen", aux: "hebben" },
+    binden:   { pastSg: "bond", pastPl: "bonden", participle: "gebonden", aux: "hebben" },
+    werpen:   { pastSg: "wierp", pastPl: "wierpen", participle: "geworpen", aux: "hebben" },
+    treffen:  { pastSg: "trof", pastPl: "troffen", participle: "getroffen", aux: "hebben" },
+    vechten:  { pastSg: "vocht", pastPl: "vochten", participle: "gevochten", aux: "hebben" },
+    schenken: { pastSg: "schonk", pastPl: "schonken", participle: "geschonken", aux: "hebben" },
+    dwingen:  { pastSg: "dwong", pastPl: "dwongen", participle: "gedwongen", aux: "hebben" },
+    dringen:  { pastSg: "drong", pastPl: "drongen", participle: "gedrongen", aux: "hebben" },
+    klinken:  { pastSg: "klonk", pastPl: "klonken", participle: "geklonken", aux: "hebben" },
+    zinken:   { pastSg: "zonk", pastPl: "zonken", participle: "gezonken", aux: "zijn" },
+    buigen:   { pastSg: "boog", pastPl: "bogen", participle: "gebogen", aux: "hebben" },
+    vriezen:  { pastSg: "vroor", pastPl: "vroren", participle: "gevroren", aux: "hebben" },
+    gieten:   { pastSg: "goot", pastPl: "goten", participle: "gegoten", aux: "hebben" },
+    fluiten:  { pastSg: "floot", pastPl: "floten", participle: "gefloten", aux: "hebben" },
+    ruiken:   { pastSg: "rook", pastPl: "roken", participle: "geroken", aux: "hebben" },
+    bijten:   { pastSg: "beet", pastPl: "beten", participle: "gebeten", aux: "hebben" },
+    lijden:   { pastSg: "leed", pastPl: "leden", participle: "geleden", aux: "hebben" },
+    glijden:  { pastSg: "gleed", pastPl: "gleden", participle: "gegleden", aux: "zijn" },
+    prijzen:  { pastSg: "prees", pastPl: "prezen", participle: "geprezen", aux: "hebben" },
+    wrijven:  { pastSg: "wreef", pastPl: "wreven", participle: "gewreven", aux: "hebben" },
+    blazen:   { pastSg: "blies", pastPl: "bliezen", participle: "geblazen", aux: "hebben" },
+    graven:   { pastSg: "groef", pastPl: "groeven", participle: "gegraven", aux: "hebben" },
+    genezen:  { pastSg: "genas", pastPl: "genazen", participle: "genezen", aux: "zijn" },
+    bedriegen:{ pastSg: "bedroog", pastPl: "bedrogen", participle: "bedrogen", aux: "hebben" },
+    verbergen:{ pastSg: "verborg", pastPl: "verborgen", participle: "verborgen", aux: "hebben" },
+    scheppen: { pastSg: "schiep", pastPl: "schiepen", participle: "geschapen", aux: "hebben" },
+    slaan:    { presentFull: ["sla","slaat","slaat","slaan","slaan","slaan"], pastSg: "sloeg", pastPl: "sloegen", participle: "geslagen", aux: "hebben", imp: "sla" },
+    duiken:   { pastSg: "dook", pastPl: "doken", participle: "gedoken", aux: "hebben" },
+    spuiten:  { pastSg: "spoot", pastPl: "spoten", participle: "gespoten", aux: "hebben" }
+  });
+  // inseparable-prefixed strong verbs derived from a base
+  function np(base, prefix, over) {
+    const b = IRR[base], o = {};
+    if (b.presentFull) o.presentFull = b.presentFull.map((x) => x === "—" ? "—" : prefix + x);
+    o.pastSg = prefix + b.pastSg;
+    o.pastPl = prefix + b.pastPl;
+    o.participle = prefix + b.participle.replace(/^ge/, "");
+    o.aux = b.aux;
+    return Object.assign(o, over || {});
+  }
+  Object.assign(IRR, {
+    verstaan: np("staan", "ver"), bestaan: np("staan", "be"), ontstaan: np("staan", "ont", { aux: "zijn" }),
+    ontkomen: np("komen", "ont"),
+    vergeven: np("geven", "ver"),
+    beschrijven: np("schrijven", "be"),
+    verbieden: np("bieden", "ver"),
+    besluiten: np("sluiten", "be"),
+    verlaten: np("laten", "ver"),
+    bevallen: np("vallen", "be", { aux: "zijn" }),
+    bewijzen: np("wijzen", "be"),
+    bewegen: np("wegen", "be"),
+    verbinden: np("binden", "ver"),
+    verbreken: np("breken", "ver"), ontbreken: np("breken", "ont"), onderbreken: np("breken", "onder"),
+    vertrekken: np("trekken", "ver", { aux: "zijn" }),
+    bezitten: np("zitten", "be")
+  });
+
+  const KOFSCHIP = ["t", "k", "f", "s", "ch", "p"];
+  function clean(v) { return (v || "").trim().toLowerCase(); }
+
+  // Separable prefixes (scheidbare werkwoorden): conjugate the base, then move the prefix to the end.
+  const NL_SEP = ["aan","af","bij","in","mee","na","om","onder","op","over","toe","uit","voor","weg","terug","door","samen","neer","tegen","vast","los","klaar","thuis","open","dicht","achteruit","vooruit","binnen","buiten","mis"];
+  const NL_SEIN_BASE = ["staan","komen","gaan","lopen","vallen","stijgen","springen","rijden","vliegen","groeien"];
+  function nlSplit(verb) {
+    for (const p of NL_SEP) {
+      if (verb.length > p.length + 2 && verb.startsWith(p)) {
+        const base = verb.slice(p.length);
+        if ((base.endsWith("en") || base.endsWith("n")) && (IRR[base] || base.length >= 3)) {
+          if (IRR[verb]) return null; // inseparable verb already defined as a whole
+          return { prefix: p, base };
+        }
+      }
+    }
+    return null;
+  }
+  function nlBaseData(base) {
+    const reg = regularData(base);
+    const irr = IRR[base];
+    if (!irr) return { data: reg, isIrr: false };
+    return { data: {
+      present: irr.presentFull || reg.present,
+      past: [irr.pastSg, irr.pastSg, irr.pastSg, irr.pastPl, irr.pastPl, irr.pastPl],
+      subjunctive: irr.subj || reg.subjunctive,
+      imperative: ["—", (irr.imp != null ? irr.imp : reg.imperative[1]), (irr.imp != null ? irr.imp : reg.imperative[1]), "laten we " + base, (irr.presentFull ? irr.presentFull[4] : reg.imperative[4]), (irr.imp != null ? irr.imp : reg.imperative[1]) + " u"],
+      participle: irr.participle,
+      aux: irr.aux || "hebben"
+    }, isIrr: true };
+  }
+  function nlSeparableTenses(verb, prefix, base) {
+    const { data, isIrr } = nlBaseData(base);
+    const aux = (NL_SEIN_BASE.indexOf(base) >= 0) ? "zijn" : data.aux;
+    const suf = (arr) => arr.map((f) => f === "—" ? "—" : `${f} … ${prefix}`);
+    const imp = data.imperative.map((f) => f === "—" ? "—" : (f.indexOf(" ") >= 0 ? f.replace("laten we " + base, "laten we " + verb) : `${f} … ${prefix}`));
+    const part = data.participle === "—" ? "—" : prefix + data.participle; // opgestaan, meegenomen
+    const dataS = { present: suf(data.present), past: suf(data.past), subjunctive: suf(data.subjunctive), imperative: imp, participle: part, aux };
+    const tenses = buildTenses(verb, dataS);
+    if (isIrr) {
+      const regBase = regularData(base);
+      const regS = { present: suf(regBase.present), past: suf(regBase.past), subjunctive: suf(regBase.subjunctive), imperative: imp, participle: prefix + regBase.participle, aux };
+      const regT = buildTenses(verb, regS);
+      tenses.forEach((t, i) => { t.reg = regT[i].forms; });
+    }
+    return tenses;
+  }
+
+  function stemOf(verb) {
+    let stem = verb.endsWith("en") ? verb.slice(0, -2) : verb.replace(/n$/, "");
+    if (/([bcdfghklmnprst])\1$/.test(stem)) {
+      stem = stem.slice(0, -1); // double consonant => short vowel, do NOT lengthen
+    } else if (/[^aeiou][aeiou][^aeiou]$/.test(stem)) {
+      const v = stem[stem.length - 2]; stem = stem.slice(0, -1) + v + stem.slice(-1);
+    }
+    stem = stem.replace(/v$/, "f").replace(/z$/, "s");
+    return stem;
+  }
+
+  function regularData(verb) {
+    const stem = stemOf(verb);
+    const lastSound = /ch$/.test(stem) ? "ch" : stem.slice(-1);
+    const voiceless = KOFSCHIP.includes(lastSound);
+    const t = voiceless ? "t" : "d";
+    const pastSing = stem + t + "e";
+    const pastPlur = stem + t + "en";
+    const stT = stem.endsWith("t") ? stem : stem + "t";
+    return {
+      present: [stem, stT, stT, verb, verb, verb],
+      past: [pastSing, pastSing, pastSing, pastPlur, pastPlur, pastPlur],
+      subjunctive: [stem + "e", stem + "e", stem + "e", verb, verb, verb],
+      imperative: ["—", stem, stem, "laten we " + verb, stT, stT + " u"],
+      participle: "ge" + stem + t,
+      aux: "hebben"
+    };
+  }
+
+  function buildTenses(verb, data) {
+    const auxPres = data.aux === "zijn"
+      ? ["ben","bent","is","zijn","zijn","zijn"]
+      : ["heb","hebt","heeft","hebben","hebben","hebben"];
+    const perfect = data.participle === "—" ? PRON.map(() => "—") : auxPres.map(a => `${a} ${data.participle}`);
+    const auxPast = data.aux === "zijn"
+      ? ["was","was","was","waren","waren","waren"]
+      : ["had","had","had","hadden","hadden","hadden"];
+    const pluperfect = data.participle === "—" ? PRON.map(() => "—") : auxPast.map(a => `${a} ${data.participle}`);
+    const zullen = ["zal","zult","zal","zullen","zullen","zullen"];
+    const future = zullen.map(z => `${z} ${verb}`);
+    const zou = ["zou","zou","zou","zouden","zouden","zouden"];
+    const conditional = zou.map(z => `${z} ${verb}`);
+    const gerund = verb + "d";
+    return [
+      { id: "present", label: "Tegenwoordige tijd", forms: data.present },
+      { id: "past", label: "Verleden tijd", forms: data.past },
+      { id: "perfect", label: "Voltooid tegenwoordige tijd", forms: perfect },
+      { id: "pluperfect", label: "Voltooid verleden tijd", forms: pluperfect },
+      { id: "future", label: "Toekomende tijd", forms: future },
+      { id: "subjunctive", label: "Aanvoegende wijs", forms: data.subjunctive },
+      { id: "conditional", label: "Voorwaardelijke wijs", forms: conditional },
+      { id: "imperative", label: "Gebiedende wijs", forms: data.imperative },
+      { id: "gerund", label: "Onvoltooid deelwoord", forms: PRON.map(() => gerund) }
+    ];
+  }
+
+  function conjugate(input) {
+    const verb = clean(input);
+    if (!verb) return null;
+    if (!verb.endsWith("en") && !verb.endsWith("n")) {
+      return { error: "Dutch verbs end in -en. Try e.g. werken, maken, lopen." };
+    }
+    const reg = regularData(verb);
+    const sep = nlSplit(verb);
+    if (sep) {
+      const tenses = nlSeparableTenses(verb, sep.prefix, sep.base);
+      return { isIrregular: !!IRR[sep.base], infinitive: verb, pronouns: PRON, tenses, separable: true };
+    }
+    const irr = IRR[verb];
+    let data = reg, isIrr = false;
+    if (irr) {
+      isIrr = true;
+      const impForm = irr.imp != null ? irr.imp : reg.imperative[1];
+      data = {
+        present: irr.presentFull || reg.present,
+        past: [irr.pastSg, irr.pastSg, irr.pastSg, irr.pastPl, irr.pastPl, irr.pastPl],
+        subjunctive: irr.subj || reg.subjunctive,
+        imperative: ["—", impForm, impForm, "laten we " + verb, (irr.presentFull ? irr.presentFull[4] : reg.imperative[4]), impForm + " u"],
+        participle: irr.participle,
+        aux: irr.aux || "hebben"
+      };
+    }
+    const tenses = buildTenses(verb, data);
+    if (isIrr) { const regT = buildTenses(verb, reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
+    return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
+  }
+
+  window.CONJ.nl = {
+    name: "Nederlands", flag: "🇳🇱", ttsLang: "nl-NL",
+    placeholder: "bijv. werken, maken, lopen…",
+    samples: ["werken", "maken", "lopen", "zijn", "hebben", "gaan", "zien", "eten", "geven", "komen", "denken", "blijven"],
+    irregulars: Object.keys(IRR),
+    conjugate
+  };
+})();
+;
+/* French conjugation engine (generator from present + future stem) */
+(function () {
+  window.CONJ = window.CONJ || {};
+  const PRON = ["je", "tu", "il / elle", "nous", "vous", "ils / elles"];
+
+  const E_IMPARF = ["ais", "ais", "ait", "ions", "iez", "aient"];
+  const E_FUT = ["ai", "as", "a", "ons", "ez", "ont"];
+  const E_COND = ["ais", "ais", "ait", "ions", "iez", "aient"];
+  function auxPresent(aux) { return aux === "être" ? ["suis","es","est","sommes","êtes","sont"] : ["ai","as","a","avons","avez","ont"]; }
+
+  // IRR fields: present[6] (required), futStem, pp, aux, subj?, imp?, pprStem?, imparfait?, ppr?, erType?
+  const IRR = {
+    être:   { present: ["suis","es","est","sommes","êtes","sont"], futStem: "ser", pp: "été", aux: "avoir", subj: ["sois","sois","soit","soyons","soyez","soient"], imp: ["—","sois","—","soyons","soyez","—"], pprStem: "ét" },
+    avoir:  { present: ["ai","as","a","avons","avez","ont"], futStem: "aur", pp: "eu", aux: "avoir", subj: ["aie","aies","ait","ayons","ayez","aient"], imp: ["—","aie","—","ayons","ayez","—"] },
+    aller:  { present: ["vais","vas","va","allons","allez","vont"], futStem: "ir", pp: "allé", aux: "être", subj: ["aille","ailles","aille","allions","alliez","aillent"], imp: ["—","va","—","allons","allez","—"] },
+    faire:  { present: ["fais","fais","fait","faisons","faites","font"], futStem: "fer", pp: "fait", aux: "avoir", subj: ["fasse","fasses","fasse","fassions","fassiez","fassent"], pprStem: "fais" },
+    dire:   { present: ["dis","dis","dit","disons","dites","disent"], futStem: "dir", pp: "dit", aux: "avoir" },
+    pouvoir:{ present: ["peux","peux","peut","pouvons","pouvez","peuvent"], futStem: "pourr", pp: "pu", aux: "avoir", subj: ["puisse","puisses","puisse","puissions","puissiez","puissent"], imp: ["—","—","—","—","—","—"] },
+    vouloir:{ present: ["veux","veux","veut","voulons","voulez","veulent"], futStem: "voudr", pp: "voulu", aux: "avoir", subj: ["veuille","veuilles","veuille","voulions","vouliez","veuillent"], imp: ["—","veuille","—","voulons","veuillez","—"] },
+    voir:   { present: ["vois","vois","voit","voyons","voyez","voient"], futStem: "verr", pp: "vu", aux: "avoir" },
+    savoir: { present: ["sais","sais","sait","savons","savez","savent"], futStem: "saur", pp: "su", aux: "avoir", subj: ["sache","saches","sache","sachions","sachiez","sachent"], imp: ["—","sache","—","sachons","sachez","—"] },
+    venir:  { present: ["viens","viens","vient","venons","venez","viennent"], futStem: "viendr", pp: "venu", aux: "être" },
+    devenir:{ present: ["deviens","deviens","devient","devenons","devenez","deviennent"], futStem: "deviendr", pp: "devenu", aux: "être" },
+    tenir:  { present: ["tiens","tiens","tient","tenons","tenez","tiennent"], futStem: "tiendr", pp: "tenu", aux: "avoir" },
+    prendre:{ present: ["prends","prends","prend","prenons","prenez","prennent"], futStem: "prendr", pp: "pris", aux: "avoir", subj: ["prenne","prennes","prenne","prenions","preniez","prennent"] },
+    devoir: { present: ["dois","dois","doit","devons","devez","doivent"], futStem: "devr", pp: "dû", aux: "avoir", subj: ["doive","doives","doive","devions","deviez","doivent"] },
+    boire:  { present: ["bois","bois","boit","buvons","buvez","boivent"], futStem: "boir", pp: "bu", aux: "avoir", subj: ["boive","boives","boive","buvions","buviez","boivent"], pprStem: "buv" },
+    mettre: { present: ["mets","mets","met","mettons","mettez","mettent"], futStem: "mettr", pp: "mis", aux: "avoir" },
+    partir: { present: ["pars","pars","part","partons","partez","partent"], futStem: "partir", pp: "parti", aux: "être" },
+    sortir: { present: ["sors","sors","sort","sortons","sortez","sortent"], futStem: "sortir", pp: "sorti", aux: "être" },
+    dormir: { present: ["dors","dors","dort","dormons","dormez","dorment"], futStem: "dormir", pp: "dormi", aux: "avoir" },
+    sentir: { present: ["sens","sens","sent","sentons","sentez","sentent"], futStem: "sentir", pp: "senti", aux: "avoir" },
+    lire:   { present: ["lis","lis","lit","lisons","lisez","lisent"], futStem: "lir", pp: "lu", aux: "avoir" },
+    écrire: { present: ["écris","écris","écrit","écrivons","écrivez","écrivent"], futStem: "écrir", pp: "écrit", aux: "avoir" },
+    connaître:{ present: ["connais","connais","connaît","connaissons","connaissez","connaissent"], futStem: "connaîtr", pp: "connu", aux: "avoir" },
+    conduire: { present: ["conduis","conduis","conduit","conduisons","conduisez","conduisent"], futStem: "conduir", pp: "conduit", aux: "avoir" },
+    comprendre:{ present: ["comprends","comprends","comprend","comprenons","comprenez","comprennent"], futStem: "comprendr", pp: "compris", aux: "avoir", subj: ["comprenne","comprennes","comprenne","comprenions","compreniez","comprennent"] },
+    apprendre:{ present: ["apprends","apprends","apprend","apprenons","apprenez","apprennent"], futStem: "apprendr", pp: "appris", aux: "avoir", subj: ["apprenne","apprennes","apprenne","apprenions","appreniez","apprennent"] },
+    battre:  { present: ["bats","bats","bat","battons","battez","battent"], futStem: "battr", pp: "battu", aux: "avoir" },
+    naître:  { present: ["nais","nais","naît","naissons","naissez","naissent"], futStem: "naîtr", pp: "né", aux: "être" },
+    plaire:  { present: ["plais","plais","plaît","plaisons","plaisez","plaisent"], futStem: "plair", pp: "plu", aux: "avoir" },
+    rire:    { present: ["ris","ris","rit","rions","riez","rient"], futStem: "rir", pp: "ri", aux: "avoir" },
+    craindre:{ present: ["crains","crains","craint","craignons","craignez","craignent"], futStem: "craindr", pp: "craint", aux: "avoir", subj: ["craigne","craignes","craigne","craignions","craigniez","craignent"] },
+    servir:  { present: ["sers","sers","sert","servons","servez","servent"], futStem: "servir", pp: "servi", aux: "avoir" },
+    mentir:  { present: ["mens","mens","ment","mentons","mentez","mentent"], futStem: "mentir", pp: "menti", aux: "avoir" },
+    souffrir:{ present: ["souffre","souffres","souffre","souffrons","souffrez","souffrent"], futStem: "souffrir", pp: "souffert", aux: "avoir", erType: true },
+    découvrir:{ present: ["découvre","découvres","découvre","découvrons","découvrez","découvrent"], futStem: "découvrir", pp: "découvert", aux: "avoir", erType: true },
+    revenir: { present: ["reviens","reviens","revient","revenons","revenez","reviennent"], futStem: "reviendr", pp: "revenu", aux: "être" },
+    valoir:  { present: ["vaux","vaux","vaut","valons","valez","valent"], futStem: "vaudr", pp: "valu", aux: "avoir", subj: ["vaille","vailles","vaille","valions","valiez","vaillent"] },
+    jeter:   { present: ["jette","jettes","jette","jetons","jetez","jettent"], imparfait: ["jetais","jetais","jetait","jetions","jetiez","jetaient"], futStem: "jetter", pp: "jeté", aux: "avoir", subj: ["jette","jettes","jette","jetions","jetiez","jettent"], ppr: "jetant", erType: true },
+    préférer:{ present: ["préfère","préfères","préfère","préférons","préférez","préfèrent"], imparfait: ["préférais","préférais","préférait","préférions","préfériez","préféraient"], futStem: "préférer", pp: "préféré", aux: "avoir", subj: ["préfère","préfères","préfère","préférions","préfériez","préfèrent"], ppr: "préférant", erType: true },
+    croire: { present: ["crois","crois","croit","croyons","croyez","croient"], futStem: "croir", pp: "cru", aux: "avoir" },
+    recevoir:{ present: ["reçois","reçois","reçoit","recevons","recevez","reçoivent"], futStem: "recevr", pp: "reçu", aux: "avoir", subj: ["reçoive","reçoives","reçoive","recevions","receviez","reçoivent"] },
+    vivre:  { present: ["vis","vis","vit","vivons","vivez","vivent"], futStem: "vivr", pp: "vécu", aux: "avoir" },
+    suivre: { present: ["suis","suis","suit","suivons","suivez","suivent"], futStem: "suivr", pp: "suivi", aux: "avoir" },
+    ouvrir: { present: ["ouvre","ouvres","ouvre","ouvrons","ouvrez","ouvrent"], futStem: "ouvrir", pp: "ouvert", aux: "avoir", erType: true },
+    offrir: { present: ["offre","offres","offre","offrons","offrez","offrent"], futStem: "offrir", pp: "offert", aux: "avoir", erType: true },
+    courir: { present: ["cours","cours","court","courons","courez","courent"], futStem: "courr", pp: "couru", aux: "avoir" },
+    mourir: { present: ["meurs","meurs","meurt","mourons","mourez","meurent"], futStem: "mourr", pp: "mort", aux: "être" },
+    manger: { present: ["mange","manges","mange","mangeons","mangez","mangent"], imparfait: ["mangeais","mangeais","mangeait","mangions","mangiez","mangeaient"], futStem: "manger", pp: "mangé", aux: "avoir", subj: ["mange","manges","mange","mangions","mangiez","mangent"], ppr: "mangeant", erType: true },
+    commencer:{ present: ["commence","commences","commence","commençons","commencez","commencent"], imparfait: ["commençais","commençais","commençait","commencions","commenciez","commençaient"], futStem: "commencer", pp: "commencé", aux: "avoir", subj: ["commence","commences","commence","commencions","commenciez","commencent"], ppr: "commençant", erType: true },
+    appeler:{ present: ["appelle","appelles","appelle","appelons","appelez","appellent"], imparfait: ["appelais","appelais","appelait","appelions","appeliez","appelaient"], futStem: "appeller", pp: "appelé", aux: "avoir", subj: ["appelle","appelles","appelle","appelions","appeliez","appellent"], ppr: "appelant", erType: true },
+    acheter:{ present: ["achète","achètes","achète","achetons","achetez","achètent"], imparfait: ["achetais","achetais","achetait","achetions","achetiez","achetaient"], futStem: "achèter", pp: "acheté", aux: "avoir", subj: ["achète","achètes","achète","achetions","achetiez","achètent"], ppr: "achetant", erType: true },
+    payer:  { present: ["paie","paies","paie","payons","payez","paient"], imparfait: ["payais","payais","payait","payions","payiez","payaient"], futStem: "paier", pp: "payé", aux: "avoir", subj: ["paie","paies","paie","payions","payiez","paient"], ppr: "payant", erType: true },
+    envoyer:{ present: ["envoie","envoies","envoie","envoyons","envoyez","envoient"], imparfait: ["envoyais","envoyais","envoyait","envoyions","envoyiez","envoyaient"], futStem: "enverr", pp: "envoyé", aux: "avoir", subj: ["envoie","envoies","envoie","envoyions","envoyiez","envoient"], ppr: "envoyant", erType: true }
+  };
+
+  /* ---- C1 expansion: derive new irregulars from verified patterns (no hand-typing of full tables) ---- */
+  function pfx(base, prefix, over) {
+    const b = IRR[base], out = {};
+    for (const k in b) {
+      const v = b[k];
+      if (Array.isArray(v)) out[k] = v.map((x) => x === "—" ? "—" : prefix + x);
+      else if (k === "futStem" || k === "pp" || k === "pprStem" || k === "ppr") out[k] = prefix + v;
+      else out[k] = v;
+    }
+    return Object.assign(out, over || {});
+  }
+  function uire(inf) { const s = inf.slice(0, -4); /* drop 'uire' */ const st = s + "ui"; return { present: [st + "s", st + "s", st + "t", st + "sons", st + "sez", st + "sent"], futStem: inf.slice(0, -1), pp: st + "t", aux: "avoir", pprStem: st + "s" }; }
+  function cevoir(inf) { const s = inf.slice(0, -6); return { present: [s + "çois", s + "çois", s + "çoit", s + "cevons", s + "cevez", s + "çoivent"], futStem: s + "cevr", pp: s + "çu", aux: "avoir", subj: [s + "çoive", s + "çoives", s + "çoive", s + "cevions", s + "ceviez", s + "çoivent"], pprStem: s + "cev" }; }
+  function ndre(inf) { const s = inf.slice(0, -5); /* drop 'indre' */ return { present: [s + "ins", s + "ins", s + "int", s + "ignons", s + "ignez", s + "ignent"], futStem: inf.slice(0, -1), pp: s + "int", aux: "avoir", subj: [s + "igne", s + "ignes", s + "igne", s + "ignions", s + "igniez", s + "ignent"], pprStem: s + "ign" }; }
+  function crire(inf) { const s = inf.slice(0, -5); /* drop 'crire' */ return { present: [s + "cris", s + "cris", s + "crit", s + "crivons", s + "crivez", s + "crivent"], futStem: s + "crir", pp: s + "crit", aux: "avoir", pprStem: s + "criv" }; }
+
+  Object.assign(IRR, {
+    // mettre family (pp -mis)
+    permettre: pfx("mettre", "per"), promettre: pfx("mettre", "pro"), remettre: pfx("mettre", "re"), admettre: pfx("mettre", "ad"), soumettre: pfx("mettre", "sou"), transmettre: pfx("mettre", "trans"), commettre: pfx("mettre", "com"), émettre: pfx("mettre", "é"),
+    // prendre family (pp -pris)
+    reprendre: pfx("prendre", "re"), surprendre: pfx("prendre", "sur"), entreprendre: pfx("prendre", "entre"),
+    // tenir family (aux avoir)
+    obtenir: pfx("tenir", "ob"), retenir: pfx("tenir", "re"), maintenir: pfx("tenir", "main"), contenir: pfx("tenir", "con"), appartenir: pfx("tenir", "appar"), soutenir: pfx("tenir", "sou"), entretenir: pfx("tenir", "entre"),
+    // venir family (aux varies)
+    parvenir: pfx("venir", "par"), intervenir: pfx("venir", "inter"), survenir: pfx("venir", "sur"), convenir: pfx("venir", "con", { aux: "avoir" }), prévenir: pfx("venir", "pré", { aux: "avoir" }),
+    // others by prefix
+    repartir: pfx("partir", "re"), ressentir: pfx("sentir", "res"), consentir: pfx("sentir", "con"), desservir: pfx("servir", "des"), parcourir: pfx("courir", "par"), secourir: pfx("courir", "se"), endormir: pfx("dormir", "en"),
+    rouvrir: pfx("ouvrir", "r"), couvrir: pfx("ouvrir", "c"),
+    décrire: crire("décrire"), inscrire: crire("inscrire"), prescrire: crire("prescrire"),
+    reconnaître: pfx("connaître", "re"), relire: pfx("lire", "re"), élire: pfx("lire", "é"), sourire: pfx("rire", "sou"),
+    survivre: pfx("vivre", "sur"), poursuivre: pfx("suivre", "pour"),
+    combattre: pfx("battre", "com"), abattre: pfx("battre", "a"), débattre: pfx("battre", "dé"),
+    déplaire: pfx("plaire", "dé"),
+    // -uire family
+    produire: uire("produire"), traduire: uire("traduire"), construire: uire("construire"), détruire: uire("détruire"), réduire: uire("réduire"), introduire: uire("introduire"), séduire: uire("séduire"), instruire: uire("instruire"), cuire: uire("cuire"),
+    // -cevoir family
+    apercevoir: cevoir("apercevoir"), concevoir: cevoir("concevoir"), décevoir: cevoir("décevoir"), percevoir: cevoir("percevoir"),
+    // -aindre / -eindre / -oindre family
+    peindre: ndre("peindre"), éteindre: ndre("éteindre"), atteindre: ndre("atteindre"), joindre: ndre("joindre"), rejoindre: ndre("rejoindre"), plaindre: ndre("plaindre"), contraindre: ndre("contraindre"),
+    // standalone
+    fuir: { present: ["fuis","fuis","fuit","fuyons","fuyez","fuient"], futStem: "fuir", pp: "fui", aux: "avoir", pprStem: "fuy" },
+    conclure: { present: ["conclus","conclus","conclut","concluons","concluez","concluent"], futStem: "conclur", pp: "conclu", aux: "avoir" },
+    accueillir: { present: ["accueille","accueilles","accueille","accueillons","accueillez","accueillent"], futStem: "accueiller", pp: "accueilli", aux: "avoir", pprStem: "accueill", erType: true },
+    cueillir: { present: ["cueille","cueilles","cueille","cueillons","cueillez","cueillent"], futStem: "cueiller", pp: "cueilli", aux: "avoir", pprStem: "cueill", erType: true }
+  });
+
+  function clean(v) { v = (v || "").trim().toLowerCase(); if (v.startsWith("se ")) v = v.slice(3); if (v.startsWith("s'")) v = v.slice(2); return v; }
+
+  function regularData(verb) {
+    if (verb.endsWith("er")) {
+      const stem = verb.slice(0, -2);
+      const isG = /g$/.test(stem), isC = /c$/.test(stem);
+      const sft = (e) => { if (/^[ao]/.test(e)) { if (isG) return stem + "e" + e; if (isC) return stem.slice(0, -1) + "ç" + e; } return stem + e; };
+      return {
+        present: [sft("e"), sft("es"), sft("e"), sft("ons"), sft("ez"), sft("ent")],
+        imparfait: E_IMPARF.map(e => sft(e)),
+        subj: [stem + "e", stem + "es", stem + "e", stem + "ions", stem + "iez", stem + "ent"],
+        ppr: sft("ant"),
+        futStem: verb, pp: stem + "é", aux: "avoir", erType: true
+      };
+    }
+    if (verb.endsWith("ir")) {
+      const stem = verb.slice(0, -2);
+      return {
+        present: [stem + "is", stem + "is", stem + "it", stem + "issons", stem + "issez", stem + "issent"],
+        imparfait: E_IMPARF.map(e => stem + "iss" + e),
+        subj: [stem + "isse", stem + "isses", stem + "isse", stem + "issions", stem + "issiez", stem + "issent"],
+        ppr: stem + "issant",
+        futStem: verb, pp: stem + "i", aux: "avoir"
+      };
+    }
+    if (verb.endsWith("re")) {
+      const stem = verb.slice(0, -2);
+      return {
+        present: [stem + "s", stem + "s", stem, stem + "ons", stem + "ez", stem + "ent"],
+        imparfait: E_IMPARF.map(e => stem + e),
+        subj: [stem + "e", stem + "es", stem + "e", stem + "ions", stem + "iez", stem + "ent"],
+        ppr: stem + "ant",
+        futStem: verb.slice(0, -1), pp: stem + "u", aux: "avoir"
+      };
+    }
+    return null;
+  }
+
+  function build(verb, data) {
+    const present = data.present;
+    const impStem = data.pprStem != null ? data.pprStem : present[3].replace(/ons$/, "");
+    const imparfait = data.imparfait || E_IMPARF.map(e => impStem + e);
+    const futur = E_FUT.map(e => data.futStem + e);
+    const conditionnel = E_COND.map(e => data.futStem + e);
+    let subj = data.subj;
+    if (!subj) { const ss = present[5].replace(/ent$/, ""); subj = [ss + "e", ss + "es", ss + "e", impStem + "ions", impStem + "iez", ss + "ent"]; }
+    const pc = auxPresent(data.aux).map(a => data.pp === "—" ? "—" : `${a} ${data.pp}`);
+    const auxImp = data.aux === "être"
+      ? ["étais","étais","était","étions","étiez","étaient"]
+      : ["avais","avais","avait","avions","aviez","avaient"];
+    const pqp = auxImp.map(a => data.pp === "—" ? "—" : `${a} ${data.pp}`);
+    const auxCond = data.aux === "être"
+      ? ["serais","serais","serait","serions","seriez","seraient"]
+      : ["aurais","aurais","aurait","aurions","auriez","auraient"];
+    const condPasse = auxCond.map(a => data.pp === "—" ? "—" : `${a} ${data.pp}`);
+    const ppr = data.ppr || (impStem + "ant");
+    let imp = data.imp;
+    if (!imp) { let tu = present[1]; if (data.erType) tu = tu.replace(/s$/, ""); imp = ["—", tu, "—", present[3], present[4], "—"]; }
+    return [
+      { id: "present", label: "Présent", forms: present },
+      { id: "past", label: "Imparfait", forms: imparfait },
+      { id: "perfect", label: "Passé composé", forms: pc },
+      { id: "pluperfect", label: "Plus-que-parfait", forms: pqp },
+      { id: "future", label: "Futur simple", forms: futur },
+      { id: "subjunctive", label: "Subjonctif", forms: subj },
+      { id: "conditional", label: "Conditionnel", forms: conditionnel },
+      { id: "conditionalPast", label: "Conditionnel passé", forms: condPasse },
+      { id: "imperative", label: "Impératif", forms: imp },
+      { id: "gerund", label: "Participe présent", forms: PRON.map(() => ppr) }
+    ];
+  }
+
+  function conjugate(input) {
+    const verb = clean(input);
+    if (!verb) return null;
+    const reg = regularData(verb);
+    if (!reg) return { error: "French verbs end in -er, -ir or -re. Try e.g. parler, finir, vendre." };
+    const irr = IRR[verb];
+    let data = reg, isIrr = false;
+    if (irr) { isIrr = true; data = Object.assign({}, irr); }
+    const tenses = build(verb, data);
+    if (isIrr) { const regT = build(verb, reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
+    return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
+  }
+
+  window.CONJ.fr = {
+    name: "Français", flag: "🇫🇷", ttsLang: "fr-FR",
+    placeholder: "p.ex. parler, finir, vendre…",
+    samples: ["parler", "finir", "vendre", "être", "avoir", "aller", "faire", "venir", "prendre", "voir", "pouvoir", "manger"],
+    irregulars: Object.keys(IRR),
+    conjugate
+  };
+})();
+;
+/* Verb meanings (English glosses) */
+(function () {
+  window.TRANS = {
+    de: {
+      machen: "to do / make", gehen: "to go", sein: "to be", haben: "to have", werden: "to become",
+      kommen: "to come", sehen: "to see", essen: "to eat", fahren: "to drive / go", geben: "to give",
+      nehmen: "to take", finden: "to find", sprechen: "to speak", lesen: "to read", schlafen: "to sleep",
+      trinken: "to drink", fliegen: "to fly", laufen: "to run / walk", helfen: "to help", treffen: "to meet",
+      denken: "to think", bringen: "to bring", wissen: "to know", kennen: "to know (be acquainted)", stehen: "to stand",
+      verstehen: "to understand", beginnen: "to begin", bleiben: "to stay", schreiben: "to write", fallen: "to fall",
+      halten: "to hold", lassen: "to let", rufen: "to call", schwimmen: "to swim", singen: "to sing",
+      sitzen: "to sit", liegen: "to lie", ziehen: "to pull", tragen: "to carry / wear", waschen: "to wash",
+      werfen: "to throw", gewinnen: "to win", vergessen: "to forget", verlieren: "to lose", bitten: "to ask / request",
+      gefallen: "to please", mögen: "to like", müssen: "to have to", können: "can / to be able", wollen: "to want",
+      sollen: "should / ought", dürfen: "to be allowed", arbeiten: "to work", spielen: "to play", lieben: "to love",
+      lernen: "to learn", kaufen: "to buy", wohnen: "to live / reside", sagen: "to say", fragen: "to ask",
+      suchen: "to search", brauchen: "to need", hören: "to hear", öffnen: "to open", reden: "to talk",
+      bekommen: "to get / receive", schlagen: "to hit / beat", wachsen: "to grow", schließen: "to close", genießen: "to enjoy",
+      steigen: "to climb / rise", scheinen: "to shine / seem", bieten: "to offer", fangen: "to catch", empfehlen: "to recommend",
+      sterben: "to die", brechen: "to break", schneiden: "to cut", greifen: "to grab", riechen: "to smell"
+    },
+    es: {
+      hablar: "to speak", comer: "to eat", vivir: "to live", ser: "to be", estar: "to be (state)",
+      haber: "to have (aux)", tener: "to have", hacer: "to do / make", ir: "to go", decir: "to say",
+      poder: "to be able", querer: "to want / love", ver: "to see", dar: "to give", saber: "to know",
+      poner: "to put", salir: "to go out", venir: "to come", traer: "to bring", conocer: "to know",
+      dormir: "to sleep", pedir: "to ask for", sentir: "to feel", pensar: "to think", volver: "to return",
+      contar: "to count / tell", jugar: "to play", empezar: "to begin", perder: "to lose", seguir: "to follow",
+      servir: "to serve", leer: "to read", oír: "to hear", caer: "to fall", morir: "to die",
+      trabajar: "to work", estudiar: "to study", amar: "to love", comprar: "to buy", llegar: "to arrive",
+      llamar: "to call", mirar: "to look", escribir: "to write", beber: "to drink", correr: "to run",
+      abrir: "to open", gustar: "to like", entender: "to understand", buscar: "to search", necesitar: "to need",
+      encontrar: "to find", mostrar: "to show", recordar: "to remember", costar: "to cost", cerrar: "to close",
+      comenzar: "to begin", preferir: "to prefer", repetir: "to repeat", llegar: "to arrive", pagar: "to pay",
+      parecer: "to seem", ofrecer: "to offer", producir: "to produce", construir: "to build", incluir: "to include",
+      oler: "to smell", soñar: "to dream", almorzar: "to have lunch", probar: "to try", mover: "to move",
+      elegir: "to choose", mentir: "to lie", andar: "to walk", caber: "to fit", valer: "to be worth", reír: "to laugh"
+    },
+    nl: {
+      werken: "to work", maken: "to make", lopen: "to walk / run", zijn: "to be", hebben: "to have",
+      gaan: "to go", zien: "to see", eten: "to eat", geven: "to give", komen: "to come",
+      denken: "to think", blijven: "to stay", worden: "to become", doen: "to do", staan: "to stand",
+      nemen: "to take", lezen: "to read", vinden: "to find", schrijven: "to write", rijden: "to ride / drive",
+      drinken: "to drink", zingen: "to sing", zwemmen: "to swim", beginnen: "to begin", brengen: "to bring",
+      kopen: "to buy", vallen: "to fall", houden: "to hold / keep", laten: "to let", slapen: "to sleep",
+      spreken: "to speak", begrijpen: "to understand", helpen: "to help", krijgen: "to get", roepen: "to call",
+      sluiten: "to close", verliezen: "to lose", winnen: "to win", dragen: "to carry / wear", vragen: "to ask",
+      zeggen: "to say", liggen: "to lie", zitten: "to sit", kijken: "to look", vergeten: "to forget",
+      trekken: "to pull", kunnen: "can / to be able", mogen: "to be allowed", moeten: "to have to", willen: "to want",
+      zullen: "will (aux)", weten: "to know", spelen: "to play", wonen: "to live", leren: "to learn", kennen: "to know",
+      vliegen: "to fly", kiezen: "to choose", bieden: "to offer", genieten: "to enjoy", schieten: "to shoot",
+      breken: "to break", steken: "to sting", stijgen: "to rise", schijnen: "to shine", verdwijnen: "to disappear",
+      snijden: "to cut", springen: "to jump", sterven: "to die", zoeken: "to search", verkopen: "to sell", lachen: "to laugh"
+    },
+    fr: {
+      parler: "to speak", finir: "to finish", vendre: "to sell", être: "to be", avoir: "to have",
+      aller: "to go", faire: "to do / make", dire: "to say", pouvoir: "to be able", vouloir: "to want",
+      voir: "to see", savoir: "to know", venir: "to come", devenir: "to become", tenir: "to hold",
+      prendre: "to take", devoir: "to have to", boire: "to drink", mettre: "to put", partir: "to leave",
+      sortir: "to go out", dormir: "to sleep", sentir: "to feel", lire: "to read", écrire: "to write",
+      connaître: "to know", croire: "to believe", recevoir: "to receive", vivre: "to live", suivre: "to follow",
+      ouvrir: "to open", offrir: "to offer", courir: "to run", mourir: "to die", manger: "to eat",
+      commencer: "to begin", appeler: "to call", acheter: "to buy", payer: "to pay", envoyer: "to send",
+      aimer: "to love / like", donner: "to give", trouver: "to find", demander: "to ask", regarder: "to watch",
+      travailler: "to work", jouer: "to play", écouter: "to listen", chanter: "to sing", habiter: "to live",
+      comprendre: "to understand", apprendre: "to learn", battre: "to beat", naître: "to be born", plaire: "to please",
+      rire: "to laugh", craindre: "to fear", servir: "to serve", mentir: "to lie", souffrir: "to suffer",
+      découvrir: "to discover", revenir: "to come back", valoir: "to be worth", jeter: "to throw", préférer: "to prefer"
+    }
+  };
+
+  window.lookupMeaning = function (lang, verb) {
+    const v = (verb || "").trim().toLowerCase();
+    const d = window.TRANS[lang];
+    return d && d[v] ? d[v] : null;
+  };
+})();
+;
+/* UI string localization — drives buttons & instructions by mother tongue.
+   Only the 5 app languages are localized; any other mother tongue falls back to English. */
+(function () {
+  window.UI = {
+    en: {
+      tagline: "conjugate · quiz · learn", hi: "Hi, {name} 👋", ready: "Ready when you are, {name}",
+      hint_quiz_cards_h: "Cards: memorise verbs, relaxed", hint_quiz_cards_1: "Pick a tense &amp; favourite topic, plus the direction (mother tongue ↔ target language).", hint_quiz_cards_2: "See the verb + tense, work out the form in your head — tap the card to flip it.", hint_quiz_cards_3: "Tap unknown words in the example sentence → translate &amp; save them.", hint_quiz_cards_4: "No pressure, no typing: perfect for getting to know forms and quick review.",
+      hint_quiz_choice_h: "Choice: spot the right form fast", hint_quiz_choice_1: "A perfect way into a new tense.", hint_quiz_choice_2: "Pick a tense &amp; favourite topic.", hint_quiz_choice_3: "Verb + required tense + four options — tap the right one for instant feedback.", hint_quiz_choice_4: "Tap unknown words in the example sentence → translate &amp; save them.",
+      hint_quiz_type_h: "Type: write conjugations actively", hint_quiz_type_1: "Writing it yourself anchors the forms most — alongside <b>Speak</b>, the most intensive mode.", hint_quiz_type_2: "Pick tense, topic &amp; direction — and whether to drill single verbs or translate a whole sentence.", hint_quiz_type_3: "Tap unknown words in the example sentence → translate &amp; save them.",
+      hint_quiz_speak_h: "Speak: say it out loud", hint_quiz_speak_1: "Saying it yourself anchors the forms most — alongside <b>Type</b>, the most intensive mode.", hint_quiz_speak_2: "Pick tense, topic &amp; direction — and whether to drill single verbs or a whole sentence.", hint_quiz_speak_3: "Tap the microphone to start and to stop the voice input.", hint_quiz_speak_4: "Tap unknown words → translate &amp; save them.",
+      hint_quiz_texte_h: "Texts: quiz your reading & listening", hint_quiz_texte_1: "Choose a favourite topic, tense and which kind of verbs to practise.", hint_quiz_texte_2: "Comprehension questions are waiting for you at the end.", hint_quiz_texte_3: "Tap any word in the text → translate &amp; save it.", hint_quiz_texte_4: "Tip: turn on “Use my saved words” — your own words appear in the story.",
+      hint_learn_h: "Welcome to Learn", hint_learn_1: "Every tense is explained bilingually, with auto-generated examples.", hint_learn_2: "Use the tense selector at the top like a <b>cheat sheet</b> to jump between forms.", hint_learn_3: "Tap any example word to save it to your vocabulary.",
+      hint_saved_verbs_h: "Saved verbs", hint_saved_verbs_1: "Every verb you saved with ☆ while conjugating gathers here.", hint_saved_verbs_2: "Tap a verb to reopen its full conjugation.", hint_saved_verbs_3: "Pick them right in the <b>Quiz</b> and practise on purpose.", hint_saved_verbs_4: "That's how you build your own personal practice list.",
+      hint_saved_vocab_h: "Your vocabulary", hint_saved_vocab_1: "Create your own topic (e.g. “Doctor's visit”) &amp; choose the practice direction.", hint_saved_vocab_2: "✨ MEGA FEATURE: generate new words — under “New” type e.g. “Adjectives” and tap “Suggest 10 new words”.", hint_saved_vocab_3: "Your saved words can also be woven into the quiz texts.",
+      tab_conjugate: "Conjugate", tab_quiz: "Quiz", tab_learn: "Learn", conjugate: "Conjugate",
+      saved: "Saved verbs", recent: "Recent", clear: "clear",
+      empty_title: "Type a verb to conjugate", empty_sub: "All tenses across {n} languages — type a verb or hit 🎲 to start.",
+      regular: "regular", irregular: "irregular", recommended: "Recommended", ad_cta: "Practice →",
+      mode: "Mode", m_type: "⌨ Type", m_choice: "◉ Choice", m_speed: "⚡ Speed", m_texte: "📖 Texts", mdesc_texte: "Read an AI story — translate, fill in verbs or answer questions", texte_question: "Comprehension", texte_cloze: "Fill verbs", texte_translate: "Translate", texte_new: "New story", texte_writing: "Writing your story…", texte_error: "Couldn't write a story — please try again.", texte_comprehension: "Comprehension", texte_done: "Story complete!", texte_fill_hint: "Put the verb in the right tense", texte_learn: "Learn this verb", texte_translation: "Translation", texte_read: "Read aloud", texte_speed: "Which speed?", texte_voice: "Which voice?", texte_voice_auto: "Automatic (best)", texte_almost: "almost done …", texte_voice_f: "Female", texte_voice_m: "Male", texte_pause: "Pause", texte_resume: "Resume", texte_mywords_lbl: "My words", texte_mywords: "Use my saved words",
+      which_tense: "Practice which tense?", tense_word: "Tense", all_tenses: "All tenses", all_themes: "All topics", which_verbs: "Which words?", which_dir: "Which direction?", dir_produce: "PRODUCE", dir_recognize: "RECOGNIZE", dir_random: "RANDOM", which_theme: "Which topic?", none_all: "None selected — all tenses are practiced", all_btn: "All", none_btn: "None", mist_clear_title: "All mistakes cleared!", mist_clear_sub: "Nice work — you reviewed every verb you got wrong.", mist_practice: "Practice mistakes", view_conj: "See full conjugation", mist_exit: "Back to all verbs",
+      correct: "correct", accuracy: "accuracy", streak: "streak 🔥",
+      type_form: "type the form…", check: "Check", next: "Next →", correct_excl: "✓ Correct!", accent_hint: "Right! Just mind the accent: {answer}", answer: "Answer:",
+      hint_type: "Type the correct form for the pronoun and tense.", hint_choice: "Pick the correct form — 4 options.",
+      challenge: "60-second challenge", challenge_sub: "Answer as many as you can before the clock runs out. Tap the right form — fast!",
+      best: "Best:", start: "Start →", sec: "sec", pts: "pts", go: "Go go go — every correct tap is a point.",
+      times_up: "Time's up!", in60: "correct in 60s", new_best: "🎉 New best!", play_again: "Play again →", back: "Back",
+      tenses: "{lang} tenses", bilingual: "Bilingual · {a} ⇄ {b}", level: "Level", native: "Native",
+      explanation: "Explanation", mnemonic: "🧠 Mnemonic", signal_words: "Signal words", examples: "Examples", when_use: "When to use", compare: "Compare",
+      fb_offline: "Live AI explanations run in the app preview. Here are the core rules in the meantime:",
+      fb_net: "Couldn't reach the explainer just now. Here are the core rules:",
+      welcome: "Hey! You'll:", welcome_sub: "Conjugate verbs in 5 languages, quiz yourself and easily learn your favourite language.",
+      your_name: "Your name…", mother_tongue: "Your mother tongue", skill_q: "Your level", skill_beginner: "Beginner", skill_beginner_sub: "common verbs", skill_intermediate: "Inter.", skill_intermediate_sub: "+ irregular", skill_advanced: "Advanced", skill_advanced_sub: "all verbs", lets_go: "Let's go →", skip: "Skip for now", remove_name: "Remove name", profile: "Profile", listen: "Listen", m_cards: "🃏 Cards", flip: "Tap to flip", got_it: "Got it", again: "Practice again", mistakes: "Mistakes", no_mistakes: "No mistakes yet — they appear here to review.", tab_saved: "Saved", reveal: "Show translation", learned: "Learned ✓", saved_empty: "No saved verbs yet. Tap the ☆ on any conjugation to save it here.", tour_conj: "The core: conjugate any verb in 5 languages, across every tense — at a glance.", tour_quiz: "Quiz yourself — cards, choice, typing & speaking — with fresh AI example sentences each round.", tour_learn: "Understand each tense bilingually, with auto-generated examples you can tap to save.", tour_saved: "Save verbs & words, build your own vocabulary, and practice them with spaced repetition.", tour_goals_h: "Learning plan & goals", tour_goal: "Create your personal learning plan — AI suggestion, time-based, or fully custom. Track your daily progress and stay motivated.", tour_trial_head: "Your gift: 24h Premium", tour_trial_sub: "Then unlock your welcome discount — the conjugation tables stay free forever.", tour_feat1: "Quiz & Saved — fully unlocked", tour_feat2: "All tenses & AI example sentences", tour_feat3: "5 languages, no ads", eg_step1: "Random verb – tap ★ to save", eg_step2: "Practice in Quiz & pick favourite topics", eg_step3: "Train saved words under 'Saved'", hero_kicker: "Hey {name} 👋", hero_plan: "Your plan for today, {name}:", hero_plan_anon: "Your plan for today:", tour_next: "Next", tour_start: "Start learning", tour_skip: "Skip", m_speak: "🎤 Speak", speak_tap: "Tap the mic and say the form", speak_heard: "Heard:", speak_nomic: "Voice input isn’t supported here.", spk_form: "Speak word", spk_sentence: "Speak sentence", spk_what: "What to practice", spk_say: "Say it in {lang}",
+      dq_form: "Conjugated form", vocab_translate: "Translate", offline_note: "⚡ Offline — examples & translations need internet", aux_title: "Building compound tenses", aux_logic: "All compound tenses are built the same way: conjugate the helper verb {aux} for the person + tense, then add the unchanging past participle {part}. Only the helper changes — the participle stays the same.", aux_note: "Compound tenses = auxiliary verb + past participle.", aux_participle: "Past participle", cards_hint: "Conjugate the verb in the required tense in your head – tap for the answer", cards_hint_type: "Conjugate the verb in the required tense · type it in the box", cards_hint_speak: "Conjugate the verb in the required tense · tap the mic to speak", choose_label: "Choose:", tap_retry: "Tap to translate", dq_infinitive: "Infinitive", dq_belongs: "From", dq_participle: "Past participle", dq_gerund: "Gerund", spk_relearn: "Still learning — show answer", spk_correct_is: "The correct sentence:", spk_next_sentence: "Next sentence →", speak_denied: "Microphone blocked — allow mic access in your browser.", speak_nospeech: "Didn't catch that — try again.", mic_start: "Tap to speak", sent_mist_practice: "Practice wrong sentences", spk_context: "In a sentence", cloze_instr: "Put the verb in the right tense", choose_tile: "pick the right tile", mic_stop: "Tap when done", tap_word: "tap a word for its meaning", practice_again: "Practice again", sk_title: "Daily goal & streak", sk_today: "Today", sk_streak: "Day streak", sk_best: "Best", sk_days: "days", sk_done: "Goal reached! 🔥", sk_left: "{n} more to reach today's goal", sk_explain: "Every conjugation and quiz answer counts. Reach the daily goal to keep your streak alive — miss a day and it resets.", sk_close: "Got it", dq_fuzzy: "matched ignoring accents", dq_switched: "switched to infinitive", dq_guess: "best guess from the ending", tfilter_hint: "Swipe sideways · tap to show / hide a tense", verb_ph: "Type a verb…", autoread: "Read answer aloud", autoread_sub: "when correct", review: "Review", native_ph: "…or a verb in your language", saved_verbs: "Verbs", saved_vocab: "Vocabulary", vocab_all: "All", vocab_new_cat: "New", vocab_new_cat_q: "Name of the new category:", vocab_add_ph: "Add a word or phrase…", vocab_empty: "No words yet — add your first above.", vocab_practice: "Practice", vocab_word: "word", vocab_phrase: "phrase", vocab_type_target: "Type it in {lang}…", vocab_done: "Round complete!", vocab_save: "Save", vocab_saved: "Saved", vocab_seeding: "Loading starter words…", vocab_suggest: "Suggest 10 new words", vocab_due: "Due today", vocab_strength: "Memory strength", vocab_starter: "Load 5 starter words", gr_ind: "Indicative", gr_subj: "Subjunctive", gr_cond: "Conditional", gr_imp: "Imperative", gr_cont: "Continuous", gr_forms: "Non-finite forms", how_formed: "How it's formed", key_irregulars: "Key irregular verbs", irr_note: "Tap a verb to see its full conjugation.", tap_save: "tap a word — meaning & save", type_word: "Type word", type_sentence: "Type sentence", spk_translate: "Translate this", qi_title: "How do you want to practice?", qi_sub: "Pick a mode — each trains a different skill.", qi_foot: "Tip: change tense & verb filters after picking a mode.", qi_back: "Overview", mdesc_cards: "Flip cards — see the answer, no pressure", mdesc_choice: "Multiple choice — pick the right form", mdesc_speed: "60-second sprint — how many can you do?", mdesc_type: "Type the form or translate a sentence", mdesc_speak: "Say it out loud — speech recognition",
+      paywall_lock: "🔒 Quiz & Saved are Premium", paywall_h1: "Conjugate without thinking", paywall_sub: "The Quiz trains you actively until the forms stick — and Saved lets you practise exactly the vocabulary that matters to you.", paywall_unlock: "Unlock Premium", paywall_later: "Maybe later", pw_feat1: "Interactive Quiz", pw_feat1v: "4 modes", pw_feat2: "Saved & vocab lists", pw_feat2v: "unlimited", pw_feat3: "Conjugation & Learn", pw_feat3v: "stays free",
+      offer_badge: "🚀 WELCOME OFFER · −{disc} %", offer_expires: "Offer expires in {t}", offer_instead: "instead of", offer_mo: "mo.", offer_yr: "/ year", offer_you_pay: "you pay:", offer_save: "you save {save} € (−{disc} %)", offer_secure: "Secure offer", offer_trial: "Try free for 24 h first", offer_trial_b: "24 h Premium free", offer_close: "Close offer", offer_price_label: "Price: {price} € per year, instead of {eq} € billed monthly",
+      plan_hero_h1: "Learn without limits", plan_hero_sub: "Unlimited Quiz & Saved in all 5 languages", plan_annual: "Annual plan", plan_monthly: "Monthly plan", plan_best: "★ Most popular", plan_bonus: "🎁 Welcome bonus", plan_per_mo: "/ month", plan_per_yr: "/ year", plan_instead: "instead of", plan_save: "you save {save} € (−{disc} %)", plan_mo_label: "~{price} € / month · instead of {eq} €", plan_flex: "flexible · equiv. {eq} € / year", plan_feat1: "Interactive conjugation quiz", plan_feat2: "Saved & vocab lists", plan_feat3: "5 languages — ES, FR, EN, NL, DE", plan_feat4: "All devices · no ads", plan_cta: "Continue to payment", plan_cancelable: "cancel anytime", plan_have_account: "Already have an account?", sign_in: "Sign in", plan_coupon: "Redeem coupon code", coupon_title: "Coupon code", coupon_need_login: "Please sign in first to redeem a code.", coupon_sign_in: "Sign in now", coupon_ph: "Enter code", coupon_redeem: "Redeem", coupon_redeeming: "Redeeming…",
+      menu_rate: "Rate app", menu_logout: "Sign out", menu_cancel_sub: "Cancel subscription", menu_sub_active_until: "✓ Subscription cancelled — active until {date}", menu_delete_acc: "Delete account", cancel_title: "Cancel subscription", cancel_body: "Your Premium runs until {date} — after that you switch to the free version automatically. Your account stays.", cancel_no: "Go back", cancel_yes: "Cancel now", delete_title: "Delete account", delete_warn_days: "⚠️ You lose {n} paid days", delete_warn_body: "Your subscription is active until {date}. If you cancel first, you can still use the remaining time.", delete_cancel_first: "Cancel subscription first", delete_anyway: "Delete anyway", delete_data: "All data will be permanently deleted.", delete_yes: "Delete",
+      sub_runs_until: "Your subscription runs until {date} — you can continue using the app until then.", sub_end_period: "end of the current billing period", goodbye_heading: "Sorry to see you go — but you’re a pro now!", goodbye_love: "All the best.", goodbye_data: "Of course we’ll delete your data.", goodbye_btn: "Goodbye! 👋", pay_error: "Payment could not be started. Please try again.", bonus_trial: "Secure Premium", bonus_welcome: "Claim welcome bonus", bonus_quiz: "Get Quiz & Saved!", ios_homescreen: "Add ConjuExpert to your home screen!", ios_share: "Share ⬆ → Add to Home Screen", ios_close: "Close", ios_how: "How to", ios_help_title: "Add it on your iPhone", ios_help_1: "In Safari, tap the <b>Share button</b> ⬆ (square with an up arrow) at the bottom.", ios_help_2: "Choose <b>“Add to Home Screen”</b>.", ios_help_3: "Tap <b>“Add”</b> at the top right — done! ✅", and_help_title: "Add it on your Android", and_help_1: "Tap the <b>menu</b> (⋮) at the top right.", and_help_2: "Choose <b>“Install app”</b> or <b>“Add to Home screen”</b>.", and_help_3: "Confirm with <b>“Install”</b> — done! ✅", pin_help_ios: "Guide for iPhone", pin_help_android: "Guide for Android", rev_kicker: "20 seconds · big impact", rev_heading: "just before you keep going …", rev_body1: "You’ve already been at it for <b>{mins} minutes</b> today — amazing! 🔥", rev_body2: "Help others find their favourite language too: with a <b>quick rating</b>, ConjuExpert gets found — your biggest support for us. 💛", rev_rate: "Rate now →", rev_feedback: "Prefer to leave feedback?", rev_snooze: "Remind me later", paysuc_sub: "All Premium features are now unlocked! Enjoy the quiz and learning your favourite language 🎉", paysuc_feat1: "Quiz — all modes & languages", paysuc_feat2: "Favourites & vocab lists", paysuc_feat3: "Unlimited · no ads", menu_logged_in: "Signed in as", menu_edit_profile: "Edit profile", menu_tarife: "Plans & prices", menu_pin: "Pin app icon", pin_title: "Add ConjuExpert to your home screen", menu_login: "Sign up / Log in", msub_konto: "Save your progress", msub_profil: "Name \u00b7 languages \u00b7 level", msub_pin: "Add to home screen", msub_tarife: "All features", msub_rate: "Support us \u2014 5 stars", pin_sub: "– and you can conjugate and quiz right away.", pin_tip: "Tip", pin_guide_for: "Here’s the guide for:", pin_step_ios: "Share → „Add to Home Screen“", pin_step_android: "Menu → „Install app“", pin_cta: "Add now", pin_later: "Later", pin_iphone: "iPhone / iPad", pin_android: "Android", menu_share: "Recommend app", err_cancel_fail: "Cancellation failed. Please try again.", err_delete_fail: "Deletion failed. Please try again.", guest_login_sub: "Sign in to save your progress and vocabulary.", guest_login_cta: "Sign in now →", login_welcome_back: "Welcome back", login_almost_done: "Almost there!", login_create_acct: "Create account", login_reset_pw: "Reset password", login_sub_login: "Save favourites & progress on all devices", login_sub_login_pay: "Sign in — you'll continue to payment right away.", login_sub_signup: "Free — data stored securely in Germany", login_sub_signup_pay: "Great choice going Premium! Create an account to track your language goal and build vocabulary on your favourite topics.", login_sub_reset: "We'll send you a reset link", login_done_signup: "Confirmation email sent!\nPlease check your inbox.", login_done_reset: "Reset link sent!\nPlease check your inbox.", login_pw_ph: "Password (min. 6 chars)", login_forgot_pw: "Forgot password?", login_btn_signup: "Create account", login_btn_reset: "Send reset link", login_or: "or", login_google: "Sign in with Google", login_apple: "Sign in with Apple", login_no_account: "No account yet?", login_has_account: "Already registered?", login_do_register: "Register", login_back: "← Back to login", login_data: "🔒 Data stored in Frankfurt, DE", goal_ai: "AI suggestion", goal_ai_badge: "MED.", goal_time: "By time", goal_time_note: "10 min/day", goal_custom: "Custom", goal_custom_note: "8 verbs · 20 words", goal_daily: "exercises per day", goal_time_approx: "≈ 6 min · adjustable"
+    },
+    de: {
+      tagline: "konjugieren · quiz · lernen", hi: "Hi, {name} 👋", ready: "Bereit, wenn du es bist, {name}",
+      hint_quiz_cards_h: "Karten: Verben entspannt einprägen", hint_quiz_cards_1: "Zeitform &amp; Lieblingsthema wählen, dazu die Richtung (Muttersprache ↔ Lernsprache).", hint_quiz_cards_2: "Verb + Zeitform ansehen, Form im Kopf überlegen — tippe die Karte zum Umdrehen.", hint_quiz_cards_3: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.", hint_quiz_cards_4: "Kein Druck, kein Tippen: ideal zum Kennenlernen und schnellen Wiederholen.",
+      hint_quiz_choice_h: "Auswahl: die richtige Form schnell erkennen", hint_quiz_choice_1: "Perfekter Einstieg in eine neue Zeitform.", hint_quiz_choice_2: "Zeitform &amp; Lieblingsthema wählen.", hint_quiz_choice_3: "Verb + geforderte Zeitform + vier Varianten — tippe die richtige an, sofortige Rückmeldung.", hint_quiz_choice_4: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.",
+      hint_quiz_type_h: "Tippen: Konjugationen aktiv schreiben", hint_quiz_type_1: "Selbst Schreiben verankert die Formen mit am stärksten — neben <b>Sprechen</b> der intensivste Modus.", hint_quiz_type_2: "Zeitform, Lieblingsthema &amp; Richtung wählen — einzelne Verben oder ganzen Satz übersetzen.", hint_quiz_type_3: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.",
+      hint_quiz_speak_h: "Sprechen: laut aussprechen", hint_quiz_speak_1: "Selbst Sprechen verankert die Formen mit am stärksten — neben <b>Schreiben</b> der intensivste Modus.", hint_quiz_speak_2: "Zeitform, Lieblingsthema &amp; Richtung wählen — einzelne Verben oder ganzen Satz.", hint_quiz_speak_3: "Mikrofon antippen zum Starten und Beenden der Spracheingabe.", hint_quiz_speak_4: "Unbekannte Wörter antippen → übersetzen &amp; speichern.",
+      hint_quiz_texte_h: "Quizze dein Lese- & Hörverständnis", hint_quiz_texte_1: "Lieblingsthema, Zeitform &amp; Art der Verben wählen.", hint_quiz_texte_2: "Am Ende warten Verständnisfragen auf dich.", hint_quiz_texte_3: "Jedes Wort im Text antippen → übersetzen &amp; speichern.", hint_quiz_texte_4: "Tipp: „Gemerkte Wörter einbauen“ aktivieren — deine Wörter erscheinen in der Geschichte.",
+      hint_learn_h: "Willkommen im Lernbereich", hint_learn_1: "Jede Zeitform wird zweisprachig erklärt — mit automatisch erzeugten Beispielen.", hint_learn_2: "Nutze die Zeitform-Auswahl oben wie einen <b>Spickzettel</b>, um zwischen den Formen zu springen.", hint_learn_3: "Tipp ein Beispielwort an, um es in deinen Wortschatz zu legen.",
+      hint_saved_verbs_h: "Gemerkte Verben", hint_saved_verbs_1: "Alle Verben, die du beim Konjugieren mit ☆ gespeichert hast.", hint_saved_verbs_2: "Verb antippen → volle Konjugation wieder öffnen.", hint_saved_verbs_3: "Direkt im <b>Quiz</b> auswählen &amp; gezielt üben.", hint_saved_verbs_4: "So baust du dir deine persönliche Übungsliste auf.",
+      hint_saved_vocab_h: "Dein Wortschatz", hint_saved_vocab_1: "Eigenes Thema anlegen (z. B. „Arztbesuch“) &amp; Übungsrichtung wählen.", hint_saved_vocab_2: "✨ MEGA-FEATURE: neue Wörter generieren — unter „Neu“ z. B. „Adjektive“ eingeben und „10 neue Wörter vorschlagen“ tippen.", hint_saved_vocab_3: "Gemerkte Wörter lassen sich zusätzlich in die Quiz-Texte einbauen.",
+      tab_conjugate: "Konjugieren", tab_quiz: "Quiz", tab_learn: "Lernen", conjugate: "Konjugieren",
+      saved: "Gespeicherte Verben", recent: "Zuletzt", clear: "löschen",
+      empty_title: "Verb eingeben zum Konjugieren", empty_sub: "Alle Zeitformen in {n} Sprachen — tippe ein Verb oder 🎲 zum Start.",
+      regular: "regelmäßig", irregular: "unregelmäßig", recommended: "Empfohlen", ad_cta: "Üben →",
+      mode: "Modus", m_type: "⌨ Tippen", m_choice: "◉ Auswahl", m_speed: "⚡ Speed", m_texte: "📖 Texte", mdesc_texte: "Lies eine KI-Geschichte — übersetzen, Verben einsetzen oder Fragen beantworten", texte_question: "Verständnis", texte_cloze: "Verben einsetzen", texte_translate: "Übersetzen", texte_new: "Neue Geschichte", texte_writing: "Deine Geschichte wird geschrieben…", texte_error: "Konnte keine Geschichte schreiben — versuch es nochmal.", texte_comprehension: "Verständnisfragen", texte_done: "Geschichte geschafft!", texte_fill_hint: "Setze das Verb in die richtige Zeitform", texte_learn: "Verb lernen", texte_translation: "Übersetzung", texte_read: "Vorlesen", texte_speed: "Welches Tempo?", texte_voice: "Welche Stimme?", texte_voice_auto: "Automatisch (beste)", texte_almost: "gleich fertig …", texte_voice_f: "Weiblich", texte_voice_m: "Männlich", texte_pause: "Pause", texte_resume: "Weiter", texte_mywords_lbl: "Mein Wortschatz", texte_mywords: "Gemerkte Wörter einbauen",
+      which_tense: "Welche Zeitform üben?", tense_word: "Zeitform", all_tenses: "Alle Zeitformen", all_themes: "Alle Themen", which_verbs: "Welche Wörter?", which_dir: "Welche Richtung?", dir_produce: "PRODUZIEREN", dir_recognize: "ERKENNEN", dir_random: "ZUFÄLLIG", which_theme: "Welche Themen?", none_all: "Nichts gewählt — es werden alle Zeitformen geübt", all_btn: "Alle", none_btn: "Keine", mist_clear_title: "Alle Fehler gemeistert!", mist_clear_sub: "Stark — du hast jedes falsch gemachte Verb wiederholt.", mist_practice: "Fehler üben", view_conj: "Volle Konjugation ansehen", mist_exit: "Zurück zu allen Verben",
+      correct: "richtig", accuracy: "Genauigkeit", streak: "Serie 🔥",
+      type_form: "Form eintippen…", check: "Prüfen", next: "Weiter →", correct_excl: "✓ Richtig!", accent_hint: "Richtig! Achte nur auf den Akzent: {answer}", answer: "Antwort:",
+      hint_type: "Tippe die richtige Form für Pronomen und Zeitform.", hint_choice: "Wähle die richtige Form — 4 Optionen.",
+      challenge: "60-Sekunden-Challenge", challenge_sub: "Beantworte so viele wie möglich, bevor die Zeit abläuft. Tippe schnell die richtige Form!",
+      best: "Bester:", start: "Start →", sec: "Sek", pts: "Pkt", go: "Los, los — jede richtige Antwort zählt!",
+      times_up: "Zeit abgelaufen!", in60: "richtig in 60s", new_best: "🎉 Neuer Rekord!", play_again: "Nochmal →", back: "Zurück",
+      tenses: "{lang} – Zeitformen", bilingual: "Zweisprachig · {a} ⇄ {b}", level: "Niveau", native: "Muttersprache",
+      explanation: "Erklärung", mnemonic: "🧠 Eselsbrücke", signal_words: "Signalwörter", examples: "Beispiele", when_use: "Verwendung", compare: "Vergleich",
+      fb_offline: "Live-KI-Erklärungen laufen in der App-Vorschau. Hier solange die Kernregeln:",
+      fb_net: "Erklärung gerade nicht erreichbar. Hier die Kernregeln:",
+      welcome: "Hey! Du wirst:", welcome_sub: "hier kannst du Verben in 5 Sprachen konjugieren, quizzen und so easy deine Lieblingssprache lernen.",
+      your_name: "Dein Name…", mother_tongue: "Deine Muttersprache", skill_q: "Dein Niveau", skill_beginner: "Anfänger", skill_beginner_sub: "häufige Verben", skill_intermediate: "Mittel", skill_intermediate_sub: "+ unregelmäßige", skill_advanced: "Fortgeschr.", skill_advanced_sub: "alle Verben", lets_go: "Los geht's →", skip: "Überspringen", remove_name: "Namen entfernen", profile: "Profil", listen: "Anhören", m_cards: "🃏 Karten", flip: "Tippen zum Umdrehen", got_it: "Gewusst", again: "Nochmal üben", mistakes: "Fehler", no_mistakes: "Noch keine Fehler — sie erscheinen hier zum Wiederholen.", tab_saved: "Gemerkt", reveal: "Übersetzung zeigen", learned: "Gelernt ✓", saved_empty: "Noch keine gemerkten Verben. Tippe bei einer Konjugation auf das ☆.", tour_conj: "Das Herzstück: jedes Verb in 5 Sprachen über alle Zeitformen konjugieren — auf einen Blick.", tour_quiz: "Quize dich — Karten, Auswahl, Tippen & Sprechen — mit automatisch erzeugten KI-Beispielsätzen.", tour_learn: "Jede Zeitform zweisprachig verstehen, mit KI-Beispielen — antippen & in den Wortschatz merken.", tour_saved: "Speichere Verben & Wörter, baue deinen eigenen Wortschatz auf und übe mit Spaced Repetition — die KI schlägt automatisch Startwörter vor.", tour_goals_h: "Lernplan & Ziele", tour_goal: "Erstelle deinen persönlichen Lernplan — KI-Vorschlag, nach Zeit oder individuell. Verfolge täglich deinen Fortschritt und bleib motiviert.", tour_trial_head: "Dein Geschenk: 24 h Premium", tour_trial_sub: "Danach Willkommensrabatt freischalten — die Konjugationstabellen bleiben für immer kostenlos.", tour_feat1: "Quiz & Gemerkt – voll freigeschaltet", tour_feat2: "Alle Zeitformen & KI-Beispielsätze", tour_feat3: "5 Sprachen, keine Werbung", eg_step1: "Zufälliges Verb – per ★ speichern", eg_step2: "Im Quiz üben & Lieblingsthemen wählen", eg_step3: "Gespeicherte Wörter gezielt im Tab 'Gemerkt' trainieren", hero_kicker: "Hey {name} 👋", hero_plan: "Dein Plan für heute, {name}:", hero_plan_anon: "Dein Plan für heute:", tour_next: "Weiter", tour_start: "Los geht\u0027s", tour_skip: "Überspringen", m_speak: "🎤 Sprechen", speak_tap: "Tippe aufs Mikro und sprich die Form", speak_heard: "Gehört:", speak_nomic: "Spracheingabe wird hier nicht unterstützt.", spk_form: "Wort sprechen", spk_sentence: "Satz sprechen", spk_what: "Was üben?", spk_say: "Sag es auf {lang}",
+      dq_form: "Konjugierte Form", vocab_translate: "Übersetzen", offline_note: "⚡ Offline — Beispiele & Übersetzungen brauchen Internet", aux_title: "Zusammengesetzte Zeiten bilden", aux_logic: "Alle zusammengesetzten Zeiten funktionieren gleich: Du konjugierst das Hilfsverb {aux} nach Person + Zeit und hängst das unveränderliche Partizip {part} an. Nur das Hilfsverb ändert sich — das Partizip bleibt gleich.", aux_note: "Zusammengesetzte Zeiten = Hilfsverb + Partizip.", aux_participle: "Partizip", cards_hint: "Konjugiere das Verb in der geforderten Zeitform gedanklich – tippe für die Lösung", cards_hint_type: "Konjugiere das Verb in der geforderten Zeitform · tippe das Wort in das Kästchen", cards_hint_speak: "Konjugiere das Verb in der geforderten Zeitform · tippe auf das Mikro zum Einsprechen", choose_label: "Wähle aus:", tap_retry: "Antippen zum Übersetzen", dq_infinitive: "Infinitiv", dq_belongs: "Von", dq_participle: "Partizip II", dq_gerund: "Gerundium / Verlaufsform", spk_relearn: "Muss ich noch lernen", spk_correct_is: "So heißt der Satz richtig:", spk_next_sentence: "Nächster Satz →", speak_denied: "Mikrofon blockiert — erlaube den Zugriff im Browser.", speak_nospeech: "Nichts verstanden — versuch es nochmal.", mic_start: "Tippen zum Sprechen", sent_mist_practice: "Falsche Sätze üben", spk_context: "Im Satz", cloze_instr: "Konjugiere das Verb in der geforderten Zeitform", choose_tile: "wähle die richtige Kachel", mic_stop: "Tippen wenn fertig", tap_word: "tippe ein Wort für die Bedeutung", practice_again: "Nochmal üben", sk_title: "Tagesziel & Streak", sk_today: "Heute", sk_streak: "Tage in Folge", sk_best: "Bestwert", sk_days: "Tage", sk_done: "Ziel erreicht! 🔥", sk_left: "Noch {n} bis zum Tagesziel", sk_explain: "Jede Konjugation und jede Quiz-Antwort zählt. Erreiche das Tagesziel, um deine Serie zu halten — verpasst du einen Tag, beginnt sie von vorn.", sk_close: "Verstanden", dq_fuzzy: "ohne Akzente erkannt", dq_switched: "zum Infinitiv gewechselt", dq_guess: "geschätzt anhand der Endung", tfilter_hint: "Seitlich wischen · tippen zum Ein-/Ausblenden", verb_ph: "Verb eingeben…", autoread: "Antwort vorlesen", autoread_sub: "bei richtig", review: "Auswertung", native_ph: "…oder ein Verb in deiner Sprache", saved_verbs: "Verben", saved_vocab: "Wortschatz", vocab_all: "Alle", vocab_new_cat: "Neu", vocab_new_cat_q: "Name der neuen Kategorie:", vocab_add_ph: "Wort oder Satz hinzufügen…", vocab_empty: "Noch keine Wörter — füge oben dein erstes hinzu.", vocab_practice: "Üben", vocab_word: "Wort", vocab_phrase: "Satz", vocab_type_target: "Auf {lang} eintippen…", vocab_done: "Runde geschafft!", vocab_save: "Merken", vocab_saved: "Gemerkt", vocab_seeding: "Starter-Wörter werden geladen…", vocab_suggest: "10 neue Wörter vorschlagen", vocab_due: "Heute fällig", vocab_strength: "Gedächtnisstärke", vocab_starter: "5 Startwörter laden", gr_ind: "Indikativ", gr_subj: "Konjunktiv", gr_cond: "Konditional", gr_imp: "Imperativ", gr_cont: "Verlaufsform", gr_forms: "Infinite Formen", how_formed: "Wie wird es gebildet?", key_irregulars: "Wichtige unregelmäßige Verben", irr_note: "Tippe ein Verb für die volle Konjugation.", tap_save: "Wort antippen – Bedeutung & merken", type_word: "Wort tippen", type_sentence: "Satz tippen", spk_translate: "Übersetze das", qi_title: "Wie möchtest du üben?", qi_sub: "Wähl einen Modus — jeder trainiert eine andere Fähigkeit.", qi_foot: "Tipp: Zeitform- & Verbfilter stellst du nach der Auswahl ein.", qi_back: "Übersicht", mdesc_cards: "Karten umdrehen — Antwort sehen, ganz entspannt", mdesc_choice: "Multiple Choice — die richtige Form wählen", mdesc_speed: "60-Sekunden-Sprint — wie viele schaffst du?", mdesc_type: "Form tippen oder einen Satz übersetzen", mdesc_speak: "Laut aussprechen — mit Spracherkennung",
+      paywall_lock: "🔒 Quiz & Merken sind Premium", paywall_h1: "Konjugieren, ohne nachzudenken", paywall_sub: "Mit dem Quiz trainierst du aktiv, bis die Formen sitzen — und mit Merken übst du genau den Wortschatz, der dir wichtig ist.", paywall_unlock: "Premium freischalten", paywall_later: "Vielleicht später", pw_feat1: "Interaktives Quiz", pw_feat1v: "4 Modi", pw_feat2: "Merken & Vokabellisten", pw_feat2v: "unbegrenzt", pw_feat3: "Konjugation & Lernen", pw_feat3v: "bleibt frei",
+      offer_badge: "🚀 WILLKOMMENSANGEBOT · −{disc} %", offer_expires: "Angebot läuft ab in {t}", offer_instead: "anstatt", offer_mo: "mtl.", offer_yr: "/ Jahr", offer_you_pay: "zahlst du:", offer_save: "du sparst {save} € (−{disc} %)", offer_secure: "Angebot sichern", offer_trial: "Erst 24 h kostenlos testen", offer_trial_b: "24 h Premium gratis", offer_close: "Angebot schließen", offer_price_label: "Preis: {price} € pro Jahr, statt {eq} € bei monatlicher Abrechnung",
+      plan_hero_h1: "Lerne ohne Limits", plan_hero_sub: "Unlimitiertes Quiz & Merken in allen 5 Sprachen", plan_annual: "Jahresabo", plan_monthly: "Monatsabo", plan_best: "★ Beliebteste Wahl", plan_bonus: "🎁 Willkommensbonus", plan_per_mo: "/ Monat", plan_per_yr: "/ Jahr", plan_instead: "statt", plan_save: "du sparst {save} € (−{disc} %)", plan_mo_label: "~{price} € / Monat · statt {eq} €", plan_flex: "flexibel · entspricht {eq} € / Jahr", plan_feat1: "Interaktives Konjugations-Quiz", plan_feat2: "Favoriten & Vokabellisten", plan_feat3: "5 Sprachen — ES, FR, EN, NL, DE", plan_feat4: "Auf allen Geräten · ohne Werbung", plan_cta: "Weiter zum Bezahlen", plan_cancelable: "jederzeit kündbar", plan_have_account: "Bereits Konto?", sign_in: "Anmelden", plan_coupon: "Gutscheincode einlösen", coupon_title: "Gutscheincode", coupon_need_login: "Bitte zuerst anmelden um einen Code einzulösen.", coupon_sign_in: "Jetzt anmelden", coupon_ph: "Code eingeben", coupon_redeem: "Einlösen", coupon_redeeming: "Wird eingelöst…",
+      menu_rate: "App bewerten", menu_logout: "Abmelden", menu_cancel_sub: "Abo kündigen", menu_sub_active_until: "✓ Abo gekündigt — aktiv bis {date}", menu_delete_acc: "Konto löschen", cancel_title: "Abo kündigen", cancel_body: "Dein Premium läuft noch bis zum {date} — danach wechselst du automatisch zur kostenlosen Version. Dein Konto bleibt erhalten.", cancel_no: "Abbrechen", cancel_yes: "Jetzt kündigen", delete_title: "Konto löschen", delete_warn_days: "⚠️ Du verlierst {n} bezahlte Tage", delete_warn_body: "Dein Abo ist noch bis {date} aktiv. Wenn du zuerst kündigst, kannst du die verbleibende Zeit noch nutzen.", delete_cancel_first: "Erst Abo kündigen", delete_anyway: "Trotzdem löschen", delete_data: "Alle Daten werden unwiderruflich gelöscht.", delete_yes: "Löschen",
+      sub_runs_until: "Dein Abo läuft noch bis zum {date} — bis dahin kannst du die App weiterhin nutzen.", sub_end_period: "Ende des aktuellen Laufzeitraums", goodbye_heading: "Schade, dass du uns verlässt — aber du bist jetzt Profi!", goodbye_love: "Alles Liebe für dich.", goodbye_data: "Deine Daten löschen wir selbstverständlich.", goodbye_btn: "Tschüss! 👋", pay_error: "Zahlung konnte nicht gestartet werden. Bitte versuche es erneut.", bonus_trial: "Premiumfunktion sichern", bonus_welcome: "Willkommensbonus sichern", bonus_quiz: "Hol dir Quiz- & Merkfunktion!", ios_homescreen: "Für Schnellstart: ConjuExpert zum Homescreen hinzufügen!", ios_share: "Teilen ⬆ → Zum Home-Bildschirm", ios_close: "Schließen", ios_how: "So geht's", ios_help_title: "Auf dem iPhone hinzufügen", ios_help_1: "Tippe unten in Safari auf das <b>Teilen-Symbol</b> ⬆ (Quadrat mit Pfeil nach oben).", ios_help_2: "Wähle <b>„Zum Home-Bildschirm“</b>.", ios_help_3: "Tippe oben rechts auf <b>„Hinzufügen“</b> — fertig! ✅", and_help_title: "Auf Android hinzufügen", and_help_1: "Tippe oben rechts auf das <b>Menü</b> (⋮).", and_help_2: "Wähle <b>„App installieren“</b> bzw. <b>„Zum Startbildschirm“</b>.", and_help_3: "Bestätige mit <b>„Installieren“</b> — fertig! ✅", pin_help_ios: "Anleitung fürs iPhone", pin_help_android: "Anleitung fürs Android", rev_kicker: "20 Sekunden · großer Effekt", rev_heading: "kurz bevor du weiterlernst …", rev_body1: "Du bist heute schon <b>{mins} Minuten</b> dran – Respekt! 🔥", rev_body2: "Hilf jetzt anderen, ihre Lieblingssprache genauso zu knacken: Mit <b>einer kurzen Bewertung</b> wird ConjuExpert gefunden — dein größter Support für uns. 💛", rev_rate: "Jetzt bewerten →", rev_feedback: "Lieber einen Wunsch / Feedback loswerden?", rev_snooze: "Später erinnern", paysuc_sub: "Du kannst alle Premium-Funktionen nutzen! Viel Spaß beim Quizzen und beim Lernen deiner Lieblingssprache 🎉", paysuc_feat1: "Quiz — alle Modi & Sprachen", paysuc_feat2: "Favoriten & Vokabellisten", paysuc_feat3: "Unlimitiert · ohne Werbung", menu_logged_in: "Angemeldet als", menu_edit_profile: "Profil ändern", menu_tarife: "Tarife und Preise", menu_pin: "App-Icon pinnen", pin_title: "Leg ConjuExpert auf deinen Startbildschirm", menu_login: "Konto erstellen / Anmelden", msub_konto: "Fortschritt sichern", msub_profil: "Name \u00b7 Sprachen \u00b7 Niveau", msub_pin: "Auf den Startbildschirm", msub_tarife: "Alle Funktionen", msub_rate: "Mit 5 Sternen unterst\u00fctzen", pin_sub: "– und du kannst sofort konjugieren und quizzen.", pin_tip: "Tipp", pin_guide_for: "Hier findest du die Anleitung für:", pin_step_ios: "Teilen → „Zum Home-Bildschirm“", pin_step_android: "Menü → „App installieren“", pin_cta: "Jetzt hinzufügen", pin_later: "Vielleicht später", pin_iphone: "iPhone / iPad", pin_android: "Android", menu_share: "App weiterempfehlen", err_cancel_fail: "Kündigung fehlgeschlagen. Bitte versuche es erneut.", err_delete_fail: "Löschen fehlgeschlagen. Bitte versuche es erneut.", guest_login_sub: "Melde dich an, um Fortschritte und Wörter speichern zu können.", guest_login_cta: "Jetzt anmelden →", login_welcome_back: "Willkommen zurück", login_almost_done: "Fast geschafft!", login_create_acct: "Konto erstellen", login_reset_pw: "Passwort zurücksetzen", login_sub_login: "Favoriten & Fortschritt auf allen Geräten", login_sub_login_pay: "Meld dich an — dann geht's direkt weiter zum Bezahlen.", login_sub_signup: "Kostenlos — Daten sicher in Deutschland", login_sub_signup_pay: "Super, dass du dich für Premium entschieden hast! Erstelle ein Konto — so kannst du dein Sprachziel verfolgen und Wortschatz zu Lieblingsthemen aufbauen.", login_sub_reset: "Wir schicken dir einen Reset-Link", login_done_signup: "Bestätigungs-E-Mail gesendet!\nBitte prüfe dein Postfach.", login_done_reset: "Reset-Link gesendet!\nPrüfe dein Postfach.", login_pw_ph: "Passwort (min. 6 Zeichen)", login_forgot_pw: "Passwort vergessen?", login_btn_signup: "Konto erstellen", login_btn_reset: "Reset-Link senden", login_or: "oder", login_google: "Mit Google anmelden", login_apple: "Mit Apple anmelden", login_no_account: "Noch kein Konto?", login_has_account: "Schon registriert?", login_do_register: "Registrieren", login_back: "← Zurück zum Login", login_data: "🔒 Daten gespeichert in Frankfurt, DE", goal_ai: "KI-Vorschlag", goal_ai_badge: "MITTEL", goal_time: "Nach Zeit", goal_time_note: "10 Min/Tag", goal_custom: "Individuell", goal_custom_note: "8 Verben · 20 Wörter", goal_daily: "Übungen pro Tag", goal_time_approx: "≈ 6 Min. · anpassbar"
+    },
+    es: {
+      tagline: "conjugar · quiz · aprender", hi: "¡Hola, {name}! 👋", ready: "Cuando quieras, {name}",
+      hint_quiz_cards_h: "Tarjetas: memoriza verbos sin estrés", hint_quiz_cards_1: "Elige tiempo verbal &amp; tema favorito, además del sentido (lengua materna ↔ idioma que aprendes).", hint_quiz_cards_2: "Mira el verbo + tiempo, piensa la forma en tu cabeza — toca la tarjeta para girarla.", hint_quiz_cards_3: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.", hint_quiz_cards_4: "Sin presión, sin escribir: ideal para conocer las formas y repasar rápido.",
+      hint_quiz_choice_h: "Opción: reconocer rápido la forma correcta", hint_quiz_choice_1: "Una entrada perfecta a un tiempo verbal nuevo.", hint_quiz_choice_2: "Elige tiempo verbal &amp; tema favorito.", hint_quiz_choice_3: "Verbo + tiempo requerido + cuatro variantes — toca la correcta y recibe respuesta al instante.", hint_quiz_choice_4: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.",
+      hint_quiz_type_h: "Escribir: conjuga de forma activa", hint_quiz_type_1: "Escribirlo tú mismo es lo que más fija las formas — junto a <b>Hablar</b>, el modo más intensivo.", hint_quiz_type_2: "Elige tiempo, tema &amp; sentido — y si practicas verbos sueltos o traduces una frase entera.", hint_quiz_type_3: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.",
+      hint_quiz_speak_h: "Hablar: dilo en voz alta", hint_quiz_speak_1: "Decirlo tú mismo es lo que más fija las formas — junto a <b>Escribir</b>, el modo más intensivo.", hint_quiz_speak_2: "Elige tiempo, tema &amp; sentido — y si practicas verbos sueltos o una frase entera.", hint_quiz_speak_3: "Toca el micrófono para empezar y para terminar la entrada de voz.", hint_quiz_speak_4: "Toca las palabras desconocidas → traducir &amp; guardar.",
+      hint_quiz_texte_h: "Textos: pon a prueba tu comprensión lectora & auditiva", hint_quiz_texte_1: "Elige tema favorito, tiempo verbal &amp; qué tipo de verbos practicar.", hint_quiz_texte_2: "Al final te esperan preguntas de comprensión.", hint_quiz_texte_3: "Toca cualquier palabra del texto → traducir &amp; guardar.", hint_quiz_texte_4: "Consejo: activa “Usar mis palabras” — tus propias palabras aparecen en la historia.",
+      hint_learn_h: "Bienvenido a Aprender", hint_learn_1: "Cada tiempo verbal se explica de forma bilingüe, con ejemplos generados automáticamente.", hint_learn_2: "Usa el selector de tiempos de arriba como una <b>chuleta</b> para saltar entre formas.", hint_learn_3: "Toca cualquier palabra de ejemplo para guardarla en tu vocabulario.",
+      hint_saved_verbs_h: "Verbos guardados", hint_saved_verbs_1: "Aquí se reúnen todos los verbos que guardaste con ☆ al conjugar.", hint_saved_verbs_2: "Toca un verbo para volver a abrir su conjugación completa.", hint_saved_verbs_3: "Elígelos directamente en el <b>Quiz</b> y practica con intención.", hint_saved_verbs_4: "Así creas tu propia lista de práctica personal.",
+      hint_saved_vocab_h: "Tu vocabulario", hint_saved_vocab_1: "Crea tu propio tema (p. ej. “Visita al médico”) &amp; elige el sentido de práctica.", hint_saved_vocab_2: "✨ SÚPER FUNCIÓN: genera palabras nuevas — en “Nueva” escribe p. ej. “Adjetivos” y toca “Sugerir 10 palabras nuevas”.", hint_saved_vocab_3: "Tus palabras guardadas también pueden incluirse en los textos del quiz.",
+      tab_conjugate: "Conjugar", tab_quiz: "Quiz", tab_learn: "Aprender", conjugate: "Conjugar",
+      saved: "Verbos guardados", recent: "Recientes", clear: "borrar",
+      empty_title: "Escribe un verbo para conjugar", empty_sub: "Todos los tiempos en {n} idiomas — escribe un verbo o pulsa 🎲.",
+      regular: "regular", irregular: "irregular", recommended: "Recomendado", ad_cta: "Practicar →",
+      mode: "Modo", m_type: "⌨ Escribir", m_choice: "◉ Opción", m_speed: "⚡ Veloz", m_texte: "📖 Textos", mdesc_texte: "Lee una historia con IA — traduce, completa verbos o responde preguntas", texte_question: "Comprensión", texte_cloze: "Completar verbos", texte_translate: "Traducir", texte_new: "Nueva historia", texte_writing: "Escribiendo tu historia…", texte_error: "No se pudo escribir una historia — inténtalo de nuevo.", texte_comprehension: "Preguntas de comprensión", texte_done: "¡Historia completada!", texte_fill_hint: "Pon el verbo en el tiempo correcto", texte_learn: "Aprender el verbo", texte_translation: "Traducción", texte_read: "Leer en voz alta", texte_speed: "¿Qué velocidad?", texte_voice: "¿Qué voz?", texte_voice_auto: "Automática (mejor)", texte_almost: "casi listo …", texte_voice_f: "Mujer", texte_voice_m: "Hombre", texte_pause: "Pausa", texte_resume: "Seguir", texte_mywords_lbl: "Mi vocabulario", texte_mywords: "Usar mis palabras",
+      which_tense: "¿Qué tiempo practicar?", tense_word: "Tiempo", all_tenses: "Todos los tiempos", all_themes: "Todos los temas", which_verbs: "¿Qué palabras?", which_dir: "¿Qué dirección?", dir_produce: "PRODUCIR", dir_recognize: "RECONOCER", dir_random: "ALEATORIO", which_theme: "¿Qué tema?", none_all: "Ninguno — se practican todos los tiempos", all_btn: "Todos", none_btn: "Ninguno", mist_clear_title: "¡Errores superados!", mist_clear_sub: "¡Bien hecho! Repasaste todos los verbos que fallaste.", mist_practice: "Practicar errores", view_conj: "Ver conjugación completa", mist_exit: "Volver a todos los verbos",
+      correct: "correctas", accuracy: "precisión", streak: "racha 🔥",
+      type_form: "escribe la forma…", check: "Comprobar", next: "Siguiente →", correct_excl: "✓ ¡Correcto!", accent_hint: "¡Bien! Solo cuida la tilde: {answer}", answer: "Respuesta:",
+      hint_type: "Escribe la forma correcta para el pronombre y el tiempo.", hint_choice: "Elige la forma correcta — 4 opciones.",
+      challenge: "Reto de 60 segundos", challenge_sub: "Responde tantas como puedas antes de que acabe el tiempo. ¡Toca rápido la forma correcta!",
+      best: "Mejor:", start: "Empezar →", sec: "seg", pts: "pts", go: "¡Vamos! Cada acierto suma.",
+      times_up: "¡Se acabó el tiempo!", in60: "correctas en 60s", new_best: "🎉 ¡Nuevo récord!", play_again: "Jugar otra vez →", back: "Atrás",
+      tenses: "Tiempos de {lang}", bilingual: "Bilingüe · {a} ⇄ {b}", level: "Nivel", native: "Lengua materna",
+      explanation: "Explicación", mnemonic: "🧠 Regla mnemotécnica", signal_words: "Palabras clave", examples: "Ejemplos", when_use: "Cuándo usar", compare: "Comparar",
+      fb_offline: "Las explicaciones con IA funcionan en la vista previa. Mientras, las reglas básicas:",
+      fb_net: "No se pudo cargar la explicación. Aquí las reglas básicas:",
+      welcome: "¡Hey! Vas a:", welcome_sub: "conjugar verbos en 5 idiomas, hacer quizzes y aprender tu idioma favorito de forma fácil.",
+      your_name: "Tu nombre…", mother_tongue: "Tu lengua materna", skill_q: "Tu nivel", skill_beginner: "Principiante", skill_beginner_sub: "verbos comunes", skill_intermediate: "Medio", skill_intermediate_sub: "+ irregulares", skill_advanced: "Avanzado", skill_advanced_sub: "todos", lets_go: "¡Vamos! →", skip: "Omitir", remove_name: "Quitar nombre", profile: "Perfil", listen: "Escuchar", m_cards: "🃏 Tarjetas", flip: "Toca para girar", got_it: "Lo sé", again: "Repasar", mistakes: "Errores", no_mistakes: "Aún no hay errores — aparecerán aquí para repasar.", tab_saved: "Guardados", reveal: "Ver traducción", learned: "Aprendido ✓", saved_empty: "Aún no hay verbos guardados. Pulsa la ☆ en una conjugación para guardarlo.", tour_conj: "El núcleo: conjuga cualquier verbo en 5 idiomas, en todos los tiempos — de un vistazo.", tour_quiz: "Ponte a prueba — tarjetas, opción, escribir y hablar — con frases de ejemplo generadas por IA.", tour_learn: "Entiende cada tiempo de forma bilingüe, con ejemplos de IA que puedes tocar y guardar.", tour_saved: "Guarda verbos y palabras, crea tu vocabulario y practícalo con repetición espaciada.", tour_goals_h: "Plan de estudio & objetivos", tour_goal: "Crea tu plan de aprendizaje personal — sugerencia IA, por tiempo o a medida. Sigue tu progreso diario y mantente constante.", tour_trial_head: "Tu regalo: 24 h Premium", tour_trial_sub: "Después activa tu descuento de bienvenida — las tablas de conjugación siempre son gratis.", tour_feat1: "Quiz y Guardados — todo desbloqueado", tour_feat2: "Todos los tiempos y frases con IA", tour_feat3: "5 idiomas, sin anuncios", eg_step1: "Verbo aleatorio – guarda con ★", eg_step2: "Practica en el Quiz y elige temas favoritos", eg_step3: "Entrena las palabras guardadas en 'Guardados'", hero_kicker: "¡Hola {name}! 👋", hero_plan: "Tu plan de hoy, {name}:", hero_plan_anon: "Tu plan de hoy:", tour_next: "Siguiente", tour_start: "Empezar", tour_skip: "Omitir", m_speak: "🎤 Hablar", speak_tap: "Toca el micro y di la forma", speak_heard: "Oído:", speak_nomic: "La entrada de voz no está disponible aquí.", spk_form: "Decir palabra", spk_sentence: "Decir frase", spk_what: "¿Qué practicar?", spk_say: "Dilo en {lang}",
+      dq_form: "Forma conjugada", vocab_translate: "Traducir", offline_note: "⚡ Sin conexión — ejemplos y traducciones necesitan internet", aux_title: "Formar los tiempos compuestos", aux_logic: "Todos los tiempos compuestos se forman igual: conjugas el verbo auxiliar {aux} según persona y tiempo, y añades el participio invariable {part}. Solo cambia el auxiliar — el participio no cambia.", aux_note: "Tiempos compuestos = verbo auxiliar + participio.", aux_participle: "Participio", cards_hint: "Conjuga el verbo en el tiempo pedido mentalmente – toca para ver la solución", cards_hint_type: "Conjuga el verbo en el tiempo pedido · escríbelo en la casilla", cards_hint_speak: "Conjuga el verbo en el tiempo pedido · toca el micro para hablar", choose_label: "Elige:", tap_retry: "Tocar para traducir", dq_infinitive: "Infinitivo", dq_belongs: "De", dq_participle: "Participio", dq_gerund: "Gerundio", spk_relearn: "Sigo aprendiendo — ver respuesta", spk_correct_is: "La frase correcta:", spk_next_sentence: "Siguiente frase →", speak_denied: "Micrófono bloqueado — permite el acceso en el navegador.", speak_nospeech: "No te he oído — inténtalo de nuevo.", mic_start: "Toca para hablar", sent_mist_practice: "Practicar frases falladas", spk_context: "En una frase", cloze_instr: "Conjuga el verbo en el tiempo pedido", choose_tile: "elige la casilla correcta", mic_stop: "Toca al terminar", tap_word: "toca una palabra para ver su significado", practice_again: "Practicar otra vez", sk_title: "Meta diaria y racha", sk_today: "Hoy", sk_streak: "Días seguidos", sk_best: "Récord", sk_days: "días", sk_done: "¡Meta lograda! 🔥", sk_left: "{n} más para la meta de hoy", sk_explain: "Cada conjugación y respuesta del quiz cuenta. Alcanza la meta diaria para mantener tu racha — si faltas un día, se reinicia.", sk_close: "Entendido", dq_fuzzy: "reconocido sin tildes", dq_switched: "cambiado al infinitivo", dq_guess: "deducido por la terminación", tfilter_hint: "Desliza · toca para mostrar / ocultar un tiempo", verb_ph: "Escribe un verbo…", autoread: "Leer la respuesta", autoread_sub: "si es correcta", review: "Resumen", native_ph: "…o un verbo en tu idioma", saved_verbs: "Verbos", saved_vocab: "Vocabulario", vocab_all: "Todo", vocab_new_cat: "Nueva", vocab_new_cat_q: "Nombre de la nueva categoría:", vocab_add_ph: "Añade una palabra o frase…", vocab_empty: "Aún no hay palabras — añade la primera arriba.", vocab_practice: "Practicar", vocab_word: "palabra", vocab_phrase: "frase", vocab_type_target: "Escríbelo en {lang}…", vocab_done: "¡Ronda completada!", vocab_save: "Guardar", vocab_saved: "Guardado", vocab_seeding: "Cargando palabras iniciales…", vocab_suggest: "Sugerir 10 palabras nuevas", vocab_due: "Para hoy", vocab_strength: "Fuerza de memoria", vocab_starter: "Cargar 5 palabras iniciales", gr_ind: "Indicativo", gr_subj: "Subjuntivo", gr_cond: "Condicional", gr_imp: "Imperativo", gr_cont: "Continuo", gr_forms: "Formas no personales", how_formed: "¿Cómo se forma?", key_irregulars: "Verbos irregulares clave", irr_note: "Toca un verbo para ver su conjugación completa.", tap_save: "toca una palabra – significado y guardar", type_word: "Escribir palabra", type_sentence: "Escribir frase", spk_translate: "Traduce esto", qi_title: "¿Cómo quieres practicar?", qi_sub: "Elige un modo — cada uno entrena una habilidad distinta.", qi_foot: "Consejo: ajusta los filtros de tiempo y verbos tras elegir.", qi_back: "Resumen", mdesc_cards: "Voltear tarjetas — ver la respuesta, sin presión", mdesc_choice: "Opción múltiple — elige la forma correcta", mdesc_speed: "Sprint de 60 s — ¿cuántas puedes?", mdesc_type: "Escribe la forma o traduce una frase", mdesc_speak: "Dílo en voz alta — reconocimiento de voz",
+      paywall_lock: "🔒 El Quiz y Guardados son Premium", paywall_h1: "Conjuga sin pensar", paywall_sub: "El Quiz te entrena activamente hasta que las formas se quedan fijas — y Guardados te permite practicar exactamente el vocabulario que te importa.", paywall_unlock: "Desbloquear Premium", paywall_later: "Quizás más tarde", pw_feat1: "Quiz interactivo", pw_feat1v: "4 modos", pw_feat2: "Guardados y listas de vocab.", pw_feat2v: "ilimitado", pw_feat3: "Conjugación y Aprender", pw_feat3v: "sigue gratis",
+      offer_badge: "🚀 OFERTA DE BIENVENIDA · −{disc} %", offer_expires: "La oferta expira en {t}", offer_instead: "en vez de", offer_mo: "mes.", offer_yr: "/ año", offer_you_pay: "pagas:", offer_save: "ahorras {save} € (−{disc} %)", offer_secure: "Aprovechar oferta", offer_trial: "Probar 24 h gratis primero", offer_trial_b: "24 h Premium gratis", offer_close: "Cerrar oferta", offer_price_label: "Precio: {price} € al año, en vez de {eq} € mensuales",
+      plan_hero_h1: "Aprende sin límites", plan_hero_sub: "Quiz y Guardados ilimitados en los 5 idiomas", plan_annual: "Plan anual", plan_monthly: "Plan mensual", plan_best: "★ Más popular", plan_bonus: "🎁 Bono de bienvenida", plan_per_mo: "/ mes", plan_per_yr: "/ año", plan_instead: "en vez de", plan_save: "ahorras {save} € (−{disc} %)", plan_mo_label: "~{price} € / mes · en vez de {eq} €", plan_flex: "flexible · equiv. {eq} € / año", plan_feat1: "Quiz de conjugación interactivo", plan_feat2: "Guardados y listas de vocabulario", plan_feat3: "5 idiomas — ES, FR, EN, NL, DE", plan_feat4: "Todos los dispositivos · sin anuncios", plan_cta: "Continuar al pago", plan_cancelable: "cancela cuando quieras", plan_have_account: "¿Ya tienes cuenta?", sign_in: "Iniciar sesión", plan_coupon: "Canjear código de descuento", coupon_title: "Código de descuento", coupon_need_login: "Por favor, inicia sesión para canjear un código.", coupon_sign_in: "Iniciar sesión", coupon_ph: "Introduce el código", coupon_redeem: "Canjear", coupon_redeeming: "Canjeando…",
+      menu_rate: "Valorar la app", menu_logout: "Cerrar sesión", menu_cancel_sub: "Cancelar suscripción", menu_sub_active_until: "✓ Suscripción cancelada — activa hasta {date}", menu_delete_acc: "Eliminar cuenta", cancel_title: "Cancelar suscripción", cancel_body: "Tu Premium está activo hasta el {date} — luego cambias automáticamente a la versión gratuita. Tu cuenta se conserva.", cancel_no: "Volver", cancel_yes: "Cancelar ahora", delete_title: "Eliminar cuenta", delete_warn_days: "⚠️ Perderás {n} días de pago", delete_warn_body: "Tu suscripción está activa hasta el {date}. Si cancelas primero, puedes aprovechar el tiempo restante.", delete_cancel_first: "Cancelar suscripción primero", delete_anyway: "Eliminar de todas formas", delete_data: "Todos los datos se eliminarán definitivamente.", delete_yes: "Eliminar",
+      sub_runs_until: "Tu suscripción sigue activa hasta el {date} — puedes seguir usando la app hasta entonces.", sub_end_period: "fin del período de facturación actual", goodbye_heading: "Una pena que te vayas — ¡pero ya eres un experto!", goodbye_love: "Todo lo mejor para ti.", goodbye_data: "Por supuesto, eliminaremos tus datos.", goodbye_btn: "¡Adiós! 👋", pay_error: "No se pudo iniciar el pago. Por favor, inténtalo de nuevo.", bonus_trial: "Asegurar Premium", bonus_welcome: "Aprovechar bono de bienvenida", bonus_quiz: "¡Consigue Quiz y Guardados!", ios_homescreen: "¡Añade ConjuExpert a tu pantalla de inicio!", ios_share: "Compartir ⬆ → Añadir a pantalla de inicio", ios_close: "Cerrar", ios_how: "Cómo se hace", ios_help_title: "Añádelo en tu iPhone", ios_help_1: "En Safari, toca abajo el <b>botón Compartir</b> ⬆ (cuadrado con una flecha hacia arriba).", ios_help_2: "Elige <b>“Añadir a pantalla de inicio”</b>.", ios_help_3: "Toca <b>“Añadir”</b> arriba a la derecha — ¡listo! ✅", and_help_title: "Añádelo en tu Android", and_help_1: "Toca el <b>menú</b> (⋮) arriba a la derecha.", and_help_2: "Elige <b>“Instalar app”</b> o <b>“Añadir a pantalla de inicio”</b>.", and_help_3: "Confirma con <b>“Instalar”</b> — ¡listo! ✅", pin_help_ios: "Guía para iPhone", pin_help_android: "Guía para Android", rev_kicker: "20 segundos · gran impacto", rev_heading: "antes de seguir aprendiendo …", rev_body1: "¡Llevas ya <b>{mins} minutos</b> hoy — ¡impresionante! 🔥", rev_body2: "Ayuda a otros a descubrir su idioma favorito: con una <b>breve valoración</b>, más gente encuentra ConjuExpert — tu mayor apoyo para nosotros. 💛", rev_rate: "Valorar ahora →", rev_feedback: "¿Prefieres dejar un comentario?", rev_snooze: "Recordármelo después", paysuc_sub: "¡Ya puedes usar todas las funciones Premium! Disfruta del quiz y el aprendizaje de tu idioma favorito 🎉", paysuc_feat1: "Quiz — todos los modos e idiomas", paysuc_feat2: "Favoritos y listas de vocabulario", paysuc_feat3: "Ilimitado · sin anuncios", menu_logged_in: "Conectado como", menu_edit_profile: "Editar perfil", menu_tarife: "Tarifas y precios", menu_pin: "Fijar icono", pin_title: "Añade ConjuExpert a tu pantalla de inicio", menu_login: "Crear cuenta / Entrar", msub_konto: "Guarda tu progreso", msub_profil: "Nombre \u00b7 idiomas \u00b7 nivel", msub_pin: "A la pantalla de inicio", msub_tarife: "Todas las funciones", msub_rate: "Ap\u00f3yanos con 5 estrellas", pin_sub: "– y podrás conjugar y hacer quizzes al instante.", pin_tip: "Consejo", pin_guide_for: "Aquí tienes la guía para:", pin_step_ios: "Compartir → „Añadir a inicio“", pin_step_android: "Menú → „Instalar app“", pin_cta: "Añadir ahora", pin_later: "Más tarde", pin_iphone: "iPhone / iPad", pin_android: "Android", menu_share: "Recomendar app", err_cancel_fail: "Cancelación fallida. Inténtalo de nuevo.", err_delete_fail: "Eliminación fallida. Inténtalo de nuevo.", guest_login_sub: "Inicia sesión para guardar tu progreso y vocabulario.", guest_login_cta: "Iniciar sesión →", login_welcome_back: "Bienvenido de nuevo", login_almost_done: "¡Casi listo!", login_create_acct: "Crear cuenta", login_reset_pw: "Restablecer contraseña", login_sub_login: "Favoritos y progreso en todos los dispositivos", login_sub_login_pay: "Inicia sesión — continuarás al pago de inmediato.", login_sub_signup: "Gratis — datos guardados en Alemania", login_sub_signup_pay: "¡Genial que hayas elegido Premium! Crea una cuenta para hacer seguimiento de tu objetivo y ampliar vocabulario sobre tus temas favoritos.", login_sub_reset: "Te enviaremos un enlace de restablecimiento", login_done_signup: "¡Correo de confirmación enviado!\nRevisa tu bandeja de entrada.", login_done_reset: "¡Enlace enviado!\nRevisa tu bandeja de entrada.", login_pw_ph: "Contraseña (mín. 6 caracteres)", login_forgot_pw: "¿Olvidaste tu contraseña?", login_btn_signup: "Crear cuenta", login_btn_reset: "Enviar enlace", login_or: "o", login_google: "Iniciar sesión con Google", login_apple: "Iniciar sesión con Apple", login_no_account: "¿Sin cuenta aún?", login_has_account: "¿Ya tienes cuenta?", login_do_register: "Registrarse", login_back: "← Volver al inicio de sesión", login_data: "🔒 Datos guardados en Frankfurt, DE", goal_ai: "Sugerencia IA", goal_ai_badge: "MEDIO", goal_time: "Por tiempo", goal_time_note: "10 min/día", goal_custom: "A medida", goal_custom_note: "8 verbos · 20 palabras", goal_daily: "ejercicios al día", goal_time_approx: "≈ 6 min · ajustable"
+    },
+    nl: {
+      tagline: "vervoegen · quiz · leren", hi: "Hoi, {name} 👋", ready: "Klaar wanneer jij het bent, {name}",
+      hint_quiz_cards_h: "Kaarten: werkwoorden ontspannen inprenten", hint_quiz_cards_1: "Kies tijd &amp; favoriet thema, plus de richting (moedertaal ↔ doeltaal).", hint_quiz_cards_2: "Bekijk werkwoord + tijd, bedenk de vorm in je hoofd — tik de kaart om te draaien.", hint_quiz_cards_3: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.", hint_quiz_cards_4: "Geen druk, geen typen: ideaal om vormen te leren kennen en snel te herhalen.",
+      hint_quiz_choice_h: "Keuze: de juiste vorm snel herkennen", hint_quiz_choice_1: "Een perfecte start in een nieuwe tijd.", hint_quiz_choice_2: "Kies tijd &amp; favoriet thema.", hint_quiz_choice_3: "Werkwoord + gevraagde tijd + vier varianten — tik de juiste aan voor directe feedback.", hint_quiz_choice_4: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.",
+      hint_quiz_type_h: "Typen: vervoegingen actief schrijven", hint_quiz_type_1: "Zelf schrijven verankert de vormen het sterkst — naast <b>Spreken</b> de intensiefste modus.", hint_quiz_type_2: "Kies tijd, thema &amp; richting — en of je losse werkwoorden oefent of een hele zin vertaalt.", hint_quiz_type_3: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.",
+      hint_quiz_speak_h: "Spreken: zeg het hardop", hint_quiz_speak_1: "Zelf spreken verankert de vormen het sterkst — naast <b>Typen</b> de intensiefste modus.", hint_quiz_speak_2: "Kies tijd, thema &amp; richting — en of je losse werkwoorden oefent of een hele zin.", hint_quiz_speak_3: "Tik op de microfoon om te beginnen en te stoppen met de spraakinvoer.", hint_quiz_speak_4: "Tik onbekende woorden → vertalen &amp; opslaan.",
+      hint_quiz_texte_h: "Teksten: test je lees- & luistervaardigheid", hint_quiz_texte_1: "Kies favoriet thema, tijd &amp; welk soort werkwoorden je wilt oefenen.", hint_quiz_texte_2: "Aan het eind wachten begripsvragen op je.", hint_quiz_texte_3: "Tik elk woord in de tekst aan → vertalen &amp; opslaan.", hint_quiz_texte_4: "Tip: zet “Mijn woorden gebruiken” aan — je eigen woorden verschijnen in het verhaal.",
+      hint_learn_h: "Welkom bij Leren", hint_learn_1: "Elke tijd wordt tweetalig uitgelegd, met automatisch gegenereerde voorbeelden.", hint_learn_2: "Gebruik de tijdkiezer bovenaan als een <b>spiekbriefje</b> om tussen vormen te springen.", hint_learn_3: "Tik op een voorbeeldwoord om het aan je woordenschat toe te voegen.",
+      hint_saved_verbs_h: "Opgeslagen werkwoorden", hint_saved_verbs_1: "Hier verzamelen zich alle werkwoorden die je tijdens het vervoegen met ☆ opsloeg.", hint_saved_verbs_2: "Tik een werkwoord aan om de volledige vervoeging weer te openen.", hint_saved_verbs_3: "Kies ze direct in de <b>Quiz</b> en oefen gericht.", hint_saved_verbs_4: "Zo bouw je je eigen persoonlijke oefenlijst op.",
+      hint_saved_vocab_h: "Jouw woordenschat", hint_saved_vocab_1: "Maak een eigen thema (bijv. “Doktersbezoek”) &amp; kies de oefenrichting.", hint_saved_vocab_2: "✨ MEGA-FEATURE: genereer nieuwe woorden — onder “Nieuw” typ je bijv. “Bijvoeglijke naamwoorden” en tik “10 nieuwe woorden voorstellen”.", hint_saved_vocab_3: "Je opgeslagen woorden kunnen ook in de quizteksten worden verwerkt.",
+      tab_conjugate: "Vervoegen", tab_quiz: "Quiz", tab_learn: "Leren", conjugate: "Vervoegen",
+      saved: "Opgeslagen werkwoorden", recent: "Recent", clear: "wissen",
+      empty_title: "Typ een werkwoord om te vervoegen", empty_sub: "Alle tijden in {n} talen — typ een werkwoord of tik 🎲.",
+      regular: "regelmatig", irregular: "onregelmatig", recommended: "Aanbevolen", ad_cta: "Oefenen →",
+      mode: "Modus", m_type: "⌨ Typen", m_choice: "◉ Keuze", m_speed: "⚡ Speed", m_texte: "📖 Teksten", mdesc_texte: "Lees een AI-verhaal — vertaal, vul werkwoorden in of beantwoord vragen", texte_question: "Begrip", texte_cloze: "Werkwoorden invullen", texte_translate: "Vertalen", texte_new: "Nieuw verhaal", texte_writing: "Je verhaal wordt geschreven…", texte_error: "Kon geen verhaal schrijven — probeer opnieuw.", texte_comprehension: "Begripsvragen", texte_done: "Verhaal voltooid!", texte_fill_hint: "Zet het werkwoord in de juiste tijd", texte_learn: "Werkwoord leren", texte_translation: "Vertaling", texte_read: "Voorlezen", texte_speed: "Welk tempo?", texte_voice: "Welke stem?", texte_voice_auto: "Automatisch (beste)", texte_almost: "bijna klaar …", texte_voice_f: "Vrouw", texte_voice_m: "Man", texte_pause: "Pauze", texte_resume: "Verder", texte_mywords_lbl: "Mijn woorden", texte_mywords: "Mijn woorden gebruiken",
+      which_tense: "Welke tijd oefenen?", tense_word: "Tijd", all_tenses: "Alle tijden", all_themes: "Alle thema's", which_verbs: "Welke woorden?", which_dir: "Welke richting?", dir_produce: "PRODUCEREN", dir_recognize: "HERKENNEN", dir_random: "WILLEKEURIG", which_theme: "Welk thema?", none_all: "Niets gekozen — alle tijden worden geoefend", all_btn: "Alle", none_btn: "Geen", mist_clear_title: "Alle fouten weggewerkt!", mist_clear_sub: "Goed gedaan — je hebt elk fout werkwoord herhaald.", mist_practice: "Fouten oefenen", view_conj: "Volledige vervoeging", mist_exit: "Terug naar alle werkwoorden",
+      correct: "goed", accuracy: "nauwkeurigheid", streak: "reeks 🔥",
+      type_form: "typ de vorm…", check: "Controleren", next: "Volgende →", correct_excl: "✓ Goed!", accent_hint: "Goed! Let alleen op het accent: {answer}", answer: "Antwoord:",
+      hint_type: "Typ de juiste vorm voor het voornaamwoord en de tijd.", hint_choice: "Kies de juiste vorm — 4 opties.",
+      challenge: "60-seconden-uitdaging", challenge_sub: "Beantwoord er zoveel mogelijk voordat de tijd om is. Tik snel de juiste vorm!",
+      best: "Beste:", start: "Start →", sec: "sec", pts: "ptn", go: "Ga ga ga — elke goede tik is een punt.",
+      times_up: "Tijd voorbij!", in60: "goed in 60s", new_best: "🎉 Nieuw record!", play_again: "Opnieuw →", back: "Terug",
+      tenses: "{lang} tijden", bilingual: "Tweetalig · {a} ⇄ {b}", level: "Niveau", native: "Moedertaal",
+      explanation: "Uitleg", mnemonic: "🧠 Ezelsbruggetje", signal_words: "Signaalwoorden", examples: "Voorbeelden", when_use: "Wanneer gebruiken", compare: "Vergelijken",
+      fb_offline: "Live AI-uitleg werkt in de app-preview. Hier alvast de kernregels:",
+      fb_net: "Kon de uitleg niet laden. Hier de kernregels:",
+      welcome: "Hey! Je gaat:", welcome_sub: "werkwoorden in 5 talen vervoegen, quizzen en op een makkelijke manier je favoriete taal leren.",
+      your_name: "Je naam…", mother_tongue: "Je moedertaal", skill_q: "Je niveau", skill_beginner: "Beginner", skill_beginner_sub: "veelgebruikt", skill_intermediate: "Middel", skill_intermediate_sub: "+ onregelmatig", skill_advanced: "Gevorderd", skill_advanced_sub: "alle", lets_go: "Let's go →", skip: "Overslaan", remove_name: "Naam verwijderen", profile: "Profiel", listen: "Luister", m_cards: "🃏 Kaarten", flip: "Tik om te draaien", got_it: "Gewust", again: "Nog oefenen", mistakes: "Fouten", no_mistakes: "Nog geen fouten — ze verschijnen hier om te herhalen.", tab_saved: "Bewaard", reveal: "Toon vertaling", learned: "Geleerd ✓", saved_empty: "Nog geen bewaarde werkwoorden. Tik op de ☆ bij een vervoeging.", tour_conj: "De kern: vervoeg elk werkwoord in 5 talen, in alle tijden — in één oogopslag.", tour_quiz: "Test jezelf — kaarten, keuze, typen & spreken — met AI-voorbeeldzinnen elke ronde.", tour_learn: "Begrijp elke tijd tweetalig, met AI-voorbeelden die je kunt aantikken en opslaan.", tour_saved: "Bewaar werkwoorden & woorden, bouw je woordenschat op en oefen met gespreide herhaling.", tour_goals_h: "Leerplan & doelen", tour_goal: "Stel je persoonlijk studieplan in — AI-voorstel, op tijd of volledig eigen. Volg je dagelijkse voortgang en blijf gemotiveerd.", tour_trial_head: "Jouw cadeau: 24 u Premium", tour_trial_sub: "Daarna je welkomstkorting vrijspelen — de vervoegingstabellen blijven altijd gratis.", tour_feat1: "Quiz & Bewaard — volledig vrij", tour_feat2: "Alle tijden & AI-voorbeeldzinnen", tour_feat3: "5 talen, geen advertenties", eg_step1: "Willekeurig werkwoord – sla op met ★", eg_step2: "Oefen in Quiz & kies favoriete thema's", eg_step3: "Train opgeslagen woorden onder 'Bewaard'", hero_kicker: "Hé {name} 👋", hero_plan: "Jouw plan voor vandaag, {name}:", hero_plan_anon: "Jouw plan voor vandaag:", tour_next: "Volgende", tour_start: "Beginnen", tour_skip: "Overslaan", m_speak: "🎤 Spreken", speak_tap: "Tik op de microfoon en zeg de vorm", speak_heard: "Gehoord:", speak_nomic: "Spraakinvoer wordt hier niet ondersteund.", spk_form: "Woord zeggen", spk_sentence: "Zin zeggen", spk_what: "Wat oefenen?", spk_say: "Zeg het in {lang}",
+      dq_form: "Vervoegde vorm", vocab_translate: "Vertalen", offline_note: "⚡ Offline — voorbeelden & vertalingen vereisen internet", aux_title: "Samengestelde tijden vormen", aux_logic: "Alle samengestelde tijden werken hetzelfde: je vervoegt het hulpwerkwoord {aux} naar persoon + tijd en voegt het onveranderlijke voltooid deelwoord {part} toe. Alleen het hulpwerkwoord verandert — het deelwoord blijft gelijk.", aux_note: "Samengestelde tijden = hulpwerkwoord + voltooid deelwoord.", aux_participle: "Voltooid deelwoord", cards_hint: "Vervoeg het werkwoord in de gevraagde tijd in gedachten – tik voor de oplossing", cards_hint_type: "Vervoeg het werkwoord in de gevraagde tijd · typ het in het vak", cards_hint_speak: "Vervoeg het werkwoord in de gevraagde tijd · tik op de microfoon om te spreken", choose_label: "Kies:", tap_retry: "Tik om te vertalen", dq_infinitive: "Hele werkwoord", dq_belongs: "Van", dq_participle: "Voltooid deelwoord", dq_gerund: "Onvoltooid deelwoord", spk_relearn: "Nog aan het leren — toon antwoord", spk_correct_is: "De juiste zin:", spk_next_sentence: "Volgende zin →", speak_denied: "Microfoon geblokkeerd — geef toegang in je browser.", speak_nospeech: "Niet verstaan — probeer opnieuw.", mic_start: "Tik om te spreken", sent_mist_practice: "Foute zinnen oefenen", spk_context: "In een zin", cloze_instr: "Vervoeg het werkwoord in de gevraagde tijd", choose_tile: "kies de juiste tegel", mic_stop: "Tik als je klaar bent", tap_word: "tik op een woord voor de betekenis", practice_again: "Opnieuw oefenen", sk_title: "Dagdoel & reeks", sk_today: "Vandaag", sk_streak: "Dagen op rij", sk_best: "Record", sk_days: "dagen", sk_done: "Doel gehaald! 🔥", sk_left: "Nog {n} tot het dagdoel", sk_explain: "Elke vervoeging en quizantwoord telt. Haal het dagdoel om je reeks te behouden — mis je een dag, dan begint hij opnieuw.", sk_close: "Begrepen", dq_fuzzy: "herkend zonder accenten", dq_switched: "naar hele werkwoord gewisseld", dq_guess: "geschat op basis van de uitgang", tfilter_hint: "Veeg opzij · tik om een tijd te tonen / verbergen", verb_ph: "Typ een werkwoord…", autoread: "Antwoord voorlezen", autoread_sub: "bij goed", review: "Overzicht", native_ph: "…of een werkwoord in je taal", saved_verbs: "Werkwoorden", saved_vocab: "Woordenschat", vocab_all: "Alle", vocab_new_cat: "Nieuw", vocab_new_cat_q: "Naam van de nieuwe categorie:", vocab_add_ph: "Voeg een woord of zin toe…", vocab_empty: "Nog geen woorden — voeg hierboven je eerste toe.", vocab_practice: "Oefenen", vocab_word: "woord", vocab_phrase: "zin", vocab_type_target: "Typ het in {lang}…", vocab_done: "Ronde voltooid!", vocab_save: "Bewaren", vocab_saved: "Bewaard", vocab_seeding: "Startwoorden laden…", vocab_suggest: "10 nieuwe woorden voorstellen", vocab_due: "Vandaag aan de beurt", vocab_strength: "Geheugenkracht", vocab_starter: "5 startwoorden laden", gr_ind: "Aantonende wijs", gr_subj: "Aanvoegende wijs", gr_cond: "Voorwaardelijk", gr_imp: "Gebiedende wijs", gr_cont: "Duurvorm", gr_forms: "Onbepaalde vormen", how_formed: "Hoe wordt het gevormd?", key_irregulars: "Belangrijke onregelmatige werkwoorden", irr_note: "Tik op een werkwoord voor de volledige vervoeging.", tap_save: "tik op een woord – betekenis & bewaren", type_word: "Woord typen", type_sentence: "Zin typen", spk_translate: "Vertaal dit", qi_title: "Hoe wil je oefenen?", qi_sub: "Kies een modus — elk traint een andere vaardigheid.", qi_foot: "Tip: stel tijd- & werkwoordfilters in na het kiezen.", qi_back: "Overzicht", mdesc_cards: "Kaarten omdraaien — antwoord zien, ontspannen", mdesc_choice: "Meerkeuze — kies de juiste vorm", mdesc_speed: "Sprint van 60 s — hoeveel haal je?", mdesc_type: "Typ de vorm of vertaal een zin", mdesc_speak: "Zeg het hardop — spraakherkenning",
+      paywall_lock: "🔒 Quiz & Bewaard zijn Premium", paywall_h1: "Vervoegen zonder nadenken", paywall_sub: "De Quiz traint je actief totdat de vormen blijven hangen — en met Bewaard oefen je precies de woordenschat die jou belangrijk is.", paywall_unlock: "Premium ontgrendelen", paywall_later: "Misschien later", pw_feat1: "Interactieve Quiz", pw_feat1v: "4 modi", pw_feat2: "Bewaard & woordenlijsten", pw_feat2v: "onbeperkt", pw_feat3: "Vervoeging & Leren", pw_feat3v: "blijft gratis",
+      offer_badge: "🚀 WELKOMSTAANBIEDING · −{disc} %", offer_expires: "Aanbieding verloopt in {t}", offer_instead: "in plaats van", offer_mo: "mnd.", offer_yr: "/ jaar", offer_you_pay: "je betaalt:", offer_save: "je bespaart {save} € (−{disc} %)", offer_secure: "Aanbieding aannemen", offer_trial: "Eerst 24 u gratis uitproberen", offer_trial_b: "24 u Premium gratis", offer_close: "Aanbieding sluiten", offer_price_label: "Prijs: {price} € per jaar, in plaats van {eq} € maandelijks",
+      plan_hero_h1: "Leer zonder limieten", plan_hero_sub: "Onbeperkte Quiz & Bewaard in alle 5 talen", plan_annual: "Jaarabonnement", plan_monthly: "Maandabonnement", plan_best: "★ Populairste keuze", plan_bonus: "🎁 Welkomstbonus", plan_per_mo: "/ maand", plan_per_yr: "/ jaar", plan_instead: "i.p.v.", plan_save: "je bespaart {save} € (−{disc} %)", plan_mo_label: "~{price} € / maand · i.p.v. {eq} €", plan_flex: "flexibel · gelijk aan {eq} € / jaar", plan_feat1: "Interactieve vervoeging-quiz", plan_feat2: "Bewaard & woordenlijsten", plan_feat3: "5 talen — ES, FR, EN, NL, DE", plan_feat4: "Alle apparaten · geen advertenties", plan_cta: "Doorgaan naar betaling", plan_cancelable: "op elk moment opzegbaar", plan_have_account: "Al een account?", sign_in: "Inloggen", plan_coupon: "Kortingscode inwisselen", coupon_title: "Kortingscode", coupon_need_login: "Log eerst in om een code in te wisselen.", coupon_sign_in: "Nu inloggen", coupon_ph: "Code invoeren", coupon_redeem: "Inwisselen", coupon_redeeming: "Inwisselen…",
+      menu_rate: "App beoordelen", menu_logout: "Uitloggen", menu_cancel_sub: "Abonnement opzeggen", menu_sub_active_until: "✓ Abonnement opgezegd — actief tot {date}", menu_delete_acc: "Account verwijderen", cancel_title: "Abonnement opzeggen", cancel_body: "Je Premium loopt door tot {date} — daarna schakel je automatisch over naar de gratis versie. Je account blijft behouden.", cancel_no: "Terug", cancel_yes: "Nu opzeggen", delete_title: "Account verwijderen", delete_warn_days: "⚠️ Je verliest {n} betaalde dagen", delete_warn_body: "Je abonnement loopt nog tot {date}. Als je eerst opzegt, kun je de resterende tijd nog gebruiken.", delete_cancel_first: "Eerst abonnement opzeggen", delete_anyway: "Toch verwijderen", delete_data: "Alle gegevens worden permanent verwijderd.", delete_yes: "Verwijderen",
+      sub_runs_until: "Je abonnement loopt tot {date} — je kunt de app tot dan blijven gebruiken.", sub_end_period: "einde van de huidige facturatieperiode", goodbye_heading: "Jammer dat je weggaat — maar je bent nu een pro!", goodbye_love: "Veel liefs voor je.", goodbye_data: "Uiteraard verwijderen we je gegevens.", goodbye_btn: "Tot ziens! 👋", pay_error: "Betaling kon niet worden gestart. Probeer het opnieuw.", bonus_trial: "Premium veiligstellen", bonus_welcome: "Welkomstbonus claimen", bonus_quiz: "Haal Quiz & Bewaard!", ios_homescreen: "Zet ConjuExpert op je startscherm!", ios_share: "Delen ⬆ → Toevoegen aan startscherm", ios_close: "Sluiten", ios_how: "Zo doe je dat", ios_help_title: "Voeg het toe op je iPhone", ios_help_1: "Tik in Safari onderaan op de <b>Deel-knop</b> ⬆ (vierkant met pijl omhoog).", ios_help_2: "Kies <b>“Zet op beginscherm”</b>.", ios_help_3: "Tik rechtsboven op <b>“Voeg toe”</b> — klaar! ✅", and_help_title: "Voeg het toe op je Android", and_help_1: "Tik rechtsboven op het <b>menu</b> (⋮).", and_help_2: "Kies <b>“App installeren”</b> of <b>“Zet op beginscherm”</b>.", and_help_3: "Bevestig met <b>“Installeren”</b> — klaar! ✅", pin_help_ios: "Gids voor iPhone", pin_help_android: "Gids voor Android", rev_kicker: "20 seconden · groot effect", rev_heading: "even voordat je verder gaat …", rev_body1: "Je bent vandaag al <b>{mins} minuten</b> bezig — geweldig! 🔥", rev_body2: "Help anderen ook hun favoriete taal te ontdekken: met een <b>korte beoordeling</b> wordt ConjuExpert gevonden — je grootste steun voor ons. 💛", rev_rate: "Nu beoordelen →", rev_feedback: "Liever feedback geven?", rev_snooze: "Later herinneren", paysuc_sub: "Je kunt alle Premium-functies gebruiken! Veel plezier met quizzen en het leren van je favoriete taal 🎉", paysuc_feat1: "Quiz — alle modi & talen", paysuc_feat2: "Favorieten & woordenlijsten", paysuc_feat3: "Onbeperkt · geen advertenties", menu_logged_in: "Aangemeld als", menu_edit_profile: "Profiel bewerken", menu_tarife: "Tarieven en prijzen", menu_pin: "App-icoon vastzetten", pin_title: "Zet ConjuExpert op je startscherm", menu_login: "Account maken / Inloggen", msub_konto: "Voortgang bewaren", msub_profil: "Naam \u00b7 talen \u00b7 niveau", msub_pin: "Op je startscherm", msub_tarife: "Alle functies", msub_rate: "Steun ons \u2014 5 sterren", pin_sub: "– en je kunt meteen vervoegen en quizzen.", pin_tip: "Tip", pin_guide_for: "Hier vind je de uitleg voor:", pin_step_ios: "Deel → „Zet op beginscherm“", pin_step_android: "Menu → „App installeren“", pin_cta: "Nu toevoegen", pin_later: "Later", pin_iphone: "iPhone / iPad", pin_android: "Android", menu_share: "App aanbevelen", err_cancel_fail: "Opzeggen mislukt. Probeer het opnieuw.", err_delete_fail: "Verwijderen mislukt. Probeer het opnieuw.", guest_login_sub: "Meld je aan om voortgang en woorden op te slaan.", guest_login_cta: "Nu aanmelden →", login_welcome_back: "Welkom terug", login_almost_done: "Bijna klaar!", login_create_acct: "Account aanmaken", login_reset_pw: "Wachtwoord resetten", login_sub_login: "Favorieten & voortgang op alle apparaten", login_sub_login_pay: "Meld je aan — je gaat direct door naar betalen.", login_sub_signup: "Gratis — gegevens veilig in Duitsland", login_sub_signup_pay: "Geweldige keuze voor Premium! Maak een account aan om je taaldoel bij te houden en woordenschat op te bouwen.", login_sub_reset: "We sturen je een reset-link", login_done_signup: "Bevestigingsmail verzonden!\nControleer je inbox.", login_done_reset: "Reset-link verzonden!\nControleer je inbox.", login_pw_ph: "Wachtwoord (min. 6 tekens)", login_forgot_pw: "Wachtwoord vergeten?", login_btn_signup: "Account aanmaken", login_btn_reset: "Reset-link versturen", login_or: "of", login_google: "Aanmelden met Google", login_apple: "Aanmelden met Apple", login_no_account: "Nog geen account?", login_has_account: "Al geregistreerd?", login_do_register: "Registreren", login_back: "← Terug naar inloggen", login_data: "🔒 Gegevens opgeslagen in Frankfurt, DE", goal_ai: "AI-voorstel", goal_ai_badge: "MIDDEN", goal_time: "Naar tijd", goal_time_note: "10 min/dag", goal_custom: "Eigen", goal_custom_note: "8 werkw. · 20 woorden", goal_daily: "oefeningen per dag", goal_time_approx: "≈ 6 min · aanpasbaar"
+    },
+    fr: {
+      tagline: "conjuguer · quiz · apprendre", hi: "Salut, {name} 👋", ready: "Quand tu veux, {name}",
+      hint_quiz_cards_h: "Cartes : mémoriser les verbes en douceur", hint_quiz_cards_1: "Choisis un temps &amp; un thème favori, ainsi que le sens (langue maternelle ↔ langue apprise).", hint_quiz_cards_2: "Regarde le verbe + le temps, trouve la forme dans ta tête — touche la carte pour la retourner.", hint_quiz_cards_3: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.", hint_quiz_cards_4: "Sans pression, sans saisie : idéal pour découvrir les formes et réviser vite.",
+      hint_quiz_choice_h: "Choix : reconnaître vite la bonne forme", hint_quiz_choice_1: "Une entrée parfaite dans un nouveau temps.", hint_quiz_choice_2: "Choisis un temps &amp; un thème favori.", hint_quiz_choice_3: "Verbe + temps demandé + quatre variantes — touche la bonne pour un retour immédiat.", hint_quiz_choice_4: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.",
+      hint_quiz_type_h: "Saisie : écrire les conjugaisons activement", hint_quiz_type_1: "Écrire soi-même ancre le plus les formes — avec <b>Parler</b>, le mode le plus intensif.", hint_quiz_type_2: "Choisis le temps, le thème &amp; le sens — et si tu travailles des verbes seuls ou traduis une phrase entière.", hint_quiz_type_3: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.",
+      hint_quiz_speak_h: "Parler : prononce à voix haute", hint_quiz_speak_1: "Parler soi-même ancre le plus les formes — avec <b>Saisie</b>, le mode le plus intensif.", hint_quiz_speak_2: "Choisis le temps, le thème &amp; le sens — et si tu travailles des verbes seuls ou une phrase entière.", hint_quiz_speak_3: "Touche le micro pour démarrer et pour arrêter la saisie vocale.", hint_quiz_speak_4: "Touche les mots inconnus → traduire &amp; enregistrer.",
+      hint_quiz_texte_h: "Textes : teste ta compréhension écrite & orale", hint_quiz_texte_1: "Choisis un thème favori, un temps &amp; quel type de verbes pratiquer.", hint_quiz_texte_2: "À la fin, des questions de compréhension t'attendent.", hint_quiz_texte_3: "Touche n'importe quel mot du texte → traduire &amp; enregistrer.", hint_quiz_texte_4: "Astuce : active « Utiliser mes mots » — tes propres mots apparaissent dans l'histoire.",
+      hint_learn_h: "Bienvenue dans Apprendre", hint_learn_1: "Chaque temps est expliqué en bilingue, avec des exemples générés automatiquement.", hint_learn_2: "Utilise le sélecteur de temps en haut comme un <b>aide-mémoire</b> pour passer d'une forme à l'autre.", hint_learn_3: "Touche un mot d'exemple pour l'enregistrer dans ton vocabulaire.",
+      hint_saved_verbs_h: "Verbes enregistrés", hint_saved_verbs_1: "Ici se réunissent tous les verbes que tu as enregistrés avec ☆ en conjuguant.", hint_saved_verbs_2: "Touche un verbe pour rouvrir sa conjugaison complète.", hint_saved_verbs_3: "Sélectionne-les directement dans le <b>Quiz</b> et entraîne-toi de façon ciblée.", hint_saved_verbs_4: "C'est ainsi que tu construis ta propre liste d'entraînement.",
+      hint_saved_vocab_h: "Ton vocabulaire", hint_saved_vocab_1: "Crée ton propre thème (p. ex. « Visite chez le médecin ») &amp; choisis le sens d'entraînement.", hint_saved_vocab_2: "✨ SUPER FONCTION : génère de nouveaux mots — sous « Nouvelle » tape p. ex. « Adjectifs » et touche « Suggérer 10 nouveaux mots ».", hint_saved_vocab_3: "Tes mots enregistrés peuvent aussi être intégrés aux textes du quiz.",
+      tab_conjugate: "Conjuguer", tab_quiz: "Quiz", tab_learn: "Apprendre", conjugate: "Conjuguer",
+      saved: "Verbes enregistrés", recent: "Récents", clear: "effacer",
+      empty_title: "Saisis un verbe à conjuguer", empty_sub: "Tous les temps en {n} langues — saisis un verbe ou appuie sur 🎲.",
+      regular: "régulier", irregular: "irrégulier", recommended: "Recommandé", ad_cta: "S'entraîner →",
+      mode: "Mode", m_type: "⌨ Saisie", m_choice: "◉ Choix", m_speed: "⚡ Rapide", m_texte: "📖 Textes", mdesc_texte: "Lis une histoire IA — traduis, complète les verbes ou réponds aux questions", texte_question: "Compréhension", texte_cloze: "Compléter les verbes", texte_translate: "Traduire", texte_new: "Nouvelle histoire", texte_writing: "Rédaction de ton histoire…", texte_error: "Impossible d'écrire une histoire — réessaie.", texte_comprehension: "Questions de compréhension", texte_done: "Histoire terminée !", texte_fill_hint: "Mets le verbe au bon temps", texte_learn: "Apprendre le verbe", texte_translation: "Traduction", texte_read: "Lire à voix haute", texte_speed: "Quelle vitesse ?", texte_voice: "Quelle voix ?", texte_voice_auto: "Automatique (meilleure)", texte_almost: "presque terminé …", texte_voice_f: "Femme", texte_voice_m: "Homme", texte_pause: "Pause", texte_resume: "Reprendre", texte_mywords_lbl: "Mon vocabulaire", texte_mywords: "Utiliser mes mots",
+      which_tense: "Quel temps réviser ?", tense_word: "Temps", all_tenses: "Tous les temps", all_themes: "Tous les thèmes", which_verbs: "Quels mots ?", which_dir: "Quelle direction ?", dir_produce: "PRODUIRE", dir_recognize: "RECONNAÎTRE", dir_random: "ALÉATOIRE", which_theme: "Quel thème ?", none_all: "Aucun — tous les temps sont révisés", all_btn: "Tous", none_btn: "Aucun", mist_clear_title: "Erreurs maîtrisées !", mist_clear_sub: "Bravo — tu as revu chaque verbe raté.", mist_practice: "Réviser les erreurs", view_conj: "Voir la conjugaison", mist_exit: "Revenir à tous les verbes",
+      correct: "correctes", accuracy: "précision", streak: "série 🔥",
+      type_form: "saisis la forme…", check: "Vérifier", next: "Suivant →", correct_excl: "✓ Correct !", accent_hint: "Bien ! Attention juste à l’accent : {answer}", answer: "Réponse :",
+      hint_type: "Saisis la forme correcte pour le pronom et le temps.", hint_choice: "Choisis la bonne forme — 4 options.",
+      challenge: "Défi de 60 secondes", challenge_sub: "Réponds au maximum avant la fin du temps. Touche vite la bonne forme !",
+      best: "Record :", start: "Commencer →", sec: "sec", pts: "pts", go: "Allez ! Chaque bonne réponse compte.",
+      times_up: "Temps écoulé !", in60: "correctes en 60s", new_best: "🎉 Nouveau record !", play_again: "Rejouer →", back: "Retour",
+      tenses: "Temps du {lang}", bilingual: "Bilingue · {a} ⇄ {b}", level: "Niveau", native: "Langue maternelle",
+      explanation: "Explication", mnemonic: "🧠 Moyen mnémotechnique", signal_words: "Mots signaux", examples: "Exemples", when_use: "Quand l'utiliser", compare: "Comparer",
+      fb_offline: "Les explications IA fonctionnent dans l'aperçu. En attendant, les règles clés :",
+      fb_net: "Impossible de charger l'explication. Voici les règles clés :",
+      welcome: "Hey ! Tu vas :", welcome_sub: "conjuguer des verbes en 5 langues, faire des quiz et apprendre facilement ta langue préférée.",
+      your_name: "Ton nom…", mother_tongue: "Ta langue maternelle", skill_q: "Ton niveau", skill_beginner: "Débutant", skill_beginner_sub: "verbes courants", skill_intermediate: "Moyen", skill_intermediate_sub: "+ irréguliers", skill_advanced: "Avancé", skill_advanced_sub: "tous", lets_go: "C'est parti →", skip: "Passer", remove_name: "Retirer le nom", profile: "Profil", listen: "Écouter", m_cards: "🃏 Cartes", flip: "Touche pour retourner", got_it: "Je sais", again: "À revoir", mistakes: "Erreurs", no_mistakes: "Aucune erreur — elles apparaîtront ici à revoir.", tab_saved: "Favoris", reveal: "Voir la traduction", learned: "Appris ✓", saved_empty: "Aucun verbe enregistré pour le moment. Touche la ★ sur une conjugaison.", tour_conj: "Le cœur : conjugue n\u2019importe quel verbe en 5 langues, à tous les temps — en un coup d\u2019œil.", tour_quiz: "Teste-toi — cartes, choix, saisie & oral — avec des phrases d\u2019exemple générées par IA.", tour_learn: "Comprends chaque temps en bilingue, avec des exemples IA à toucher et mémoriser.", tour_saved: "Mémorise verbes & mots, construis ton vocabulaire et révise-le en répétition espacée.", tour_goals_h: "Plan d’apprentissage & objectifs", tour_goal: "Crée ton plan d’apprentissage personnel — suggestion IA, par temps ou sur-mesure. Suis tes progrès quotidiens et reste motivé(e).", tour_trial_head: "Ton cadeau : 24 h Premium", tour_trial_sub: "Ensuite, débloque ta remise de bienvenue — les tableaux de conjugaison restent toujours gratuits.", tour_feat1: "Quiz & Favoris — tout débloqué", tour_feat2: "Tous les temps & phrases IA", tour_feat3: "5 langues, sans pub", eg_step1: "Verbe au hasard – touche ★ pour garder", eg_step2: "Pratique en Quiz & choisis tes thèmes", eg_step3: "Entraîne les mots gardés dans l'onglet 'Favoris'", hero_kicker: "Salut {name} 👋", hero_plan: "Ton plan du jour, {name} :", hero_plan_anon: "Ton plan du jour :", tour_next: "Suivant", tour_start: "Commencer", tour_skip: "Passer", m_speak: "🎤 Parler", speak_tap: "Touche le micro et dis la forme", speak_heard: "Entendu :", speak_nomic: "La saisie vocale n’est pas disponible ici.", spk_form: "Dire un mot", spk_sentence: "Dire une phrase", spk_what: "Quoi pratiquer ?", spk_say: "Dis-le en {lang}",
+      dq_form: "Forme conjuguée", vocab_translate: "Traduire", offline_note: "⚡ Hors ligne — exemples et traductions nécessitent internet", aux_title: "Former les temps composés", aux_logic: "Tous les temps composés se forment pareil : tu conjugues l'auxiliaire {aux} selon la personne et le temps, puis tu ajoutes le participe passé invariable {part}. Seul l'auxiliaire change — le participe reste identique.", aux_note: "Temps composés = auxiliaire + participe passé.", aux_participle: "Participe passé", cards_hint: "Conjugue le verbe au temps demandé mentalement – touche pour la solution", cards_hint_type: "Conjugue le verbe au temps demandé · tape-le dans la case", cards_hint_speak: "Conjugue le verbe au temps demandé · touche le micro pour parler", choose_label: "Choisis :", tap_retry: "Toucher pour traduire", dq_infinitive: "Infinitif", dq_belongs: "De", dq_participle: "Participe passé", dq_gerund: "Gérondif", spk_relearn: "À revoir — voir la réponse", spk_correct_is: "La phrase correcte :", spk_next_sentence: "Phrase suivante →", speak_denied: "Micro bloqué — autorise l'accès dans le navigateur.", speak_nospeech: "Je n'ai pas entendu — réessaie.", mic_start: "Touche pour parler", sent_mist_practice: "Réviser les phrases ratées", spk_context: "Dans une phrase", cloze_instr: "Conjugue le verbe au temps demandé", choose_tile: "choisis la bonne case", mic_stop: "Touche quand c'est fini", tap_word: "touche un mot pour sa traduction", practice_again: "Réviser encore", sk_title: "Objectif quotidien & série", sk_today: "Aujourd'hui", sk_streak: "Jours d'affilée", sk_best: "Record", sk_days: "jours", sk_done: "Objectif atteint ! 🔥", sk_left: "Encore {n} pour l'objectif du jour", sk_explain: "Chaque conjugaison et réponse de quiz compte. Atteins l'objectif quotidien pour garder ta série — un jour manqué la remet à zéro.", sk_close: "Compris", dq_fuzzy: "reconnu sans accents", dq_switched: "passé à l\u2019infinitif", dq_guess: "déduit d\u2019après la terminaison", tfilter_hint: "Glisse · touche pour afficher / masquer un temps", verb_ph: "Saisis un verbe…", autoread: "Lire la réponse", autoread_sub: "si correct", review: "Bilan", native_ph: "…ou un verbe dans ta langue", saved_verbs: "Verbes", saved_vocab: "Vocabulaire", vocab_all: "Tout", vocab_new_cat: "Nouvelle", vocab_new_cat_q: "Nom de la nouvelle catégorie :", vocab_add_ph: "Ajoute un mot ou une phrase…", vocab_empty: "Pas encore de mots — ajoute le premier ci-dessus.", vocab_practice: "Réviser", vocab_word: "mot", vocab_phrase: "phrase", vocab_type_target: "Écris-le en {lang}…", vocab_done: "Tour terminé !", vocab_save: "Garder", vocab_saved: "Gardé", vocab_seeding: "Chargement des mots de départ…", vocab_suggest: "Suggérer 10 nouveaux mots", vocab_due: "À revoir aujourd'hui", vocab_strength: "Force mémoire", vocab_starter: "Charger 5 mots de départ", gr_ind: "Indicatif", gr_subj: "Subjonctif", gr_cond: "Conditionnel", gr_imp: "Impératif", gr_cont: "Forme progressive", gr_forms: "Formes non personnelles", how_formed: "Comment se forme-t-il ?", key_irregulars: "Verbes irréguliers clés", irr_note: "Touche un verbe pour voir sa conjugaison complète.", tap_save: "touche un mot – sens & garder", type_word: "Écrire un mot", type_sentence: "Écrire une phrase", spk_translate: "Traduis ceci", qi_title: "Comment veux-tu t'entraîner ?", qi_sub: "Choisis un mode — chacun entraîne une compétence.", qi_foot: "Astuce : règle les filtres de temps et de verbes après.", qi_back: "Aperçu", mdesc_cards: "Retourner des cartes — voir la réponse, sans stress", mdesc_choice: "Choix multiple — choisis la bonne forme", mdesc_speed: "Sprint de 60 s — combien en fais-tu ?", mdesc_type: "Écris la forme ou traduis une phrase", mdesc_speak: "Dis-le à voix haute — reconnaissance vocale",
+      paywall_lock: "🔒 Le Quiz et Mémorisés sont Premium", paywall_h1: "Conjugue sans réfléchir", paywall_sub: "Le Quiz t'entraîne activement jusqu'à ce que les formes soient ancrées — et Mémorisés te permet de pratiquer exactement le vocabulaire qui compte pour toi.", paywall_unlock: "Débloquer Premium", paywall_later: "Peut-être plus tard", pw_feat1: "Quiz interactif", pw_feat1v: "4 modes", pw_feat2: "Mémorisés & listes de vocab.", pw_feat2v: "illimité", pw_feat3: "Conjugaison & Apprendre", pw_feat3v: "reste gratuit",
+      offer_badge: "🚀 OFFRE DE BIENVENUE · −{disc} %", offer_expires: "L'offre expire dans {t}", offer_instead: "au lieu de", offer_mo: "mois.", offer_yr: "/ an", offer_you_pay: "tu paies :", offer_save: "tu économises {save} € (−{disc} %)", offer_secure: "Profiter de l'offre", offer_trial: "Essayer 24 h gratuit d'abord", offer_trial_b: "24 h Premium gratuit", offer_close: "Fermer l'offre", offer_price_label: "Prix : {price} € par an, au lieu de {eq} € mensuels",
+      plan_hero_h1: "Apprends sans limites", plan_hero_sub: "Quiz & Mémorisés illimités dans les 5 langues", plan_annual: "Abonnement annuel", plan_monthly: "Abonnement mensuel", plan_best: "★ Le plus populaire", plan_bonus: "🎁 Bonus de bienvenue", plan_per_mo: "/ mois", plan_per_yr: "/ an", plan_instead: "au lieu de", plan_save: "tu économises {save} € (−{disc} %)", plan_mo_label: "~{price} € / mois · au lieu de {eq} €", plan_flex: "flexible · équiv. {eq} € / an", plan_feat1: "Quiz de conjugaison interactif", plan_feat2: "Mémorisés & listes de vocabulaire", plan_feat3: "5 langues — ES, FR, EN, NL, DE", plan_feat4: "Tous appareils · sans pub", plan_cta: "Continuer vers le paiement", plan_cancelable: "annulable à tout moment", plan_have_account: "Déjà un compte ?", sign_in: "Se connecter", plan_coupon: "Utiliser un code promo", coupon_title: "Code promo", coupon_need_login: "Connecte-toi d'abord pour utiliser un code.", coupon_sign_in: "Se connecter maintenant", coupon_ph: "Saisir le code", coupon_redeem: "Utiliser", coupon_redeeming: "En cours…",
+      menu_rate: "Évaluer l'app", menu_logout: "Se déconnecter", menu_cancel_sub: "Résilier l'abonnement", menu_sub_active_until: "✓ Abonnement résilié — actif jusqu'au {date}", menu_delete_acc: "Supprimer le compte", cancel_title: "Résilier l'abonnement", cancel_body: "Ton Premium court jusqu'au {date} — ensuite tu passes automatiquement à la version gratuite. Ton compte reste.", cancel_no: "Retour", cancel_yes: "Résilier maintenant", delete_title: "Supprimer le compte", delete_warn_days: "⚠️ Tu perdras {n} jours payés", delete_warn_body: "Ton abonnement est actif jusqu'au {date}. Si tu résilie d'abord, tu peux encore utiliser le temps restant.", delete_cancel_first: "D'abord résilier l'abonnement", delete_anyway: "Supprimer quand même", delete_data: "Toutes les données seront définitivement supprimées.", delete_yes: "Supprimer",
+      sub_runs_until: "Ton abonnement court jusqu'au {date} — tu peux continuer à utiliser l'app jusqu'alors.", sub_end_period: "fin de la période de facturation en cours", goodbye_heading: "Dommage que tu partes — mais tu es un pro maintenant !", goodbye_love: "Tout le meilleur pour toi.", goodbye_data: "Bien sûr, nous supprimerons tes données.", goodbye_btn: "Au revoir ! 👋", pay_error: "Le paiement n'a pas pu démarrer. Veuillez réessayer.", bonus_trial: "Sécuriser Premium", bonus_welcome: "Profiter du bonus de bienvenue", bonus_quiz: "Obtenir Quiz & Mémorisés !", ios_homescreen: "Ajoute ConjuExpert à ton écran d'accueil !", ios_share: "Partager ⬆ → Ajouter à l'écran d'accueil", ios_close: "Fermer", ios_how: "Comment faire", ios_help_title: "Ajoute-le sur ton iPhone", ios_help_1: "Dans Safari, touche en bas le <b>bouton Partager</b> ⬆ (carré avec une flèche vers le haut).", ios_help_2: "Choisis <b>« Sur l'écran d'accueil »</b>.", ios_help_3: "Touche <b>« Ajouter »</b> en haut à droite — c'est fait ! ✅", and_help_title: "Ajoute-le sur ton Android", and_help_1: "Touche le <b>menu</b> (⋮) en haut à droite.", and_help_2: "Choisis <b>« Installer l'application »</b> ou <b>« Sur l'écran d'accueil »</b>.", and_help_3: "Confirme avec <b>« Installer »</b> — c'est fait ! ✅", pin_help_ios: "Guide pour iPhone", pin_help_android: "Guide pour Android", rev_kicker: "20 secondes · grand impact", rev_heading: "avant que tu continues …", rev_body1: "Tu es déjà sur l'app depuis <b>{mins} minutes</b> aujourd'hui — bravo ! 🔥", rev_body2: "Aide les autres à trouver leur langue préférée : avec un <b>court avis</b>, ConjuExpert est trouvé — ton plus grand soutien pour nous. 💛", rev_rate: "Évaluer maintenant →", rev_feedback: "Préfères-tu laisser un commentaire ?", rev_snooze: "Me rappeler plus tard", paysuc_sub: "Tu peux utiliser toutes les fonctions Premium ! Profite du quiz et de l'apprentissage de ta langue préférée 🎉", paysuc_feat1: "Quiz — tous les modes & langues", paysuc_feat2: "Mémorisés & listes de vocabulaire", paysuc_feat3: "Illimité · sans pub", menu_logged_in: "Connecté en tant que", menu_edit_profile: "Modifier le profil", menu_tarife: "Tarifs et prix", menu_pin: "Épingler l'icône", pin_title: "Ajoute ConjuExpert à ton écran d'accueil", menu_login: "Cr\u00e9er un compte / Se connecter", msub_konto: "Sauvegarde ta progression", msub_profil: "Nom \u00b7 langues \u00b7 niveau", msub_pin: "Sur l\u0027\u00e9cran d\u0027accueil", msub_tarife: "Toutes les fonctions", msub_rate: "Soutiens-nous \u2014 5 \u00e9toiles", pin_sub: "– et tu peux conjuguer et t'entraîner aussitôt.", pin_tip: "Astuce", pin_guide_for: "Voici le guide pour :", pin_step_ios: "Partager → „Écran d’accueil“", pin_step_android: "Menu → „Installer l’app“", pin_cta: "Ajouter", pin_later: "Plus tard", pin_iphone: "iPhone / iPad", pin_android: "Android", menu_share: "Recommander l'app", err_cancel_fail: "Résiliation échouée. Réessaie.", err_delete_fail: "Suppression échouée. Réessaie.", guest_login_sub: "Connecte-toi pour sauvegarder ta progression et ton vocabulaire.", guest_login_cta: "Se connecter maintenant →", login_welcome_back: "Content de te revoir", login_almost_done: "Presque là !", login_create_acct: "Créer un compte", login_reset_pw: "Réinitialiser le mot de passe", login_sub_login: "Favoris & progression sur tous les appareils", login_sub_login_pay: "Connecte-toi — tu passeras directement au paiement.", login_sub_signup: "Gratuit — données en sécurité en Allemagne", login_sub_signup_pay: "Super d'avoir choisi Premium ! Crée un compte pour suivre ton objectif et enrichir ton vocabulaire sur tes thèmes préférés.", login_sub_reset: "Nous t'enverrons un lien de réinitialisation", login_done_signup: "Email de confirmation envoyé !\nVérifie ta boîte mail.", login_done_reset: "Lien de réinitialisation envoyé !\nVérifie ta boîte mail.", login_pw_ph: "Mot de passe (min. 6 caractères)", login_forgot_pw: "Mot de passe oublié ?", login_btn_signup: "Créer un compte", login_btn_reset: "Envoyer le lien", login_or: "ou", login_google: "Se connecter avec Google", login_apple: "Se connecter avec Apple", login_no_account: "Pas encore de compte ?", login_has_account: "Déjà inscrit(e) ?", login_do_register: "S'inscrire", login_back: "← Retour à la connexion", login_data: "🔒 Données enregistrées à Frankfurt, DE", goal_ai: "Suggestion IA", goal_ai_badge: "MOY.", goal_time: "Par temps", goal_time_note: "10 min/jour", goal_custom: "Personnalisé", goal_custom_note: "8 verbes · 20 mots", goal_daily: "exercices par jour", goal_time_approx: "≈ 6 min · ajustable"
+    }
+  };
+})();
+;
+/* Grammar tips per language */
+(function () {
+  window.GRAMMAR = {
+    en: [
+      {
+        title: "Regular verbs",
+        body: "Most English verbs are regular: form the past and the participle by adding <b>-ed</b> (work → worked → worked). After a short vowel + consonant, double it (stop → stopped). A final <b>-y</b> after a consonant becomes <b>-ied</b> (try → tried)."
+      },
+      {
+        title: "Irregular verbs",
+        body: "A small but very frequent group has its own past and participle: <b>go → went → gone</b>, <b>see → saw → seen</b>, <b>be → was/were → been</b>. There is no rule — learn them in threes (infinitive · past · participle)."
+      },
+      {
+        title: "Third person -s",
+        body: "In the present, add <b>-s</b> for he / she / it: she <i>works</i>. After o, s, x, z, ch, sh add <b>-es</b> (go → goes), and consonant + y → <b>-ies</b> (fly → flies)."
+      },
+      {
+        title: "Building tenses",
+        body: "English loves helpers: <b>will</b> + verb for the future, <b>would</b> + verb for the conditional, <b>have/has</b> + participle for the present perfect."
+      }
+    ],
+    de: [
+      {
+        title: "Regelmäßige (schwache) Verben",
+        body: "Schwache Verben bilden das Präteritum mit <b>-te</b> und das Partizip mit <b>ge…-t</b>: machen → machte → gemacht. Endet der Stamm auf <b>d/t</b>, wird ein <b>-e-</b> eingeschoben: arbeiten → arbeit<b>e</b>te → gearbeit<b>e</b>t."
+      },
+      {
+        title: "Unregelmäßige (starke) Verben",
+        body: "Starke Verben ändern den Stammvokal (Ablaut): <b>sprechen → sprach → gesprochen</b>, <b>gehen → ging → gegangen</b>. Oft ändert sich auch der Vokal in der 2./3. Person Präsens: ich spreche, du <b>sprichst</b>, er <b>spricht</b>."
+      },
+      {
+        title: "haben oder sein im Perfekt?",
+        body: "Die meisten Verben nehmen <b>haben</b>. Verben der Bewegung und Zustandsänderung nehmen <b>sein</b>: ich <b>bin</b> gegangen, sie <b>ist</b> gefahren, es <b>ist</b> geworden."
+      },
+      {
+        title: "Futur & Konjunktiv",
+        body: "Futur I = <b>werden</b> + Infinitiv (ich werde machen). Konjunktiv II drückt Wünsche/Irreales aus; im Alltag oft mit <b>würde</b> + Infinitiv (ich würde gehen) statt der alten Form (ich ginge)."
+      }
+    ],
+    es: [
+      {
+        title: "Tres conjugaciones: -ar · -er · -ir",
+        body: "Quita la terminación y añade las desinencias. Presente regular: habl<b>o</b>, habl<b>as</b>, habl<b>a</b>… / com<b>o</b>, com<b>es</b>, com<b>e</b>… / viv<b>o</b>, viv<b>es</b>, viv<b>e</b>…"
+      },
+      {
+        title: "Verbos irregulares",
+        body: "Algunos cambian la raíz (e→ie, o→ue): <b>querer → quiero</b>, <b>poder → puedo</b>. Otros son totalmente irregulares: <b>ser, ir, haber, hacer, tener</b>. Son los más usados, así que vale la pena memorizarlos."
+      },
+      {
+        title: "Futuro y condicional",
+        body: "Se forman sobre el <b>infinitivo completo</b> + terminaciones: hablar<b>é</b>, hablar<b>ás</b>… / hablar<b>ía</b>, hablar<b>ías</b>… Por eso un infinitivo irregular (tendr-, har-, podr-) afecta a ambos tiempos."
+      },
+      {
+        title: "El subjuntivo",
+        body: "Expresa deseo, duda o emoción: <i>espero que <b>hables</b></i>. Para los verbos en -ar usa terminaciones en -e; para -er/-ir, en -a."
+      }
+    ],
+    nl: [
+      {
+        title: "Regelmatige werkwoorden",
+        body: "Neem de stam (ik-vorm) en voeg toe: tegenwoordige tijd <b>stam / stam+t / stam+t</b>. De voltooide tijd is <b>ge…+t/d</b>: werken → gewerkt, maken → gemaakt."
+      },
+      {
+        title: "'t kofschip",
+        body: "Eindigt de stam op een van de medeklinkers in <b>’t kofschip</b> (t, k, f, s, ch, p)? Dan krijg je <b>-te / -t</b>. Anders <b>-de / -d</b>: werk<b>te</b> · gewerk<b>t</b>, maar speel<b>de</b> · gespeel<b>d</b>."
+      },
+      {
+        title: "Onregelmatige werkwoorden",
+        body: "Sterke werkwoorden veranderen de klinker: <b>lopen → liep → gelopen</b>, <b>zien → zag → gezien</b>. <b>Zijn</b> en <b>hebben</b> zijn volledig onregelmatig en heel frequent."
+      },
+      {
+        title: "hebben of zijn?",
+        body: "De voltooide tijd gebruikt meestal <b>hebben</b>. Bij beweging of verandering gebruik je <b>zijn</b>: ik <b>ben</b> gegaan, hij <b>is</b> gekomen, het <b>is</b> geworden."
+      }
+    ],
+    fr: [
+      {
+        title: "Trois groupes : -er · -ir · -re",
+        body: "1er groupe (-er, le plus grand) : <b>parler → je parle, tu parles, il parle…</b> 2e groupe (-ir avec -iss-) : <b>finir → je finis, nous finissons</b>. 3e groupe (-re et irréguliers) : <b>vendre → je vends, il vend</b>."
+      },
+      {
+        title: "Verbes irréguliers",
+        body: "Les plus fréquents sont irréguliers : <b>être, avoir, aller, faire, dire, pouvoir, vouloir</b>. Ils changent de radical : <i>je vais, nous allons, ils vont</i>. Mieux vaut les apprendre par cœur."
+      },
+      {
+        title: "Le passé composé : avoir ou être ?",
+        body: "Passé composé = auxiliaire au présent + participe passé. La plupart des verbes prennent <b>avoir</b> (j'ai mangé). Les verbes de mouvement et les pronominaux prennent <b>être</b> : <i>je suis allé, elle est venue</i> (accord avec le sujet)."
+      },
+      {
+        title: "Futur, conditionnel & imparfait",
+        body: "Futur et conditionnel se forment sur le <b>radical du futur</b> (souvent l'infinitif) : <i>je parlerai / je parlerais</i>. L'imparfait se forme sur le radical du <b>nous</b> au présent : <i>nous parlons → je parlais</i>."
+      }
+    ]
+  };
+
+  /* ====================================================================
+     Pre-written grammar lessons for the most common tenses, in a warm,
+     patient-teacher tone. The Learn tab shows these INSTANTLY (no AI wait,
+     works offline). Target-language parts (name, explain_t, signal words w,
+     example sentences s, compare.with) are stored once; everything that
+     depends on the learner's mother tongue lives under `n` per UI language
+     (de/en/es/nl/fr). Example verbs are wrapped in **double asterisks**.
+     Rarer tenses still fall back to the on-demand AI explainer.
+     ==================================================================== */
+  window.GRAMMAR_STATIC = {
+    en: {
+      present: {
+        name: "Present Simple",
+        explain_t: "Use the present simple for habits, routines, facts and things that are generally true. Don't forget the little **-s** for he, she and it.",
+        signals: [{ w: "every day" }, { w: "usually" }, { w: "always" }, { w: "never" }],
+        examples: [{ s: "I **work** from home on Fridays." }, { s: "She **drinks** coffee every morning." }],
+        compare: { with: "Present Continuous" },
+        n: {
+          en: { explain_n: "It's your everyday workhorse: habits, facts and routines. Just remember the -s for he/she/it.", mnemonic: "he, she, it — the 's' must fit!", signals: ["every day", "usually", "always", "never"], examples: ["I work from home on Fridays.", "She drinks coffee every morning."], use: ["Habits and routines", "Facts and general truths"], avoid: ["Not for something happening right now — that's the present continuous."], compare_rows: [["general, always true", "happening right now"]], compare_note: "Present simple = in general; present continuous = at this very moment." },
+          de: { explain_n: "Dein Alltagshelfer für Gewohnheiten, Tatsachen und Routinen. Denk nur an das -s bei he/she/it.", mnemonic: "he, she, it — das ‚s‘ muss mit!", signals: ["jeden Tag", "normalerweise", "immer", "nie"], examples: ["Ich arbeite freitags von zu Hause.", "Sie trinkt jeden Morgen Kaffee."], use: ["Gewohnheiten und Routinen", "Tatsachen und Allgemeingültiges"], avoid: ["Nicht für etwas, das gerade jetzt passiert — das ist das Present Continuous."], compare_rows: [["allgemein, immer wahr", "gerade im Moment"]], compare_note: "Present Simple = allgemein; Present Continuous = genau jetzt." },
+          es: { explain_n: "Tu herramienta diaria: hábitos, hechos y rutinas. Solo recuerda la -s para he/she/it.", mnemonic: "he, she, it — ¡la ‘s’ no se va!", signals: ["cada día", "normalmente", "siempre", "nunca"], examples: ["Trabajo desde casa los viernes.", "Ella bebe café cada mañana."], use: ["Hábitos y rutinas", "Hechos y verdades generales"], avoid: ["No para algo que ocurre justo ahora (eso es el present continuous)."], compare_rows: [["general, siempre cierto", "justo ahora"]], compare_note: "Present simple = en general; present continuous = en este momento." },
+          nl: { explain_n: "Je dagelijkse hulp: gewoontes, feiten en routines. Vergeet de -s niet bij he/she/it.", mnemonic: "he, she, it — de ‘s’ moet erbij!", signals: ["elke dag", "meestal", "altijd", "nooit"], examples: ["Ik werk op vrijdag thuis.", "Zij drinkt elke ochtend koffie."], use: ["Gewoontes en routines", "Feiten en algemene waarheden"], avoid: ["Niet voor iets dat nu bezig is (dat is present continuous)."], compare_rows: [["algemeen, altijd waar", "nu bezig"]], compare_note: "Present simple = algemeen; present continuous = nu op dit moment." },
+          fr: { explain_n: "Ton outil de tous les jours : habitudes, faits et routines. Pense juste au -s pour he/she/it.", mnemonic: "he, she, it — le ‘s’ est de rigueur !", signals: ["chaque jour", "d'habitude", "toujours", "jamais"], examples: ["Je travaille chez moi le vendredi.", "Elle boit un café chaque matin."], use: ["Habitudes et routines", "Faits et vérités générales"], avoid: ["Pas pour une action en cours en ce moment (c'est le present continuous)."], compare_rows: [["général, toujours vrai", "juste maintenant"]], compare_note: "Present simple = en général ; present continuous = en ce moment." }
+        }
+      },
+      presentCont: {
+        name: "Present Continuous",
+        explain_t: "Use **am/is/are + verb-ing** for actions happening right now or around the present time. It captures the live, in-progress moment.",
+        signals: [{ w: "now" }, { w: "right now" }, { w: "at the moment" }, { w: "today" }],
+        examples: [{ s: "I **am working** right now." }, { s: "They **are watching** a film." }],
+        compare: { with: "Present Simple" },
+        n: {
+          en: { explain_n: "am/is/are + -ing shows the action live, in progress at this moment.", mnemonic: "Picture a webcam: it's happening as we speak — '-ing'.", signals: ["now", "right now", "at the moment", "today"], examples: ["I am working right now.", "They are watching a film."], use: ["Actions happening right now", "Temporary situations around now"], avoid: ["Not with state verbs like know, want, like."], compare_rows: [["happening right now", "in general / always"]], compare_note: "Continuous = this moment; simple = a general habit." },
+          de: { explain_n: "am/is/are + -ing zeigt die Handlung live, gerade im Gange.", mnemonic: "Stell dir eine Webcam vor: es passiert jetzt — ‚-ing‘.", signals: ["jetzt", "gerade jetzt", "im Moment", "heute"], examples: ["Ich arbeite gerade.", "Sie schauen einen Film."], use: ["Handlungen, die gerade jetzt passieren", "Vorübergehende Situationen rund um jetzt"], avoid: ["Nicht mit Zustandsverben wie know, want, like."], compare_rows: [["gerade jetzt", "allgemein / immer"]], compare_note: "Continuous = dieser Moment; Simple = allgemeine Gewohnheit." },
+          es: { explain_n: "am/is/are + -ing muestra la acción en directo, en curso ahora mismo.", mnemonic: "Imagina una webcam: ocurre mientras hablamos — ‘-ing’.", signals: ["ahora", "ahora mismo", "en este momento", "hoy"], examples: ["Estoy trabajando ahora mismo.", "Están viendo una película."], use: ["Acciones que ocurren justo ahora", "Situaciones temporales en torno a ahora"], avoid: ["No con verbos de estado como know, want, like."], compare_rows: [["justo ahora", "en general / siempre"]], compare_note: "Continuous = este momento; simple = hábito general." },
+          nl: { explain_n: "am/is/are + -ing toont de handeling live, nu bezig.", mnemonic: "Denk aan een webcam: het gebeurt nu — ‘-ing’.", signals: ["nu", "op dit moment", "momenteel", "vandaag"], examples: ["Ik ben nu aan het werk.", "Ze kijken een film."], use: ["Handelingen die nu gebeuren", "Tijdelijke situaties rond nu"], avoid: ["Niet met toestandswerkwoorden zoals know, want, like."], compare_rows: [["nu bezig", "in het algemeen / altijd"]], compare_note: "Continuous = dit moment; simple = algemene gewoonte." },
+          fr: { explain_n: "am/is/are + -ing montre l'action en direct, en cours en ce moment.", mnemonic: "Imagine une webcam : ça se passe là, maintenant — ‘-ing’.", signals: ["maintenant", "en ce moment", "actuellement", "aujourd'hui"], examples: ["Je suis en train de travailler.", "Ils regardent un film."], use: ["Actions en cours en ce moment", "Situations temporaires autour de maintenant"], avoid: ["Pas avec les verbes d'état comme know, want, like."], compare_rows: [["en ce moment", "en général / toujours"]], compare_note: "Continuous = cet instant ; simple = habitude générale." }
+        }
+      },
+      past: {
+        name: "Simple Past",
+        explain_t: "Use the simple past for finished actions at a definite time in the past. Regular verbs add **-ed**; many common verbs are irregular (go → went).",
+        signals: [{ w: "yesterday" }, { w: "last week" }, { w: "in 2020" }, { w: "ago" }],
+        examples: [{ s: "I **visited** my grandparents yesterday." }, { s: "We **went** to Rome last summer." }],
+        compare: { with: "Present Perfect" },
+        n: {
+          en: { explain_n: "Finished actions at a clear past time. Regular = -ed; irregular verbs just have to be learned.", mnemonic: "A clear 'when' in the past → simple past.", signals: ["yesterday", "last week", "in 2020", "ago"], examples: ["I visited my grandparents yesterday.", "We went to Rome last summer."], use: ["Completed actions with a definite past time", "A sequence of past events (a story)"], avoid: ["Not when the time is unspecified or still relevant — use the present perfect."], compare_rows: [["finished, definite time", "link to now, no exact time"]], compare_note: "I saw it yesterday (simple past) vs. I have seen it (present perfect)." },
+          de: { explain_n: "Abgeschlossene Handlungen zu einem klaren Zeitpunkt in der Vergangenheit. Regelmäßig = -ed; unregelmäßige lernst du auswendig.", mnemonic: "Ein klares ‚wann‘ in der Vergangenheit → Simple Past.", signals: ["gestern", "letzte Woche", "2020", "vor"], examples: ["Ich habe gestern meine Großeltern besucht.", "Wir sind letzten Sommer nach Rom gefahren."], use: ["Abgeschlossene Handlungen mit klarem Zeitpunkt", "Eine Abfolge von Ereignissen (eine Geschichte)"], avoid: ["Nicht, wenn die Zeit unbestimmt oder noch relevant ist — dann Present Perfect."], compare_rows: [["abgeschlossen, feste Zeit", "Bezug zu jetzt, keine genaue Zeit"]], compare_note: "I saw it yesterday (Simple Past) vs. I have seen it (Present Perfect)." },
+          es: { explain_n: "Acciones terminadas en un momento claro del pasado. Regular = -ed; los irregulares se aprenden de memoria.", mnemonic: "Un ‘cuándo’ claro en el pasado → simple past.", signals: ["ayer", "la semana pasada", "en 2020", "hace"], examples: ["Ayer visité a mis abuelos.", "Fuimos a Roma el verano pasado."], use: ["Acciones terminadas con un momento concreto", "Una secuencia de hechos (una historia)"], avoid: ["No si el tiempo es indefinido o aún relevante — usa el present perfect."], compare_rows: [["terminado, tiempo concreto", "conexión con el ahora, sin hora exacta"]], compare_note: "I saw it yesterday (simple past) vs. I have seen it (present perfect)." },
+          nl: { explain_n: "Afgeronde handelingen op een duidelijk moment in het verleden. Regelmatig = -ed; onregelmatige leer je uit het hoofd.", mnemonic: "Een duidelijk ‘wanneer’ in het verleden → simple past.", signals: ["gisteren", "vorige week", "in 2020", "geleden"], examples: ["Ik bezocht gisteren mijn grootouders.", "We gingen vorige zomer naar Rome."], use: ["Afgeronde handelingen met een concreet moment", "Een reeks gebeurtenissen (een verhaal)"], avoid: ["Niet als de tijd onbepaald of nog relevant is — gebruik present perfect."], compare_rows: [["afgerond, vaste tijd", "verband met nu, geen exacte tijd"]], compare_note: "I saw it yesterday (simple past) vs. I have seen it (present perfect)." },
+          fr: { explain_n: "Actions terminées à un moment précis du passé. Régulier = -ed ; les irréguliers s'apprennent par cœur.", mnemonic: "Un ‘quand’ clair dans le passé → simple past.", signals: ["hier", "la semaine dernière", "en 2020", "il y a"], examples: ["Hier, j'ai rendu visite à mes grands-parents.", "Nous sommes allés à Rome l'été dernier."], use: ["Actions terminées avec un moment précis", "Une suite d'événements (un récit)"], avoid: ["Pas si le moment est indéfini ou encore d'actualité — utilise le present perfect."], compare_rows: [["terminé, moment précis", "lien avec maintenant, sans heure exacte"]], compare_note: "I saw it yesterday (simple past) vs. I have seen it (present perfect)." }
+        }
+      },
+      perfect: {
+        name: "Present Perfect",
+        explain_t: "Use **have/has + past participle** for past actions that connect to now: life experience, recent news, or something with no specific time.",
+        signals: [{ w: "ever" }, { w: "never" }, { w: "already" }, { w: "yet" }],
+        examples: [{ s: "I **have visited** Japan twice." }, { s: "She **has just finished** her homework." }],
+        compare: { with: "Simple Past" },
+        n: {
+          en: { explain_n: "have/has + participle links the past to now — experiences and results, no exact time.", mnemonic: "Past with a bridge to the present: have + done.", signals: ["ever", "never", "already", "yet"], examples: ["I have visited Japan twice.", "She has just finished her homework."], use: ["Life experiences (no exact time)", "Recent actions with a result now"], avoid: ["Not with a finished past time word like 'yesterday' — use the simple past."], compare_rows: [["link to now, no exact time", "finished, definite time"]], compare_note: "I have seen it (perfect) vs. I saw it yesterday (simple past)." },
+          de: { explain_n: "have/has + Partizip verbindet die Vergangenheit mit dem Jetzt — Erfahrungen und Ergebnisse, ohne genaue Zeit.", mnemonic: "Vergangenheit mit Brücke zur Gegenwart: have + done.", signals: ["jemals", "nie", "schon", "noch (nicht)"], examples: ["Ich war schon zweimal in Japan.", "Sie hat ihre Hausaufgaben gerade fertig."], use: ["Lebenserfahrungen (ohne genaue Zeit)", "Kürzliche Handlungen mit Ergebnis jetzt"], avoid: ["Nicht mit abgeschlossenem Zeitwort wie ‚yesterday‘ — dann Simple Past."], compare_rows: [["Bezug zu jetzt, keine genaue Zeit", "abgeschlossen, feste Zeit"]], compare_note: "I have seen it (Perfect) vs. I saw it yesterday (Simple Past)." },
+          es: { explain_n: "have/has + participio conecta el pasado con el ahora — experiencias y resultados, sin hora exacta.", mnemonic: "Pasado con un puente al presente: have + done.", signals: ["alguna vez", "nunca", "ya", "todavía"], examples: ["He estado en Japón dos veces.", "Acaba de terminar los deberes."], use: ["Experiencias de la vida (sin hora exacta)", "Acciones recientes con resultado ahora"], avoid: ["No con un tiempo pasado cerrado como ‘yesterday’ — usa el simple past."], compare_rows: [["conexión con el ahora, sin hora", "terminado, tiempo concreto"]], compare_note: "I have seen it (perfect) vs. I saw it yesterday (simple past)." },
+          nl: { explain_n: "have/has + voltooid deelwoord verbindt het verleden met nu — ervaringen en resultaten, zonder exacte tijd.", mnemonic: "Verleden met een brug naar het heden: have + done.", signals: ["ooit", "nooit", "al", "nog (niet)"], examples: ["Ik ben twee keer in Japan geweest.", "Ze heeft haar huiswerk net af."], use: ["Levenservaringen (zonder exacte tijd)", "Recente handelingen met een resultaat nu"], avoid: ["Niet met een afgesloten tijd zoals ‘yesterday’ — gebruik simple past."], compare_rows: [["verband met nu, geen tijd", "afgerond, vaste tijd"]], compare_note: "I have seen it (perfect) vs. I saw it yesterday (simple past)." },
+          fr: { explain_n: "have/has + participe relie le passé au présent — expériences et résultats, sans moment précis.", mnemonic: "Un passé avec un pont vers le présent : have + done.", signals: ["déjà (ever)", "jamais", "déjà", "encore / pas encore"], examples: ["Je suis allé au Japon deux fois.", "Elle vient de finir ses devoirs."], use: ["Expériences de vie (sans moment précis)", "Actions récentes avec un résultat maintenant"], avoid: ["Pas avec un marqueur de passé fini comme ‘yesterday’ — utilise le simple past."], compare_rows: [["lien avec maintenant, sans heure", "terminé, moment précis"]], compare_note: "I have seen it (perfect) vs. I saw it yesterday (simple past)." }
+        }
+      },
+      future: {
+        name: "Future (will)",
+        explain_t: "Use **will + base verb** for predictions, spontaneous decisions and promises. For fixed plans, English often prefers 'going to'.",
+        signals: [{ w: "tomorrow" }, { w: "soon" }, { w: "next year" }, { w: "I think" }],
+        examples: [{ s: "I **will call** you tomorrow." }, { s: "It **will rain** later." }],
+        compare: { with: "Present (going to)" },
+        n: {
+          en: { explain_n: "will + base verb: predictions, on-the-spot decisions and promises.", mnemonic: "Decide on the spot? 'I'll do it!' = will.", signals: ["tomorrow", "soon", "next year", "I think"], examples: ["I will call you tomorrow.", "It will rain later."], use: ["Predictions about the future", "Spontaneous decisions and promises"], avoid: ["For arranged plans, 'going to' often sounds more natural."], compare_rows: [["spontaneous / prediction", "already planned"]], compare_note: "I'll help (decided now) vs. I'm going to help (planned)." },
+          de: { explain_n: "will + Grundform: Vorhersagen, spontane Entscheidungen und Versprechen.", mnemonic: "Spontan entschieden? ‚I'll do it!‘ = will.", signals: ["morgen", "bald", "nächstes Jahr", "ich glaube"], examples: ["Ich rufe dich morgen an.", "Es wird später regnen."], use: ["Vorhersagen über die Zukunft", "Spontane Entscheidungen und Versprechen"], avoid: ["Für feste Pläne klingt ‚going to‘ oft natürlicher."], compare_rows: [["spontan / Vorhersage", "schon geplant"]], compare_note: "I'll help (jetzt entschieden) vs. I'm going to help (geplant)." },
+          es: { explain_n: "will + verbo base: predicciones, decisiones espontáneas y promesas.", mnemonic: "¿Decisión en el momento? ‘I'll do it!’ = will.", signals: ["mañana", "pronto", "el año que viene", "creo que"], examples: ["Te llamaré mañana.", "Lloverá más tarde."], use: ["Predicciones sobre el futuro", "Decisiones espontáneas y promesas"], avoid: ["Para planes fijos, ‘going to’ suele sonar más natural."], compare_rows: [["espontáneo / predicción", "ya planeado"]], compare_note: "I'll help (decidido ahora) vs. I'm going to help (planeado)." },
+          nl: { explain_n: "will + basisvorm: voorspellingen, spontane beslissingen en beloftes.", mnemonic: "Nu beslist? ‘I'll do it!’ = will.", signals: ["morgen", "binnenkort", "volgend jaar", "ik denk"], examples: ["Ik bel je morgen.", "Het gaat later regenen."], use: ["Voorspellingen over de toekomst", "Spontane beslissingen en beloftes"], avoid: ["Voor vaste plannen klinkt ‘going to’ vaak natuurlijker."], compare_rows: [["spontaan / voorspelling", "al gepland"]], compare_note: "I'll help (nu beslist) vs. I'm going to help (gepland)." },
+          fr: { explain_n: "will + verbe de base : prédictions, décisions spontanées et promesses.", mnemonic: "Décidé sur le moment ? ‘I'll do it!’ = will.", signals: ["demain", "bientôt", "l'année prochaine", "je pense"], examples: ["Je t'appellerai demain.", "Il pleuvra plus tard."], use: ["Prédictions sur l'avenir", "Décisions spontanées et promesses"], avoid: ["Pour les projets prévus, ‘going to’ sonne souvent plus naturel."], compare_rows: [["spontané / prédiction", "déjà prévu"]], compare_note: "I'll help (décidé maintenant) vs. I'm going to help (prévu)." }
+        }
+      }
+    },
+    es: {
+      present: {
+        name: "Presente",
+        explain_t: "El presente sirve para hábitos, rutinas, hechos y verdades generales. Las terminaciones cambian según -ar / -er / -ir: **hablo, como, vivo**.",
+        signals: [{ w: "hoy" }, { w: "siempre" }, { w: "normalmente" }, { w: "todos los días" }],
+        examples: [{ s: "Yo **hablo** español en casa." }, { s: "Ella **vive** en Madrid." }],
+        compare: { with: "Presente continuo" },
+        n: {
+          es: { explain_n: "Para hábitos, rutinas y verdades generales. Fíjate en las terminaciones -ar/-er/-ir.", mnemonic: "Tres familias: -ar, -er, -ir — cada una con su melodía.", signals: ["hoy", "siempre", "normalmente", "todos los días"], examples: ["Yo hablo español en casa.", "Ella vive en Madrid."], use: ["Hábitos y rutinas", "Hechos y verdades generales"], avoid: ["No para algo en curso ahora mismo (eso es 'estoy hablando')."], compare_rows: [["en general", "justo en este momento"]], compare_note: "hablo (general) vs. estoy hablando (ahora mismo)." },
+          de: { explain_n: "Für Gewohnheiten, Routinen und allgemein Gültiges. Achte auf die Endungen -ar/-er/-ir.", mnemonic: "Drei Familien: -ar, -er, -ir — jede mit eigener Melodie.", signals: ["heute", "immer", "normalerweise", "jeden Tag"], examples: ["Ich spreche zu Hause Spanisch.", "Sie wohnt in Madrid."], use: ["Gewohnheiten und Routinen", "Tatsachen und Allgemeingültiges"], avoid: ["Nicht für etwas, das gerade läuft (das ist ‚estoy hablando‘)."], compare_rows: [["allgemein", "genau im Moment"]], compare_note: "hablo (allgemein) vs. estoy hablando (gerade jetzt)." },
+          en: { explain_n: "For habits, routines and general truths. Watch the -ar/-er/-ir endings.", mnemonic: "Three families: -ar, -er, -ir — each with its own tune.", signals: ["today", "always", "usually", "every day"], examples: ["I speak Spanish at home.", "She lives in Madrid."], use: ["Habits and routines", "Facts and general truths"], avoid: ["Not for something in progress right now (that's 'estoy hablando')."], compare_rows: [["in general", "right at this moment"]], compare_note: "hablo (general) vs. estoy hablando (right now)." },
+          nl: { explain_n: "Voor gewoontes, routines en algemene waarheden. Let op de uitgangen -ar/-er/-ir.", mnemonic: "Drie families: -ar, -er, -ir — elk met eigen melodie.", signals: ["vandaag", "altijd", "meestal", "elke dag"], examples: ["Ik spreek thuis Spaans.", "Zij woont in Madrid."], use: ["Gewoontes en routines", "Feiten en algemene waarheden"], avoid: ["Niet voor iets dat nu bezig is (dat is ‘estoy hablando’)."], compare_rows: [["in het algemeen", "precies nu"]], compare_note: "hablo (algemeen) vs. estoy hablando (nu)." },
+          fr: { explain_n: "Pour les habitudes, les routines et les vérités générales. Observe les terminaisons -ar/-er/-ir.", mnemonic: "Trois familles : -ar, -er, -ir — chacune sa mélodie.", signals: ["aujourd'hui", "toujours", "normalement", "tous les jours"], examples: ["Je parle espagnol à la maison.", "Elle habite à Madrid."], use: ["Habitudes et routines", "Faits et vérités générales"], avoid: ["Pas pour une action en cours (c'est ‘estoy hablando’)."], compare_rows: [["en général", "juste en ce moment"]], compare_note: "hablo (général) vs. estoy hablando (maintenant)." }
+        }
+      },
+      imperfect: {
+        name: "Pretérito imperfecto",
+        explain_t: "El imperfecto describe el pasado sin un final claro: cómo eran las cosas, acciones repetidas o de fondo. Terminaciones suaves: **-aba / -ía**.",
+        signals: [{ w: "antes" }, { w: "siempre" }, { w: "todos los días" }, { w: "mientras" }],
+        examples: [{ s: "De niño **jugaba** en el parque." }, { s: "**Llovía** cuando salí." }],
+        compare: { with: "Pretérito (indefinido)" },
+        n: {
+          es: { explain_n: "El telón de fondo del pasado: cómo era, costumbres y acciones en curso.", mnemonic: "Imperfecto = la película de fondo; indefinido = el ‘clic’ de la foto.", signals: ["antes", "siempre", "todos los días", "mientras"], examples: ["De niño jugaba en el parque.", "Llovía cuando salí."], use: ["Descripciones y situaciones en el pasado", "Acciones habituales o repetidas"], avoid: ["No para una acción puntual y terminada (eso es el indefinido)."], compare_rows: [["de fondo, sin final claro", "puntual y terminado"]], compare_note: "Llovía (de fondo) vs. llovió ayer (hecho terminado)." },
+          de: { explain_n: "Der Hintergrund der Vergangenheit: wie es war, Gewohnheiten und laufende Handlungen.", mnemonic: "Imperfecto = der Hintergrundfilm; Indefinido = der ‚Klick‘ des Fotos.", signals: ["früher", "immer", "jeden Tag", "während"], examples: ["Als Kind spielte ich im Park.", "Es regnete, als ich rausging."], use: ["Beschreibungen und Situationen in der Vergangenheit", "Gewohnheiten oder wiederholte Handlungen"], avoid: ["Nicht für eine einmalige, abgeschlossene Handlung (das ist das Indefinido)."], compare_rows: [["Hintergrund, kein klares Ende", "einmalig und abgeschlossen"]], compare_note: "Llovía (Hintergrund) vs. llovió ayer (abgeschlossene Tatsache)." },
+          en: { explain_n: "The backdrop of the past: how things were, habits and ongoing actions.", mnemonic: "Imperfecto = the background movie; indefinido = the camera 'click'.", signals: ["before", "always", "every day", "while"], examples: ["As a child I used to play in the park.", "It was raining when I left."], use: ["Descriptions and past situations", "Habitual or repeated actions"], avoid: ["Not for a single, completed action (that's the indefinido)."], compare_rows: [["backdrop, no clear end", "single, completed"]], compare_note: "Llovía (background) vs. llovió ayer (completed fact)." },
+          nl: { explain_n: "De achtergrond van het verleden: hoe het was, gewoontes en lopende handelingen.", mnemonic: "Imperfecto = de achtergrondfilm; indefinido = de ‘klik’ van de foto.", signals: ["vroeger", "altijd", "elke dag", "terwijl"], examples: ["Als kind speelde ik in het park.", "Het regende toen ik vertrok."], use: ["Beschrijvingen en situaties in het verleden", "Gewoontes of herhaalde handelingen"], avoid: ["Niet voor één afgeronde handeling (dat is het indefinido)."], compare_rows: [["achtergrond, geen duidelijk einde", "eenmalig en afgerond"]], compare_note: "Llovía (achtergrond) vs. llovió ayer (afgerond feit)." },
+          fr: { explain_n: "La toile de fond du passé : comment c'était, les habitudes et les actions en cours.", mnemonic: "Imperfecto = le film de fond ; indefinido = le ‘clic’ de la photo.", signals: ["avant", "toujours", "tous les jours", "pendant que"], examples: ["Enfant, je jouais dans le parc.", "Il pleuvait quand je suis sorti."], use: ["Descriptions et situations au passé", "Actions habituelles ou répétées"], avoid: ["Pas pour une action unique et terminée (c'est l'indefinido)."], compare_rows: [["toile de fond, sans fin nette", "unique et terminé"]], compare_note: "Llovía (fond) vs. llovió ayer (fait terminé)." }
+        }
+      },
+      past: {
+        name: "Pretérito (indefinido)",
+        explain_t: "El indefinido cuenta acciones puntuales y terminadas en el pasado, con un momento concreto. Es el tiempo de la narración: **hablé, comí, viví**.",
+        signals: [{ w: "ayer" }, { w: "anoche" }, { w: "el año pasado" }, { w: "de repente" }],
+        examples: [{ s: "Ayer **comí** paella." }, { s: "**Viajamos** a México en 2019." }],
+        compare: { with: "Pretérito imperfecto" },
+        n: {
+          es: { explain_n: "Acciones puntuales y terminadas con un momento claro. El tiempo de contar historias.", mnemonic: "Indefinido = el ‘clic’ de la foto: un momento concreto, terminado.", signals: ["ayer", "anoche", "el año pasado", "de repente"], examples: ["Ayer comí paella.", "Viajamos a México en 2019."], use: ["Acciones terminadas con momento concreto", "Hechos que hacen avanzar la historia"], avoid: ["No para descripciones o costumbres (eso es el imperfecto)."], compare_rows: [["puntual y terminado", "de fondo, sin final claro"]], compare_note: "comí ayer (terminado) vs. comía siempre (costumbre)." },
+          de: { explain_n: "Einmalige, abgeschlossene Handlungen mit klarem Zeitpunkt. Die Erzählzeit.", mnemonic: "Indefinido = der ‚Klick‘ des Fotos: ein konkreter, abgeschlossener Moment.", signals: ["gestern", "gestern Abend", "letztes Jahr", "plötzlich"], examples: ["Gestern habe ich Paella gegessen.", "2019 sind wir nach Mexiko gereist."], use: ["Abgeschlossene Handlungen mit klarem Zeitpunkt", "Ereignisse, die die Geschichte vorantreiben"], avoid: ["Nicht für Beschreibungen oder Gewohnheiten (das ist das Imperfecto)."], compare_rows: [["einmalig und abgeschlossen", "Hintergrund, kein klares Ende"]], compare_note: "comí ayer (abgeschlossen) vs. comía siempre (Gewohnheit)." },
+          en: { explain_n: "Single, completed actions at a clear time. The storytelling tense.", mnemonic: "Indefinido = the camera 'click': one concrete, finished moment.", signals: ["yesterday", "last night", "last year", "suddenly"], examples: ["Yesterday I ate paella.", "We travelled to Mexico in 2019."], use: ["Completed actions at a clear time", "Events that move the story forward"], avoid: ["Not for descriptions or habits (that's the imperfecto)."], compare_rows: [["single, completed", "backdrop, no clear end"]], compare_note: "comí ayer (completed) vs. comía siempre (habit)." },
+          nl: { explain_n: "Eenmalige, afgeronde handelingen op een duidelijk moment. De verteltijd.", mnemonic: "Indefinido = de ‘klik’ van de foto: één concreet, afgerond moment.", signals: ["gisteren", "gisteravond", "vorig jaar", "plotseling"], examples: ["Gisteren at ik paella.", "We reisden in 2019 naar Mexico."], use: ["Afgeronde handelingen op een duidelijk moment", "Gebeurtenissen die het verhaal voortstuwen"], avoid: ["Niet voor beschrijvingen of gewoontes (dat is het imperfecto)."], compare_rows: [["eenmalig en afgerond", "achtergrond, geen duidelijk einde"]], compare_note: "comí ayer (afgerond) vs. comía siempre (gewoonte)." },
+          fr: { explain_n: "Actions uniques et terminées à un moment précis. Le temps du récit.", mnemonic: "Indefinido = le ‘clic’ de la photo : un moment concret, terminé.", signals: ["hier", "hier soir", "l'an dernier", "soudain"], examples: ["Hier, j'ai mangé une paella.", "Nous avons voyagé au Mexique en 2019."], use: ["Actions terminées à un moment précis", "Événements qui font avancer le récit"], avoid: ["Pas pour les descriptions ou les habitudes (c'est l'imperfecto)."], compare_rows: [["unique et terminé", "toile de fond, sans fin nette"]], compare_note: "comí ayer (terminé) vs. comía siempre (habitude)." }
+        }
+      },
+      perfect: {
+        name: "Pretérito perfecto",
+        explain_t: "El pretérito perfecto une el pasado con el presente: **haber (he, has, ha...) + participio**. Para acciones recientes o dentro de un periodo aún abierto (hoy, esta semana).",
+        signals: [{ w: "hoy" }, { w: "esta semana" }, { w: "ya" }, { w: "alguna vez" }],
+        examples: [{ s: "Hoy **he comido** muy bien." }, { s: "**Hemos visto** esa película." }],
+        compare: { with: "Pretérito (indefinido)" },
+        n: {
+          es: { explain_n: "Une pasado y presente: haber + participio. Para lo reciente o un periodo aún abierto.", mnemonic: "he + -ado/-ido: el pasado que todavía ‘toca’ el hoy.", signals: ["hoy", "esta semana", "ya", "alguna vez"], examples: ["Hoy he comido muy bien.", "Hemos visto esa película."], use: ["Acciones recientes con efecto ahora", "Periodo de tiempo aún no terminado (hoy, este año)"], avoid: ["No con un tiempo cerrado como ‘ayer’ (eso es el indefinido)."], compare_rows: [["periodo abierto / reciente", "momento cerrado en el pasado"]], compare_note: "he comido hoy (perfecto) vs. comí ayer (indefinido)." },
+          de: { explain_n: "Verbindet Vergangenheit und Gegenwart: haber + Partizip. Für Kürzliches oder einen noch offenen Zeitraum.", mnemonic: "he + -ado/-ido: die Vergangenheit, die das Heute noch ‚berührt‘.", signals: ["heute", "diese Woche", "schon", "jemals"], examples: ["Heute habe ich sehr gut gegessen.", "Wir haben diesen Film gesehen."], use: ["Kürzliche Handlungen mit Wirkung jetzt", "Noch nicht beendeter Zeitraum (heute, dieses Jahr)"], avoid: ["Nicht mit abgeschlossenem Zeitwort wie ‚ayer‘ (das ist das Indefinido)."], compare_rows: [["offener Zeitraum / kürzlich", "abgeschlossener Moment"]], compare_note: "he comido hoy (Perfecto) vs. comí ayer (Indefinido)." },
+          en: { explain_n: "Links past and present: haber + participle. For the recent past or a period that's still open.", mnemonic: "he + -ado/-ido: the past that still 'touches' today.", signals: ["today", "this week", "already", "ever"], examples: ["I've eaten really well today.", "We have seen that film."], use: ["Recent actions with an effect now", "A time period not yet over (today, this year)"], avoid: ["Not with a closed time like 'ayer' (that's the indefinido)."], compare_rows: [["open period / recent", "closed moment in the past"]], compare_note: "he comido hoy (perfecto) vs. comí ayer (indefinido)." },
+          nl: { explain_n: "Verbindt verleden en heden: haber + deelwoord. Voor het recente of een nog open periode.", mnemonic: "he + -ado/-ido: het verleden dat het heden nog ‘raakt’.", signals: ["vandaag", "deze week", "al", "ooit"], examples: ["Vandaag heb ik heel goed gegeten.", "We hebben die film gezien."], use: ["Recente handelingen met effect nu", "Periode die nog niet voorbij is (vandaag, dit jaar)"], avoid: ["Niet met een afgesloten tijd zoals ‘ayer’ (dat is het indefinido)."], compare_rows: [["open periode / recent", "afgesloten moment in verleden"]], compare_note: "he comido hoy (perfecto) vs. comí ayer (indefinido)." },
+          fr: { explain_n: "Relie passé et présent : haber + participe. Pour le récent ou une période encore ouverte.", mnemonic: "he + -ado/-ido : le passé qui ‘touche’ encore aujourd'hui.", signals: ["aujourd'hui", "cette semaine", "déjà", "jamais (ever)"], examples: ["Aujourd'hui, j'ai très bien mangé.", "Nous avons vu ce film."], use: ["Actions récentes avec effet maintenant", "Période pas encore terminée (aujourd'hui, cette année)"], avoid: ["Pas avec un temps fermé comme ‘ayer’ (c'est l'indefinido)."], compare_rows: [["période ouverte / récent", "moment fermé au passé"]], compare_note: "he comido hoy (perfecto) vs. comí ayer (indefinido)." }
+        }
+      },
+      future: {
+        name: "Futuro",
+        explain_t: "El futuro simple expresa predicciones, planes y promesas. Se forma sobre el **infinitivo + terminación** (-é, -ás, -á...): hablaré, comeré, viviré.",
+        signals: [{ w: "mañana" }, { w: "pronto" }, { w: "el año que viene" }, { w: "luego" }],
+        examples: [{ s: "Mañana **hablaré** con el jefe." }, { s: "**Lloverá** por la tarde." }],
+        compare: { with: "Presente (ir a + infinitivo)" },
+        n: {
+          es: { explain_n: "Predicciones, planes y promesas. Se construye sobre el infinitivo + terminación.", mnemonic: "Infinitivo entero + -é/-ás/-á: hablar → hablaré.", signals: ["mañana", "pronto", "el año que viene", "luego"], examples: ["Mañana hablaré con el jefe.", "Lloverá por la tarde."], use: ["Predicciones sobre el futuro", "Planes y promesas"], avoid: ["En el habla cotidiana, ‘voy a hablar’ suele sonar más natural."], compare_rows: [["futuro / predicción", "plan inmediato (ir a)"]], compare_note: "hablaré (futuro) vs. voy a hablar (plan cercano)." },
+          de: { explain_n: "Vorhersagen, Pläne und Versprechen. Gebildet aus Infinitiv + Endung.", mnemonic: "Ganzer Infinitiv + -é/-ás/-á: hablar → hablaré.", signals: ["morgen", "bald", "nächstes Jahr", "später"], examples: ["Morgen spreche ich mit dem Chef.", "Am Nachmittag wird es regnen."], use: ["Vorhersagen über die Zukunft", "Pläne und Versprechen"], avoid: ["Im Alltag klingt ‚voy a hablar‘ oft natürlicher."], compare_rows: [["Zukunft / Vorhersage", "unmittelbarer Plan (ir a)"]], compare_note: "hablaré (Futur) vs. voy a hablar (naher Plan)." },
+          en: { explain_n: "Predictions, plans and promises. Built on the infinitive + ending.", mnemonic: "Whole infinitive + -é/-ás/-á: hablar → hablaré.", signals: ["tomorrow", "soon", "next year", "later"], examples: ["Tomorrow I'll speak with the boss.", "It will rain in the afternoon."], use: ["Predictions about the future", "Plans and promises"], avoid: ["In everyday speech, 'voy a hablar' often sounds more natural."], compare_rows: [["future / prediction", "immediate plan (ir a)"]], compare_note: "hablaré (future) vs. voy a hablar (near plan)." },
+          nl: { explain_n: "Voorspellingen, plannen en beloftes. Gevormd op de infinitief + uitgang.", mnemonic: "Hele infinitief + -é/-ás/-á: hablar → hablaré.", signals: ["morgen", "binnenkort", "volgend jaar", "later"], examples: ["Morgen spreek ik met de baas.", "Het zal 's middags regenen."], use: ["Voorspellingen over de toekomst", "Plannen en beloftes"], avoid: ["In spreektaal klinkt ‘voy a hablar’ vaak natuurlijker."], compare_rows: [["toekomst / voorspelling", "direct plan (ir a)"]], compare_note: "hablaré (toekomst) vs. voy a hablar (nabij plan)." },
+          fr: { explain_n: "Prédictions, projets et promesses. Formé sur l'infinitif + terminaison.", mnemonic: "Infinitif entier + -é/-ás/-á : hablar → hablaré.", signals: ["demain", "bientôt", "l'année prochaine", "plus tard"], examples: ["Demain, je parlerai au chef.", "Il pleuvra l'après-midi."], use: ["Prédictions sur l'avenir", "Projets et promesses"], avoid: ["À l'oral, ‘voy a hablar’ sonne souvent plus naturel."], compare_rows: [["futur / prédiction", "projet immédiat (ir a)"]], compare_note: "hablaré (futur) vs. voy a hablar (projet proche)." }
+        }
+      },
+      subjunctive: {
+        name: "Subjuntivo (presente)",
+        explain_t: "El subjuntivo no describe hechos, sino deseos, dudas, emociones y peticiones. Suele aparecer tras **que**: espero que **vengas**.",
+        signals: [{ w: "espero que" }, { w: "ojalá" }, { w: "para que" }, { w: "es importante que" }],
+        examples: [{ s: "Espero que **tengas** un buen día." }, { s: "Quiero que me **llames**." }],
+        compare: { with: "Presente (indicativo)" },
+        n: {
+          es: { explain_n: "El mundo de lo no-real: deseos, dudas, emociones y peticiones, casi siempre tras ‘que’.", mnemonic: "WEIRDO: Wish, Emotion, Impersonal, Request, Doubt, Ojalá → subjuntivo.", signals: ["espero que", "ojalá", "para que", "es importante que"], examples: ["Espero que tengas un buen día.", "Quiero que me llames."], use: ["Deseos y peticiones (quiero que, espero que)", "Duda, emoción y expresiones impersonales"], avoid: ["No para hechos seguros (eso es el indicativo)."], compare_rows: [["deseo / duda / subjetivo", "hecho seguro y real"]], compare_note: "Creo que viene (hecho) vs. Espero que venga (deseo)." },
+          de: { explain_n: "Die Welt des Nicht-Realen: Wünsche, Zweifel, Gefühle und Bitten, fast immer nach ‚que‘.", mnemonic: "WEIRDO: Wunsch, Emotion, Unpersönlich, Bitte, Zweifel, Ojalá → Subjuntivo.", signals: ["ich hoffe, dass", "hoffentlich", "damit", "es ist wichtig, dass"], examples: ["Ich hoffe, dass du einen schönen Tag hast.", "Ich möchte, dass du mich anrufst."], use: ["Wünsche und Bitten (quiero que, espero que)", "Zweifel, Gefühl und unpersönliche Ausdrücke"], avoid: ["Nicht für sichere Tatsachen (das ist der Indikativ)."], compare_rows: [["Wunsch / Zweifel / subjektiv", "sichere, reale Tatsache"]], compare_note: "Creo que viene (Tatsache) vs. Espero que venga (Wunsch)." },
+          en: { explain_n: "The world of the non-real: wishes, doubts, emotions and requests, almost always after 'que'.", mnemonic: "WEIRDO: Wish, Emotion, Impersonal, Request, Doubt, Ojalá → subjunctive.", signals: ["I hope that", "if only / hopefully", "so that", "it's important that"], examples: ["I hope you have a good day.", "I want you to call me."], use: ["Wishes and requests (quiero que, espero que)", "Doubt, emotion and impersonal expressions"], avoid: ["Not for certain facts (that's the indicative)."], compare_rows: [["wish / doubt / subjective", "certain, real fact"]], compare_note: "Creo que viene (fact) vs. Espero que venga (wish)." },
+          nl: { explain_n: "De wereld van het niet-reële: wensen, twijfels, emoties en verzoeken, bijna altijd na ‘que’.", mnemonic: "WEIRDO: Wens, Emotie, Onpersoonlijk, Verzoek, Twijfel, Ojalá → subjuntivo.", signals: ["ik hoop dat", "hopelijk", "zodat", "het is belangrijk dat"], examples: ["Ik hoop dat je een fijne dag hebt.", "Ik wil dat je me belt."], use: ["Wensen en verzoeken (quiero que, espero que)", "Twijfel, emotie en onpersoonlijke uitdrukkingen"], avoid: ["Niet voor zekere feiten (dat is de indicatief)."], compare_rows: [["wens / twijfel / subjectief", "zeker, reëel feit"]], compare_note: "Creo que viene (feit) vs. Espero que venga (wens)." },
+          fr: { explain_n: "Le monde du non-réel : souhaits, doutes, émotions et demandes, presque toujours après ‘que’.", mnemonic: "WEIRDO : Wish, Emotion, Impersonnel, Requête, Doute, Ojalá → subjonctif.", signals: ["j'espère que", "si seulement", "pour que", "il est important que"], examples: ["J'espère que tu passes une bonne journée.", "Je veux que tu m'appelles."], use: ["Souhaits et demandes (quiero que, espero que)", "Doute, émotion et expressions impersonnelles"], avoid: ["Pas pour des faits certains (c'est l'indicatif)."], compare_rows: [["souhait / doute / subjectif", "fait certain et réel"]], compare_note: "Creo que viene (fait) vs. Espero que venga (souhait)." }
+        }
+      }
+    },
+    de: {
+      present: {
+        name: "Präsens",
+        explain_t: "Das Präsens nutzt du für die Gegenwart, Gewohnheiten und allgemein Gültiges — und im Deutschen oft auch für die nahe Zukunft. Endungen: **-e, -st, -t**.",
+        signals: [{ w: "heute" }, { w: "immer" }, { w: "jeden Tag" }, { w: "gerade" }],
+        examples: [{ s: "Ich **arbeite** im Büro." }, { s: "Morgen **fahre** ich nach Berlin." }],
+        compare: { with: "Futur I" },
+        n: {
+          de: { explain_n: "Für Gegenwart, Gewohnheiten und Allgemeines — oft auch für Geplantes in naher Zukunft.", mnemonic: "ich -e, du -st, er/sie/es -t: die Treppe der Endungen.", signals: ["heute", "immer", "jeden Tag", "gerade"], examples: ["Ich arbeite im Büro.", "Morgen fahre ich nach Berlin."], use: ["Gegenwart und Gewohnheiten", "Geplante nahe Zukunft (mit Zeitangabe)"], avoid: ["Bei Sätzen über Vergangenes brauchst du Perfekt oder Präteritum."], compare_rows: [["jetzt / geplant nah", "ausdrücklich in der Zukunft (werden)"]], compare_note: "Morgen fahre ich (Präsens, geplant) vs. Ich werde fahren (Futur, betont)." },
+          en: { explain_n: "For the present, habits and general truths — and often the near future too. Endings: -e, -st, -t.", mnemonic: "ich -e, du -st, er/sie/es -t: the staircase of endings.", signals: ["today", "always", "every day", "right now"], examples: ["I work in the office.", "Tomorrow I'm going to Berlin."], use: ["The present and habits", "Planned near future (with a time word)"], avoid: ["For past events you need the Perfekt or Präteritum."], compare_rows: [["now / planned soon", "explicitly future (werden)"]], compare_note: "Morgen fahre ich (present, planned) vs. Ich werde fahren (future, emphatic)." },
+          es: { explain_n: "Para el presente, los hábitos y lo general — y a menudo también el futuro cercano. Terminaciones: -e, -st, -t.", mnemonic: "ich -e, du -st, er/sie/es -t: la escalera de terminaciones.", signals: ["hoy", "siempre", "cada día", "ahora mismo"], examples: ["Trabajo en la oficina.", "Mañana voy a Berlín."], use: ["El presente y los hábitos", "Futuro cercano planeado (con marcador de tiempo)"], avoid: ["Para hechos pasados necesitas el Perfekt o el Präteritum."], compare_rows: [["ahora / planeado cercano", "futuro explícito (werden)"]], compare_note: "Morgen fahre ich (presente, planeado) vs. Ich werde fahren (futuro, enfático)." },
+          nl: { explain_n: "Voor het heden, gewoontes en algemene zaken — en vaak ook de nabije toekomst. Uitgangen: -e, -st, -t.", mnemonic: "ich -e, du -st, er/sie/es -t: de trap van uitgangen.", signals: ["vandaag", "altijd", "elke dag", "nu"], examples: ["Ik werk op kantoor.", "Morgen ga ik naar Berlijn."], use: ["Het heden en gewoontes", "Geplande nabije toekomst (met tijdwoord)"], avoid: ["Voor verleden heb je het Perfekt of Präteritum nodig."], compare_rows: [["nu / gepland dichtbij", "expliciet toekomst (werden)"]], compare_note: "Morgen fahre ich (heden, gepland) vs. Ich werde fahren (toekomst, nadruk)." },
+          fr: { explain_n: "Pour le présent, les habitudes et le général — et souvent le futur proche aussi. Terminaisons : -e, -st, -t.", mnemonic: "ich -e, du -st, er/sie/es -t : l'escalier des terminaisons.", signals: ["aujourd'hui", "toujours", "chaque jour", "là, maintenant"], examples: ["Je travaille au bureau.", "Demain je vais à Berlin."], use: ["Le présent et les habitudes", "Futur proche prévu (avec un mot de temps)"], avoid: ["Pour le passé, il faut le Perfekt ou le Präteritum."], compare_rows: [["maintenant / prévu proche", "futur explicite (werden)"]], compare_note: "Morgen fahre ich (présent, prévu) vs. Ich werde fahren (futur, insistant)." }
+        }
+      },
+      past: {
+        name: "Präteritum",
+        explain_t: "Das Präteritum ist die geschriebene Erzählvergangenheit (Bücher, Berichte) und wird bei **sein, haben** und Modalverben auch gesprochen: ich **war**, ich **hatte**.",
+        signals: [{ w: "damals" }, { w: "gestern" }, { w: "als" }, { w: "früher" }],
+        examples: [{ s: "Gestern **war** ich krank." }, { s: "Sie **machte** die Tür zu." }],
+        compare: { with: "Perfekt" },
+        n: {
+          de: { explain_n: "Die Erzählvergangenheit der Schrift; gesprochen vor allem bei sein, haben und Modalverben.", mnemonic: "Geschichten & ‚war/hatte/konnte‘ → Präteritum.", signals: ["damals", "gestern", "als", "früher"], examples: ["Gestern war ich krank.", "Sie machte die Tür zu."], use: ["Geschriebene Erzählungen und Berichte", "sein, haben und Modalverben — auch gesprochen"], avoid: ["Im Gespräch klingt bei den meisten Verben das Perfekt natürlicher."], compare_rows: [["geschrieben / war, hatte", "gesprochener Alltag"]], compare_note: "Ich war da (Präteritum) vs. Ich bin da gewesen (Perfekt)." },
+          en: { explain_n: "The written narrative past; spoken mainly with sein, haben and modal verbs.", mnemonic: "Stories & 'war/hatte/konnte' → Präteritum.", signals: ["back then", "yesterday", "when", "in the past"], examples: ["Yesterday I was ill.", "She closed the door."], use: ["Written stories and reports", "sein, haben and modal verbs — even when spoken"], avoid: ["In conversation, the Perfekt sounds more natural for most verbs."], compare_rows: [["written / war, hatte", "everyday spoken German"]], compare_note: "Ich war da (Präteritum) vs. Ich bin da gewesen (Perfekt)." },
+          es: { explain_n: "El pasado narrativo escrito; hablado sobre todo con sein, haben y los verbos modales.", mnemonic: "Relatos y ‘war/hatte/konnte’ → Präteritum.", signals: ["entonces", "ayer", "cuando", "antes"], examples: ["Ayer estaba enfermo.", "Ella cerró la puerta."], use: ["Relatos e informes escritos", "sein, haben y modales — también al hablar"], avoid: ["Al hablar, el Perfekt suena más natural con la mayoría de verbos."], compare_rows: [["escrito / war, hatte", "alemán hablado cotidiano"]], compare_note: "Ich war da (Präteritum) vs. Ich bin da gewesen (Perfekt)." },
+          nl: { explain_n: "Het geschreven verteltijd-verleden; gesproken vooral bij sein, haben en modale werkwoorden.", mnemonic: "Verhalen & ‘war/hatte/konnte’ → Präteritum.", signals: ["toen", "gisteren", "als/toen", "vroeger"], examples: ["Gisteren was ik ziek.", "Zij deed de deur dicht."], use: ["Geschreven verhalen en verslagen", "sein, haben en modale werkwoorden — ook gesproken"], avoid: ["In gesprek klinkt het Perfekt natuurlijker bij de meeste werkwoorden."], compare_rows: [["geschreven / war, hatte", "alledaags gesproken Duits"]], compare_note: "Ich war da (Präteritum) vs. Ich bin da gewesen (Perfekt)." },
+          fr: { explain_n: "Le passé narratif écrit ; à l'oral surtout avec sein, haben et les modaux.", mnemonic: "Récits & ‘war/hatte/konnte’ → Präteritum.", signals: ["à l'époque", "hier", "quand/lorsque", "autrefois"], examples: ["Hier, j'étais malade.", "Elle a fermé la porte."], use: ["Récits et rapports écrits", "sein, haben et les modaux — même à l'oral"], avoid: ["À l'oral, le Perfekt est plus naturel pour la plupart des verbes."], compare_rows: [["écrit / war, hatte", "allemand parlé du quotidien"]], compare_note: "Ich war da (Präteritum) vs. Ich bin da gewesen (Perfekt)." }
+        }
+      },
+      perfect: {
+        name: "Perfekt",
+        explain_t: "Das Perfekt ist die gesprochene Vergangenheit: **haben/sein + Partizip II**. Wähle ‚sein‘ bei Bewegung und Zustandswechsel (gehen, kommen), sonst ‚haben‘.",
+        signals: [{ w: "gestern" }, { w: "letzte Woche" }, { w: "schon" }, { w: "vorhin" }],
+        examples: [{ s: "Ich **habe** Pizza **gegessen**." }, { s: "Wir **sind** nach Hause **gegangen**." }],
+        compare: { with: "Präteritum" },
+        n: {
+          de: { explain_n: "Die gesprochene Vergangenheit: haben/sein + Partizip II. ‚sein‘ bei Bewegung/Zustandswechsel.", mnemonic: "Bewegung von A nach B? → sein. Sonst → haben.", signals: ["gestern", "letzte Woche", "schon", "vorhin"], examples: ["Ich habe Pizza gegessen.", "Wir sind nach Hause gegangen."], use: ["Vergangenes im Gespräch und in E-Mails", "Handlungen mit Ergebnis bis jetzt"], avoid: ["Verwechsle das Hilfsverb nicht: ‚Ich habe gegangen‘ ist falsch — ‚Ich bin gegangen‘."], compare_rows: [["gesprochener Alltag", "geschriebene Erzählung"]], compare_note: "Ich habe gegessen (Perfekt, gesprochen) vs. Ich aß (Präteritum, schriftlich)." },
+          en: { explain_n: "The spoken past: haben/sein + past participle. Use 'sein' for movement and change of state.", mnemonic: "Movement from A to B? → sein. Otherwise → haben.", signals: ["yesterday", "last week", "already", "just now"], examples: ["I ate pizza. (Ich habe Pizza gegessen.)", "We went home. (Wir sind nach Hause gegangen.)"], use: ["Past events in speech and emails", "Actions with a result up to now"], avoid: ["Don't mix up the auxiliary: 'Ich habe gegangen' is wrong — 'Ich bin gegangen'."], compare_rows: [["everyday spoken", "written narrative"]], compare_note: "Ich habe gegessen (Perfekt, spoken) vs. Ich aß (Präteritum, written)." },
+          es: { explain_n: "El pasado hablado: haben/sein + participio. Usa ‘sein’ con movimiento y cambio de estado.", mnemonic: "¿Movimiento de A a B? → sein. Si no → haben.", signals: ["ayer", "la semana pasada", "ya", "hace un rato"], examples: ["Comí pizza. (Ich habe Pizza gegessen.)", "Fuimos a casa. (Wir sind nach Hause gegangen.)"], use: ["Pasado al hablar y en correos", "Acciones con resultado hasta ahora"], avoid: ["No confundas el auxiliar: ‘Ich habe gegangen’ es incorrecto — ‘Ich bin gegangen’."], compare_rows: [["habla cotidiana", "relato escrito"]], compare_note: "Ich habe gegessen (Perfekt, hablado) vs. Ich aß (Präteritum, escrito)." },
+          nl: { explain_n: "Het gesproken verleden: haben/sein + voltooid deelwoord. ‘sein’ bij beweging en toestandsverandering.", mnemonic: "Beweging van A naar B? → sein. Anders → haben.", signals: ["gisteren", "vorige week", "al", "net"], examples: ["Ik heb pizza gegeten. (Ich habe Pizza gegessen.)", "We zijn naar huis gegaan. (Wir sind nach Hause gegangen.)"], use: ["Verleden in gesprek en e-mails", "Handelingen met resultaat tot nu"], avoid: ["Verwar het hulpwerkwoord niet: ‘Ich habe gegangen’ is fout — ‘Ich bin gegangen’."], compare_rows: [["alledaags gesproken", "geschreven verhaal"]], compare_note: "Ich habe gegessen (Perfekt, gesproken) vs. Ich aß (Präteritum, geschreven)." },
+          fr: { explain_n: "Le passé parlé : haben/sein + participe II. Emploie ‘sein’ pour le mouvement et le changement d'état.", mnemonic: "Mouvement de A à B ? → sein. Sinon → haben.", signals: ["hier", "la semaine dernière", "déjà", "tout à l'heure"], examples: ["J'ai mangé une pizza. (Ich habe Pizza gegessen.)", "Nous sommes rentrés. (Wir sind nach Hause gegangen.)"], use: ["Le passé à l'oral et dans les e-mails", "Actions avec un résultat jusqu'à maintenant"], avoid: ["Ne confonds pas l'auxiliaire : ‘Ich habe gegangen’ est faux — ‘Ich bin gegangen’."], compare_rows: [["oral du quotidien", "récit écrit"]], compare_note: "Ich habe gegessen (Perfekt, oral) vs. Ich aß (Präteritum, écrit)." }
+        }
+      },
+      future: {
+        name: "Futur I",
+        explain_t: "Das Futur I bildest du mit **werden + Infinitiv**. Du nutzt es für betonte Zukunft, Vorhersagen und Vermutungen (oft mit ‚wohl‘).",
+        signals: [{ w: "morgen" }, { w: "bald" }, { w: "nächstes Jahr" }, { w: "wohl" }],
+        examples: [{ s: "Ich **werde** dich **anrufen**." }, { s: "Es **wird** wohl **regnen**." }],
+        compare: { with: "Präsens" },
+        n: {
+          de: { explain_n: "werden + Infinitiv: für betonte Zukunft, Vorhersagen und Vermutungen.", mnemonic: "werden + Infinitiv hinten: ‚Ich werde … anrufen.‘", signals: ["morgen", "bald", "nächstes Jahr", "wohl"], examples: ["Ich werde dich anrufen.", "Es wird wohl regnen."], use: ["Betonte oder ferne Zukunft", "Vorhersagen und Vermutungen (wohl)"], avoid: ["Für klar geplante nahe Zukunft reicht oft das Präsens."], compare_rows: [["betonte Zukunft (werden)", "geplant nah (Präsens)"]], compare_note: "Ich werde fahren (Futur, betont) vs. Morgen fahre ich (Präsens, geplant)." },
+          en: { explain_n: "werden + infinitive: for emphasised future, predictions and assumptions.", mnemonic: "werden + infinitive at the end: 'Ich werde … anrufen.'", signals: ["tomorrow", "soon", "next year", "probably (wohl)"], examples: ["I will call you.", "It will probably rain."], use: ["Emphasised or distant future", "Predictions and assumptions (wohl)"], avoid: ["For clearly planned near future, the present tense is often enough."], compare_rows: [["emphasised future (werden)", "planned soon (present)"]], compare_note: "Ich werde fahren (future, emphatic) vs. Morgen fahre ich (present, planned)." },
+          es: { explain_n: "werden + infinitivo: para el futuro enfático, predicciones y suposiciones.", mnemonic: "werden + infinitivo al final: ‘Ich werde … anrufen.’", signals: ["mañana", "pronto", "el año que viene", "probablemente (wohl)"], examples: ["Te llamaré.", "Probablemente lloverá."], use: ["Futuro enfático o lejano", "Predicciones y suposiciones (wohl)"], avoid: ["Para un futuro cercano ya planeado, suele bastar el presente."], compare_rows: [["futuro enfático (werden)", "planeado cercano (presente)"]], compare_note: "Ich werde fahren (futuro, enfático) vs. Morgen fahre ich (presente, planeado)." },
+          nl: { explain_n: "werden + infinitief: voor nadrukkelijke toekomst, voorspellingen en vermoedens.", mnemonic: "werden + infinitief achteraan: ‘Ich werde … anrufen.’", signals: ["morgen", "binnenkort", "volgend jaar", "wel/wohl"], examples: ["Ik zal je bellen.", "Het zal wel regenen."], use: ["Nadrukkelijke of verre toekomst", "Voorspellingen en vermoedens (wohl)"], avoid: ["Voor duidelijk geplande nabije toekomst volstaat vaak het Präsens."], compare_rows: [["nadrukkelijke toekomst (werden)", "gepland dichtbij (Präsens)"]], compare_note: "Ich werde fahren (toekomst, nadruk) vs. Morgen fahre ich (Präsens, gepland)." },
+          fr: { explain_n: "werden + infinitif : pour le futur insistant, les prédictions et les suppositions.", mnemonic: "werden + infinitif à la fin : ‘Ich werde … anrufen.’", signals: ["demain", "bientôt", "l'année prochaine", "sans doute (wohl)"], examples: ["Je t'appellerai.", "Il va sans doute pleuvoir."], use: ["Futur insistant ou lointain", "Prédictions et suppositions (wohl)"], avoid: ["Pour un futur proche clairement prévu, le présent suffit souvent."], compare_rows: [["futur insistant (werden)", "prévu proche (présent)"]], compare_note: "Ich werde fahren (futur, insistant) vs. Morgen fahre ich (présent, prévu)." }
+        }
+      },
+      subjunctive: {
+        name: "Konjunktiv II",
+        explain_t: "Der Konjunktiv II drückt Irreales, Höflichkeit und Wünsche aus. Im Alltag meist mit **würde + Infinitiv**; bei sein/haben/Modalverben die eigene Form: **wäre, hätte, könnte**.",
+        signals: [{ w: "wenn" }, { w: "würde" }, { w: "hätte" }, { w: "an deiner Stelle" }],
+        examples: [{ s: "Ich **würde** gern **kommen**." }, { s: "Wenn ich Zeit **hätte**, …" }],
+        compare: { with: "Indikativ" },
+        n: {
+          de: { explain_n: "Für Irreales, höfliche Bitten und Wünsche. Meist ‚würde + Infinitiv‘, sonst wäre/hätte/könnte.", mnemonic: "Träum oder bitte höflich? → würde / wäre / hätte / könnte.", signals: ["wenn", "würde", "hätte", "an deiner Stelle"], examples: ["Ich würde gern kommen.", "Wenn ich Zeit hätte, …"], use: ["Irreale Bedingungen (wenn … wäre)", "Höfliche Bitten und Wünsche"], avoid: ["Nicht für echte, reale Tatsachen (das ist der Indikativ)."], compare_rows: [["irreal / höflich / Wunsch", "reale Tatsache"]], compare_note: "Ich habe Zeit (real) vs. Ich hätte Zeit (irreal/Wunsch)." },
+          en: { explain_n: "For the unreal, polite requests and wishes. Usually 'würde + infinitive', else wäre/hätte/könnte.", mnemonic: "Dreaming or being polite? → würde / wäre / hätte / könnte.", signals: ["if (wenn)", "would (würde)", "had (hätte)", "in your place"], examples: ["I would love to come.", "If I had time, …"], use: ["Unreal conditions (wenn … wäre)", "Polite requests and wishes"], avoid: ["Not for real, true facts (that's the indicative)."], compare_rows: [["unreal / polite / wish", "real fact"]], compare_note: "Ich habe Zeit (real) vs. Ich hätte Zeit (unreal/wish)." },
+          es: { explain_n: "Para lo irreal, las peticiones corteses y los deseos. Suele ser ‘würde + infinitivo’, si no wäre/hätte/könnte.", mnemonic: "¿Sueñas o pides con cortesía? → würde / wäre / hätte / könnte.", signals: ["si (wenn)", "haría / sería", "tuviera / tendría", "en tu lugar"], examples: ["Me encantaría ir.", "Si tuviera tiempo, …"], use: ["Condiciones irreales (wenn … wäre)", "Peticiones corteses y deseos"], avoid: ["No para hechos reales y verdaderos (eso es el indicativo)."], compare_rows: [["irreal / cortés / deseo", "hecho real"]], compare_note: "Ich habe Zeit (real) vs. Ich hätte Zeit (irreal/deseo)." },
+          nl: { explain_n: "Voor het irreële, beleefde verzoeken en wensen. Meestal ‘würde + infinitief’, anders wäre/hätte/könnte.", mnemonic: "Droom je of vraag je beleefd? → würde / wäre / hätte / könnte.", signals: ["als (wenn)", "zou", "had / zou hebben", "in jouw plaats"], examples: ["Ik zou graag komen.", "Als ik tijd had, …"], use: ["Irreële voorwaarden (wenn … wäre)", "Beleefde verzoeken en wensen"], avoid: ["Niet voor echte, ware feiten (dat is de indicatief)."], compare_rows: [["irreëel / beleefd / wens", "reëel feit"]], compare_note: "Ich habe Zeit (reëel) vs. Ich hätte Zeit (irreëel/wens)." },
+          fr: { explain_n: "Pour l'irréel, les demandes polies et les souhaits. Souvent ‘würde + infinitif’, sinon wäre/hätte/könnte.", mnemonic: "Tu rêves ou tu demandes poliment ? → würde / wäre / hätte / könnte.", signals: ["si (wenn)", "ferait / serait", "aurait", "à ta place"], examples: ["J'aimerais beaucoup venir.", "Si j'avais le temps, …"], use: ["Conditions irréelles (wenn … wäre)", "Demandes polies et souhaits"], avoid: ["Pas pour des faits réels et vrais (c'est l'indicatif)."], compare_rows: [["irréel / poli / souhait", "fait réel"]], compare_note: "Ich habe Zeit (réel) vs. Ich hätte Zeit (irréel/souhait)." }
+        }
+      }
+    },
+    nl: {
+      present: {
+        name: "Tegenwoordige tijd",
+        explain_t: "De tegenwoordige tijd gebruik je voor het heden, gewoontes en feiten. Stam voor ik, **stam + t** voor jij/hij/zij; bij ‚jij‘ na het werkwoord valt de -t weg.",
+        signals: [{ w: "nu" }, { w: "altijd" }, { w: "elke dag" }, { w: "vaak" }],
+        examples: [{ s: "Ik **werk** in Amsterdam." }, { s: "Zij **woont** in Utrecht." }],
+        compare: { with: "Toekomende tijd" },
+        n: {
+          nl: { explain_n: "Voor het heden, gewoontes en feiten. Onthoud: ‘t kofschip’ bepaalt later -te/-de.", mnemonic: "ik = stam, jij/hij = stam + t (maar ‘werk jij?’ zonder t).", signals: ["nu", "altijd", "elke dag", "vaak"], examples: ["Ik werk in Amsterdam.", "Zij woont in Utrecht."], use: ["Het heden en gewoontes", "Feiten en algemene waarheden"], avoid: ["Vergeet de -t niet bij hij/zij/het."], compare_rows: [["nu / algemeen", "uitdrukkelijk toekomst (zullen)"]], compare_note: "Ik werk morgen (gepland) vs. Ik zal werken (nadruk op toekomst)." },
+          de: { explain_n: "Für das Heute, Gewohnheiten und Fakten. Merke: ‚t kofschip‘ entscheidet später über -te/-de.", mnemonic: "ik = Stamm, jij/hij = Stamm + t (aber ‚werk jij?‘ ohne t).", signals: ["jetzt", "immer", "jeden Tag", "oft"], examples: ["Ich arbeite in Amsterdam.", "Sie wohnt in Utrecht."], use: ["Gegenwart und Gewohnheiten", "Fakten und Allgemeingültiges"], avoid: ["Vergiss das -t bei hij/zij/het nicht."], compare_rows: [["jetzt / allgemein", "ausdrücklich Zukunft (zullen)"]], compare_note: "Ik werk morgen (geplant) vs. Ik zal werken (Zukunft betont)." },
+          en: { explain_n: "For the present, habits and facts. Note: 't kofschip' later decides -te/-de.", mnemonic: "ik = stem, jij/hij = stem + t (but 'werk jij?' drops the t).", signals: ["now", "always", "every day", "often"], examples: ["I work in Amsterdam.", "She lives in Utrecht."], use: ["The present and habits", "Facts and general truths"], avoid: ["Don't forget the -t for hij/zij/het."], compare_rows: [["now / general", "explicitly future (zullen)"]], compare_note: "Ik werk morgen (planned) vs. Ik zal werken (future emphasised)." },
+          es: { explain_n: "Para el presente, los hábitos y los hechos. Nota: ‘t kofschip’ decide luego -te/-de.", mnemonic: "ik = raíz, jij/hij = raíz + t (pero ‘werk jij?’ sin t).", signals: ["ahora", "siempre", "cada día", "a menudo"], examples: ["Trabajo en Ámsterdam.", "Ella vive en Utrecht."], use: ["El presente y los hábitos", "Hechos y verdades generales"], avoid: ["No olvides la -t con hij/zij/het."], compare_rows: [["ahora / general", "futuro explícito (zullen)"]], compare_note: "Ik werk morgen (planeado) vs. Ik zal werken (futuro enfático)." },
+          fr: { explain_n: "Pour le présent, les habitudes et les faits. Note : ‘t kofschip’ décidera -te/-de.", mnemonic: "ik = radical, jij/hij = radical + t (mais ‘werk jij?’ sans t).", signals: ["maintenant", "toujours", "chaque jour", "souvent"], examples: ["Je travaille à Amsterdam.", "Elle habite à Utrecht."], use: ["Le présent et les habitudes", "Faits et vérités générales"], avoid: ["N'oublie pas le -t pour hij/zij/het."], compare_rows: [["maintenant / général", "futur explicite (zullen)"]], compare_note: "Ik werk morgen (prévu) vs. Ik zal werken (futur insistant)." }
+        }
+      },
+      past: {
+        name: "Verleden tijd",
+        explain_t: "De onvoltooid verleden tijd (imperfectum) vertelt over het verleden, vooral beschrijvingen en gewoontes. Regelmatig: **-te(n) / -de(n)** — ‘t kofschip’ kiest -te.",
+        signals: [{ w: "gisteren" }, { w: "toen" }, { w: "vroeger" }, { w: "altijd" }],
+        examples: [{ s: "Ik **werkte** in een café." }, { s: "Wij **woonden** in Gent." }],
+        compare: { with: "Voltooid tegenwoordige tijd" },
+        n: {
+          nl: { explain_n: "Vertelt over het verleden: beschrijvingen, gewoontes en de achtergrond van een verhaal.", mnemonic: "‘t kofschip’ → -te; anders -de. (werken → werkte; wonen → woonde)", signals: ["gisteren", "toen", "vroeger", "altijd"], examples: ["Ik werkte in een café.", "Wij woonden in Gent."], use: ["Beschrijvingen en gewoontes in het verleden", "De verhaallijn in geschreven verhalen"], avoid: ["Voor één afgeronde gebeurtenis in spreektaal kies je vaak het perfectum."], compare_rows: [["beschrijving / gewoonte", "afgeronde gebeurtenis (gesproken)"]], compare_note: "Ik werkte daar (beschrijving) vs. Ik heb daar gewerkt (gebeurtenis)." },
+          de: { explain_n: "Erzählt über die Vergangenheit: Beschreibungen, Gewohnheiten und Hintergrund.", mnemonic: "‚t kofschip‘ → -te; sonst -de. (werken → werkte; wonen → woonde)", signals: ["gestern", "damals", "früher", "immer"], examples: ["Ich arbeitete in einem Café.", "Wir wohnten in Gent."], use: ["Beschreibungen und Gewohnheiten in der Vergangenheit", "Der rote Faden in geschriebenen Geschichten"], avoid: ["Für ein einzelnes abgeschlossenes Ereignis im Gespräch oft das Perfekt."], compare_rows: [["Beschreibung / Gewohnheit", "abgeschlossenes Ereignis (gesprochen)"]], compare_note: "Ik werkte daar (Beschreibung) vs. Ik heb daar gewerkt (Ereignis)." },
+          en: { explain_n: "Tells about the past: descriptions, habits and the background of a story.", mnemonic: "'t kofschip' → -te; otherwise -de. (werken → werkte; wonen → woonde)", signals: ["yesterday", "then", "in the past", "always"], examples: ["I worked in a café.", "We lived in Ghent."], use: ["Descriptions and habits in the past", "The storyline in written stories"], avoid: ["For one finished event in speech, the perfect tense is often preferred."], compare_rows: [["description / habit", "finished event (spoken)"]], compare_note: "Ik werkte daar (description) vs. Ik heb daar gewerkt (event)." },
+          es: { explain_n: "Habla del pasado: descripciones, hábitos y el trasfondo de una historia.", mnemonic: "‘t kofschip’ → -te; si no -de. (werken → werkte; wonen → woonde)", signals: ["ayer", "entonces", "antes", "siempre"], examples: ["Trabajaba en una cafetería.", "Vivíamos en Gante."], use: ["Descripciones y hábitos en el pasado", "El hilo de las historias escritas"], avoid: ["Para un único hecho terminado al hablar, suele preferirse el perfectum."], compare_rows: [["descripción / hábito", "hecho terminado (hablado)"]], compare_note: "Ik werkte daar (descripción) vs. Ik heb daar gewerkt (hecho)." },
+          fr: { explain_n: "Parle du passé : descriptions, habitudes et l'arrière-plan d'un récit.", mnemonic: "‘t kofschip’ → -te ; sinon -de. (werken → werkte ; wonen → woonde)", signals: ["hier", "alors", "autrefois", "toujours"], examples: ["Je travaillais dans un café.", "Nous habitions à Gand."], use: ["Descriptions et habitudes au passé", "Le fil des récits écrits"], avoid: ["Pour un seul événement terminé à l'oral, on préfère souvent le perfectum."], compare_rows: [["description / habitude", "événement terminé (oral)"]], compare_note: "Ik werkte daar (description) vs. Ik heb daar gewerkt (événement)." }
+        }
+      },
+      perfect: {
+        name: "Voltooid tegenwoordige tijd",
+        explain_t: "Het perfectum is het gesproken verleden: **hebben/zijn + voltooid deelwoord** (ge-…-t/-d). Kies ‘zijn’ bij beweging en verandering (gaan, komen, worden).",
+        signals: [{ w: "gisteren" }, { w: "net" }, { w: "al" }, { w: "vorige week" }],
+        examples: [{ s: "Ik **heb** pizza **gegeten**." }, { s: "Wij **zijn** naar huis **gegaan**." }],
+        compare: { with: "Verleden tijd" },
+        n: {
+          nl: { explain_n: "Het gesproken verleden: hebben/zijn + voltooid deelwoord. ‘zijn’ bij beweging/verandering.", mnemonic: "ge- + stam + t/d; beweging van A naar B? → zijn.", signals: ["gisteren", "net", "al", "vorige week"], examples: ["Ik heb pizza gegeten.", "Wij zijn naar huis gegaan."], use: ["Het verleden in gesprek en e-mails", "Afgeronde handelingen met gevolg nu"], avoid: ["Verwar het hulpwerkwoord niet: ‘ik heb gegaan’ is fout — ‘ik ben gegaan’."], compare_rows: [["gesproken gebeurtenis", "beschrijving / gewoonte"]], compare_note: "Ik heb gewerkt (perfectum, gebeurtenis) vs. Ik werkte (imperfectum, beschrijving)." },
+          de: { explain_n: "Das gesprochene Perfekt: hebben/zijn + Partizip. ‚zijn‘ bei Bewegung/Veränderung.", mnemonic: "ge- + Stamm + t/d; Bewegung von A nach B? → zijn.", signals: ["gestern", "gerade", "schon", "letzte Woche"], examples: ["Ich habe Pizza gegessen.", "Wir sind nach Hause gegangen."], use: ["Vergangenes im Gespräch und in E-Mails", "Abgeschlossene Handlungen mit Folge jetzt"], avoid: ["Verwechsle das Hilfsverb nicht: ‚ik heb gegaan‘ ist falsch — ‚ik ben gegaan‘."], compare_rows: [["gesprochenes Ereignis", "Beschreibung / Gewohnheit"]], compare_note: "Ik heb gewerkt (Perfektum, Ereignis) vs. Ik werkte (Imperfektum, Beschreibung)." },
+          en: { explain_n: "The spoken past: hebben/zijn + past participle. Use 'zijn' for movement/change.", mnemonic: "ge- + stem + t/d; movement from A to B? → zijn.", signals: ["yesterday", "just", "already", "last week"], examples: ["I ate pizza. (Ik heb pizza gegeten.)", "We went home. (Wij zijn naar huis gegaan.)"], use: ["The past in speech and emails", "Finished actions with a result now"], avoid: ["Don't mix up the auxiliary: 'ik heb gegaan' is wrong — 'ik ben gegaan'."], compare_rows: [["spoken event", "description / habit"]], compare_note: "Ik heb gewerkt (perfectum, event) vs. Ik werkte (imperfectum, description)." },
+          es: { explain_n: "El pasado hablado: hebben/zijn + participio. Usa ‘zijn’ con movimiento/cambio.", mnemonic: "ge- + raíz + t/d; ¿movimiento de A a B? → zijn.", signals: ["ayer", "recién", "ya", "la semana pasada"], examples: ["Comí pizza. (Ik heb pizza gegeten.)", "Fuimos a casa. (Wij zijn naar huis gegaan.)"], use: ["El pasado al hablar y en correos", "Acciones terminadas con resultado ahora"], avoid: ["No confundas el auxiliar: ‘ik heb gegaan’ es incorrecto — ‘ik ben gegaan’."], compare_rows: [["hecho hablado", "descripción / hábito"]], compare_note: "Ik heb gewerkt (perfectum, hecho) vs. Ik werkte (imperfectum, descripción)." },
+          fr: { explain_n: "Le passé parlé : hebben/zijn + participe passé. Emploie ‘zijn’ pour le mouvement/changement.", mnemonic: "ge- + radical + t/d ; mouvement de A à B ? → zijn.", signals: ["hier", "juste", "déjà", "la semaine dernière"], examples: ["J'ai mangé une pizza. (Ik heb pizza gegeten.)", "Nous sommes rentrés. (Wij zijn naar huis gegaan.)"], use: ["Le passé à l'oral et dans les e-mails", "Actions terminées avec un résultat maintenant"], avoid: ["Ne confonds pas l'auxiliaire : ‘ik heb gegaan’ est faux — ‘ik ben gegaan’."], compare_rows: [["événement oral", "description / habitude"]], compare_note: "Ik heb gewerkt (perfectum, événement) vs. Ik werkte (imperfectum, description)." }
+        }
+      },
+      future: {
+        name: "Toekomende tijd",
+        explain_t: "De toekomende tijd vorm je met **zullen + infinitief**. In het Nederlands gebruik je voor geplande dingen vaak gewoon de tegenwoordige tijd of ‘gaan’.",
+        signals: [{ w: "morgen" }, { w: "straks" }, { w: "volgend jaar" }, { w: "binnenkort" }],
+        examples: [{ s: "Ik **zal** je **bellen**." }, { s: "Het **zal** wel **regenen**." }],
+        compare: { with: "Tegenwoordige tijd" },
+        n: {
+          nl: { explain_n: "zullen + infinitief, voor de toekomst, beloftes en vermoedens. Vaak volstaat ook ‘gaan’ of het heden.", mnemonic: "zal/zult/zullen + hele werkwoord achteraan.", signals: ["morgen", "straks", "volgend jaar", "binnenkort"], examples: ["Ik zal je bellen.", "Het zal wel regenen."], use: ["Voornemens, beloftes en vermoedens", "Nadrukkelijke toekomst"], avoid: ["Voor gewone plannen klinkt ‘ik ga bellen’ of het heden vaak natuurlijker."], compare_rows: [["nadruk op toekomst (zullen)", "gepland (heden / gaan)"]], compare_note: "Ik zal werken (nadruk) vs. Ik werk morgen (gewoon gepland)." },
+          de: { explain_n: "zullen + Infinitiv, für Zukunft, Versprechen und Vermutungen. Oft reicht auch ‚gaan‘ oder das Präsens.", mnemonic: "zal/zult/zullen + ganzes Verb am Ende.", signals: ["morgen", "gleich", "nächstes Jahr", "bald"], examples: ["Ich werde dich anrufen.", "Es wird wohl regnen."], use: ["Vorsätze, Versprechen und Vermutungen", "Betonte Zukunft"], avoid: ["Für normale Pläne klingt ‚ik ga bellen‘ oder das Präsens natürlicher."], compare_rows: [["betonte Zukunft (zullen)", "geplant (Präsens / gaan)"]], compare_note: "Ik zal werken (betont) vs. Ik werk morgen (einfach geplant)." },
+          en: { explain_n: "zullen + infinitive, for the future, promises and assumptions. Often 'gaan' or the present is enough.", mnemonic: "zal/zult/zullen + full verb at the end.", signals: ["tomorrow", "later", "next year", "soon"], examples: ["I'll call you.", "It will probably rain."], use: ["Intentions, promises and assumptions", "Emphasised future"], avoid: ["For ordinary plans, 'ik ga bellen' or the present sounds more natural."], compare_rows: [["emphasised future (zullen)", "planned (present / gaan)"]], compare_note: "Ik zal werken (emphasis) vs. Ik werk morgen (just planned)." },
+          es: { explain_n: "zullen + infinitivo, para el futuro, promesas y suposiciones. A menudo basta ‘gaan’ o el presente.", mnemonic: "zal/zult/zullen + verbo entero al final.", signals: ["mañana", "luego", "el año que viene", "pronto"], examples: ["Te llamaré.", "Probablemente lloverá."], use: ["Intenciones, promesas y suposiciones", "Futuro enfático"], avoid: ["Para planes normales, ‘ik ga bellen’ o el presente suena más natural."], compare_rows: [["futuro enfático (zullen)", "planeado (presente / gaan)"]], compare_note: "Ik zal werken (énfasis) vs. Ik werk morgen (simplemente planeado)." },
+          fr: { explain_n: "zullen + infinitif, pour le futur, les promesses et les suppositions. Souvent ‘gaan’ ou le présent suffit.", mnemonic: "zal/zult/zullen + verbe entier à la fin.", signals: ["demain", "tout à l'heure", "l'année prochaine", "bientôt"], examples: ["Je t'appellerai.", "Il va sans doute pleuvoir."], use: ["Intentions, promesses et suppositions", "Futur insistant"], avoid: ["Pour des projets ordinaires, ‘ik ga bellen’ ou le présent sonne plus naturel."], compare_rows: [["futur insistant (zullen)", "prévu (présent / gaan)"]], compare_note: "Ik zal werken (insistance) vs. Ik werk morgen (simplement prévu)." }
+        }
+      }
+    },
+    fr: {
+      present: {
+        name: "Présent",
+        explain_t: "Le présent sert aux habitudes, aux faits et à ce qui se passe maintenant. Les terminaisons dépendent du groupe (-er / -ir / -re) : **je parle, je finis, je vends**.",
+        signals: [{ w: "aujourd'hui" }, { w: "toujours" }, { w: "souvent" }, { w: "maintenant" }],
+        examples: [{ s: "Je **parle** français." }, { s: "Elle **habite** à Lyon." }],
+        compare: { with: "Futur simple" },
+        n: {
+          fr: { explain_n: "Pour les habitudes, les faits et le moment présent. Surveille les trois groupes (-er/-ir/-re).", mnemonic: "1er groupe -er : je -e, tu -es, il -e — le plus régulier.", signals: ["aujourd'hui", "toujours", "souvent", "maintenant"], examples: ["Je parle français.", "Elle habite à Lyon."], use: ["Habitudes et routines", "Faits et vérités générales"], avoid: ["Pour le passé, utilise le passé composé ou l'imparfait."], compare_rows: [["maintenant / général", "explicitement futur"]], compare_note: "Je parle (présent) vs. Je parlerai (futur)." },
+          de: { explain_n: "Für Gewohnheiten, Fakten und den Moment jetzt. Achte auf die drei Gruppen (-er/-ir/-re).", mnemonic: "1. Gruppe -er: je -e, tu -es, il -e — die regelmäßigste.", signals: ["heute", "immer", "oft", "jetzt"], examples: ["Ich spreche Französisch.", "Sie wohnt in Lyon."], use: ["Gewohnheiten und Routinen", "Fakten und Allgemeingültiges"], avoid: ["Für Vergangenes nimm das Passé composé oder Imparfait."], compare_rows: [["jetzt / allgemein", "ausdrücklich Zukunft"]], compare_note: "Je parle (Präsens) vs. Je parlerai (Futur)." },
+          en: { explain_n: "For habits, facts and the present moment. Watch the three groups (-er/-ir/-re).", mnemonic: "1st group -er: je -e, tu -es, il -e — the most regular.", signals: ["today", "always", "often", "now"], examples: ["I speak French.", "She lives in Lyon."], use: ["Habits and routines", "Facts and general truths"], avoid: ["For the past, use the passé composé or imparfait."], compare_rows: [["now / general", "explicitly future"]], compare_note: "Je parle (present) vs. Je parlerai (future)." },
+          es: { explain_n: "Para hábitos, hechos y el momento presente. Atención a los tres grupos (-er/-ir/-re).", mnemonic: "1er grupo -er: je -e, tu -es, il -e — el más regular.", signals: ["hoy", "siempre", "a menudo", "ahora"], examples: ["Hablo francés.", "Ella vive en Lyon."], use: ["Hábitos y rutinas", "Hechos y verdades generales"], avoid: ["Para el pasado, usa el passé composé o el imparfait."], compare_rows: [["ahora / general", "explícitamente futuro"]], compare_note: "Je parle (presente) vs. Je parlerai (futuro)." },
+          nl: { explain_n: "Voor gewoontes, feiten en het moment nu. Let op de drie groepen (-er/-ir/-re).", mnemonic: "1e groep -er: je -e, tu -es, il -e — de meest regelmatige.", signals: ["vandaag", "altijd", "vaak", "nu"], examples: ["Ik spreek Frans.", "Zij woont in Lyon."], use: ["Gewoontes en routines", "Feiten en algemene waarheden"], avoid: ["Voor het verleden gebruik je de passé composé of imparfait."], compare_rows: [["nu / algemeen", "expliciet toekomst"]], compare_note: "Je parle (heden) vs. Je parlerai (toekomst)." }
+        }
+      },
+      past: {
+        name: "Imparfait",
+        explain_t: "L'imparfait décrit le passé sans fin nette : décors, habitudes et actions de fond. Formé sur le radical du **nous** au présent + **-ais, -ais, -ait…**",
+        signals: [{ w: "avant" }, { w: "souvent" }, { w: "tous les jours" }, { w: "pendant que" }],
+        examples: [{ s: "Quand j'étais petit, je **jouais** dehors." }, { s: "Il **pleuvait** ce matin." }],
+        compare: { with: "Passé composé" },
+        n: {
+          fr: { explain_n: "La toile de fond du passé : décor, habitudes et actions en cours.", mnemonic: "Radical du ‘nous’ + -ais : nous parlons → je parlais.", signals: ["avant", "souvent", "tous les jours", "pendant que"], examples: ["Quand j'étais petit, je jouais dehors.", "Il pleuvait ce matin."], use: ["Descriptions et décors au passé", "Habitudes et actions répétées"], avoid: ["Pas pour une action unique et terminée (c'est le passé composé)."], compare_rows: [["décor, sans fin nette", "action ponctuelle terminée"]], compare_note: "Il pleuvait (décor) vs. Il a plu (fait terminé)." },
+          de: { explain_n: "Der Hintergrund der Vergangenheit: Beschreibung, Gewohnheiten und laufende Handlungen.", mnemonic: "Stamm von ‚nous‘ + -ais: nous parlons → je parlais.", signals: ["früher", "oft", "jeden Tag", "während"], examples: ["Als ich klein war, spielte ich draußen.", "Heute Morgen regnete es."], use: ["Beschreibungen und Kulissen in der Vergangenheit", "Gewohnheiten und wiederholte Handlungen"], avoid: ["Nicht für eine einmalige, abgeschlossene Handlung (das ist das Passé composé)."], compare_rows: [["Kulisse, kein klares Ende", "einmalige, abgeschlossene Handlung"]], compare_note: "Il pleuvait (Kulisse) vs. Il a plu (abgeschlossene Tatsache)." },
+          en: { explain_n: "The backdrop of the past: descriptions, habits and ongoing actions.", mnemonic: "Stem of 'nous' + -ais: nous parlons → je parlais.", signals: ["before", "often", "every day", "while"], examples: ["When I was little, I played outside.", "It was raining this morning."], use: ["Descriptions and settings in the past", "Habits and repeated actions"], avoid: ["Not for a single, completed action (that's the passé composé)."], compare_rows: [["backdrop, no clear end", "single, completed action"]], compare_note: "Il pleuvait (backdrop) vs. Il a plu (completed fact)." },
+          es: { explain_n: "El trasfondo del pasado: descripciones, hábitos y acciones en curso.", mnemonic: "Raíz de ‘nous’ + -ais: nous parlons → je parlais.", signals: ["antes", "a menudo", "todos los días", "mientras"], examples: ["Cuando era pequeño, jugaba fuera.", "Esta mañana llovía."], use: ["Descripciones y escenarios del pasado", "Hábitos y acciones repetidas"], avoid: ["No para una acción única y terminada (eso es el passé composé)."], compare_rows: [["trasfondo, sin fin nítida", "acción puntual terminada"]], compare_note: "Il pleuvait (trasfondo) vs. Il a plu (hecho terminado)." },
+          nl: { explain_n: "De achtergrond van het verleden: beschrijvingen, gewoontes en lopende handelingen.", mnemonic: "Stam van ‘nous’ + -ais: nous parlons → je parlais.", signals: ["vroeger", "vaak", "elke dag", "terwijl"], examples: ["Toen ik klein was, speelde ik buiten.", "Het regende vanochtend."], use: ["Beschrijvingen en decors in het verleden", "Gewoontes en herhaalde handelingen"], avoid: ["Niet voor één afgeronde handeling (dat is de passé composé)."], compare_rows: [["decor, geen duidelijk einde", "eenmalige, afgeronde handeling"]], compare_note: "Il pleuvait (decor) vs. Il a plu (afgerond feit)." }
+        }
+      },
+      perfect: {
+        name: "Passé composé",
+        explain_t: "Le passé composé raconte les actions ponctuelles et terminées : **avoir/être + participe passé**. Mouvement et verbes pronominaux prennent **être** (accord avec le sujet).",
+        signals: [{ w: "hier" }, { w: "ce matin" }, { w: "soudain" }, { w: "une fois" }],
+        examples: [{ s: "Hier, j'**ai mangé** au restaurant." }, { s: "Elle **est arrivée** à midi." }],
+        compare: { with: "Imparfait" },
+        n: {
+          fr: { explain_n: "Actions ponctuelles et terminées : avoir/être + participe. ‘être’ pour le mouvement et les pronominaux.", mnemonic: "Mouvement ou pronominal ? → être (et accord avec le sujet).", signals: ["hier", "ce matin", "soudain", "une fois"], examples: ["Hier, j'ai mangé au restaurant.", "Elle est arrivée à midi."], use: ["Actions ponctuelles et terminées", "Événements qui font avancer le récit"], avoid: ["Pas pour les descriptions ou les habitudes (c'est l'imparfait)."], compare_rows: [["action ponctuelle terminée", "décor / habitude"]], compare_note: "J'ai mangé (fait) vs. Je mangeais (en train de, habitude)." },
+          de: { explain_n: "Einmalige, abgeschlossene Handlungen: avoir/être + Partizip. ‚être‘ bei Bewegung und Reflexivverben.", mnemonic: "Bewegung oder reflexiv? → être (und Angleichung ans Subjekt).", signals: ["gestern", "heute Morgen", "plötzlich", "einmal"], examples: ["Gestern habe ich im Restaurant gegessen.", "Sie ist um zwölf angekommen."], use: ["Einmalige, abgeschlossene Handlungen", "Ereignisse, die die Geschichte vorantreiben"], avoid: ["Nicht für Beschreibungen oder Gewohnheiten (das ist das Imparfait)."], compare_rows: [["einmalige abgeschlossene Handlung", "Kulisse / Gewohnheit"]], compare_note: "J'ai mangé (Tatsache) vs. Je mangeais (gerade dabei, Gewohnheit)." },
+          en: { explain_n: "Single, completed actions: avoir/être + participle. Use 'être' for movement and reflexive verbs.", mnemonic: "Movement or reflexive? → être (and agree with the subject).", signals: ["yesterday", "this morning", "suddenly", "once"], examples: ["Yesterday I ate at a restaurant.", "She arrived at noon."], use: ["Single, completed actions", "Events that move the story forward"], avoid: ["Not for descriptions or habits (that's the imparfait)."], compare_rows: [["single completed action", "backdrop / habit"]], compare_note: "J'ai mangé (fact) vs. Je mangeais (in progress, habit)." },
+          es: { explain_n: "Acciones puntuales y terminadas: avoir/être + participio. ‘être’ con movimiento y verbos pronominales.", mnemonic: "¿Movimiento o pronominal? → être (y concuerda con el sujeto).", signals: ["ayer", "esta mañana", "de repente", "una vez"], examples: ["Ayer comí en un restaurante.", "Ella llegó a mediodía."], use: ["Acciones puntuales y terminadas", "Hechos que hacen avanzar la historia"], avoid: ["No para descripciones o hábitos (eso es el imparfait)."], compare_rows: [["acción puntual terminada", "trasfondo / hábito"]], compare_note: "J'ai mangé (hecho) vs. Je mangeais (en curso, hábito)." },
+          nl: { explain_n: "Eenmalige, afgeronde handelingen: avoir/être + deelwoord. ‘être’ bij beweging en wederkerende werkwoorden.", mnemonic: "Beweging of wederkerend? → être (en congruentie met het onderwerp).", signals: ["gisteren", "vanochtend", "plotseling", "een keer"], examples: ["Gisteren at ik in een restaurant.", "Zij is om twaalf uur aangekomen."], use: ["Eenmalige, afgeronde handelingen", "Gebeurtenissen die het verhaal voortstuwen"], avoid: ["Niet voor beschrijvingen of gewoontes (dat is de imparfait)."], compare_rows: [["eenmalige afgeronde handeling", "decor / gewoonte"]], compare_note: "J'ai mangé (feit) vs. Je mangeais (bezig, gewoonte)." }
+        }
+      },
+      future: {
+        name: "Futur simple",
+        explain_t: "Le futur simple exprime les prédictions, les projets et les promesses. Il se forme sur l'**infinitif + -ai, -as, -a…** : je parlerai, je finirai.",
+        signals: [{ w: "demain" }, { w: "bientôt" }, { w: "l'année prochaine" }, { w: "un jour" }],
+        examples: [{ s: "Demain, je **parlerai** au directeur." }, { s: "Il **pleuvra** ce soir." }],
+        compare: { with: "Présent (futur proche : aller +)" },
+        n: {
+          fr: { explain_n: "Prédictions, projets et promesses. Construit sur l'infinitif + -ai/-as/-a.", mnemonic: "Infinitif entier + -ai : parler → je parlerai.", signals: ["demain", "bientôt", "l'année prochaine", "un jour"], examples: ["Demain, je parlerai au directeur.", "Il pleuvra ce soir."], use: ["Prédictions sur l'avenir", "Projets et promesses"], avoid: ["À l'oral, le futur proche ‘je vais parler’ est très fréquent."], compare_rows: [["futur (lointain / formel)", "futur proche (aller + infinitif)"]], compare_note: "Je parlerai (futur simple) vs. Je vais parler (futur proche)." },
+          de: { explain_n: "Vorhersagen, Pläne und Versprechen. Gebildet aus Infinitiv + -ai/-as/-a.", mnemonic: "Ganzer Infinitiv + -ai: parler → je parlerai.", signals: ["morgen", "bald", "nächstes Jahr", "eines Tages"], examples: ["Morgen spreche ich mit dem Direktor.", "Heute Abend wird es regnen."], use: ["Vorhersagen über die Zukunft", "Pläne und Versprechen"], avoid: ["Im Gespräch ist das Futur proche ‚je vais parler‘ sehr häufig."], compare_rows: [["Futur (fern / formell)", "nahe Zukunft (aller + Infinitiv)"]], compare_note: "Je parlerai (Futur simple) vs. Je vais parler (Futur proche)." },
+          en: { explain_n: "Predictions, plans and promises. Built on the infinitive + -ai/-as/-a.", mnemonic: "Whole infinitive + -ai: parler → je parlerai.", signals: ["tomorrow", "soon", "next year", "one day"], examples: ["Tomorrow I'll speak with the director.", "It will rain tonight."], use: ["Predictions about the future", "Plans and promises"], avoid: ["In speech, the near future 'je vais parler' is very common."], compare_rows: [["future (distant / formal)", "near future (aller + infinitive)"]], compare_note: "Je parlerai (futur simple) vs. Je vais parler (futur proche)." },
+          es: { explain_n: "Predicciones, planes y promesas. Se forma sobre el infinitivo + -ai/-as/-a.", mnemonic: "Infinitivo entero + -ai: parler → je parlerai.", signals: ["mañana", "pronto", "el año que viene", "algún día"], examples: ["Mañana hablaré con el director.", "Esta noche lloverá."], use: ["Predicciones sobre el futuro", "Planes y promesas"], avoid: ["Al hablar, el futuro próximo ‘je vais parler’ es muy frecuente."], compare_rows: [["futuro (lejano / formal)", "futuro próximo (aller + infinitivo)"]], compare_note: "Je parlerai (futur simple) vs. Je vais parler (futur proche)." },
+          nl: { explain_n: "Voorspellingen, plannen en beloftes. Gevormd op de infinitief + -ai/-as/-a.", mnemonic: "Hele infinitief + -ai: parler → je parlerai.", signals: ["morgen", "binnenkort", "volgend jaar", "ooit"], examples: ["Morgen spreek ik met de directeur.", "Het zal vanavond regenen."], use: ["Voorspellingen over de toekomst", "Plannen en beloftes"], avoid: ["In spreektaal is de nabije toekomst ‘je vais parler’ heel gewoon."], compare_rows: [["toekomst (ver / formeel)", "nabije toekomst (aller + infinitief)"]], compare_note: "Je parlerai (futur simple) vs. Je vais parler (futur proche)." }
+        }
+      },
+      subjunctive: {
+        name: "Subjonctif",
+        explain_t: "Le subjonctif exprime le souhait, le doute, l'émotion et la nécessité. Il suit souvent **que** : il faut que tu **viennes**, je veux que tu **sois** là.",
+        signals: [{ w: "il faut que" }, { w: "je veux que" }, { w: "bien que" }, { w: "pour que" }],
+        examples: [{ s: "Il faut que je **parte**." }, { s: "Je veux que tu **sois** heureux." }],
+        compare: { with: "Indicatif (présent)" },
+        n: {
+          fr: { explain_n: "Le mode du subjectif : souhait, doute, émotion et nécessité, souvent après ‘que’.", mnemonic: "Souhait, doute, obligation après ‘que’ → subjonctif.", signals: ["il faut que", "je veux que", "bien que", "pour que"], examples: ["Il faut que je parte.", "Je veux que tu sois heureux."], use: ["Souhait, volonté et nécessité (il faut que, je veux que)", "Doute, émotion et certaines conjonctions (bien que, pour que)"], avoid: ["Pas pour un fait certain (c'est l'indicatif)."], compare_rows: [["souhait / doute / subjectif", "fait certain et réel"]], compare_note: "Je sais qu'il vient (fait) vs. Je veux qu'il vienne (souhait)." },
+          de: { explain_n: "Der Modus des Subjektiven: Wunsch, Zweifel, Gefühl und Notwendigkeit, oft nach ‚que‘.", mnemonic: "Wunsch, Zweifel, Notwendigkeit nach ‚que‘ → Subjonctif.", signals: ["es ist nötig, dass", "ich will, dass", "obwohl", "damit"], examples: ["Ich muss gehen.", "Ich möchte, dass du glücklich bist."], use: ["Wunsch, Wille und Notwendigkeit (il faut que, je veux que)", "Zweifel, Gefühl und bestimmte Konjunktionen (bien que, pour que)"], avoid: ["Nicht für sichere Tatsachen (das ist der Indikativ)."], compare_rows: [["Wunsch / Zweifel / subjektiv", "sichere, reale Tatsache"]], compare_note: "Je sais qu'il vient (Tatsache) vs. Je veux qu'il vienne (Wunsch)." },
+          en: { explain_n: "The mood of the subjective: wish, doubt, emotion and necessity, often after 'que'.", mnemonic: "Wish, doubt, necessity after 'que' → subjonctif.", signals: ["it is necessary that", "I want (that)", "although", "so that"], examples: ["I have to go.", "I want you to be happy."], use: ["Wish, will and necessity (il faut que, je veux que)", "Doubt, emotion and certain conjunctions (bien que, pour que)"], avoid: ["Not for a certain fact (that's the indicative)."], compare_rows: [["wish / doubt / subjective", "certain, real fact"]], compare_note: "Je sais qu'il vient (fact) vs. Je veux qu'il vienne (wish)." },
+          es: { explain_n: "El modo de lo subjetivo: deseo, duda, emoción y necesidad, a menudo tras ‘que’.", mnemonic: "Deseo, duda, necesidad tras ‘que’ → subjonctif.", signals: ["es necesario que", "quiero que", "aunque", "para que"], examples: ["Tengo que irme.", "Quiero que seas feliz."], use: ["Deseo, voluntad y necesidad (il faut que, je veux que)", "Duda, emoción y ciertas conjunciones (bien que, pour que)"], avoid: ["No para un hecho seguro (eso es el indicativo)."], compare_rows: [["deseo / duda / subjetivo", "hecho seguro y real"]], compare_note: "Je sais qu'il vient (hecho) vs. Je veux qu'il vienne (deseo)." },
+          nl: { explain_n: "De wijs van het subjectieve: wens, twijfel, emotie en noodzaak, vaak na ‘que’.", mnemonic: "Wens, twijfel, noodzaak na ‘que’ → subjonctif.", signals: ["het is nodig dat", "ik wil dat", "hoewel", "zodat"], examples: ["Ik moet gaan.", "Ik wil dat je gelukkig bent."], use: ["Wens, wil en noodzaak (il faut que, je veux que)", "Twijfel, emotie en bepaalde voegwoorden (bien que, pour que)"], avoid: ["Niet voor een zeker feit (dat is de indicatief)."], compare_rows: [["wens / twijfel / subjectief", "zeker, reëel feit"]], compare_note: "Je sais qu'il vient (feit) vs. Je veux qu'il vienne (wens)." }
+        }
+      }
+    }
+  };
+})();
+;
+/* ===== Supabase Auth bridge ===== */
+(function(){
+  var SUPA_URL = 'https://lrhmyboevoxtlvoxnrny.supabase.co';
+  var SUPA_KEY = 'sb_publishable_HJMTA3em7L69hzbQrwgwOA_WsYgyN3P';
+  var client = supabase.createClient(SUPA_URL, SUPA_KEY);
+  window.__supa = client;
+  window.__supaUser = null;
+
+  client.auth.getSession().then(function(r){
+    window.__supaUser = r.data && r.data.session && r.data.session.user || null;
+    document.dispatchEvent(new CustomEvent('supa-auth', {detail: window.__supaUser}));
+  });
+  client.auth.onAuthStateChange(function(_e, session){
+    window.__supaUser = session && session.user || null;
+    document.dispatchEvent(new CustomEvent('supa-auth', {detail: window.__supaUser}));
+  });
+})();
+;
+/* ===== ConjuExpert AI bridge — Cloudflare Worker proxy ===== */
+(function(){
+  // Same-Origin-Route (Cloudflare-Worker an conjuexpert.app/api/ai* gebunden).
+  // Ermoeglicht WAF-Rate-Limiting + entfernt die oeffentliche workers.dev-URL.
+  var WORKER = '/api/ai';
+  var queue = [], busy = false, lastCall = 0, INTERVAL = 300;
+  function delay(ms){ return new Promise(function(r){setTimeout(r,ms);}); }
+  async function callWorker(prompt, attempt){
+    attempt = attempt || 0;
+    var resp = await fetch(WORKER, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({prompt: prompt})
+    });
+    var d = await resp.json();
+    if(!resp.ok){
+      if(resp.status===429 && attempt < 5){
+        await delay(3000 * (attempt + 1));
+        return callWorker(prompt, attempt + 1);
+      }
+      throw new Error((d.error&&d.error.message)||'AI error');
+    }
+    return d.text || '';
+  }
+  async function processQueue(){
+    if(busy) return; busy = true;
+    while(queue.length){
+      var wait = lastCall + INTERVAL - Date.now();
+      if(wait > 0) await delay(wait);
+      var item = queue.shift();
+      lastCall = Date.now();
+      try{ item.resolve(await callWorker(item.prompt)); }
+      catch(e){ item.reject(e); }
+    }
+    busy = false;
+  }
+  function enqueue(prompt){
+    return new Promise(function(resolve,reject){
+      queue.push({prompt:prompt,resolve:resolve,reject:reject});
+      processQueue();
+    });
+  }
+  window.claude = { complete: enqueue };
+  window.__hasAI = function(){ return true; };
+  window.aiComplete = enqueue;
+  // streaming variant: yields the model's text as it arrives (onText gets the accumulated text)
+  async function streamComplete(prompt, onText){
+    var resp = await fetch(WORKER, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt:prompt, stream:true}) });
+    var ct = (resp.headers.get('content-type') || '');
+    if (ct.indexOf('application/json') >= 0 || !resp.body || !resp.body.getReader) {
+      var d = await resp.json().catch(function(){ return {}; });
+      if (!resp.ok) throw new Error((d.error && d.error.message) || ('AI error ' + resp.status));
+      var t = d.text || ''; if (onText) { try { onText(t); } catch(e){} } return t;
+    }
+    var reader = resp.body.getReader();
+    var dec = new TextDecoder();
+    var acc = '';
+    while (true) {
+      var r = await reader.read();
+      if (r.done) break;
+      acc += dec.decode(r.value, { stream: true });
+      if (onText) { try { onText(acc); } catch(e){} }
+    }
+    return acc;
+  }
+  window.aiStream = streamComplete;
+})();
+;
+// @ds-adherence-ignore -- omelette starter scaffold (raw elements/hex/px by design)
+
+/* BEGIN USAGE */
+// tweaks-panel.jsx
+// Reusable Tweaks shell + form-control helpers.
+// Exports (to window): useTweaks, TweaksPanel, TweakSection, TweakRow, TweakSlider,
+//   TweakToggle, TweakRadio, TweakSelect, TweakText, TweakNumber, TweakColor, TweakButton.
+//
+// Owns the host protocol (listens for __activate_edit_mode / __deactivate_edit_mode,
+// posts __edit_mode_available / __edit_mode_set_keys / __edit_mode_dismissed) so
+// individual prototypes don't re-roll it. Ships a consistent set of controls so you
+// don't hand-draw <input type="range">, segmented radios, steppers, etc.
+//
+// Usage (in an HTML file that loads React + Babel):
+//
+//   const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+//     "primaryColor": "#D97757",
+//     "palette": ["#D97757", "#29261b", "#f6f4ef"],
+//     "fontSize": 16,
+//     "density": "regular",
+//     "dark": false
+//   }/*EDITMODE-END*/;
+//
+//   function App() {
+//     const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+//     return (
+//       <div style={{ fontSize: t.fontSize, color: t.primaryColor }}>
+//         Hello
+//         <TweaksPanel>
+//           <TweakSection label="Typography" />
+//           <TweakSlider label="Font size" value={t.fontSize} min={10} max={32} unit="px"
+//                        onChange={(v) => setTweak('fontSize', v)} />
+//           <TweakRadio  label="Density" value={t.density}
+//                        options={['compact', 'regular', 'comfy']}
+//                        onChange={(v) => setTweak('density', v)} />
+//           <TweakSection label="Theme" />
+//           <TweakColor  label="Primary" value={t.primaryColor}
+//                        options={['#D97757', '#2A6FDB', '#1F8A5B', '#7A5AE0']}
+//                        onChange={(v) => setTweak('primaryColor', v)} />
+//           <TweakColor  label="Palette" value={t.palette}
+//                        options={[['#D97757', '#29261b', '#f6f4ef'],
+//                                  ['#475569', '#0f172a', '#f1f5f9']]}
+//                        onChange={(v) => setTweak('palette', v)} />
+//           <TweakToggle label="Dark mode" value={t.dark}
+//                        onChange={(v) => setTweak('dark', v)} />
+//         </TweaksPanel>
+//       </div>
+//     );
+//   }
+//
+// TweakRadio is the segmented control for 2–3 short options (auto-falls-back to
+// TweakSelect past ~16/~10 chars per label); reach for TweakSelect directly when
+// options are many or long. For color tweaks always curate 3-4 options rather than
+// a free picker; an option can also be a whole 2–5 color palette (the stored value
+// is the array). The Tweak* controls are a floor, not a ceiling — build custom
+// controls inside the panel if a tweak calls for UI they don't cover.
+/* END USAGE */
+// ─────────────────────────────────────────────────────────────────────────────
+
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-body::-webkit-scrollbar{width:8px}
+  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
+  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
+    border:2px solid transparent;background-clip:content-box}
+  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
+    border:2px solid transparent;background-clip:content-box}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;
+    color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+
+  .twk-field{appearance:none;box-sizing:border-box;width:100%;min-width:0;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
+    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:14px;height:14px;border-radius:50%;background:#fff;
+    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
+    background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
+    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;
+    overflow-wrap:anywhere}
+
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+
+  .twk-num{display:flex;align-items:center;box-sizing:border-box;min-width:0;height:26px;padding:0 0 0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;background:rgba(255,255,255,.6)}
+  .twk-num-lbl{font-weight:500;color:rgba(41,38,27,.6);cursor:ew-resize;
+    user-select:none;padding-right:8px}
+  .twk-num input{flex:1;min-width:0;height:100%;border:0;background:transparent;
+    font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:0 8px 0 0;
+    outline:none;color:inherit;-moz-appearance:textfield}
+  .twk-num input::-webkit-inner-spin-button,.twk-num input::-webkit-outer-spin-button{
+    -webkit-appearance:none;margin:0}
+  .twk-num-unit{padding-right:8px;color:rgba(41,38,27,.45)}
+
+  .twk-btn{appearance:none;height:26px;padding:0 12px;border:0;border-radius:7px;
+    background:rgba(0,0,0,.78);color:#fff;font:inherit;font-weight:500;cursor:default}
+  .twk-btn:hover{background:rgba(0,0,0,.88)}
+  .twk-btn.secondary{background:rgba(0,0,0,.06);color:inherit}
+  .twk-btn.secondary:hover{background:rgba(0,0,0,.1)}
+
+  .twk-swatch{appearance:none;-webkit-appearance:none;width:56px;height:22px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:6px;padding:0;cursor:default;
+    background:transparent;flex-shrink:0}
+  .twk-swatch::-webkit-color-swatch-wrapper{padding:0}
+  .twk-swatch::-webkit-color-swatch{border:0;border-radius:5.5px}
+  .twk-swatch::-moz-color-swatch{border:0;border-radius:5.5px}
+
+  .twk-chips{display:flex;gap:6px}
+  .twk-chip{position:relative;appearance:none;flex:1;min-width:0;height:46px;
+    padding:0;border:0;border-radius:6px;overflow:hidden;cursor:default;
+    box-shadow:0 0 0 .5px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.06);
+    transition:transform .12s cubic-bezier(.3,.7,.4,1),box-shadow .12s}
+  .twk-chip:hover{transform:translateY(-1px);
+    box-shadow:0 0 0 .5px rgba(0,0,0,.18),0 4px 10px rgba(0,0,0,.12)}
+  .twk-chip[data-on="1"]{box-shadow:0 0 0 1.5px rgba(0,0,0,.85),
+    0 2px 6px rgba(0,0,0,.15)}
+  .twk-chip>span{position:absolute;top:0;bottom:0;right:0;width:34%;
+    display:flex;flex-direction:column;box-shadow:-1px 0 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i{flex:1;box-shadow:0 -1px 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i:first-child{box-shadow:none}
+  .twk-chip svg{position:absolute;top:6px;left:6px;width:13px;height:13px;
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
+`;
+
+// ── useTweaks ───────────────────────────────────────────────────────────────
+// Single source of truth for tweak values. setTweak persists via the host
+// (__edit_mode_set_keys → host rewrites the EDITMODE block on disk).
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  // Accepts either setTweak('key', value) or setTweak({ key: value, ... }) so a
+  // useState-style call doesn't write a "[object Object]" key into the persisted
+  // JSON block.
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null ? keyOrEdits : {
+      [keyOrEdits]: val
+    };
+    setValues(prev => ({
+      ...prev,
+      ...edits
+    }));
+    window.parent.postMessage({
+      type: '__edit_mode_set_keys',
+      edits
+    }, '*');
+    // Same-window signal so in-page listeners (deck-stage rail thumbnails)
+    // can react — the parent message only reaches the host, not peers.
+    window.dispatchEvent(new CustomEvent('tweakchange', {
+      detail: edits
+    }));
+  }, []);
+  return [values, setTweak];
+}
+
+// ── TweaksPanel ─────────────────────────────────────────────────────────────
+// Floating shell. Registers the protocol listener BEFORE announcing
+// availability — if the announce ran first, the host's activate could land
+// before our handler exists and the toolbar toggle would silently no-op.
+// The close button posts __edit_mode_dismissed so the host's toolbar toggle
+// flips off in lockstep; the host echoes __deactivate_edit_mode back which
+// is what actually hides the panel.
+function TweaksPanel({
+  title = 'Tweaks',
+  children
+}) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  const offsetRef = React.useRef({
+    x: 16,
+    y: 16
+  });
+  const PAD = 16;
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth,
+      h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y))
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', clampToViewport);
+      return () => window.removeEventListener('resize', clampToViewport);
+    }
+    const ro = new ResizeObserver(clampToViewport);
+    ro.observe(document.documentElement);
+    return () => ro.disconnect();
+  }, [open, clampToViewport]);
+  React.useEffect(() => {
+    const onMsg = e => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({
+      type: '__edit_mode_available'
+    }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+  const dismiss = () => {
+    setOpen(false);
+    window.parent.postMessage({
+      type: '__edit_mode_dismissed'
+    }, '*');
+  };
+  const onDragStart = e => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX,
+      sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = ev => {
+      offsetRef.current = {
+        x: startRight - (ev.clientX - sx),
+        y: startBottom - (ev.clientY - sy)
+      };
+      clampToViewport();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+  if (!open) return null;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("style", null, __TWEAKS_STYLE), /*#__PURE__*/React.createElement("div", {
+    ref: dragRef,
+    className: "twk-panel",
+    "data-omelette-chrome": "",
+    style: {
+      right: offsetRef.current.x,
+      bottom: offsetRef.current.y
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "twk-hd",
+    onMouseDown: onDragStart
+  }, /*#__PURE__*/React.createElement("b", null, title), /*#__PURE__*/React.createElement("button", {
+    className: "twk-x",
+    "aria-label": "Close tweaks",
+    onMouseDown: e => e.stopPropagation(),
+    onClick: dismiss
+  }, "\u2715")), /*#__PURE__*/React.createElement("div", {
+    className: "twk-body"
+  }, children)));
+}
+
+// ── Layout helpers ──────────────────────────────────────────────────────────
+
+function TweakSection({
+  label,
+  children
+}) {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "twk-sect"
+  }, label), children);
+}
+function TweakRow({
+  label,
+  value,
+  children,
+  inline = false
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: inline ? 'twk-row twk-row-h' : 'twk-row'
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "twk-lbl"
+  }, /*#__PURE__*/React.createElement("span", null, label), value != null && /*#__PURE__*/React.createElement("span", {
+    className: "twk-val"
+  }, value)), children);
+}
+
+// ── Controls ────────────────────────────────────────────────────────────────
+
+function TweakSlider({
+  label,
+  value,
+  min = 0,
+  max = 100,
+  step = 1,
+  unit = '',
+  onChange
+}) {
+  return /*#__PURE__*/React.createElement(TweakRow, {
+    label: label,
+    value: `${value}${unit}`
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "range",
+    className: "twk-slider",
+    "aria-label": label,
+    min: min,
+    max: max,
+    step: step,
+    value: value,
+    onChange: e => onChange(Number(e.target.value))
+  }));
+}
+function TweakToggle({
+  label,
+  value,
+  onChange
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "twk-row twk-row-h"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "twk-lbl"
+  }, /*#__PURE__*/React.createElement("span", null, label)), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "twk-toggle",
+    "data-on": value ? '1' : '0',
+    role: "switch",
+    "aria-checked": !!value,
+    onClick: () => onChange(!value)
+  }, /*#__PURE__*/React.createElement("i", null)));
+}
+function TweakRadio({
+  label,
+  value,
+  options,
+  onChange
+}) {
+  const trackRef = React.useRef(null);
+  const [dragging, setDragging] = React.useState(false);
+  // The active value is read by pointer-move handlers attached for the lifetime
+  // of a drag — ref it so a stale closure doesn't fire onChange for every move.
+  const valueRef = React.useRef(value);
+  valueRef.current = value;
+
+  // Segments wrap mid-word once per-segment width runs out. The track is
+  // ~248px (280 panel − 28 body pad − 4 seg pad), each button loses 12px
+  // to its own padding, and 11.5px system-ui averages ~6.3px/char — so 2
+  // options fit ~16 chars each, 3 fit ~10. Past that (or >3 options), fall
+  // back to a dropdown rather than wrap.
+  const labelLen = o => String(typeof o === 'object' ? o.label : o).length;
+  const maxLen = options.reduce((m, o) => Math.max(m, labelLen(o)), 0);
+  const fitsAsSegments = maxLen <= ({
+    2: 16,
+    3: 10
+  }[options.length] ?? 0);
+  if (!fitsAsSegments) {
+    // <select> emits strings — map back to the original option value so the
+    // fallback stays type-preserving (numbers, booleans) like the segment path.
+    const resolve = s => {
+      const m = options.find(o => String(typeof o === 'object' ? o.value : o) === s);
+      return m === undefined ? s : typeof m === 'object' ? m.value : m;
+    };
+    return /*#__PURE__*/React.createElement(TweakSelect, {
+      label: label,
+      value: value,
+      options: options,
+      onChange: s => onChange(resolve(s))
+    });
+  }
+  const opts = options.map(o => typeof o === 'object' ? o : {
+    value: o,
+    label: o
+  });
+  const idx = Math.max(0, opts.findIndex(o => o.value === value));
+  const n = opts.length;
+  const segAt = clientX => {
+    const r = trackRef.current.getBoundingClientRect();
+    const inner = r.width - 4;
+    const i = Math.floor((clientX - r.left - 2) / inner * n);
+    return opts[Math.max(0, Math.min(n - 1, i))].value;
+  };
+  const onPointerDown = e => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = ev => {
+      if (!trackRef.current) return;
+      const v = segAt(ev.clientX);
+      if (v !== valueRef.current) onChange(v);
+    };
+    const up = () => {
+      setDragging(false);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return /*#__PURE__*/React.createElement(TweakRow, {
+    label: label
+  }, /*#__PURE__*/React.createElement("div", {
+    ref: trackRef,
+    role: "radiogroup",
+    onPointerDown: onPointerDown,
+    className: dragging ? 'twk-seg dragging' : 'twk-seg'
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "twk-seg-thumb",
+    style: {
+      left: `calc(2px + ${idx} * (100% - 4px) / ${n})`,
+      width: `calc((100% - 4px) / ${n})`
+    }
+  }), opts.map(o => /*#__PURE__*/React.createElement("button", {
+    key: o.value,
+    type: "button",
+    role: "radio",
+    "aria-checked": o.value === value
+  }, o.label))));
+}
+function TweakSelect({
+  label,
+  value,
+  options,
+  onChange
+}) {
+  return /*#__PURE__*/React.createElement(TweakRow, {
+    label: label
+  }, /*#__PURE__*/React.createElement("select", {
+    className: "twk-field",
+    "aria-label": label,
+    value: value,
+    onChange: e => onChange(e.target.value)
+  }, options.map(o => {
+    const v = typeof o === 'object' ? o.value : o;
+    const l = typeof o === 'object' ? o.label : o;
+    return /*#__PURE__*/React.createElement("option", {
+      key: v,
+      value: v
+    }, l);
+  })));
+}
+function TweakText({
+  label,
+  value,
+  placeholder,
+  onChange
+}) {
+  return /*#__PURE__*/React.createElement(TweakRow, {
+    label: label
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "twk-field",
+    type: "text",
+    "aria-label": label,
+    value: value,
+    placeholder: placeholder,
+    onChange: e => onChange(e.target.value)
+  }));
+}
+function TweakNumber({
+  label,
+  value,
+  min,
+  max,
+  step = 1,
+  unit = '',
+  onChange
+}) {
+  const clamp = n => {
+    if (min != null && n < min) return min;
+    if (max != null && n > max) return max;
+    return n;
+  };
+  const startRef = React.useRef({
+    x: 0,
+    val: 0
+  });
+  const onScrubStart = e => {
+    e.preventDefault();
+    startRef.current = {
+      x: e.clientX,
+      val: value
+    };
+    const decimals = (String(step).split('.')[1] || '').length;
+    const move = ev => {
+      const dx = ev.clientX - startRef.current.x;
+      const raw = startRef.current.val + dx * step;
+      const snapped = Math.round(raw / step) * step;
+      onChange(clamp(Number(snapped.toFixed(decimals))));
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "twk-num"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "twk-num-lbl",
+    onPointerDown: onScrubStart
+  }, label), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    "aria-label": label,
+    value: value,
+    min: min,
+    max: max,
+    step: step,
+    onChange: e => onChange(clamp(Number(e.target.value)))
+  }), unit && /*#__PURE__*/React.createElement("span", {
+    className: "twk-num-unit"
+  }, unit));
+}
+
+// Relative-luminance contrast pick — checkmarks drawn over a swatch need to
+// read on both #111 and #fafafa without per-option configuration. Hex input
+// only (#rgb / #rrggbb); named or rgb()/hsl() colors fall through to "light".
+function __twkIsLight(hex) {
+  const h = String(hex).replace('#', '');
+  const x = h.length === 3 ? h.replace(/./g, c => c + c) : h.padEnd(6, '0');
+  const n = parseInt(x.slice(0, 6), 16);
+  if (Number.isNaN(n)) return true;
+  const r = n >> 16 & 255,
+    g = n >> 8 & 255,
+    b = n & 255;
+  return r * 299 + g * 587 + b * 114 > 148000;
+}
+const __TwkCheck = ({
+  light
+}) => /*#__PURE__*/React.createElement("svg", {
+  viewBox: "0 0 14 14",
+  "aria-hidden": "true"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M3 7.2 5.8 10 11 4.2",
+  fill: "none",
+  strokeWidth: "2.2",
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  stroke: light ? 'rgba(0,0,0,.78)' : '#fff'
+}));
+
+// TweakColor — curated color/palette picker. Each option is either a single
+// hex string or an array of 1-5 hex strings; the card adapts — a lone color
+// renders solid, a palette renders colors[0] as the hero (left ~2/3) with the
+// rest stacked in a sharp column on the right. onChange emits the
+// option in the shape it was passed (string stays string, array stays array).
+// Without options it falls back to the native color input for back-compat.
+function TweakColor({
+  label,
+  value,
+  options,
+  onChange
+}) {
+  if (!options || !options.length) {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "twk-row twk-row-h"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "twk-lbl"
+    }, /*#__PURE__*/React.createElement("span", null, label)), /*#__PURE__*/React.createElement("input", {
+      type: "color",
+      className: "twk-swatch",
+      "aria-label": label,
+      value: value,
+      onChange: e => onChange(e.target.value)
+    }));
+  }
+  // Native <input type=color> emits lowercase hex per the HTML spec, so
+  // compare case-insensitively. String() guards JSON.stringify(undefined),
+  // which returns the primitive undefined (no .toLowerCase).
+  const key = o => String(JSON.stringify(o)).toLowerCase();
+  const cur = key(value);
+  return /*#__PURE__*/React.createElement(TweakRow, {
+    label: label
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "twk-chips",
+    role: "radiogroup"
+  }, options.map((o, i) => {
+    const colors = Array.isArray(o) ? o : [o];
+    const [hero, ...rest] = colors;
+    const sup = rest.slice(0, 4);
+    const on = key(o) === cur;
+    return /*#__PURE__*/React.createElement("button", {
+      key: i,
+      type: "button",
+      className: "twk-chip",
+      role: "radio",
+      "aria-checked": on,
+      "data-on": on ? '1' : '0',
+      "aria-label": colors.join(', '),
+      title: colors.join(' · '),
+      style: {
+        background: hero
+      },
+      onClick: () => onChange(o)
+    }, sup.length > 0 && /*#__PURE__*/React.createElement("span", null, sup.map((c, j) => /*#__PURE__*/React.createElement("i", {
+      key: j,
+      style: {
+        background: c
+      }
+    }))), on && /*#__PURE__*/React.createElement(__TwkCheck, {
+      light: __twkIsLight(hero)
+    }));
+  })));
+}
+function TweakButton({
+  label,
+  onClick,
+  secondary = false
+}) {
+  return /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: secondary ? 'twk-btn secondary' : 'twk-btn',
+    onClick: onClick
+  }, label);
+}
+Object.assign(window, {
+  useTweaks,
+  TweaksPanel,
+  TweakSection,
+  TweakRow,
+  TweakSlider,
+  TweakToggle,
+  TweakRadio,
+  TweakSelect,
+  TweakText,
+  TweakNumber,
+  TweakColor,
+  TweakButton
+});
+;
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
+/* Kunju Expert — main app (v2: 5 languages, audio, translation, filters, favorites, mixed quiz, highlight) */
+const {
+  useState,
+  useEffect,
+  useRef,
+  useMemo
+} = React;
+const LANG_ORDER = ["de", "es", "en", "nl", "fr"];
+const LANG_META = {
+  de: {
+    code: "DE",
+    color: "#ff3b5c"
+  },
+  es: {
+    code: "ES",
+    color: "#ff9f0a"
+  },
+  en: {
+    code: "EN",
+    color: "#0a84ff"
+  },
+  nl: {
+    code: "NL",
+    color: "#30c95a"
+  },
+  fr: {
+    code: "FR",
+    color: "#a557ff"
+  }
+};
+const RAINBOW = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#00bcd4", "#0a84ff", "#a557ff", "#ff5ea8"];
+
+/* Per-(learning-)language hero claim — in the TARGET language, not the UI language. */
+const HERO_CLAIM = {
+  de: {
+    pre: "Sprich ",
+    lng: "Deutsch",
+    accent: "souverän.",
+    c2: "#ff7a18"
+  },
+  es: {
+    pre: "¡Habla ",
+    lng: "español",
+    accent: "con confianza!",
+    c2: "#ff5ea8"
+  },
+  en: {
+    pre: "Speak ",
+    lng: "English",
+    accent: "with confidence",
+    c2: "#00bcd4"
+  },
+  nl: {
+    pre: "Spreek ",
+    lng: "Nederlands",
+    accent: "met vertrouwen",
+    c2: "#00bcd4"
+  },
+  fr: {
+    pre: "Parle ",
+    lng: "français",
+    accent: "avec assurance",
+    c2: "#ff5ea8"
+  }
+};
+const HERO_CONFETTI = [{
+  top: 12,
+  left: 22,
+  w: 7,
+  h: 7,
+  rot: 18,
+  o: 1
+}, {
+  top: 26,
+  left: "82%",
+  w: 18,
+  h: 6,
+  rot: -22,
+  o: 1
+}, {
+  top: 58,
+  left: 16,
+  w: 16,
+  h: 5,
+  rot: 35,
+  o: 0.9
+}, {
+  top: 16,
+  left: "58%",
+  w: 6,
+  h: 6,
+  rot: 0,
+  o: 0.9
+}, {
+  top: 104,
+  left: "90%",
+  w: 8,
+  h: 8,
+  rot: 25,
+  o: 0.85
+}, {
+  top: 132,
+  left: 26,
+  w: 13,
+  h: 5,
+  rot: -14,
+  o: 0.8
+}];
+
+/* Short formation hints for regular verbs, per language + tense id (memory aid). */
+const TENSE_HINTS = {
+  es: {
+    present: "-o · -as/-es",
+    imperfect: "-aba / -ía",
+    past: "-é·-aste·-ó",
+    perfect: "he + -ado/-ido",
+    pluperfect: "había + -ado/-ido",
+    future: "Inf. + -é",
+    subjunctive: "-e / -a",
+    subjunctiveImp: "-ara / -iera",
+    conditional: "Inf. + -ía",
+    imperative: "¡-a! / ¡-e!",
+    continuous: "estoy + -ando/-iendo",
+    continuousPerfect: "he estado + -ndo",
+    gerund: "-ando / -iendo",
+    participle: "-ado / -ido"
+  },
+  en: {
+    present: "base (+ -s)",
+    presentCont: "am/is/are + -ing",
+    past: "-ed",
+    pastCont: "was/were + -ing",
+    perfect: "have + -ed",
+    perfectCont: "have been + -ing",
+    pluperfect: "had + -ed",
+    future: "will + base",
+    subjunctive: "base form",
+    conditional: "would + base",
+    imperative: "base!",
+    gerund: "-ing"
+  },
+  de: {
+    present: "-e · -st · -t",
+    past: "-te",
+    perfect: "haben/sein + ge-…-t",
+    pluperfect: "hatte/war + ge-…-t",
+    future: "werden + Inf.",
+    subjunctive: "würde + Inf.",
+    subjunctive1: "-e · -est · -e",
+    conditional: "würde + Inf.",
+    imperative: "Stamm!",
+    gerund: "-end"
+  },
+  fr: {
+    present: "-e·-es·-e / -is",
+    past: "-ais",
+    perfect: "avoir/être + -é",
+    pluperfect: "avais + -é",
+    future: "Inf. + -ai",
+    subjunctive: "-e",
+    conditional: "Inf. + -ais",
+    conditionalPast: "aurais + -é",
+    imperative: "-e !",
+    gerund: "-ant"
+  },
+  nl: {
+    present: "- / -t",
+    past: "-te / -de",
+    perfect: "hebben/zijn + ge-…",
+    pluperfect: "had + ge-…",
+    future: "zullen + Inf.",
+    subjunctive: "-e",
+    conditional: "zou + Inf.",
+    imperative: "stam!",
+    gerund: "-end"
+  }
+};
+function tenseHint(lang, id) {
+  return (TENSE_HINTS[lang] || {})[id] || "";
+}
+/* For tenses whose regular endings change per person, a single fixed hint
+   (e.g. FR "-ais", DE "-te") mismatches the shown form. Derive the ending that
+   matches THIS form from the answer's suffix. `pre` is the prefix shown before
+   the ending. Falls back to the static tenseHint when nothing matches. */
+const PERSON_ENDINGS = {
+  fr: {
+    past: {
+      pre: "-",
+      ends: ["ais", "ait", "ions", "iez", "aient"]
+    },
+    conditional: {
+      pre: "Inf. + -",
+      ends: ["ais", "ait", "ions", "iez", "aient"]
+    },
+    future: {
+      pre: "Inf. + -",
+      ends: ["ai", "as", "ons", "ez", "ont", "a"]
+    }
+  },
+  es: {
+    imperfect: {
+      pre: "-",
+      ends: ["ábamos", "abais", "aban", "abas", "aba", "íamos", "íais", "ían", "ías", "ía"]
+    },
+    future: {
+      pre: "Inf. + -",
+      ends: ["emos", "éis", "án", "ás", "é", "á"]
+    },
+    conditional: {
+      pre: "Inf. + -",
+      ends: ["íamos", "íais", "ían", "ías", "ía"]
+    }
+  },
+  de: {
+    present: {
+      pre: "-",
+      ends: ["en", "st", "t", "e"]
+    },
+    past: {
+      pre: "-",
+      ends: ["test", "tet", "ten", "te"]
+    }
+  },
+  nl: {
+    present: {
+      pre: "-",
+      ends: ["en", "t"]
+    },
+    past: {
+      pre: "-",
+      ends: ["ten", "den", "te", "de"]
+    }
+  }
+};
+function quizHint(lang, q) {
+  const cfg = q && PERSON_ENDINGS[lang] && PERSON_ENDINGS[lang][q.tenseId];
+  if (cfg && q.answer) {
+    const a = q.answer.toLowerCase().trim();
+    let best = "";
+    cfg.ends.forEach(e => {
+      if (a.endsWith(e) && e.length > best.length) best = e;
+    });
+    if (best) return cfg.pre + best;
+  }
+  return tenseHint(lang, q ? q.tenseId : null);
+}
+const FR_ETRE_TENSES = new Set(["perfect", "pluperfect", "conditionalPast"]);
+const DE_NL_AUX_TENSES = new Set(["perfect", "pluperfect"]);
+function auxHint(lang, tenseId, answer) {
+  if (!answer) return "";
+  const first = answer.split(" ")[0];
+  if (lang === "fr" && FR_ETRE_TENSES.has(tenseId) && (first === "suis" || answer.includes(" suis "))) return "Fém. +e · Plur. +s";
+  if (lang === "de" && DE_NL_AUX_TENSES.has(tenseId) && (first === "bin" || answer.includes(" bin "))) return "Hilfsverb: sein";
+  if (lang === "nl" && DE_NL_AUX_TENSES.has(tenseId) && (first === "ben" || answer.includes(" ben "))) return "Hulpww.: zijn";
+  return "";
+}
+const ES_VERB_NOTES = {
+  ser: {
+    de: "Dauerhaft & Identität · ≠ estar (Zustand/Ort)",
+    en: "Permanent & identity · ≠ estar (state/place)",
+    es: "Permanente & identidad · ≠ estar (estado/lugar)",
+    nl: "Permanent & identiteit · ≠ estar (staat/locatie)",
+    fr: "Permanent & identité · ≠ estar (état/lieu)"
+  },
+  estar: {
+    de: "Zustand, Befindlichkeit & Ort · ≠ ser (Identität)",
+    en: "State, feeling & location · ≠ ser (identity)",
+    es: "Estado, sentimiento & ubicación · ≠ ser (identidad)",
+    nl: "Toestand & locatie · ≠ ser (identiteit)",
+    fr: "État & lieu · ≠ ser (identité)"
+  },
+  gustar: {
+    de: "Konstr.: me gusta/gustan · Subjekt = das Gemochte",
+    en: "Constr.: me gusta/gustan · subject = what is liked",
+    es: "Constr.: me gusta/gustan · sujeto = lo que gusta",
+    nl: "Constr.: me gusta/gustan · onderwerp = het gewaardeerde",
+    fr: "Constr.: me gusta/gustan · sujet = ce qui plaît"
+  }
+};
+const ES_GUSTAR_VERBS = new Set(["gustar", "encantar", "molestar", "faltar", "doler", "interesar", "parecer", "importar", "quedar", "sorprender", "aburrir", "preocupar", "apetecer", "convenir"]);
+/* Group each tense into a mood/family for headers + ordering. */
+const TENSE_GROUP = {
+  present: "ind",
+  imperfect: "ind",
+  past: "ind",
+  presentCont: "ind",
+  pastCont: "ind",
+  perfect: "ind",
+  perfectCont: "ind",
+  pluperfect: "ind",
+  future: "ind",
+  subjunctive: "subj",
+  subjunctive1: "subj",
+  subjunctiveImp: "subj",
+  conditional: "cond",
+  conditionalPast: "cond",
+  imperative: "imp",
+  continuous: "cont",
+  continuousPerfect: "cont",
+  gerund: "forms",
+  participle: "forms"
+};
+const GROUP_ORDER = ["ind", "subj", "cond", "imp", "cont", "forms"];
+function tenseGroup(id) {
+  return TENSE_GROUP[id] || "ind";
+}
+function QModeIcon({
+  id
+}) {
+  const p = {
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.9,
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  };
+  if (id === "cards") return /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    width: "24",
+    height: "24",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("rect", _extends({
+    x: "3",
+    y: "6",
+    width: "13",
+    height: "15",
+    rx: "2.5"
+  }, p)), /*#__PURE__*/React.createElement("path", _extends({
+    d: "M8 3.5h9.5A2.5 2.5 0 0 1 20 6v12"
+  }, p)));
+  if (id === "choice") return /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    width: "24",
+    height: "24",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("rect", _extends({
+    x: "3.5",
+    y: "4.5",
+    width: "17",
+    height: "6",
+    rx: "3"
+  }, p)), /*#__PURE__*/React.createElement("rect", _extends({
+    x: "3.5",
+    y: "13.5",
+    width: "17",
+    height: "6",
+    rx: "3"
+  }, p)), /*#__PURE__*/React.createElement("circle", {
+    cx: "16.5",
+    cy: "16.5",
+    r: "1.4",
+    fill: "currentColor",
+    stroke: "none"
+  }));
+  if (id === "type") return /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    width: "24",
+    height: "24",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("rect", _extends({
+    x: "2.5",
+    y: "6",
+    width: "19",
+    height: "12",
+    rx: "2.5"
+  }, p)), /*#__PURE__*/React.createElement("path", _extends({
+    d: "M7 10h.01M11 10h.01M15 10h.01M8 14h8"
+  }, p)));
+  if (id === "speak") return /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    width: "24",
+    height: "24",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("rect", _extends({
+    x: "9",
+    y: "3",
+    width: "6",
+    height: "11",
+    rx: "3"
+  }, p)), /*#__PURE__*/React.createElement("path", _extends({
+    d: "M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"
+  }, p)));
+  if (id === "texte") return /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    width: "24",
+    height: "24",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("path", _extends({
+    d: "M12 6.5C10.5 5 8 4.5 4.5 4.8V18c3.5-.3 6 .2 7.5 1.7"
+  }, p)), /*#__PURE__*/React.createElement("path", _extends({
+    d: "M12 6.5C13.5 5 16 4.5 19.5 4.8V18c-3.5-.3-6 .2-7.5 1.7"
+  }, p)));
+  return null;
+}
+function TenseDropdown({
+  lang,
+  tenses,
+  isOn,
+  onToggle,
+  onAll,
+  onNone,
+  single,
+  onClose,
+  hideLbl
+}) {
+  const [open, setOpen] = useState(false);
+  const onCount = tenses.filter(t => isOn(t.id)).length;
+  const cur = single ? (tenses.find(t => isOn(t.id)) || {}).label : null;
+  const summary = single ? cur || "—" : onCount === tenses.length || onCount === 0 ? tr("all_tenses") : onCount + " / " + tenses.length;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tdwrap",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tdbtn" + (open ? " open" : ""),
+    onClick: () => setOpen(o => !o)
+  }, !hideLbl && /*#__PURE__*/React.createElement("span", {
+    className: "tdbtn-lbl"
+  }, tr("tense_word")), /*#__PURE__*/React.createElement("span", {
+    className: "tdbtn-sum"
+  }, summary), /*#__PURE__*/React.createElement("span", {
+    className: "tdbtn-caret"
+  }, open ? "▴" : "▾")), open && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "tdbackdrop",
+    onClick: () => setOpen(false)
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "tdmenu"
+  }, !single && /*#__PURE__*/React.createElement("div", {
+    className: "tdactions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tdaction",
+    onClick: onAll
+  }, "\u2713 ", tr("all_btn")), /*#__PURE__*/React.createElement("button", {
+    className: "tdaction",
+    onClick: onNone
+  }, "\u2715 ", tr("none_btn"))), /*#__PURE__*/React.createElement("div", {
+    className: "tdlist"
+  }, tenses.map((t, i) => /*#__PURE__*/React.createElement("button", {
+    key: t.id,
+    className: "tditem" + (isOn(t.id) ? " on" : ""),
+    style: {
+      "--cc": RAINBOW[i % RAINBOW.length]
+    },
+    onClick: () => {
+      onToggle(t.id);
+      if (single) setOpen(false);
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tdcheck"
+  }, isOn(t.id) ? "✓" : ""), /*#__PURE__*/React.createElement("span", {
+    className: "tdlabel"
+  }, t.label, tenseHint(lang, t.id) && /*#__PURE__*/React.createElement("span", {
+    className: "tdhint"
+  }, tenseHint(lang, t.id)))))))));
+}
+function OneDropdown({
+  lang,
+  options,
+  valueId,
+  onPick
+}) {
+  const [open, setOpen] = useState(false);
+  const cur = (options.find(o => o.id === valueId) || options[0] || {}).label;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tdwrap",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tdbtn" + (open ? " open" : ""),
+    onClick: () => setOpen(o => !o)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tdbtn-sum"
+  }, cur), /*#__PURE__*/React.createElement("span", {
+    className: "tdbtn-caret"
+  }, open ? "▴" : "▾")), open && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "tdbackdrop",
+    onClick: () => setOpen(false)
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "tdmenu"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tdlist"
+  }, options.map(o => /*#__PURE__*/React.createElement("button", {
+    key: o.id,
+    className: "tditem" + (valueId === o.id ? " on" : ""),
+    style: {
+      "--cc": "var(--lc)"
+    },
+    onClick: () => {
+      onPick(o.id);
+      setOpen(false);
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tdcheck"
+  }, valueId === o.id ? "✓" : ""), /*#__PURE__*/React.createElement("span", {
+    className: "tdlabel"
+  }, o.label, o.hint && /*#__PURE__*/React.createElement("span", {
+    className: "tdhint"
+  }, o.hint))))))));
+}
+function MultiDropdown({
+  lang,
+  options,
+  isOn,
+  onToggle,
+  onAll,
+  onNone
+}) {
+  const [open, setOpen] = useState(false);
+  const onCount = options.filter(o => isOn(o.id)).length;
+  const summary = onCount === options.length || onCount === 0 ? tr("all_themes") : onCount + " / " + options.length;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tdwrap",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tdbtn" + (open ? " open" : ""),
+    onClick: () => setOpen(o => !o)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tdbtn-sum"
+  }, summary), /*#__PURE__*/React.createElement("span", {
+    className: "tdbtn-caret"
+  }, open ? "▴" : "▾")), open && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "tdbackdrop",
+    onClick: () => setOpen(false)
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "tdmenu"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tdactions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tdaction",
+    onClick: onAll
+  }, "\u2713 ", tr("all_btn")), /*#__PURE__*/React.createElement("button", {
+    className: "tdaction",
+    onClick: onNone
+  }, "\u2715 ", tr("none_btn"))), /*#__PURE__*/React.createElement("div", {
+    className: "tdlist"
+  }, options.map(o => /*#__PURE__*/React.createElement("button", {
+    key: o.id,
+    className: "tditem" + (isOn(o.id) ? " on" : ""),
+    style: {
+      "--cc": "var(--lc)"
+    },
+    onClick: () => onToggle(o.id)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tdcheck"
+  }, isOn(o.id) ? "✓" : ""), /*#__PURE__*/React.createElement("span", {
+    className: "tdlabel"
+  }, o.label)))))));
+}
+
+/* 5 most important irregular verbs per language (for the Learn overview). */
+const IRR_TOP = {
+  es: ["ser", "estar", "tener", "hacer", "ir", "haber", "poder", "decir"],
+  en: ["be", "have", "do", "go", "say", "get", "make", "know"],
+  de: ["sein", "haben", "werden", "gehen", "kommen", "geben", "nehmen", "wissen"],
+  fr: ["être", "avoir", "aller", "faire", "pouvoir", "vouloir", "venir", "prendre"],
+  nl: ["zijn", "hebben", "gaan", "doen", "komen", "zien", "geven", "nemen"]
+};
+/* A reliably-regular sample verb per language, for showing the regular pattern. */
+const REG_SAMPLE = {
+  es: "hablar",
+  en: "work",
+  de: "machen",
+  fr: "parler",
+  nl: "werken"
+};
+function persist(k, v) {
+  try {
+    localStorage.setItem(k, JSON.stringify(v));
+  } catch (e) {}
+}
+function recall(k, d) {
+  try {
+    const v = localStorage.getItem(k);
+    return v == null ? d : JSON.parse(v);
+  } catch (e) {
+    return d;
+  }
+}
+/* Reset quiz scores once per browser session (so each session starts fresh). */
+try {
+  if (!sessionStorage.getItem("kunju-sess")) {
+    Object.keys(localStorage).filter(k => k.indexOf("kunju-score-") === 0).forEach(k => localStorage.removeItem(k));
+    sessionStorage.setItem("kunju-sess", "1");
+  }
+} catch (e) {}
+
+/* UI localization: driven by mother tongue (only the 5 app langs; else English). */
+const NATIVE_TO_UI = {
+  German: "de",
+  English: "en",
+  Spanish: "es",
+  Dutch: "nl",
+  French: "fr"
+};
+function uiFromNative(n) {
+  return NATIVE_TO_UI[n] || "en";
+}
+/* Guess the learner's mother tongue from the browser so the very first screen
+   isn't in a language they can't read. Falls back to English. */
+function detectNative() {
+  const map = {
+    de: "German",
+    en: "English",
+    es: "Spanish",
+    nl: "Dutch",
+    fr: "French",
+    it: "Italian",
+    pt: "Portuguese",
+    pl: "Polish",
+    tr: "Turkish",
+    ru: "Russian",
+    ar: "Arabic",
+    zh: "Chinese"
+  };
+  try {
+    const langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+    for (const l of langs) {
+      const code = String(l).slice(0, 2).toLowerCase();
+      if (map[code]) return map[code];
+    }
+  } catch (e) {}
+  return "English";
+}
+let UILANG = "en";
+function tr(k, vars) {
+  const dict = window.UI && window.UI[UILANG] || window.UI && window.UI.en || {};
+  let s = dict[k] != null ? dict[k] : (window.UI && window.UI.en[k]) != null ? window.UI.en[k] : k;
+  if (vars) Object.keys(vars).forEach(p => {
+    s = s.split("{" + p + "}").join(vars[p]);
+  });
+  return s;
+}
+function savedVoiceURI(base) {
+  try {
+    return localStorage.getItem("kunju-voice-" + base) || "";
+  } catch (e) {
+    return "";
+  }
+}
+function setSavedVoice(base, uri) {
+  try {
+    uri ? localStorage.setItem("kunju-voice-" + base, uri) : localStorage.removeItem("kunju-voice-" + base);
+  } catch (e) {}
+}
+function savedGender(base) {
+  try {
+    return localStorage.getItem("kunju-voicegender-" + base) || "";
+  } catch (e) {
+    return "";
+  }
+}
+function setSavedGender(base, g) {
+  try {
+    g ? localStorage.setItem("kunju-voicegender-" + base, g) : localStorage.removeItem("kunju-voicegender-" + base);
+  } catch (e) {}
+}
+// names that signal a higher-quality / more natural voice vs. robotic "compact" ones
+const NICE_VOICE = /(neural|natural|enhanced|premium|wavenet|siri|google|amélior|verbessert|mejorad)/i;
+const BAD_VOICE = /(compact|eloquence|fred|albert|zarvox|whisper|bad news|good news|bells|trinoids|cellos)/i;
+// best-effort gender guess from the voice name (device voices rarely expose gender directly)
+const VOICE_F = /(\bfemale\b|weiblich|\bfrau\b|femenin|\bmujer\b|\bvrouw\b|\bfemme\b|m[oó]nica|paulina|marisol|angelina|esperanza|pen[eé]lope|luc[ií]a|\banna\b|petra|helena|marlene|katja|vicki|samantha|karen|moira|tessa|serena|fiona|victoria|allison|\bava\b|susan|\bzoe\b|\bkate\b|catherine|\bnora\b|am[eé]lie|audrey|aur[eé]lie|\bmarie\b|virginie|chantal|\bjulie\b|ellen|claire|femke|laura|sof[ií]a|\bsara\b|in[eé]s|hedda|gisela|seraphina|amala|elvira|abril|dalia|paloma|triana|jenny|aria|michelle|sonia|libby|maisie|emma|denise|eloise|jacqueline|coralie|josephine|colette|fenna|maartje)/i;
+const VOICE_M = /(\bmale\b|m[aä]nnlich|\bmann\b|masculin|\bhombre\b|\bman\b|jorge|diego|\bjuan\b|carlos|pablo|enrique|miguel|yannick|markus|\bmartin\b|stefan|boris|conrad|\bhans\b|\bdaniel\b|\balex\b|\bfred\b|\btom\b|aaron|arthur|gordon|oliver|\blee\b|rishi|\balbert\b|thomas|nicolas|mathieu|\bpaul\b|xander|\bbram\b|ruben|maarten|\bluca\b|killian|bernd|christoph|ralf|[aá]lvaro|dario|elias|saul|ryan|guy|\beric\b|brian|liam|henri|jerome|maurten|kasper)/i;
+function voiceGender(name) {
+  const n = (name || "").toLowerCase();
+  if (VOICE_F.test(n)) return "f";
+  if (VOICE_M.test(n)) return "m";
+  return "";
+}
+function pickVoice(lang) {
+  if (!window.speechSynthesis) return null;
+  const voices = window.speechSynthesis.getVoices() || [];
+  if (!voices.length) return null;
+  const lc = (lang || "").toLowerCase(),
+    base = lc.split("-")[0];
+  // honour a specific chosen voice first
+  const pref = savedVoiceURI(base);
+  if (pref) {
+    const pv = voices.find(v => v.voiceURI === pref);
+    if (pv) return pv;
+  }
+  const exact = voices.filter(v => (v.lang || "").toLowerCase() === lc);
+  const baseM = voices.filter(v => (v.lang || "").toLowerCase().split("-")[0] === base);
+  let pool = exact.length ? exact : baseM;
+  if (!pool.length) return null;
+  // narrow to the requested gender; if none is detected by name, at least avoid the opposite gender.
+  // Default to a female voice when the user hasn't explicitly chosen one (Auto) — softly: if no
+  // female voice exists we keep the full pool so the best available voice is still used.
+  const gender = savedGender(base) || "f";
+  if (gender) {
+    const gm = pool.filter(v => voiceGender(v.name) === gender);
+    if (gm.length) {
+      pool = gm;
+    } else {
+      const other = gender === "f" ? "m" : "f";
+      const notOther = pool.filter(v => voiceGender(v.name) !== other);
+      if (notOther.length) pool = notOther;
+    }
+  }
+  // prefer natural-sounding voices, penalise robotic/novelty ones; local & default break ties
+  const rank = v => (NICE_VOICE.test(v.name) ? 4 : 0) + (BAD_VOICE.test(v.name) ? -4 : 0) + (v.localService ? 1 : 0) + (v.default ? 1 : 0);
+  return pool.slice().sort((a, b) => rank(b) - rank(a))[0];
+}
+let TTS_RATE = 1.0;
+try {
+  const _r = parseFloat(localStorage.getItem("kunju-ttsrate"));
+  if (_r) TTS_RATE = _r;
+} catch (e) {}
+function applyTtsRate(r) {
+  TTS_RATE = r;
+  try {
+    localStorage.setItem("kunju-ttsrate", String(r));
+  } catch (e) {}
+}
+function speak(text, lang) {
+  if (!window.speechSynthesis || !text || text === "—") return;
+  try {
+    const clean = String(text).replace(/…/g, " ").replace(/\s+/g, " ").trim();
+    const u = new SpeechSynthesisUtterance(clean);
+    u.lang = lang;
+    u.rate = TTS_RATE;
+    const v = pickVoice(lang);
+    if (v) {
+      u.voice = v;
+      u.lang = v.lang;
+    }
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  } catch (e) {}
+}
+// read a whole story aloud, queued sentence by sentence (reliable for long texts)
+function speakStory(sents, lang) {
+  if (!window.speechSynthesis) return;
+  try {
+    window.speechSynthesis.cancel();
+  } catch (e) {}
+  const v = pickVoice(lang);
+  (sents || []).forEach(txt => {
+    const clean = String(txt || "").replace(/…/g, " ").replace(/\s+/g, " ").trim();
+    if (!clean) return;
+    try {
+      const u = new SpeechSynthesisUtterance(clean);
+      u.lang = v && v.lang || lang;
+      u.rate = TTS_RATE;
+      if (v) u.voice = v;
+      window.speechSynthesis.speak(u);
+    } catch (e) {}
+  });
+}
+// small stable hash for caching a story's translation by content + native language
+function strHash(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) {
+    h = h * 31 + s.charCodeAt(i) | 0;
+  }
+  return (h >>> 0).toString(36);
+}
+// warm up the voice list (some browsers load it asynchronously)
+if (window.speechSynthesis) {
+  try {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => {
+      window.speechSynthesis.getVoices();
+    };
+  } catch (e) {}
+}
+const esc = s => (s || "").replace(/[<>&]/g, c => ({
+  "<": "&lt;",
+  ">": "&gt;",
+  "&": "&amp;"
+})[c]);
+function diffHTML(actual, baseline) {
+  if (!baseline || actual === baseline || actual === "—") return esc(actual);
+  const a = actual,
+    b = baseline;
+  let p = 0;
+  while (p < a.length && p < b.length && a[p] === b[p]) p++;
+  let s = 0;
+  while (s < a.length - p && s < b.length - p && a[a.length - 1 - s] === b[b.length - 1 - s]) s++;
+  const mid = a.slice(p, a.length - s);
+  if (!mid) return esc(actual);
+  return esc(a.slice(0, p)) + '<mark class="irrmark">' + esc(mid) + "</mark>" + esc(a.slice(a.length - s));
+}
+function suggestionsFor(lang) {
+  const eng = window.CONJ[lang];
+  const set = new Set(eng.samples);
+  const tr = window.TRANS[lang];
+  if (tr) Object.keys(tr).forEach(k => set.add(k));
+  return Array.from(set).sort();
+}
+
+/* ---------- Reverse lookup / deconjugation ----------
+   Type an inflected form ("siendo", "hago", "ging", "fui") and find which
+   infinitive + person + tense it belongs to, by enumerating a pool of known
+   verbs and matching every conjugated form. Catches the irregular forms that
+   are impossible to reverse-engineer by eye. */
+function deburr(s) {
+  return (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+function infBase(langCode, inf) {
+  return (inf || "").replace(/^to /, "").trim().toLowerCase();
+}
+
+/* Large vetted lists of additional REGULAR verbs to widen the quiz/lookup pool.
+   Only regular verbs (which the rule engine conjugates correctly) — strong/
+   irregular verbs are already covered by each engine's IRR table. */
+const EXTRA_VERBS = {
+  es: ["trabajar", "estudiar", "comprar", "mirar", "escuchar", "caminar", "cocinar", "limpiar", "lavar", "llevar", "llamar", "tomar", "usar", "ayudar", "necesitar", "esperar", "pasar", "quedar", "dejar", "entrar", "mandar", "preguntar", "contestar", "cantar", "bailar", "nadar", "viajar", "visitar", "descansar", "terminar", "preparar", "enseñar", "ganar", "gastar", "prestar", "regalar", "alquilar", "arreglar", "cambiar", "llorar", "gritar", "saltar", "tardar", "tratar", "desear", "disfrutar", "dibujar", "firmar", "guardar", "invitar", "marcar", "parar", "pintar", "robar", "mejorar", "bajar", "llegar", "pagar", "sacar", "tocar", "buscar", "practicar", "explicar", "organizar", "utilizar", "aceptar", "ocupar", "llenar", "beber", "correr", "aprender", "vender", "deber", "temer", "meter", "prometer", "comprender", "depender", "recibir", "decidir", "subir", "partir", "permitir", "existir", "insistir", "asistir", "discutir", "sufrir", "unir", "añadir", "admitir"],
+  de: ["arbeiten", "spielen", "lernen", "kaufen", "wohnen", "sagen", "fragen", "suchen", "brauchen", "hören", "öffnen", "reden", "lieben", "leben", "lachen", "weinen", "kochen", "putzen", "baden", "aufstehen", "ankommen", "einkaufen", "anrufen", "mitnehmen", "aufmachen", "zumachen", "anfangen", "aufhören", "einschlafen", "aussehen", "vorbereiten", "abholen", "anziehen", "ausziehen", "fernsehen", "aufräumen", "einladen", "vorstellen", "teilnehmen", "stattfinden", "zurückkommen", "ausbreiten", "duschen", "tanzen", "zeigen", "holen", "legen", "stellen", "setzen", "kosten", "danken", "glauben", "hoffen", "planen", "schicken", "schmecken", "stören", "träumen", "üben", "verkaufen", "versuchen", "warten", "wecken", "wiederholen", "wünschen", "zahlen", "zeichnen", "mieten", "packen", "parken", "rauchen", "reisen", "retten", "schenken", "sparen", "antworten", "erklären", "bezahlen", "bestellen", "besuchen", "benutzen", "erzählen", "gehören", "verdienen", "studieren", "telefonieren", "fotografieren", "diskutieren", "funktionieren", "informieren", "organisieren", "probieren", "reparieren", "reservieren", "gratulieren", "korrigieren", "markieren", "notieren", "passieren"],
+  en: ["work", "play", "learn", "want", "like", "love", "need", "help", "call", "look", "watch", "listen", "talk", "ask", "answer", "open", "close", "start", "stop", "walk", "jump", "clean", "cook", "wash", "use", "move", "live", "stay", "study", "try", "carry", "worry", "hurry", "marry", "enjoy", "travel", "visit", "finish", "wait", "change", "turn", "return", "follow", "happen", "seem", "believe", "remember", "decide", "explain", "describe", "continue", "create", "offer", "order", "plan", "save", "share", "smile", "count", "join", "pull", "push", "repeat", "report", "rest", "suggest", "thank", "touch", "wish", "end", "fill", "fix", "hope", "laugh", "pass", "pick", "reach", "relax", "remain", "rent", "wonder", "cross", "dance", "earn", "cause", "accept", "add", "allow", "appear", "arrive", "check", "claim", "climb", "collect", "compare", "complete", "cover", "deliver"],
+  nl: ["maken", "spelen", "leren", "wonen", "luisteren", "praten", "koken", "dansen", "tonen", "halen", "opstaan", "aankomen", "meenemen", "opbellen", "uitgaan", "meedoen", "afspreken", "opruimen", "aankleden", "uitleggen", "voorstellen", "terugkomen", "zetten", "kosten", "danken", "geloven", "hopen", "sturen", "proberen", "wachten", "wensen", "betalen", "tekenen", "huren", "pakken", "parkeren", "roken", "reizen", "redden", "sparen", "studeren", "telefoneren", "bedanken", "beantwoorden", "bestellen", "openen", "gebruiken", "herhalen", "kloppen", "leven", "melden", "missen", "noemen", "passen", "rekenen", "stoppen", "tellen", "volgen", "werken", "antwoorden", "bewaren", "branden", "delen", "dromen", "fietsen", "groeten", "haasten", "regenen", "schudden", "stappen", "verven", "wandelen", "zwaaien", "bouwen", "gebeuren", "herinneren", "roepen"],
+  fr: ["travailler", "regarder", "écouter", "marcher", "chercher", "aimer", "habiter", "arriver", "entrer", "rester", "passer", "montrer", "demander", "gagner", "danser", "chanter", "cuisiner", "laver", "porter", "fermer", "garder", "inviter", "oublier", "continuer", "étudier", "expliquer", "raconter", "rencontrer", "téléphoner", "tomber", "tourner", "utiliser", "visiter", "préparer", "présenter", "quitter", "réserver", "terminer", "traverser", "aider", "accepter", "adorer", "apporter", "casser", "compter", "coûter", "déjeuner", "dîner", "durer", "embrasser", "jouer", "penser", "donner", "trouver", "voyager", "manger", "arranger", "changer", "partager", "ranger", "nager", "laisser", "monter", "choisir", "finir", "grandir", "grossir", "maigrir", "obéir", "réfléchir", "réussir", "remplir", "réagir", "punir", "nourrir", "applaudir", "bâtir"]
+};
+
+/* Second batch — further vetted regular verbs to widen the pool. */
+const EXTRA_VERBS2 = {
+  es: ["abandonar", "acabar", "acompañar", "alcanzar", "animar", "apoyar", "aprovechar", "avisar", "borrar", "calcular", "celebrar", "cenar", "cobrar", "comentar", "comunicar", "considerar", "controlar", "crear", "cruzar", "cuidar", "dedicar", "dudar", "echar", "eliminar", "empujar", "entregar", "entrenar", "evitar", "expresar", "formar", "golpear", "imaginar", "importar", "indicar", "informar", "intentar", "inventar", "juntar", "levantar", "lograr", "luchar", "manejar", "mencionar", "molestar", "montar", "observar", "ordenar", "pelear", "perdonar", "preparar", "presentar", "quemar", "quitar", "realizar", "regresar", "reparar", "reservar", "respetar", "respirar", "saludar", "salvar", "secar", "separar", "sumar", "superar", "tirar", "tratar", "votar"],
+  de: ["abholen", "aufräumen", "bauen", "bedeuten", "begrüßen", "beobachten", "bezahlen", "bilden", "buchen", "decken", "drehen", "drücken", "erlauben", "erreichen", "fehlen", "feiern", "fühlen", "füllen", "gründen", "heiraten", "kämpfen", "liefern", "loben", "melden", "mischen", "nutzen", "ordnen", "prüfen", "sorgen", "tauschen", "teilen", "töten", "trennen", "verletzen", "vermieten", "verpassen", "verstecken", "vertrauen", "vorbereiten", "wundern", "zählen", "zerstören", "beenden", "bemerken", "betonen", "bewerten", "bedienen"],
+  en: ["agree", "attack", "bake", "behave", "blame", "borrow", "breathe", "brush", "burn", "celebrate", "charge", "cheer", "connect", "consider", "contain", "cough", "crash", "cry", "decorate", "discover", "discuss", "divide", "dress", "expect", "explore", "fail", "gather", "greet", "guess", "hate", "heat", "hire", "hunt", "imagine", "improve", "increase", "introduce", "invite", "kick", "knock", "lift", "manage", "mark", "measure", "mention", "mix", "name", "notice", "paint", "park", "plant", "prepare", "present", "pretend", "prevent", "print", "promise", "protect", "prove", "provide", "raise", "receive", "recognize", "record", "reduce", "refuse", "remove", "repair", "reply", "rescue", "respect", "shout", "sign", "solve", "sort", "spell", "support", "surprise", "survive", "taste", "train", "treat", "trust", "type", "vote", "waste", "whisper", "wrap", "yell"],
+  nl: ["bedoelen", "begroeten", "behandelen", "bellen", "bereiden", "beschermen", "betekenen", "boeken", "drukken", "duwen", "filmen", "fluisteren", "huilen", "kammen", "letten", "oefenen", "planten", "poetsen", "regelen", "schilderen", "slepen", "trainen", "vegen", "verbeteren", "vertalen", "wisselen", "zorgen", "afmaken", "bewaren", "controleren", "koppelen", "markeren", "ontmoeten", "registreren", "verzamelen"],
+  fr: ["accompagner", "ajouter", "allumer", "amuser", "apprécier", "arrêter", "attraper", "augmenter", "baisser", "bavarder", "briller", "brosser", "brûler", "cacher", "calculer", "cesser", "classer", "coller", "commander", "comparer", "conserver", "consulter", "copier", "coucher", "couper", "crier", "décider", "déclarer", "décorer", "dépenser", "dessiner", "deviner", "discuter", "échouer", "emprunter", "enseigner", "exprimer", "fonctionner", "former", "frapper", "goûter", "habiller", "imaginer", "indiquer", "louer", "mériter", "noter", "pardonner", "pleurer", "poser", "pousser", "prêter", "profiter", "proposer", "ramasser", "refuser", "réparer", "respecter", "retrouver", "sauter", "sembler", "sonner", "souhaiter", "toucher", "tricher", "vérifier", "verser", "voler", "agir", "définir", "établir", "fournir", "guérir", "ralentir", "réunir", "rougir", "salir", "unir"]
+};
+
+/* Third batch — large C1-level set of vetted REGULAR verbs. */
+const EXTRA_VERBS3 = {
+  es: ["acelerar", "aclarar", "acomodar", "acumular", "adaptar", "adelantar", "adoptar", "afectar", "afirmar", "agrupar", "ajustar", "alargar", "aliviar", "alojar", "alterar", "amenazar", "anotar", "anticipar", "anular", "apuntar", "arrancar", "arrastrar", "arriesgar", "asegurar", "asignar", "asociar", "bloquear", "bromear", "calmar", "cancelar", "capturar", "cargar", "castigar", "causar", "citar", "clasificar", "combinar", "compensar", "conectar", "conquistar", "conservar", "contemplar", "contratar", "conversar", "cooperar", "coordinar", "copiar", "cultivar", "declarar", "decorar", "denunciar", "depositar", "derribar", "desarrollar", "designar", "destacar", "destinar", "detallar", "determinar", "dialogar", "disculpar", "diseñar", "disparar", "divorciar", "doblar", "documentar", "dominar", "donar", "ejecutar", "elaborar", "elevar", "embarcar", "emocionar", "emplear", "enamorar", "encajar", "encargar", "enfadar", "enfocar", "enfrentar", "engañar", "ensayar", "enumerar", "equipar", "escalar", "estacionar", "estimar", "estimular", "estirar", "estrenar", "estropear", "examinar", "experimentar", "explorar", "exportar", "expulsar", "fabricar", "facilitar", "fallar", "fascinar", "felicitar", "fijar", "fomentar", "formular", "fracasar", "frenar", "fundar", "generar", "grabar", "heredar", "identificar", "ignorar", "iluminar", "ilustrar", "implicar", "impulsar", "incorporar", "ingresar", "inspirar", "instalar", "integrar", "intercambiar", "interpretar", "investigar", "juzgar", "lamentar", "lanzar", "liberar", "limitar", "localizar", "madurar", "manipular", "memorizar", "mezclar", "modificar", "motivar", "multiplicar", "negociar", "nombrar", "obligar", "ocasionar", "odiar", "orientar", "originar", "otorgar", "participar", "pasear", "penetrar", "pescar", "planear", "plantar", "plantear", "precisar", "premiar", "presionar", "procesar", "proclamar", "procurar", "programar", "progresar", "promocionar", "proporcionar", "protagonizar", "protestar", "provocar", "rascar", "rebajar", "rechazar", "reclamar", "recopilar", "recuperar", "redactar", "reflejar", "reformar", "registrar", "relacionar", "relajar", "rellenar", "rematar", "restaurar", "resultar", "retirar", "retrasar", "revelar", "revisar", "rodear", "saborear", "sancionar", "seleccionar", "señalar", "simular", "solicitar", "solucionar", "soportar", "sospechar", "subrayar", "sujetar", "suplicar", "telefonear", "titular", "tolerar", "trasladar", "triunfar", "valorar", "ventilar", "vibrar", "vigilar", "vincular", "visualizar", "sacudir", "interrumpir", "sobrevivir", "percibir", "resumir", "transmitir", "suprimir"],
+  de: ["ändern", "ärgern", "atmen", "beantragen", "bedrohen", "beeinflussen", "befragen", "begleiten", "behaupten", "beleidigen", "belohnen", "berichten", "beruhigen", "beschädigen", "bestrafen", "beteiligen", "betrachten", "bewundern", "blühen", "dichten", "drohen", "ehren", "einkaufen", "entwickeln", "erfüllen", "ergänzen", "erhöhen", "erkundigen", "ermöglichen", "ernähren", "erschöpfen", "erwähnen", "erwarten", "fördern", "freuen", "fürchten", "gehorchen", "genehmigen", "gewöhnen", "glänzen", "hindern", "husten", "klagen", "korrigieren", "kritisieren", "kürzen", "lagern", "leisten", "lenken", "lösen", "malen", "merken", "montieren", "nähen", "nicken", "pflanzen", "pflegen", "plaudern", "präsentieren", "produzieren", "quälen", "rasieren", "rechnen", "reagieren", "reduzieren", "reinigen", "riskieren", "schaden", "schalten", "schminken", "schonen", "servieren", "siegen", "spazieren", "speichern", "spenden", "sperren", "spülen", "stärken", "strafen", "stürzen", "summen", "tanken", "trauern", "tropfen", "überlegen", "überqueren", "überraschen", "übersetzen", "umarmen", "unterrichten", "unterstützen", "verändern", "verbessern", "verbrauchen", "verlangen", "vermuten", "verpacken", "versichern", "versorgen", "verteilen", "verwenden", "verzichten", "warnen", "wechseln", "widmen", "wirken", "würzen", "zaubern", "zelten", "zweifeln"],
+  en: ["accomplish", "acquire", "adapt", "address", "adjust", "admire", "advise", "alarm", "amaze", "analyze", "announce", "appreciate", "approach", "approve", "argue", "arrange", "assist", "assume", "attach", "attempt", "attend", "attract", "avoid", "balance", "behave", "belong", "bother", "brake", "brighten", "calculate", "cancel", "capture", "care", "cause", "challenge", "chase", "cheat", "chew", "claim", "clap", "classify", "combine", "comment", "communicate", "compare", "compete", "complain", "concentrate", "conclude", "confirm", "confuse", "congratulate", "conquer", "consist", "contact", "contribute", "control", "convince", "cooperate", "copy", "correct", "cure", "damage", "dare", "declare", "decrease", "defeat", "defend", "define", "delay", "deliver", "demand", "deny", "depend", "deserve", "design", "desire", "destroy", "develop", "disagree", "disappear", "disappoint", "distribute", "disturb", "double", "doubt", "drag", "earn", "educate", "embarrass", "employ", "encourage", "ensure", "entertain", "escape", "examine", "exchange", "exist", "expand", "experience", "express", "extend", "fasten", "film", "fold", "force", "frighten", "gather", "generate", "glance", "govern", "grab", "greet", "handle", "harm", "heal", "hesitate", "identify", "ignore", "illustrate", "imagine", "imitate", "impress", "include", "increase", "indicate", "influence", "inform", "injure", "inspire", "install", "instruct", "intend", "interrupt", "introduce", "invent", "investigate", "involve", "join", "judge", "kiss", "knock", "label", "launch", "link", "list", "locate", "lock", "manage", "manufacture", "march", "measure", "melt", "mend", "mention", "mind", "murder", "obey", "observe", "obtain", "occupy", "offend", "operate", "organize", "owe", "pack", "paint", "participate", "perform", "persuade", "pick", "plant", "please", "point", "polish", "possess", "pour", "practice", "praise", "prefer", "prepare", "present", "preserve", "pretend", "prevent", "produce", "promise", "pronounce", "protect", "provide", "publish", "punish", "realize", "recognize", "recommend", "record", "reduce", "refuse", "regret", "reject", "relate", "relax", "release", "remember", "remind", "remove", "repair", "repeat", "replace", "reply", "report", "represent", "require", "rescue", "respect", "respond", "retire", "reveal", "review", "reward", "rob", "rub", "ruin", "satisfy", "scratch", "seal", "search", "separate", "settle", "shape", "share", "shave", "shout", "sign", "slip", "smell", "solve", "sort", "spell", "spoil", "spray", "squeeze", "stare", "start", "state", "stay", "steer", "stir", "strengthen", "stretch", "study", "succeed", "suffer", "suggest", "supply", "support", "suppose", "surround", "survive", "suspect", "switch", "talk", "taste", "tease", "threaten", "tidy", "tip", "trace", "train", "translate", "travel", "treat", "trust", "type", "unite", "use", "vary", "visit", "vote", "warn", "waste", "weigh", "whisper", "wipe", "wonder", "worry", "wrap", "yawn", "yell"],
+  nl: ["aankleden", "aanraken", "afmaken", "antwoorden", "bewaren", "bestuderen", "controleren", "dromen", "fietsen", "filmen", "fluisteren", "groeten", "haasten", "herstellen", "herinneren", "kammen", "kloppen", "koppelen", "letten", "markeren", "melden", "missen", "mompelen", "noemen", "oefenen", "ontmoeten", "ontspannen", "openen", "pakken", "parkeren", "planten", "poetsen", "redden", "regelen", "registreren", "rekenen", "schilderen", "slepen", "sparen", "spelen", "stoppen", "strepen", "tekenen", "tellen", "trainen", "vegen", "verbeteren", "verbranden", "verdienen", "vergroten", "verhuizen", "verkleinen", "vermenigvuldigen", "verminderen", "veroorzaken", "versieren", "vertalen", "verwarmen", "verzamelen", "voorbereiden", "wandelen", "wensen", "wisselen", "zorgen"],
+  fr: ["accélérer", "accepter", "accompagner", "accrocher", "accuser", "acheter", "admirer", "adorer", "affirmer", "ajouter", "allumer", "améliorer", "amuser", "analyser", "annoncer", "apercevoir", "apprécier", "approcher", "arrêter", "arroser", "assurer", "attacher", "attaquer", "attraper", "augmenter", "avaler", "avancer", "bâiller", "baisser", "balayer", "bavarder", "blesser", "boucher", "bouger", "briller", "brosser", "brûler", "cacher", "calculer", "calmer", "camper", "casser", "causer", "cesser", "changer", "chanter", "charger", "chasser", "chauffer", "chercher", "classer", "coller", "commander", "comparer", "compléter", "compliquer", "compter", "conserver", "consulter", "continuer", "copier", "corriger", "coucher", "couper", "crier", "critiquer", "cultiver", "danser", "déchirer", "décider", "déclarer", "décorer", "découper", "décrire", "défendre", "dégoûter", "déjeuner", "demander", "démolir", "dépenser", "déranger", "dessiner", "détester", "deviner", "dîner", "diriger", "discuter", "distribuer", "diviser", "donner", "doubler", "durer", "échanger", "échouer", "éclairer", "économiser", "écouter", "effacer", "embrasser", "emmener", "emprunter", "encourager", "enfermer", "enlever", "enseigner", "entourer", "entrer", "envoyer", "épargner", "espérer", "essayer", "essuyer", "étaler", "éteindre", "étonner", "étudier", "éviter", "examiner", "exiger", "expliquer", "exprimer", "fabriquer", "fâcher", "faciliter", "fatiguer", "fermer", "fêter", "filmer", "fixer", "former", "fournir", "frapper", "frotter", "gagner", "garder", "gâter", "goûter", "grandir", "gratter", "griller", "habiller", "habiter", "hésiter", "identifier", "ignorer", "imaginer", "imiter", "indiquer", "insister", "installer", "interroger", "inventer", "inviter", "jeter", "jouer", "juger", "laisser", "laver", "lever", "libérer", "limiter", "livrer", "louer", "manquer", "marcher", "marquer", "mélanger", "menacer", "mériter", "mesurer", "modifier", "monter", "montrer", "mordre", "nager", "négliger", "nettoyer", "noter", "obliger", "observer", "occuper", "offrir", "organiser", "oser", "oublier", "pardonner", "parler", "partager", "participer", "passer", "patiner", "pêcher", "peindre", "penser", "percer", "perdre", "photographier", "piquer", "placer", "plaisanter", "pleurer", "plier", "plonger", "porter", "poser", "posséder", "pousser", "préférer", "préparer", "présenter", "prêter", "prier", "produire", "profiter", "programmer", "prononcer", "proposer", "protéger", "prouver", "punir", "quitter", "raconter", "ralentir", "ramasser", "ranger", "rappeler", "rapporter", "rassurer", "réagir", "réaliser", "recevoir", "réchauffer", "recommander", "réfléchir", "refuser", "regarder", "régler", "regretter", "remarquer", "remercier", "remplacer", "remplir", "rencontrer", "renforcer", "renverser", "réparer", "répéter", "répondre", "reposer", "représenter", "réserver", "résoudre", "respecter", "ressembler", "rester", "retenir", "retirer", "réunir", "réussir", "réveiller", "réviser", "rouler", "sauter", "sauver", "sécher", "sembler", "séparer", "serrer", "servir", "signer", "situer", "soigner", "souffler", "souhaiter", "soulever", "soupçonner", "sourire", "subir", "supporter", "supposer", "surveiller", "taper", "téléphoner", "terminer", "tirer", "tomber", "toucher", "tourner", "tousser", "tracer", "traduire", "trahir", "traîner", "traiter", "transformer", "transporter", "travailler", "traverser", "tremper", "tricher", "tromper", "trouver", "utiliser", "vendre", "vérifier", "verser", "viser", "visiter", "voler", "voter", "voyager"]
+};
+function verbPool(langCode) {
+  const eng = window.CONJ[langCode];
+  const set = new Set(eng.samples || []);
+  (eng.irregulars || []).forEach(v => set.add(v));
+  (EXTRA_VERBS[langCode] || []).forEach(v => set.add(v));
+  (EXTRA_VERBS2[langCode] || []).forEach(v => set.add(v));
+  if (langCode === "es" || langCode === "en") (EXTRA_VERBS3[langCode] || []).forEach(v => set.add(v));
+  const trd = window.TRANS[langCode];
+  if (trd) Object.keys(trd).forEach(k => set.add(k));
+  const idx = _LIDX[langCode];
+  if (idx != null) CONCEPTS.forEach(row => {
+    if (row[idx]) set.add(row[idx]);
+  });
+  return Array.from(set);
+}
+
+/* Quiz pool graded by learner level:
+   beginner = common verbs + most-frequent irregulars;
+   intermediate = + all irregulars + extra common batch;
+   advanced = everything available. */
+function quizPool(langCode, skill) {
+  const eng = window.CONJ[langCode];
+  const irr = eng.irregulars || [];
+  const set = new Set();
+  (eng.samples || []).forEach(v => set.add(v));
+  (EXTRA_VERBS[langCode] || []).forEach(v => set.add(v));
+  if (skill === "beginner") {
+    irr.slice(0, 24).forEach(v => set.add(v));
+  } else {
+    irr.forEach(v => set.add(v));
+    (EXTRA_VERBS2[langCode] || []).forEach(v => set.add(v));
+  }
+  if (skill === "advanced") {
+    if (langCode === "es" || langCode === "en") (EXTRA_VERBS3[langCode] || []).forEach(v => set.add(v));
+    const trd = window.TRANS[langCode];
+    if (trd) Object.keys(trd).forEach(k => set.add(k));
+  }
+  return Array.from(set);
+}
+
+/* Is the raw input a known dictionary (infinitive) verb? We check pool
+   membership rather than "does it conjugate", because German/Dutch accept any
+   -en word as an infinitive — which would hide participles like "gegessen". */
+function isKnownInfinitive(langCode, raw) {
+  const v = (raw || "").trim().toLowerCase().replace(/^to /, "");
+  if (!v) return false;
+  return verbPool(langCode).indexOf(v) >= 0;
+}
+
+/* Infinitive endings per language, ordered by how common/productive the class
+   is (first = highest priority when an ending is ambiguous). */
+const INF_SUF = {
+  es: ["ar", "er", "ir"],
+  fr: ["er", "re", "ir"],
+  de: ["en", "n"],
+  nl: ["en", "n"],
+  en: []
+};
+
+/* Generate plausible infinitives for an inflected form, to be *verified* by
+   re-conjugation. For es/fr/de/nl: the infinitive is either a prefix of the
+   form (future/conditional are built on the infinitive) or stem+ending. */
+function ruleCandidates(langCode, input) {
+  if (langCode === "en") return enCandidates(input);
+  const suf = INF_SUF[langCode] || [];
+  const set = new Set();
+  const L = input.length;
+  for (let k = Math.max(2, L - 7); k <= L; k++) {
+    const pre = input.slice(0, k);
+    set.add(pre);
+    suf.forEach(s => set.add(pre + s));
+  }
+  return Array.from(set).filter(c => c.length >= 2 && suf.some(s => c.endsWith(s)));
+}
+function enCandidates(w) {
+  const c = new Set();
+  const undbl = s => s.length > 1 && s[s.length - 1] === s[s.length - 2] ? s.slice(0, -1) : null;
+  if (w.endsWith("ing")) {
+    const s = w.slice(0, -3);
+    c.add(s);
+    c.add(s + "e");
+    const d = undbl(s);
+    if (d) c.add(d);
+  }
+  if (w.endsWith("ied")) {
+    c.add(w.slice(0, -3) + "y");
+  }
+  if (w.endsWith("ed")) {
+    const s = w.slice(0, -2);
+    c.add(s);
+    c.add(s + "e");
+    const d = undbl(s);
+    if (d) c.add(d);
+    c.add(w.slice(0, -1));
+  }
+  if (w.endsWith("ies")) {
+    c.add(w.slice(0, -3) + "y");
+  }
+  if (w.endsWith("es")) {
+    c.add(w.slice(0, -2));
+    c.add(w.slice(0, -1));
+  }
+  if (w.endsWith("s") && !w.endsWith("ss")) {
+    c.add(w.slice(0, -1));
+  }
+  return Array.from(c).filter(x => x.length >= 2);
+}
+/* When several made-up infinitives verify (ambiguous ending), keep only the
+   best one: the shortest base (bogus reconstructions embed inflectional letters
+   into the stem, so they are longer), then the most productive verb-class. */
+function pruneGuess(langCode, groups) {
+  let min = Infinity;
+  groups.forEach(g => {
+    min = Math.min(min, g.base.length);
+  });
+  Array.from(groups.entries()).forEach(([k, g]) => {
+    if (g.base.length > min) groups.delete(k);
+  });
+  const order = INF_SUF[langCode] || [];
+  if (order.length) {
+    const pri = b => {
+      for (let k = 0; k < order.length; k++) if (b.endsWith(order[k])) return order.length - k;
+      return 0;
+    };
+    let best = 0;
+    groups.forEach(g => {
+      best = Math.max(best, pri(g.base));
+    });
+    Array.from(groups.entries()).forEach(([k, g]) => {
+      if (pri(g.base) < best) groups.delete(k);
+    });
+  }
+}
+function deconjugate(langCode, raw) {
+  const input = norm(raw);
+  if (!input) return null;
+  const eng = window.CONJ[langCode];
+  const pool = verbPool(langCode);
+  const groups = new Map(); // inf|tenseId -> analysis
+  const dinput = deburr(input);
+  function record(r, t, i, allSame) {
+    const ib = infBase(langCode, r.infinitive);
+    const key = ib + "|" + t.id;
+    let g = groups.get(key);
+    if (!g) {
+      g = {
+        infinitive: r.infinitive,
+        base: ib,
+        isIrregular: r.isIrregular,
+        tenseId: t.id,
+        tenseLabel: t.label,
+        indices: [],
+        pronouns: [],
+        noPerson: allSame
+      };
+      groups.set(key, g);
+    }
+    if (g.indices.indexOf(i) < 0) {
+      g.indices.push(i);
+      g.pronouns.push(r.pronouns[i]);
+    }
+  }
+  function scan(matchFn) {
+    pool.forEach(cand => {
+      const r = eng.conjugate(cand);
+      if (!r || r.error) return;
+      r.tenses.forEach(t => {
+        if (!t.forms) return;
+        const allSame = t.forms.every(f => f === t.forms[0]);
+        t.forms.forEach((f, i) => {
+          if (f && f !== "—" && matchFn(norm(f))) record(r, t, i, allSame);
+        });
+      });
+    });
+  }
+  scan(f => f === input); // 1) exact full-form match
+
+  if (groups.size === 0) {
+    // 2) bare participle / gerund inside compound tenses
+    const isGerund = /(ndo|ant|ing)$/.test(input); // -ndo (es), -ant (fr), -ing (en)
+    pool.forEach(cand => {
+      const r = eng.conjugate(cand);
+      if (!r || r.error) return;
+      r.tenses.forEach(t => {
+        if (!t.forms) return;
+        t.forms.forEach(f => {
+          if (!f || f === "—" || f.indexOf(" ") < 0) return;
+          if (norm(f.split(" ").pop()) === input) {
+            const ib = infBase(langCode, r.infinitive);
+            const key = ib + (isGerund ? "|__ger" : "|__pp");
+            if (!groups.has(key)) groups.set(key, {
+              infinitive: r.infinitive,
+              base: ib,
+              isIrregular: r.isIrregular,
+              tenseId: isGerund ? "gerund" : "participle",
+              tenseLabel: isGerund ? tr("dq_gerund") : tr("dq_participle"),
+              indices: [],
+              pronouns: [],
+              noPerson: true
+            });
+          }
+        });
+      });
+    });
+  }
+  let fuzzy = false;
+  if (groups.size === 0 && dinput !== input) {
+    // 3) accent-insensitive fallback
+    fuzzy = true;
+    scan(f => deburr(f) === dinput);
+  }
+  let guessed = false;
+  if (groups.size === 0) {
+    // 4) rule-based reconstruction (verified by re-conjugation)
+    const isGer = /(ndo|ant|ing)$/.test(input);
+    ruleCandidates(langCode, input).forEach(cand => {
+      const r = eng.conjugate(cand);
+      if (!r || r.error) return;
+      if (infBase(langCode, r.infinitive) !== cand) return; // candidate must be its own clean infinitive
+      r.tenses.forEach(t => {
+        if (!t.forms) return;
+        const allSame = t.forms.every(f => f === t.forms[0]);
+        t.forms.forEach((f, i) => {
+          if (!f || f === "—") return;
+          if (norm(f) === input) record(r, t, i, allSame);else if (f.indexOf(" ") >= 0 && norm(f.split(" ").pop()) === input) {
+            const ib = infBase(langCode, r.infinitive);
+            const key = ib + (isGer ? "|__ger" : "|__pp");
+            if (!groups.has(key)) groups.set(key, {
+              infinitive: r.infinitive,
+              base: ib,
+              isIrregular: r.isIrregular,
+              tenseId: isGer ? "gerund" : "participle",
+              tenseLabel: isGer ? tr("dq_gerund") : tr("dq_participle"),
+              indices: [],
+              pronouns: [],
+              noPerson: true
+            });
+          }
+        });
+      });
+    });
+    if (groups.size > 0) {
+      guessed = true;
+      pruneGuess(langCode, groups);
+    }
+  }
+  if (groups.size === 0) return null;
+  const analyses = Array.from(groups.values());
+  const infinitives = [];
+  analyses.forEach(a => {
+    if (!infinitives.some(x => x.base === a.base)) infinitives.push({
+      infinitive: a.infinitive,
+      base: a.base,
+      isIrregular: a.isIrregular
+    });
+  });
+  return {
+    input: (raw || "").trim(),
+    analyses,
+    infinitives,
+    fuzzy,
+    guessed
+  };
+}
+
+/* ---------- Sponsor slot (single contextual recommendation) ---------- */
+/* Swap these objects to change the paying partner per language. */
+const SPONSORS = {
+  de: {
+    name: "DeutschDaily",
+    letter: "D",
+    color: "#ff3b5c",
+    tag: "Spaced-repetition trainer for German verbs",
+    link: "https://example.com/de"
+  },
+  es: {
+    name: "Verbaes",
+    letter: "V",
+    color: "#ff9f0a",
+    tag: "Master Spanish tenses with 5-min drills",
+    link: "https://example.com/es"
+  },
+  en: {
+    name: "FluentList",
+    letter: "F",
+    color: "#0a84ff",
+    tag: "Build English fluency in 5 minutes a day",
+    link: "https://example.com/en"
+  },
+  nl: {
+    name: "NederLearn",
+    letter: "N",
+    color: "#30c95a",
+    tag: "Practice Dutch verbs the smart way",
+    link: "https://example.com/nl"
+  },
+  fr: {
+    name: "ParlezPlus",
+    letter: "P",
+    color: "#a557ff",
+    tag: "Your interactive French grammar coach",
+    link: "https://example.com/fr"
+  }
+};
+function AdCard({
+  sponsor,
+  hook,
+  onClick,
+  onDismiss
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "adcard"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "adcard-top"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "adlabel"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "addot"
+  }), tr("recommended")), /*#__PURE__*/React.createElement("button", {
+    className: "adclose",
+    title: "Dismiss",
+    onClick: onDismiss
+  }, "\xD7")), /*#__PURE__*/React.createElement("div", {
+    className: "adcard-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "adicon",
+    style: {
+      background: sponsor.color
+    }
+  }, sponsor.letter), /*#__PURE__*/React.createElement("div", {
+    className: "adtext"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "adtitle"
+  }, hook), /*#__PURE__*/React.createElement("div", {
+    className: "addesc"
+  }, sponsor.name, " \xB7 ", sponsor.tag))), /*#__PURE__*/React.createElement("a", {
+    className: "adcta",
+    href: sponsor.link,
+    target: "_blank",
+    rel: "noopener noreferrer",
+    onClick: onClick
+  }, tr("ad_cta")));
+}
+
+/* Cross-language verb equivalents (all chosen to conjugate correctly). Order: de, es, en, nl, fr */
+const CONCEPTS = [["sein", "ser", "be", "zijn", "être"], ["haben", "tener", "have", "hebben", "avoir"], ["gehen", "ir", "go", "gaan", "aller"], ["kommen", "venir", "come", "komen", "venir"], ["machen", "hacer", "make", "maken", "faire"], ["sehen", "ver", "see", "zien", "voir"], ["essen", "comer", "eat", "eten", "manger"], ["trinken", "beber", "drink", "drinken", "boire"], ["sprechen", "hablar", "speak", "spreken", "parler"], ["wollen", "querer", "want", "willen", "vouloir"], ["können", "poder", "can", "kunnen", "pouvoir"], ["wissen", "saber", "know", "weten", "savoir"], ["geben", "dar", "give", "geven", "donner"], ["nehmen", "tomar", "take", "nemen", "prendre"], ["finden", "encontrar", "find", "vinden", "trouver"], ["schreiben", "escribir", "write", "schrijven", "écrire"], ["lesen", "leer", "read", "lezen", "lire"], ["schlafen", "dormir", "sleep", "slapen", "dormir"], ["arbeiten", "trabajar", "work", "werken", "travailler"], ["kaufen", "comprar", "buy", "kopen", "acheter"], ["wohnen", "vivir", "live", "wonen", "vivre"], ["sagen", "decir", "say", "zeggen", "dire"], ["fahren", "conducir", "drive", "rijden", "conduire"], ["spielen", "jugar", "play", "spelen", "jouer"], ["helfen", "ayudar", "help", "helpen", "aider"], ["bringen", "traer", "bring", "brengen", "apporter"], ["denken", "pensar", "think", "denken", "penser"]];
+const _LIDX = {
+  de: 0,
+  es: 1,
+  en: 2,
+  nl: 3,
+  fr: 4
+};
+function conceptTranslate(verb, from, to) {
+  const v = (verb || "").trim().toLowerCase();
+  const fi = _LIDX[from],
+    ti = _LIDX[to];
+  for (const row of CONCEPTS) {
+    if (row[fi] === v) return row[ti];
+  }
+  return null;
+}
+
+/* Verb meaning in the learner's mother tongue, when we can know it instantly
+   (same language, a built-in cross-language equivalent, or the English gloss). */
+function nativeMeaningInstant(langCode, base, nativeName) {
+  const nCode = NATIVE_TO_UI[nativeName];
+  if (nCode === langCode) return base;
+  if (nCode) {
+    const ct = conceptTranslate(base, langCode, nCode);
+    if (ct) return ct;
+  }
+  if (nativeName === "English") {
+    const m = window.lookupMeaning(langCode, base);
+    if (m) return m;
+  }
+  return null;
+}
+
+/* Formal vs informal address hint per language */
+const FORMALITY = {
+  de: "du = informal · Sie = formal (polite)",
+  es: "tú = informal · usted (uses 3rd person) = formal",
+  en: "English uses one “you” for everyone",
+  nl: "jij/je = informal · u = formal",
+  fr: "tu = informal · vous = formal or plural"
+};
+
+/* Reflexive verb support (wrapper around the base engines) */
+const REFLEX = {
+  es: {
+    detect: v => /(ar|er|ir)se$/.test(v),
+    strip: v => v.slice(0, -2),
+    pron: ["me", "te", "se", "nos", "os", "se"],
+    place: "before"
+  },
+  fr: {
+    detect: v => /^se /.test(v) || /^s'/.test(v),
+    strip: v => v.replace(/^se /, "").replace(/^s'/, ""),
+    pron: ["me", "te", "se", "nous", "vous", "se"],
+    place: "before",
+    elide: true
+  },
+  de: {
+    detect: v => /^sich /.test(v),
+    strip: v => v.replace(/^sich /, ""),
+    pron: ["mich", "dich", "sich", "uns", "euch", "sich"],
+    place: "after"
+  },
+  nl: {
+    detect: v => /^zich /.test(v),
+    strip: v => v.replace(/^zich /, ""),
+    pron: ["me", "je", "zich", "ons", "je", "zich"],
+    place: "after"
+  }
+};
+function conjugateMaybeReflexive(langCode, input) {
+  const eng = window.CONJ[langCode];
+  const v = (input || "").trim().toLowerCase();
+  const R = REFLEX[langCode];
+  if (R && R.detect(v)) {
+    const r = eng.conjugate(R.strip(v));
+    if (!r || r.error) return r;
+    // French reflexive compound tenses take être, not avoir
+    const FR_ETRE = {
+      ai: "suis",
+      as: "es",
+      a: "est",
+      avons: "sommes",
+      avez: "êtes",
+      ont: "sont",
+      avais: "étais",
+      avait: "était",
+      avions: "étions",
+      aviez: "étiez",
+      avaient: "étaient"
+    };
+    const out = Object.assign({}, r, {
+      infinitive: v,
+      reflexive: true
+    });
+    out.tenses = r.tenses.map(t => ({
+      id: t.id,
+      label: t.label,
+      reg: null,
+      forms: t.forms.map((f, i) => {
+        if (!f || f === "—") return f;
+        const p = R.pron[i];
+        let form = f;
+        if (langCode === "fr" && /perfect/.test(t.id)) {
+          form = form.replace(/^(\S+)/, w => FR_ETRE[w] || w); // avoir → être
+        }
+        if (R.place === "after") {
+          // pronoun goes right after the finite (first) word: "habe mich gefreut"
+          const parts = form.split(" ");
+          if (parts.length === 1) return parts[0] + " " + p;
+          return parts[0] + " " + p + " " + parts.slice(1).join(" ");
+        }
+        // before (es/fr): clitic precedes the whole verb cluster
+        if (R.elide && /^[aeiouhâàéèêïî]/i.test(form) && (p === "me" || p === "te" || p === "se")) return p[0] + "'" + form;
+        return p + " " + form;
+      })
+    }));
+    return out;
+  }
+  return eng.conjugate(input);
+}
+
+/* Accent helper keys per language */
+const ACCENTS = {
+  de: ["ä", "ö", "ü", "ß"],
+  es: ["á", "é", "í", "ó", "ú", "ñ", "ü", "¿", "¡"],
+  fr: ["à", "â", "ç", "é", "è", "ê", "ë", "î", "ï", "ô", "û", "ù", "œ"],
+  nl: ["ë", "ï", "é"],
+  en: []
+};
+function AccentBar({
+  lang,
+  onInsert
+}) {
+  return null; // removed per request — users type accents on their own keyboard
+}
+
+/* Mistakes pool (wrong answers, per language) */
+function mKey(m) {
+  return m.verb + "|" + m.tenseLabel + "|" + m.pronoun;
+}
+function getMistakes(lang) {
+  return recall("kunju-mistakes-" + lang, []);
+}
+function addMistake(lang, q) {
+  const list = getMistakes(lang);
+  if (list.some(m => mKey(m) === mKey(q))) return;
+  list.unshift({
+    verb: q.verb,
+    tenseLabel: q.tenseLabel,
+    pronoun: q.pronoun,
+    answer: q.answer,
+    options: q.options,
+    isIrregular: q.isIrregular,
+    ttsLang: q.ttsLang,
+    lang
+  });
+  persist("kunju-mistakes-" + lang, list.slice(0, 40));
+}
+function removeMistake(lang, q) {
+  persist("kunju-mistakes-" + lang, getMistakes(lang).filter(m => mKey(m) !== mKey(q)));
+}
+/* Sentence-mistakes pool (wrong/unknown sentences), per target language. */
+function getSentMist(tc) {
+  return recall("kunju-sentmist-" + tc, []);
+}
+function addSentMist(tc, s) {
+  if (!s || !s.t) return;
+  const list = getSentMist(tc);
+  if (list.some(x => x.t === s.t)) return;
+  list.unshift({
+    n: s.n,
+    t: s.t
+  });
+  persist("kunju-sentmist-" + tc, list.slice(0, 40));
+}
+function removeSentMist(tc, s) {
+  if (!s) return;
+  persist("kunju-sentmist-" + tc, getSentMist(tc).filter(x => x.t !== s.t));
+}
+
+/* Daily goal + streak */
+const DAILY_GOAL = 12;
+function getPersonalGoal() {
+  const g = recall("kunju-goal-data", null);
+  return g && g.perDay ? g.perDay : DAILY_GOAL;
+}
+function readDaily() {
+  const today = new Date().toDateString();
+  const y = new Date(Date.now() - 86400000).toDateString();
+  const d = recall("kunju-daily", {
+    date: "",
+    count: 0
+  });
+  const st = recall("kunju-streak", {
+    last: "",
+    streak: 0,
+    best: 0
+  });
+  const count = d.date === today ? d.count : 0;
+  let streak = st.streak || 0;
+  if (st.last !== today && st.last !== y) streak = 0;
+  return {
+    count,
+    goal: getPersonalGoal(),
+    streak,
+    best: st.best || 0
+  };
+}
+function bumpDaily() {
+  const today = new Date().toDateString();
+  const y = new Date(Date.now() - 86400000).toDateString();
+  let d = recall("kunju-daily", {
+    date: "",
+    count: 0
+  });
+  if (d.date !== today) d = {
+    date: today,
+    count: 0
+  };
+  d.count += 1;
+  persist("kunju-daily", d);
+  let st = recall("kunju-streak", {
+    last: "",
+    streak: 0,
+    best: 0
+  });
+  if (d.count >= getPersonalGoal() && st.last !== today) {
+    st.streak = st.last === y ? (st.streak || 0) + 1 : 1;
+    st.last = today;
+    st.best = Math.max(st.best || 0, st.streak);
+    persist("kunju-streak", st);
+  }
+  return readDaily();
+}
+
+/* Export / share a conjugation */
+const PROMO = [["DE", "Verben konjugieren, üben & lernen"], ["EN", "conjugate, quiz & learn verbs"], ["ES", "conjuga, practica y aprende verbos"], ["NL", "werkwoorden vervoegen, oefenen & leren"], ["FR", "conjuguer, réviser & apprendre"]];
+const PROMO_H = 234;
+function makeConjCanvas(result, langCode, meaning) {
+  const eng = window.CONJ[langCode];
+  const RB = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#00bcd4", "#0a84ff", "#a557ff", "#ff5ea8"];
+  const W = 880,
+    pad = 46,
+    lineH = 32,
+    headH = 150,
+    tenseGap = 20;
+  const H = headH + result.tenses.reduce((a, t) => a + 40 + t.forms.length * lineH + tenseGap, 0) + PROMO_H;
+  const c = document.createElement("canvas");
+  const SC = 2;
+  c.width = W * SC;
+  c.height = H * SC;
+  const x = c.getContext("2d");
+  x.scale(SC, SC);
+  x.fillStyle = "#f6f7fb";
+  x.fillRect(0, 0, W, H);
+  x.fillStyle = "#ffffff";
+  x.fillRect(0, 0, W, headH - 16);
+  const grad = x.createLinearGradient(0, 0, W, 0);
+  ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#00bcd4", "#0a84ff", "#a557ff"].forEach((col, i, arr) => grad.addColorStop(i / (arr.length - 1), col));
+  x.fillStyle = grad;
+  x.fillRect(0, 0, W, 10);
+  x.fillStyle = "#14151a";
+  x.font = "700 46px sans-serif";
+  x.fillText(result.infinitive, pad, 78);
+  x.fillStyle = "#707888";
+  x.font = "500 19px sans-serif";
+  x.fillText(eng.name + (meaning ? "  ·  " + meaning : ""), pad, 108);
+  // regular/irregular pill
+  const pillTxt = result.isIrregular ? "irregular" : "regular";
+  x.font = "600 14px sans-serif";
+  const pw = x.measureText(pillTxt).width + 22;
+  x.fillStyle = result.isIrregular ? "#ffe3cc" : "#d6f5e0";
+  roundRect(x, pad, 120, pw, 24, 12);
+  x.fill();
+  x.fillStyle = result.isIrregular ? "#d4660a" : "#1a9b46";
+  x.fillText(pillTxt, pad + 11, 137);
+  x.fillStyle = "#a557ff";
+  x.font = "700 16px sans-serif";
+  x.textAlign = "right";
+  x.fillText("ConjuExpert", W - pad, 78);
+  x.textAlign = "left";
+  let y = headH + 18;
+  result.tenses.forEach((t, ti) => {
+    x.fillStyle = RB[ti % RB.length];
+    roundRect(x, pad, y - 15, 12, 12, 3);
+    x.fill();
+    x.fillStyle = "#14151a";
+    x.font = "600 22px sans-serif";
+    x.fillText(t.label, pad + 24, y + 2);
+    y += 36;
+    t.forms.forEach((f, i) => {
+      if (i % 2 === 0) {
+        x.fillStyle = "#ffffff";
+        x.fillRect(pad, y - 21, W - pad * 2, lineH);
+      }
+      x.fillStyle = "#9098a8";
+      x.font = "15px sans-serif";
+      x.fillText(result.pronouns[i], pad + 14, y);
+      x.fillStyle = "#14151a";
+      x.font = "600 18px monospace";
+      x.fillText(f, pad + 210, y);
+      y += lineH;
+    });
+    y += tenseGap;
+  });
+  // promo / ad block
+  const py = H - PROMO_H + 8;
+  x.fillStyle = "#101018";
+  x.fillRect(0, py, W, PROMO_H - 8);
+  x.fillStyle = grad;
+  x.fillRect(0, py, W, 5);
+  x.fillStyle = "#ffffff";
+  x.font = "700 24px sans-serif";
+  x.fillText("Conju", pad, py + 44);
+  const cw = x.measureText("Conju").width;
+  x.fillStyle = "#a557ff";
+  x.fillText("Expert", pad + cw, py + 44);
+  x.fillStyle = "#8a93b0";
+  x.font = "500 14px sans-serif";
+  x.textAlign = "right";
+  x.fillText("free verb conjugator", W - pad, py + 44);
+  x.textAlign = "left";
+  PROMO.forEach((p, i) => {
+    const ly = py + 78 + i * 23;
+    x.fillStyle = "#6b7390";
+    x.font = "700 12px sans-serif";
+    x.fillText(p[0], pad, ly);
+    x.fillStyle = "#dfe2ee";
+    x.font = "15px sans-serif";
+    x.fillText(p[1], pad + 36, ly);
+  });
+  x.fillStyle = "#ffd24a";
+  x.font = "600 16px sans-serif";
+  x.fillText("📱  Download free — iOS App Store · Google Play", pad, py + 78 + 5 * 23 + 12);
+  return c;
+}
+function roundRect(x, rx, ry, w, h, r) {
+  x.beginPath();
+  x.moveTo(rx + r, ry);
+  x.arcTo(rx + w, ry, rx + w, ry + h, r);
+  x.arcTo(rx + w, ry + h, rx, ry + h, r);
+  x.arcTo(rx, ry + h, rx, ry, r);
+  x.arcTo(rx, ry, rx + w, ry, r);
+  x.closePath();
+}
+function canvasToBlob(c) {
+  return new Promise(res => c.toBlob(res, "image/png"));
+}
+function fileName(result, langCode) {
+  return result.infinitive.replace(/[^\p{L}]/gu, "_") + "_" + langCode;
+}
+function exportImage(result, langCode, meaning) {
+  makeConjCanvas(result, langCode, meaning).toBlob(b => {
+    if (!b) return;
+    const u = URL.createObjectURL(b);
+    const a = document.createElement("a");
+    a.href = u;
+    a.download = fileName(result, langCode) + ".png";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(u), 1500);
+  }, "image/png");
+}
+function exportPDF(result, langCode, meaning) {
+  const eng = window.CONJ[langCode];
+  const native = recall("kunju-native", "German");
+  const skill = recall("kunju-skill", "beginner");
+  const sec = result.tenses.map(t => {
+    const rows = t.forms.map((f, i) => `<tr><td class="p">${esc(result.pronouns[i])}</td><td class="f">${esc(f)}</td></tr>`).join("");
+    const ex = recall(`kunju-tex2-${langCode}-${result.infinitive}-${t.id}-${native}-${skill}`, null);
+    const exHtml = ex && ex.s ? `<div class="ex"><span class="exs">${fmtVerbMark(ex.s)}</span>${ex.n ? `<span class="exn">${esc(ex.n)}</span>` : ""}</div>` : "";
+    return `<div class="tense"><h3>${esc(t.label)}</h3><table>${rows}</table>${exHtml}</div>`;
+  }).join("");
+  const LC = {
+    DE: "#ff3b5c",
+    EN: "#0a84ff",
+    ES: "#ff9f0a",
+    NL: "#30c95a",
+    FR: "#a557ff"
+  };
+  const MARK = '<div class="mark"><i style="background:#ff3b5c"></i><i style="background:#ff7a18"></i><i style="background:#ffc400"></i><i style="background:#34c759"></i><i style="background:#0a84ff"></i></div>';
+  const RB = '<div class="rb"></div>';
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(result.infinitive)} — ConjuExpert</title>
+<style>
+@page{margin:1.4cm 1.6cm}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#14151a;margin:0;padding:0;background:#fff}
+.wrap{padding:0 0 32px}
+.rb{height:5px;background:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff)}
+.hdr{display:flex;align-items:center;gap:11px;padding:18px 0 16px;border-bottom:1px solid #f0f1f4}
+.mark{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;width:30px;height:30px;padding:4px;background:#f7f8fb;border-radius:8px;border:1px solid #e8eaef;flex:none}
+.mark i{display:block;border-radius:2px}
+.bname{font-size:18px;font-weight:600;letter-spacing:-.02em;color:#14151a;line-height:1.1}
+.bname b{font-weight:700;background:linear-gradient(90deg,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btag{font-size:10.5px;color:#9098a8;letter-spacing:.04em;display:block;margin-top:1px}
+.verb{padding:20px 0 2px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h1{font-size:38px;font-weight:800;margin:0;letter-spacing:-.03em}
+.vtag{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:7px;background:#f0f1f4;color:#6b7390;align-self:center}
+.sub{color:#9098a8;font-size:13.5px;margin:2px 0 18px;font-weight:500}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 28px}
+.tense{break-inside:avoid;margin-bottom:10px}
+h3{font-size:11.5px;font-weight:700;margin:0 0 4px;letter-spacing:.08em;text-transform:uppercase;color:#b0b7c8;border-bottom:1px solid #f0f1f4;padding-bottom:3px}
+table{width:100%;border-collapse:collapse}
+td{padding:2.5px 0;font-size:13.5px}
+.p{color:#c0c7d4;width:40%}
+.f{font-family:ui-monospace,SFMono-Regular,monospace;font-weight:700;color:#14151a}
+.foot{margin-top:28px;padding-top:20px;border-top:1px solid #f0f1f4}
+.fhdr{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.fmark{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:24px;height:24px;padding:3px;background:#f7f8fb;border-radius:6px;border:1px solid #e8eaef;flex:none}
+.fmark i{display:block;border-radius:1px}
+.fname{font-size:15px;font-weight:600;letter-spacing:-.02em;color:#14151a}
+.fname b{font-weight:700;background:linear-gradient(90deg,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ftag{font-size:10px;color:#9098a8;display:block;margin-top:1px}
+.langs{display:grid;grid-template-columns:1fr 1fr;gap:5px 20px;margin-bottom:14px}
+.lang{font-size:12.5px;color:#555;display:flex;gap:9px;align-items:center}
+.lc{font-size:9.5px;font-weight:700;letter-spacing:.1em;min-width:22px;font-family:ui-monospace,monospace}
+.url{font-weight:700;font-size:13px;background:linear-gradient(90deg,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-top:10px;display:block}
+.ex{margin-top:5px;padding:5px 0 0;border-top:1px dashed #edf0f5}
+.exs{display:block;font-size:12px;color:#3a3f52;font-style:italic;line-height:1.45}
+.exs b{color:#0a84ff;font-style:normal;font-weight:700}
+.exn{display:block;font-size:11px;color:#b0b7c8;margin-top:1px}
+.rb-b{margin-top:20px}
+@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head>
+<body>
+${RB}
+<div class="wrap">
+  <div class="hdr">
+    ${MARK}
+    <div>
+      <span class="bname">Conju<b>Expert</b></span>
+      <span class="btag">KI-Konjugationstrainer · 5 Sprachen</span>
+    </div>
+  </div>
+  <div class="verb"><h1>${esc(result.infinitive)}</h1><span class="vtag">${esc(eng.name)}</span></div>
+  <p class="sub">${result.isIrregular ? "unregelmäßig" : "regelmäßig"}${meaning ? " · " + esc(meaning) : ""}</p>
+  <div class="grid">${sec}</div>
+  <div class="foot">
+    <div class="fhdr">
+      <div class="fmark"><i style="background:#ff3b5c"></i><i style="background:#ff7a18"></i><i style="background:#ffc400"></i><i style="background:#34c759"></i><i style="background:#0a84ff"></i></div>
+      <div><span class="fname">Conju<b>Expert</b></span><span class="ftag">Verben konjugieren, üben &amp; lernen — kostenlos</span></div>
+    </div>
+    <div class="langs">
+      ${PROMO.map(p => `<div class="lang"><span class="lc" style="color:${LC[p[0]] || "#9098a8"}">${p[0]}</span>${esc(p[1])}</div>`).join("")}
+    </div>
+    <span class="url">conjuexpert.app</span>
+  </div>
+</div>
+${RB}
+<script>onload=function(){setTimeout(function(){window.print()},400)}<\/script></body></html>`;
+  const w = window.open("", "_blank");
+  if (!w) return;
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+}
+function rateApp() {
+  window.open("https://conjuexpert.app/bewertungen/", "_blank");
+}
+async function shareApp() {
+  const lang = (navigator.language || navigator.userLanguage || "en").toLowerCase().slice(0, 2);
+  const slogans = {
+    de: {
+      title: "ConjuExpert — KI-Support für 5 Sprachen 🌍",
+      text: "🌍✨ 5 Sprachen. KI-Support. Ein Klick.\n\nMit ConjuExpert konjugierst du Verben auf Deutsch, Spanisch, Englisch, Niederländisch & Französisch – mit KI-Support. Sofort. Kostenlos. Kein Download nötig.",
+      copied: "Link kopiert – einfach in WhatsApp, Instagram oder eine E-Mail einfügen! 🎉"
+    },
+    es: {
+      title: "ConjuExpert — Soporte IA para 5 idiomas 🌍",
+      text: "🌍✨ 5 idiomas. Soporte IA. Un clic.\n\nCon ConjuExpert conjugas verbos en alemán, español, inglés, neerlandés y francés – con soporte de IA. Al instante. Gratis. Sin descargas.",
+      copied: "¡Enlace copiado – pégalo en WhatsApp, Instagram o un correo! 🎉"
+    },
+    nl: {
+      title: "ConjuExpert — AI-ondersteuning voor 5 talen 🌍",
+      text: "🌍✨ 5 talen. AI-ondersteuning. Één klik.\n\nMet ConjuExpert vervoeg je werkwoorden in het Duits, Spaans, Engels, Nederlands & Frans – met AI-ondersteuning. Direct. Gratis. Geen download nodig.",
+      copied: "Link gekopieerd – plak het in WhatsApp, Instagram of een e-mail! 🎉"
+    },
+    fr: {
+      title: "ConjuExpert — Support IA pour 5 langues 🌍",
+      text: "🌍✨ 5 langues. Support IA. Un clic.\n\nAvec ConjuExpert, conjuguez des verbes en allemand, espagnol, anglais, néerlandais et français – avec le support de l'IA. Instantané. Gratuit. Sans téléchargement.",
+      copied: "Lien copié – colle-le dans WhatsApp, Instagram ou un e-mail ! 🎉"
+    },
+    en: {
+      title: "ConjuExpert — AI support for 5 languages 🌍",
+      text: "🌍✨ 5 languages. AI support. One click.\n\nWith ConjuExpert you conjugate verbs in German, Spanish, English, Dutch & French – with AI support. Instant. Free. No download needed.",
+      copied: "Link copied – paste it into WhatsApp, Instagram or an email! 🎉"
+    }
+  };
+  const s = slogans[lang] || slogans.en;
+  const shareData = {
+    title: s.title,
+    text: s.text,
+    url: "https://conjuexpert.app"
+  };
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+      return;
+    }
+    await navigator.clipboard.writeText(s.text + "\n\n👉 conjuexpert.app");
+    if (window.__toast) window.__toast(s.copied);
+  } catch (e) {
+    if (e && e.name !== "AbortError") {
+      try {
+        await navigator.clipboard.writeText("https://conjuexpert.app");
+      } catch {}
+    }
+  }
+}
+async function shareConjugation(result, langCode, meaning) {
+  try {
+    const blob = await canvasToBlob(makeConjCanvas(result, langCode, meaning));
+    const file = new File([blob], fileName(result, langCode) + ".png", {
+      type: "image/png"
+    });
+    if (navigator.canShare && navigator.canShare({
+      files: [file]
+    })) {
+      await navigator.share({
+        files: [file],
+        title: result.infinitive,
+        text: result.infinitive + " — ConjuExpert"
+      });
+      return;
+    }
+  } catch (e) {
+    if (e && e.name === "AbortError") return;
+  }
+  const lines = [result.infinitive + (meaning ? " (" + meaning + ")" : "")];
+  result.tenses.forEach(t => {
+    lines.push("\n" + t.label);
+    result.pronouns.forEach((p, i) => lines.push(p + ": " + t.forms[i]));
+  });
+  const text = lines.join("\n") + "\n\n— ConjuExpert";
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: result.infinitive,
+        text
+      });
+      return;
+    }
+    await navigator.clipboard.writeText(text);
+    if (window.__toast) window.__toast("Copied to clipboard — paste it into WhatsApp etc.");
+  } catch (e) {}
+}
+
+/* ---------- Language selector ---------- */
+function LanguageBar({
+  lang,
+  setLang
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "langbar"
+  }, LANG_ORDER.map(code => {
+    const meta = LANG_META[code];
+    const engine = window.CONJ[code];
+    const active = lang === code;
+    return /*#__PURE__*/React.createElement("button", {
+      key: code,
+      className: "langbtn" + (active ? " active" : ""),
+      style: active ? {
+        "--lc": meta.color
+      } : {},
+      onClick: () => setLang(code)
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "langstripe",
+      style: {
+        background: meta.color
+      }
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "langflag"
+    }, meta.code), /*#__PURE__*/React.createElement("span", {
+      className: "langname"
+    }, engine.name));
+  }));
+}
+
+/* ---------- Tabs ---------- */
+function Tabs({
+  tab,
+  setTab
+}) {
+  const items = [{
+    id: "conjugate",
+    label: tr("tab_conjugate"),
+    icon: "▦"
+  }, {
+    id: "quiz",
+    label: tr("tab_quiz"),
+    icon: "◆"
+  }, {
+    id: "grammar",
+    label: tr("tab_learn"),
+    icon: "✦"
+  }, {
+    id: "saved",
+    label: tr("tab_saved"),
+    icon: "★"
+  }];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tabs"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tabs-track"
+  }, items.map(it => /*#__PURE__*/React.createElement("button", {
+    key: it.id,
+    className: "tab" + (tab === it.id ? " active" : ""),
+    onClick: () => setTab(it.id)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tab-icon"
+  }, it.icon), /*#__PURE__*/React.createElement("span", {
+    className: "tab-label"
+  }, it.label)))));
+}
+
+/* ---------- Tense card ---------- */
+function TenseCard({
+  tense,
+  pronouns,
+  color,
+  openDefault,
+  ttsLang,
+  highlight,
+  sound,
+  verb,
+  langCode,
+  engineName,
+  hl,
+  hint,
+  onLearn
+}) {
+  const [open, setOpen] = useState(openDefault);
+  const [tenseEx, setTenseEx] = useState(null);
+  const native = recall("kunju-native", "German");
+  function fetchTenseEx(fresh, attempt) {
+    attempt = attempt || 0;
+    const idx = tense.forms.findIndex(f => f && f !== "—");
+    if (idx < 0) return;
+    const form = tense.forms[idx];
+    const pron = pronouns[idx];
+    const skill = recall("kunju-skill", "beginner");
+    const key = `kunju-tex2-${langCode}-${verb}-${tense.id}-${native}-${skill}`;
+    const cached = recall(key, null);
+    if (cached && !fresh) {
+      setTenseEx({
+        open: true,
+        s: cached.s,
+        n: cached.n
+      });
+      return;
+    }
+    if (!window.__hasAI()) {
+      setTenseEx({
+        open: true,
+        error: 1
+      });
+      return;
+    }
+    const sameLang = native === engineName;
+    const splitLang = langCode === "de" || langCode === "nl";
+    const isCompound = form.indexOf(" ") >= 0;
+    const freshTxt = fresh ? ` Give a DIFFERENT example than usual (variety #${Math.floor(Math.random() * 1000)}).` : "";
+    const formInstr = isCompound && splitLang ? `that correctly expresses the ${tense.label} of "${verb}" for "${pron}" — its parts are ${form.split(" ").map(p => `"${p}"`).join(" + ")}. Use natural ${engineName} word order: the finite/auxiliary verb stays in SECOND position and the participle or infinitive moves to the very END of the clause (e.g. "du **hast** mir das Buch gestern **gegeben**"). Wrap EACH of those verb parts in **double asterisks** where they actually stand.` : `that uses exactly the verb form "${form}" — the ${tense.label} form (${pron}) of "${verb}". Wrap that exact verb form in **double asterisks**.`;
+    const sepNote = splitLang ? ` IMPORTANT: if "${verb}" is a separable-prefix verb (trennbares Verb / scheidbaar werkwoord), split the prefix to the END of the main clause in simple tenses (e.g. "ausbreiten" → "Das Feuer breitete sich schnell aus", NEVER "ausbreitete"; "aufstehen" → "Ich stehe früh auf").` : "";
+    const checkNote = ` Before replying, silently PROOFREAD the sentence and guarantee it is 100% correct standard ${engineName}: correct verb position, separable-prefix placement, case government, article/adjective/subject agreement and natural word order. If anything is off, fix it; output ONLY the corrected, fully grammatical sentence.`;
+    const lvlNote = skill === "advanced" ? " Use richer C1-level vocabulary and, where natural, a subordinating clause." : skill === "intermediate" ? " Use everyday B1-level vocabulary." : " Use very simple A1–A2 vocabulary (max 7 words total).";
+    const prompt = `Write ONE short, natural everyday sentence in ${engineName}${lvlNote} ${formInstr}${freshTxt}${sepNote} The sentence MUST be fully grammatical and idiomatic: use the verb with its correct case government, prepositions and subject (e.g. dative verbs like "gefallen"/"helfen" take a dative object; in German say "auf der Party", not "in der Party"). The sentence MUST end with proper punctuation (. ! or ?).${checkNote} ${sameLang ? `For "n", repeat the same sentence WITHOUT the asterisks.` : `For "n", give a natural ${native} translation of the whole sentence.`} Do NOT use any double-quote (") character inside either sentence. Reply with ONLY minified JSON and nothing else, exactly: {"s":"...","n":"..."}`;
+    if (fresh) setTenseEx({
+      open: true,
+      loading: true
+    });
+    window.aiComplete(prompt).then(txt => {
+      let j = null;
+      try {
+        j = looseParse(txt);
+      } catch (_) {
+        j = null;
+      }
+      if (!j || !j.s) {
+        if (attempt < 1) {
+          fetchTenseEx(fresh, attempt + 1);
+          return;
+        }
+        setTenseEx({
+          open: true,
+          error: 1
+        });
+        return;
+      }
+      const out = {
+        s: j.s,
+        n: j.n || ""
+      };
+      persist(key, out);
+      setTenseEx({
+        open: true,
+        s: out.s,
+        n: out.n
+      });
+    }).catch(() => {
+      if (attempt < 1) {
+        fetchTenseEx(fresh, attempt + 1);
+        return;
+      }
+      setTenseEx({
+        open: true,
+        error: 1
+      });
+    });
+  }
+  function toggleTenseEx() {
+    if (tenseEx && (tenseEx.s || tenseEx.loading || tenseEx.error)) {
+      setTenseEx(prev => ({
+        ...prev,
+        open: !prev.open
+      }));
+    } else {
+      setTenseEx({
+        open: true,
+        loading: true
+      });
+      fetchTenseEx(false);
+    }
+  }
+  const hasAnyForm = tense.forms.some(f => f && f !== "—");
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tcard" + (open ? " open" : ""),
+    style: {
+      "--tc": LANG_META[langCode].color,
+      "--dot": color
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tcard-head",
+    onClick: () => setOpen(o => !o)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tcard-dot"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "tcard-title"
+  }, tense.label, hint && /*#__PURE__*/React.createElement("span", {
+    className: "tcard-hint"
+  }, hint)), onLearn && /*#__PURE__*/React.createElement("span", {
+    role: "button",
+    tabIndex: 0,
+    title: tr("tab_learn"),
+    onClick: e => {
+      e.stopPropagation();
+      onLearn(tense.id);
+    },
+    onKeyDown: e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.stopPropagation();
+        onLearn(tense.id);
+      }
+    },
+    style: {
+      flex: "none",
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "4px",
+      marginRight: "8px",
+      fontSize: "11px",
+      fontWeight: 700,
+      color: "var(--tc)",
+      background: "color-mix(in srgb, var(--tc) 12%, var(--surface))",
+      border: "1px solid color-mix(in srgb, var(--tc) 32%, var(--border))",
+      borderRadius: "999px",
+      padding: "3px 9px",
+      cursor: "pointer",
+      whiteSpace: "nowrap"
+    }
+  }, "\u2726 ", tr("tab_learn")), /*#__PURE__*/React.createElement("span", {
+    className: "tcard-caret"
+  }, open ? "−" : "+")), /*#__PURE__*/React.createElement("div", {
+    className: "tcard-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tcard-rows"
+  }, tense.forms.map((f, i) => /*#__PURE__*/React.createElement(React.Fragment, {
+    key: i
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "conjrow" + (hl && hl.indexOf(i) >= 0 ? " matched" : "")
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "pron"
+  }, pronouns[i]), /*#__PURE__*/React.createElement("span", {
+    className: "form",
+    dangerouslySetInnerHTML: {
+      __html: highlight && tense.reg ? diffHTML(f, tense.reg[i]) : esc(f)
+    }
+  }), sound && f && f !== "—" && /*#__PURE__*/React.createElement("button", {
+    className: "speakbtn",
+    title: "Listen",
+    onClick: ev => {
+      ev.stopPropagation();
+      speak(f, ttsLang);
+    }
+  }, "\uD83D\uDD0A"))))), hasAnyForm && /*#__PURE__*/React.createElement("div", {
+    className: "tcard-exbtn-row"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "tcard-exbtn",
+    onClick: toggleTenseEx
+  }, tenseEx && tenseEx.open ? "▾ Beispiel" : "＋ Beispiel")), tenseEx && tenseEx.open && /*#__PURE__*/React.createElement("div", {
+    className: "exrow2"
+  }, tenseEx.loading && /*#__PURE__*/React.createElement("span", {
+    className: "exloading"
+  }, "\u2026"), tenseEx.error && /*#__PURE__*/React.createElement("span", {
+    className: "exloading"
+  }, "No example available."), tenseEx.s && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "exrow2-top"
+  }, /*#__PURE__*/React.createElement(WordSentence, {
+    text: stripMark(tenseEx.s),
+    fromName: engineName,
+    toName: native,
+    cachePrefix: `kunju-wtr-${langCode}-nat`,
+    accent: true,
+    saveLang: langCode,
+    saveDir: "fromTarget"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "exrow2-btns"
+  }, sound && /*#__PURE__*/React.createElement("button", {
+    className: "speakbtn",
+    title: "Listen",
+    onClick: ev => {
+      ev.stopPropagation();
+      speak(stripMark(tenseEx.s), ttsLang);
+    }
+  }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("button", {
+    className: "speakbtn exrefresh",
+    title: "New example",
+    onClick: ev => {
+      ev.stopPropagation();
+      fetchTenseEx(true);
+    }
+  }, "\u21BB"))), /*#__PURE__*/React.createElement("span", {
+    className: "exnative2"
+  }, tenseEx.n)))));
+}
+
+/* ---------- Deconjugation banner ---------- */
+function DeconjBanner({
+  deconj,
+  lang,
+  activeInf,
+  onView
+}) {
+  const multi = deconj.infinitives.length > 1;
+  const color = LANG_META[lang].color;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "deconj",
+    style: {
+      "--lc": color
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "deconj-eyebrow"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "deconj-turn"
+  }, "\u21A9"), tr("dq_form")), /*#__PURE__*/React.createElement("div", {
+    className: "deconj-form"
+  }, "\u201C", deconj.input, "\u201D"), /*#__PURE__*/React.createElement("div", {
+    className: "deconj-lines"
+  }, deconj.analyses.map((a, i) => /*#__PURE__*/React.createElement("button", {
+    key: i,
+    className: "deconj-line" + (a.base === activeInf ? " on" : ""),
+    onClick: () => multi && onView(a.base),
+    disabled: !multi,
+    style: {
+      cursor: multi ? "pointer" : "default"
+    }
+  }, !a.noPerson && /*#__PURE__*/React.createElement("span", {
+    className: "deconj-pron"
+  }, a.pronouns.join(" / ")), /*#__PURE__*/React.createElement("span", {
+    className: "deconj-tense"
+  }, a.tenseLabel), multi && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    className: "deconj-arrow"
+  }, "\u2192"), /*#__PURE__*/React.createElement("span", {
+    className: "deconj-inf-mini"
+  }, a.infinitive))))), /*#__PURE__*/React.createElement("div", {
+    className: "deconj-foot"
+  }, multi ? /*#__PURE__*/React.createElement("div", {
+    className: "deconj-chips"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "deconj-inf-label"
+  }, tr("dq_belongs")), deconj.infinitives.map(it => /*#__PURE__*/React.createElement("button", {
+    key: it.base,
+    className: "deconj-chip" + (it.base === activeInf ? " on" : ""),
+    onClick: () => onView(it.base)
+  }, it.infinitive))) : /*#__PURE__*/React.createElement("div", {
+    className: "deconj-inf-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "deconj-inf-label"
+  }, tr("dq_infinitive")), /*#__PURE__*/React.createElement("span", {
+    className: "deconj-inf"
+  }, deconj.infinitives[0].infinitive), /*#__PURE__*/React.createElement("span", {
+    className: "badge " + (deconj.infinitives[0].isIrregular ? "irr" : "reg")
+  }, deconj.infinitives[0].isIrregular ? tr("irregular") : tr("regular"))), deconj.guessed ? /*#__PURE__*/React.createElement("span", {
+    className: "deconj-fuzzy"
+  }, "\u2248 ", tr("dq_guess")) : deconj.fuzzy && /*#__PURE__*/React.createElement("span", {
+    className: "deconj-fuzzy"
+  }, "\u2248 ", tr("dq_fuzzy"))));
+}
+
+/* ---------- Conjugate view ---------- */
+function ConjugateView({
+  engine,
+  lang,
+  verb,
+  setVerb,
+  result,
+  onConjugate,
+  t,
+  favs,
+  toggleFav,
+  history,
+  clearHistory,
+  pickVerb,
+  adVisible,
+  onAdClick,
+  onAdDismiss,
+  name,
+  translating,
+  deconj,
+  activeInf,
+  onViewInf,
+  onTab,
+  onLearnTense
+}) {
+  const inputRef = useRef(null);
+  const diceRef = useRef([]);
+  const [hidden, setHidden] = useState({});
+  const sugg = useMemo(() => suggestionsFor(lang), [lang]);
+  const engMeaning = result && !result.error ? window.lookupMeaning(lang, result.infinitive.replace(/^to /, "")) : null;
+  const [meaning, setMeaning] = useState(null);
+  useEffect(() => {
+    if (!result || result.error) {
+      setMeaning(null);
+      return;
+    }
+    const base = result.infinitive.replace(/^to /, "");
+    const nativeName = recall("kunju-native", "German");
+    const inst = nativeMeaningInstant(lang, base, nativeName);
+    if (inst) {
+      setMeaning(inst);
+      return;
+    }
+    const key = `kunju-vtr-${lang}-${base}-${nativeName}`;
+    const cached = recall(key, null);
+    if (cached != null) {
+      setMeaning(cached);
+      return;
+    }
+    const fallback = nativeName === "English" ? engMeaning || null : null;
+    if (!window.__hasAI()) {
+      setMeaning(fallback);
+      return;
+    }
+    setMeaning(null);
+    let cancelled = false;
+    window.aiComplete(`Translate the ${window.CONJ[lang].name} verb "${base}" into ${nativeName}. Reply with ONLY the ${nativeName} translation in its base/infinitive form, nothing else.`).then(txt => {
+      if (cancelled) return;
+      const t = String(txt || "").trim().replace(/^["'«»]+|["'«».]+$/g, "").split("\n")[0].trim();
+      if (t) {
+        persist(key, t);
+        setMeaning(t);
+      } else setMeaning(fallback);
+    }).catch(() => {
+      if (!cancelled) setMeaning(fallback);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [result, lang]);
+  const isFav = result && !result.error && favs.some(x => x.lang === lang && x.verb === result.infinitive);
+  const hlCells = useMemo(() => {
+    if (!deconj || !activeInf) return null;
+    const m = {};
+    deconj.analyses.forEach(a => {
+      if (a.base === activeInf && a.indices.length) m[a.tenseId] = (m[a.tenseId] || []).concat(a.indices);
+    });
+    return m;
+  }, [deconj, activeInf]);
+  const langHist = history.filter(x => x.lang === lang && !favs.some(f => f.lang === lang && f.verb === x.verb)).slice(0, 10);
+  function rnd() {
+    const pool = verbPool(lang);
+    let v = null;
+    for (let i = 0; i < 25; i++) {
+      v = pool[Math.floor(Math.random() * pool.length)];
+      if (diceRef.current.indexOf(v) < 0) break;
+    }
+    diceRef.current = [v, ...diceRef.current].slice(0, Math.min(40, Math.floor(pool.length / 2)));
+    setVerb(v);
+    onConjugate(v);
+  }
+  const [nativeVerb, setNativeVerb] = useState("");
+  const [nativeBusy, setNativeBusy] = useState(false);
+  const natName = recall("kunju-native", "German");
+  const natCode = NATIVE_TO_UI[natName];
+  const natBadge = natCode ? natCode.toUpperCase() : nativeLabel(natName).slice(0, 2).toUpperCase();
+  function submitNative() {
+    const w = (nativeVerb || "").trim().toLowerCase();
+    if (!w || nativeBusy) return;
+    if (natCode === lang) {
+      setVerb(w);
+      onConjugate(w);
+      setNativeVerb("");
+      return;
+    }
+    if (natCode) {
+      const ct = conceptTranslate(w, natCode, lang);
+      if (ct) {
+        setVerb(ct);
+        onConjugate(ct);
+        setNativeVerb("");
+        return;
+      }
+    }
+    const key = `kunju-n2t-${natName}-${lang}-${w}`;
+    const cached = recall(key, null);
+    if (cached) {
+      setVerb(cached);
+      onConjugate(cached);
+      setNativeVerb("");
+      return;
+    }
+    if (!window.__hasAI()) return;
+    setNativeBusy(true);
+    window.aiComplete(`Translate the ${natName} verb "${w}" to its ${engine.name} infinitive. Reply with ONLY the single infinitive word in ${engine.name}, lowercase, no article, no extra text.`).then(txt => {
+      const out = String(txt || "").trim().toLowerCase().split(/\s+/)[0].replace(/[^a-zà-ÿ'’\-]/gi, "");
+      setNativeBusy(false);
+      if (out) {
+        persist(key, out);
+        setVerb(out);
+        onConjugate(out);
+        setNativeVerb("");
+      }
+    }).catch(() => setNativeBusy(false));
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "view"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "inputrow"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "inputfield"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "inputlead",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, LANG_META[lang].code), /*#__PURE__*/React.createElement("input", {
+    ref: inputRef,
+    value: verb,
+    "aria-label": "Verb eingeben",
+    placeholder: translating ? "↔ translating…" : "…",
+    disabled: translating,
+    onChange: e => setVerb(e.target.value),
+    onKeyDown: e => {
+      if (e.key === "Enter") onConjugate(verb);
+    },
+    autoComplete: "off",
+    autoCapitalize: "off",
+    spellCheck: "false"
+  }), verb && /*#__PURE__*/React.createElement("button", {
+    className: "clearbtn",
+    onClick: () => {
+      setVerb("");
+      inputRef.current && inputRef.current.focus();
+    }
+  }, "\xD7")), /*#__PURE__*/React.createElement("button", {
+    className: "dicebtn",
+    title: "Random verb",
+    onClick: rnd,
+    "aria-label": "Random verb",
+    style: {
+      color: LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    width: "26",
+    height: "26",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("rect", {
+    x: "2.5",
+    y: "2.5",
+    width: "19",
+    height: "19",
+    rx: "6.5",
+    fill: "currentColor"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "8",
+    cy: "8",
+    r: "1.85",
+    fill: "#fff"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "16",
+    cy: "8",
+    r: "1.85",
+    fill: "#fff"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "12",
+    cy: "12",
+    r: "1.85",
+    fill: "#fff"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "8",
+    cy: "16",
+    r: "1.85",
+    fill: "#fff"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "16",
+    cy: "16",
+    r: "1.85",
+    fill: "#fff"
+  })))), /*#__PURE__*/React.createElement(AccentBar, {
+    lang: lang,
+    onInsert: c => {
+      setVerb(verb + c);
+      inputRef.current && inputRef.current.focus();
+    }
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "cta",
+    onClick: () => onConjugate(verb)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "cta-rainbow"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "cta-label"
+  }, tr("conjugate"))), favs.filter(f => f.lang === lang).length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "recent"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "recent-head"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "recent-title"
+  }, "\u2605 ", tr("saved"), " \xB7 ", favs.filter(f => f.lang === lang).length)), /*#__PURE__*/React.createElement("div", {
+    className: "recent-chips"
+  }, favs.filter(f => f.lang === lang).slice(0, 4).map((it, i) => /*#__PURE__*/React.createElement("button", {
+    key: i,
+    className: "recentchip",
+    onClick: () => pickVerb(it.lang, it.verb)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "rc-flag"
+  }, LANG_META[it.lang].code), it.verb)))), result && result.error && /*#__PURE__*/React.createElement("div", {
+    className: "errorbox"
+  }, result.error), result && !result.error && /*#__PURE__*/React.createElement("div", {
+    className: "resultwrap"
+  }, deconj && /*#__PURE__*/React.createElement(DeconjBanner, {
+    deconj: deconj,
+    lang: lang,
+    activeInf: activeInf,
+    onView: onViewInf
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "resulthead",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "rh-top"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "rh-lang"
+  }, LANG_META[lang].code), /*#__PURE__*/React.createElement("span", {
+    className: "badge " + (result.isIrregular ? "irr" : "reg")
+  }, result.isIrregular ? tr("irregular") : tr("regular")), /*#__PURE__*/React.createElement("button", {
+    className: "starbtn" + (isFav ? " on" : ""),
+    title: "Save verb",
+    onClick: () => toggleFav(lang, result.infinitive)
+  }, isFav ? "★" : "☆")), /*#__PURE__*/React.createElement("h2", {
+    className: "rh-verb"
+  }, result.infinitive), meaning && meaning.toLowerCase() !== result.infinitive.replace(/^to /, "").toLowerCase() && /*#__PURE__*/React.createElement("div", {
+    className: "rh-meaning"
+  }, /*#__PURE__*/React.createElement("b", null, result.infinitive.replace(/^to /, "")), /*#__PURE__*/React.createElement("em", null, meaning)), /*#__PURE__*/React.createElement("div", {
+    className: "rh-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "exportbtn",
+    title: "Share (WhatsApp \u2026)",
+    onClick: () => shareConjugation(result, lang, meaning)
+  }, "\u2197"), /*#__PURE__*/React.createElement("button", {
+    className: "exportbtn pdf",
+    title: "Save as image (PNG)",
+    onClick: () => exportImage(result, lang, meaning)
+  }, "PNG"), /*#__PURE__*/React.createElement("button", {
+    className: "exportbtn pdf",
+    title: "Save as PDF",
+    onClick: () => exportPDF(result, lang, meaning)
+  }, "PDF"))), /*#__PURE__*/React.createElement("div", {
+    className: "formalnote"
+  }, "\u24D8 ", FORMALITY[lang]), /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-block",
+    style: {
+      marginTop: 4
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "recent-title qfilter-lbl"
+  }, tr("which_tense")), /*#__PURE__*/React.createElement(TenseDropdown, {
+    lang: lang,
+    tenses: result.tenses,
+    isOn: id => !hidden[id],
+    onToggle: id => setHidden(h => {
+      const next = {
+        ...h,
+        [id]: !h[id]
+      };
+      persist(`kunju-tenses-${lang}`, result.tenses.map(t2 => t2.id).filter(x => !next[x]));
+      return next;
+    }),
+    onAll: () => {
+      setHidden({});
+      persist(`kunju-tenses-${lang}`, result.tenses.map(t2 => t2.id));
+    },
+    onNone: () => {
+      const h = {};
+      result.tenses.forEach(t2 => {
+        h[t2.id] = true;
+      });
+      setHidden(h);
+      persist(`kunju-tenses-${lang}`, []);
+    }
+  })), (() => {
+    const perf = result.tenses.find(t2 => t2.id === "perfect");
+    const pf0 = perf && perf.forms && perf.forms[0];
+    const isEtreVerb = lang === "fr" && pf0 && (pf0.startsWith("suis ") || pf0.includes(" suis "));
+    const isSeinVerb = lang === "de" && pf0 && pf0.startsWith("bin ");
+    const isZijnVerb = lang === "nl" && pf0 && pf0.startsWith("ben ");
+    const esNote = lang === "es" && result.infinitive && (() => {
+      const n = ES_VERB_NOTES[result.infinitive] || (ES_GUSTAR_VERBS.has(result.infinitive) ? ES_VERB_NOTES.gustar : null);
+      return n ? n[UILANG] || n.en : null;
+    })();
+    return /*#__PURE__*/React.createElement(React.Fragment, null, esNote && /*#__PURE__*/React.createElement("div", {
+      className: "verb-note"
+    }, "\uD83D\uDCA1 ", esNote), GROUP_ORDER.map(g => {
+      const inGroup = result.tenses.map((t2, i) => ({
+        t2,
+        i
+      })).filter(x => tenseGroup(x.t2.id) === g && !hidden[x.t2.id]);
+      if (!inGroup.length) return null;
+      return /*#__PURE__*/React.createElement(React.Fragment, {
+        key: g
+      }, g !== "ind" && /*#__PURE__*/React.createElement("div", {
+        className: "tgrouphead"
+      }, tr("gr_" + g)), inGroup.map(({
+        t2,
+        i
+      }) => {
+        const hint = isEtreVerb && FR_ETRE_TENSES.has(t2.id) ? "Fém. +e · Plur. +s" : isSeinVerb && DE_NL_AUX_TENSES.has(t2.id) ? "Hilfsverb: sein" : isZijnVerb && DE_NL_AUX_TENSES.has(t2.id) ? "Hulpww.: zijn" : null;
+        return /*#__PURE__*/React.createElement(TenseCard, {
+          key: t2.id,
+          tense: t2,
+          pronouns: result.pronouns,
+          color: RAINBOW[i % RAINBOW.length],
+          openDefault: true,
+          ttsLang: engine.ttsLang,
+          highlight: t.highlight && result.isIrregular,
+          sound: t.sound,
+          verb: result.infinitive,
+          langCode: lang,
+          engineName: engine.name,
+          hl: hlCells && hlCells[t2.id],
+          hint: hint,
+          onLearn: onLearnTense
+        });
+      }));
+    }));
+  })(), t.sponsor && adVisible && SPONSORS[lang] && /*#__PURE__*/React.createElement(AdCard, {
+    sponsor: SPONSORS[lang],
+    hook: result.isIrregular ? `Drill irregular ${engine.name} verbs` : `Practice ${engine.name} verbs daily`,
+    onClick: onAdClick,
+    onDismiss: onAdDismiss
+  })), !result && /*#__PURE__*/React.createElement("div", {
+    className: "emptystate emptyguide"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eg-hero",
+    style: {
+      "--lc": LANG_META[lang].color,
+      "--lc2": HERO_CLAIM[lang].c2
+    }
+  }, HERO_CONFETTI.map((c, i) => {
+    const cc = [LANG_META[lang].color, HERO_CLAIM[lang].c2, "#ffc400", "#34c759"];
+    return /*#__PURE__*/React.createElement("span", {
+      key: i,
+      className: "eg-confetti",
+      style: {
+        top: c.top,
+        left: c.left,
+        width: c.w,
+        height: c.h,
+        opacity: c.o,
+        transform: `rotate(${c.rot}deg)`,
+        background: cc[i % cc.length],
+        borderRadius: c.w === c.h ? "50%" : "2px"
+      }
+    });
+  }), name && /*#__PURE__*/React.createElement("p", {
+    className: "eg-kicker"
+  }, tr("hero_kicker", {
+    name
+  })), /*#__PURE__*/React.createElement("h2", {
+    className: "eg-l1"
+  }, HERO_CLAIM[lang].pre, /*#__PURE__*/React.createElement("span", {
+    className: "eg-lng"
+  }, HERO_CLAIM[lang].lng)), /*#__PURE__*/React.createElement("div", {
+    className: "eg-accent"
+  }, HERO_CLAIM[lang].accent, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 200 13",
+    preserveAspectRatio: "none",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M3 8 C 45 2, 90 2, 130 6 S 185 11, 197 5",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "3.5",
+    strokeLinecap: "round",
+    opacity: "0.5"
+  }))), /*#__PURE__*/React.createElement("p", {
+    className: "eg-plan"
+  }, name ? tr("hero_plan", {
+    name
+  }) : tr("hero_plan_anon"))), /*#__PURE__*/React.createElement("div", {
+    className: "eg-cards"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "eg-card",
+    onClick: rnd
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "eg-ic",
+    style: {
+      color: LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    width: "22",
+    height: "22",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("rect", {
+    x: "2.5",
+    y: "2.5",
+    width: "19",
+    height: "19",
+    rx: "6.5",
+    fill: "currentColor"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "8",
+    cy: "8",
+    r: "1.85",
+    fill: "#fff"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "16",
+    cy: "8",
+    r: "1.85",
+    fill: "#fff"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "12",
+    cy: "12",
+    r: "1.85",
+    fill: "#fff"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "8",
+    cy: "16",
+    r: "1.85",
+    fill: "#fff"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "16",
+    cy: "16",
+    r: "1.85",
+    fill: "#fff"
+  }))), /*#__PURE__*/React.createElement("span", {
+    className: "eg-tx"
+  }, /*#__PURE__*/React.createElement("b", {
+    className: "eg-n"
+  }, "1"), tr("eg_step1")), /*#__PURE__*/React.createElement("span", {
+    className: "eg-go"
+  }, "\u2192")), /*#__PURE__*/React.createElement("button", {
+    className: "eg-card",
+    onClick: () => onTab && onTab("quiz")
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "eg-ic eg-ic-glyph",
+    style: {
+      color: LANG_META[lang].color
+    }
+  }, "\u25C6"), /*#__PURE__*/React.createElement("span", {
+    className: "eg-tx"
+  }, /*#__PURE__*/React.createElement("b", {
+    className: "eg-n"
+  }, "2"), tr("eg_step2")), /*#__PURE__*/React.createElement("span", {
+    className: "eg-go"
+  }, "\u2192")), /*#__PURE__*/React.createElement("button", {
+    className: "eg-card",
+    onClick: () => onTab && onTab("saved")
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "eg-ic eg-ic-glyph",
+    style: {
+      color: LANG_META[lang].color
+    }
+  }, "\u2605"), /*#__PURE__*/React.createElement("span", {
+    className: "eg-tx"
+  }, /*#__PURE__*/React.createElement("b", {
+    className: "eg-n"
+  }, "3"), tr("eg_step3")), /*#__PURE__*/React.createElement("span", {
+    className: "eg-go"
+  }, "\u2192")))));
+}
+
+/* ---------- Quiz ---------- */
+function pick(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function norm(s) {
+  return (s || "").trim().toLowerCase().replace(/\s+/g, " ");
+}
+function buildQuestion(lang, tenseId, pool) {
+  const eng = window.CONJ[lang];
+  for (let tries = 0; tries < 22; tries++) {
+    const v = pick(pool);
+    const r = eng.conjugate(v);
+    if (!r || r.error) continue;
+    let t;
+    if (tenseId === "all") t = pick(r.tenses);else if (Array.isArray(tenseId)) {
+      const avail = r.tenses.filter(x => tenseId.indexOf(x.id) >= 0);
+      if (!avail.length) continue;
+      t = pick(avail);
+    } else {
+      t = r.tenses.find(x => x.id === tenseId);
+      if (!t) continue;
+    }
+    const idxs = [];
+    t.forms.forEach((f, i) => {
+      if (f && f !== "—") idxs.push(i);
+    });
+    if (!idxs.length) continue;
+    const pi = pick(idxs);
+    const answer = t.forms[pi];
+    // distractors: prefer forms from the same selected tense(s); only widen if too few
+    const allowed = tenseId === "all" ? null : Array.isArray(tenseId) ? tenseId : [tenseId];
+    const cand = new Set();
+    r.tenses.forEach(tt => {
+      if (allowed && allowed.indexOf(tt.id) < 0) return;
+      tt.forms.forEach(f => {
+        if (f && f !== "—" && norm(f) !== norm(answer)) cand.add(f);
+      });
+    });
+    if (cand.size < 3) r.tenses.forEach(tt => tt.forms.forEach(f => {
+      if (f && f !== "—" && norm(f) !== norm(answer)) cand.add(f);
+    }));
+    const distract = shuffle([...cand]).slice(0, 3);
+    const options = shuffle([answer, ...distract]);
+    return {
+      lang,
+      verb: r.infinitive,
+      tenseId: t.id,
+      tenseLabel: t.label,
+      pronoun: r.pronouns[pi],
+      answer,
+      options,
+      isIrregular: r.isIrregular,
+      ttsLang: eng.ttsLang
+    };
+  }
+  return null;
+}
+
+/* Sentence-speaking helpers: varied topics + warm feedback lines */
+const SPK_THEMES = [{
+  id: "random",
+  topic: ""
+}, {
+  id: "shopping",
+  topic: "shopping and stores"
+}, {
+  id: "office",
+  topic: "an official or government appointment (bureaucracy)"
+}, {
+  id: "doctor",
+  topic: "a doctor, pharmacy or health situation"
+}, {
+  id: "family",
+  topic: "family, kids and home life"
+}, {
+  id: "travel",
+  topic: "travelling, trains and asking directions"
+}, {
+  id: "restaurant",
+  topic: "a restaurant, café or ordering food"
+}, {
+  id: "work",
+  topic: "work, office and appointments"
+}, {
+  id: "freetime",
+  topic: "free time, hobbies and sport"
+}, {
+  id: "sport",
+  topic: "sport, exercise and the gym"
+}, {
+  id: "pregnancy",
+  topic: "pregnancy, baby and expecting a child"
+}, {
+  id: "finance",
+  topic: "finance, money, banking and the economy"
+}, {
+  id: "proverb",
+  topic: "a well-known traditional proverb or saying from a country where the language is spoken"
+}];
+const THEME_LABELS = {
+  de: {
+    random: "Zufällig",
+    shopping: "Einkaufen",
+    office: "Behörde",
+    doctor: "Arztbesuch",
+    family: "Familie",
+    travel: "Reisen",
+    restaurant: "Restaurant",
+    work: "Arbeit",
+    freetime: "Freizeit",
+    sport: "Sport",
+    pregnancy: "Schwangerschaft",
+    finance: "Finanzen & Wirtschaft",
+    proverb: "Sprichworte"
+  },
+  en: {
+    random: "Random",
+    shopping: "Shopping",
+    office: "Authorities",
+    doctor: "Doctor",
+    family: "Family",
+    travel: "Travel",
+    restaurant: "Restaurant",
+    work: "Work",
+    freetime: "Free time",
+    sport: "Sport",
+    pregnancy: "Pregnancy",
+    finance: "Finance & economy",
+    proverb: "Proverbs"
+  },
+  es: {
+    random: "Aleatorio",
+    shopping: "Compras",
+    office: "Trámites",
+    doctor: "Médico",
+    family: "Familia",
+    travel: "Viajes",
+    restaurant: "Restaurante",
+    work: "Trabajo",
+    freetime: "Ocio",
+    sport: "Deporte",
+    pregnancy: "Embarazo",
+    finance: "Finanzas y economía",
+    proverb: "Refranes"
+  },
+  nl: {
+    random: "Willekeurig",
+    shopping: "Winkelen",
+    office: "Overheid",
+    doctor: "Dokter",
+    family: "Familie",
+    travel: "Reizen",
+    restaurant: "Restaurant",
+    work: "Werk",
+    freetime: "Vrije tijd",
+    sport: "Sport",
+    pregnancy: "Zwangerschap",
+    finance: "Financiën & economie",
+    proverb: "Spreekwoorden"
+  },
+  fr: {
+    random: "Aléatoire",
+    shopping: "Achats",
+    office: "Démarches",
+    doctor: "Médecin",
+    family: "Famille",
+    travel: "Voyages",
+    restaurant: "Restaurant",
+    work: "Travail",
+    freetime: "Loisirs",
+    sport: "Sport",
+    pregnancy: "Grossesse",
+    finance: "Finance & économie",
+    proverb: "Proverbes"
+  }
+};
+function themeLabel(id) {
+  if (id && id.startsWith("cat:")) return id.slice(4);
+  const m = THEME_LABELS[UILANG] || THEME_LABELS.en;
+  return m[id] || id;
+}
+
+/* Verb-group filters for the quiz (per language). "words" = practice with the
+   learner's saved vocabulary woven into the example sentences. */
+const VERB_GROUPS = {
+  es: [{
+    id: "all"
+  }, {
+    id: "words"
+  }, {
+    id: "saved"
+  }, {
+    id: "irregular"
+  }, {
+    id: "ar",
+    suf: "ar"
+  }, {
+    id: "er",
+    suf: "er"
+  }, {
+    id: "ir",
+    suf: "ir"
+  }],
+  fr: [{
+    id: "all"
+  }, {
+    id: "words"
+  }, {
+    id: "saved"
+  }, {
+    id: "irregular"
+  }, {
+    id: "er",
+    suf: "er"
+  }, {
+    id: "ir",
+    suf: "ir"
+  }, {
+    id: "re",
+    suf: "re"
+  }],
+  de: [{
+    id: "all"
+  }, {
+    id: "words"
+  }, {
+    id: "saved"
+  }, {
+    id: "irregular"
+  }, {
+    id: "regular"
+  }],
+  nl: [{
+    id: "all"
+  }, {
+    id: "words"
+  }, {
+    id: "saved"
+  }, {
+    id: "irregular"
+  }, {
+    id: "regular"
+  }],
+  en: [{
+    id: "all"
+  }, {
+    id: "words"
+  }, {
+    id: "saved"
+  }, {
+    id: "irregular"
+  }, {
+    id: "regular"
+  }]
+};
+const GROUP_LABELS = {
+  de: {
+    all: "Alle",
+    words: "Gespeicherte Wörter",
+    saved: "Gespeicherte Verben",
+    irregular: "Unregelmäßig",
+    regular: "Regelmäßig"
+  },
+  en: {
+    all: "All",
+    words: "Saved words",
+    saved: "Saved verbs",
+    irregular: "Irregular",
+    regular: "Regular"
+  },
+  es: {
+    all: "Todos",
+    words: "Palabras guardadas",
+    saved: "Verbos guardados",
+    irregular: "Irregulares",
+    regular: "Regulares"
+  },
+  nl: {
+    all: "Alle",
+    words: "Bewaarde woorden",
+    saved: "Bewaarde werkwoorden",
+    irregular: "Onregelmatig",
+    regular: "Regelmatig"
+  },
+  fr: {
+    all: "Tous",
+    words: "Mots mémorisés",
+    saved: "Verbes mémorisés",
+    irregular: "Irréguliers",
+    regular: "Réguliers"
+  }
+};
+function groupLabel(g) {
+  if (g.suf) return "-" + g.suf;
+  const m = GROUP_LABELS[UILANG] || GROUP_LABELS.en;
+  return m[g.id] || g.id;
+}
+const SENT_TOPICS = ["food and drink", "travel", "family and friends", "work or study", "the weather", "hobbies", "shopping", "animals and pets", "sports", "music or films", "a daily routine", "weekend plans", "health", "technology", "the city", "nature", "holidays", "cooking", "the morning", "a phone call"];
+// friendly rotating lines shown while a story is being generated
+const TEXTE_TIPS = {
+  de: ["✍️ Wir denken uns eine Geschichte für dich aus…", "📖 Figuren und Schauplatz entstehen gerade…", "🪄 Wörter werden zu Sätzen verwoben…", "✨ Wir feilen an den letzten Sätzen…", "☕ Gleich kannst du loslesen…"],
+  en: ["✍️ Inventing a story just for you…", "📖 Characters and setting are taking shape…", "🪄 Weaving words into sentences…", "✨ Polishing the final lines…", "☕ Almost ready to read…"],
+  es: ["✍️ Inventando una historia para ti…", "📖 Los personajes y el escenario cobran forma…", "🪄 Tejiendo palabras en frases…", "✨ Puliendo las últimas líneas…", "☕ Casi listo para leer…"],
+  nl: ["✍️ We verzinnen een verhaal voor je…", "📖 Personages en decor krijgen vorm…", "🪄 Woorden worden tot zinnen geweven…", "✨ De laatste zinnen worden bijgeschaafd…", "☕ Bijna klaar om te lezen…"],
+  fr: ["✍️ On invente une histoire pour toi…", "📖 Les personnages et le décor prennent forme…", "🪄 On tisse les mots en phrases…", "✨ On peaufine les dernières phrases…", "☕ Bientôt prêt à lire…"]
+};
+const PRAISE = {
+  de: ["Stark! 💪", "Perfekt!", "Klasse gemacht!", "Weiter so!", "Top! 🎯", "Genau richtig!", "Sitzt!", "Bravo! 🎉", "Sauber!", "Du rockst das!", "Wie aus dem Lehrbuch!", "Da war kein Zögern!", "Muttersprachler-Niveau! ✨", "Das gibt Selbstvertrauen!", "Glasklar!", "Mehr davon!"],
+  en: ["Nice! 💪", "Perfect!", "Well done!", "Keep it up!", "Spot on! 🎯", "Exactly right!", "Nailed it!", "Bravo! 🎉", "Clean!", "You're on fire!", "Textbook!", "No hesitation there!", "Native-level! ✨", "That builds confidence!", "Crystal clear!", "More of that!"],
+  es: ["¡Genial! 💪", "¡Perfecto!", "¡Muy bien!", "¡Sigue así!", "¡Justo! 🎯", "¡Exacto!", "¡Bravo! 🎉", "¡Estupendo!", "¡Impecable!", "¡Lo clavaste!", "¡De libro!", "¡Sin titubear!", "¡Nivel nativo! ✨", "¡Eso da confianza!", "¡Clarísimo!", "¡Así se hace!"],
+  nl: ["Top! 💪", "Perfect!", "Goed gedaan!", "Ga zo door!", "Precies! 🎯", "Helemaal goed!", "Bravo! 🎉", "Knap!", "Netjes!", "Je bent on fire!", "Uit het boekje!", "Geen twijfel!", "Moedertaalniveau! ✨", "Dat geeft vertrouwen!", "Glashelder!", "Meer hiervan!"],
+  fr: ["Bravo ! 💪", "Parfait !", "Bien joué !", "Continue !", "Pile poil ! 🎯", "Exact !", "Super ! 🎉", "Génial !", "Impeccable !", "Tu assures !", "Comme dans le manuel !", "Aucune hésitation !", "Niveau natif ! ✨", "Ça donne confiance !", "Limpide !", "Encore comme ça !"]
+};
+const CHEER = {
+  de: ["Fast! Nochmal 🙌", "Kein Problem, weiter geht's!", "Übung macht den Meister!", "Gleich hast du's!", "Dranbleiben! 💛", "Nicht schlimm — nächste Runde!", "Schon nah dran!", "Aus Fehlern lernt man!", "Beim nächsten klappt's!", "Kopf hoch, weiter!", "Genau dafür übst du!"],
+  en: ["Almost! Try again 🙌", "No worries, keep going!", "Practice makes perfect!", "You'll get it!", "Stay with it! 💛", "All good — next one!", "So close!", "Mistakes are how we learn!", "Next one's yours!", "Chin up, keep going!", "That's what practice is for!"],
+  es: ["¡Casi! Otra vez 🙌", "¡Sin problema, sigue!", "¡La práctica hace al maestro!", "¡Ya casi!", "¡Ánimo! 💛", "Tranqui — ¡a la siguiente!", "¡Por poco!", "¡De los errores se aprende!", "¡La próxima es tuya!", "¡Arriba, sigue!", "¡Para eso se practica!"],
+  nl: ["Bijna! Nog eens 🙌", "Geen zorgen, ga door!", "Oefening baart kunst!", "Je krijgt het bijna!", "Volhouden! 💛", "Geeft niet — volgende!", "Zó dichtbij!", "Van fouten leer je!", "De volgende is van jou!", "Kop op, ga door!", "Daarvoor oefen je!"],
+  fr: ["Presque ! Réessaie 🙌", "Pas grave, continue !", "C'est en forgeant... !", "Tu y es presque !", "Accroche-toi ! 💛", "Pas de souci — au suivant !", "Tout près !", "On apprend de ses erreurs !", "La prochaine est pour toi !", "Garde le moral !", "C'est fait pour ça !"]
+};
+function _withName(line) {
+  const nm = recall("kunju-name", "");
+  if (nm && Math.random() < 0.25) {
+    const sep = /[!?.]$/.test(line) ? line.slice(0, -1) + ", " + nm + line.slice(-1) : line + ", " + nm;
+    return sep;
+  }
+  return line;
+}
+function praiseLine() {
+  const a = PRAISE[UILANG] || PRAISE.en;
+  return _withName(a[Math.floor(Math.random() * a.length)]);
+}
+function cheerLine() {
+  const a = CHEER[UILANG] || CHEER.en;
+  return _withName(a[Math.floor(Math.random() * a.length)]);
+}
+
+/* Tappable sentence: tap a word to see its translation (shown as a stable chip
+   below — robust on mobile, never clipped). Direction set via from/to. */
+function WordSentence({
+  text,
+  fromName,
+  toName,
+  cachePrefix,
+  big,
+  accent,
+  saveLang,
+  saveDir,
+  showHint,
+  wordChip,
+  inline,
+  savedSet,
+  onSaved
+}) {
+  const [openW, setOpenW] = useState(null);
+  const [trans, setTrans] = useState({});
+  const [saved, setSaved] = useState({});
+  const [hintVisible, setHintVisible] = useState(() => showHint && !recall("kunju-word-hint-seen", false));
+  useEffect(() => {
+    if (!hintVisible) return;
+    persist("kunju-word-hint-seen", true);
+    const t = setTimeout(() => setHintVisible(false), 3700);
+    return () => clearTimeout(t);
+  }, [hintVisible]);
+  const parts = (text || "").split(/(\s+)/);
+  function clean(w) {
+    return w.replace(/[^\p{L}\p{N}'’\-]/gu, "").toLowerCase();
+  }
+  function savedW(w) {
+    const c = clean(w);
+    return !!(c && savedSet && savedSet.has(deburr(norm(c))));
+  }
+  const underlineStyle = {
+    textDecoration: "underline",
+    textDecorationColor: "var(--lc, #0a84ff)",
+    textDecorationThickness: "2px",
+    textUnderlineOffset: "3px"
+  };
+  function tap(w, i) {
+    const c = clean(w);
+    if (!c) return;
+    if (openW && openW.i === i) {
+      setOpenW(null);
+      return;
+    }
+    setOpenW({
+      w: c,
+      i
+    });
+    if (trans[c] != null) return;
+    const key = `${cachePrefix}-${c}`;
+    const cached = recall(key, null);
+    if (cached != null) {
+      setTrans(t => ({
+        ...t,
+        [c]: cached
+      }));
+      return;
+    }
+    if (!window.__hasAI()) {
+      setTrans(t => ({
+        ...t,
+        [c]: "—"
+      }));
+      return;
+    }
+    setTrans(t => ({
+      ...t,
+      [c]: "…"
+    }));
+    window.aiComplete(`In the ${fromName} sentence "${text}", what does the word "${c}" mean in ${toName}? Reply with ONLY the ${toName} translation, 1–3 words, no punctuation, no extra text.`).then(r => {
+      const out = String(r || "").trim().replace(/^["'.]+|["'.]+$/g, "").split("\n")[0].trim() || "—";
+      persist(key, out);
+      setTrans(t => ({
+        ...t,
+        [c]: out
+      }));
+    }).catch(() => setTrans(t => ({
+      ...t,
+      [c]: "—"
+    })));
+  }
+  function saveWord() {
+    if (!saveLang || !openW) return;
+    const c = openW.w;
+    function afterTrans(tvRaw) {
+      const tv = !tvRaw || tvRaw === "…" || tvRaw === "—" ? "" : tvRaw;
+      const term = saveDir === "fromTarget" ? c : tv || c;
+      const native = saveDir === "fromTarget" ? tv : c;
+      const cats = templateCats();
+      function commit(catName) {
+        const entry = {
+          id: Date.now() + "",
+          lang: saveLang,
+          term,
+          trans: native,
+          cat: catName,
+          kind: "word",
+          created: Date.now(),
+          nat: recall("kunju-native", "German")
+        };
+        const list = getVocab();
+        if (!list.some(x => x.lang === entry.lang && norm(x.term) === norm(entry.term))) saveVocab([entry, ...list]);
+        setSaved(s => ({
+          ...s,
+          [c]: true
+        }));
+      }
+      const ck = `kunju-vcat-${saveLang}-${norm(term)}`;
+      const cached = recall(ck, null);
+      if (cached) {
+        commit(cached);
+        return;
+      }
+      if (!window.__hasAI()) {
+        commit(generalCat());
+        return;
+      }
+      window.aiComplete(`Which ONE category best fits the word "${term}"${native ? ` (meaning "${native}")` : ""}? Choose exactly one from this list: ${cats.join(", ")}, ${generalCat()}. If none clearly fits, answer "${generalCat()}". Reply with ONLY the category name, nothing else.`).then(r => {
+        const p = String(r || "").trim().replace(/[".]/g, "");
+        const match = [...cats, generalCat()].find(x => x.toLowerCase() === p.toLowerCase()) || generalCat();
+        persist(ck, match);
+        commit(match);
+      }).catch(() => commit(generalCat()));
+    }
+    setSaved(s => ({
+      ...s,
+      [c]: "saving"
+    }));
+    const have = trans[c];
+    if (have && have !== "…" && have !== "—") {
+      afterTrans(have);
+      return;
+    }
+    // translation not loaded yet — fetch it, then save
+    const tkey = `${cachePrefix}-${c}`;
+    const tc = recall(tkey, null);
+    if (tc != null) {
+      setTrans(t => ({
+        ...t,
+        [c]: tc
+      }));
+      afterTrans(tc);
+      return;
+    }
+    if (!window.__hasAI()) {
+      afterTrans("");
+      return;
+    }
+    window.aiComplete(`In the ${fromName} sentence "${text}", what does the word "${c}" mean in ${toName}? Reply with ONLY the ${toName} translation, 1–3 words, no punctuation, no extra text.`).then(r => {
+      const out = String(r || "").trim().replace(/^["'«».]+|["'«».]+$/g, "").split("\n")[0].trim();
+      if (out) {
+        persist(tkey, out);
+        setTrans(t => ({
+          ...t,
+          [c]: out
+        }));
+      }
+      afterTrans(out);
+    }).catch(() => afterTrans(""));
+  }
+  function chipInner() {
+    const c = openW.w;
+    const isSaved = !!(savedSet && savedSet.has(deburr(norm(c))));
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("b", null, c), " \u2192 ", /*#__PURE__*/React.createElement("span", null, trans[c] || "…"), saveLang && (isSaved ? /*#__PURE__*/React.createElement("button", {
+      className: "wsave saved",
+      onClick: () => onSaved && onSaved()
+    }, "\u2713 ", tr("tab_saved"), " \u2192") : saved[c] === "saving" ? /*#__PURE__*/React.createElement("span", {
+      className: "wsave saved"
+    }, "\u2026") : saved[c] ? /*#__PURE__*/React.createElement("span", {
+      className: "wsave saved"
+    }, "\u2713 ", tr("vocab_saved")) : /*#__PURE__*/React.createElement("button", {
+      className: "wsave",
+      onClick: saveWord
+    }, "+ ", tr("vocab_save"))));
+  }
+  if (inline) return /*#__PURE__*/React.createElement("span", {
+    className: "wsent" + (big ? " big" : "") + (accent ? " accent" : ""),
+    style: {
+      lineHeight: "inherit"
+    }
+  }, parts.map((w, i) => {
+    if (/^\s+$/.test(w) || !clean(w)) return /*#__PURE__*/React.createElement("span", {
+      key: i
+    }, w);
+    const isOpen = openW && openW.i === i;
+    return /*#__PURE__*/React.createElement(React.Fragment, {
+      key: i
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "wword" + (isOpen ? " open" : ""),
+      style: savedW(w) ? underlineStyle : undefined,
+      onClick: () => tap(w, i)
+    }, w), isOpen && /*#__PURE__*/React.createElement("span", {
+      className: "wtrans-inline",
+      style: {
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "5px",
+        verticalAlign: "middle",
+        margin: "1px 5px",
+        padding: "3px 10px",
+        borderRadius: "999px",
+        background: "color-mix(in srgb, var(--lc, #0a84ff) 13%, var(--surface))",
+        border: "1px solid color-mix(in srgb, var(--lc, #0a84ff) 32%, var(--border))",
+        fontSize: "13px",
+        fontWeight: 600,
+        whiteSpace: "nowrap"
+      }
+    }, chipInner()));
+  }));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "wsentwrap"
+  }, hintVisible && /*#__PURE__*/React.createElement("div", {
+    className: "word-tap-hint"
+  }, "\uD83D\uDC46 W\xF6rter antippen \u2192 Bedeutung & merken"), /*#__PURE__*/React.createElement("div", {
+    className: "wsent" + (big ? " big" : "") + (accent ? " accent" : "")
+  }, parts.map((w, i) => {
+    if (/^\s+$/.test(w) || !clean(w)) return /*#__PURE__*/React.createElement("span", {
+      key: i
+    }, w);
+    const isOpen = openW && openW.i === i;
+    return /*#__PURE__*/React.createElement(React.Fragment, {
+      key: i
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "wword" + (isOpen ? " open" : ""),
+      style: savedW(w) ? underlineStyle : undefined,
+      onClick: () => tap(w, i)
+    }, w), wordChip && isOpen && /*#__PURE__*/React.createElement("span", {
+      className: "wtrans-inline",
+      style: {
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "5px",
+        verticalAlign: "middle",
+        margin: "1px 5px",
+        padding: "3px 10px",
+        borderRadius: "999px",
+        background: "color-mix(in srgb, var(--lc, #0a84ff) 13%, var(--surface))",
+        border: "1px solid color-mix(in srgb, var(--lc, #0a84ff) 32%, var(--border))",
+        fontSize: "13px",
+        fontWeight: 600,
+        whiteSpace: "nowrap"
+      }
+    }, chipInner()));
+  })), !wordChip && openW && /*#__PURE__*/React.createElement("div", {
+    className: "wtrans"
+  }, chipInner()));
+}
+function QuizView({
+  lang,
+  favs,
+  toggleFav,
+  sound,
+  skill,
+  onStudy,
+  onActivity,
+  isActive,
+  onTab,
+  onHint
+}) {
+  const eng = window.CONJ[lang];
+  const tenseOpts = useMemo(() => {
+    const r = eng.conjugate(eng.samples[0]);
+    return r && r.tenses ? r.tenses.map(t => ({
+      id: t.id,
+      label: t.label
+    })) : [];
+  }, [lang]);
+  const pool = useMemo(() => {
+    const base = quizPool(lang, skill || "beginner");
+    const favVerbs = favs.filter(f => f.lang === lang).map(f => f.verb);
+    favVerbs.forEach(v => {
+      if (base.indexOf(v) < 0) base.push(v);
+    });
+    // add 4 extra copies of each favorite → ~5× higher pick probability
+    for (let i = 0; i < 4; i++) favVerbs.forEach(v => base.push(v));
+    return base;
+  }, [lang, favs, skill]);
+  const [mode, setMode] = useState("cards");
+  // First time the user opens a given quiz mode, ask for its explainer popup.
+  useEffect(() => {
+    if (isActive && onHint) onHint("quiz_" + mode);
+  }, [mode, isActive]);
+  const allTenseIds = useMemo(() => tenseOpts.map(t => t.id), [tenseOpts]);
+  const [tenseSel, setTenseSel] = useState([]);
+  const [mistMode, setMistMode] = useState(false);
+  const allTensesOn = tenseSel.length > 0 && tenseSel.length === allTenseIds.length;
+  const [selGroup, setSelGroup] = useState(() => recall("kunju-quiz-group", "all"));
+  const groups = VERB_GROUPS[lang] || [{
+    id: "all"
+  }];
+  function pickGroup(id) {
+    setSelGroup(id);
+    persist("kunju-quiz-group", id);
+    clozeMyWordsRef.current = id === "words"; // saved vocab → into example sentences
+  }
+  const filteredPool = useMemo(() => {
+    if (selGroup === "all" || selGroup === "words") return pool; // "words" keeps all verbs; saved vocab goes into the sentences
+    if (selGroup === "saved") {
+      const f = (favs || []).filter(x => x.lang === lang).map(x => x.verb).filter(v => pool.includes(v));
+      return f.length ? f : pool;
+    }
+    const irr = new Set(window.CONJ[lang].irregulars || []);
+    if (selGroup === "irregular") {
+      const f = pool.filter(v => irr.has(v));
+      return f.length ? f : pool;
+    }
+    if (selGroup === "regular") {
+      const f = pool.filter(v => !irr.has(v));
+      return f.length ? f : pool;
+    }
+    const g = groups.find(x => x.id === selGroup);
+    if (g && g.suf) {
+      const f = pool.filter(v => v.endsWith(g.suf));
+      return f.length ? f : pool;
+    }
+    return pool;
+  }, [pool, selGroup, lang, favs]);
+  const [q, setQ] = useState(null);
+  const [val, setVal] = useState("");
+  const [state, setState] = useState("idle");
+  const [picked, setPicked] = useState(null);
+  const [flipped, setFlipped] = useState(false);
+  const [transl, setTransl] = useState(null);
+  const [prevCards, setPrevCards] = useState([]);
+  const [speedLog, setSpeedLog] = useState([]);
+  const [mver, setMver] = useState(0);
+  const [listening, setListening] = useState(false);
+  const [heard, setHeard] = useState("");
+  const [msg, setMsg] = useState("");
+  const [autoSpeak, setAutoSpeak] = useState(() => recall("kunju-autospeak", false));
+  function toggleAutoSpeak() {
+    setAutoSpeak(v => {
+      const n = !v;
+      persist("kunju-autospeak", n);
+      return n;
+    });
+  }
+  const [spkMode, setSpkMode] = useState("form");
+  const [typeMode, setTypeMode] = useState("form");
+  const [revealed, setRevealed] = useState(false);
+  const [sentMistMode, setSentMistMode] = useState(false);
+  const [smver, setSmver] = useState(0);
+  const [cloze, setCloze] = useState(null);
+  const [topicsSel, setTopicsSel] = useState(["random"]);
+  const [sent, setSent] = useState(null);
+  const [spkTarget, setSpkTarget] = useState(lang);
+  const [score, setScore] = useState({
+    right: 0,
+    total: 0,
+    streak: 0
+  });
+  const inRef = useRef(null);
+  const recentRef = useRef([]);
+  const recentSentRef = useRef({});
+  const recRef = useRef(null);
+  const transcriptRef = useRef("");
+  // ---- TEXTE (story) mode ----
+  const [texteMode, setTexteMode] = useState("question"); // Texte = Lesen + Verständnisfragen
+  const [story, setStory] = useState(null); // null | {loading} | {error} | {sentences:[{t,n}], topic}
+  const [storyIdx, setStoryIdx] = useState(0);
+  const [clozeItem, setClozeItem] = useState(null); // null | {loading} | {full,gap,answer,inf,tenseLabel,tenseId,nogap}
+  const [questions, setQuestions] = useState(null); // null | {loading} | {error} | [{q,options,answer}]
+  const [qIdx, setQIdx] = useState(0);
+  const [explain, setExplain] = useState(""); // short rule hint shown on a wrong cloze answer
+  const [genProg, setGenProg] = useState(""); // progress while a new story is being generated
+  const [genSecs, setGenSecs] = useState(0); // elapsed seconds while generating (for the countdown)
+  const [transOpen, setTransOpen] = useState(false); // native translation collapsed/expanded in Texte mode
+  const [storyTrans, setStoryTrans] = useState(null); // lazily generated translation of the whole story (in the user's native language)
+  const [reading, setReadingState] = useState("idle"); // read-aloud: idle | playing | paused
+  const [readIdx, setReadIdx] = useState(0); // index of the sentence currently being read
+  const [useMyWords, setUseMyWords] = useState(() => recall("kunju-texte-mywords", false)); // weave the learner's saved words into the story
+  const useMyWordsRef = useRef(recall("kunju-texte-mywords", false));
+  const clozeMyWordsRef = useRef(recall("kunju-quiz-group", "all") === "words"); // driven by the "Welche Wörter?" group = "words"
+  const [ttsRate, setTtsRateState] = useState(() => recall("kunju-ttsrate", 1.0)); // read-aloud speed
+  const [voices, setVoices] = useState(() => (window.speechSynthesis ? window.speechSynthesis.getVoices() : []) || []);
+  const ttsBase = (window.CONJ[lang] && window.CONJ[lang].ttsLang || lang).toLowerCase().split("-")[0];
+  const [voiceSel, setVoiceSel] = useState("");
+  const [voiceGenderSel, setVoiceGenderSel] = useState("");
+  useEffect(() => {
+    if (!window.speechSynthesis) return;
+    const upd = () => setVoices(window.speechSynthesis.getVoices() || []);
+    upd();
+    try {
+      window.speechSynthesis.addEventListener("voiceschanged", upd);
+    } catch (e) {}
+    return () => {
+      try {
+        window.speechSynthesis.removeEventListener("voiceschanged", upd);
+      } catch (e) {}
+    };
+  }, []);
+  useEffect(() => {
+    setVoiceSel(savedVoiceURI(ttsBase));
+    setVoiceGenderSel(savedGender(ttsBase));
+  }, [ttsBase, lang]);
+  const langVoices = voices.filter(v => (v.lang || "").toLowerCase().split("-")[0] === ttsBase);
+  const storyTokenRef = useRef(0);
+  const qTokRef = useRef(0);
+  const clozeTokRef = useRef(0);
+  const lastStoryRef = useRef(null);
+  const genRef = useRef(0);
+  const texteModeRef = useRef("question");
+  const storyIdxRef = useRef(0);
+  const readingRef = useRef("idle");
+  const readIdxRef = useRef(0);
+  const sentRefs = useRef([]);
+
+  // speed mode
+  const [speedState, setSpeedState] = useState("idle"); // idle | running | done
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [speedScore, setSpeedScore] = useState(0);
+  const [speedTotal, setSpeedTotal] = useState(0);
+  const speedBestKey = `kunju-speedbest-${lang}`;
+  const [speedBest, setSpeedBest] = useState(() => recall(speedBestKey, 0));
+  const [cardDir, setCardDir] = useState(() => recall("kunju-carddir", "target"));
+  const [thisDir, setThisDir] = useState("target");
+  const nativeName = recall("kunju-native", "German");
+  const nativeCode = NATIVE_TO_UI[nativeName] || "en";
+  const nativeLangCode = (LANG_META[nativeCode] || {
+    code: "?"
+  }).code;
+  const customCatNames = recall("kunju-vocab-catnames", []);
+  const allThemes = customCatNames.length ? [...SPK_THEMES, ...customCatNames.map(n => ({
+    id: "cat:" + n,
+    topic: n
+  }))] : SPK_THEMES;
+  function reloadTenses() {
+    const saved = recall(`kunju-tenses-${lang}`, null);
+    const ids = eng.conjugate(eng.samples[0]);
+    const all = ids && ids.tenses ? ids.tenses.map(t => t.id) : [];
+    const valid = Array.isArray(saved) ? saved.filter(id => all.indexOf(id) >= 0) : [];
+    setTenseSel(valid.length ? valid : all);
+  }
+  useEffect(() => {
+    reloadTenses();
+    setMistMode(false);
+    setSelGroup("all");
+    setSpkTarget(lang);
+    recentRef.current = [];
+    setSpeedBest(recall(`kunju-speedbest-${lang}`, 0));
+  }, [lang]);
+  useEffect(() => {
+    if (isActive) reloadTenses();
+  }, [isActive]);
+  function toggleTense(id) {
+    setTenseSel(prev => {
+      const next = prev.indexOf(id) >= 0 ? prev.filter(x => x !== id) : allTenseIds.filter(x => prev.indexOf(x) >= 0 || x === id);
+      persist(`kunju-tenses-${lang}`, next);
+      return next;
+    });
+  }
+  function setAllTenses(on) {
+    const next = on ? allTenseIds.slice() : [];
+    setTenseSel(next);
+    persist(`kunju-tenses-${lang}`, next);
+  }
+  const scoreKey = `kunju-score-${lang}-${mode}`;
+  useEffect(() => {
+    setScore(recall(scoreKey, {
+      right: 0,
+      total: 0,
+      streak: 0
+    }));
+  }, [scoreKey]);
+  useEffect(() => {
+    if ((mode === "choice" || mode === "type" || mode === "speed" || mode === "speak") && q) fetchTransl(q.verb);
+    if (mode === "cards" && q && thisDir === "native") fetchTransl(q.verb);
+    if ((mode === "choice" || mode === "cards" || mode === "type" && typeMode === "form" || mode === "speak" && spkMode === "form") && q) fetchCloze(q);else setCloze(null); /* eslint-disable-next-line */
+  }, [q, mode, spkMode, typeMode, thisDir]);
+  useEffect(() => {
+    if (mode === "type" && typeMode === "sentence" && !sent) genSentence(lang); /* eslint-disable-next-line */
+  }, [mode, typeMode]);
+  function newQ() {
+    if (mistMode) {
+      const list = getMistakes(lang);
+      return list.length ? pick(list) : null;
+    }
+    const fp = filteredPool;
+    const avoid = Math.min(recentRef.current.length ? 24 : 0, Math.floor(fp.length / 2));
+    const spec = !tenseSel.length || tenseSel.length === allTenseIds.length ? "all" : tenseSel;
+    let qn = null;
+    for (let i = 0; i < 12; i++) {
+      qn = buildQuestion(lang, spec, fp);
+      if (!qn) break;
+      if (recentRef.current.slice(0, avoid).indexOf(qn.verb) < 0) break; // skip recently-seen verbs
+    }
+    if (qn) recentRef.current = [qn.verb, ...recentRef.current].slice(0, 30);
+    return qn;
+  }
+  function next() {
+    if (recRef.current) {
+      try {
+        recRef.current.onend = null;
+        recRef.current.stop();
+      } catch (e) {}
+      recRef.current = null;
+    }
+    setQ(newQ());
+    setVal("");
+    setState("idle");
+    setPicked(null);
+    setFlipped(false);
+    setTransl(null);
+    setHeard("");
+    setListening(false);
+    setMsg("");
+    setRevealed(false);
+    if (mode === "cards") setThisDir(cardDir === "mix" ? Math.random() < 0.5 ? "target" : "native" : cardDir);
+    if (mode === "type") setTimeout(() => inRef.current && inRef.current.focus({
+      preventScroll: true
+    }), 50);
+    if (mode === "speak" && spkMode === "sentence") genSentence();else setSent(null);
+  }
+  function fetchTransl(rawVerb) {
+    const base = (rawVerb || "").replace(/^to /, "");
+    const nativeName = recall("kunju-native", "German");
+    const key = `kunju-vtr-${lang}-${base}-${nativeName}`;
+    const cached = recall(key, null);
+    if (cached != null) {
+      setTransl(cached);
+      return;
+    }
+    const nCode = NATIVE_TO_UI[nativeName];
+    if (nCode === lang) {
+      setTransl(base);
+      return;
+    }
+    if (nCode) {
+      const ct = conceptTranslate(base, lang, nCode);
+      if (ct) {
+        persist(key, ct);
+        setTransl(ct);
+        return;
+      }
+    }
+    if (nativeName === "English") {
+      const m = window.lookupMeaning(lang, base);
+      if (m) {
+        persist(key, m);
+        setTransl(m);
+        return;
+      }
+    }
+    if (!window.__hasAI()) {
+      setTransl("");
+      return;
+    }
+    setTransl("…");
+    window.aiComplete(`Translate the ${eng.name} verb "${base}" into ${nativeName}. Reply with ONLY the ${nativeName} translation in its base/infinitive form, nothing else.`).then(txt => {
+      const t = String(txt || "").trim().replace(/^["'«»]+|["'«».]+$/g, "").split("\n")[0].trim();
+      persist(key, t);
+      setTransl(t);
+    }).catch(() => setTransl(""));
+  }
+  function flipCard() {
+    if (!flipped) {
+      setFlipped(true);
+      if (q) fetchTransl(q.verb);
+    }
+  }
+  function toggleTopic(id) {
+    setTopicsSel(prev => {
+      if (id === "random") return ["random"]; // random is the exclusive "any topic" option
+      const without = prev.filter(x => x !== "random"); // picking a real theme drops "random"
+      const next = without.includes(id) ? without.filter(x => x !== id) : [...without, id];
+      return next.length ? next : ["random"]; // nothing specific left → back to random
+    });
+  }
+  function pickClozeTopic(id) {
+    setTopicsSel([id]);
+    if (typeMode === "sentence") {
+      setVal("");
+      setState("idle");
+      setRevealed(false);
+      setMsg("");
+      genSentence(lang, 0, id);
+    } else if (q) {
+      fetchCloze(q, 0, id);
+    }
+  }
+  const clozeTokenRef = useRef(0);
+  function fetchCloze(qq, attempt, topicOverride) {
+    attempt = attempt || 0;
+    const curTopic = topicOverride || (topicsSel.length ? topicsSel[Math.floor(Math.random() * topicsSel.length)] : "random");
+    if (!qq || !qq.answer || qq.answer === "—") {
+      setCloze(null);
+      return;
+    }
+    const myTok = attempt === 0 ? ++clozeTokenRef.current : clozeTokenRef.current;
+    const targetName = window.CONJ[lang].name;
+    const nativeName = recall("kunju-native", "German");
+    const lvl = skill === "advanced" ? "C1-level" : skill === "intermediate" ? "B1-level" : "very simple A1–A2";
+    const advConn = skill === "advanced" ? ` Make it a more complex sentence that naturally uses a subordinating connector (e.g. German: obwohl/trotzdem/damit/während/sodass; Spanish: aunque/a pesar de que/para que; French: bien que/quoique/afin que/pourtant; Dutch: hoewel/zodat/terwijl), like "Trotz der Umstände hielten sie durch."` : "";
+    const theme = allThemes.find(t => t.id === curTopic);
+    const topicTxt = theme && theme.topic ? ` The sentence should relate to: ${theme.topic}.` : "";
+    // Optionally weave one of the learner's saved words into the example sentence.
+    const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
+    const myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
+    const myWordTxt = myWord ? ` If it fits naturally, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence.` : "";
+    const key = `kunju-cloze6-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
+    const cached = recall(key, null);
+    if (cached != null) {
+      setCloze(cached);
+      return;
+    }
+    if (!window.__hasAI()) {
+      setCloze(null);
+      return;
+    }
+    setCloze({
+      loading: true
+    });
+    const splitLang = lang === "de" || lang === "nl";
+    const isCompound = qq.answer.indexOf(" ") >= 0;
+    const isProverb = curTopic === "proverb";
+    const provN = isProverb ? Math.floor(Math.random() * 40) : 0;
+    const clozeStyles = [" Make it a normal statement.", " Phrase it as a QUESTION ending with '?'.", " Phrase it as an EXCLAMATION ending with '!'.", " Make it a short line of spoken dialogue."];
+    const clozeStyle = isProverb ? "" : clozeStyles[Math.floor(Math.random() * clozeStyles.length)];
+    const prompt = isProverb ? `Give ONE of the MOST FAMOUS, standard ${targetName} proverbs ("Sprichwort") — the kind every native speaker knows and that appears in proverb collections (e.g. for German: "Übung macht den Meister", "Morgenstund hat Gold im Mund", "Wer A sagt, muss auch B sagen"). It must be a real, complete proverb in standard ${targetName}, NOT regional slang, NOT an everyday idiom, NOT invented. Pick a varied one (variety #${provN}). Wrap its main conjugated verb in **double asterisks**. Then give its meaning in ${nativeName}. Do NOT use double-quote characters. Reply with ONLY minified JSON: {"t":"<the proverb with **verb**>","n":"<${nativeName} meaning>"}` : `Write ONE short, natural ${lvl} sentence in ${targetName} (max 9 words) ${splitLang && isCompound ? `that correctly expresses the ${qq.tenseLabel} of "${qq.verb}" for "${qq.pronoun}" — its parts are ${qq.answer.split(" ").map(p => `"${p}"`).join(" + ")}. Use natural ${targetName} word order: the finite/auxiliary verb stays in SECOND position and the participle or infinitive moves to the END of the clause (e.g. "Ich habe das Buch gestern gelesen").` : `that CONTAINS exactly the verb form "${qq.answer}" (the ${qq.tenseLabel} of "${qq.verb}", ${qq.pronoun}).`}${clozeStyle}${advConn}${splitLang ? ` IMPORTANT: if "${qq.verb}" is a separable-prefix verb (trennbares Verb / scheidbaar werkwoord), split the prefix to the END of the main clause in simple tenses (e.g. "ausbreiten" → "Das Feuer breitete sich schnell aus", NEVER "ausbreitete").` : ""}${topicTxt}${myWordTxt} End with proper punctuation (. ! or ?). Before replying, silently PROOFREAD and guarantee the sentence is 100% correct standard ${targetName} (verb position, separable-prefix split, case government, agreement, word order); if anything is off, fix it and output only the corrected sentence. Then give a natural ${nativeName} translation of the WHOLE sentence. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`;
+    window.aiComplete(prompt).then(txt => {
+      if (clozeTokenRef.current !== myTok) return; // stale response — a newer question is active
+      let j = null;
+      try {
+        j = looseParse(txt);
+      } catch (_) {
+        j = null;
+      }
+      if (isProverb) {
+        let raw = j && j.t ? String(j.t).trim() : "";
+        if (!raw) {
+          if (attempt < 1) {
+            fetchCloze(qq, attempt + 1, curTopic);
+            return;
+          }
+          setCloze(null);
+          return;
+        }
+        const full = raw.replace(/\*\*/g, "");
+        // proverbs are independent of the quiz verb → show the full saying (no gap to avoid a verb mismatch)
+        const out = {
+          full,
+          gap: full,
+          native: j && j.n ? String(j.n).trim() : "",
+          proverb: true
+        };
+        persist(key, out);
+        setCloze(out);
+        return;
+      }
+      const s = j && j.t ? String(j.t).trim() : "";
+      const stripMark = t => t.replace(/\*\*/g, "");
+      // build a gap: prefer **markers** from AI, fall back to regex word match
+      const full = stripMark(s);
+      let gap = full,
+        hit = false;
+      const markedGap = s.replace(/\*\*(.+?)\*\*/, "…");
+      if (markedGap !== s) {
+        gap = stripMark(markedGap);
+        hit = true;
+      }
+      if (!hit) {
+        const mkRe = w => {
+          const e = w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          try {
+            return new RegExp("(?<![\\p{L}])" + e + "(?![\\p{L}])", "iu");
+          } catch (x) {
+            return new RegExp("\\b" + e + "\\b", "i");
+          }
+        };
+        const wordList = splitLang && isCompound ? qq.answer.split(/\s+/) : [qq.answer];
+        wordList.forEach(w => {
+          const r = mkRe(w);
+          if (r.test(gap)) {
+            gap = gap.replace(r, "…");
+            hit = true;
+          }
+        });
+      }
+      if (!s || !hit) {
+        if (attempt < 1) {
+          fetchCloze(qq, attempt + 1, curTopic);
+          return;
+        }
+        if (!s) {
+          setCloze(null);
+          return;
+        }
+      }
+      const out = {
+        full,
+        gap: hit ? gap : full,
+        native: j && j.n ? String(j.n).trim() : ""
+      };
+      persist(key, out);
+      setCloze(out);
+    }).catch(() => {
+      if (clozeTokenRef.current !== myTok) return;
+      if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic);else setCloze(null);
+    });
+  }
+  useEffect(() => {
+    setPrevCards([]);
+    if (mode === "speed") {
+      setSpeedState("idle");
+      setQ(newQ());
+    } else next();
+    /* eslint-disable-next-line */
+  }, [lang, tenseSel.join(","), mistMode, selGroup, mode]);
+  function setModeP(m) {
+    setMode(m);
+    persist("kunju-mode", m);
+  }
+  function bumpMist() {
+    setMver(v => v + 1);
+  }
+  function record(ok) {
+    const ns = {
+      right: score.right + (ok ? 1 : 0),
+      total: score.total + 1,
+      streak: ok ? score.streak + 1 : 0
+    };
+    setScore(ns);
+    persist(scoreKey, ns);
+    if (!ok) {
+      addMistake(lang, q);
+      bumpMist();
+    } else if (mistMode) {
+      removeMistake(lang, q);
+      bumpMist();
+    }
+    onActivity && onActivity();
+  }
+  function check() {
+    if (!q || state !== "idle") return;
+    if (typeMode === "sentence") {
+      if (!sent || !sent.t) return;
+      const clean = s => norm(s).replace(/[^\p{L}\p{N}\s]/gu, "").replace(/\s+/g, " ").trim();
+      const ct = clean(sent.t),
+        cv = clean(val);
+      // typed → require an exact match (accents matter); allow only minor accent slips when otherwise identical
+      const ok = cv === ct || deburr(cv) === deburr(ct) && cv.split(" ").length === ct.split(" ").length;
+      const accentSlip = ok && cv !== ct;
+      record(ok);
+      setState(ok ? "correct" : "wrong");
+      setMsg(ok ? accentSlip ? tr("accent_hint") : praiseLine() : cheerLine());
+      return;
+    }
+    const exact = norm(val) === norm(q.answer);
+    const accentOnly = !exact && deburr(norm(val)) === deburr(norm(q.answer)) && norm(val).length > 0;
+    const ok = exact || accentOnly;
+    record(ok);
+    setState(ok ? "correct" : "wrong");
+    setMsg(accentOnly ? tr("accent_hint", {
+      answer: q.answer
+    }) : ok ? praiseLine() : cheerLine());
+    if (ok && autoSpeak) speak(q.answer, q.ttsLang);
+  }
+  function choose(opt) {
+    if (!q || state !== "idle") return;
+    setPicked(opt);
+    const ok = norm(opt) === norm(q.answer);
+    record(ok);
+    setState(ok ? "correct" : "wrong");
+    setMsg(ok ? praiseLine() : cheerLine());
+    if (ok && autoSpeak) speak(q.answer, q.ttsLang);
+  }
+
+  // speed timer
+  useEffect(() => {
+    if (mode !== "speed" || speedState !== "running") return;
+    if (timeLeft <= 0) {
+      setSpeedState("done");
+      setSpeedBest(b => {
+        const nb = Math.max(b, speedScore);
+        persist(speedBestKey, nb);
+        return nb;
+      });
+      return;
+    }
+    const id = setTimeout(() => setTimeLeft(x => x - 1), 1000);
+    return () => clearTimeout(id);
+    /* eslint-disable-next-line */
+  }, [mode, speedState, timeLeft]);
+  function startSpeed() {
+    setSpeedScore(0);
+    setSpeedTotal(0);
+    setSpeedLog([]);
+    setTimeLeft(60);
+    setQ(newQ());
+    setSpeedState("running");
+  }
+  function speedAnswer(opt) {
+    if (speedState !== "running") return;
+    const ok = norm(opt) === norm(q.answer);
+    if (ok) setSpeedScore(s => s + 1);else {
+      addMistake(lang, q);
+      bumpMist();
+    }
+    setSpeedLog(l => [...l, {
+      verb: q.verb,
+      pronoun: q.pronoun,
+      tenseLabel: q.tenseLabel,
+      answer: q.answer,
+      picked: opt,
+      ok: ok,
+      ttsLang: q.ttsLang
+    }]);
+    setSpeedTotal(s => s + 1);
+    onActivity && onActivity();
+    setQ(newQ());
+  }
+  function nextCard(known) {
+    if (known) {
+      if (mistMode) {
+        removeMistake(lang, q);
+        bumpMist();
+      }
+    } else {
+      addMistake(lang, q);
+      bumpMist();
+    }
+    onActivity && onActivity();
+    setPrevCards(s => [...s, q].slice(-40));
+    next();
+  }
+  function goBackCard() {
+    setPrevCards(stack => {
+      if (!stack.length) return stack;
+      const copy = stack.slice();
+      const prev = copy.pop();
+      setQ(prev);
+      setFlipped(false);
+      setTransl(null);
+      setState("idle");
+      setMsg("");
+      return copy;
+    });
+  }
+  function evaluateSpoken(said, target, recLang) {
+    const a = norm(said),
+      tg = norm(target);
+    const da = deburr(a),
+      dtg = deburr(tg);
+    let ok;
+    if (spkMode === "sentence") {
+      ok = sentSim(a, tg) >= 0.38 || sentSim(da, dtg) >= 0.5;
+    } else {
+      const last = tg.split(" ").pop(),
+        dlast = dtg.split(" ").pop();
+      const aw = a.split(" "),
+        daw = da.split(" ");
+      ok = a === tg || da === dtg || a.includes(tg) || da.includes(dtg) || aw.indexOf(last) >= 0 || daw.indexOf(dlast) >= 0 || daw.some(w => w.length > 2 && (w === dlast || dlast.indexOf(w) === 0 || w.indexOf(dlast) === 0));
+    }
+    record(ok);
+    setState(ok ? "correct" : "wrong");
+    setMsg(ok ? praiseLine() : cheerLine());
+    if (spkMode === "sentence" && sent) {
+      if (ok) {
+        if (sentMistMode) {
+          removeSentMist(spkTarget, sent);
+          setSmver(v => v + 1);
+        }
+      } else {
+        addSentMist(spkTarget, sent);
+        setSmver(v => v + 1);
+      }
+    }
+    if (ok && autoSpeak) speak(target, recLang);
+  }
+  function listen() {
+    if (state !== "idle") return;
+    // tap again while recording → stop & evaluate (like sending a voice message)
+    if (recRef.current) {
+      try {
+        recRef.current.stop();
+      } catch (e) {}
+      return;
+    }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) {
+      setHeard("__nomic__");
+      return;
+    }
+    const target = spkMode === "sentence" && sent && sent.t ? sent.t : q.answer;
+    const recLang = spkMode === "sentence" ? window.CONJ[spkTarget].ttsLang : q.ttsLang;
+    const rec = new SR();
+    rec.lang = recLang;
+    rec.continuous = true;
+    rec.interimResults = true;
+    rec.maxAlternatives = 1;
+    transcriptRef.current = "";
+    setHeard("");
+    setListening(true);
+    let finalT = "";
+    rec.onresult = e => {
+      let interim = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const r = e.results[i];
+        if (r.isFinal) finalT += r[0].transcript + " ";else interim += r[0].transcript;
+      }
+      transcriptRef.current = (finalT + interim).trim();
+      setHeard(transcriptRef.current);
+    };
+    rec.onerror = e => {
+      const er = e && e.error;
+      if (er === "not-allowed" || er === "service-not-allowed") {
+        recRef.current = null;
+        setListening(false);
+        setHeard("__denied__");
+      } else if (er === "no-speech" && !transcriptRef.current) {/* keep listening */}
+    };
+    rec.onend = () => {
+      recRef.current = null;
+      setListening(false);
+      const said = transcriptRef.current;
+      if (said) evaluateSpoken(said, target, recLang);
+    };
+    recRef.current = rec;
+    try {
+      rec.start();
+    } catch (e) {
+      recRef.current = null;
+      setListening(false);
+      setHeard("__nomic__");
+    }
+  }
+  function sentSim(a, b) {
+    const words = s => deburr(norm(s)).replace(/[^\p{L}\p{N}\s]/gu, " ").split(/\s+/).filter(w => w.length > 1);
+    const aw = new Set(words(a));
+    const bw = words(b);
+    if (!bw.length) return 0;
+    let m = 0;
+    bw.forEach(w => {
+      if (aw.has(w)) m++;
+    });
+    return m / bw.length; // recall over the target words — lenient toward extra/missing words
+  }
+  const genTokenRef = useRef(0);
+  function genSentence(targetCode, attempt, topicOverride, forceNormal) {
+    const tc = targetCode || spkTarget;
+    const myTok = ++genTokenRef.current;
+    if (sentMistMode && !forceNormal) {
+      const list = getSentMist(tc);
+      setRevealed(false);
+      setHeard("");
+      setMsg("");
+      setState("idle");
+      setSent(list.length ? pick(list) : null);
+      return;
+    }
+    attempt = attempt || 0;
+    setRevealed(false);
+    setSent({
+      loading: true
+    });
+    if (!window.__hasAI()) {
+      setSent({
+        error: 1
+      });
+      return;
+    }
+    const nativeName = recall("kunju-native", "German");
+    const targetName = window.CONJ[tc].name;
+    const tid = topicOverride || (topicsSel.length ? topicsSel[Math.floor(Math.random() * topicsSel.length)] : "random");
+    const theme = allThemes.find(t => t.id === tid);
+    const topic = theme && theme.topic ? theme.topic : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)];
+    const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
+    const myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
+    const myWordTxt = myWord ? ` Its ${targetName} translation should, if it fits naturally, include the saved word "${myWord}".` : "";
+    const pool = tenseSel.length ? tenseSel : tenseOpts.map(t => t.id);
+    const chosenId = pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+    const chosen = chosenId ? tenseOpts.find(t => t.id === chosenId) || {} : {};
+    const oneTense = chosen.label || null;
+    const tenseTxt = oneTense ? ` Write it so its ${targetName} translation naturally uses the ${oneTense} tense.` : "";
+    const rkey = `${tc}|${tid}|${tenseSel.join(",")}`;
+    const recent = recentSentRef.current[rkey] || [];
+    const avoidTxt = attempt === 0 && recent.length ? ` Make it clearly DIFFERENT from these recent ones (no paraphrases): ${recent.slice(0, 10).map(s => `"${s}"`).join("; ")}.` : "";
+    const seed = Math.floor(Math.random() * 100000);
+    const lvlTxt = skill === "advanced" ? " Use richer C1-level vocabulary and a more complex structure that naturally uses a subordinating connector (in the target language e.g. Spanish: aunque, a pesar de que, para que, sin que, mientras; German: obwohl, trotzdem, damit, während, sodass; French: bien que, quoique, afin que, pourtant; Dutch: hoewel, ofschoon, zodat, terwijl)." : skill === "intermediate" ? " Use everyday B1-level vocabulary." : " Use very simple A1\u2013A2 vocabulary and a short, easy structure (max 7 words).";
+    const STYLES = [" Make it a normal statement.", " Make it a QUESTION ending with '?'.", " Make it an EXCLAMATION ending with '!'.", " Make it a short line of spoken dialogue (question or exclamation), as in a real conversation."];
+    const styleTxt = STYLES[Math.floor(Math.random() * STYLES.length)];
+    window.aiComplete(`Write ONE short, natural everyday sentence (max 10 words) in ${nativeName} about ${topic}.${tenseTxt}${lvlTxt}${styleTxt}${myWordTxt} Make it specific and fresh, NOT a clichéd textbook line (variety seed ${seed}).${avoidTxt} Both sentences MUST end with proper punctuation (. ! or ?). Then give its natural ${targetName} translation. Do NOT use any double-quote (") character inside either sentence. Reply with ONLY minified JSON and nothing else: {"n":"...","t":"..."}`).then(txt => {
+      if (genTokenRef.current !== myTok) return;
+      let j = null;
+      try {
+        j = looseParse(txt);
+      } catch (_) {
+        j = null;
+      }
+      if (!j || !j.n || !j.t) {
+        if (attempt < 2) {
+          genSentence(tc, attempt + 1, tid);
+          return;
+        }
+        setSent({
+          error: 1
+        });
+        return;
+      }
+      recentSentRef.current[rkey] = [j.n, ...recent].slice(0, 30);
+      setSent({
+        n: j.n,
+        t: j.t,
+        tenseLabel: oneTense,
+        tenseId: chosenId
+      });
+    }).catch(() => {
+      if (genTokenRef.current !== myTok) return;
+      if (attempt < 2) {
+        genSentence(tc, attempt + 1, tid);
+        return;
+      }
+      setSent({
+        error: 1
+      });
+    });
+  }
+
+  // ---- TEXTE: individualized AI stories ----
+  // tolerant parser for JSON arrays (looseParse only handles single objects)
+  const parseArr = txt => {
+    let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+    const a = s.indexOf("[");
+    if (a >= 0) s = s.slice(a);
+    const b = s.lastIndexOf("]");
+    try {
+      const j = JSON.parse(b > 0 ? s.slice(0, b + 1) : s);
+      if (Array.isArray(j) && j.length) return j;
+    } catch (_) {}
+    // salvage: extract each {…} object individually — survives truncation, stray text or inner quotes
+    const out = [];
+    const objRe = /\{[^{}]*\}/g;
+    let m;
+    while (m = objRe.exec(s)) {
+      let o = null;
+      try {
+        o = JSON.parse(m[0]);
+      } catch (_) {
+        try {
+          o = looseParse(m[0]);
+        } catch (e) {
+          o = null;
+        }
+      }
+      if (o && (o.t || o.n || o.q || o.v || o.inf || o.i != null)) out.push(o);
+    }
+    return out.length ? out : null;
+  };
+  // shared story library (Supabase) — each topic×level×language combo is generated once, then reused for everyone
+  async function libFetch(lg, topic, level, tenses) {
+    if (!window.__supa) return [];
+    try {
+      const {
+        data
+      } = await window.__supa.from("texte_stories").select("sentences,questions").eq("lang", lg).eq("topic", topic).eq("level", level).eq("tenses", tenses).limit(40);
+      return Array.isArray(data) ? data : [];
+    } catch (e) {
+      return [];
+    }
+  }
+  function libInsert(lg, topic, level, tenses, sentences, questions) {
+    if (!window.__supa) return;
+    try {
+      window.__supa.from("texte_stories").insert({
+        lang: lg,
+        topic,
+        level,
+        tenses,
+        sentences,
+        questions: questions || null
+      }).then(() => {}, () => {});
+    } catch (e) {}
+  }
+  function useStoryRow(row, tid) {
+    const sents = (row.sentences || []).filter(s => s && s.t);
+    if (!sents.length) {
+      setStory({
+        error: 1
+      });
+      return;
+    }
+    lastStoryRef.current = sents[0].t;
+    setStory({
+      sentences: sents,
+      questions: Array.isArray(row.questions) ? row.questions : null,
+      topic: themeLabel(tid),
+      gen: ++genRef.current
+    });
+  }
+  async function buildQuestions(sentences, nativeName) {
+    try {
+      const full = sentences.map(s => s.t).join(" ");
+      const prompt = `Read this story:\n"${full}"\nWrite 3 simple reading-comprehension questions about it in ${nativeName}, each with exactly 3 short answer options where only ONE is correct. Do NOT use double-quote characters inside any text. Reply with ONLY a minified JSON array and nothing else: [{"q":"<question in ${nativeName}>","options":["<a>","<b>","<c>"],"answer":"<exact text of the correct option>"}]`;
+      const txt = await window.aiComplete(prompt);
+      let arr = parseArr(txt);
+      arr = (Array.isArray(arr) ? arr : []).filter(x => x && x.q && Array.isArray(x.options) && x.options.length && x.answer);
+      return arr.length ? arr : null;
+    } catch (e) {
+      return null;
+    }
+  }
+  // pull the already-complete {"t":"..."} sentences out of a partial (streaming) JSON array
+  const parsePartial = acc => {
+    const out = [];
+    const re = /\{\s*"t"\s*:\s*"([^"]*)"\s*\}/g;
+    let m;
+    while (m = re.exec(acc)) {
+      const t = m[1].trim();
+      if (t) out.push({
+        t
+      });
+    }
+    return out;
+  };
+  // build only the story prose (fast first paint); verbs + questions are added afterwards.
+  // onProgress(partialSentences) is called as sentences stream in.
+  async function buildProse(myTok, tid, onProgress, myWords) {
+    const nativeName = recall("kunju-native", "German");
+    const targetName = window.CONJ[lang].name;
+    const N = skill === "advanced" ? 35 : skill === "intermediate" ? 28 : 25;
+    const theme = allThemes.find(t => t.id === tid);
+    const topic = theme && theme.topic ? theme.topic : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)];
+    const isSubset = tenseSel.length > 0 && tenseSel.length < tenseOpts.length;
+    const selLabels = (tenseSel.length ? tenseSel : tenseOpts.map(t => t.id)).map(id => (tenseOpts.find(t => t.id === id) || {}).label).filter(Boolean);
+    const tenseTxt = isSubset ? ` IMPORTANT: write the narration so that the verbs are PREDOMINANTLY in the ${targetName} ${selLabels.join(" / ")} tense${selLabels.length > 1 ? "s" : ""} — keep that tense focus throughout wherever it reads naturally.` : ` Use a natural mix of ${targetName} tenses.`;
+    const grpHint = selGroup === "irregular" ? " Prefer common irregular verbs where it stays natural." : selGroup === "regular" ? " Prefer regular verbs where it stays natural." : "";
+    const myWordsTxt = myWords && myWords.length ? ` IMPORTANT: the learner is practising these ${targetName} words/verbs — weave AS MANY of them as you naturally can into the story, used correctly and in context (integrate them, never just list them): ${myWords.join(", ")}.` : "";
+    const ADV_CONN = {
+      es: "aunque, a pesar de que, mientras, puesto que, sin embargo, de modo que, no obstante",
+      de: "obwohl, während, da, sodass, dennoch, wohingegen, indessen",
+      fr: "bien que, quoique, tandis que, puisque, néanmoins, de sorte que",
+      nl: "hoewel, terwijl, aangezien, zodat, niettemin, ofschoon",
+      en: "although, while, since, so that, nevertheless, whereas"
+    };
+    const styleTxt = skill === "advanced" ? ` Write LITERARY, flowing C1-level ${targetName} prose: long, complex sentences with subordinate, relative and concessive clauses, the subjunctive where natural, varied connectors (${ADV_CONN[lang] || ADV_CONN.en}), rich and idiomatic vocabulary, vivid sensory description and some dialogue. NEVER write short, choppy or list-like sentences — weave the ideas into elegant, varied prose.` : skill === "intermediate" ? ` Write natural, everyday B1-level ${targetName} with varied sentence length, connectors and some subordinate clauses, and a real narrative flow (not isolated short sentences).` : ` Write very simple A1–A2 ${targetName} with short, clear sentences and basic connectors, while still telling one coherent little story.`;
+    const seed = Math.floor(Math.random() * 100000);
+    // advance by the sentences actually received — one big call when the worker's max_tokens is high,
+    // automatically several smaller ones when it is low. Robust either way.
+    let sentences = [];
+    let guard = 0;
+    while (sentences.length < N && guard < 12) {
+      guard++;
+      if (storyTokenRef.current !== myTok) return null;
+      const ask = Math.min(N - sentences.length, 40);
+      const isFirst = sentences.length === 0;
+      const isLast = sentences.length + ask >= N;
+      const intro = isFirst ? ` This is the OPENING: establish a vivid setting, one or two named characters, and a small conflict or goal about ${topic} that drives the plot.` : ` CONTINUE the same story with the SAME characters and setting; advance the plot and do NOT repeat earlier events. The story so far ends: "${sentences.slice(-3).map(s => s.t).join(" ")}".`;
+      const endTxt = isLast ? " In these final sentences, resolve the conflict and give the story a satisfying, rounded ending." : "";
+      const prompt = `You are writing a real short story (a "Kurzgeschichte") in ${targetName}; write ${ask} more sentences now.${styleTxt}${intro}${tenseTxt}${grpHint}${myWordsTxt}${endTxt} Keep the SAME narrative voice and tense register throughout. CRUCIAL — vary the sentence openings strongly: NEVER begin two sentences in a row with the same word or with the subject's name; open different sentences with time or place adverbials, subordinate or participial clauses, prepositional phrases, direct speech, or an object — and refer to the protagonist mostly with pronouns or epithets instead of repeating the name. Vary sentence length, rhythm and structure, and do NOT mirror the structure of the previous sentences. Variety seed ${seed}+${sentences.length}. Do NOT use any double-quote (") character inside any sentence. Reply with ONLY a minified JSON array and nothing else: [{"t":"<${targetName} sentence>"}]`;
+      let arr = null;
+      for (let att = 0; att < 3 && !(Array.isArray(arr) && arr.length); att++) {
+        if (att) await new Promise(r => setTimeout(r, 900 * att));
+        if (storyTokenRef.current !== myTok) return null;
+        let lastShown = sentences.length;
+        try {
+          const txt = window.aiStream ? await window.aiStream(prompt, acc => {
+            if (storyTokenRef.current !== myTok) return;
+            const partial = sentences.concat(parsePartial(acc));
+            if (partial.length > lastShown) {
+              lastShown = partial.length;
+              if (onProgress) onProgress(partial.slice(0, N));
+              setGenProg(Math.min(partial.length, N) + " / " + N);
+            }
+          }) : await window.aiComplete(prompt);
+          arr = parseArr(txt);
+        } catch (_) {
+          arr = null;
+        }
+      }
+      if (storyTokenRef.current !== myTok) return null;
+      const before = sentences.length;
+      if (Array.isArray(arr) && arr.length) sentences = sentences.concat(arr.filter(s => s && s.t).map(s => ({
+        t: String(s.t).trim()
+      })));
+      if (storyTokenRef.current === myTok) {
+        setGenProg(Math.min(sentences.length, N) + " / " + N);
+        if (onProgress && sentences.length) onProgress(sentences.slice(0, N));
+      }
+      if (sentences.length === before) {
+        if (sentences.length) break;
+        return null;
+      }
+    }
+    return sentences.length ? sentences : null;
+  }
+  // after the prose is on screen, fill in cloze verb tags + comprehension questions in parallel, then cache
+  async function enrichStory(myTok, tid, level, tsig, sentences, cache) {
+    const nativeName = recall("kunju-native", "German");
+    let questions = null;
+    try {
+      questions = await buildQuestions(sentences, nativeName);
+    } catch (e) {}
+    if (storyTokenRef.current !== myTok) return;
+    setStory(prev => prev && prev.gen === genRef.current ? {
+      ...prev,
+      questions: questions || prev.questions || null,
+      enriching: false
+    } : prev);
+    if (cache) libInsert(lang, tid, level, tsig, sentences, questions);
+    const shuffle = x => ({
+      q: x.q,
+      answer: x.answer,
+      options: (x.options || []).slice().sort(() => Math.random() - 0.5)
+    });
+    setQuestions(questions && questions.length ? questions.map(shuffle) : {
+      error: 1
+    });
+  }
+  // collect the learner's saved words (vocabulary) + saved verbs for the current language
+  function gatherMyWords() {
+    let words = [];
+    try {
+      words = (getVocab() || []).filter(v => v.lang === lang && v.term).map(v => String(v.term).trim());
+    } catch (e) {}
+    const verbs = (favs || []).filter(f => f.lang === lang && f.verb).map(f => String(f.verb).replace(/^to /, "").trim());
+    const all = [];
+    const seen = {};
+    verbs.concat(words).forEach(w => {
+      const k = (w || "").toLowerCase();
+      if (w && !seen[k]) {
+        seen[k] = 1;
+        all.push(w);
+      }
+    });
+    for (let i = all.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = all[i];
+      all[i] = all[j];
+      all[j] = tmp;
+    }
+    return all.slice(0, 25);
+  }
+  async function genStory(forceNew) {
+    const myTok = ++storyTokenRef.current;
+    setStory({
+      loading: true
+    });
+    setQuestions(null);
+    setClozeItem(null);
+    setStoryIdx(0);
+    setQIdx(0);
+    setVal("");
+    setState("idle");
+    setMsg("");
+    setPicked(null);
+    setExplain("");
+    setGenProg("");
+    setTransOpen(false);
+    setStoryTrans(null);
+    setReading("idle");
+    readIdxRef.current = 0;
+    setReadIdx(0);
+    if (window.speechSynthesis) try {
+      window.speechSynthesis.cancel();
+    } catch (e) {}
+    const tid = topicsSel.length ? topicsSel[Math.floor(Math.random() * topicsSel.length)] : "random";
+    const level = skill || "beginner";
+    const tsig = !tenseSel.length || tenseSel.length === allTenseIds.length ? "mix" : tenseSel.slice().sort().join(",");
+    const TARGET = 8; // keep growing the library until this many variants exist per combo
+    const myWords = useMyWordsRef.current ? gatherMyWords() : [];
+    const personalized = myWords.length > 0;
+    // 1) shared library first — instant and free (skipped for personalised "my words" stories)
+    if (!personalized) {
+      const lib = await libFetch(lang, tid, level, tsig);
+      if (storyTokenRef.current !== myTok) return;
+      if (lib.length && (!forceNew || lib.length >= TARGET)) {
+        let row = lib[Math.floor(Math.random() * lib.length)];
+        for (let i = 0; i < 5 && lib.length > 1 && row.sentences && row.sentences[0] && row.sentences[0].t === lastStoryRef.current; i++) {
+          row = lib[Math.floor(Math.random() * lib.length)];
+        }
+        useStoryRow(row, tid);
+        return;
+      }
+    }
+    // 2) generate (stream live), then enrich; cache only generic (non-personalised) stories
+    if (!window.__hasAI()) {
+      setStory({
+        error: 1
+      });
+      return;
+    }
+    const myGen = ++genRef.current;
+    const sentences = await buildProse(myTok, tid, partial => {
+      if (storyTokenRef.current !== myTok || !partial || !partial.length) return;
+      lastStoryRef.current = partial[0].t;
+      setStory({
+        sentences: partial,
+        questions: null,
+        topic: themeLabel(tid),
+        enriching: true,
+        streaming: true,
+        gen: myGen
+      });
+    }, myWords);
+    if (storyTokenRef.current !== myTok) return;
+    if (!sentences || !sentences.length) {
+      setStory({
+        error: 1
+      });
+      return;
+    }
+    lastStoryRef.current = sentences[0].t;
+    setStory({
+      sentences,
+      questions: null,
+      topic: themeLabel(tid),
+      enriching: true,
+      gen: myGen
+    });
+    enrichStory(myTok, tid, level, tsig, sentences, !personalized);
+  }
+  function genQuestions() {
+    if (!story || !story.sentences) return;
+    const myTok = ++qTokRef.current;
+    setQIdx(0);
+    setVal("");
+    setState("idle");
+    setPicked(null);
+    const shuffle = x => ({
+      q: x.q,
+      answer: x.answer,
+      options: (x.options || []).slice().sort(() => Math.random() - 0.5)
+    });
+    if (Array.isArray(story.questions) && story.questions.length) {
+      setQuestions(story.questions.map(shuffle));
+      return;
+    }
+    setQuestions({
+      loading: true
+    });
+    if (story.enriching) return; // background enrichment will deliver the questions
+    buildQuestions(story.sentences, recall("kunju-native", "German")).then(arr => {
+      if (qTokRef.current !== myTok) return;
+      setQuestions(arr && arr.length ? arr.map(shuffle) : {
+        error: 1
+      });
+    });
+  }
+  // cloze gaps now come from the stored verb tags — no per-sentence AI call
+  function prepCloze(idx) {
+    const s = story && story.sentences && story.sentences[idx];
+    if (!s) {
+      setClozeItem(null);
+      return;
+    }
+    const form = s.v ? String(s.v).trim() : "";
+    if (!form) {
+      setClozeItem({
+        full: s.t,
+        gap: s.t,
+        answer: "",
+        nogap: true
+      });
+      return;
+    }
+    const e = form.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    let re;
+    try {
+      re = new RegExp("(?<![\\p{L}])" + e + "(?![\\p{L}])", "u");
+    } catch (x) {
+      re = new RegExp("\\b" + e + "\\b");
+    }
+    let gap = s.t,
+      hit = false;
+    if (re.test(s.t)) {
+      gap = s.t.replace(re, "…");
+      hit = true;
+    }
+    const tlabel = s.tns || "";
+    const topt = tenseOpts.find(t => t.label && tlabel && t.label.toLowerCase() === tlabel.toLowerCase());
+    setClozeItem({
+      full: s.t,
+      gap: hit ? gap : s.t,
+      answer: hit ? form : "",
+      inf: s.inf || "",
+      tenseLabel: tlabel,
+      tenseId: topt ? topt.id : null,
+      nogap: !hit
+    });
+  }
+  function checkTexte() {
+    if (state !== "idle") return;
+    if (texteMode === "translate") {
+      const s = story && story.sentences && story.sentences[storyIdx];
+      if (!s) return;
+      const ok = sentSim(val, s.t) >= 0.6 || deburr(norm(val)) === deburr(norm(s.t));
+      setState(ok ? "correct" : "wrong");
+      setMsg(ok ? praiseLine() : cheerLine());
+    } else if (texteMode === "cloze") {
+      const it = clozeItem;
+      if (!it || !it.answer) return;
+      const exact = norm(val) === norm(it.answer);
+      const accentOnly = !exact && deburr(norm(val)) === deburr(norm(it.answer)) && norm(val).length > 0;
+      const ok = exact || accentOnly;
+      setState(ok ? "correct" : "wrong");
+      setMsg(accentOnly ? tr("accent_hint", {
+        answer: it.answer
+      }) : ok ? praiseLine() : cheerLine());
+      if (!ok) {
+        const hint = tenseHint(lang, it.tenseId) || "";
+        setExplain((it.tenseLabel || "") + (hint ? (it.tenseLabel ? " · " : "") + hint : ""));
+      }
+    }
+    onActivity && onActivity();
+  }
+  function chooseTexte(opt) {
+    if (state !== "idle") return;
+    const qq = questions && questions[qIdx];
+    if (!qq) return;
+    setPicked(opt);
+    const ok = norm(opt) === norm(qq.answer);
+    setState(ok ? "correct" : "wrong");
+    setMsg(ok ? praiseLine() : cheerLine());
+    onActivity && onActivity();
+  }
+  function nextTexte() {
+    setVal("");
+    setState("idle");
+    setMsg("");
+    setPicked(null);
+    setExplain("");
+    if (texteMode === "question") {
+      setQIdx(i => questions && i + 1 <= questions.length ? i + 1 : i);
+    } else {
+      const total = story && story.sentences ? story.sentences.length : 0;
+      const ni = storyIdx + 1;
+      setStoryIdx(ni);
+      if (texteMode === "cloze" && ni < total) prepCloze(ni);
+    }
+  }
+  function pickTexteMode(m) {
+    setTexteMode(m);
+    persist("kunju-textemode", m);
+  }
+  // collapsible native-language translation (open by default for beginners)
+  // translate the whole story into the user's native language on demand (cached locally), then show it
+  // read the story aloud sentence by sentence so it can be paused and resumed at the same spot
+  function setReading(v) {
+    readingRef.current = v;
+    setReadingState(v);
+  }
+  function speakFrom(idx) {
+    const sents = story && story.sentences || [];
+    if (idx >= sents.length) {
+      setReading("idle");
+      readIdxRef.current = 0;
+      setReadIdx(0);
+      return;
+    }
+    readIdxRef.current = idx;
+    setReadIdx(idx);
+    const txt = String(sents[idx].t || "").replace(/…/g, " ").replace(/\s+/g, " ").trim();
+    try {
+      window.speechSynthesis.cancel();
+    } catch (e) {}
+    if (!txt) {
+      speakFrom(idx + 1);
+      return;
+    }
+    let u;
+    try {
+      u = new SpeechSynthesisUtterance(txt);
+    } catch (e) {
+      setReading("idle");
+      return;
+    }
+    const lng = window.CONJ[lang].ttsLang;
+    const v = pickVoice(lng);
+    u.lang = v && v.lang || lng;
+    u.rate = TTS_RATE;
+    if (v) u.voice = v;
+    u.onend = () => {
+      if (readingRef.current === "playing") speakFrom(idx + 1);
+    };
+    try {
+      window.speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+  function playStory() {
+    if (!story || !story.sentences || !story.sentences.length || !window.speechSynthesis) return;
+    if (readingRef.current === "paused") {
+      setReading("playing");
+      try {
+        window.speechSynthesis.resume();
+      } catch (e) {}
+      // iOS fallback: if the paused utterance got dropped, restart from the current sentence
+      setTimeout(() => {
+        try {
+          if (readingRef.current === "playing" && !window.speechSynthesis.speaking && !window.speechSynthesis.pending) speakFrom(readIdxRef.current);
+        } catch (e) {}
+      }, 260);
+      return;
+    }
+    setReading("playing");
+    speakFrom(0);
+  }
+  function pauseStory() {
+    setReading("paused");
+    try {
+      window.speechSynthesis.pause();
+    } catch (e) {}
+  }
+  function rewindStory() {
+    if (!story || !story.sentences || !story.sentences.length) return;
+    const ni = Math.max(0, readIdxRef.current - 2); // ~ a couple of sentences ≈ 5–10 s
+    setReading("playing");
+    speakFrom(ni);
+  }
+  function stopStory() {
+    setReading("idle");
+    readIdxRef.current = 0;
+    setReadIdx(0);
+    try {
+      window.speechSynthesis.cancel();
+    } catch (e) {}
+  }
+  function ensureStoryTrans() {
+    if (storyTrans != null) return;
+    const sents = story && story.sentences || [];
+    if (!sents.length) return;
+    const native = recall("kunju-native", "German");
+    const full = sents.map(s => s.t).join(" ");
+    const key = `kunju-stortr-${native}-${strHash(full)}`;
+    const cached = recall(key, null);
+    if (cached) {
+      setStoryTrans(cached);
+      return;
+    }
+    if (!window.__hasAI()) {
+      setStoryTrans("—");
+      return;
+    }
+    setStoryTrans("…");
+    const targetName = window.CONJ[lang].name;
+    window.aiComplete(`Translate this ${targetName} short story into natural, fluent ${native}. Stay faithful to the original and keep the same flow. Reply with ONLY the ${native} translation, no quotes and no extra text:\n\n${full}`).then(txt => {
+      const out = String(txt || "").trim().replace(/^["'«»]+|["'«»]+$/g, "");
+      if (out) {
+        persist(key, out);
+        setStoryTrans(out);
+      } else setStoryTrans("—");
+    }).catch(() => setStoryTrans("—"));
+  }
+  function nativeTrans() {
+    if (!story || !story.sentences) return null;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "texte-trans"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => setTransOpen(o => {
+        const nv = !o;
+        if (nv) ensureStoryTrans();
+        return nv;
+      }),
+      style: {
+        background: "none",
+        border: "none",
+        color: LANG_META[lang].color,
+        cursor: "pointer",
+        fontWeight: 600,
+        fontSize: ".82rem",
+        padding: "4px 0",
+        marginTop: "4px"
+      }
+    }, (transOpen ? "▾ " : "▸ ") + tr("texte_translation")), transOpen && /*#__PURE__*/React.createElement("div", {
+      className: "clozenative",
+      style: {
+        marginTop: "2px",
+        textAlign: "left",
+        lineHeight: 1.6
+      }
+    }, storyTrans || "…"));
+  }
+  // (re)generate the story when entering Texte mode or when the selection / level changes
+  useEffect(() => {
+    if (mode === "texte") genStory(); /* eslint-disable-next-line */
+  }, [mode, lang, skill, topicsSel.join(","), tenseSel.join(",")]);
+  // when the story is ready or the sub-mode changes, prepare that sub-mode's task
+  useEffect(() => {
+    if (mode !== "texte" || !story || !story.sentences) return;
+    setStoryIdx(0);
+    setQIdx(0);
+    setVal("");
+    setState("idle");
+    setMsg("");
+    setPicked(null);
+    setExplain("");
+    setTransOpen(false);
+    setStoryTrans(null);
+    if (texteMode === "question") genQuestions();else if (texteMode === "cloze") prepCloze(0);
+    /* eslint-disable-next-line */
+  }, [texteMode, story && story.gen]);
+  useEffect(() => {
+    texteModeRef.current = texteMode;
+  }, [texteMode]);
+  useEffect(() => {
+    storyIdxRef.current = storyIdx;
+  }, [storyIdx]);
+  useEffect(() => {
+    if (mode !== "texte") {
+      setReading("idle");
+      readIdxRef.current = 0;
+      try {
+        window.speechSynthesis.cancel();
+      } catch (e) {}
+    } /* eslint-disable-next-line */
+  }, [mode]);
+  useEffect(() => {
+    if (reading !== "idle" && sentRefs.current[readIdx]) {
+      try {
+        sentRefs.current[readIdx].scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      } catch (e) {}
+    } /* eslint-disable-next-line */
+  }, [readIdx, reading]);
+  const texteLoading = mode === "texte" && !!(story && story.loading);
+  useEffect(() => {
+    if (!texteLoading) return;
+    setGenSecs(0);
+    const id = setInterval(() => setGenSecs(s => s + 1), 1000);
+    return () => clearInterval(id);
+  }, [texteLoading]);
+  const pct = score.total ? Math.round(score.right / score.total * 100) : 0;
+  const mistakes = (mver, getMistakes(lang));
+  const MODES = [{
+    id: "cards",
+    label: tr("m_cards"),
+    icon: "🃏"
+  }, {
+    id: "choice",
+    label: tr("m_choice"),
+    icon: "◉"
+  }, {
+    id: "type",
+    label: tr("m_type"),
+    icon: "⌨"
+  }, {
+    id: "speak",
+    label: tr("m_speak"),
+    icon: "🎤"
+  }, {
+    id: "texte",
+    label: tr("m_texte"),
+    icon: "📖"
+  }];
+  // normalized set of the learner's saved words/verbs (to underline them in stories)
+  const savedSet = useMemo(() => {
+    const s = new Set();
+    try {
+      (getVocab() || []).forEach(v => {
+        if (v.lang === lang && v.term) s.add(deburr(norm(v.term)));
+      });
+    } catch (e) {}
+    (favs || []).forEach(f => {
+      if (f.lang === lang && f.verb) s.add(deburr(norm(String(f.verb).replace(/^to /, ""))));
+    });
+    return s;
+  }, [lang, favs, story, mver]);
+  function TenseBar() {
+    if (mistMode) return null;
+    const isRev = cardDir === "target";
+    const fromC = isRev ? LANG_META[lang].code : nativeLangCode;
+    const toC = isRev ? nativeLangCode : LANG_META[lang].code;
+    const dcap = isRev ? tr("dir_recognize") : tr("dir_produce");
+    return /*#__PURE__*/React.createElement("div", {
+      className: "quiztenses"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "qfilter-block"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "recent-title qfilter-lbl"
+    }, tr("which_tense")), /*#__PURE__*/React.createElement(TenseDropdown, {
+      lang: lang,
+      tenses: [...tenseOpts].sort((a, b) => (a.label || "").localeCompare(b.label || "")),
+      isOn: id => tenseSel.indexOf(id) >= 0,
+      onToggle: toggleTense,
+      onAll: () => setAllTenses(true),
+      onNone: () => setAllTenses(false),
+      hideLbl: true
+    }), !tenseSel.length && /*#__PURE__*/React.createElement("div", {
+      className: "qfilter-hint"
+    }, tr("none_all"))), groups.length > 1 && /*#__PURE__*/React.createElement("div", {
+      className: "qfilter-block"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "recent-title qfilter-lbl"
+    }, tr("which_verbs")), /*#__PURE__*/React.createElement(OneDropdown, {
+      lang: lang,
+      options: groups.map(g => ({
+        id: g.id,
+        label: groupLabel(g)
+      })),
+      valueId: selGroup,
+      onPick: pickGroup
+    })), mode !== "choice" && mode !== "texte" && /*#__PURE__*/React.createElement("div", {
+      className: "qfilter-block"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "recent-title qfilter-lbl"
+    }, tr("which_dir")), /*#__PURE__*/React.createElement("div", {
+      className: "tdwrap",
+      style: {
+        "--lc": LANG_META[lang].color
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "tdbtn swap",
+      onClick: () => {
+        const d = isRev ? "native" : "target";
+        setCardDir(d);
+        persist("kunju-carddir", d);
+        setThisDir(d);
+        if (d === "native" && q) fetchTransl(q.verb);
+      },
+      title: tr("which_dir")
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "tdbtn-sum"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "swapcode"
+    }, fromC), /*#__PURE__*/React.createElement("i", {
+      className: "swaparrow"
+    }, "\u2192"), /*#__PURE__*/React.createElement("span", {
+      className: "swapcode"
+    }, toC), /*#__PURE__*/React.createElement("span", {
+      className: "swapcap"
+    }, dcap)), /*#__PURE__*/React.createElement("span", {
+      className: "tdbtn-caret swapcaret"
+    }, "\u21C4")))), /*#__PURE__*/React.createElement("div", {
+      className: "qfilter-block"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "recent-title qfilter-lbl"
+    }, tr("which_theme")), /*#__PURE__*/React.createElement(MultiDropdown, {
+      lang: lang,
+      options: allThemes.map(th => ({
+        id: th.id,
+        label: themeLabel(th.id)
+      })).sort((a, b) => a.label.localeCompare(b.label)),
+      isOn: id => topicsSel.includes(id),
+      onToggle: toggleTopic,
+      onAll: () => setTopicsSel(["random"]),
+      onNone: () => setTopicsSel(["random"])
+    })));
+  }
+  function MistakeBar() {
+    const inMist = mistMode;
+    if (!inMist && mistakes.length === 0) return null;
+    return /*#__PURE__*/React.createElement("button", {
+      className: "mistbtn" + (inMist ? " on" : ""),
+      onClick: () => {
+        setMistMode(!inMist);
+        if (!inMist) {
+          setSelGroup("all");
+          setTypeMode("form");
+          setSpkMode("form");
+        }
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "mistbtn-ic"
+    }, inMist ? "←" : "⚠"), /*#__PURE__*/React.createElement("span", {
+      className: "mistbtn-tx"
+    }, inMist ? tr("mist_exit") : tr("mist_practice")), /*#__PURE__*/React.createElement("span", {
+      className: "mistbtn-n"
+    }, mistakes.length));
+  }
+  function ClozeThemes() {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "tfilter spkthemes scrollthemes clozethemes"
+    }, allThemes.map((th, i) => /*#__PURE__*/React.createElement("button", {
+      key: th.id,
+      className: "tfilterchip" + (topicsSel.includes(th.id) ? " on" : ""),
+      style: {
+        "--cc": RAINBOW[i % RAINBOW.length]
+      },
+      onClick: () => pickClozeTopic(th.id)
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "dotmini"
+    }), themeLabel(th.id))));
+  }
+  function ScoreLine() {
+    return null;
+  }
+  function Prompt() {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "quizprompt",
+      style: {
+        "--lc": LANG_META[lang].color
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "quizverb quizverb-link",
+      title: tr("view_conj"),
+      onClick: () => onStudy && onStudy(lang, q.verb)
+    }, q.verb, " ", /*#__PURE__*/React.createElement("span", {
+      className: "qm-study-ic"
+    }, "\u2197")), /*#__PURE__*/React.createElement("span", {
+      className: "quizarrow"
+    }, "\u2192"), /*#__PURE__*/React.createElement("span", {
+      className: "quizpron"
+    }, q.pronoun));
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "view",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "quizmodes"
+  }, MODES.map((m, i) => /*#__PURE__*/React.createElement("button", {
+    key: m.id,
+    className: "qmode" + (mode === m.id ? " on" : ""),
+    style: {
+      "--mc": LANG_META[lang].color
+    },
+    onClick: () => setModeP(m.id)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "qmode-ic"
+  }, /*#__PURE__*/React.createElement(QModeIcon, {
+    id: m.id
+  })), /*#__PURE__*/React.createElement("span", {
+    className: "qmode-lb"
+  }, m.label.replace(/^[^\s]+\s/, ""))))), /*#__PURE__*/React.createElement("p", {
+    className: "quizintro-line"
+  }, "\uD83D\uDCA1 ", tr("mdesc_" + mode)), TenseBar(), mistMode && mistakes.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "mistdone"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mistdone-ic"
+  }, "\uD83C\uDF89"), /*#__PURE__*/React.createElement("h3", null, tr("mist_clear_title")), /*#__PURE__*/React.createElement("p", null, tr("mist_clear_sub")), /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn check",
+    onClick: () => setMistMode(false)
+  }, tr("mist_exit"))), mode === "type" && q && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ScoreLine, null), /*#__PURE__*/React.createElement("div", {
+    className: "modepick speakpick"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "modepick-label"
+  }, "\u2328 ", tr("spk_what")), /*#__PURE__*/React.createElement("div", {
+    className: "modegrid speakmodes"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "modebtn" + (typeMode === "form" ? " on" : ""),
+    onClick: () => {
+      setTypeMode("form");
+    }
+  }, tr("type_word")), /*#__PURE__*/React.createElement("button", {
+    className: "modebtn" + (typeMode === "sentence" ? " on" : ""),
+    onClick: () => {
+      setTypeMode("sentence");
+      setVal("");
+      setState("idle");
+      setRevealed(false);
+      genSentence(lang);
+    }
+  }, tr("type_sentence")))), typeMode === "form" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "quizcard quizmodern " + state,
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cards-cue cards-cue-top"
+  }, "\uD83D\uDCAC ", tr("cards_hint_type")), /*#__PURE__*/React.createElement("div", {
+    className: "qm-top",
+    "data-typequiz": "true"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flashtense"
+  }, q.tenseLabel, skill !== "advanced" && (quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) ? /*#__PURE__*/React.createElement("span", {
+    className: "flashhint-inline"
+  }, quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) : null), q.isIrregular && /*#__PURE__*/React.createElement("span", {
+    className: "flashtag"
+  }, tr("irregular")), /*#__PURE__*/React.createElement("button", {
+    className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
+    title: "Save verb",
+    onClick: () => toggleFav(lang, q.verb)
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement("div", {
+    className: "qm-prompt"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "flashverb flashverb-link",
+    title: tr("view_conj"),
+    onClick: () => onStudy && onStudy(lang, q.verb)
+  }, q.verb.replace(/^to /, ""), " ", /*#__PURE__*/React.createElement("span", {
+    className: "qm-study-ic"
+  }, "\u2197")), /*#__PURE__*/React.createElement("span", {
+    className: "flashpron"
+  }, q.pronoun)), /*#__PURE__*/React.createElement("div", {
+    className: "qm-mean"
+  }, transl ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("b", null, q.verb.replace(/^to /, "")), /*#__PURE__*/React.createElement("em", null, transl === "…" ? "…" : transl)) : /*#__PURE__*/React.createElement("span", {
+    className: "qm-mean-ph"
+  }, "\xB7")), cloze && (cloze.loading ? /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "exloading"
+  }, "\u2026")) : /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal-row"
+  }, /*#__PURE__*/React.createElement(WordSentence, {
+    text: state === "idle" ? cloze.gap : cloze.full,
+    fromName: window.CONJ[lang].name,
+    toName: recall("kunju-native", "German"),
+    cachePrefix: `kunju-wtr-${lang}-nat`,
+    big: true,
+    accent: true,
+    saveLang: lang,
+    saveDir: "fromTarget",
+    showHint: true
+  }), state !== "idle" && /*#__PURE__*/React.createElement("button", {
+    className: "flashspeak",
+    onClick: () => speak(cloze.full, q.ttsLang)
+  }, "\uD83D\uDD0A")), cloze.native && (skill === "beginner" || state !== "idle") && /*#__PURE__*/React.createElement("div", {
+    className: "clozenative"
+  }, cloze.native))), /*#__PURE__*/React.createElement("div", {
+    className: "quizinput"
+  }, /*#__PURE__*/React.createElement("input", {
+    ref: inRef,
+    value: val,
+    "aria-label": "Antwort eingeben",
+    placeholder: "\u2026",
+    disabled: state !== "idle",
+    onChange: e => setVal(e.target.value),
+    onKeyDown: e => {
+      if (e.key === "Enter") {
+        state === "idle" ? check() : next();
+      }
+    },
+    autoComplete: "off",
+    autoCapitalize: "off",
+    spellCheck: "false",
+    style: {
+      height: "40px"
+    }
+  })), state === "correct" && /*#__PURE__*/React.createElement("div", {
+    className: "feedback ok"
+  }, "\u2713 ", msg || tr("correct_excl")), state === "wrong" && /*#__PURE__*/React.createElement("div", {
+    className: "feedback no"
+  }, msg ? msg + " · " : "✗ ", tr("answer"), " ", /*#__PURE__*/React.createElement("b", null, q.answer)), state === "idle" ? /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn check qm-check",
+    onClick: check
+  }, tr("check")) : /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn next",
+    onClick: next
+  }, tr("next"))), /*#__PURE__*/React.createElement("p", {
+    className: "quizhint"
+  }, tr("hint_type"))) : /*#__PURE__*/React.createElement("div", {
+    className: "quizcard quizmodern " + state,
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "qm-top"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flashtense"
+  }, sent && sent.tenseLabel ? sent.tenseLabel : tr("type_sentence"), sent && sent.tenseId && skill !== "advanced" && tenseHint(lang, sent.tenseId) ? /*#__PURE__*/React.createElement("span", {
+    className: "flashhint-inline"
+  }, tenseHint(lang, sent.tenseId)) : null)), !sent || sent.loading ? /*#__PURE__*/React.createElement("div", {
+    className: "qm-prompt"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "exloading"
+  }, "\u2026")) : sent.error ? /*#__PURE__*/React.createElement("div", {
+    className: "qm-prompt"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "exloading"
+  }, "\u2014")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal-label"
+  }, tr("spk_translate")), /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal-row"
+  }, /*#__PURE__*/React.createElement(WordSentence, {
+    text: sent.n,
+    fromName: recall("kunju-native", "German"),
+    toName: window.CONJ[lang].name,
+    cachePrefix: `kunju-wtr-nat-${lang}`,
+    big: true,
+    saveLang: lang,
+    saveDir: "fromNative"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "quizinput"
+  }, /*#__PURE__*/React.createElement("input", {
+    ref: inRef,
+    value: val,
+    "aria-label": "Antwort eingeben",
+    placeholder: "\u2026",
+    disabled: state !== "idle",
+    onChange: e => setVal(e.target.value),
+    onKeyDown: e => {
+      if (e.key === "Enter") {
+        state === "idle" ? check() : next();
+      }
+    },
+    autoComplete: "off",
+    autoCapitalize: "off",
+    spellCheck: "false"
+  })), state === "correct" && /*#__PURE__*/React.createElement("div", {
+    className: "feedback ok"
+  }, "\u2713 ", msg || tr("correct_excl")), state === "wrong" && /*#__PURE__*/React.createElement("div", {
+    className: "feedback no"
+  }, msg || "✗"), state !== "idle" && /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal-label"
+  }, tr("spk_correct_is"), " ", /*#__PURE__*/React.createElement("span", {
+    className: "spkreveal-tap"
+  }, "\xB7 ", tr("tap_save"))), /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal-row"
+  }, /*#__PURE__*/React.createElement(WordSentence, {
+    text: sent.t,
+    fromName: window.CONJ[lang].name,
+    toName: recall("kunju-native", "German"),
+    cachePrefix: `kunju-wtr-${lang}-nat`,
+    big: true,
+    accent: true,
+    saveLang: lang,
+    saveDir: "fromTarget"
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "flashspeak",
+    onClick: () => speak(sent.t, window.CONJ[lang].ttsLang)
+  }, "\uD83D\uDD0A"))), state === "idle" ? /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn check qm-check",
+    onClick: check
+  }, tr("check")) : /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn next",
+    onClick: () => {
+      setVal("");
+      setState("idle");
+      setRevealed(false);
+      setMsg("");
+      genSentence(lang);
+    }
+  }, tr("spk_next_sentence"))))), mode === "texte" && /*#__PURE__*/React.createElement(React.Fragment, null, reading !== "idle" && story && story.sentences && typeof ReactDOM !== "undefined" && ReactDOM.createPortal(/*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      right: "12px",
+      bottom: "calc(12px + env(safe-area-inset-bottom))",
+      zIndex: 4000,
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "8px",
+      background: "var(--surface)",
+      border: "1px solid var(--border)",
+      borderRadius: "999px",
+      boxShadow: "0 10px 30px rgba(0,0,0,.24)",
+      padding: "7px 12px 7px 14px"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "12px",
+      fontWeight: 800,
+      color: LANG_META[lang].color,
+      whiteSpace: "nowrap"
+    }
+  }, readIdx + 1, "/", story.sentences.length), /*#__PURE__*/React.createElement("button", {
+    onClick: rewindStory,
+    title: "\u221210 s",
+    style: {
+      border: "1px solid var(--border)",
+      borderRadius: "999px",
+      width: "40px",
+      height: "36px",
+      background: "var(--surface-2)",
+      color: "var(--text)",
+      fontSize: "14px",
+      fontWeight: 700,
+      cursor: "pointer"
+    }
+  }, "\u21BA10"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => reading === "playing" ? pauseStory() : playStory(),
+    style: {
+      border: "none",
+      borderRadius: "999px",
+      width: "40px",
+      height: "36px",
+      background: LANG_META[lang].color,
+      color: "#fff",
+      fontSize: "15px",
+      cursor: "pointer"
+    }
+  }, reading === "playing" ? "⏸" : "▶"), /*#__PURE__*/React.createElement("button", {
+    onClick: stopStory,
+    style: {
+      border: "1px solid var(--border)",
+      borderRadius: "999px",
+      width: "40px",
+      height: "36px",
+      background: "var(--surface-2)",
+      color: "var(--text)",
+      fontSize: "13px",
+      cursor: "pointer"
+    }
+  }, "\u23F9")), typeof document !== "undefined" && document.querySelector(".phone") || document.body), /*#__PURE__*/React.createElement("div", {
+    className: "quiztenses"
+  }, (getVocab().some(v => v.lang === lang) || favs.some(f => f.lang === lang)) && /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-block"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "recent-title qfilter-lbl"
+  }, tr("texte_mywords_lbl")), /*#__PURE__*/React.createElement("button", {
+    className: "modebtn" + (useMyWords ? " on" : ""),
+    style: {
+      width: "100%"
+    },
+    onClick: () => {
+      const nv = !useMyWords;
+      setUseMyWords(nv);
+      useMyWordsRef.current = nv;
+      persist("kunju-texte-mywords", nv);
+      genStory(true);
+    }
+  }, "\u2605 ", tr("texte_mywords"), useMyWords ? " ✓" : "")), /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-block"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "recent-title qfilter-lbl"
+  }, tr("texte_speed")), /*#__PURE__*/React.createElement("div", {
+    className: "modegrid"
+  }, [[0.5, "0,5×"], [0.75, "0,75×"], [1, "1×"], [1.25, "1,25×"]].map(o => {
+    const on = [0.5, 0.75, 1, 1.25].reduce((a, b) => Math.abs(b - ttsRate) < Math.abs(a - ttsRate) ? b : a, 1) === o[0];
+    return /*#__PURE__*/React.createElement("button", {
+      key: o[0],
+      className: "modebtn" + (on ? " on" : ""),
+      style: {
+        flex: "1 1 0",
+        minWidth: 0
+      },
+      onClick: () => {
+        setTtsRateState(o[0]);
+        applyTtsRate(o[0]);
+        setReading("idle");
+        readIdxRef.current = 0;
+        if (window.speechSynthesis) try {
+          window.speechSynthesis.cancel();
+        } catch (e) {}
+      }
+    }, o[1]);
+  }))), langVoices.length > 1 && /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-block"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "recent-title qfilter-lbl"
+  }, tr("texte_voice")), /*#__PURE__*/React.createElement("div", {
+    className: "modegrid"
+  }, [["", "Auto"], ["f", "♀ " + tr("texte_voice_f")], ["m", "♂ " + tr("texte_voice_m")]].map(o => /*#__PURE__*/React.createElement("button", {
+    key: o[0],
+    className: "modebtn" + (voiceGenderSel === o[0] ? " on" : ""),
+    style: {
+      flex: "1 1 0",
+      minWidth: 0
+    },
+    onClick: () => {
+      setVoiceGenderSel(o[0]);
+      setSavedGender(ttsBase, o[0]);
+      setSavedVoice(ttsBase, "");
+      setVoiceSel("");
+      setReading("idle");
+      readIdxRef.current = 0;
+      if (window.speechSynthesis) try {
+        window.speechSynthesis.cancel();
+      } catch (x) {}
+      if (story && story.sentences && story.sentences[0]) speak(story.sentences[0].t, window.CONJ[lang].ttsLang);
+    }
+  }, o[1]))))), /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn again",
+    onClick: () => genStory(true),
+    style: {
+      width: "100%",
+      marginBottom: "10px",
+      minHeight: "42px",
+      padding: "9px 14px",
+      fontSize: "14px"
+    }
+  }, "\uD83D\uDD04 ", tr("texte_new")), /*#__PURE__*/React.createElement("div", {
+    className: "quizcard quizmodern " + state,
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, !story || story.loading ? /*#__PURE__*/React.createElement("div", {
+    className: "qm-prompt"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "exloading"
+  }, "\u2026"), /*#__PURE__*/React.createElement("div", {
+    className: "clozenative",
+    style: {
+      marginTop: "8px"
+    }
+  }, tr("texte_writing"), genProg ? " · " + genProg : ""), /*#__PURE__*/React.createElement("div", {
+    className: "clozenative",
+    style: {
+      marginTop: "4px",
+      fontWeight: 700
+    }
+  }, "\u23F1 ", (skill === "advanced" ? 40 : skill === "intermediate" ? 30 : 22) - genSecs > 0 ? "~" + ((skill === "advanced" ? 40 : skill === "intermediate" ? 30 : 22) - genSecs) + " s" : tr("texte_almost")), /*#__PURE__*/React.createElement("div", {
+    className: "clozenative",
+    style: {
+      marginTop: "6px",
+      opacity: .85
+    }
+  }, (TEXTE_TIPS[UILANG] || TEXTE_TIPS.en)[Math.floor(genSecs / 4) % (TEXTE_TIPS[UILANG] || TEXTE_TIPS.en).length])) : story.error ? /*#__PURE__*/React.createElement("div", {
+    className: "qm-prompt"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "exloading"
+  }, "\u2014"), /*#__PURE__*/React.createElement("div", {
+    className: "clozenative",
+    style: {
+      marginTop: "8px"
+    }
+  }, tr("texte_error"))) : /*#__PURE__*/React.createElement(React.Fragment, null, texteMode === "question" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: "8px"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "var(--font-display)",
+      fontWeight: 700,
+      fontSize: "14.5px",
+      color: LANG_META[lang].color
+    }
+  }, "\uD83D\uDCD6 ", story.topic), /*#__PURE__*/React.createElement("button", {
+    onClick: () => reading === "playing" ? pauseStory() : playStory(),
+    style: {
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "5px",
+      background: "color-mix(in srgb, " + LANG_META[lang].color + " 14%, var(--surface))",
+      border: "1px solid color-mix(in srgb, " + LANG_META[lang].color + " 35%, transparent)",
+      borderRadius: "999px",
+      padding: "5px 12px",
+      color: LANG_META[lang].color,
+      fontFamily: "var(--font-display)",
+      fontWeight: 700,
+      fontSize: ".8rem",
+      cursor: "pointer",
+      flexShrink: 0
+    }
+  }, reading === "playing" ? "⏸ " + tr("texte_pause") : reading === "paused" ? "▶ " + tr("texte_resume") : "🔊 " + tr("texte_read"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "var(--muted)",
+      marginTop: "3px",
+      marginBottom: "9px"
+    }
+  }, "\uD83D\uDC46 ", tr("tap_save")), /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal-row",
+    style: {
+      lineHeight: "2",
+      display: "block",
+      textAlign: "left",
+      textWrap: "pretty",
+      hyphens: "auto"
+    }
+  }, story.sentences.map((s, i) => /*#__PURE__*/React.createElement("span", {
+    key: i,
+    ref: el => {
+      sentRefs.current[i] = el;
+    },
+    style: {
+      background: reading !== "idle" && i === readIdx ? "color-mix(in srgb, " + LANG_META[lang].color + " 22%, transparent)" : "transparent",
+      borderRadius: "5px",
+      boxDecorationBreak: "clone",
+      WebkitBoxDecorationBreak: "clone",
+      transition: "background .25s"
+    }
+  }, /*#__PURE__*/React.createElement(WordSentence, {
+    text: s.t,
+    fromName: window.CONJ[lang].name,
+    toName: recall("kunju-native", "German"),
+    cachePrefix: `kunju-wtr-${lang}-nat`,
+    big: true,
+    accent: true,
+    saveLang: lang,
+    saveDir: "fromTarget",
+    wordChip: true,
+    inline: true,
+    savedSet: savedSet,
+    onSaved: () => onTab && onTab("saved")
+  }), " "))), nativeTrans()), !questions || questions.loading ? /*#__PURE__*/React.createElement("div", {
+    className: "qm-prompt"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "exloading"
+  }, "\u2026")) : questions.error ? /*#__PURE__*/React.createElement("div", {
+    className: "clozenative",
+    style: {
+      marginTop: "10px"
+    }
+  }, tr("texte_error")) : qIdx >= questions.length ? /*#__PURE__*/React.createElement("div", {
+    className: "mistdone"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mistdone-ic"
+  }, "\uD83C\uDF89"), /*#__PURE__*/React.createElement("h3", null, tr("texte_done"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "choose-label",
+    style: {
+      marginTop: "12px"
+    }
+  }, tr("texte_comprehension"), " \xB7 ", qIdx + 1, "/", questions.length), /*#__PURE__*/React.createElement("div", {
+    className: "qm-prompt",
+    style: {
+      fontSize: "1.02rem"
+    }
+  }, questions[qIdx].q), /*#__PURE__*/React.createElement("div", {
+    className: "qopts"
+  }, questions[qIdx].options.map((opt, i) => {
+    let cls = "qopt";
+    if (state !== "idle") {
+      if (norm(opt) === norm(questions[qIdx].answer)) cls += " correct";else if (picked === opt) cls += " wrong";
+    }
+    return /*#__PURE__*/React.createElement("button", {
+      key: i,
+      className: cls,
+      disabled: state !== "idle",
+      onClick: () => chooseTexte(opt)
+    }, opt);
+  })), state === "correct" && /*#__PURE__*/React.createElement("div", {
+    className: "feedback ok"
+  }, "\u2713 ", msg || tr("correct_excl")), state === "wrong" && /*#__PURE__*/React.createElement("div", {
+    className: "feedback no"
+  }, msg || "✗"), state !== "idle" && /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn next",
+    onClick: nextTexte
+  }, tr("next"))))))), mode === "choice" && q && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ScoreLine, null), /*#__PURE__*/React.createElement("div", {
+    className: "quizcard quizmodern " + state,
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cards-cue cards-cue-top"
+  }, "\uD83D\uDCAC ", tr("cards_hint")), /*#__PURE__*/React.createElement("div", {
+    className: "qm-top"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flashtense"
+  }, q.tenseLabel, skill !== "advanced" && (quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) ? /*#__PURE__*/React.createElement("span", {
+    className: "flashhint-inline"
+  }, quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) : null), q.isIrregular && /*#__PURE__*/React.createElement("span", {
+    className: "flashtag"
+  }, tr("irregular")), /*#__PURE__*/React.createElement("button", {
+    className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
+    title: "Save verb",
+    onClick: () => toggleFav(lang, q.verb)
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement("div", {
+    className: "qm-prompt"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "flashverb flashverb-link",
+    title: tr("view_conj"),
+    onClick: () => onStudy && onStudy(lang, q.verb)
+  }, q.verb.replace(/^to /, ""), " ", /*#__PURE__*/React.createElement("span", {
+    className: "qm-study-ic"
+  }, "\u2197")), /*#__PURE__*/React.createElement("span", {
+    className: "flashpron"
+  }, q.pronoun)), /*#__PURE__*/React.createElement("div", {
+    className: "qm-mean"
+  }, transl ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("b", null, q.verb.replace(/^to /, "")), /*#__PURE__*/React.createElement("em", null, transl === "…" ? "…" : transl)) : /*#__PURE__*/React.createElement("span", {
+    className: "qm-mean-ph"
+  }, "\xB7")), cloze && (cloze.loading ? /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "exloading"
+  }, "\u2026")) : /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal-row"
+  }, /*#__PURE__*/React.createElement(WordSentence, {
+    text: state === "idle" ? cloze.gap : cloze.full,
+    fromName: window.CONJ[lang].name,
+    toName: recall("kunju-native", "German"),
+    cachePrefix: `kunju-wtr-${lang}-nat`,
+    big: true,
+    accent: true,
+    saveLang: lang,
+    saveDir: "fromTarget"
+  }), state !== "idle" && /*#__PURE__*/React.createElement("button", {
+    className: "flashspeak",
+    onClick: () => speak(cloze.full, q.ttsLang)
+  }, "\uD83D\uDD0A")), cloze.native && (skill === "beginner" || state !== "idle") && /*#__PURE__*/React.createElement("div", {
+    className: "clozenative"
+  }, cloze.native))), /*#__PURE__*/React.createElement("div", {
+    className: "choose-label"
+  }, tr("choose_label")), /*#__PURE__*/React.createElement("div", {
+    className: "qopts"
+  }, q.options.map((opt, i) => {
+    let cls = "qopt";
+    if (state !== "idle") {
+      if (norm(opt) === norm(q.answer)) cls += " correct";else if (opt === picked) cls += " wrong";else cls += " dim";
+    }
+    return /*#__PURE__*/React.createElement("button", {
+      key: i,
+      className: cls,
+      disabled: state !== "idle",
+      onClick: () => choose(opt)
+    }, opt);
+  })), state !== "idle" && /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn next",
+    onClick: next
+  }, tr("next"))), /*#__PURE__*/React.createElement("p", {
+    className: "quizhint"
+  }, tr("hint_choice"))), mode === "speed" && /*#__PURE__*/React.createElement(React.Fragment, null, speedState === "idle" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "speedstart"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "speedbig"
+  }, "\u26A1"), /*#__PURE__*/React.createElement("h3", null, tr("challenge")), /*#__PURE__*/React.createElement("p", null, tr("challenge_sub")), /*#__PURE__*/React.createElement("div", {
+    className: "speedbest"
+  }, tr("best"), " ", /*#__PURE__*/React.createElement("b", null, speedBest)), /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn check",
+    onClick: startSpeed
+  }, tr("start")))), speedState === "running" && q && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "speedhud"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "speedtime"
+  }, /*#__PURE__*/React.createElement("b", null, timeLeft), /*#__PURE__*/React.createElement("span", null, tr("sec"))), /*#__PURE__*/React.createElement("div", {
+    className: "speedbar"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "speedfill",
+    style: {
+      width: timeLeft / 60 * 100 + "%"
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "speedpts"
+  }, /*#__PURE__*/React.createElement("b", null, speedScore), /*#__PURE__*/React.createElement("span", null, tr("pts")))), /*#__PURE__*/React.createElement("div", {
+    className: "quizcard"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "quizmeta"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "quizpill"
+  }, q.tenseLabel), q.isIrregular && /*#__PURE__*/React.createElement("span", {
+    className: "quizpill irr"
+  }, "irregular")), /*#__PURE__*/React.createElement(Prompt, null), /*#__PURE__*/React.createElement("div", {
+    className: "qm-mean",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, transl ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("b", null, q.verb.replace(/^to /, "")), /*#__PURE__*/React.createElement("em", null, transl === "…" ? "…" : transl)) : /*#__PURE__*/React.createElement("span", {
+    className: "qm-mean-ph"
+  }, "\xB7")), /*#__PURE__*/React.createElement("div", {
+    className: "qopts"
+  }, q.options.map((opt, i) => /*#__PURE__*/React.createElement("button", {
+    key: i,
+    className: "qopt",
+    onClick: () => speedAnswer(opt)
+  }, opt)))), /*#__PURE__*/React.createElement("p", {
+    className: "quizhint"
+  }, tr("go"))), speedState === "done" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "speedstart"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "speedbig"
+  }, "\uD83C\uDFC1"), /*#__PURE__*/React.createElement("h3", null, tr("times_up")), /*#__PURE__*/React.createElement("div", {
+    className: "speedresult"
+  }, /*#__PURE__*/React.createElement("b", null, speedScore), /*#__PURE__*/React.createElement("span", null, tr("in60"))), /*#__PURE__*/React.createElement("div", {
+    className: "speedbest"
+  }, speedScore >= speedBest && speedScore > 0 ? tr("new_best") : /*#__PURE__*/React.createElement(React.Fragment, null, tr("best"), " ", /*#__PURE__*/React.createElement("b", null, speedBest))), /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn check",
+    onClick: startSpeed
+  }, tr("play_again")), /*#__PURE__*/React.createElement("button", {
+    className: "nameskip",
+    onClick: () => setSpeedState("idle")
+  }, tr("back"))), speedLog.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "speedreview"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "srev-head"
+  }, tr("review"), " \xB7 ", /*#__PURE__*/React.createElement("span", {
+    className: "srev-ok"
+  }, "\u2713 ", speedLog.filter(x => x.ok).length), " \xB7 ", /*#__PURE__*/React.createElement("span", {
+    className: "srev-no"
+  }, "\u2717 ", speedLog.filter(x => !x.ok).length)), /*#__PURE__*/React.createElement("div", {
+    className: "srev-list"
+  }, speedLog.slice().sort((a, b) => a.ok === b.ok ? 0 : a.ok ? 1 : -1).map((x, i) => /*#__PURE__*/React.createElement("div", {
+    className: "srev-row " + (x.ok ? "ok" : "no"),
+    key: i
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "srev-mark"
+  }, x.ok ? "✓" : "✗"), /*#__PURE__*/React.createElement("span", {
+    className: "srev-ctx"
+  }, x.verb.replace(/^to /, ""), " \xB7 ", x.pronoun, " ", /*#__PURE__*/React.createElement("em", null, x.tenseLabel)), /*#__PURE__*/React.createElement("span", {
+    className: "srev-ans"
+  }, x.ok ? x.answer : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("s", null, x.picked), " ", x.answer)))))))), mode === "cards" && q && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "flashcard",
+    onClick: () => {
+      if (flipped) setFlipped(false);else flipCard();
+    }
+  }, prevCards.length > 0 && /*#__PURE__*/React.createElement("button", {
+    className: "flashback-btn",
+    title: tr("back"),
+    onClick: e => {
+      e.stopPropagation();
+      goBackCard();
+    }
+  }, "\u2039"), /*#__PURE__*/React.createElement("div", {
+    className: "flashface " + (flipped ? "fback" : "ffront"),
+    key: flipped ? "b" : "f",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, !flipped ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "cards-cue cards-cue-top"
+  }, "\uD83D\uDCAC ", tr("cards_hint")), /*#__PURE__*/React.createElement("div", {
+    className: "flashtop"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flashtense"
+  }, q.tenseLabel, skill !== "advanced" && (quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) ? /*#__PURE__*/React.createElement("span", {
+    className: "flashhint-inline"
+  }, quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) : null), q.isIrregular && /*#__PURE__*/React.createElement("span", {
+    className: "flashtag"
+  }, tr("irregular")), /*#__PURE__*/React.createElement("button", {
+    className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
+    title: "Save verb",
+    onClick: e => {
+      e.stopPropagation();
+      toggleFav(lang, q.verb);
+    }
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement("div", {
+    className: "flashbody"
+  }, thisDir === "native" ? transl && transl !== "…" ? /*#__PURE__*/React.createElement("span", {
+    className: "flashnative"
+  }, transl) : /*#__PURE__*/React.createElement("span", {
+    className: "flashnative",
+    style: {
+      opacity: 0.3
+    }
+  }, "\u2026") : /*#__PURE__*/React.createElement("button", {
+    className: "flashverb flashverb-link",
+    title: tr("view_conj"),
+    onClick: e => {
+      e.stopPropagation();
+      onStudy && onStudy(lang, q.verb);
+    }
+  }, q.verb.replace(/^to /, ""), " ", /*#__PURE__*/React.createElement("span", {
+    className: "qm-study-ic"
+  }, "\u2197")), /*#__PURE__*/React.createElement("span", {
+    className: "flashpron"
+  }, q.pronoun), cloze && !cloze.loading && /*#__PURE__*/React.createElement("div", {
+    className: "flashcloze",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement(WordSentence, {
+    text: cloze.gap,
+    fromName: window.CONJ[lang].name,
+    toName: nativeName,
+    cachePrefix: `kunju-wtr-${lang}-nat`,
+    big: true,
+    accent: true,
+    saveLang: lang,
+    saveDir: "fromTarget"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "flashfoot"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flashflip"
+  }, "\u21BB ", tr("flip")))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "flashtop"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flashctx"
+  }, thisDir === "native" && transl && transl !== "…" ? transl + " · " : "", q.verb.replace(/^to /, ""), " \xB7 ", q.pronoun), sound && q.answer !== "—" && /*#__PURE__*/React.createElement("button", {
+    className: "flashspeak",
+    onClick: e => {
+      e.stopPropagation();
+      speak(q.answer, q.ttsLang);
+    }
+  }, "\uD83D\uDD0A")), /*#__PURE__*/React.createElement("div", {
+    className: "flashbody"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flashanswer"
+  }, q.answer), cloze && !cloze.loading && /*#__PURE__*/React.createElement("div", {
+    className: "flashcloze",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement(WordSentence, {
+    text: cloze.full,
+    fromName: window.CONJ[lang].name,
+    toName: nativeName,
+    cachePrefix: `kunju-wtr-${lang}-nat`,
+    big: true,
+    accent: true,
+    saveLang: lang,
+    saveDir: "fromTarget"
+  }), cloze.native && /*#__PURE__*/React.createElement("div", {
+    className: "clozenative"
+  }, cloze.native))), /*#__PURE__*/React.createElement("div", {
+    className: "flashfoot"
+  }, transl ? /*#__PURE__*/React.createElement("span", {
+    className: "flashmean"
+  }, /*#__PURE__*/React.createElement("b", null, q.verb.replace(/^to /, "")), transl === "…" ? /*#__PURE__*/React.createElement("i", null, "\u2026") : /*#__PURE__*/React.createElement("em", null, transl)) : /*#__PURE__*/React.createElement("span", {
+    className: "flashmean dim"
+  }, "\xB7"))))), flipped ? /*#__PURE__*/React.createElement("div", {
+    className: "cardbtns"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn again",
+    onClick: () => nextCard(false)
+  }, "\u21BB ", tr("again")), /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn gotit",
+    onClick: () => nextCard(true)
+  }, "\u2713 ", tr("got_it"))) : /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn next",
+    onClick: () => flipCard()
+  }, tr("flip"))), mode === "speak" && q && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ScoreLine, null), /*#__PURE__*/React.createElement("div", {
+    className: "modepick speakpick"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "modepick-label"
+  }, "\uD83C\uDF99 ", tr("spk_what")), /*#__PURE__*/React.createElement("div", {
+    className: "modegrid speakmodes"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "modebtn" + (spkMode === "form" ? " on" : ""),
+    onClick: () => {
+      setSpkMode("form");
+      setSent(null);
+    }
+  }, tr("spk_form")), /*#__PURE__*/React.createElement("button", {
+    className: "modebtn" + (spkMode === "sentence" ? " on" : ""),
+    onClick: () => {
+      setSpkMode("sentence");
+      genSentence();
+    }
+  }, tr("spk_sentence")))), spkMode === "sentence" && /*#__PURE__*/React.createElement("div", {
+    className: "tfilter spkthemes scrollthemes"
+  }, allThemes.map((th, i) => /*#__PURE__*/React.createElement("button", {
+    key: th.id,
+    className: "tfilterchip" + (topicsSel.includes(th.id) ? " on" : ""),
+    style: {
+      "--cc": RAINBOW[i % RAINBOW.length]
+    },
+    onClick: () => {
+      toggleTopic(th.id);
+      genSentence(undefined, 0, th.id);
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "dotmini"
+  }), themeLabel(th.id)))), spkMode === "sentence" && !sentMistMode && getSentMist(spkTarget).length > 0 && /*#__PURE__*/React.createElement("button", {
+    className: "mistbtn",
+    style: {
+      "--lc": LANG_META[lang].color
+    },
+    onClick: () => {
+      const list = getSentMist(spkTarget);
+      genTokenRef.current++;
+      setSentMistMode(true);
+      setRevealed(false);
+      setHeard("");
+      setMsg("");
+      setState("idle");
+      setSent(list.length ? pick(list) : null);
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "mistbtn-ic"
+  }, "\u26A0"), /*#__PURE__*/React.createElement("span", {
+    className: "mistbtn-tx"
+  }, tr("sent_mist_practice")), /*#__PURE__*/React.createElement("span", {
+    className: "mistbtn-n"
+  }, getSentMist(spkTarget).length)), spkMode === "sentence" && sentMistMode && /*#__PURE__*/React.createElement("button", {
+    className: "mistbtn on",
+    style: {
+      "--lc": LANG_META[lang].color
+    },
+    onClick: () => {
+      setSentMistMode(false);
+      genSentence(undefined, 0, undefined, true);
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "mistbtn-ic"
+  }, "\u2190"), /*#__PURE__*/React.createElement("span", {
+    className: "mistbtn-tx"
+  }, tr("mist_exit")), getSentMist(spkTarget).length > 0 && /*#__PURE__*/React.createElement("span", {
+    className: "mistbtn-n"
+  }, getSentMist(spkTarget).length)), spkMode === "sentence" && sentMistMode && !sent && /*#__PURE__*/React.createElement("div", {
+    className: "mistdone"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mistdone-ic"
+  }, "\uD83C\uDF89"), /*#__PURE__*/React.createElement("h3", null, tr("mist_clear_title")), /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn check",
+    onClick: () => {
+      setSentMistMode(false);
+      genSentence(undefined, 0, undefined, true);
+    }
+  }, tr("mist_exit"))), !(spkMode === "sentence" && sentMistMode && !sent) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "quizcard " + state,
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, spkMode === "form" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "cards-cue cards-cue-top"
+  }, "\uD83D\uDCAC ", tr("cards_hint_speak")), /*#__PURE__*/React.createElement("div", {
+    className: "qm-top"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flashtense"
+  }, q.tenseLabel, skill !== "advanced" && (quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) ? /*#__PURE__*/React.createElement("span", {
+    className: "flashhint-inline"
+  }, quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) : null), q.isIrregular && /*#__PURE__*/React.createElement("span", {
+    className: "flashtag"
+  }, tr("irregular")), /*#__PURE__*/React.createElement("button", {
+    className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
+    title: "Save verb",
+    onClick: () => toggleFav(lang, q.verb)
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(Prompt, null), /*#__PURE__*/React.createElement("div", {
+    className: "qm-mean",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, transl ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("b", null, q.verb.replace(/^to /, "")), /*#__PURE__*/React.createElement("em", null, transl === "…" ? "…" : transl)) : /*#__PURE__*/React.createElement("span", {
+    className: "qm-mean-ph"
+  }, "\xB7")), cloze && (cloze.loading ? /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "exloading"
+  }, "\u2026")) : /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "spkreveal-row"
+  }, /*#__PURE__*/React.createElement(WordSentence, {
+    text: state === "idle" ? cloze.gap : cloze.full,
+    fromName: window.CONJ[lang].name,
+    toName: recall("kunju-native", "German"),
+    cachePrefix: `kunju-wtr-${lang}-nat`,
+    big: true,
+    accent: true,
+    saveLang: lang,
+    saveDir: "fromTarget"
+  }), state !== "idle" && /*#__PURE__*/React.createElement("button", {
+    className: "flashspeak",
+    onClick: () => speak(cloze.full, q.ttsLang)
+  }, "\uD83D\uDD0A")), cloze.native && (skill === "beginner" || state !== "idle") && /*#__PURE__*/React.createElement("div", {
+    className: "clozenative"
+  }, cloze.native)))) : /*#__PURE__*/React.createElement("div", {
+    className: "spksent"
+  }, (!sent || sent.loading) && /*#__PURE__*/React.createElement("span", {
+    className: "exloading"
+  }, "\u2026"), sent && sent.error && /*#__PURE__*/React.createElement("span", {
+    className: "exloading"
+  }, "\u2014"), sent && sent.n && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(WordSentence, {
+    text: sent.n,
+    fromName: recall("kunju-native", "German"),
+    toName: window.CONJ[spkTarget].name,
+    cachePrefix: `kunju-wtr-nat-${spkTarget}`,
+    big: true,
+    saveLang: spkTarget,
+    saveDir: "fromNative"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "spkhintarrow"
+  }, "\u2193 ", tr("spk_say", {
+    lang: window.CONJ[spkTarget].name
+  })))), (() => {
+    const showAns = spkMode === "sentence" && sent && sent.t && (revealed || state !== "idle");
+    return /*#__PURE__*/React.createElement(React.Fragment, null, !showAns && /*#__PURE__*/React.createElement("div", {
+      className: "micwrap"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "micbtn" + (listening ? " rec" : ""),
+      disabled: state !== "idle" || spkMode === "sentence" && (!sent || !sent.t),
+      onClick: listen
+    }, listening ? /*#__PURE__*/React.createElement("span", {
+      className: "micstop"
+    }) : "🎤"), /*#__PURE__*/React.createElement("div", {
+      className: "michint"
+    }, listening ? tr("mic_stop") : tr("mic_start"))), spkMode === "sentence" && sent && sent.t && state === "idle" && !revealed && /*#__PURE__*/React.createElement("button", {
+      className: "relearnbtn",
+      onClick: () => {
+        setRevealed(true);
+        if (sent) {
+          addSentMist(spkTarget, sent);
+          setSmver(v => v + 1);
+        }
+      }
+    }, "\u21BB ", tr("spk_relearn")), spkMode === "form" && state === "idle" && /*#__PURE__*/React.createElement("button", {
+      className: "relearnbtn",
+      onClick: () => {
+        setState("wrong");
+        setMsg(cheerLine());
+        addMistake(lang, q);
+        bumpMist();
+      }
+    }, "\u21BB ", tr("spk_relearn")), heard === "__nomic__" && /*#__PURE__*/React.createElement("div", {
+      className: "feedback no"
+    }, tr("speak_nomic")), heard === "__denied__" && /*#__PURE__*/React.createElement("div", {
+      className: "feedback no"
+    }, tr("speak_denied")), heard === "__nospeech__" && /*#__PURE__*/React.createElement("div", {
+      className: "feedback no"
+    }, tr("speak_nospeech")), heard && heard.indexOf("__") !== 0 && /*#__PURE__*/React.createElement("div", {
+      className: "heardline"
+    }, tr("speak_heard"), " \u201C", heard, "\u201D"), state === "correct" && /*#__PURE__*/React.createElement("div", {
+      className: "feedback ok"
+    }, "\u2713 ", msg || tr("correct_excl")), state === "wrong" && spkMode === "form" && /*#__PURE__*/React.createElement("div", {
+      className: "feedback no"
+    }, msg ? msg + " · " : "✗ ", tr("answer"), " ", /*#__PURE__*/React.createElement("b", null, q.answer)), state === "wrong" && spkMode === "sentence" && /*#__PURE__*/React.createElement("div", {
+      className: "feedback no"
+    }, msg || "✗"), showAns && /*#__PURE__*/React.createElement("div", {
+      className: "spkreveal"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "spkreveal-label"
+    }, tr("spk_correct_is"), " ", /*#__PURE__*/React.createElement("span", {
+      className: "spkreveal-tap"
+    }, "\xB7 ", tr("tap_save"))), /*#__PURE__*/React.createElement("div", {
+      className: "spkreveal-row"
+    }, /*#__PURE__*/React.createElement(WordSentence, {
+      text: sent.t,
+      fromName: window.CONJ[spkTarget].name,
+      toName: recall("kunju-native", "German"),
+      cachePrefix: `kunju-wtr-${spkTarget}-nat`,
+      big: true,
+      accent: true,
+      saveLang: spkTarget,
+      saveDir: "fromTarget"
+    }), /*#__PURE__*/React.createElement("button", {
+      className: "flashspeak",
+      onClick: () => speak(sent.t, window.CONJ[spkTarget].ttsLang)
+    }, "\uD83D\uDD0A"))), showAns ? /*#__PURE__*/React.createElement("div", {
+      className: "cardbtns"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "quizbtn again",
+      onClick: () => {
+        setRevealed(false);
+        setHeard("");
+        setMsg("");
+        setState("idle");
+      }
+    }, "\u21BB ", tr("practice_again")), /*#__PURE__*/React.createElement("button", {
+      className: "quizbtn next",
+      onClick: next
+    }, tr("spk_next_sentence"))) : state === "idle" ? spkMode === "form" && /*#__PURE__*/React.createElement("p", {
+      className: "quizhint",
+      style: {
+        margin: 0
+      }
+    }, tr("speak_tap")) : /*#__PURE__*/React.createElement("button", {
+      className: "quizbtn next",
+      onClick: next
+    }, tr("next")));
+  })())))), MistakeBar());
+}
+const NATIVE_LANGS = [{
+  label: "Deutsch",
+  name: "German"
+}, {
+  label: "English",
+  name: "English"
+}, {
+  label: "Español",
+  name: "Spanish"
+}, {
+  label: "Français",
+  name: "French"
+}, {
+  label: "Nederlands",
+  name: "Dutch"
+}, {
+  label: "Italiano",
+  name: "Italian"
+}, {
+  label: "Português",
+  name: "Portuguese"
+}, {
+  label: "Polski",
+  name: "Polish"
+}, {
+  label: "Türkçe",
+  name: "Turkish"
+}, {
+  label: "Русский",
+  name: "Russian"
+}, {
+  label: "العربية",
+  name: "Arabic"
+}, {
+  label: "中文",
+  name: "Chinese"
+}];
+function nativeLabel(name) {
+  const f = NATIVE_LANGS.find(l => l.name === name);
+  return f ? f.label : name;
+}
+const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
+const arr = x => Array.isArray(x) ? x : [];
+const stripMark = s => String(s || "").replace(/\*\*/g, "");
+function fmtVerbMark(s) {
+  return esc(s).replace(/\*\*(.+?)\*\*/g, '<b class="exverb">$1</b>');
+}
+/* Highlight the changed ending of a regular form vs the bare infinitive stem. */
+function hl3(inf, form) {
+  const f = esc(form);
+  const stem = (inf || "").replace(/^to /, "").replace(/(ar|er|ir|en|re|n)$/, "");
+  if (stem && stem.length >= 2 && form.toLowerCase().indexOf(stem.toLowerCase()) === 0) {
+    return esc(form.slice(0, stem.length)) + '<b class="formend">' + esc(form.slice(stem.length)) + "</b>";
+  }
+  return f;
+}
+function buildGrammarPrompt(langName, tenseLabel, level, nativeName) {
+  return `You are a concise bilingual language tutor. Target language: ${langName}. Native language: ${nativeName}. Learner CEFR level: ${level}.
+Explain the verb tense "${tenseLabel}" of ${langName} for a ${level} learner (use simpler language for A1/A2, richer for C1/C2).
+Return ONLY valid minified JSON (no markdown fences, no commentary) with EXACTLY this shape:
+{"name":"","explain_t":"","explain_n":"","mnemonic":"","signals":[{"w":"","t":""}],"examples":[{"s":"","n":""}],"use":[""],"avoid":[""],"compare":{"with":"","rows":[["",""]],"note":""}}
+Rules:
+- Be linguistically ACCURATE above all: follow standard reference grammar; never invent or oversimplify rules. If this is a mood (subjunctive/conditional/imperative), explain its REAL triggers, not a vague feeling.
+- name = the tense name in ${langName}.
+- explain_t: 1-2 short sentences in ${langName}. explain_n: its ${nativeName} translation.
+- mnemonic: one short, vivid memory hook in ${nativeName} that is correct and does NOT distort the real usage (skip it rather than give a misleading one).
+- signals: exactly 5 typical signal words/connectors that genuinely trigger this tense/mood; w in ${langName}, t = ${nativeName} meaning. (e.g. Spanish subjunctive: "espero que", "dudo que", "ojalá", "para que", "es importante que".)
+- examples: exactly 3 everyday sentences; s in ${langName} with the conjugated verb of THIS tense wrapped in **double asterisks**; n = ${nativeName} translation.
+- use: 2-3 short ${nativeName} bullets naming the ACTUAL grammatical triggers — for the subjunctive these are e.g. doubt/uncertainty, wish/desire, emotion, requests & recommendations, impersonal expressions, and certain conjunctions. avoid: 1-2 short ${nativeName} bullets (when NOT to use it).
+- compare.with = the most easily confused other ${langName} tense (its name); rows = up to 3 pairs ["<this tense> trait","<other tense> trait"] written in ${nativeName}; note = one ${nativeName} sentence on the key difference. If no useful comparison exists, use "with":"" and "rows":[].
+Keep every field short.`;
+}
+
+/* Assemble a ready-to-render grammar lesson from the pre-written static set
+   (window.GRAMMAR_STATIC). Target-language parts are stored once; the parts
+   that depend on the learner's mother tongue come from `n[<ui code>]`.
+   Returns the same shape the AI explainer produces, or null if not covered. */
+function staticGrammar(lang, tid, native) {
+  const G = window.GRAMMAR_STATIC && window.GRAMMAR_STATIC[lang] && window.GRAMMAR_STATIC[lang][tid];
+  if (!G) return null;
+  const code = uiFromNative(native);
+  const n = G.n && (G.n[code] || G.n.en);
+  if (!n) return null;
+  const signals = (G.signals || []).map((s, i) => ({
+    w: s.w,
+    t: (n.signals || [])[i] || ""
+  }));
+  const examples = (G.examples || []).map((e, i) => ({
+    s: e.s,
+    n: (n.examples || [])[i] || ""
+  }));
+  const compare = G.compare && G.compare.with ? {
+    with: G.compare.with,
+    rows: n.compare_rows || [],
+    note: n.compare_note || ""
+  } : {
+    with: "",
+    rows: []
+  };
+  return {
+    name: G.name,
+    explain_t: G.explain_t,
+    explain_n: n.explain_n || "",
+    mnemonic: n.mnemonic || "",
+    signals,
+    examples,
+    use: n.use || [],
+    avoid: n.avoid || [],
+    compare
+  };
+}
+function parseLLMJSON(text) {
+  let s = String(text || "").trim();
+  s = s.replace(/^```(?:json)?/i, "").replace(/```$/, "").trim();
+  const a = s.indexOf("{"),
+    b = s.lastIndexOf("}");
+  if (a >= 0 && b > a) s = s.slice(a, b + 1);
+  return JSON.parse(s);
+}
+
+/* Tolerant parser for the simple {"s":…,"n":…} / {"n":…,"t":…} sentence payloads.
+   LLM replies (esp. longer German sentences) often contain an unescaped quote,
+   a stray newline, or trailing prose that breaks strict JSON.parse — so we first
+   try JSON, then fall back to extracting each string field by hand, ending a value
+   only at a quote that is followed by a comma or the closing brace. */
+function looseParse(text) {
+  let s = String(text || "").trim();
+  s = s.replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+  const a = s.indexOf("{"),
+    b = s.lastIndexOf("}");
+  if (a >= 0 && b > a) s = s.slice(a, b + 1);
+  try {
+    return JSON.parse(s);
+  } catch (e) {/* fall through */}
+  const out = {};
+  const keyRe = /"(\w+)"\s*:\s*"/g;
+  let m;
+  while (m = keyRe.exec(s)) {
+    const key = m[1];
+    let i = keyRe.lastIndex,
+      val = "";
+    for (; i < s.length; i++) {
+      const c = s[i];
+      if (c === "\\") {
+        const n = s[i + 1];
+        val += n === "n" || n === "t" || n === "r" ? " " : n || "";
+        i++;
+        continue;
+      }
+      if (c === '"') {
+        const rest = s.slice(i + 1).replace(/^\s+/, "");
+        if (rest === "" || rest[0] === "," || rest[0] === "}") break;
+        val += '"';
+        continue;
+      }
+      val += c;
+    }
+    out[key] = val.trim();
+    keyRe.lastIndex = i + 1;
+  }
+  if (Object.keys(out).length) return out;
+  throw new Error("unparseable");
+}
+function LearnSkeleton() {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "learn-list"
+  }, [0, 1, 2].map(i => /*#__PURE__*/React.createElement("div", {
+    className: "lcard skel",
+    key: i
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "sk-line w40"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "sk-line w90"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "sk-line w70"
+  }))));
+}
+const PERFECT_FAMILY = ["perfect", "pluperfect", "continuousPerfect"];
+const AUX_NAME = {
+  es: "haber",
+  de: "haben / sein",
+  en: "have",
+  nl: "hebben / zijn",
+  fr: "avoir / être"
+};
+function AuxiliaryCard({
+  lang,
+  engine,
+  selTense
+}) {
+  const data = useMemo(() => {
+    if (PERFECT_FAMILY.indexOf(selTense) < 0) return null;
+    const sample = REG_SAMPLE[lang] || engine.samples && engine.samples[0];
+    const r = engine.conjugate(sample);
+    if (!r || r.error) return null;
+    const rows = [];
+    PERFECT_FAMILY.forEach(id => {
+      const t = r.tenses.find(x => x.id === id);
+      if (!t || !t.forms) return;
+      // auxiliary = each form minus its last word (the participle/gerund), which is shared
+      const parts = t.forms.map(f => f && f !== "—" ? f.trim().split(/\s+/) : null);
+      if (parts.some(p => !p || p.length < 2)) return;
+      const participle = parts[0][parts[0].length - 1];
+      const aux = parts.map(p => p.slice(0, p.length - 1).join(" "));
+      rows.push({
+        id,
+        label: t.label,
+        aux,
+        participle,
+        pronouns: r.pronouns
+      });
+    });
+    return rows.length ? {
+      rows,
+      inf: r.infinitive,
+      auxName: AUX_NAME[lang] || ""
+    } : null;
+  }, [lang, selTense]);
+  if (!data) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "lcard auxcard"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lcard-tag"
+  }, tr("aux_title")), /*#__PURE__*/React.createElement("p", {
+    className: "auxnote",
+    dangerouslySetInnerHTML: {
+      __html: tr("aux_logic", {
+        aux: "<b>" + data.auxName + "</b>",
+        part: "<b>" + data.rows[0].participle + "</b>"
+      })
+    }
+  }), data.rows.map(row => /*#__PURE__*/React.createElement("div", {
+    className: "auxblock",
+    key: row.id
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "auxblock-head"
+  }, row.label), /*#__PURE__*/React.createElement("table", {
+    className: "auxtable"
+  }, /*#__PURE__*/React.createElement("tbody", null, row.pronouns.map((p, i) => row.aux[i] && /*#__PURE__*/React.createElement("tr", {
+    key: i
+  }, /*#__PURE__*/React.createElement("td", {
+    className: "auxt-pron"
+  }, p), /*#__PURE__*/React.createElement("td", {
+    className: "auxt-aux"
+  }, /*#__PURE__*/React.createElement("b", null, row.aux[i])), /*#__PURE__*/React.createElement("td", {
+    className: "auxt-part"
+  }, row.participle))))), /*#__PURE__*/React.createElement(AuxExample, {
+    lang: lang,
+    tenseId: row.id,
+    tenseLabel: row.label,
+    sample: data.inf,
+    sampleForms: row.aux.map((a, i) => a + " " + row.participle),
+    pronouns: data.rows[0].pronouns
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "auxpart"
+  }, tr("aux_participle"), ": ", /*#__PURE__*/React.createElement("b", null, data.rows[0].participle)));
+}
+function AuxExample({
+  lang,
+  tenseId,
+  tenseLabel,
+  sample,
+  sampleForms,
+  pronouns
+}) {
+  const nativeName = recall("kunju-native", "German");
+  const targetName = window.CONJ[lang].name;
+  const skill = recall("kunju-skill", "beginner");
+  const pick = Math.min(2, (sampleForms || []).length - 1); // use a 3rd-person form
+  const form = sampleForms && sampleForms[pick] ? sampleForms[pick] : null;
+  const pron = pronouns && pronouns[pick] ? pronouns[pick] : "";
+  const key = `kunju-auxex3-${lang}-${tenseId}-${sample}-${nativeName}-${skill}`;
+  const [ex, setEx] = useState(() => recall(key, null));
+  const [busy, setBusy] = useState(false);
+  function load(fresh) {
+    if (!form || !window.__hasAI()) return;
+    if (!fresh) {
+      const c = recall(key, null);
+      if (c != null) {
+        setEx(c);
+        return;
+      }
+    }
+    const variety = fresh ? ` Give a DIFFERENT example than before (variety #${Math.floor(Math.random() * 1000)}).` : "";
+    const lvlNote = skill === "advanced" ? " Use C1-level vocabulary and a complex structure." : skill === "intermediate" ? " Use B1-level everyday vocabulary." : " Use very simple A1–A2 vocabulary (max 7 words).";
+    setBusy(true);
+    window.aiComplete(`Write ONE short, natural ${targetName} sentence that uses EXACTLY the verb form "${form}" (the ${tenseLabel} of "${sample}", ${pron}).${lvlNote} Keep that exact form in the sentence.${variety} Then give its natural ${nativeName} translation. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`).then(txt => {
+      let j = null;
+      try {
+        j = looseParse(txt);
+      } catch (e) {}
+      setBusy(false);
+      if (j && j.t && j.n) {
+        persist(key, j);
+        setEx(j);
+      }
+    }).catch(() => setBusy(false));
+  }
+  useEffect(() => {
+    setEx(recall(key, null));
+    if (recall(key, null) == null) load(false); /* eslint-disable-next-line */
+  }, [lang, tenseId, sample, nativeName]);
+  if (!ex) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "auxex"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "auxex-row"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "auxex-t"
+  }, busy ? "…" : ex.t), /*#__PURE__*/React.createElement("button", {
+    className: "speakbtn exrefresh",
+    title: "New example",
+    onClick: () => load(true)
+  }, "\u21BB")), /*#__PURE__*/React.createElement("div", {
+    className: "auxex-n"
+  }, ex.n));
+}
+function LearnContent({
+  data,
+  loading,
+  engine,
+  sound,
+  lang,
+  selTense,
+  selLabel,
+  onStudy
+}) {
+  const d = data || {};
+  const hint = tenseHint(lang, selTense);
+  const sample = REG_SAMPLE[lang];
+  const sampleForms = useMemo(() => {
+    if (!sample) return null;
+    const r = engine.conjugate(sample);
+    if (!r || r.error) return null;
+    const t = r.tenses.find(x => x.id === selTense);
+    return t ? {
+      pronouns: r.pronouns,
+      forms: t.forms,
+      inf: r.infinitive
+    } : null;
+  }, [lang, selTense]);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "learn-list",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lcard formcard"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lcard-tag"
+  }, tr("how_formed")), hint && /*#__PURE__*/React.createElement("div", {
+    className: "formhint"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "formhint-lbl"
+  }, tr("regular")), /*#__PURE__*/React.createElement("span", {
+    className: "formhint-val"
+  }, hint)), sampleForms && /*#__PURE__*/React.createElement("div", {
+    className: "formtable"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "formtable-cap"
+  }, tr("example"), ": ", /*#__PURE__*/React.createElement("b", null, sampleForms.inf.replace(/^to /, ""))), /*#__PURE__*/React.createElement("div", {
+    className: "formwrap"
+  }, sampleForms.pronouns.map((p, i) => sampleForms.forms[i] && sampleForms.forms[i] !== "—" && /*#__PURE__*/React.createElement("span", {
+    className: "formitem",
+    key: i
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "formval",
+    dangerouslySetInnerHTML: {
+      __html: hl3(sample, sampleForms.forms[i])
+    }
+  })))))), /*#__PURE__*/React.createElement("div", {
+    className: "lcard irrcard"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lcard-tag"
+  }, tr("key_irregulars")), /*#__PURE__*/React.createElement("div", {
+    className: "irrchips"
+  }, (IRR_TOP[lang] || []).map(v => /*#__PURE__*/React.createElement("button", {
+    className: "irrchip",
+    key: v,
+    onClick: () => onStudy && onStudy(lang, v)
+  }, v, " ", /*#__PURE__*/React.createElement("span", {
+    className: "irrchip-go"
+  }, "\u2197")))), /*#__PURE__*/React.createElement("p", {
+    className: "irrnote"
+  }, tr("irr_note"))), loading && !data && /*#__PURE__*/React.createElement(LearnSkeleton, null), (d.explain_t || d.explain_n) && /*#__PURE__*/React.createElement("div", {
+    className: "lcard explain"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lcard-tag"
+  }, tr("explanation")), d.name && /*#__PURE__*/React.createElement("div", {
+    className: "lc-name"
+  }, d.name), /*#__PURE__*/React.createElement("p", {
+    className: "lc-target"
+  }, d.explain_t), /*#__PURE__*/React.createElement("p", {
+    className: "lc-native"
+  }, d.explain_n)), d.mnemonic && /*#__PURE__*/React.createElement("div", {
+    className: "lcard mnemo"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lcard-tag"
+  }, tr("mnemonic")), /*#__PURE__*/React.createElement("p", {
+    className: "lc-native big"
+  }, d.mnemonic)), arr(d.signals).length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "lcard"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lcard-tag"
+  }, tr("signal_words")), /*#__PURE__*/React.createElement("div", {
+    className: "sigwords"
+  }, d.signals.map((s, i) => /*#__PURE__*/React.createElement("span", {
+    className: "sigchip",
+    key: i
+  }, /*#__PURE__*/React.createElement("b", null, s.w), /*#__PURE__*/React.createElement("i", null, s.t))))), arr(d.examples).length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "lcard"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lcard-tag"
+  }, tr("examples")), /*#__PURE__*/React.createElement("div", {
+    className: "exlist"
+  }, d.examples.map((ex, i) => /*#__PURE__*/React.createElement("div", {
+    className: "exrow",
+    key: i
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "exmain"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "exline",
+    dangerouslySetInnerHTML: {
+      __html: fmtVerbMark(ex.s)
+    }
+  }), sound && /*#__PURE__*/React.createElement("button", {
+    className: "speakbtn",
+    title: "Listen",
+    onClick: () => speak(stripMark(ex.s), engine.ttsLang)
+  }, "\uD83D\uDD0A")), /*#__PURE__*/React.createElement("div", {
+    className: "exnative"
+  }, ex.n))))), (arr(d.use).length > 0 || arr(d.avoid).length > 0) && /*#__PURE__*/React.createElement("div", {
+    className: "lcard"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lcard-tag"
+  }, tr("when_use")), /*#__PURE__*/React.createElement("div", {
+    className: "usegrid"
+  }, arr(d.use).length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "usecol"
+  }, d.use.map((u, i) => /*#__PURE__*/React.createElement("div", {
+    className: "useli",
+    key: i
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "usei ok"
+  }, "\u2713"), u))), arr(d.avoid).length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "usecol"
+  }, d.avoid.map((u, i) => /*#__PURE__*/React.createElement("div", {
+    className: "useli",
+    key: i
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "usei no"
+  }, "\u2715"), u))))), d.compare && d.compare.with && arr(d.compare.rows).length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "lcard"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lcard-tag"
+  }, tr("compare")), /*#__PURE__*/React.createElement("div", {
+    className: "cmp"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cmp-row head"
+  }, /*#__PURE__*/React.createElement("span", null, d.name || "—"), /*#__PURE__*/React.createElement("span", null, d.compare.with)), d.compare.rows.map((r, i) => /*#__PURE__*/React.createElement("div", {
+    className: "cmp-row",
+    key: i
+  }, /*#__PURE__*/React.createElement("span", null, r[0]), /*#__PURE__*/React.createElement("span", null, r[1])))), d.compare.note && /*#__PURE__*/React.createElement("p", {
+    className: "lc-native cmp-note"
+  }, d.compare.note)), /*#__PURE__*/React.createElement(AuxiliaryCard, {
+    lang: lang,
+    engine: engine,
+    selTense: selTense
+  }));
+}
+function LearnView({
+  lang,
+  engine,
+  sound,
+  native,
+  setNative,
+  onStudy,
+  jumpTense,
+  onJumpDone
+}) {
+  const tenseOpts = useMemo(() => {
+    const r = engine.conjugate(engine.samples[0]);
+    return r && r.tenses ? r.tenses.map(t => ({
+      id: t.id,
+      label: t.label
+    })) : [];
+  }, [lang]);
+  const [selTense, setSelTense] = useState(() => jumpTense && tenseOpts.some(t => t.id === jumpTense) ? jumpTense : tenseOpts[0] ? tenseOpts[0].id : null);
+  // Jump straight to a specific tense when opened from the Conjugate card.
+  useEffect(() => {
+    if (jumpTense && tenseOpts.some(t => t.id === jumpTense)) {
+      setSelTense(jumpTense);
+    }
+    if (jumpTense && onJumpDone) onJumpDone(); /* eslint-disable-next-line */
+  }, [jumpTense]);
+  const [level, setLevel] = useState(() => recall("kunju-level", "A2"));
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const langMounted = useRef(false);
+  useEffect(() => {
+    if (!langMounted.current) {
+      langMounted.current = true;
+      return;
+    }
+    if (tenseOpts.length) setSelTense(tenseOpts[0].id);
+  }, [lang]);
+  const curLabel = (tenseOpts.find(t => t.id === selTense) || {}).label;
+  useEffect(() => {
+    if (!selTense || !curLabel) return;
+    const key = `kunju-gram-v2-${lang}-${selTense}-${level}-${native}`;
+    const cached = recall(key, null);
+    if (cached) {
+      setData(cached);
+      setError(null);
+      setLoading(false);
+      return;
+    }
+    // Pre-written lesson for the common tenses → shows instantly, no AI wait,
+    // works offline. Rarer tenses still fall through to the AI explainer.
+    const stat = staticGrammar(lang, selTense, native);
+    if (stat) {
+      setData(stat);
+      setError(null);
+      setLoading(false);
+      return;
+    }
+    if (!window.__hasAI()) {
+      setData(null);
+      setError("offline");
+      setLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    setData(null);
+    window.aiComplete(buildGrammarPrompt(engine.name, curLabel, level, native)).then(txt => {
+      if (cancelled) return;
+      try {
+        const j = parseLLMJSON(txt);
+        persist(key, j);
+        setData(j);
+      } catch (e) {
+        setError("parse");
+      }
+      setLoading(false);
+    }).catch(() => {
+      if (!cancelled) {
+        setError("net");
+        setLoading(false);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [lang, selTense, level, native, curLabel]);
+  function setLvl(l) {
+    setLevel(l);
+    persist("kunju-level", l);
+  }
+  const tips = window.GRAMMAR && window.GRAMMAR[lang] || [];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "view"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "grammar-intro"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, tr("tenses", {
+    lang: engine.name
+  })), /*#__PURE__*/React.createElement("p", null, tr("bilingual", {
+    a: engine.name,
+    b: nativeLabel(native)
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "learnselrow"
+  }, /*#__PURE__*/React.createElement(TenseDropdown, {
+    lang: lang,
+    tenses: tenseOpts,
+    single: true,
+    isOn: id => id === selTense,
+    onToggle: id => setSelTense(id)
+  })), /*#__PURE__*/React.createElement(LearnContent, {
+    data: data,
+    loading: loading,
+    engine: engine,
+    sound: sound,
+    lang: lang,
+    selTense: selTense,
+    selLabel: curLabel,
+    onStudy: onStudy
+  }), error && !loading && /*#__PURE__*/React.createElement("div", {
+    className: "learn-fallback"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "errorbox"
+  }, error === "offline" ? tr("fb_offline") : tr("fb_net")), /*#__PURE__*/React.createElement("div", {
+    className: "grammar-list"
+  }, tips.map((tp, i) => /*#__PURE__*/React.createElement("div", {
+    className: "gcard",
+    key: i,
+    style: {
+      "--gc": RAINBOW[i % RAINBOW.length]
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gcard-bar"
+  }), /*#__PURE__*/React.createElement("h4", null, tp.title), /*#__PURE__*/React.createElement("p", {
+    dangerouslySetInnerHTML: {
+      __html: tp.body
+    }
+  }))))), /*#__PURE__*/React.createElement("a", {
+    href: "/blog/",
+    className: "learn-blog-btn",
+    target: "_blank",
+    rel: "noopener"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gg"
+  }), /*#__PURE__*/React.createElement("span", null, {
+    de: "Weiter im Blog stöbern",
+    en: "Explore the Blog",
+    es: "Explorar el Blog",
+    nl: "Verder op de Blog",
+    fr: "Explorer le Blog"
+  }[UILANG] || "Weiter im Blog stöbern", " \u2192")));
+}
+
+/* ---------- Personal vocabulary ("Mein Wortschatz") ---------- */
+function vocabKey() {
+  return "kunju-vocab";
+}
+function getVocab() {
+  return recall(vocabKey(), []);
+}
+function saveVocab(list) {
+  persist(vocabKey(), list);
+}
+/* Words the user dismissed ("weggeklickt") count as KNOWN — keep them out of
+   future AI suggestions so they never reappear. Stored per learning language. */
+function vocabKnownKey() {
+  return "kunju-vocab-known";
+}
+function getVocabKnown() {
+  return recall(vocabKnownKey(), []);
+}
+function knownTerms(lang) {
+  return getVocabKnown().filter(x => x.lang === lang).map(x => x.term).filter(Boolean);
+}
+function addVocabKnown(lang, term) {
+  const t = (term || "").trim();
+  if (!t) return;
+  const cur = getVocabKnown();
+  const have = new Set(cur.map(x => x.lang + "|" + norm(x.term)));
+  if (have.has(lang + "|" + norm(t))) return;
+  cur.push({
+    lang,
+    term: t
+  });
+  persist(vocabKnownKey(), cur);
+}
+function isVocabKnown(lang, term) {
+  const t = norm(term || "");
+  return !!t && getVocabKnown().some(x => x.lang === lang && norm(x.term) === t);
+}
+const VOCAB_TEMPLATES = {
+  de: ["Einkaufen", "Arztbesuch", "Behörde", "Arbeit", "Reisen", "Restaurant", "Familie", "Freizeit", "Adjektive"],
+  en: ["Shopping", "Doctor", "Authorities", "Work", "Travel", "Restaurant", "Family", "Free time", "Adjectives"],
+  es: ["Compras", "Médico", "Trámites", "Trabajo", "Viajes", "Restaurante", "Familia", "Ocio", "Adjetivos"],
+  nl: ["Winkelen", "Dokter", "Overheid", "Werk", "Reizen", "Restaurant", "Familie", "Vrije tijd", "Bijvoeglijke naamwoorden"],
+  fr: ["Achats", "Médecin", "Démarches", "Travail", "Voyages", "Restaurant", "Famille", "Loisirs", "Adjectifs"]
+};
+function templateCats() {
+  return VOCAB_TEMPLATES[UILANG] || VOCAB_TEMPLATES.en;
+}
+const VOCAB_TOPICS = ["shopping and groceries", "seeing a doctor, pharmacy and health", "government offices and bureaucracy", "work and the office", "travel and transport", "restaurants and ordering food", "family and home life", "free time, hobbies and sport", "common everyday adjectives"];
+/* "Adjektive"-style topic detection (across the 5 UI languages + variants), so
+   French/Spanish adjectives are generated with BOTH gender forms (beau / belle). */
+const ADJ_NAMES = new Set(["adjektive", "adjektiv", "adjectives", "adjective", "adjetivos", "adjetivo", "adjectifs", "adjectif", "bijvoeglijke naamwoorden", "bijvoeglijk naamwoord", "adjectieven"]);
+function isAdjTopic(name) {
+  return ADJ_NAMES.has((name || "").trim().toLowerCase());
+}
+function adjFormsNote(langCode, targetNameStr, isAdj) {
+  if (!isAdj || langCode !== "fr" && langCode !== "es") return "";
+  const ex = langCode === "fr" ? '"beau / belle", "grand / grande", "heureux / heureuse"' : '"bueno / buena", "alto / alta", "trabajador / trabajadora"';
+  return ` These are ${targetNameStr} ADJECTIVES: for each term give BOTH the masculine and feminine form, separated by " / " (e.g. ${ex}); if the two forms are identical, write the word once.`;
+}
+/* 50 common adjectives, one concept per row with the form in each language
+   (es/fr carry both gender forms where they differ). The vocab seeder reads
+   term = row[learningLang], translation = row[motherTongueCode]. Static, so
+   the "Adjektive" topic fills instantly & offline; more come via AI / input. */
+const ADJ_STATIC = [{
+  de: "gut",
+  en: "good",
+  es: "bueno / buena",
+  fr: "bon / bonne",
+  nl: "goed"
+}, {
+  de: "schlecht",
+  en: "bad",
+  es: "malo / mala",
+  fr: "mauvais / mauvaise",
+  nl: "slecht"
+}, {
+  de: "groß",
+  en: "big",
+  es: "grande",
+  fr: "grand / grande",
+  nl: "groot"
+}, {
+  de: "klein",
+  en: "small",
+  es: "pequeño / pequeña",
+  fr: "petit / petite",
+  nl: "klein"
+}, {
+  de: "neu",
+  en: "new",
+  es: "nuevo / nueva",
+  fr: "nouveau / nouvelle",
+  nl: "nieuw"
+}, {
+  de: "alt",
+  en: "old",
+  es: "viejo / vieja",
+  fr: "vieux / vieille",
+  nl: "oud"
+}, {
+  de: "jung",
+  en: "young",
+  es: "joven",
+  fr: "jeune",
+  nl: "jong"
+}, {
+  de: "schön",
+  en: "beautiful",
+  es: "bonito / bonita",
+  fr: "beau / belle",
+  nl: "mooi"
+}, {
+  de: "hässlich",
+  en: "ugly",
+  es: "feo / fea",
+  fr: "laid / laide",
+  nl: "lelijk"
+}, {
+  de: "lang",
+  en: "long",
+  es: "largo / larga",
+  fr: "long / longue",
+  nl: "lang"
+}, {
+  de: "kurz",
+  en: "short",
+  es: "corto / corta",
+  fr: "court / courte",
+  nl: "kort"
+}, {
+  de: "hoch",
+  en: "high",
+  es: "alto / alta",
+  fr: "haut / haute",
+  nl: "hoog"
+}, {
+  de: "niedrig",
+  en: "low",
+  es: "bajo / baja",
+  fr: "bas / basse",
+  nl: "laag"
+}, {
+  de: "einfach",
+  en: "easy",
+  es: "fácil",
+  fr: "facile",
+  nl: "makkelijk"
+}, {
+  de: "schwierig",
+  en: "difficult",
+  es: "difícil",
+  fr: "difficile",
+  nl: "moeilijk"
+}, {
+  de: "glücklich",
+  en: "happy",
+  es: "feliz",
+  fr: "heureux / heureuse",
+  nl: "gelukkig"
+}, {
+  de: "traurig",
+  en: "sad",
+  es: "triste",
+  fr: "triste",
+  nl: "verdrietig"
+}, {
+  de: "schnell",
+  en: "fast",
+  es: "rápido / rápida",
+  fr: "rapide",
+  nl: "snel"
+}, {
+  de: "langsam",
+  en: "slow",
+  es: "lento / lenta",
+  fr: "lent / lente",
+  nl: "langzaam"
+}, {
+  de: "teuer",
+  en: "expensive",
+  es: "caro / cara",
+  fr: "cher / chère",
+  nl: "duur"
+}, {
+  de: "billig",
+  en: "cheap",
+  es: "barato / barata",
+  fr: "bon marché",
+  nl: "goedkoop"
+}, {
+  de: "heiß",
+  en: "hot",
+  es: "caliente",
+  fr: "chaud / chaude",
+  nl: "heet"
+}, {
+  de: "kalt",
+  en: "cold",
+  es: "frío / fría",
+  fr: "froid / froide",
+  nl: "koud"
+}, {
+  de: "sauber",
+  en: "clean",
+  es: "limpio / limpia",
+  fr: "propre",
+  nl: "schoon"
+}, {
+  de: "schmutzig",
+  en: "dirty",
+  es: "sucio / sucia",
+  fr: "sale",
+  nl: "vuil"
+}, {
+  de: "stark",
+  en: "strong",
+  es: "fuerte",
+  fr: "fort / forte",
+  nl: "sterk"
+}, {
+  de: "schwach",
+  en: "weak",
+  es: "débil",
+  fr: "faible",
+  nl: "zwak"
+}, {
+  de: "reich",
+  en: "rich",
+  es: "rico / rica",
+  fr: "riche",
+  nl: "rijk"
+}, {
+  de: "arm",
+  en: "poor",
+  es: "pobre",
+  fr: "pauvre",
+  nl: "arm"
+}, {
+  de: "voll",
+  en: "full",
+  es: "lleno / llena",
+  fr: "plein / pleine",
+  nl: "vol"
+}, {
+  de: "leer",
+  en: "empty",
+  es: "vacío / vacía",
+  fr: "vide",
+  nl: "leeg"
+}, {
+  de: "offen",
+  en: "open",
+  es: "abierto / abierta",
+  fr: "ouvert / ouverte",
+  nl: "open"
+}, {
+  de: "geschlossen",
+  en: "closed",
+  es: "cerrado / cerrada",
+  fr: "fermé / fermée",
+  nl: "gesloten"
+}, {
+  de: "hell",
+  en: "bright",
+  es: "claro / clara",
+  fr: "clair / claire",
+  nl: "helder"
+}, {
+  de: "dunkel",
+  en: "dark",
+  es: "oscuro / oscura",
+  fr: "sombre",
+  nl: "donker"
+}, {
+  de: "schwer",
+  en: "heavy",
+  es: "pesado / pesada",
+  fr: "lourd / lourde",
+  nl: "zwaar"
+}, {
+  de: "leicht",
+  en: "light",
+  es: "ligero / ligera",
+  fr: "léger / légère",
+  nl: "licht"
+}, {
+  de: "wichtig",
+  en: "important",
+  es: "importante",
+  fr: "important / importante",
+  nl: "belangrijk"
+}, {
+  de: "interessant",
+  en: "interesting",
+  es: "interesante",
+  fr: "intéressant / intéressante",
+  nl: "interessant"
+}, {
+  de: "langweilig",
+  en: "boring",
+  es: "aburrido / aburrida",
+  fr: "ennuyeux / ennuyeuse",
+  nl: "saai"
+}, {
+  de: "lustig",
+  en: "funny",
+  es: "divertido / divertida",
+  fr: "drôle",
+  nl: "grappig"
+}, {
+  de: "nett",
+  en: "nice",
+  es: "simpático / simpática",
+  fr: "sympathique",
+  nl: "aardig"
+}, {
+  de: "freundlich",
+  en: "friendly",
+  es: "amable",
+  fr: "aimable",
+  nl: "vriendelijk"
+}, {
+  de: "wütend",
+  en: "angry",
+  es: "enfadado / enfadada",
+  fr: "fâché / fâchée",
+  nl: "boos"
+}, {
+  de: "müde",
+  en: "tired",
+  es: "cansado / cansada",
+  fr: "fatigué / fatiguée",
+  nl: "moe"
+}, {
+  de: "gesund",
+  en: "healthy",
+  es: "sano / sana",
+  fr: "sain / saine",
+  nl: "gezond"
+}, {
+  de: "krank",
+  en: "sick",
+  es: "enfermo / enferma",
+  fr: "malade",
+  nl: "ziek"
+}, {
+  de: "trocken",
+  en: "dry",
+  es: "seco / seca",
+  fr: "sec / sèche",
+  nl: "droog"
+}, {
+  de: "nass",
+  en: "wet",
+  es: "mojado / mojada",
+  fr: "mouillé / mouillée",
+  nl: "nat"
+}, {
+  de: "gefährlich",
+  en: "dangerous",
+  es: "peligroso / peligrosa",
+  fr: "dangereux / dangereuse",
+  nl: "gevaarlijk"
+}];
+function generalCat() {
+  return {
+    de: "Allgemein",
+    en: "General",
+    es: "General",
+    nl: "Algemeen",
+    fr: "Général"
+  }[UILANG] || "General";
+}
+const GENERAL_LABELS = ["allgemein", "general", "général", "algemeen", "generale", "généralités"];
+function isGeneralCat(c) {
+  return GENERAL_LABELS.indexOf((c || "").trim().toLowerCase()) >= 0;
+}
+const SR_DAYS = [1, 3, 7, 21, 60, 60];
+function VocabView({
+  lang
+}) {
+  const [items, setItems] = useState(() => getVocab());
+  const [cat, setCat] = useState(() => recall("kunju-vocab-cat", "all"));
+  const [dir, setDir] = useState("native"); // native = type mother tongue → translate to target
+  const [text, setText] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [practice, setPractice] = useState(null); // {pool, idx, val, state, portion}
+  const [seeding, setSeeding] = useState("");
+  const skill = recall("kunju-skill", "beginner");
+  const nativeName = recall("kunju-native", "German");
+  const [customCatNames, setCustomCatNames] = useState(() => recall("kunju-vocab-catnames", []));
+  const [addingCat, setAddingCat] = useState(false);
+  const [newCatVal, setNewCatVal] = useState("");
+  const customCats = useMemo(() => {
+    const fromItems = new Set();
+    items.forEach(it => {
+      if (it.cat && !isGeneralCat(it.cat) && templateCats().indexOf(it.cat) < 0) fromItems.add(it.cat);
+    });
+    const merged = new Set([...customCatNames, ...fromItems]);
+    return [...merged];
+  }, [items, customCatNames]);
+  const allCats = [generalCat(), ...templateCats(), ...customCats];
+  function persistItems(next) {
+    setItems(next);
+    saveVocab(next);
+  }
+  function targetName() {
+    return window.CONJ[lang].name;
+  }
+
+  // Pre-fill the "Adjektive" topic with the static list (instant, offline,
+  // correct gender forms). Once per learning+mother-tongue pair.
+  function seedAdjectives(catName) {
+    const seedKey = `kunju-vadj-${lang}-${nativeName}`;
+    if (recall(seedKey, false)) return;
+    const code = uiFromNative(nativeName);
+    if (code === lang) {
+      persist(seedKey, true);
+      return;
+    } // mother tongue = target → nothing to learn
+    const have = getVocab();
+    const additions = [];
+    ADJ_STATIC.forEach((a, i) => {
+      const term = (a[lang] || "").trim(),
+        nat = (a[code] || a.en || "").trim();
+      if (!term || !nat || norm(term) === norm(nat)) return;
+      if (isVocabKnown(lang, term)) return;
+      if (have.some(x => x.lang === lang && norm(x.term) === norm(term)) || additions.some(x => norm(x.term) === norm(term))) return;
+      additions.push({
+        id: Date.now() + "-adj" + i,
+        lang,
+        term,
+        trans: nat,
+        cat: catName,
+        kind: "word",
+        created: Date.now() + i,
+        seed: true,
+        nat: nativeName
+      });
+    });
+    if (additions.length) persistItems([...additions, ...getVocab()]);
+    persist(seedKey, true);
+  }
+  function seedCategory(catName) {
+    if (!catName || catName === "all") return;
+    const idx = templateCats().indexOf(catName);
+    if (idx < 0) return; // only auto-fill template categories
+    if (isAdjTopic(catName)) {
+      seedAdjectives(catName);
+      return;
+    } // static, no AI
+    const seedKey = `kunju-vseed-${lang}-${catName}-${skill}-${nativeName}`;
+    if (recall(seedKey, false)) return;
+    if (!window.__hasAI()) return;
+    const already = getVocab().filter(it => it.lang === lang && it.cat === catName).length;
+    if (already >= 5) {
+      persist(seedKey, true);
+      return;
+    }
+    const topic = VOCAB_TOPICS[idx] || catName;
+    const lvl = skill === "advanced" ? "advanced C1-level" : skill === "intermediate" ? "intermediate B1-level" : "basic A1–A2";
+    setSeeding(catName);
+    window.aiComplete(`List 5 useful ${lvl} ${targetName()} words or short phrases about "${topic}".${adjFormsNote(lang, targetName(), isAdjTopic(catName))} For each, give the ${targetName()} term and its ${nativeName} translation. Avoid duplicates. Reply with ONLY a minified JSON array, nothing else: [{"t":"<${targetName()} term>","n":"<${nativeName} translation>"}]`).then(txt => {
+      let arr = null;
+      try {
+        let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+        const a = s.indexOf("["),
+          b = s.lastIndexOf("]");
+        if (a >= 0 && b > a) s = s.slice(a, b + 1);
+        arr = JSON.parse(s);
+      } catch (_) {
+        arr = null;
+      }
+      setSeeding("");
+      if (!Array.isArray(arr) || !arr.length) return; // failed — allow retry on next open
+      const list = getVocab();
+      const additions = [];
+      arr.slice(0, 5).forEach((e, i) => {
+        const term = (e && (e.t || e.term) || "").trim(),
+          nat = (e && (e.n || e.trans) || "").trim();
+        if (!term || !nat) return;
+        if (isVocabKnown(lang, term)) return; // user dismissed it earlier → knows it
+        if (list.some(x => x.lang === lang && norm(x.term) === norm(term)) || additions.some(x => norm(x.term) === norm(term))) return;
+        additions.push({
+          id: Date.now() + "-" + i,
+          lang,
+          term,
+          trans: nat,
+          cat: catName,
+          kind: term.indexOf(" ") >= 0 ? "phrase" : "word",
+          created: Date.now() + i,
+          seed: true,
+          nat: nativeName
+        });
+      });
+      if (additions.length) {
+        persist(seedKey, true);
+        persistItems([...additions, ...getVocab()]);
+      }
+    }).catch(() => {
+      setSeeding("");
+    });
+  }
+  function seedCustomCategory(catName) {
+    if (!catName || !window.__hasAI()) return;
+    const seedKey = `kunju-vseed-${lang}-custom-${catName}`;
+    if (recall(seedKey, false)) return;
+    const already = getVocab().filter(it => it.lang === lang && it.cat === catName).length;
+    if (already >= 3) {
+      persist(seedKey, true);
+      return;
+    }
+    const lvl = skill === "advanced" ? "advanced C1-level" : skill === "intermediate" ? "intermediate B1-level" : "basic A1–A2";
+    setSeeding(catName);
+    window.aiComplete(`List 5 useful ${lvl} ${targetName()} words or short phrases about "${catName}".${adjFormsNote(lang, targetName(), isAdjTopic(catName))} For each, give the ${targetName()} term and its ${nativeName} translation. Avoid duplicates. Reply with ONLY a minified JSON array: [{"t":"<${targetName()} term>","n":"<${nativeName} translation>"}]`).then(txt => {
+      let arr = null;
+      try {
+        let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+        const a = s.indexOf("["),
+          b = s.lastIndexOf("]");
+        if (a >= 0 && b > a) s = s.slice(a, b + 1);
+        arr = JSON.parse(s);
+      } catch (_) {}
+      setSeeding("");
+      if (!Array.isArray(arr) || !arr.length) return;
+      const list = getVocab();
+      const additions = [];
+      arr.slice(0, 5).forEach((e, i) => {
+        const term = (e && (e.t || e.term) || "").trim(),
+          nat = (e && (e.n || e.trans) || "").trim();
+        if (!term || !nat) return;
+        if (isVocabKnown(lang, term)) return; // user dismissed it earlier → knows it
+        if (list.some(x => x.lang === lang && norm(x.term) === norm(term)) || additions.some(x => norm(x.term) === norm(term))) return;
+        additions.push({
+          id: Date.now() + "-" + i,
+          lang,
+          term,
+          trans: nat,
+          cat: catName,
+          kind: term.indexOf(" ") >= 0 ? "phrase" : "word",
+          created: Date.now() + i,
+          seed: true,
+          nat: nativeName
+        });
+      });
+      if (additions.length) {
+        persist(seedKey, true);
+        persistItems([...additions, ...getVocab()]);
+      }
+    }).catch(() => setSeeding(""));
+  }
+
+  // starter words auto-load when a template category is opened (per category + level, once)
+  useEffect(() => {
+    if (cat && templateCats().indexOf(cat) >= 0) seedCategory(cat); /* eslint-disable-next-line */
+  }, [cat, lang]);
+
+  // One-time auto-refresh: upgrade existing single-form FR/ES adjectives to BOTH
+  // gender forms (beau → "beau / belle"). Static map first (instant/offline),
+  // then AI for any remaining adjectives in an "Adjektive" category.
+  useEffect(() => {
+    if (lang !== "fr" && lang !== "es") return;
+    const flag = `kunju-adjfix-${lang}-v1`;
+    if (recall(flag, false)) return;
+    const map = {};
+    ADJ_STATIC.forEach(a => {
+      const v = a[lang];
+      if (v && v.indexOf(" / ") >= 0) map[norm(v.split(" / ")[0])] = v;
+    });
+    let changed = false;
+    const next = getVocab().map(it => {
+      if (it.lang !== lang || !it.term || it.term.indexOf(" / ") >= 0) return it;
+      const dbl = map[norm(it.term)];
+      if (dbl) {
+        changed = true;
+        return {
+          ...it,
+          term: dbl,
+          kind: "word"
+        };
+      }
+      return it;
+    });
+    if (changed) {
+      saveVocab(next);
+      setItems(next);
+    }
+    persist(flag, true);
+    if (window.__hasAI && window.__hasAI()) {
+      const tName = window.CONJ[lang].name;
+      next.filter(it => it.lang === lang && it.term && it.term.indexOf(" / ") < 0 && isAdjTopic(it.cat)).slice(0, 20).forEach(it => {
+        window.aiComplete(`The ${tName} adjective "${it.term}": give its masculine and feminine forms separated by " / " (e.g. "beau / belle"). If both forms are identical, reply with the word once. Reply with ONLY that, nothing else.`).then(r => {
+          const out = String(r || "").trim().replace(/^["'«»]+|["'«»]+$/g, "").split("\n")[0].trim();
+          if (!out || norm(out) === norm(it.term) || out.indexOf(" / ") < 0) return;
+          const upd = getVocab().map(x => x.id === it.id ? {
+            ...x,
+            term: out
+          } : x);
+          saveVocab(upd);
+          setItems(upd);
+        }).catch(() => {});
+      });
+    }
+    /* eslint-disable-next-line */
+  }, [lang]);
+  function suggestMore() {
+    if (seeding) return;
+    const isTpl = templateCats().indexOf(cat) >= 0;
+    const catName = cat === "all" || cat === generalCat() ? null : cat;
+    const idx = catName ? templateCats().indexOf(catName) : -1;
+    const topic = idx >= 0 ? VOCAB_TOPICS[idx] : catName || "useful everyday vocabulary";
+    if (!window.__hasAI()) return;
+    const lvl = skill === "advanced" ? "advanced C1-level" : skill === "intermediate" ? "intermediate B1-level" : "basic A1–A2";
+    const known = knownTerms(lang);
+    const knownSet = new Set(known.map(t => norm(t)));
+    // Avoid both what's already saved AND words the user dismissed (= knows).
+    const avoidList = [...new Set([...getVocab().filter(it => it.lang === lang).map(it => it.term), ...known])].filter(Boolean).slice(0, 60);
+    const avoid = avoidList.length ? ` The learner already knows these — do NOT include any of them: ${avoidList.join(", ")}.` : "";
+    const adjNote = adjFormsNote(lang, targetName(), isAdjTopic(catName) || isAdjTopic(cat));
+    setSeeding(cat || "all");
+    window.aiComplete(`Suggest 10 useful ${lvl} ${targetName()} words or short phrases about "${topic}".${avoid}${adjNote} For each give the ${targetName()} term and its ${nativeName} translation. Reply with ONLY a minified JSON array, nothing else: [{"t":"...","n":"..."}]`).then(txt => {
+      let arr = null;
+      try {
+        let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+        const a = s.indexOf("["),
+          b = s.lastIndexOf("]");
+        if (a >= 0 && b > a) s = s.slice(a, b + 1);
+        arr = JSON.parse(s);
+      } catch (_) {
+        arr = null;
+      }
+      setSeeding("");
+      if (!Array.isArray(arr)) return;
+      const list = getVocab();
+      const additions = [];
+      const useCat = catName || generalCat();
+      arr.slice(0, 10).forEach((e, i) => {
+        const term = (e && (e.t || e.term) || "").trim(),
+          nat = (e && (e.n || e.trans) || "").trim();
+        if (!term || !nat) return;
+        if (knownSet.has(norm(term))) return; // dismissed earlier → skip
+        if (list.some(x => x.lang === lang && norm(x.term) === norm(term)) || additions.some(x => norm(x.term) === norm(term))) return;
+        additions.push({
+          id: Date.now() + "-s" + i,
+          lang,
+          term,
+          trans: nat,
+          cat: useCat,
+          kind: term.indexOf(" ") >= 0 ? "phrase" : "word",
+          created: Date.now() + i,
+          seed: true,
+          nat: nativeName
+        });
+      });
+      if (additions.length) persistItems([...additions, ...getVocab()]);
+    }).catch(() => setSeeding(""));
+  }
+  function addEntry() {
+    const raw = text.trim();
+    if (!raw || busy) return;
+    const useCat = cat === "all" ? generalCat() : cat;
+    if (!window.__hasAI()) {
+      const entry = {
+        id: Date.now() + "",
+        lang,
+        term: dir === "target" ? raw : "",
+        trans: dir === "native" ? raw : "",
+        cat: useCat,
+        kind: raw.indexOf(" ") >= 0 ? "phrase" : "word",
+        created: Date.now(),
+        nat: nativeName
+      };
+      persistItems([entry, ...items]);
+      setText("");
+      return;
+    }
+    setBusy(true);
+    const from = dir === "native" ? nativeName : targetName();
+    const to = dir === "native" ? targetName() : nativeName;
+    window.aiComplete(`Translate this ${from} ${raw.indexOf(" ") >= 0 ? "phrase" : "word"} into ${to}: "${raw}". Reply with ONLY the ${to} translation, no quotes, no extra text.`).then(r => {
+      const out = String(r || "").trim().replace(/^["'«»]+|["'«»]+$/g, "").split("\n")[0].trim();
+      const entry = dir === "native" ? {
+        id: Date.now() + "",
+        lang,
+        term: out,
+        trans: raw,
+        cat: useCat,
+        kind: raw.indexOf(" ") >= 0 ? "phrase" : "word",
+        created: Date.now(),
+        nat: nativeName
+      } : {
+        id: Date.now() + "",
+        lang,
+        term: raw,
+        trans: out,
+        cat: useCat,
+        kind: raw.indexOf(" ") >= 0 ? "phrase" : "word",
+        created: Date.now(),
+        nat: nativeName
+      };
+      persistItems([entry, ...items]);
+      setText("");
+      setBusy(false);
+    }).catch(() => setBusy(false));
+  }
+  function remove(id) {
+    const it = items.find(x => x.id === id);
+    if (it) addVocabKnown(lang, it.term);
+    persistItems(items.filter(x => x.id !== id));
+  }
+  function addCustomCat() {
+    setAddingCat(true);
+    setNewCatVal("");
+  }
+  function commitNewCat() {
+    const name = newCatVal.trim();
+    setAddingCat(false);
+    setNewCatVal("");
+    if (!name) return;
+    if (!customCatNames.includes(name)) {
+      const updated = [...customCatNames, name];
+      setCustomCatNames(updated);
+      persist("kunju-vocab-catnames", updated);
+    }
+    setCat(name);
+    persist("kunju-vocab-cat", name);
+    setTimeout(() => seedCustomCategory(name), 80);
+  }
+  const langItems = items.filter(it => it.lang === lang && (!it.nat || it.nat === nativeName));
+  const shown = cat === "all" ? langItems : isGeneralCat(cat) ? langItems.filter(it => isGeneralCat(it.cat)) : langItems.filter(it => it.cat === cat);
+
+  // ----- practice (self-typing, portions of 30) -----
+  function vmistKey() {
+    return `kunju-vmist-${lang}`;
+  }
+  function getVMist() {
+    return recall(vmistKey(), []);
+  }
+  function addVMist(it) {
+    const l = getVMist();
+    if (!l.some(x => norm(x.term) === norm(it.term))) persist(vmistKey(), [{
+      term: it.term,
+      trans: it.trans,
+      cat: it.cat,
+      kind: it.kind
+    }, ...l].slice(0, 100));
+  }
+  function removeVMist(it) {
+    persist(vmistKey(), getVMist().filter(x => norm(x.term) !== norm(it.term)));
+  }
+  // ----- spaced repetition -----
+  function srKey() {
+    return `kunju-sr-${lang}`;
+  }
+  function getSR() {
+    return recall(srKey(), {});
+  }
+  function srInfo(term) {
+    return getSR()[norm(term)] || {
+      lvl: 0,
+      due: 0
+    };
+  }
+  function srAnswer(term, ok) {
+    const m = getSR();
+    const cur = m[norm(term)] || {
+      lvl: 0,
+      due: 0
+    };
+    const now = Date.now();
+    let lvl, due;
+    if (ok) {
+      lvl = Math.min(cur.lvl + 1, 6);
+      due = now + SR_DAYS[Math.min(lvl - 1, 5)] * 864e5;
+    } else {
+      lvl = 0;
+      due = now;
+    }
+    m[norm(term)] = {
+      lvl,
+      due
+    };
+    persist(srKey(), m);
+  }
+  function isDue(term) {
+    return (srInfo(term).due || 0) <= Date.now();
+  }
+  const dueItems = langItems.filter(it => it.term && it.trans && isDue(it.term));
+  function startDuePractice() {
+    const pool = shuffle(dueItems).slice(0, 30);
+    if (!pool.length) return;
+    setPractice({
+      pool,
+      idx: 0,
+      val: "",
+      state: "idle",
+      due: true,
+      right: 0
+    });
+  }
+  function startPractice(portion) {
+    const pool = shuffle(shown.filter(it => it.term && it.trans)).slice(portion * 30, portion * 30 + 30);
+    if (!pool.length) return;
+    setPractice({
+      pool,
+      idx: 0,
+      val: "",
+      state: "idle",
+      portion,
+      right: 0
+    });
+  }
+  function startMistPractice() {
+    const pool = shuffle(getVMist());
+    if (!pool.length) return;
+    setPractice({
+      pool,
+      idx: 0,
+      val: "",
+      state: "idle",
+      mist: true,
+      right: 0
+    });
+  }
+  function checkPractice() {
+    if (!practice || practice.state !== "idle") return;
+    const cur = practice.pool[practice.idx];
+    const ok = deburr(norm(practice.val)) === deburr(norm(cur.term));
+    if (ok) {
+      if (practice.mist) removeVMist(cur);
+    } else addVMist(cur);
+    srAnswer(cur.term, ok);
+    setPractice(p => p ? {
+      ...p,
+      state: ok ? "correct" : "wrong",
+      right: p.right + (ok ? 1 : 0)
+    } : p);
+  }
+  function nextPractice() {
+    setPractice(p => {
+      if (!p) return p;
+      if (p.idx + 1 >= p.pool.length) return {
+        ...p,
+        done: true
+      };
+      return {
+        ...p,
+        idx: p.idx + 1,
+        val: "",
+        state: "idle"
+      };
+    });
+  }
+  if (practice && !practice.done) {
+    const cur = practice.pool[practice.idx];
+    return /*#__PURE__*/React.createElement("div", {
+      className: "view",
+      style: {
+        "--lc": LANG_META[lang].color
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "vocpr-head"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "nameskip",
+      onClick: () => setPractice(null)
+    }, "\u2190 ", tr("back")), /*#__PURE__*/React.createElement("span", {
+      className: "vocpr-count"
+    }, practice.idx + 1, " / ", practice.pool.length)), /*#__PURE__*/React.createElement("div", {
+      className: "quizcard quizmodern",
+      style: {
+        "--lc": LANG_META[lang].color
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "qm-top"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "flashtense"
+    }, cur.cat), /*#__PURE__*/React.createElement("span", {
+      className: "flashtense vockind"
+    }, cur.kind === "phrase" ? tr("vocab_phrase") : tr("vocab_word"))), /*#__PURE__*/React.createElement("div", {
+      className: "qm-prompt"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "flashverb"
+    }, cur.trans)), /*#__PURE__*/React.createElement("div", {
+      className: "quizinput"
+    }, /*#__PURE__*/React.createElement("input", {
+      value: practice.val,
+      "aria-label": "Antwort eingeben",
+      placeholder: "\u2026",
+      disabled: practice.state !== "idle",
+      onChange: e => setPractice(p => ({
+        ...p,
+        val: e.target.value
+      })),
+      onKeyDown: e => {
+        if (e.key === "Enter") {
+          practice.state === "idle" ? checkPractice() : nextPractice();
+        }
+      },
+      autoComplete: "off",
+      autoCapitalize: "off",
+      spellCheck: "false"
+    })), practice.state === "correct" && /*#__PURE__*/React.createElement("div", {
+      className: "feedback ok"
+    }, "\u2713 ", praiseLine()), practice.state === "wrong" && /*#__PURE__*/React.createElement("div", {
+      className: "feedback no"
+    }, "\u2717 ", tr("answer"), " ", /*#__PURE__*/React.createElement("b", null, cur.term)), practice.state === "idle" ? /*#__PURE__*/React.createElement("button", {
+      className: "quizbtn check qm-check",
+      onClick: checkPractice
+    }, tr("check")) : /*#__PURE__*/React.createElement("button", {
+      className: "quizbtn next",
+      onClick: nextPractice
+    }, tr("next"))));
+  }
+  if (practice && practice.done) {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "view",
+      style: {
+        "--lc": LANG_META[lang].color
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "mistdone"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "mistdone-ic"
+    }, "\uD83C\uDF89"), /*#__PURE__*/React.createElement("h3", null, practice.right, " / ", practice.pool.length), /*#__PURE__*/React.createElement("p", null, tr("vocab_done")), /*#__PURE__*/React.createElement("button", {
+      className: "quizbtn check",
+      onClick: () => setPractice(null)
+    }, tr("back"))));
+  }
+  const portions = Math.ceil(shown.filter(it => it.term && it.trans).length / 30);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "view",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "vocadd",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "vocdir"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "vocdirbtn" + (dir === "native" ? " on" : ""),
+    onClick: () => setDir("native")
+  }, nativeLabel(nativeName), " \u2192 ", targetName()), /*#__PURE__*/React.createElement("button", {
+    className: "vocdirbtn" + (dir === "target" ? " on" : ""),
+    onClick: () => setDir("target")
+  }, targetName(), " \u2192 ", nativeLabel(nativeName))), /*#__PURE__*/React.createElement("div", {
+    className: "vocaddrow"
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "vocinput",
+    value: text,
+    "aria-label": tr("vocab_add_ph"),
+    placeholder: busy ? "↔ …" : tr("vocab_add_ph"),
+    disabled: busy,
+    onChange: e => setText(e.target.value),
+    onKeyDown: e => {
+      if (e.key === "Enter") addEntry();
+    },
+    autoComplete: "off",
+    spellCheck: "false"
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "vocaddbtn",
+    onClick: addEntry,
+    disabled: busy || !text.trim()
+  }, "+")), /*#__PURE__*/React.createElement("div", {
+    className: "voccats"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "voccat" + (cat === "all" ? " on" : ""),
+    onClick: () => {
+      setCat("all");
+      persist("kunju-vocab-cat", "all");
+    }
+  }, tr("vocab_all")), allCats.map(c => /*#__PURE__*/React.createElement("button", {
+    key: c,
+    className: "voccat" + (cat === c ? " on" : ""),
+    onClick: () => {
+      setCat(c);
+      persist("kunju-vocab-cat", c);
+    }
+  }, c)), /*#__PURE__*/React.createElement("button", {
+    className: "voccat addcat",
+    onClick: addCustomCat
+  }, "+ ", tr("vocab_new_cat")))), (shown.filter(it => it.term && it.trans).length > 0 || getVMist().length > 0) && /*#__PURE__*/React.createElement("div", {
+    className: "vocpractice-bar"
+  }, dueItems.length > 0 && /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn vocstart vocdue",
+    onClick: startDuePractice
+  }, "\uD83D\uDD25 ", tr("vocab_due"), " \xB7 ", dueItems.length), Array.from({
+    length: portions
+  }).map((_, p) => /*#__PURE__*/React.createElement("button", {
+    key: p,
+    className: "quizbtn vocstart" + (dueItems.length > 0 ? " ghost" : ""),
+    onClick: () => startPractice(p)
+  }, "\u25B6 ", tr("vocab_practice"), " ", portions > 1 ? `· ${p * 30 + 1}–${Math.min((p + 1) * 30, shown.length)}` : "")), getVMist().length > 0 && /*#__PURE__*/React.createElement("button", {
+    className: "mistbtn vocmist",
+    style: {
+      "--lc": LANG_META[lang].color
+    },
+    onClick: startMistPractice
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "mistbtn-ic"
+  }, "\u26A0"), /*#__PURE__*/React.createElement("span", {
+    className: "mistbtn-tx"
+  }, tr("mist_practice")), /*#__PURE__*/React.createElement("span", {
+    className: "mistbtn-n"
+  }, getVMist().length))), /*#__PURE__*/React.createElement("button", {
+    className: "vocsuggest",
+    onClick: suggestMore,
+    disabled: !!seeding
+  }, seeding ? "✨ …" : "✨ " + tr("vocab_suggest")), addingCat && /*#__PURE__*/React.createElement("div", {
+    onClick: () => setAddingCat(false),
+    style: {
+      position: "fixed",
+      inset: 0,
+      zIndex: 600,
+      background: "rgba(0,0,0,.55)",
+      backdropFilter: "blur(4px)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "20px",
+      animation: "fade .18s ease"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    onClick: e => e.stopPropagation(),
+    style: {
+      background: "var(--surface)",
+      borderRadius: "24px",
+      width: "min(320px,100%)",
+      boxShadow: "0 24px 60px rgba(0,0,0,.35)",
+      overflow: "hidden",
+      animation: "fade .2s ease"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "linear-gradient(135deg,#a557ff22,#0a84ff18)",
+      padding: "22px 20px 16px",
+      textAlign: "center",
+      borderBottom: "1px solid var(--border)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "36px",
+      lineHeight: 1,
+      marginBottom: "8px"
+    }
+  }, "\uD83D\uDCC1"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: "17px",
+      color: "var(--text)",
+      marginBottom: "4px"
+    }
+  }, "Neue Kategorie"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "12.5px",
+      color: "var(--muted)",
+      lineHeight: 1.4
+    }
+  }, "Die KI schl\xE4gt danach automatisch", /*#__PURE__*/React.createElement("br", null), "5 passende Startw\xF6rter vor \u2728")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "16px 18px 18px",
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px"
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    autoFocus: true,
+    className: "nameinput",
+    "aria-label": "Kategoriename",
+    value: newCatVal,
+    onChange: e => setNewCatVal(e.target.value),
+    onKeyDown: e => {
+      if (e.key === "Enter" && newCatVal.trim()) commitNewCat();
+      if (e.key === "Escape") setAddingCat(false);
+    },
+    placeholder: "z. B. Reisen, Kochen, Sport\u2026",
+    style: {
+      fontSize: "15px",
+      margin: 0
+    }
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "namebtn",
+    onClick: commitNewCat,
+    disabled: !newCatVal.trim(),
+    style: {
+      margin: 0,
+      opacity: newCatVal.trim() ? 1 : 0.4,
+      transition: "opacity .15s"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "cta-rainbow"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "cta-label"
+  }, "Erstellen \u2713"))))), shown.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "emptystate"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "emptystate-title"
+  }, seeding ? "✨" : "📒"), /*#__PURE__*/React.createElement("p", {
+    className: "emptystate-sub"
+  }, seeding ? tr("vocab_seeding") : tr("vocab_empty"))) : /*#__PURE__*/React.createElement("div", {
+    className: "voclist"
+  }, shown.map(it => /*#__PURE__*/React.createElement("div", {
+    className: "vocitem",
+    key: it.id,
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "vocitem-main"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "vocterm"
+  }, it.term || "…", it.term && /*#__PURE__*/React.createElement("button", {
+    className: "vocspk",
+    onClick: () => speak(it.term, window.CONJ[lang].ttsLang)
+  }, "\uD83D\uDD0A")), /*#__PURE__*/React.createElement("span", {
+    className: "voctrans"
+  }, it.trans), it.term && /*#__PURE__*/React.createElement("span", {
+    className: "vocsr lvl" + Math.min(srInfo(it.term).lvl, 6),
+    title: tr("vocab_strength")
+  }, /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null))), /*#__PURE__*/React.createElement("span", {
+    className: "voccatchip"
+  }, it.cat), /*#__PURE__*/React.createElement("button", {
+    className: "vocx",
+    onClick: () => remove(it.id)
+  }, "\u2715")))));
+}
+
+/* ---------- Saved verbs (heart tab) ---------- */
+function SavedTab({
+  lang,
+  favs,
+  toggleFav,
+  pickVerb,
+  onActivity,
+  onHint
+}) {
+  const [sub, setSub] = useState(() => recall("kunju-saved-sub", "verbs"));
+  // First time the user opens each Saved area (Verbs / Vocabulary), explain it.
+  useEffect(() => {
+    if (onHint) onHint("saved_" + sub);
+  }, [sub]);
+  function pick(s) {
+    setSub(s);
+    persist("kunju-saved-sub", s);
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "view",
+    style: {
+      gap: 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "savedsub"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "savedsubbtn" + (sub === "verbs" ? " on" : ""),
+    onClick: () => pick("verbs")
+  }, tr("saved_verbs")), /*#__PURE__*/React.createElement("button", {
+    className: "savedsubbtn" + (sub === "vocab" ? " on" : ""),
+    onClick: () => pick("vocab")
+  }, tr("saved_vocab"))), sub === "verbs" ? /*#__PURE__*/React.createElement(SavedView, {
+    lang: lang,
+    favs: favs,
+    toggleFav: toggleFav,
+    pickVerb: pickVerb,
+    onActivity: onActivity
+  }) : /*#__PURE__*/React.createElement(VocabView, {
+    lang: lang
+  }));
+}
+function SavedCell({
+  base,
+  from,
+  to
+}) {
+  const xkey = `kunju-xlt-${from}-${to}-${base}`;
+  const seed = () => {
+    if (to === from) return base;
+    const ct = conceptTranslate(base, from, to);
+    if (ct) return ct;
+    const c = recall(xkey, null);
+    return c != null ? c : null;
+  };
+  const [val, setVal] = useState(seed);
+  const [loading, setLoading] = useState(false);
+  const triedRef = useRef(0);
+  function fetchT() {
+    if (val != null || loading) return;
+    if (!window.__hasAI()) return;
+    triedRef.current += 1;
+    setLoading(true);
+    window.aiComplete(`Translate the ${window.CONJ[from].name} verb "${base}" to its ${window.CONJ[to].name} infinitive. Reply with ONLY the single infinitive word or short phrase in ${window.CONJ[to].name}, lowercase, no article, no quotes, no extra text.`).then(txt => {
+      let out = String(txt || "").trim().toLowerCase().split("\n")[0].replace(/^["'«»]+|["'«».]+$/g, "").replace(/[^\p{L}\s'’\-]/gu, "").trim();
+      setLoading(false);
+      if (out) {
+        persist(xkey, out);
+        setVal(out);
+      } else if (triedRef.current < 2) {
+        setTimeout(fetchT, 400);
+      }
+    }).catch(() => {
+      setLoading(false);
+      if (triedRef.current < 2) setTimeout(fetchT, 600);
+    });
+  }
+  useEffect(() => {
+    setVal(seed());
+    triedRef.current = 0; /* eslint-disable-next-line */
+  }, [base, from, to]);
+  useEffect(() => {
+    if (val == null) {
+      const t = setTimeout(fetchT, 80);
+      return () => clearTimeout(t);
+    } /* eslint-disable-next-line */
+  }, [val, base, from, to]);
+  if (val) return /*#__PURE__*/React.createElement("button", {
+    className: "vtcell vtword",
+    onClick: () => speak(val, window.CONJ[to].ttsLang)
+  }, /*#__PURE__*/React.createElement("span", null, val), /*#__PURE__*/React.createElement("span", {
+    className: "vtspk"
+  }, "\uD83D\uDD0A"));
+  return /*#__PURE__*/React.createElement("button", {
+    className: "vtcell vtword empty",
+    onClick: fetchT,
+    title: tr("tap_retry") || ""
+  }, loading ? "…" : "↻");
+}
+function SavedView({
+  lang,
+  favs,
+  toggleFav,
+  pickVerb,
+  onActivity
+}) {
+  const langFavs = favs.filter(f => f.lang === lang);
+  const [pr, setPr] = useState(null); // {pool, idx, val, state, mist}
+  const vpool = useMemo(() => langFavs.map(f => f.verb), [langFavs.length, lang]);
+  const vmistKey = `kunju-vbmist-${lang}`;
+  const vsrKey = `kunju-vbsr-${lang}`;
+  function getVbMist() {
+    const m = recall(vmistKey, []);
+    return m.filter(v => vpool.indexOf(v) >= 0);
+  }
+  function vbDue() {
+    const sr = recall(vsrKey, {});
+    const now = Date.now();
+    return vpool.filter(v => !sr[v] || sr[v] <= now);
+  }
+  function schedule(v, ok) {
+    const sr = recall(vsrKey, {});
+    const SR = [1, 3, 7, 21, 60];
+    const lvlk = `${vsrKey}-lvl`;
+    const lv = recall(lvlk, {});
+    let n = ok ? Math.min((lv[v] || 0) + 1, SR.length) : 0;
+    lv[v] = n;
+    persist(lvlk, lv);
+    sr[v] = Date.now() + (ok ? SR[Math.max(0, n - 1)] : 0.0007) * 86400000;
+    persist(vsrKey, sr);
+  }
+  function addVbMist(v) {
+    const m = recall(vmistKey, []);
+    if (m.indexOf(v) < 0) {
+      m.push(v);
+      persist(vmistKey, m);
+    }
+  }
+  function rmVbMist(v) {
+    persist(vmistKey, recall(vmistKey, []).filter(x => x !== v));
+  }
+  const natName = recall("kunju-native", "German");
+  const natCode = NATIVE_TO_UI[natName];
+  const [transLang, setTransLang] = useState(() => recall("kunju-savedtrans", natCode || "en"));
+  function setTL(v) {
+    setTransLang(v);
+    persist("kunju-savedtrans", v);
+  }
+  function LangSelect({
+    value,
+    onChange
+  }) {
+    const [open, setOpen] = useState(false);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "vtdrop"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "vtdrop-btn",
+      onClick: () => setOpen(o => !o)
+    }, window.CONJ[value].name, /*#__PURE__*/React.createElement("span", {
+      className: "vtdrop-car"
+    }, "\u25BE")), open && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      className: "vtdrop-back",
+      onClick: () => setOpen(false)
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "vtdrop-menu"
+    }, LANG_ORDER.map(c => /*#__PURE__*/React.createElement("button", {
+      key: c,
+      className: "vtdrop-opt" + (c === value ? " on" : ""),
+      onClick: () => {
+        onChange(c);
+        setOpen(false);
+      }
+    }, window.CONJ[c].name)))));
+  }
+  function vbMeaning(base) {
+    if (natCode === lang) return base;
+    if (natCode) {
+      const ct = conceptTranslate(base, lang, natCode);
+      if (ct) return ct;
+    }
+    if (natName === "English") {
+      const m = window.lookupMeaning(lang, base);
+      if (m) return m;
+    }
+    return recall(`kunju-vtr-${lang}-${base}-${natName}`, null);
+  }
+  function buildVbQ(verbList) {
+    const v = verbList[Math.floor(Math.random() * verbList.length)];
+    const base = (v || "").replace(/^to /, "");
+    return {
+      verb: v,
+      base,
+      prompt: vbMeaning(base),
+      answer: base
+    };
+  }
+  function ensureMeaning(base) {
+    if (vbMeaning(base) != null) return;
+    if (!window.__hasAI()) return;
+    window.aiComplete(`Translate the ${window.CONJ[lang].name} verb "${base}" into ${natName}. Reply with ONLY the ${natName} translation in its base/infinitive form, nothing else.`).then(txt => {
+      const t = String(txt || "").trim().replace(/^["'«».]+|["'«».]+$/g, "").split("\n")[0].trim();
+      if (t) {
+        persist(`kunju-vtr-${lang}-${base}-${natName}`, t);
+        setPr(p => p && p.q && p.q.base === base ? {
+          ...p,
+          q: {
+            ...p.q,
+            prompt: t
+          }
+        } : p);
+      }
+    }).catch(() => {});
+  }
+  function startVbPractice(mode) {
+    const src = mode === "mist" ? getVbMist() : mode === "due" ? vbDue() : vpool;
+    if (!src.length) return;
+    const q = buildVbQ(src);
+    if (!q) return;
+    ensureMeaning(q.base);
+    setPr({
+      mode,
+      q,
+      val: "",
+      state: "idle",
+      right: 0,
+      total: 0
+    });
+  }
+  function vbCheck() {
+    setPr(p => {
+      if (!p || p.state !== "idle") return p;
+      const ok = norm(p.val) === norm(p.q.answer) || deburr(norm(p.val)) === deburr(norm(p.q.answer));
+      if (ok) {
+        schedule(p.q.verb, true);
+        if (p.mode === "mist") rmVbMist(p.q.verb);
+      } else {
+        schedule(p.q.verb, false);
+        addVbMist(p.q.verb);
+      }
+      onActivity && onActivity();
+      return {
+        ...p,
+        state: ok ? "correct" : "wrong",
+        right: p.right + (ok ? 1 : 0),
+        total: p.total + 1,
+        msg: ok ? praiseLine() : cheerLine()
+      };
+    });
+  }
+  function vbNext() {
+    setPr(p => {
+      if (!p) return p;
+      const src = p.mode === "mist" ? getVbMist() : p.mode === "due" ? vbDue() : vpool;
+      if (!src.length) return null;
+      const q = buildVbQ(src);
+      if (q) ensureMeaning(q.base);
+      return q ? {
+        ...p,
+        q,
+        val: "",
+        state: "idle"
+      } : null;
+    });
+  }
+  if (!langFavs.length) {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "view"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "emptystate"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "emptystate-rings"
+    }, RAINBOW.slice(0, 6).map((c, i) => /*#__PURE__*/React.createElement("span", {
+      key: i,
+      style: {
+        background: c,
+        animationDelay: i * 0.12 + "s"
+      }
+    }))), /*#__PURE__*/React.createElement("p", {
+      className: "emptystate-title"
+    }, "\u2605"), /*#__PURE__*/React.createElement("p", {
+      className: "emptystate-sub"
+    }, tr("saved_empty"))));
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "view",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "grammar-intro"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, tr("saved"), " \xB7 ", langFavs.length))), pr ? /*#__PURE__*/React.createElement("div", {
+    className: "quizcard quizmodern",
+    style: {
+      "--lc": LANG_META[lang].color
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "qm-top"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flashtense"
+  }, tr("vocab_translate") || "→"), /*#__PURE__*/React.createElement("span", {
+    className: "flashtag"
+  }, LANG_META[lang].code)), /*#__PURE__*/React.createElement("div", {
+    className: "qm-prompt"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flashverb"
+  }, pr.q.prompt || "…")), /*#__PURE__*/React.createElement("div", {
+    className: "quizinput"
+  }, /*#__PURE__*/React.createElement("input", {
+    value: pr.val,
+    "aria-label": "Antwort eingeben",
+    disabled: pr.state !== "idle",
+    placeholder: "\u2026",
+    autoFocus: true,
+    onChange: e => setPr(p => ({
+      ...p,
+      val: e.target.value
+    })),
+    onKeyDown: e => {
+      if (e.key === "Enter") {
+        pr.state === "idle" ? vbCheck() : vbNext();
+      }
+    }
+  })), pr.state === "correct" && /*#__PURE__*/React.createElement("div", {
+    className: "feedback ok"
+  }, "\u2713 ", pr.msg), pr.state === "wrong" && /*#__PURE__*/React.createElement("div", {
+    className: "feedback no"
+  }, pr.msg, " \xB7 ", tr("answer"), " ", /*#__PURE__*/React.createElement("b", null, pr.q.answer)), pr.state === "idle" ? /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn check qm-check",
+    onClick: vbCheck
+  }, tr("check")) : /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn next",
+    onClick: vbNext
+  }, tr("next")), /*#__PURE__*/React.createElement("button", {
+    className: "nameskip",
+    onClick: () => setPr(null)
+  }, tr("back"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "vocpractice-bar"
+  }, vbDue().length > 0 && /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn vocstart vocdue",
+    onClick: () => startVbPractice("due")
+  }, "\uD83D\uDD25 ", tr("vocab_due"), " \xB7 ", vbDue().length), /*#__PURE__*/React.createElement("button", {
+    className: "quizbtn vocstart" + (vbDue().length > 0 ? " ghost" : ""),
+    onClick: () => startVbPractice("all")
+  }, "\u25B6 ", tr("vocab_practice")), getVbMist().length > 0 && /*#__PURE__*/React.createElement("button", {
+    className: "mistbtn vocmist",
+    style: {
+      "--lc": LANG_META[lang].color
+    },
+    onClick: () => startVbPractice("mist")
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "mistbtn-ic"
+  }, "\u26A0"), /*#__PURE__*/React.createElement("span", {
+    className: "mistbtn-tx"
+  }, tr("mist_practice")), /*#__PURE__*/React.createElement("span", {
+    className: "mistbtn-n"
+  }, getVbMist().length))), /*#__PURE__*/React.createElement("div", {
+    className: "vtable"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "vtrow vthead"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "vth vtfirst"
+  }, "\u2605"), /*#__PURE__*/React.createElement("div", {
+    className: "vth"
+  }, /*#__PURE__*/React.createElement(LangSelect, {
+    value: transLang,
+    onChange: setTL
+  }))), langFavs.map(it => {
+    const base = it.verb.replace(/^to /, "");
+    const rk = it.lang + "|" + it.verb;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "vtrow",
+      key: rk
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "vtcell vtfirst",
+      style: {
+        "--lc": LANG_META[it.lang].color
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "vtx",
+      title: tr("learned"),
+      onClick: () => toggleFav(it.lang, it.verb)
+    }, "\u2715"), /*#__PURE__*/React.createElement("button", {
+      className: "vtverb",
+      onClick: () => pickVerb(it.lang, it.verb)
+    }, base), /*#__PURE__*/React.createElement("span", {
+      className: "vtbadge"
+    }, LANG_META[it.lang].code)), /*#__PURE__*/React.createElement(SavedCell, {
+      base: base,
+      from: it.lang,
+      to: transLang
+    }));
+  })), /*#__PURE__*/React.createElement("p", {
+    className: "quizhint",
+    style: {
+      marginTop: 4
+    }
+  }, "Tap a cell to hear it \xB7 \u2715 removes the verb")));
+}
+
+/* ---------- Tweaks ---------- */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "light",
+  "accent": "vivid",
+  "font": "space",
+  "radius": 22,
+  "density": "regular",
+  "highlight": true,
+  "sound": true,
+  "sponsor": true
+} /*EDITMODE-END*/;
+function AppTweaks({
+  t,
+  setTweak,
+  name,
+  commitName
+}) {
+  return /*#__PURE__*/React.createElement(TweaksPanel, null, /*#__PURE__*/React.createElement(TweakSection, {
+    label: "Profile"
+  }), /*#__PURE__*/React.createElement(TweakText, {
+    label: "Your name",
+    value: name,
+    placeholder: "Your name\u2026",
+    onChange: v => commitName(v)
+  }), /*#__PURE__*/React.createElement(TweakText, {
+    label: "Gemini API key (for AI offline)",
+    value: recall("kunju-gemini-key", ""),
+    placeholder: "AIza\u2026 \u2014 your own key",
+    onChange: v => persist("kunju-gemini-key", v.trim())
+  }), /*#__PURE__*/React.createElement(TweakSection, {
+    label: "Look & feel"
+  }), /*#__PURE__*/React.createElement(TweakSelect, {
+    label: "Theme",
+    value: t.theme,
+    options: [{
+      value: "auto",
+      label: "Auto (system)"
+    }, {
+      value: "light",
+      label: "Light"
+    }, {
+      value: "dark",
+      label: "Dark"
+    }, {
+      value: "playful",
+      label: "Playful"
+    }],
+    onChange: v => setTweak("theme", v)
+  }), /*#__PURE__*/React.createElement(TweakRadio, {
+    label: "Rainbow",
+    value: t.accent,
+    options: ["vivid", "soft", "mono"],
+    onChange: v => setTweak("accent", v)
+  }), /*#__PURE__*/React.createElement(TweakSection, {
+    label: "Learning aids"
+  }), /*#__PURE__*/React.createElement(TweakToggle, {
+    label: "Highlight irregular parts",
+    value: t.highlight,
+    onChange: v => setTweak("highlight", v)
+  }), /*#__PURE__*/React.createElement(TweakToggle, {
+    label: "Pronunciation buttons",
+    value: t.sound,
+    onChange: v => setTweak("sound", v)
+  }), /*#__PURE__*/React.createElement(TweakSection, {
+    label: "Monetization (demo)"
+  }), /*#__PURE__*/React.createElement(TweakToggle, {
+    label: "Sponsor recommendation slot",
+    value: t.sponsor,
+    onChange: v => setTweak("sponsor", v)
+  }), /*#__PURE__*/React.createElement(TweakSection, {
+    label: "Typography & shape"
+  }), /*#__PURE__*/React.createElement(TweakSelect, {
+    label: "Font",
+    value: t.font,
+    options: [{
+      value: "space",
+      label: "Space Grotesk"
+    }, {
+      value: "sora",
+      label: "Sora"
+    }, {
+      value: "jakarta",
+      label: "Plus Jakarta"
+    }],
+    onChange: v => setTweak("font", v)
+  }), /*#__PURE__*/React.createElement(TweakSlider, {
+    label: "Corner radius",
+    value: t.radius,
+    min: 8,
+    max: 34,
+    step: 1,
+    unit: "px",
+    onChange: v => setTweak("radius", v)
+  }), /*#__PURE__*/React.createElement(TweakRadio, {
+    label: "Density",
+    value: t.density,
+    options: ["compact", "regular", "comfy"],
+    onChange: v => setTweak("density", v)
+  }));
+}
+
+/* ---------- Onboarding: name ---------- */
+function NameGate({
+  initial,
+  onSubmit,
+  onClose,
+  editing,
+  native,
+  setNative,
+  skill,
+  setSkill
+}) {
+  const [val, setVal] = useState(initial || "");
+  const ref = useRef(null);
+  useEffect(() => {
+    setTimeout(() => ref.current && ref.current.focus(), 220);
+  }, []);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "namegate"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "namecard"
+  }, editing && /*#__PURE__*/React.createElement("button", {
+    className: "namex",
+    onClick: onClose
+  }, "\xD7"), /*#__PURE__*/React.createElement("h2", {
+    className: "namehead"
+  }, tr("welcome")), /*#__PURE__*/React.createElement("p", {
+    className: "namebrand"
+  }, "Conju", /*#__PURE__*/React.createElement("b", null, "Expert")), /*#__PURE__*/React.createElement("span", {
+    className: "brand-mark big"
+  }, RAINBOW.slice(0, 5).map((c, i) => /*#__PURE__*/React.createElement("i", {
+    key: i,
+    style: {
+      background: c
+    }
+  }))), /*#__PURE__*/React.createElement("p", {
+    className: "namesub"
+  }, tr("welcome_sub")), /*#__PURE__*/React.createElement("input", {
+    ref: ref,
+    className: "nameinput",
+    value: val,
+    "aria-label": tr("your_name"),
+    placeholder: tr("your_name"),
+    maxLength: 24,
+    onChange: e => setVal(e.target.value),
+    onKeyDown: e => {
+      if (e.key === "Enter" && val.trim()) onSubmit(val.trim());
+    },
+    autoComplete: "off",
+    autoCapitalize: "words",
+    spellCheck: "false"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "namefield"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "namelabel"
+  }, tr("mother_tongue")), /*#__PURE__*/React.createElement("div", {
+    className: "nativewrap"
+  }, /*#__PURE__*/React.createElement("select", {
+    className: "nativesel",
+    "aria-label": tr("mother_tongue"),
+    value: native,
+    onChange: e => setNative(e.target.value)
+  }, NATIVE_LANGS.map(l => /*#__PURE__*/React.createElement("option", {
+    key: l.name,
+    value: l.name
+  }, l.label))), /*#__PURE__*/React.createElement("span", {
+    className: "nativecaret"
+  }, "\u25BE"))), /*#__PURE__*/React.createElement("div", {
+    className: "namefield"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "namelabel"
+  }, tr("skill_q")), /*#__PURE__*/React.createElement("div", {
+    className: "skillseg"
+  }, ["beginner", "intermediate", "advanced"].map(s => /*#__PURE__*/React.createElement("button", {
+    key: s,
+    className: "skillbtn" + (skill === s ? " on" : ""),
+    onClick: () => setSkill(s)
+  }, /*#__PURE__*/React.createElement("b", null, tr("skill_" + s)), /*#__PURE__*/React.createElement("small", null, tr("skill_" + s + "_sub")))))), /*#__PURE__*/React.createElement("button", {
+    className: "namebtn",
+    disabled: !val.trim(),
+    onClick: () => onSubmit(val.trim())
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "cta-rainbow"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "cta-label"
+  }, tr("lets_go"))), /*#__PURE__*/React.createElement("button", {
+    className: "nameskip",
+    onClick: () => onSubmit("")
+  }, editing ? tr("remove_name") : tr("skip"))));
+}
+
+/* ---------- Onboarding: feature tour ---------- */
+function TourMock({
+  kind
+}) {
+  if (kind === "trial") {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "tmock",
+      key: "trial",
+      style: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "12px",
+        paddingTop: "2px"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: "44px",
+        lineHeight: 1
+      }
+    }, "\uD83C\uDF81"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: "15.5px",
+        fontWeight: 800,
+        letterSpacing: "-0.01em",
+        color: "var(--text)",
+        lineHeight: 1.3,
+        textAlign: "center",
+        fontFamily: "var(--font-display)"
+      }
+    }, tr("tour_trial_head")), [tr("tour_feat1"), tr("tour_feat2"), tr("tour_feat3")].map((t, i) => /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "tm-row",
+      style: {
+        animationDelay: 0.2 + i * 0.13 + "s",
+        gap: "8px"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: "var(--col)",
+        fontWeight: 800
+      }
+    }, "\u2713"), /*#__PURE__*/React.createElement("span", null, t))));
+  }
+  if (kind === "conjugate") {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "tmock",
+      key: "c"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "tm-input"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "tm-cursor"
+    }), "hablar"), /*#__PURE__*/React.createElement("div", {
+      className: "tm-rows"
+    }, ["yo · hablo", "tú · hablas", "él · habla", "nosotros · hablamos"].map((r, i) => /*#__PURE__*/React.createElement("div", {
+      className: "tm-row",
+      style: {
+        animationDelay: 0.25 + i * 0.13 + "s"
+      },
+      key: i
+    }, /*#__PURE__*/React.createElement("span", null, r.split(" · ")[0]), /*#__PURE__*/React.createElement("b", null, r.split(" · ")[1])))));
+  }
+  if (kind === "quiz") {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "tmock",
+      key: "q"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "tm-q"
+    }, "comer \u2192 ", /*#__PURE__*/React.createElement("b", null, "nosotros")), /*#__PURE__*/React.createElement("div", {
+      className: "tm-opts"
+    }, ["comemos", "coméis", "comen", "comían"].map((o, i) => /*#__PURE__*/React.createElement("div", {
+      className: "tm-opt" + (i === 0 ? " ok" : ""),
+      style: {
+        animationDelay: 0.2 + i * 0.1 + "s"
+      },
+      key: i
+    }, o, i === 0 && /*#__PURE__*/React.createElement("span", {
+      className: "tm-check"
+    }, "\u2713")))));
+  }
+  if (kind === "learn") {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "tmock",
+      key: "l"
+    }, [["Presente", 0], ["Pretérito", 1], ["Futuro", 2], ["Subjuntivo", 3]].map((c, i) => /*#__PURE__*/React.createElement("div", {
+      className: "tm-lcard",
+      style: {
+        animationDelay: 0.15 + i * 0.12 + "s",
+        "--lc": RAINBOW[i]
+      },
+      key: i
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "tm-ldot"
+    }), /*#__PURE__*/React.createElement("b", null, c[0]))));
+  }
+  if (kind === "goals") {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "tmock",
+      key: "g"
+    }, [{
+      icon: "✨",
+      label: tr("goal_ai"),
+      badge: tr("goal_ai_badge"),
+      badgeCol: "#9a4bf0"
+    }, {
+      icon: "⏱",
+      label: tr("goal_time"),
+      note: tr("goal_time_note"),
+      noteCol: "var(--muted)"
+    }, {
+      icon: "⚙️",
+      label: tr("goal_custom"),
+      note: tr("goal_custom_note"),
+      noteCol: "var(--muted)"
+    }].map((opt, i) => /*#__PURE__*/React.createElement("div", {
+      className: "tm-row",
+      key: i,
+      style: {
+        animationDelay: 0.15 + i * 0.13 + "s",
+        gap: "10px"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: "14px"
+      }
+    }, opt.icon), /*#__PURE__*/React.createElement("span", {
+      style: {
+        flex: 1,
+        fontFamily: "var(--font-display)",
+        fontWeight: 700,
+        fontSize: "12.5px",
+        color: "var(--text)"
+      }
+    }, opt.label), opt.badge && /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: "9.5px",
+        fontWeight: 800,
+        color: opt.badgeCol,
+        background: "color-mix(in srgb,#a557ff 11%,var(--surface))",
+        borderRadius: "5px",
+        padding: "2px 6px",
+        letterSpacing: "0.03em"
+      }
+    }, opt.badge), opt.note && /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: "11px",
+        color: opt.noteCol,
+        fontWeight: 600
+      }
+    }, opt.note))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: "10px",
+        borderRadius: "12px",
+        padding: "10px 13px",
+        background: "color-mix(in srgb,#7a5cff 9%,var(--surface))",
+        border: "1px solid color-mix(in srgb,#7a5cff 20%,var(--border))",
+        animation: "tmpop 0.45s cubic-bezier(.34,1.4,.5,1) 0.54s both"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: "26px",
+        fontWeight: 800,
+        color: "#6a3fd0",
+        lineHeight: 1,
+        fontFamily: "var(--font-display)"
+      }
+    }, "12"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: "12px",
+        lineHeight: 1.4
+      }
+    }, /*#__PURE__*/React.createElement("b", {
+      style: {
+        color: "#6a3fd0",
+        fontFamily: "var(--font-display)"
+      }
+    }, "12 ", tr("goal_daily")), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("small", {
+      style: {
+        color: "var(--muted)"
+      }
+    }, tr("goal_time_approx")))));
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "tmock",
+    key: "s"
+  }, [["DE", "gehen"], ["ES", "tener"], ["FR", "être"]].map((c, i) => /*#__PURE__*/React.createElement("div", {
+    className: "tm-srow",
+    style: {
+      animationDelay: 0.2 + i * 0.14 + "s"
+    },
+    key: i
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tm-star"
+  }, "\u2605"), /*#__PURE__*/React.createElement("span", {
+    className: "tm-sl"
+  }, c[0]), /*#__PURE__*/React.createElement("b", null, c[1]), /*#__PURE__*/React.createElement("span", {
+    className: "tm-spk"
+  }, "\uD83D\uDD0A"))));
+}
+function TourGate({
+  onDone
+}) {
+  const [i, setI] = useState(0);
+  const slides = [{
+    kind: "trial",
+    icon: "🎁",
+    title: tr("offer_trial_b"),
+    text: tr("tour_trial_sub"),
+    col: "#e71583"
+  }, {
+    kind: "conjugate",
+    icon: "▦",
+    title: tr("tab_conjugate"),
+    text: tr("tour_conj"),
+    col: "#ff3b5c"
+  }, {
+    kind: "quiz",
+    icon: "◆",
+    title: tr("tab_quiz"),
+    text: tr("tour_quiz"),
+    col: "#34c759"
+  }, {
+    kind: "learn",
+    icon: "✦",
+    title: tr("tab_learn"),
+    text: tr("tour_learn"),
+    col: "#00bcd4"
+  }, {
+    kind: "saved",
+    icon: "★",
+    title: tr("tab_saved"),
+    text: tr("tour_saved"),
+    col: "#ffb300"
+  }, {
+    kind: "goals",
+    icon: "🎯",
+    title: tr("tour_goals_h"),
+    text: tr("tour_goal"),
+    col: "#7a5cff"
+  }];
+  const last = i === slides.length - 1;
+  const s = slides[i];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "namegate"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "namecard tourcard"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "namex",
+    onClick: onDone,
+    title: tr("tour_skip")
+  }, "\xD7"), /*#__PURE__*/React.createElement("div", {
+    className: "tourstage",
+    style: {
+      "--col": s.col
+    }
+  }, /*#__PURE__*/React.createElement(TourMock, {
+    kind: s.kind
+  })), s.kind !== "trial" && /*#__PURE__*/React.createElement("div", {
+    className: "tourhead-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tourbadge",
+    style: {
+      background: s.col
+    }
+  }, s.icon), /*#__PURE__*/React.createElement("h2", {
+    className: "namehead",
+    style: {
+      margin: 0
+    }
+  }, s.title)), /*#__PURE__*/React.createElement("p", {
+    className: "namesub"
+  }, s.text), /*#__PURE__*/React.createElement("div", {
+    className: "tourdots"
+  }, slides.map((_, k) => /*#__PURE__*/React.createElement("span", {
+    key: k,
+    className: "tourdot" + (k === i ? " on" : "")
+  }))), /*#__PURE__*/React.createElement("button", {
+    className: "namebtn",
+    onClick: () => last ? onDone() : setI(i + 1)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "cta-rainbow"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "cta-label"
+  }, last ? tr("tour_start") : tr("tour_next")))));
+}
+
+/* ---------- Contextual first-open feature hints ----------
+   Shown shortly after a user first opens a section or a specific quiz mode /
+   Saved sub-area, because most people click the welcome tour away too fast.
+   One key set per kind in window.UI (all 5 UI languages):
+   learn · quiz_cards/choice/type/speak/texte · saved_verbs/saved_vocab. */
+const FEATURE_HINTS = {
+  learn: {
+    icon: "✦",
+    col: "#0a84ff"
+  },
+  quiz_cards: {
+    icon: "🃏",
+    col: "#34c759"
+  },
+  quiz_choice: {
+    icon: "◉",
+    col: "#34c759"
+  },
+  quiz_type: {
+    icon: "⌨",
+    col: "#34c759"
+  },
+  quiz_speak: {
+    icon: "🎤",
+    col: "#34c759"
+  },
+  quiz_texte: {
+    icon: "📖",
+    col: "#34c759"
+  },
+  saved_verbs: {
+    icon: "★",
+    col: "#ffb300"
+  },
+  saved_vocab: {
+    icon: "📒",
+    col: "#ffb300"
+  }
+};
+function FeatureHint({
+  kind,
+  onClose
+}) {
+  const meta = FEATURE_HINTS[kind] || FEATURE_HINTS.learn;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "namegate",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "namecard hintcard",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "namex",
+    onClick: onClose,
+    title: tr("tour_skip")
+  }, "\xD7"), /*#__PURE__*/React.createElement("div", {
+    className: "tourhead-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tourbadge",
+    style: {
+      background: meta.col
+    }
+  }, meta.icon), /*#__PURE__*/React.createElement("h2", {
+    className: "namehead",
+    style: {
+      margin: 0
+    }
+  }, tr("hint_" + kind + "_h"))), /*#__PURE__*/React.createElement("ul", {
+    className: "hintlist",
+    style: {
+      "--col": meta.col
+    }
+  }, [1, 2, 3, 4].map((n, i) => {
+    const txt = tr("hint_" + kind + "_" + n);
+    if (!txt || txt === "hint_" + kind + "_" + n) return null;
+    return /*#__PURE__*/React.createElement("li", {
+      key: n,
+      style: {
+        animationDelay: 0.06 + i * 0.09 + "s"
+      },
+      dangerouslySetInnerHTML: {
+        __html: txt
+      }
+    });
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "namebtn",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "cta-rainbow"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "cta-label"
+  }, tr("got_it")))));
+}
+const UI_LOCALE = {
+  de: "de-DE",
+  en: "en-GB",
+  es: "es-ES",
+  nl: "nl-NL",
+  fr: "fr-FR"
+};
+function fmtDate(iso) {
+  const d = typeof iso === "string" ? new Date(iso) : iso;
+  return d.toLocaleDateString(UI_LOCALE[UILANG] || "en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+}
+
+/* ---------- App ---------- */
+/* ===== User Menu ===== */
+function AccountDeletedModal({
+  onClose,
+  wasPremium
+}) {
+  const until = wasPremium?.until ? new Date(wasPremium.until) : null;
+  const untilStr = until ? fmtDate(until) : null;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "fixed",
+      inset: 0,
+      zIndex: 9999,
+      background: "rgba(0,0,0,.5)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "24px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "var(--surface)",
+      borderRadius: "24px",
+      padding: "32px 24px",
+      maxWidth: "340px",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: "16px",
+      textAlign: "center",
+      boxShadow: "0 20px 60px rgba(0,0,0,.2)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "48px",
+      lineHeight: 1
+    }
+  }, "\uD83D\uDC4B"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "20px",
+      fontWeight: 800,
+      color: "var(--text)",
+      letterSpacing: "-.02em",
+      marginBottom: "10px"
+    }
+  }, tr("goodbye_heading")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "14px",
+      color: "var(--muted)",
+      lineHeight: 1.6
+    }
+  }, tr("goodbye_love"), /*#__PURE__*/React.createElement("br", null), tr("goodbye_data")), wasPremium && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: "12px",
+      background: "var(--surface-2)",
+      borderRadius: "12px",
+      padding: "12px 14px",
+      fontSize: "13px",
+      color: "var(--text)",
+      lineHeight: 1.5,
+      border: "1px solid var(--border)"
+    }
+  }, tr("sub_runs_until", {
+    date: untilStr || tr("sub_end_period")
+  }))), /*#__PURE__*/React.createElement("button", {
+    onClick: onClose,
+    style: {
+      width: "100%",
+      padding: "15px",
+      borderRadius: "16px",
+      border: "none",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      color: "#fff",
+      fontSize: "15px",
+      fontWeight: 800,
+      cursor: "pointer",
+      marginTop: "4px"
+    }
+  }, tr("goodbye_btn"))));
+}
+const DD_ITEM = {
+  width: "100%",
+  padding: "9px 10px",
+  background: "none",
+  border: "none",
+  borderRadius: "10px",
+  cursor: "pointer",
+  textAlign: "left",
+  fontSize: "13px",
+  color: "var(--text)",
+  display: "flex",
+  alignItems: "center",
+  gap: "8px"
+};
+function MenuRow({
+  onClick,
+  bg,
+  glyph,
+  fav,
+  label,
+  sub,
+  danger
+}) {
+  return /*#__PURE__*/React.createElement("button", {
+    onClick: onClick,
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: "12px",
+      width: "100%",
+      padding: "9px 8px",
+      border: "none",
+      background: "none",
+      cursor: "pointer",
+      textAlign: "left",
+      borderRadius: "12px"
+    }
+  }, fav ? /*#__PURE__*/React.createElement("img", {
+    src: "/favicon.svg",
+    alt: "",
+    style: {
+      width: "38px",
+      height: "38px",
+      borderRadius: "11px",
+      flexShrink: 0,
+      display: "block"
+    }
+  }) : /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: "38px",
+      height: "38px",
+      borderRadius: "11px",
+      background: bg,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "18px",
+      flexShrink: 0
+    }
+  }, glyph), /*#__PURE__*/React.createElement("span", {
+    style: {
+      flex: 1,
+      minWidth: 0
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: "block",
+      fontFamily: "var(--font-display)",
+      fontWeight: 800,
+      fontSize: "13.5px",
+      color: danger ? "#e0245e" : "var(--text)",
+      lineHeight: 1.25
+    }
+  }, label), sub && /*#__PURE__*/React.createElement("small", {
+    style: {
+      display: "block",
+      color: "var(--muted)",
+      fontSize: "11px",
+      marginTop: "2px"
+    }
+  }, sub)), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "var(--muted)",
+      opacity: 0.45,
+      fontSize: "17px",
+      flexShrink: 0
+    }
+  }, "\u203A"));
+}
+function UserChip({
+  avatar,
+  label,
+  onClick
+}) {
+  return /*#__PURE__*/React.createElement("button", {
+    onClick: onClick,
+    style: {
+      background: "none",
+      border: "1.5px solid rgba(165,87,255,.35)",
+      borderRadius: "20px",
+      padding: "3px 9px 3px 4px",
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      gap: "5px",
+      fontFamily: "inherit"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "brand-greet",
+    style: {
+      pointerEvents: "none",
+      fontSize: "13.5px",
+      fontWeight: 800
+    }
+  }, label), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "9px",
+      color: "var(--muted)",
+      pointerEvents: "none"
+    }
+  }, "\u25BE"));
+}
+function UserMenu({
+  user,
+  greet,
+  name,
+  isPremium,
+  premiumUntil,
+  onDeleted,
+  onEditName,
+  onTarife,
+  onPin
+}) {
+  const [open, setOpen] = useState(false);
+  const [panel, setPanel] = useState(null); // null | "cancel" | "delete"
+  const [deleting, setDeleting] = useState(false);
+  const [deleteErr, setDeleteErr] = useState("");
+  const [cancelling, setCancelling] = useState(false);
+  const [cancelErr, setCancelErr] = useState("");
+  const [cancelledUntil, setCancelledUntil] = useState(null);
+  const ref = useRef(null);
+  const initial = (name || user.email || "?")[0].toUpperCase();
+  useEffect(() => {
+    function onClickOut(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onClickOut);
+    return () => document.removeEventListener("mousedown", onClickOut);
+  }, []);
+  function openPanel(p) {
+    setPanel(p);
+    setDeleteErr("");
+    setCancelErr("");
+  }
+  async function cancelSubscription() {
+    setCancelling(true);
+    setCancelErr("");
+    try {
+      const {
+        data,
+        error
+      } = await window.__supa.functions.invoke("cancel-subscription");
+      if (error) throw new Error(error.message || "Fehler");
+      setCancelledUntil(data?.premiumUntil || premiumUntil || null);
+      setPanel(null);
+    } catch (e) {
+      setCancelErr(e.message || tr("err_cancel_fail"));
+    }
+    setCancelling(false);
+  }
+  async function deleteAccount() {
+    setDeleting(true);
+    setDeleteErr("");
+    try {
+      const {
+        data,
+        error
+      } = await window.__supa.functions.invoke("delete-account");
+      if (error) throw new Error(error.message || "Fehler");
+      await window.__supa.auth.signOut();
+      if (onDeleted) onDeleted(data);
+    } catch (e) {
+      setDeleteErr(e.message || tr("err_delete_fail"));
+      setDeleting(false);
+    }
+  }
+  const avatar = /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "22px",
+      height: "22px",
+      borderRadius: "50%",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "10px",
+      fontWeight: 800,
+      color: "#fff",
+      flexShrink: 0
+    }
+  }, initial);
+
+  // Days remaining on active subscription
+  const activeUntil = cancelledUntil || premiumUntil;
+  const daysLeft = activeUntil ? Math.max(0, Math.ceil((new Date(activeUntil) - Date.now()) / 86400000)) : 0;
+  const untilStr = activeUntil ? fmtDate(new Date(activeUntil)) : null;
+  const hasActiveSub = isPremium && !cancelledUntil; // paid and not yet cancelled
+
+  return /*#__PURE__*/React.createElement("div", {
+    ref: ref,
+    style: {
+      position: "relative"
+    }
+  }, /*#__PURE__*/React.createElement(UserChip, {
+    avatar: avatar,
+    label: greet,
+    onClick: () => setOpen(o => !o)
+  }), open && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      left: 0,
+      top: "calc(100% + 6px)",
+      background: "var(--surface)",
+      border: "1px solid var(--border)",
+      borderRadius: "16px",
+      boxShadow: "0 8px 28px rgba(0,0,0,.13)",
+      padding: "8px",
+      minWidth: "266px",
+      zIndex: 999
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "6px 10px 8px",
+      borderBottom: "1px solid var(--border)",
+      marginBottom: "4px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "var(--muted)"
+    }
+  }, tr("menu_logged_in")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "12px",
+      fontWeight: "600",
+      wordBreak: "break-all"
+    }
+  }, user.email)), panel === null && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(MenuRow, {
+    onClick: () => {
+      onEditName && onEditName();
+      setOpen(false);
+    },
+    bg: "#f1ecff",
+    glyph: "👤",
+    label: tr("menu_edit_profile"),
+    sub: tr("msub_profil")
+  }), /*#__PURE__*/React.createElement(MenuRow, {
+    onClick: () => {
+      onPin && onPin();
+      setOpen(false);
+    },
+    fav: true,
+    label: tr("menu_pin"),
+    sub: tr("msub_pin")
+  }), /*#__PURE__*/React.createElement(MenuRow, {
+    onClick: () => {
+      onTarife && onTarife();
+      setOpen(false);
+    },
+    bg: "#efeaff",
+    glyph: "💎",
+    label: tr("menu_tarife"),
+    sub: tr("msub_tarife")
+  }), /*#__PURE__*/React.createElement(MenuRow, {
+    onClick: () => {
+      rateApp();
+      setOpen(false);
+    },
+    bg: "#fff4e0",
+    glyph: "⭐",
+    label: tr("menu_rate"),
+    sub: tr("msub_rate")
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: "1px",
+      background: "var(--border)",
+      margin: "3px 0"
+    }
+  }), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      window.__supa.auth.signOut();
+      setOpen(false);
+    },
+    style: DD_ITEM
+  }, /*#__PURE__*/React.createElement("span", null, "\u21AA"), " ", tr("menu_logout")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: "1px",
+      background: "var(--border)",
+      margin: "3px 0"
+    }
+  }), hasActiveSub && /*#__PURE__*/React.createElement("button", {
+    onClick: () => openPanel("cancel"),
+    style: {
+      ...DD_ITEM,
+      color: "#ff9f0a"
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDD14"), " ", tr("menu_cancel_sub")), isPremium && cancelledUntil && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "7px 10px",
+      fontSize: "12px",
+      color: "var(--muted)",
+      lineHeight: 1.5
+    }
+  }, tr("menu_sub_active_until", {
+    date: untilStr
+  })), /*#__PURE__*/React.createElement("button", {
+    onClick: () => openPanel("delete"),
+    style: {
+      ...DD_ITEM,
+      color: "#ff453a"
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDDD1"), " ", tr("menu_delete_acc"))), panel === "cancel" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "4px 2px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "13px",
+      fontWeight: "700",
+      color: "var(--text)",
+      marginBottom: "6px",
+      padding: "0 8px"
+    }
+  }, tr("cancel_title")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "12px",
+      color: "var(--muted)",
+      lineHeight: 1.55,
+      marginBottom: "10px",
+      padding: "0 8px"
+    }
+  }, tr("cancel_body", {
+    date: untilStr
+  })), cancelErr && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "#ff453a",
+      marginBottom: "8px",
+      padding: "0 8px"
+    }
+  }, cancelErr), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: "6px",
+      padding: "0 2px"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => openPanel(null),
+    style: {
+      flex: 1,
+      padding: "8px",
+      background: "var(--surface-2)",
+      border: "1px solid var(--border)",
+      borderRadius: "10px",
+      cursor: "pointer",
+      fontSize: "12px",
+      fontWeight: "600"
+    }
+  }, tr("cancel_no")), /*#__PURE__*/React.createElement("button", {
+    onClick: cancelSubscription,
+    disabled: cancelling,
+    style: {
+      flex: 1,
+      padding: "8px",
+      background: "#ff9f0a",
+      border: "none",
+      borderRadius: "10px",
+      cursor: "pointer",
+      fontSize: "12px",
+      color: "#fff",
+      fontWeight: "700"
+    }
+  }, cancelling ? "…" : tr("cancel_yes")))), panel === "delete" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "4px 2px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "13px",
+      fontWeight: "700",
+      color: "#ff453a",
+      marginBottom: "6px",
+      padding: "0 8px"
+    }
+  }, tr("delete_title")), hasActiveSub ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "rgba(255,159,10,0.1)",
+      border: "1px solid rgba(255,159,10,0.3)",
+      borderRadius: "10px",
+      padding: "10px",
+      marginBottom: "10px",
+      fontSize: "12px",
+      lineHeight: 1.55
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: "700",
+      color: "#ff9f0a",
+      marginBottom: "4px"
+    }
+  }, tr("delete_warn_days", {
+    n: daysLeft
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: "var(--muted)"
+    }
+  }, tr("delete_warn_body", {
+    date: untilStr
+  }))), deleteErr && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "#ff453a",
+      marginBottom: "8px",
+      padding: "0 8px"
+    }
+  }, deleteErr), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: "6px",
+      padding: "0 2px"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => openPanel("cancel"),
+    style: {
+      flex: "1.4",
+      padding: "8px",
+      background: "linear-gradient(135deg,#ff9f0a,#ff6b00)",
+      border: "none",
+      borderRadius: "10px",
+      cursor: "pointer",
+      fontSize: "11px",
+      color: "#fff",
+      fontWeight: "700",
+      lineHeight: 1.3
+    }
+  }, tr("delete_cancel_first")), /*#__PURE__*/React.createElement("button", {
+    onClick: deleteAccount,
+    disabled: deleting,
+    style: {
+      flex: "1",
+      padding: "8px",
+      background: "rgba(255,69,58,0.12)",
+      border: "1.5px solid #ff453a",
+      borderRadius: "10px",
+      cursor: "pointer",
+      fontSize: "11px",
+      color: "#ff453a",
+      fontWeight: "700"
+    }
+  }, deleting ? "…" : tr("delete_anyway"))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => openPanel(null),
+    style: {
+      width: "100%",
+      marginTop: "6px",
+      padding: "6px",
+      background: "none",
+      border: "none",
+      cursor: "pointer",
+      fontSize: "11px",
+      color: "var(--muted)"
+    }
+  }, tr("cancel_no"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "12px",
+      color: "var(--muted)",
+      lineHeight: 1.5,
+      marginBottom: "10px",
+      padding: "0 8px"
+    }
+  }, tr("delete_data")), deleteErr && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "#ff453a",
+      marginBottom: "8px",
+      padding: "0 8px"
+    }
+  }, deleteErr), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: "6px",
+      padding: "0 2px"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => openPanel(null),
+    style: {
+      flex: 1,
+      padding: "8px",
+      background: "var(--surface-2)",
+      border: "1px solid var(--border)",
+      borderRadius: "10px",
+      cursor: "pointer",
+      fontSize: "12px",
+      fontWeight: "600"
+    }
+  }, tr("cancel_no")), /*#__PURE__*/React.createElement("button", {
+    onClick: deleteAccount,
+    disabled: deleting,
+    style: {
+      flex: 1,
+      padding: "8px",
+      background: "#ff453a",
+      border: "none",
+      borderRadius: "10px",
+      cursor: "pointer",
+      fontSize: "12px",
+      color: "#fff",
+      fontWeight: "700"
+    }
+  }, deleting ? "…" : tr("delete_yes")))))));
+}
+function GuestMenu({
+  name,
+  greet,
+  onLogin,
+  onEditName,
+  onTarife,
+  onPin
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    function onClickOut(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onClickOut);
+    return () => document.removeEventListener("mousedown", onClickOut);
+  }, []);
+  const avatar = /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "22px",
+      height: "22px",
+      borderRadius: "50%",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "10px",
+      fontWeight: 800,
+      color: "#fff",
+      flexShrink: 0
+    }
+  }, (name || "").trim().charAt(0).toUpperCase() || "★");
+  return /*#__PURE__*/React.createElement("div", {
+    ref: ref,
+    style: {
+      position: "relative"
+    }
+  }, /*#__PURE__*/React.createElement(UserChip, {
+    avatar: avatar,
+    label: greet,
+    onClick: () => setOpen(o => !o)
+  }), open && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      left: 0,
+      top: "calc(100% + 6px)",
+      background: "var(--surface)",
+      border: "1px solid var(--border)",
+      borderRadius: "16px",
+      boxShadow: "0 8px 28px rgba(0,0,0,.13)",
+      padding: "8px",
+      minWidth: "266px",
+      zIndex: 999
+    }
+  }, /*#__PURE__*/React.createElement(MenuRow, {
+    onClick: () => {
+      onLogin();
+      setOpen(false);
+    },
+    bg: "#fde9f3",
+    glyph: "🔑",
+    label: tr("menu_login"),
+    sub: tr("msub_konto")
+  }), /*#__PURE__*/React.createElement(MenuRow, {
+    onClick: () => {
+      onEditName();
+      setOpen(false);
+    },
+    bg: "#f1ecff",
+    glyph: "👤",
+    label: tr("menu_edit_profile"),
+    sub: tr("msub_profil")
+  }), /*#__PURE__*/React.createElement(MenuRow, {
+    onClick: () => {
+      onPin();
+      setOpen(false);
+    },
+    fav: true,
+    label: tr("menu_pin"),
+    sub: tr("msub_pin")
+  }), /*#__PURE__*/React.createElement(MenuRow, {
+    onClick: () => {
+      onTarife();
+      setOpen(false);
+    },
+    bg: "#efeaff",
+    glyph: "💎",
+    label: tr("menu_tarife"),
+    sub: tr("msub_tarife")
+  }), /*#__PURE__*/React.createElement(MenuRow, {
+    onClick: () => {
+      rateApp();
+      setOpen(false);
+    },
+    bg: "#fff4e0",
+    glyph: "⭐",
+    label: tr("menu_rate"),
+    sub: tr("msub_rate")
+  })));
+}
+
+/* ===== Login Modal ===== */
+function LoginModal({
+  onClose,
+  fromPayment
+}) {
+  const [mode, setMode] = useState(fromPayment ? "signup" : "login");
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState(() => recall("kunju-name", ""));
+  const [pw, setPw] = useState("");
+  const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+  const emailRef = useRef(null);
+  useEffect(() => {
+    setTimeout(() => emailRef.current && emailRef.current.focus(), 200);
+  }, []);
+  async function submit(e) {
+    e.preventDefault();
+    setErr("");
+    setLoading(true);
+    try {
+      const supa = window.__supa;
+      if (mode === "reset") {
+        const {
+          error
+        } = await supa.auth.resetPasswordForEmail(email, {
+          redirectTo: "https://conjuexpert.app"
+        });
+        if (error) throw error;
+        setDone(true);
+      } else if (mode === "login") {
+        const {
+          error
+        } = await supa.auth.signInWithPassword({
+          email,
+          password: pw
+        });
+        if (error) throw error;
+        onClose();
+      } else {
+        const fn = firstName.trim();
+        if (!fn) {
+          setErr(tr("your_name"));
+          setLoading(false);
+          return;
+        }
+        const {
+          error
+        } = await supa.auth.signUp({
+          email,
+          password: pw,
+          options: {
+            data: {
+              first_name: fn
+            }
+          }
+        });
+        if (error) throw error;
+        persist("kunju-name", fn);
+        setDone(true);
+      }
+    } catch (e) {
+      setErr(e.message);
+    }
+    setLoading(false);
+  }
+  const headings = {
+    login: tr("login_welcome_back"),
+    signup: fromPayment ? tr("login_almost_done") : tr("login_create_acct"),
+    reset: tr("login_reset_pw")
+  };
+  const subs = {
+    login: fromPayment ? tr("login_sub_login_pay") : tr("login_sub_login"),
+    signup: fromPayment ? tr("login_sub_signup_pay") : tr("login_sub_signup"),
+    reset: tr("login_sub_reset")
+  };
+  const doneText = {
+    signup: {
+      icon: "📧",
+      msg: tr("login_done_signup")
+    },
+    reset: {
+      icon: "🔑",
+      msg: tr("login_done_reset")
+    }
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "namegate",
+    onClick: e => {
+      if (e.target === e.currentTarget) onClose();
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "namecard"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "namex",
+    onClick: onClose
+  }, "\xD7"), /*#__PURE__*/React.createElement("span", {
+    className: "brand-mark big"
+  }, RAINBOW.slice(0, 5).map((c, i) => /*#__PURE__*/React.createElement("i", {
+    key: i,
+    style: {
+      background: c
+    }
+  }))), /*#__PURE__*/React.createElement("h2", {
+    className: "namehead"
+  }, headings[mode]), /*#__PURE__*/React.createElement("p", {
+    className: "namesub"
+  }, subs[mode]), done ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: "12px 0 8px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "42px",
+      marginBottom: "10px"
+    }
+  }, (doneText[mode] || doneText.signup).icon), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "0 0 16px",
+      color: "var(--muted)",
+      fontSize: "14px",
+      whiteSpace: "pre-line"
+    }
+  }, (doneText[mode] || doneText.signup).msg), /*#__PURE__*/React.createElement("button", {
+    className: "namebtn",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "cta-rainbow"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "cta-label"
+  }, "OK"))) : /*#__PURE__*/React.createElement("form", {
+    onSubmit: submit,
+    style: {
+      width: "100%"
+    }
+  }, mode === "signup" && /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    name: "given-name",
+    "aria-label": tr("your_name"),
+    placeholder: tr("your_name"),
+    value: firstName,
+    onChange: e => setFirstName(e.target.value),
+    required: true,
+    maxLength: 40,
+    className: "nameinput",
+    style: {
+      marginBottom: "10px",
+      fontWeight: 400,
+      fontSize: "16px"
+    },
+    autoComplete: "given-name"
+  }), /*#__PURE__*/React.createElement("input", {
+    ref: emailRef,
+    type: "email",
+    name: "email",
+    "aria-label": "E-Mail",
+    placeholder: "E-Mail",
+    value: email,
+    onChange: e => setEmail(e.target.value),
+    required: true,
+    className: "nameinput",
+    style: {
+      marginBottom: "10px",
+      fontWeight: 400,
+      fontSize: "16px"
+    },
+    autoComplete: "email"
+  }), mode !== "reset" && /*#__PURE__*/React.createElement("input", {
+    type: "password",
+    name: "password",
+    "aria-label": tr("login_pw_ph"),
+    placeholder: tr("login_pw_ph"),
+    value: pw,
+    onChange: e => setPw(e.target.value),
+    required: true,
+    minLength: "6",
+    className: "nameinput",
+    style: {
+      marginBottom: mode === "login" ? "6px" : "14px",
+      fontWeight: 400,
+      fontSize: "16px"
+    },
+    autoComplete: mode === "login" ? "current-password" : "new-password"
+  }), mode === "login" && /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "12px",
+      textAlign: "right",
+      margin: "0 0 12px",
+      color: "var(--muted)"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    onClick: () => {
+      setMode("reset");
+      setErr("");
+      setPw("");
+    },
+    style: {
+      cursor: "pointer",
+      textDecoration: "underline"
+    }
+  }, tr("login_forgot_pw"))), mode === "reset" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: "14px"
+    }
+  }), err && /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "#ff453a",
+      fontSize: "13px",
+      margin: "0 0 10px",
+      textAlign: "left"
+    }
+  }, err), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "namebtn",
+    disabled: loading
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "cta-rainbow"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "cta-label"
+  }, loading ? "…" : mode === "login" ? tr("sign_in") : mode === "signup" ? tr("login_btn_signup") : tr("login_btn_reset")))), !done && mode !== "reset" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: "8px",
+      width: "100%",
+      margin: "4px 0"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      height: "1px",
+      background: "var(--border)"
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "12px",
+      color: "var(--muted)"
+    }
+  }, tr("login_or")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      height: "1px",
+      background: "var(--border)"
+    }
+  })), /*#__PURE__*/React.createElement("button", {
+    onClick: async () => {
+      await window.__supa.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "https://conjuexpert.app"
+        }
+      });
+    },
+    style: {
+      width: "100%",
+      padding: "12px",
+      background: "var(--surface-2)",
+      border: "1px solid var(--border)",
+      borderRadius: "12px",
+      fontSize: "14px",
+      fontWeight: "600",
+      cursor: "pointer",
+      color: "var(--text)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "10px"
+    }
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "18",
+    height: "18",
+    viewBox: "0 0 18 18"
+  }, /*#__PURE__*/React.createElement("path", {
+    fill: "#4285F4",
+    d: "M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"
+  }), /*#__PURE__*/React.createElement("path", {
+    fill: "#34A853",
+    d: "M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"
+  }), /*#__PURE__*/React.createElement("path", {
+    fill: "#FBBC05",
+    d: "M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"
+  }), /*#__PURE__*/React.createElement("path", {
+    fill: "#EA4335",
+    d: "M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"
+  })), tr("login_google")), /*#__PURE__*/React.createElement("button", {
+    onClick: async () => {
+      await window.__supa.auth.signInWithOAuth({
+        provider: "apple",
+        options: {
+          redirectTo: "https://conjuexpert.app"
+        }
+      });
+    },
+    style: {
+      width: "100%",
+      padding: "12px",
+      background: "#000",
+      border: "1px solid #000",
+      borderRadius: "12px",
+      fontSize: "14px",
+      fontWeight: "600",
+      cursor: "pointer",
+      color: "#fff",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "10px",
+      marginTop: "8px"
+    }
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "17",
+    height: "17",
+    viewBox: "0 0 24 24",
+    fill: "currentColor"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.453 2.208 3.09 3.792 3.029 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
+  })), tr("login_apple")), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "13px",
+      marginTop: "12px",
+      color: "var(--muted)"
+    }
+  }, mode === "login" ? tr("login_no_account") + " " : tr("login_has_account") + " ", /*#__PURE__*/React.createElement("span", {
+    onClick: () => {
+      setMode(mode === "login" ? "signup" : "login");
+      setErr("");
+    },
+    style: {
+      color: "var(--tc,#0a84ff)",
+      cursor: "pointer",
+      textDecoration: "underline"
+    }
+  }, mode === "login" ? tr("login_do_register") : tr("sign_in")))), !done && mode === "reset" && /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "13px",
+      marginTop: "12px",
+      color: "var(--muted)"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    onClick: () => {
+      setMode("login");
+      setErr("");
+    },
+    style: {
+      color: "var(--tc,#0a84ff)",
+      cursor: "pointer",
+      textDecoration: "underline"
+    }
+  }, tr("login_back"))), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "11px",
+      color: "var(--muted)",
+      marginTop: "8px",
+      opacity: 0.7
+    }
+  }, tr("login_data"))));
+}
+
+/* ---------- Monetization ---------- */
+const M_PRICE = 2.99;
+const A_PRICE_BONUS = 24.99;
+const A_PRICE_FULL = 29.99;
+const A_EQ = +(M_PRICE * 12).toFixed(2);
+const BONUS_MS = 7 * 24 * 60 * 60 * 1000;
+(function () {
+  if (!recall("kunju-first-open", null)) persist("kunju-first-open", Date.now());
+})();
+function isBonusActive() {
+  const first = recall("kunju-first-open", null);
+  if (!first) return false;
+  return Date.now() - first < BONUS_MS;
+}
+function getAPrice() {
+  return isBonusActive() ? A_PRICE_BONUS : A_PRICE_FULL;
+}
+function getASave() {
+  return +(A_EQ - getAPrice()).toFixed(2);
+}
+function getADisc() {
+  return Math.round(getASave() / A_EQ * 100);
+}
+function fEur(n) {
+  return String(n.toFixed(2)).replace(".", ",");
+}
+const RCTA = React.forwardRef(function RCTA({
+  label,
+  onClick
+}, ref) {
+  return /*#__PURE__*/React.createElement("button", {
+    className: "rcta",
+    onClick: onClick,
+    ref: ref
+  }, /*#__PURE__*/React.createElement("span", null, label));
+});
+function FeatureBox({
+  rows
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "feature-box"
+  }, rows.map(([label, meta], i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "feature-row"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fcheck"
+  }, "\u2713"), /*#__PURE__*/React.createElement("span", null, label), meta && /*#__PURE__*/React.createElement("span", {
+    className: "fmeta"
+  }, meta))));
+}
+function useCountdown(expiry) {
+  const [ms, setMs] = useState(() => expiry ? Math.max(0, expiry - Date.now()) : 0);
+  useEffect(() => {
+    if (!expiry) return;
+    const t = setInterval(() => setMs(Math.max(0, expiry - Date.now())), 1000);
+    return () => clearInterval(t);
+  }, [expiry]);
+  return ms;
+}
+function useBonusCountdown() {
+  const [ms, setMs] = useState(() => {
+    const f = recall("kunju-first-open", null);
+    return f ? Math.max(0, f + BONUS_MS - Date.now()) : 0;
+  });
+  useEffect(() => {
+    const t = setInterval(() => {
+      const f = recall("kunju-first-open", null);
+      setMs(f ? Math.max(0, f + BONUS_MS - Date.now()) : 0);
+    }, 1000);
+    return () => clearInterval(t);
+  }, []);
+  return ms;
+}
+function formatCountdown(ms) {
+  if (ms <= 0) return "";
+  const s = Math.floor(ms / 1000),
+    h = Math.floor(s / 3600),
+    m = Math.floor(s % 3600 / 60),
+    sec = s % 60;
+  if (h >= 24) {
+    const d = Math.floor(h / 24);
+    return `${d}T ${h % 24}h`;
+  }
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+}
+function PinSheet({
+  onClose
+}) {
+  const [view, setView] = useState("choose");
+  if (view === "ios") return /*#__PURE__*/React.createElement(IOSHelpModal, {
+    onClose: onClose
+  });
+  if (view === "android") return /*#__PURE__*/React.createElement(AndroidHelpModal, {
+    onClose: onClose
+  });
+  const RB = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#0a84ff"];
+  const barsSvg = `<svg viewBox="0 0 100 100" fill="none"><rect x="16" y="33" width="9" height="34" rx="3.5" fill="#ff3b5c"/><rect x="31" y="21" width="9" height="58" rx="3.5" fill="#ff8a18"/><rect x="46" y="10" width="9" height="80" rx="3.5" fill="#ffc400"/><rect x="61" y="26" width="9" height="48" rx="3.5" fill="#1fbf6b"/><rect x="76" y="36" width="9" height="28" rx="3.5" fill="#0a84ff"/></svg>`;
+  const plusSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v8M8 12h8"></path></svg>`;
+  const appleSvg = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.8-3-.8c-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7 2-1.1 2.8-2.2c.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.5-1-2.5-3.8zM14.1 4.9c.7-.8 1.1-1.9 1-3-1 0-2.1.6-2.8 1.4-.6.7-1.1 1.8-1 2.9 1.1.1 2.2-.5 2.8-1.3z"></path></svg>`;
+  const androidSvg = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.5l1.4-2.5c.1-.1 0-.3-.1-.3-.1-.1-.3 0-.3.1l-1.4 2.5C16 8.8 14.6 8.5 13 8.5s-3 .3-4.2.8L7.4 6.8c-.1-.1-.2-.2-.3-.1-.1 0-.2.2-.1.3l1.4 2.5C5.7 11 4 13.5 4 16.5h18c0-3-1.7-5.5-4.4-7zM8.8 13.4c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7zm6.4 0c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7z"></path></svg>`;
+  const h = React.createElement;
+  const gh = (s2, i) => h("span", {
+    key: i,
+    className: "pp-gh" + (s2 ? " s2" : "")
+  });
+  return h("div", {
+    className: "namegate",
+    onClick: onClose
+  }, h("div", {
+    className: "pinpop",
+    onClick: e => e.stopPropagation()
+  }, h("button", {
+    className: "pp-x",
+    onClick: onClose,
+    title: tr("ios_close")
+  }, "×"), h("div", {
+    className: "pp-head"
+  }, h("span", {
+    className: "pp-mark"
+  }, RB.map((c, i) => h("i", {
+    key: i,
+    style: {
+      background: c
+    }
+  }))), h("span", {
+    className: "pp-ey"
+  }, "Conju", h("b", null, "Expert"), " · ", tr("pin_tip"))), h("h2", {
+    className: "pp-title"
+  }, tr("pin_title")), h("p", {
+    className: "pp-sub"
+  }, tr("pin_sub")), h("div", {
+    className: "pp-stage"
+  }, h("div", {
+    className: "pp-phone"
+  }, h("span", {
+    className: "pp-island"
+  }), h("div", {
+    className: "pp-screen"
+  }, h("div", {
+    className: "pp-sbar"
+  }, h("span", null, "9:41"), h("span", null, "•••")), h("div", {
+    className: "pp-grid"
+  }, gh(false, 0), gh(true, 1), gh(false, 2), gh(true, 3), gh(true, 4), h("span", {
+    key: "slot",
+    className: "pp-slot"
+  }, h("span", {
+    className: "pp-slotbox",
+    dangerouslySetInnerHTML: {
+      __html: plusSvg
+    }
+  }), h("span", {
+    className: "pp-slotpulse"
+  }), h("span", {
+    className: "pp-ce",
+    dangerouslySetInnerHTML: {
+      __html: barsSvg
+    }
+  })), gh(false, 6), gh(true, 7), gh(false, 8), gh(true, 9), gh(false, 10), gh(true, 11)), h("div", {
+    className: "pp-dock"
+  }, gh(false, "d0"), gh(false, "d1"), gh(false, "d2"), gh(false, "d3"))))), h("p", {
+    className: "pp-bhint"
+  }, tr("pin_guide_for")), h("div", {
+    className: "pp-btns"
+  }, h("button", {
+    className: "pp-b",
+    onClick: () => setView("ios")
+  }, h("span", {
+    dangerouslySetInnerHTML: {
+      __html: appleSvg
+    }
+  }), "iPhone"), h("button", {
+    className: "pp-b",
+    onClick: () => setView("android")
+  }, h("span", {
+    dangerouslySetInnerHTML: {
+      __html: androidSvg
+    }
+  }), "Android")), h("button", {
+    className: "pp-skip",
+    onClick: onClose
+  }, tr("pin_later"))));
+}
+function InstallBanner({
+  onInstall,
+  onDismiss
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "install-bar",
+    role: "banner"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "install-bar-icon"
+  }, "\uD83D\uDCF1"), /*#__PURE__*/React.createElement("span", {
+    className: "install-bar-text"
+  }, "ConjuExpert auf deinen Homescreen!", /*#__PURE__*/React.createElement("small", null, "Kein App Store n\xF6tig.")), /*#__PURE__*/React.createElement("button", {
+    className: "install-bar-btn",
+    onClick: onInstall
+  }, "Installieren"), /*#__PURE__*/React.createElement("button", {
+    className: "install-bar-x",
+    onClick: onDismiss,
+    "aria-label": "Schlie\xDFen"
+  }, "\u2715"));
+}
+function IOSInstallBanner({
+  onDismiss
+}) {
+  const [help, setHelp] = useState(false);
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "install-bar",
+    role: "banner",
+    style: {
+      flexWrap: "wrap",
+      gap: "8px 10px"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "install-bar-icon"
+  }, "\uD83D\uDCF1"), /*#__PURE__*/React.createElement("span", {
+    className: "install-bar-text",
+    style: {
+      minWidth: "180px"
+    }
+  }, tr("ios_homescreen"), /*#__PURE__*/React.createElement("small", null, tr("ios_share"))), /*#__PURE__*/React.createElement("button", {
+    className: "install-bar-btn",
+    onClick: () => setHelp(true)
+  }, tr("ios_how")), /*#__PURE__*/React.createElement("button", {
+    className: "install-bar-x",
+    onClick: onDismiss,
+    "aria-label": tr("ios_close")
+  }, "\u2715")), help && /*#__PURE__*/React.createElement(IOSHelpModal, {
+    onClose: () => setHelp(false)
+  }));
+}
+
+/* Short step-by-step explainer for adding the app to the iOS home screen
+   (Safari can't trigger this from a tap — the user must use the Share menu). */
+function AndroidHelpModal({
+  onClose
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "namegate",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "namecard hintcard",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "namex",
+    onClick: onClose,
+    title: tr("ios_close")
+  }, "\xD7"), /*#__PURE__*/React.createElement("div", {
+    className: "tourhead-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tourbadge",
+    style: {
+      background: "#1a9b46"
+    }
+  }, "\U0001F916"), /*#__PURE__*/React.createElement("h2", {
+    className: "namehead",
+    style: {
+      margin: 0
+    }
+  }, tr("and_help_title"))), /*#__PURE__*/React.createElement("ul", {
+    className: "hintlist",
+    style: {
+      "--col": "#1a9b46"
+    }
+  }, [1, 2, 3].map((n, i) => /*#__PURE__*/React.createElement("li", {
+    key: n,
+    style: {
+      animationDelay: 0.06 + i * 0.09 + "s"
+    },
+    dangerouslySetInnerHTML: {
+      __html: tr("and_help_" + n)
+    }
+  }))), /*#__PURE__*/React.createElement("button", {
+    className: "namebtn",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "cta-rainbow"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "cta-label"
+  }, tr("got_it")))));
+}
+function IOSHelpModal({
+  onClose
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "namegate",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "namecard hintcard",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "namex",
+    onClick: onClose,
+    title: tr("ios_close")
+  }, "\xD7"), /*#__PURE__*/React.createElement("div", {
+    className: "tourhead-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tourbadge",
+    style: {
+      background: "#0a84ff"
+    }
+  }, "\uD83D\uDCF1"), /*#__PURE__*/React.createElement("h2", {
+    className: "namehead",
+    style: {
+      margin: 0
+    }
+  }, tr("ios_help_title"))), /*#__PURE__*/React.createElement("ul", {
+    className: "hintlist",
+    style: {
+      "--col": "#0a84ff"
+    }
+  }, [1, 2, 3].map((n, i) => /*#__PURE__*/React.createElement("li", {
+    key: n,
+    style: {
+      animationDelay: 0.06 + i * 0.09 + "s"
+    },
+    dangerouslySetInnerHTML: {
+      __html: tr("ios_help_" + n)
+    }
+  }))), /*#__PURE__*/React.createElement("button", {
+    className: "namebtn",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "cta-rainbow"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "cta-label"
+  }, tr("got_it")))));
+}
+function BonusBar({
+  onOpen,
+  trialExpiry,
+  bonusActive,
+  name
+}) {
+  const trialMs = useCountdown(trialExpiry);
+  const onTrial = trialExpiry && trialMs > 0;
+  const cd = formatCountdown(trialMs);
+  const label = onTrial ? "🔥 " + (name ? name + ", " : "") + tr("bonus_trial") : bonusActive ? "🎁 " + tr("bonus_welcome") : "🎯 " + tr("bonus_quiz");
+  return /*#__PURE__*/React.createElement("button", {
+    onClick: onOpen,
+    style: {
+      width: "100%",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      border: "none",
+      padding: "6px 12px",
+      fontSize: "12px",
+      fontWeight: 700,
+      cursor: "pointer",
+      color: "#fff",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "8px",
+      letterSpacing: "0.01em",
+      textShadow: "0 1px 3px rgba(0,0,0,.2)",
+      whiteSpace: "nowrap"
+    }
+  }, /*#__PURE__*/React.createElement("span", null, label), onTrial && cd && /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: "4px",
+      background: "rgba(0,0,0,.25)",
+      borderRadius: "8px",
+      padding: "2px 8px",
+      fontVariantNumeric: "tabular-nums",
+      letterSpacing: "0.05em",
+      fontSize: "11px"
+    }
+  }, "\u23F1 ", cd));
+}
+function ReviewPrompt({
+  name,
+  onRate,
+  onFeedback,
+  onClose
+}) {
+  useEffect(() => {
+    const onKey = e => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+  const hi = name ? name + ", " : "";
+  return /*#__PURE__*/React.createElement("div", {
+    onClick: onClose,
+    style: {
+      position: "fixed",
+      inset: 0,
+      zIndex: 9999,
+      background: "rgba(10,8,20,0.6)",
+      backdropFilter: "blur(7px)",
+      WebkitBackdropFilter: "blur(7px)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "20px",
+      animation: "fade 0.2s ease both"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    onClick: e => e.stopPropagation(),
+    style: {
+      position: "relative",
+      width: "100%",
+      maxWidth: "362px",
+      background: "var(--surface)",
+      borderRadius: "26px",
+      boxShadow: "0 34px 80px -22px rgba(0,0,0,0.6)",
+      overflow: "hidden",
+      animation: "skup 0.34s cubic-bezier(.22,1,.36,1) both"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "linear-gradient(135deg,#e71583,#ff7a18,#a557ff)",
+      padding: "22px 22px 18px",
+      textAlign: "center",
+      color: "#fff"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "inline-block",
+      fontSize: "10px",
+      fontWeight: 800,
+      letterSpacing: "0.09em",
+      textTransform: "uppercase",
+      background: "rgba(255,255,255,0.24)",
+      borderRadius: "999px",
+      padding: "4px 11px",
+      marginBottom: "11px"
+    }
+  }, "\u2B50 ", tr("rev_kicker")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "36px",
+      lineHeight: 1,
+      marginBottom: "7px"
+    }
+  }, "\uD83D\uDE80"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "var(--font-display)",
+      fontWeight: 800,
+      fontSize: "19px",
+      lineHeight: 1.2
+    }
+  }, hi, tr("rev_heading"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "18px 22px 20px",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "0 0 11px",
+      fontSize: "15px",
+      lineHeight: 1.5,
+      color: "var(--text)"
+    },
+    dangerouslySetInnerHTML: {
+      __html: tr("rev_body1", {
+        mins: "30"
+      })
+    }
+  }), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "0 0 18px",
+      fontSize: "13.8px",
+      lineHeight: 1.55,
+      color: "var(--muted)"
+    },
+    dangerouslySetInnerHTML: {
+      __html: tr("rev_body2")
+    }
+  }), /*#__PURE__*/React.createElement("button", {
+    onClick: onRate,
+    style: {
+      width: "100%",
+      border: "none",
+      borderRadius: "15px",
+      padding: "15px",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      color: "#fff",
+      fontFamily: "var(--font-display)",
+      fontWeight: 800,
+      fontSize: "16px",
+      cursor: "pointer",
+      boxShadow: "0 14px 32px -12px rgba(165,87,255,0.6)"
+    }
+  }, "\u2B50 ", tr("rev_rate")), /*#__PURE__*/React.createElement("button", {
+    onClick: onFeedback,
+    style: {
+      width: "100%",
+      marginTop: "10px",
+      border: "none",
+      background: "none",
+      color: "var(--lang-color,#0a84ff)",
+      fontFamily: "var(--font-display)",
+      fontWeight: 700,
+      fontSize: "13.5px",
+      cursor: "pointer"
+    }
+  }, "\uD83D\uDCA1 ", tr("rev_feedback")), /*#__PURE__*/React.createElement("button", {
+    onClick: onClose,
+    style: {
+      width: "100%",
+      marginTop: "3px",
+      border: "none",
+      background: "none",
+      color: "var(--muted)",
+      fontSize: "12.5px",
+      cursor: "pointer",
+      padding: "6px"
+    }
+  }, tr("rev_snooze")))));
+}
+function PaymentSuccess({
+  name,
+  onClose
+}) {
+  useEffect(() => {
+    const onKey = e => {
+      if (e.key === "Escape" || e.key === "Enter") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "paysuc-bg",
+    role: "dialog",
+    "aria-modal": "true",
+    "aria-labelledby": "paysuc-title"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "paysuc-modal"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "paysuc-glow",
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "paysuc-logo"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "brand-mark big",
+    style: {
+      display: "grid",
+      width: "72px",
+      height: "72px",
+      borderRadius: "22px",
+      padding: "11px",
+      margin: "0 auto",
+      boxShadow: "0 12px 40px -8px rgba(165,87,255,.45)"
+    }
+  }, RAINBOW.slice(0, 5).map((c, i) => /*#__PURE__*/React.createElement("i", {
+    key: i,
+    style: {
+      background: c
+    }
+  }))), /*#__PURE__*/React.createElement("span", {
+    className: "paysuc-check",
+    "aria-hidden": "true"
+  }, "\u2713")), /*#__PURE__*/React.createElement("h2", {
+    className: "paysuc-h1",
+    id: "paysuc-title"
+  }, name ? `Super${name ? ", " + name : ""}!` : "Super!"), /*#__PURE__*/React.createElement("p", {
+    className: "paysuc-sub"
+  }, tr("paysuc_sub")), /*#__PURE__*/React.createElement("div", {
+    className: "paysuc-perks"
+  }, [["🎯", tr("paysuc_feat1")], ["⭐", tr("paysuc_feat2")], ["♾️", tr("paysuc_feat3")]].map(([icon, text]) => /*#__PURE__*/React.createElement("div", {
+    key: icon,
+    className: "paysuc-perk"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "paysuc-perk-icon"
+  }, icon), /*#__PURE__*/React.createElement("span", null, text)))), /*#__PURE__*/React.createElement("button", {
+    className: "paysuc-cta",
+    onClick: onClose,
+    autoFocus: true
+  }, /*#__PURE__*/React.createElement("span", null, tr("lets_go")))));
+}
+function WelcomeOffer({
+  onSecure,
+  onTrial,
+  afterTrial
+}) {
+  const A_PRICE = A_PRICE_BONUS;
+  const A_SAVE = +(A_EQ - A_PRICE_BONUS).toFixed(2);
+  const A_DISC = Math.round(A_SAVE / A_EQ * 100);
+  const ctaRef = useRef(null);
+  const ms = useBonusCountdown();
+  const cd = formatCountdown(ms);
+  useEffect(() => {
+    ctaRef.current && ctaRef.current.focus();
+    const onKey = e => {
+      if (e.key === "Escape") onTrial();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "offer-bg",
+    role: "dialog",
+    "aria-modal": "true",
+    "aria-labelledby": "offer-title"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "offer-modal"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "offer-close",
+    onClick: onTrial,
+    "aria-label": tr("offer_close")
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "deal-badge",
+    "aria-hidden": "true"
+  }, tr("offer_badge", {
+    disc: A_DISC
+  })), cd && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "6px",
+      background: "linear-gradient(135deg,rgba(231,21,107,.12),rgba(165,87,255,.12))",
+      border: "1px solid rgba(165,87,255,.3)",
+      borderRadius: "12px",
+      padding: "8px 14px",
+      marginBottom: "4px"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "16px"
+    }
+  }, "\u23F1"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "var(--font-display)",
+      fontWeight: 700,
+      fontSize: "13px",
+      color: "var(--text)"
+    }
+  }, tr("offer_expires", {
+    t: ""
+  }), " ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#e71583",
+      fontVariantNumeric: "tabular-nums"
+    }
+  }, cd))), /*#__PURE__*/React.createElement("h2", {
+    className: "offer-h1",
+    id: "offer-title"
+  }, tr("paywall_h1")), /*#__PURE__*/React.createElement("p", {
+    className: "offer-sub"
+  }, tr("paywall_sub")), /*#__PURE__*/React.createElement("div", {
+    className: "offer-price",
+    "aria-label": tr("offer_price_label", {
+      price: fEur(A_PRICE),
+      eq: fEur(A_EQ)
+    })
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "offer-price-line"
+  }, /*#__PURE__*/React.createElement("b", null, tr("offer_instead")), " ", tr("offer_mo"), " ", fEur(M_PRICE), " \u20AC \xD7 12 = ", fEur(A_EQ), " \u20AC ", tr("offer_yr")), /*#__PURE__*/React.createElement("span", {
+    className: "offer-price-zahlst",
+    "aria-hidden": "true"
+  }, tr("offer_you_pay")), /*#__PURE__*/React.createElement("span", {
+    className: "offer-price-num",
+    "aria-hidden": "true"
+  }, fEur(A_PRICE), " \u20AC", /*#__PURE__*/React.createElement("span", {
+    className: "offer-price-per"
+  }, " ", tr("offer_yr"))), /*#__PURE__*/React.createElement("span", {
+    className: "offer-savings"
+  }, tr("offer_save", {
+    save: fEur(A_SAVE),
+    disc: A_DISC
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "100%"
+    }
+  }, /*#__PURE__*/React.createElement(RCTA, {
+    label: tr("offer_secure"),
+    onClick: onSecure,
+    ref: ctaRef
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "mghost",
+    onClick: onTrial
+  }, afterTrial ? tr("paywall_later") : tr("offer_trial"))));
+}
+function PaywallSheet({
+  onUpgrade,
+  onClose
+}) {
+  const ctaRef = useRef(null);
+  useEffect(() => {
+    ctaRef.current && ctaRef.current.focus();
+    const onKey = e => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "paywall-bg",
+    onClick: onClose,
+    role: "dialog",
+    "aria-modal": "true",
+    "aria-labelledby": "paywall-title"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "paywall-sheet",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "paywall-grab",
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "lock-tag",
+    "aria-hidden": "true"
+  }, tr("paywall_lock")), /*#__PURE__*/React.createElement("h2", {
+    className: "paywall-h1",
+    id: "paywall-title"
+  }, tr("paywall_h1")), /*#__PURE__*/React.createElement("p", {
+    className: "paywall-sub"
+  }, tr("paywall_sub")), /*#__PURE__*/React.createElement(FeatureBox, {
+    rows: [[tr("pw_feat1"), tr("pw_feat1v")], [tr("pw_feat2"), tr("pw_feat2v")], [tr("pw_feat3"), tr("pw_feat3v")]]
+  }), /*#__PURE__*/React.createElement(RCTA, {
+    label: tr("paywall_unlock"),
+    onClick: onUpgrade,
+    ref: ctaRef
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "mghost",
+    onClick: onClose
+  }, tr("paywall_later"))));
+}
+function PlanSelect({
+  plan,
+  setPlan,
+  onNext,
+  onClose,
+  onLogin,
+  onCouponLogin,
+  supaUser,
+  onPremium,
+  openCoupon
+}) {
+  const backRef = useRef(null);
+  const plans = ["monthly", "annual"];
+  const A_PRICE = getAPrice();
+  const A_SAVE = getASave();
+  const A_DISC = getADisc();
+  const bonusActive = isBonusActive();
+  const [showCode, setShowCode] = useState(openCoupon || false);
+  const [code, setCode] = useState("");
+  const [codeState, setCodeState] = useState(null);
+  const [errMsg, setErrMsg] = useState("");
+  const [redeemed, setRedeemed] = useState(false);
+  async function redeemCode() {
+    if (!supaUser?.id) {
+      setCodeState("err");
+      setErrMsg("Bitte zuerst anmelden");
+      return;
+    }
+    setCodeState("loading");
+    try {
+      const {
+        data,
+        error
+      } = await window.__supa.functions.invoke("redeem-code", {
+        body: {
+          code: code.trim(),
+          userId: supaUser.id
+        }
+      });
+      if (error) {
+        const body = await error.context?.json?.().catch(() => null);
+        setCodeState("err");
+        setErrMsg(body?.error || error.message || "Fehler");
+        return;
+      }
+      if (data?.error) {
+        setCodeState("err");
+        setErrMsg(data.error);
+        return;
+      }
+      onPremium();
+      setRedeemed(true);
+    } catch (e) {
+      setCodeState("err");
+      setErrMsg(e?.message || "Verbindungsfehler");
+    }
+  }
+  useEffect(() => {
+    backRef.current && backRef.current.focus();
+    const onKey = e => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+  function onCardKey(e, id) {
+    if (e.key === " " || e.key === "Enter") {
+      e.preventDefault();
+      setPlan(id);
+    }
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+      e.preventDefault();
+      setPlan(plans[(plans.indexOf(id) + 1) % plans.length]);
+    }
+    if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+      e.preventDefault();
+      setPlan(plans[(plans.indexOf(id) - 1 + plans.length) % plans.length]);
+    }
+  }
+  if (redeemed) return /*#__PURE__*/React.createElement("div", {
+    className: "plansel-bg",
+    role: "dialog",
+    "aria-modal": "true"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "plansel-sheet",
+    style: {
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "32px 24px",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: "20px",
+      maxWidth: "320px",
+      width: "100%"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "relative",
+      marginBottom: "4px"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "brand-mark big",
+    style: {
+      display: "grid",
+      margin: "0 auto",
+      width: "72px",
+      height: "72px",
+      borderRadius: "22px",
+      padding: "11px",
+      boxShadow: "0 12px 40px -8px rgba(165,87,255,.45)"
+    }
+  }, RAINBOW.slice(0, 5).map((c, i) => /*#__PURE__*/React.createElement("i", {
+    key: i,
+    style: {
+      background: c
+    }
+  }))), /*#__PURE__*/React.createElement("span", {
+    style: {
+      position: "absolute",
+      bottom: "-6px",
+      right: "-6px",
+      fontSize: "22px",
+      lineHeight: 1
+    }
+  }, "\u2705")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "26px",
+      fontWeight: 800,
+      letterSpacing: "-.03em",
+      color: "var(--text)",
+      marginBottom: "8px"
+    }
+  }, "Premium aktiviert!"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "14px",
+      color: "var(--muted)",
+      lineHeight: 1.5,
+      textWrap: "balance"
+    }
+  }, "Die App steht dir jetzt vollumf\xE4nglich zur Verf\xFCgung \u2014 ohne Einschr\xE4nkungen.")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "100%",
+      background: "var(--surface-2)",
+      borderRadius: "16px",
+      padding: "16px",
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px"
+    }
+  }, [["🎯", "Konjugations-Quiz — alle Sprachen"], ["⭐", "Favoriten & Vokabellisten"], ["🌍", "Spanisch, Französisch, Italienisch, Portugiesisch, Deutsch"], ["♾️", "Unlimitiert, ohne Werbung"]].map(([icon, text]) => /*#__PURE__*/React.createElement("div", {
+    key: text,
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: "10px",
+      fontSize: "13.5px",
+      color: "var(--text)"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: "28px",
+      height: "28px",
+      borderRadius: "8px",
+      background: "var(--surface)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "14px",
+      flexShrink: 0,
+      boxShadow: "var(--shadow-sm)"
+    }
+  }, icon), /*#__PURE__*/React.createElement("span", null, text)))), /*#__PURE__*/React.createElement("button", {
+    className: "paysuc-cta",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("span", null, "Jetzt loslegen \u2192")))));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "plansel-bg",
+    role: "dialog",
+    "aria-modal": "true",
+    "aria-labelledby": "plansel-title"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "plansel-sheet"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "plansel-bar"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "plansel-back",
+    ref: backRef,
+    onClick: onClose,
+    "aria-label": "Zur\xFCck"
+  }, "\u2039"), /*#__PURE__*/React.createElement("span", {
+    id: "plansel-title",
+    style: {
+      fontSize: "15px",
+      fontWeight: 700,
+      color: "var(--text)"
+    }
+  }, "Premium freischalten"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 44
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "plansel-hero"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "brand-mark big",
+    style: {
+      margin: "0 auto 14px",
+      display: "grid"
+    }
+  }, RAINBOW.slice(0, 5).map((c, i) => /*#__PURE__*/React.createElement("i", {
+    key: i,
+    style: {
+      background: c
+    }
+  }))), /*#__PURE__*/React.createElement("h2", {
+    className: "plansel-hero-h1"
+  }, tr("plan_hero_h1")), /*#__PURE__*/React.createElement("p", {
+    className: "plansel-hero-sub"
+  }, tr("plan_hero_sub"))), /*#__PURE__*/React.createElement("div", {
+    className: "plansel-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "plan-cards",
+    role: "radiogroup",
+    "aria-label": "Abonnement w\xE4hlen"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "plan-card annual" + (plan === "annual" ? " sel" : ""),
+    onClick: () => setPlan("annual"),
+    onKeyDown: e => onCardKey(e, "annual"),
+    role: "radio",
+    "aria-checked": plan === "annual",
+    "aria-label": tr("plan_annual") + ": " + fEur(A_PRICE) + " € " + tr("plan_per_yr"),
+    tabIndex: 0
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "plan-best-badge",
+    "aria-hidden": "true"
+  }, bonusActive ? tr("plan_bonus") : tr("plan_best")), /*#__PURE__*/React.createElement("div", {
+    className: "plan-radio" + (plan === "annual" ? " on" : ""),
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "plan-info"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "plan-name"
+  }, tr("plan_annual")), /*#__PURE__*/React.createElement("div", {
+    className: "plan-meta"
+  }, tr("plan_mo_label", {
+    price: fEur(+(A_PRICE / 12).toFixed(2)),
+    eq: fEur(A_EQ)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "savings-tag"
+  }, tr("plan_save", {
+    save: fEur(A_SAVE),
+    disc: A_DISC
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "plan-price",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("b", null, fEur(A_PRICE), " \u20AC"), /*#__PURE__*/React.createElement("small", null, " ", tr("plan_per_yr")))), /*#__PURE__*/React.createElement("div", {
+    className: "plan-card" + (plan === "monthly" ? " sel" : ""),
+    onClick: () => setPlan("monthly"),
+    onKeyDown: e => onCardKey(e, "monthly"),
+    role: "radio",
+    "aria-checked": plan === "monthly",
+    "aria-label": tr("plan_monthly") + ": " + fEur(M_PRICE) + " € " + tr("plan_per_mo"),
+    tabIndex: 0
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "plan-radio" + (plan === "monthly" ? " on" : ""),
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "plan-info"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "plan-name"
+  }, tr("plan_monthly")), /*#__PURE__*/React.createElement("div", {
+    className: "plan-meta"
+  }, tr("plan_flex", {
+    eq: fEur(A_EQ)
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "plan-price",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("b", null, fEur(M_PRICE), " \u20AC"), /*#__PURE__*/React.createElement("small", null, " ", tr("plan_per_mo"))))), /*#__PURE__*/React.createElement("div", {
+    className: "plansel-features"
+  }, [tr("plan_feat1"), tr("plan_feat2"), tr("plan_feat3"), tr("plan_feat4")].map(text => /*#__PURE__*/React.createElement("div", {
+    key: text,
+    className: "plansel-feature-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "plansel-fcheck"
+  }, "\u2713"), /*#__PURE__*/React.createElement("span", null, text)))), /*#__PURE__*/React.createElement("button", {
+    className: "plansel-cta",
+    onClick: onNext
+  }, tr("plan_cta")), !showCode && /*#__PURE__*/React.createElement("button", {
+    className: "plansel-coupon-cta",
+    onClick: () => setShowCode(true),
+    style: {
+      width: "100%",
+      marginTop: "10px",
+      padding: "13px",
+      borderRadius: "14px",
+      border: "1.6px dashed #c9a6ff",
+      background: "rgba(165,87,255,0.08)",
+      color: "var(--text)",
+      fontFamily: "var(--font-display)",
+      fontWeight: 700,
+      fontSize: "14.5px",
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "8px"
+    }
+  }, "\uD83C\uDF81 ", tr("plan_coupon")), /*#__PURE__*/React.createElement("div", {
+    className: "plansel-footer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "trust-badges"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "trust-badge"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "trust-icon"
+  }, "\uD83D\uDD12"), "Stripe"), /*#__PURE__*/React.createElement("span", {
+    className: "trust-sep"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "trust-badge"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "trust-icon"
+  }, "\u2713"), "SSL"), /*#__PURE__*/React.createElement("span", {
+    className: "trust-sep"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "trust-badge"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "trust-icon"
+  }, "\u21A9"), tr("plan_cancelable"))), /*#__PURE__*/React.createElement("div", {
+    className: "plansel-footer-links"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "plansel-footer-btn",
+    onClick: onLogin
+  }, tr("plan_have_account"), " ", /*#__PURE__*/React.createElement("b", null, tr("sign_in"))))), showCode && /*#__PURE__*/React.createElement("div", {
+    className: "coupon-box"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginBottom: "2px"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "13px",
+      fontWeight: 700,
+      color: "var(--text)"
+    }
+  }, tr("coupon_title")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setShowCode(false);
+      setCodeState(null);
+      setCode("");
+    },
+    style: {
+      background: "none",
+      border: "none",
+      cursor: "pointer",
+      fontSize: "18px",
+      color: "var(--muted)",
+      lineHeight: 1,
+      padding: "0 2px"
+    }
+  }, "\xD7")), !supaUser ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: "4px 0"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "13px",
+      color: "var(--muted)",
+      marginBottom: "10px"
+    }
+  }, tr("coupon_need_login")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setShowCode(false);
+      (onCouponLogin || onLogin)();
+    },
+    style: {
+      padding: "11px 24px",
+      borderRadius: "12px",
+      border: "none",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      color: "#fff",
+      fontWeight: 700,
+      fontSize: "14px",
+      cursor: "pointer"
+    }
+  }, tr("coupon_sign_in"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("input", {
+    value: code,
+    "aria-label": "Code",
+    onChange: e => setCode(e.target.value.toUpperCase()),
+    placeholder: tr("coupon_ph"),
+    autoFocus: true,
+    style: {
+      width: "100%",
+      padding: "12px 14px",
+      borderRadius: "12px",
+      border: "1.5px solid var(--border)",
+      fontSize: "16px",
+      fontFamily: "monospace",
+      fontWeight: 700,
+      background: "var(--surface)",
+      color: "var(--text)",
+      outline: "none",
+      letterSpacing: "0.08em",
+      textAlign: "center"
+    },
+    onKeyDown: e => e.key === "Enter" && redeemCode()
+  }), /*#__PURE__*/React.createElement("button", {
+    onClick: redeemCode,
+    disabled: !code.trim() || codeState === "loading",
+    style: {
+      width: "100%",
+      padding: "13px",
+      borderRadius: "12px",
+      border: "none",
+      background: !code.trim() || codeState === "loading" ? "var(--border)" : "linear-gradient(135deg,#e71583,#a557ff)",
+      color: !code.trim() || codeState === "loading" ? "var(--muted)" : "#fff",
+      fontWeight: 700,
+      fontSize: "15px",
+      cursor: !code.trim() || codeState === "loading" ? "default" : "pointer",
+      transition: "background .2s, color .2s"
+    }
+  }, codeState === "loading" ? tr("coupon_redeeming") : tr("coupon_redeem")), codeState === "err" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "13px",
+      color: "#ff453a",
+      textAlign: "center",
+      marginTop: "-4px"
+    }
+  }, errMsg))))));
+}
+
+/* ---------- GoalSuccess ---------- */
+function GoalSuccess({
+  name,
+  goal,
+  onClose,
+  onQuiz
+}) {
+  const perDay = goal?.perDay || 12;
+  const weeks = goal?.weeks || 2;
+  const verbs = goal?.verbs || null;
+  const words = goal?.words || null;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "streakmodal-bg",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "zt-board",
+    style: {
+      alignItems: "stretch",
+      gap: "16px",
+      padding: "28px 24px 24px"
+    },
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "zt-x",
+    onClick: onClose
+  }, "\xD7"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: "10px",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "56px",
+      height: "56px",
+      borderRadius: "18px",
+      background: "linear-gradient(135deg,#0a84ff,#a557ff)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "26px",
+      boxShadow: "0 10px 28px -10px #7a5cff"
+    }
+  }, "\u2713"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: "22px",
+      fontWeight: 900,
+      letterSpacing: "-0.03em",
+      margin: "0 0 6px",
+      lineHeight: 1.15
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      background: "linear-gradient(95deg,#0a84ff,#a557ff)",
+      WebkitBackgroundClip: "text",
+      backgroundClip: "text",
+      color: "transparent"
+    }
+  }, "Deine Ziele sind erfasst", name ? `, ${name}` : "", ".")), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "13.5px",
+      color: "var(--muted)",
+      margin: 0,
+      lineHeight: 1.6,
+      maxWidth: "280px"
+    }
+  }, "Viel Spa\xDF beim Quizzen \u2014 stell dir vor, wie du bald fl\xFCssig in deiner Lieblingssprache sprichst. \uD83C\uDF1F"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: "10px",
+      background: "var(--surface-2)",
+      borderRadius: "16px",
+      padding: "14px 16px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "20px",
+      fontWeight: 800,
+      color: "#6a3fd0"
+    }
+  }, perDay), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "var(--muted)",
+      fontWeight: 600,
+      marginTop: "2px"
+    }
+  }, "\xDCbungen/Tag")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "1px",
+      background: "var(--border)"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "20px",
+      fontWeight: 800,
+      color: "#0a84ff"
+    }
+  }, weeks), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "var(--muted)",
+      fontWeight: 600,
+      marginTop: "2px"
+    }
+  }, weeks === 1 ? "Woche" : "Wochen")), verbs && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "1px",
+      background: "var(--border)"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "20px",
+      fontWeight: 800,
+      color: "#34c759"
+    }
+  }, verbs), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "var(--muted)",
+      fontWeight: 600,
+      marginTop: "2px"
+    }
+  }, "Verben"))), words && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "1px",
+      background: "var(--border)"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "20px",
+      fontWeight: 800,
+      color: "#ff7a18"
+    }
+  }, words), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "var(--muted)",
+      fontWeight: 600,
+      marginTop: "2px"
+    }
+  }, "W\xF6rter")))), /*#__PURE__*/React.createElement("button", {
+    className: "gcta",
+    onClick: onQuiz
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gg"
+  }), /*#__PURE__*/React.createElement("span", null, "Los geht's \u2014 zum Quiz \u2192")), /*#__PURE__*/React.createElement("button", {
+    className: "zt-act",
+    onClick: onClose,
+    style: {
+      textAlign: "center"
+    }
+  }, "Sp\xE4ter starten")));
+}
+
+/* ---------- GoalCelebration ---------- */
+function GoalCelebration({
+  name,
+  daily,
+  goal,
+  onClose,
+  onNewGoal
+}) {
+  const planDay = goal?.startDate ? Math.min((goal.weeks || 2) * 7, Math.floor((Date.now() - new Date(goal.startDate)) / 86400000) + 1) : null;
+  const goalDays = goal ? (goal.weeks || 2) * 7 : null;
+  const planDone = planDay !== null && planDay >= goalDays;
+  const EMOJIS = ["🎉", "⭐", "🔥", "🏆", "💪", "🌟"];
+  const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "streakmodal-bg",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "zt-board",
+    style: {
+      textAlign: "center",
+      alignItems: "center",
+      gap: "14px",
+      padding: "32px 24px 24px"
+    },
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "56px",
+      lineHeight: 1,
+      animation: "flamepulse 1.4s ease-in-out infinite"
+    }
+  }, emoji), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: "26px",
+      fontWeight: 900,
+      letterSpacing: "-0.03em",
+      margin: "0 0 6px"
+    }
+  }, planDone ? "Lernziel erreicht!" : "Tagesziel geschafft!"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "14px",
+      color: "var(--muted)",
+      margin: 0,
+      lineHeight: 1.5
+    }
+  }, planDone ? `Du hast deinen ${goalDays}-Tage-Plan abgeschlossen${name ? `, ${name}` : ""}! Zeit für ein neues Ziel.` : `${name ? name + ", du" : "Du"} hast heute ${daily.goal} Übungen gemacht — stark!`)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: "12px",
+      width: "100%",
+      background: "var(--surface-2)",
+      borderRadius: "16px",
+      padding: "14px 16px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "22px",
+      fontWeight: 800,
+      color: "#6a3fd0"
+    }
+  }, daily.count), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "var(--muted)",
+      fontWeight: 600,
+      marginTop: "2px"
+    }
+  }, "\xDCbungen heute")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "1px",
+      background: "var(--border)"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "22px",
+      fontWeight: 800,
+      color: "#e8730a"
+    }
+  }, "\uD83D\uDD25 ", daily.streak), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "var(--muted)",
+      fontWeight: 600,
+      marginTop: "2px"
+    }
+  }, "Tage in Folge")), planDay && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "1px",
+      background: "var(--border)"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "22px",
+      fontWeight: 800,
+      color: "#34c759"
+    }
+  }, planDay, "/", goalDays), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "var(--muted)",
+      fontWeight: 600,
+      marginTop: "2px"
+    }
+  }, "Plantage")))), planDone ? /*#__PURE__*/React.createElement("button", {
+    className: "gcta",
+    style: {
+      width: "100%"
+    },
+    onClick: onNewGoal
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gg"
+  }), /*#__PURE__*/React.createElement("span", null, "Neues Ziel setzen \u2192")) : /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: "8px",
+      width: "100%"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "zt-act primary",
+    style: {
+      flex: 2
+    },
+    onClick: onClose
+  }, "Weiter \xFCben"), /*#__PURE__*/React.createElement("button", {
+    className: "zt-act",
+    style: {
+      flex: 1
+    },
+    onClick: () => {
+      onClose();
+      setTimeout(onNewGoal, 50);
+    }
+  }, "Ziel anpassen"))));
+}
+
+/* ---------- Zieltafel ---------- */
+function Zieltafel({
+  name,
+  lang,
+  daily,
+  goal,
+  onClose,
+  onAdjustGoal,
+  onQuiz
+}) {
+  const LNAME = {
+    de: "Deutsch",
+    es: "Spanisch",
+    en: "Englisch",
+    nl: "Niederländisch",
+    fr: "Französisch"
+  }[lang] || "der Sprache";
+  const HL = ["Richtig stark heute,", "Das läuft bei dir,", "Du wirst besser,", "Schön, dich zu sehen,", "Dranbleiben lohnt sich,", "Da tut sich was,", "Ich freu mich mit dir,", "Weiter so,"];
+  const hl = React.useRef(HL[Math.floor(Math.random() * HL.length)]).current;
+  const who = name || "du";
+  const shown = Math.min(daily.count, daily.goal);
+  const left = Math.max(0, daily.goal - daily.count);
+  const initMsg = `Wobei hakt's gerade${name ? `, ${name}` : ""}? Lass uns das im Dialog auf ${LNAME} üben.`;
+  const [messages, setMessages] = React.useState([{
+    role: "ai",
+    text: initMsg
+  }]);
+  const [input, setInput] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const scrollRef = React.useRef(null);
+  React.useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [messages]);
+  async function send(text) {
+    const msg = (text !== undefined ? text : input).trim();
+    if (!msg || loading) return;
+    setInput("");
+    const history = [...messages, {
+      role: "user",
+      text: msg
+    }];
+    setMessages(history);
+    setLoading(true);
+    try {
+      const sys = `Du bist eine freundliche Sprachlehrerin in ConjuExpert. Die Nutzerin/der Nutzer heißt ${name || "jemand"} und lernt ${LNAME}. Sei kurz (2–3 Sätze), warm und konkret. Antworte auf Deutsch, außer bei Übungen auf ${LNAME}.`;
+      const conv = history.map(m => m.role === "ai" ? `Lehrerin: ${m.text}` : `Lernende/r: ${m.text}`).join("\n");
+      const reply = await window.claude.complete(`${sys}\n\nGespräch:\n${conv}\nLehrerin:`);
+      setMessages(m => [...m, {
+        role: "ai",
+        text: reply.trim()
+      }]);
+    } catch (e) {
+      setMessages(m => [...m, {
+        role: "ai",
+        text: "Ups, da ist etwas schiefgelaufen. Versuch es nochmal!"
+      }]);
+    }
+    setLoading(false);
+  }
+  const goalDays = goal ? (goal.weeks || 2) * 7 : 14;
+  const goalVerbs = goal ? goal.verbs : null;
+  const goalWords = goal ? goal.words : null;
+  const minsLeft = Math.max(1, Math.round(left * 0.5));
+  const planDay = goal?.startDate ? Math.min(goalDays, Math.floor((Date.now() - new Date(goal.startDate)) / 86400000) + 1) : daily.streak;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "streakmodal-bg",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "zt-board",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "zt-x",
+    onClick: onClose
+  }, "\xD7"), /*#__PURE__*/React.createElement("div", {
+    className: "zt-eye"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "zt-k"
+  }, "Deine Zieltafel", goal ? /*#__PURE__*/React.createElement(React.Fragment, null, " \xB7 ", /*#__PURE__*/React.createElement("b", {
+    style: {
+      color: "var(--text)"
+    }
+  }, "Tag ", planDay, " / ", goalDays)) : ""), /*#__PURE__*/React.createElement("button", {
+    className: "zt-e",
+    onClick: onAdjustGoal
+  }, "\u270E Ziel anpa.")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+    className: "zt-greet"
+  }, hl, /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+    className: "zt-nm"
+  }, who, ".")), /*#__PURE__*/React.createElement("p", {
+    className: "zt-sub"
+  }, "Heute schon ", /*#__PURE__*/React.createElement("b", null, shown, " von ", daily.goal), " \xDCbungen", left > 0 ? ` — noch ${left} bis zu deinem Tagesziel.` : " — Tagesziel geschafft! 🎉")), /*#__PURE__*/React.createElement("div", {
+    className: "zt-prog"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "zt-pr"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "zt-a"
+  }, "Heute ", /*#__PURE__*/React.createElement("small", null, shown, " / ", daily.goal)), left > 0 && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "12px",
+      color: "var(--muted)",
+      fontWeight: 600
+    }
+  }, "\u2248 ", minsLeft, " Min \xFCbrig")), /*#__PURE__*/React.createElement("div", {
+    className: "zt-pbar"
+  }, /*#__PURE__*/React.createElement("i", {
+    style: {
+      width: Math.min(daily.count / daily.goal, 1) * 100 + "%"
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: "16px",
+      marginTop: "2px",
+      fontSize: "12.5px",
+      fontWeight: 700
+    }
+  }, goalVerbs && /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "var(--text)"
+    }
+  }, "Verben ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#6a3fd0"
+    }
+  }, goalVerbs)), goalWords && /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "var(--text)"
+    }
+  }, "W\xF6rter ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#6a3fd0"
+    }
+  }, goalWords)), daily.streak > 0 && /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#e8730a"
+    }
+  }, "\uD83D\uDD25 ", daily.streak, " Tage in Folge"))), /*#__PURE__*/React.createElement("div", {
+    className: "zt-ai",
+    ref: scrollRef,
+    style: {
+      flexDirection: "column",
+      gap: "12px",
+      maxHeight: "220px",
+      overflowY: "auto"
+    }
+  }, messages.map((m, i) => m.role === "ai" ? /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      display: "flex",
+      gap: "13px",
+      alignItems: "flex-start"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "zt-av"
+  }, (name || "J").slice(0, 1).toUpperCase()), /*#__PURE__*/React.createElement("div", {
+    className: "zt-body"
+  }, /*#__PURE__*/React.createElement("p", null, m.text), i === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "zt-chips"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "zt-chip",
+    onClick: () => send("Ja, im Dialog üben")
+  }, "Ja, im Dialog \xFCben"), /*#__PURE__*/React.createElement("span", {
+    className: "zt-chip",
+    onClick: onQuiz
+  }, "Lieber Quiz"), /*#__PURE__*/React.createElement("span", {
+    className: "zt-chip",
+    onClick: () => send("Ich erkläre dir, wobei ich Probleme habe.")
+  }, "Wo's hakt sagen")))) : /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      display: "flex",
+      justifyContent: "flex-end"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      background: "linear-gradient(95deg,#0a84ff,#a557ff)",
+      color: "#fff",
+      borderRadius: "14px 14px 0 14px",
+      padding: "9px 13px",
+      fontSize: "13.5px",
+      maxWidth: "80%",
+      lineHeight: 1.5
+    }
+  }, m.text))), loading && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: "13px"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "zt-av"
+  }, (name || "J").slice(0, 1).toUpperCase()), /*#__PURE__*/React.createElement("div", {
+    className: "zt-body"
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "var(--muted)",
+      fontStyle: "italic"
+    }
+  }, "\u2026")))), /*#__PURE__*/React.createElement("div", {
+    className: "zt-chatin"
+  }, /*#__PURE__*/React.createElement("input", {
+    value: input,
+    "aria-label": "Nachricht",
+    onChange: e => setInput(e.target.value),
+    onKeyDown: e => e.key === "Enter" && send(),
+    placeholder: "Antworte hier \u2026",
+    disabled: loading
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "zt-send",
+    onClick: () => send(),
+    disabled: loading || !input.trim()
+  }, "\u2191")), /*#__PURE__*/React.createElement("div", {
+    className: "zt-acts"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "zt-act primary",
+    onClick: onClose
+  }, "Weiter \xFCben"), /*#__PURE__*/React.createElement("button", {
+    className: "zt-act",
+    onClick: onQuiz
+  }, "Zum Quiz \u2192"))));
+}
+
+/* ---------- GoalFlow ---------- */
+function GoalFlow({
+  step,
+  setStep,
+  name,
+  lang,
+  onClose,
+  onCreate
+}) {
+  const eng = window.CONJ[lang] || window.CONJ["de"];
+  const tenseOpts = React.useMemo(() => {
+    const r = eng.conjugate(eng.samples[0]);
+    return r && r.tenses ? r.tenses.map(t => ({
+      id: t.id,
+      label: t.label
+    })) : [];
+  }, [lang]);
+  const allTenseIds = React.useMemo(() => tenseOpts.map(t => t.id), [tenseOpts]);
+  const [tenseSel, setTenseSel] = useState(() => allTenseIds.slice());
+  React.useEffect(() => {
+    setTenseSel(allTenseIds.slice());
+  }, [allTenseIds]);
+  const tenseCount = tenseSel.length || 1;
+  function toggleTense(id) {
+    setTenseSel(s => s.includes(id) ? s.filter(x => x !== id) : [...s, id]);
+  }
+  const [verbs, setVerbs] = useState(8);
+  const [words, setWords] = useState(20);
+  const [weeks, setWeeks] = useState(2);
+  const [timeMins, setTimeMins] = useState(10);
+  const WEEK_OPTS = [1, 2, 3, 4];
+  const days = weeks * 7;
+  const reps = verbs * tenseCount * 8 + words * 6;
+  const perDay = Math.max(6, Math.round(reps / days));
+  const minsEst = Math.max(3, Math.round(perDay * 0.5));
+  const tenseText = !tenseSel.length || tenseSel.length === allTenseIds.length ? "allen Zeitformen" : tenseSel.map(id => (tenseOpts.find(t => t.id === id) || {}).label).filter(Boolean).join(", ");
+
+  // Zeit-Pfad: from minutes → perDay → back-calc plan totals (same unit as Form: distinct items)
+  const timPerDay = Math.max(6, Math.round(timeMins * 2));
+  const timDays = 14; // fixed 2-week plan for time path
+  const timVerbs = Math.max(4, Math.round(timPerDay * timDays * 0.35 / (3 * 8)));
+  const timWords = Math.max(8, Math.round(timPerDay * timDays * 0.65 / 6));
+  function cycleWeeks() {
+    setWeeks(w => WEEK_OPTS[(WEEK_OPTS.indexOf(w) + 1) % WEEK_OPTS.length]);
+  }
+  const Wordmark = () => /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("span", {
+    className: "cw-c"
+  }, "Conju"), /*#__PURE__*/React.createElement("span", {
+    className: "cw-e"
+  }, "Expert"));
+  const Stepper = ({
+    value,
+    set,
+    min = 1
+  }) => /*#__PURE__*/React.createElement("span", {
+    className: "gstep"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => set(Math.max(min, value - 1))
+  }, "\u2013"), /*#__PURE__*/React.createElement("span", {
+    className: "gnum"
+  }, value), /*#__PURE__*/React.createElement("button", {
+    onClick: () => set(value + 1)
+  }, "+"));
+  const renderForm = prefilled => /*#__PURE__*/React.createElement(React.Fragment, null, prefilled && /*#__PURE__*/React.createElement("div", {
+    className: "gkibanner"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gkic"
+  }, "\u2728"), /*#__PURE__*/React.createElement("span", {
+    className: "gkit"
+  }, /*#__PURE__*/React.createElement("b", null, "Dein KI-Vorschlag \u2014 Level Mittel."), " Schon ausgef\xFCllt \u2014 pass alles frei an.")), /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-block"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-lbl"
+  }, "Zeitraum"), /*#__PURE__*/React.createElement("button", {
+    className: "tdbtn",
+    onClick: cycleWeeks
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tdbtn-sum"
+  }, weeks, " ", weeks === 1 ? "Woche" : "Wochen"), /*#__PURE__*/React.createElement("span", {
+    className: "tdbtn-caret"
+  }, "\u25BE"))), /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-block"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-lbl"
+  }, "Zeitform"), /*#__PURE__*/React.createElement(TenseDropdown, {
+    lang: lang,
+    tenses: tenseOpts,
+    isOn: id => tenseSel.includes(id),
+    onToggle: toggleTense,
+    onAll: () => setTenseSel(allTenseIds.slice()),
+    onNone: () => setTenseSel([]),
+    hideLbl: true
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-block"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-lbl"
+  }, "Verben konjugieren"), /*#__PURE__*/React.createElement("div", {
+    className: "gstepwrap"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gsl"
+  }, "Anzahl Verben", /*#__PURE__*/React.createElement("small", null, "je Zeitform")), /*#__PURE__*/React.createElement(Stepper, {
+    value: verbs,
+    set: setVerbs
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-block"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-lbl"
+  }, "Neue W\xF6rter"), /*#__PURE__*/React.createElement("div", {
+    className: "gstepwrap"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gsl"
+  }, "Wortschatz", /*#__PURE__*/React.createElement("small", null, "neu lernen")), /*#__PURE__*/React.createElement(Stepper, {
+    value: words,
+    set: setWords
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "gderive"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gbig"
+  }, perDay), /*#__PURE__*/React.createElement("span", {
+    className: "gdt"
+  }, /*#__PURE__*/React.createElement("b", null, "\xDCbungen pro Tag \xB7 \u2248 ", minsEst, " Min."), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("small", null, "Dein Tagesziel \u2014 passt sich automatisch an."))), /*#__PURE__*/React.createElement("div", {
+    className: "gsumlbl"
+  }, "Lernziel Zusammenfassung"), /*#__PURE__*/React.createElement("div", {
+    className: "gsummary"
+  }, "In ", /*#__PURE__*/React.createElement("span", {
+    className: "ghl"
+  }, weeks, " ", weeks === 1 ? "Woche" : "Wochen"), ": ", /*#__PURE__*/React.createElement("span", {
+    className: "ghl"
+  }, verbs, " Verben"), " je Form ", /*#__PURE__*/React.createElement("span", {
+    className: "ghl"
+  }, tenseText), ", dazu ", /*#__PURE__*/React.createElement("span", {
+    className: "ghl"
+  }, words, " neue W\xF6rter"), "."), /*#__PURE__*/React.createElement("button", {
+    className: "gcta",
+    onClick: () => onCreate({
+      weeks,
+      verbs,
+      words,
+      tenseCount,
+      perDay
+    })
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gg"
+  }), /*#__PURE__*/React.createElement("span", null, "Erstelle einen Lernplan \xB7 ", perDay, " \xDCbungen/Tag")));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "goal-bg",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "goal-sheet",
+    style: {
+      "--lc": "#7a5cff",
+      "--lang-color": "#7a5cff",
+      "--cc": "#a557ff"
+    },
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "goal-x",
+    onClick: onClose
+  }, "\xD7"), step === "choose" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h2", {
+    className: "goal-h1"
+  }, "Lege dein Lernziel fest, um ", /*#__PURE__*/React.createElement(Wordmark, null), " zu werden:"), /*#__PURE__*/React.createElement("div", {
+    className: "qfilter-lbl"
+  }, "Wie m\xF6chtest du starten?"), /*#__PURE__*/React.createElement("div", {
+    className: "gchoice sug",
+    onClick: () => setStep("suggest")
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gci"
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.7",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M12 3.2l1.7 4.1 4.1 1.7-4.1 1.7L12 14.8l-1.7-4.1L6.2 9l4.1-1.7z"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M18.5 14.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"
+  }))), /*#__PURE__*/React.createElement("span", {
+    className: "gct"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gh"
+  }, "Schlag mir was vor ", /*#__PURE__*/React.createElement("span", {
+    className: "glvl"
+  }, "LEVEL: MITTEL")), /*#__PURE__*/React.createElement("span", {
+    className: "gs"
+  }, "Wir bauen dir in Sekunden einen passenden Plan \u2014 abgestimmt auf dein Niveau.")), /*#__PURE__*/React.createElement("span", {
+    className: "ggo"
+  }, "\u2192")), /*#__PURE__*/React.createElement("div", {
+    className: "gchoice ind",
+    onClick: () => setStep("individual")
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gci"
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.7",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  }, /*#__PURE__*/React.createElement("line", {
+    x1: "4",
+    y1: "7.5",
+    x2: "20",
+    y2: "7.5"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "4",
+    y1: "16.5",
+    x2: "20",
+    y2: "16.5"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "9",
+    cy: "7.5",
+    r: "2.6",
+    fill: "var(--surface)"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "15",
+    cy: "16.5",
+    r: "2.6",
+    fill: "var(--surface)"
+  }))), /*#__PURE__*/React.createElement("span", {
+    className: "gct"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gh"
+  }, "Individueller Lernplan"), /*#__PURE__*/React.createElement("span", {
+    className: "gs"
+  }, "Zeitraum, Zeitformen, Verben & W\xF6rter selbst festlegen.")), /*#__PURE__*/React.createElement("span", {
+    className: "ggo"
+  }, "\u2192")), /*#__PURE__*/React.createElement("div", {
+    className: "gorsep"
+  }, "oder nach Zeit"), /*#__PURE__*/React.createElement("div", {
+    className: "gchoice tim",
+    onClick: () => setStep("time")
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gci"
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.7",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  }, /*#__PURE__*/React.createElement("circle", {
+    cx: "12",
+    cy: "12.5",
+    r: "8"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M12 8v4.5l3 1.8"
+  }))), /*#__PURE__*/React.createElement("span", {
+    className: "gct"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gh"
+  }, "Ich gebe meine Zeit vor"), /*#__PURE__*/React.createElement("span", {
+    className: "gs"
+  }, "\u201EIch m\xF6chte \u2026 Minuten am Tag \xFCben\" \u2014 wir rechnen das Ziel aus.")), /*#__PURE__*/React.createElement("span", {
+    className: "ggo"
+  }, "\u2192"))), step === "suggest" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "gback"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "gbackbtn",
+    onClick: () => setStep("choose")
+  }, "\u2039"), /*#__PURE__*/React.createElement("span", {
+    className: "gbt"
+  }, "Schlag mir was vor \xB7 zur\xFCck")), renderForm(true)), step === "individual" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "gback"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "gbackbtn",
+    onClick: () => setStep("choose")
+  }, "\u2039"), /*#__PURE__*/React.createElement("span", {
+    className: "gbt"
+  }, "Individueller Lernplan \xB7 zur\xFCck")), renderForm(false)), step === "time" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "gback"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "gbackbtn",
+    onClick: () => setStep("choose")
+  }, "\u2039"), /*#__PURE__*/React.createElement("span", {
+    className: "gbt"
+  }, "Nach Zeit \xB7 zur\xFCck")), /*#__PURE__*/React.createElement("div", {
+    className: "gkibanner"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gkic"
+  }, "\u23F1"), /*#__PURE__*/React.createElement("span", {
+    className: "gkit"
+  }, /*#__PURE__*/React.createElement("b", null, "Wie viele Minuten m\xF6chtest du t\xE4glich \xFCben?"), " Wir berechnen dein optimales Tagesziel automatisch.")), /*#__PURE__*/React.createElement("div", {
+    className: "gmins-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gml"
+  }, "Minuten pro Tag", /*#__PURE__*/React.createElement("small", null, "mindestens 3 Min. empfohlen")), /*#__PURE__*/React.createElement("div", {
+    className: "gmins-btns"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setTimeMins(m => Math.max(3, m - 1))
+  }, "\u2013"), /*#__PURE__*/React.createElement("span", {
+    className: "gmval"
+  }, timeMins), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setTimeMins(m => m + 1)
+  }, "+"))), /*#__PURE__*/React.createElement("div", {
+    className: "gderive"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gbig"
+  }, timPerDay), /*#__PURE__*/React.createElement("span", {
+    className: "gdt"
+  }, /*#__PURE__*/React.createElement("b", null, "\xDCbungen pro Tag \xB7 \u2248 ", timeMins, " Min."), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("small", null, "~", timVerbs, " Verben & ", timWords, " W\xF6rter t\xE4glich."))), /*#__PURE__*/React.createElement("div", {
+    className: "gsumlbl"
+  }, "Lernziel Zusammenfassung"), /*#__PURE__*/React.createElement("div", {
+    className: "gsummary"
+  }, "T\xE4glich ", /*#__PURE__*/React.createElement("span", {
+    className: "ghl"
+  }, timeMins, " Minuten"), " = ", /*#__PURE__*/React.createElement("span", {
+    className: "ghl"
+  }, timPerDay, " \xDCbungen/Tag"), ". In ", /*#__PURE__*/React.createElement("span", {
+    className: "ghl"
+  }, "2 Wochen"), " lernst du ca. ", /*#__PURE__*/React.createElement("span", {
+    className: "ghl"
+  }, timVerbs, " Verben"), " und ", /*#__PURE__*/React.createElement("span", {
+    className: "ghl"
+  }, timWords, " neue W\xF6rter"), "."), /*#__PURE__*/React.createElement("button", {
+    className: "gcta",
+    onClick: () => onCreate({
+      weeks: 2,
+      verbs: timVerbs,
+      words: timWords,
+      tenseCount: 3,
+      perDay: timPerDay
+    })
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gg"
+  }), /*#__PURE__*/React.createElement("span", null, "Lernplan erstellen \xB7 ", timPerDay, " \xDCbungen/Tag")))));
+}
+function Toast({
+  msg,
+  onDone
+}) {
+  useEffect(() => {
+    const t = setTimeout(onDone, 2800);
+    return () => clearTimeout(t);
+  }, []);
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "fixed",
+      bottom: "88px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      background: "rgba(20,21,26,0.93)",
+      color: "#fff",
+      borderRadius: "14px",
+      padding: "11px 20px",
+      fontSize: "14px",
+      fontWeight: 500,
+      lineHeight: 1.4,
+      zIndex: 9999,
+      maxWidth: "calc(100vw - 40px)",
+      textAlign: "center",
+      boxShadow: "0 8px 28px rgba(0,0,0,0.35)",
+      whiteSpace: "pre-wrap",
+      animation: "fade 0.18s ease",
+      pointerEvents: "none"
+    }
+  }, msg);
+}
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [toastMsg, setToastMsg] = useState(null);
+  const [lang, setLang] = useState(() => recall("kunju-lang", "de"));
+  const [verb, setVerb] = useState("");
+  const [result, setResult] = useState(null);
+  const [deconj, setDeconj] = useState(null);
+  const [activeInf, setActiveInf] = useState(null);
+  const [tab, setTab] = useState("conjugate");
+  const [lastVerb, setLastVerb] = useState("");
+  const [favs, setFavs] = useState(() => recall("kunju-favs", []));
+  const [supaUser, setSupaUser] = useState(() => window.__supaUser || null);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showDeletedMsg, setShowDeletedMsg] = useState(false);
+  const [deletedWasPremium, setDeletedWasPremium] = useState(null); // { until: ISO string | null }
+  const [history, setHistory] = useState(() => recall("kunju-history", []));
+  const [name, setName] = useState(() => recall("kunju-name", ""));
+  const [showOnboard, setShowOnboard] = useState(() => recall("kunju-name", null) === null);
+  const [showTour, setShowTour] = useState(() => recall("kunju-name", null) !== null && recall("kunju-tour", null) === null);
+  const [native, setNative] = useState(() => recall("kunju-native", detectNative()));
+  const [skill, setSkill] = useState(() => recall("kunju-skill", "beginner"));
+  function setNat(n) {
+    setNative(n);
+    persist("kunju-native", n);
+  }
+  function setSkl(s) {
+    setSkill(s);
+    persist("kunju-skill", s);
+  }
+  function commitName(n) {
+    setName(n);
+    persist("kunju-name", n);
+    setShowOnboard(false);
+    if (recall("kunju-tour", null) === null) setShowTour(true);
+  }
+  function finishTour() {
+    persist("kunju-tour", true);
+    setShowTour(false);
+    startTrial();
+  }
+  // Contextual first-open hints (learn tab · each quiz mode · each Saved area).
+  const [featureHint, setFeatureHint] = useState(null);
+  const [pendingHint, setPendingHint] = useState(null);
+  function requestHint(kind) {
+    if (kind && !recall("kunju-hint-" + kind, false)) setPendingHint(kind);
+  }
+  function closeFeatureHint() {
+    if (featureHint) persist("kunju-hint-" + featureHint, true);
+    setFeatureHint(null);
+  }
+  UILANG = uiFromNative(native);
+  useEffect(() => {
+    window.__toast = msg => setToastMsg(msg);
+    return () => {
+      window.__toast = null;
+    };
+  }, []);
+
+  // --- Monetization ---
+  const [isPremium, setIsPremium] = useState(() => recall("kunju-premium", false));
+  const [premiumUntil, setPremiumUntil] = useState(() => recall("kunju-premium-until", null));
+  const [showPaySuccess, setShowPaySuccess] = useState(false);
+  const [showReviewPrompt, setShowReviewPrompt] = useState(false);
+
+  // After ~30 min of total active use, ask once for a rating (gentle snooze on "later")
+  useEffect(() => {
+    if (recall("kunju-review-done", false)) return;
+    const TARGET = 1800; // 30 minutes
+    let secs = recall("kunju-active-secs", 0);
+    const id = setInterval(() => {
+      if (document.visibilityState && document.visibilityState !== "visible") return;
+      secs += 15;
+      persist("kunju-active-secs", secs);
+      if (secs >= TARGET && recall("kunju-name", "")) {
+        setShowReviewPrompt(true);
+        clearInterval(id);
+      }
+    }, 15000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Check premium from Supabase on load + handle Stripe return
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("payment") === "success") {
+      // Optimistic unlock: Stripe only sends users here after successful payment.
+      // The webhook may still be in flight, so we trust the success URL immediately.
+      persist("kunju-premium", true);
+      setIsPremium(true);
+      setShowPaySuccess(true);
+      window.history.replaceState({}, "", "/");
+      // Background verify: sync DB status once webhook has likely landed
+      if (window.__supa) {
+        setTimeout(() => {
+          window.__supa.auth.getUser().then(({
+            data
+          }) => {
+            if (!data?.user) return;
+            window.__supa.from("profiles").select("is_premium").eq("id", data.user.id).single().then(({
+              data: profile
+            }) => {
+              if (profile?.is_premium) persist("kunju-premium", true);
+            });
+          });
+        }, 4000);
+      }
+    }
+    if (params.get("payment") === "cancel") {
+      setShowPlanSelect(true);
+      window.history.replaceState({}, "", "/");
+    }
+  }, []);
+  const [trialExpiry, setTrialExpiry] = useState(() => {
+    const d = recall("kunju-trial", null);
+    return d ? d.exp : null;
+  });
+  function hasPaidAccess() {
+    if (trialExpiry && Date.now() < trialExpiry) return true;
+    if (authResolved && !supaUser) return false;
+    const premExpired = isPremium && premiumUntil && new Date(premiumUntil) < new Date();
+    return !premExpired && isPremium;
+  }
+  const [authResolved, setAuthResolved] = useState(false);
+  const paywallOnExpiryShown = useRef(false);
+  const [showOffer, setShowOffer] = useState(false);
+  const [bonusActive] = useState(() => isBonusActive());
+  const deferredInstall = useRef(null);
+  const [showInstall, setShowInstall] = useState(false);
+  const [showIOSInstall, setShowIOSInstall] = useState(false);
+  const [showPin, setShowPin] = useState(false);
+  useEffect(() => {
+    if (recall("kunju-install-dismissed", false)) return;
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isStandalone = window.navigator.standalone === true || !!(window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+    if (isStandalone) return;
+    // Deferred Prompt evtl. schon vor React-Mount gefeuert
+    if (window.__deferredInstallPrompt) {
+      deferredInstall.current = window.__deferredInstallPrompt;
+      window.__deferredInstallPrompt = null;
+    }
+    const handler = e => {
+      e.preventDefault();
+      deferredInstall.current = e;
+      setShowInstall(true);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    const installed = () => {
+      setShowInstall(false);
+      persist("kunju-install-dismissed", true);
+    };
+    window.addEventListener("appinstalled", installed);
+    // Bei JEDEM Start anbieten, bis aktiv weggeklickt: iOS-Safari → Hinweis, sonst Banner.
+    if (isIOS && isSafari) setShowIOSInstall(true);else setShowInstall(true);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handler);
+      window.removeEventListener("appinstalled", installed);
+    };
+  }, []);
+  async function handleInstall() {
+    if (!deferredInstall.current) {
+      dismissInstall();
+      return;
+    }
+    deferredInstall.current.prompt();
+    const {
+      outcome
+    } = await deferredInstall.current.userChoice;
+    deferredInstall.current = null;
+    setShowInstall(false);
+    if (outcome === "accepted") persist("kunju-install-dismissed", true);
+  }
+  function dismissInstall() {
+    persist("kunju-install-dismissed", true);
+    setShowInstall(false);
+  }
+  function dismissIOSInstall() {
+    persist("kunju-install-dismissed", true);
+    setShowIOSInstall(false);
+  }
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [showPlanSelect, setShowPlanSelect] = useState(false);
+  const [pendingCoupon, setPendingCoupon] = useState(false);
+  const [pendingPayment, setPendingPayment] = useState(false);
+  const [selPlan, setSelPlan] = useState("annual");
+  function openPlanSelect() {
+    if (!supaUser) {
+      setPendingPayment(true);
+      setShowLogin(true);
+      return;
+    }
+    setShowPlanSelect(true);
+  }
+  async function goToStripe() {
+    if (!supaUser) {
+      setPendingPayment(true);
+      setShowPlanSelect(false);
+      setShowLogin(true);
+      return;
+    }
+    try {
+      const {
+        data,
+        error
+      } = await window.__supa.functions.invoke("create-checkout-session", {
+        body: {
+          plan: selPlan === "annual" && isBonusActive() ? "annual_bonus" : selPlan,
+          userId: supaUser.id,
+          email: supaUser.email
+        }
+      });
+      const url = data?.url;
+      if (error) throw new Error(error);
+      window.location.href = url;
+    } catch (e) {
+      setToastMsg(tr("pay_error"));
+    }
+  }
+  function startTrial() {
+    const exp = Date.now() + 24 * 60 * 60 * 1000;
+    persist("kunju-trial", {
+      exp
+    });
+    persist("kunju-offer-seen", Date.now());
+    setTrialExpiry(exp);
+    setShowOffer(false);
+  }
+  function handleTabSwitch(id) {
+    if ((id === "quiz" || id === "saved") && !hasPaidAccess()) {
+      setShowPaywall(true);
+      return;
+    }
+    setTab(id);
+  }
+  // Jump from a Conjugate card straight into the Learn tab at that tense.
+  const [learnJump, setLearnJump] = useState(null);
+  function goToLearnTense(tenseId) {
+    setLearnJump(tenseId);
+    setTab("grammar");
+  }
+
+  // After auth resolves: enforce tab access — kick users who got in before auth was ready
+  useEffect(() => {
+    if (!authResolved) return;
+    if (tab !== "quiz" && tab !== "saved") return;
+    const onTrial = trialExpiry && Date.now() < trialExpiry;
+    const premExpired = isPremium && premiumUntil && new Date(premiumUntil) < new Date();
+    const hasAccess = onTrial || supaUser && !premExpired && isPremium;
+    if (!hasAccess) {
+      setTab("conjugate");
+      setShowPaywall(true);
+    }
+  }, [authResolved, supaUser, isPremium, premiumUntil, trialExpiry]);
+
+  // Learn is a whole-tab hint; quiz modes & Saved areas request theirs from
+  // inside their views (see requestHint passed down below).
+  useEffect(() => {
+    if (tab === "grammar") requestHint("learn");
+  }, [tab]);
+
+  // Show a requested hint shortly after, unless a bigger modal is up. Once each.
+  useEffect(() => {
+    if (!pendingHint) return;
+    if (recall("kunju-hint-" + pendingHint, false)) {
+      setPendingHint(null);
+      return;
+    }
+    if (showOnboard || showTour || showPaywall || featureHint) return;
+    const id = setTimeout(() => {
+      setFeatureHint(pendingHint);
+      setPendingHint(null);
+    }, 1600);
+    return () => clearTimeout(id);
+  }, [pendingHint, showOnboard, showTour, showPaywall, featureHint]);
+
+  // Auto-detect expired premium and show paywall once per session
+  useEffect(() => {
+    if (paywallOnExpiryShown.current) return;
+    const expired = isPremium && premiumUntil && new Date(premiumUntil) < new Date();
+    if (!expired) return;
+    paywallOnExpiryShown.current = true;
+    persist("kunju-premium", false);
+    setIsPremium(false);
+    setShowPaywall(true);
+  }, [isPremium, premiumUntil]);
+
+  // After the 24h trial ends, show the welcome-bonus offer (24,99 €/yr) once,
+  // as long as we're still inside the 7-day bonus window and not yet premium.
+  const welcomeOfferShown = useRef(false);
+  useEffect(() => {
+    if (welcomeOfferShown.current) return;
+    if (showOnboard || showTour || showPaywall) return;
+    if (isPremium) return;
+    if (!bonusActive) return; // 7-day window over
+    if (!trialExpiry || Date.now() < trialExpiry) return; // still inside the 24h trial
+    if (recall("kunju-welcomeoffer-seen", false)) return; // show once
+    welcomeOfferShown.current = true;
+    setShowOffer(true);
+  }, [showOnboard, showTour, showPaywall, isPremium, bonusActive, trialExpiry]);
+
+  // Auth: listen for Supabase login/logout
+  useEffect(() => {
+    function onAuth(e) {
+      setAuthResolved(true);
+      const user = e.detail;
+      setSupaUser(user);
+      if (!user) {
+        // Logged out or no session — premium requires an account, reset stale state
+        if (recall("kunju-premium", false)) {
+          persist("kunju-premium", false);
+          persist("kunju-premium-until", null);
+          setIsPremium(false);
+          setPremiumUntil(null);
+        }
+        return;
+      }
+      if (user && window.__supa) {
+        // Load cloud favorites + premium status on login
+        window.__supa.from("favorites").select("lang,verb").eq("user_id", user.id).then(({
+          data
+        }) => {
+          if (data && data.length) {
+            setFavs(prev => {
+              const merged = [...prev];
+              data.forEach(f => {
+                if (!merged.some(x => x.lang === f.lang && x.verb === f.verb)) merged.push(f);
+              });
+              persist("kunju-favs", merged);
+              return merged;
+            });
+          }
+        });
+        window.__supa.from("profiles").select("is_premium,premium_until").eq("id", user.id).single().then(({
+          data: p
+        }) => {
+          if (p?.is_premium) {
+            persist("kunju-premium", true);
+            setIsPremium(true);
+          } else if (recall("kunju-premium", false)) {
+            // DB says not premium but localStorage says yes → expired/cancelled
+            persist("kunju-premium", false);
+            setIsPremium(false);
+            if (!paywallOnExpiryShown.current) {
+              paywallOnExpiryShown.current = true;
+              setShowPaywall(true);
+            }
+          }
+          if (p?.premium_until) {
+            persist("kunju-premium-until", p.premium_until);
+            setPremiumUntil(p.premium_until);
+          }
+        });
+        // Return to coupon box or stripe after login if user came from there
+        if (pendingCoupon) {
+          setShowLogin(false);
+          setShowPlanSelect(true);
+        } else if (pendingPayment) {
+          setShowLogin(false);
+          setPendingPayment(false);
+          const plan = selPlan === "annual" && isBonusActive() ? "annual_bonus" : selPlan;
+          window.__supa.functions.invoke("create-checkout-session", {
+            body: {
+              plan,
+              userId: user.id,
+              email: user.email
+            }
+          }).then(({
+            data,
+            error
+          }) => {
+            if (error || !data?.url) {
+              setToastMsg(tr("pay_error"));
+              return;
+            }
+            window.location.href = data.url;
+          }).catch(() => setToastMsg(tr("pay_error")));
+        }
+      }
+    }
+    document.addEventListener("supa-auth", onAuth);
+    return () => document.removeEventListener("supa-auth", onAuth);
+  }, [pendingCoupon, pendingPayment]);
+
+  // Clear pendingCoupon / pendingPayment after PlanSelect has mounted
+  useEffect(() => {
+    if (showPlanSelect && pendingCoupon) setPendingCoupon(false);
+    if (showPlanSelect && pendingPayment) setPendingPayment(false);
+  }, [showPlanSelect, pendingCoupon, pendingPayment]);
+
+  // Sponsor slot: 1×/session, re-show only after >=4 more conjugations, daily cap.
+  const adSession = useRef({
+    shown: 0,
+    dismissed: false,
+    conjSince: 999
+  });
+  const [adVisible, setAdVisible] = useState(false);
+  const [translating, setTranslating] = useState(false);
+  const [sysDark, setSysDark] = useState(() => !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches));
+  const [daily, setDaily] = useState(() => readDaily());
+  const [showGoalCelebration, setShowGoalCelebration] = useState(false);
+  const [showGoalSuccess, setShowGoalSuccess] = useState(false);
+  const [showStreak, setShowStreak] = useState(false);
+  const [showGoal, setShowGoal] = useState(false);
+  const [goalStep, setGoalStep] = useState("choose");
+  const [goalSet, setGoalSet] = useState(() => recall("kunju-goal", false));
+  const [goal, setGoal] = useState(() => recall("kunju-goal-data", null));
+  const [skHint, setSkHint] = useState(() => !recall("kunju-skhint", false));
+  function closeSkHint() {
+    setSkHint(false);
+    persist("kunju-skhint", true);
+  }
+  const [offline, setOffline] = useState(() => !navigator.onLine);
+  useEffect(() => {
+    const on = () => setOffline(false),
+      off = () => setOffline(true);
+    window.addEventListener("online", on);
+    window.addEventListener("offline", off);
+    return () => {
+      window.removeEventListener("online", on);
+      window.removeEventListener("offline", off);
+    };
+  }, []);
+  function onActivity() {
+    const prev = daily.count;
+    const next = bumpDaily();
+    setDaily(next);
+    if (prev < next.goal && next.count >= next.goal) {
+      setShowGoalCelebration(true);
+    }
+  }
+  const adTimer = useRef(null);
+  function maybeShowAd() {
+    const s = adSession.current;
+    if (s.dismissed) return;
+    if (s.shown >= 1 && s.conjSince < 4) return;
+    const today = new Date().toDateString();
+    const day = recall("kunju-adday", {
+      d: "",
+      n: 0
+    });
+    const todayN = day.d === today ? day.n : 0;
+    if (todayN >= 8) return;
+    s.shown += 1;
+    s.conjSince = 0;
+    persist("kunju-adday", {
+      d: today,
+      n: todayN + 1
+    });
+    if (adTimer.current) clearTimeout(adTimer.current);
+    adTimer.current = setTimeout(() => setAdVisible(true), 400);
+  }
+  function onAdClick() {
+    const n = recall("kunju-adclicks", 0) + 1;
+    persist("kunju-adclicks", n);
+  }
+  function onAdDismiss() {
+    adSession.current.dismissed = true;
+    setAdVisible(false);
+  }
+  const engine = window.CONJ[lang];
+  const pendingRef = useRef(null);
+  function addHistory(lg, vb) {
+    setHistory(h => {
+      const nx = [{
+        lang: lg,
+        verb: vb
+      }, ...h.filter(x => !(x.lang === lg && x.verb === vb))].slice(0, 24);
+      persist("kunju-history", nx);
+      return nx;
+    });
+  }
+  function switchLang(newLang) {
+    if (newLang === lang) return;
+    const cur = result && !result.error ? result.infinitive.replace(/^to /, "") : verb.trim().toLowerCase();
+    const target = cur ? conceptTranslate(cur, lang, newLang) : null;
+    if (target) {
+      pendingRef.current = target;
+      setLang(newLang);
+      return;
+    }
+    if (cur && window.__hasAI()) {
+      pendingRef.current = null;
+      setTranslating(true);
+      const fromName = window.CONJ[lang].name,
+        toName = window.CONJ[newLang].name;
+      setLang(newLang);
+      window.aiComplete(`Translate the verb "${cur}" from ${fromName} to its ${toName} infinitive. Reply with ONLY the single infinitive word in ${toName}, lowercase, no article, no extra text.`).then(txt => {
+        const w = String(txt || "").trim().toLowerCase().split(/\s+/)[0].replace(/[^a-zà-ÿ'’-]/gi, "");
+        if (w) {
+          setVerb(w);
+          const r = window.CONJ[newLang].conjugate(w);
+          setResult(r);
+          if (r && !r.error) addHistory(newLang, r.infinitive);
+        }
+        setTranslating(false);
+      }).catch(() => setTranslating(false));
+      return;
+    }
+    setLang(newLang);
+  }
+  useEffect(() => {
+    persist("kunju-lang", lang);
+    setAdVisible(false);
+    setDeconj(null);
+    setActiveInf(null);
+    if (pendingRef.current) {
+      const vb = pendingRef.current;
+      pendingRef.current = null;
+      setVerb(vb);
+      const r = conjugateMaybeReflexive(lang, vb);
+      setResult(r);
+      if (r && !r.error) {
+        setLastVerb(vb);
+        addHistory(lang, r.infinitive);
+        adSession.current.conjSince += 1;
+        maybeShowAd();
+      }
+    } else {
+      setResult(null);
+      setVerb("");
+    }
+  }, [lang]);
+  function finishConjugate(lg, v, r) {
+    setResult(r);
+    if (r && !r.error) {
+      setLastVerb(v);
+      addHistory(lg, r.infinitive);
+      adSession.current.conjSince += 1;
+      setAdVisible(false);
+      maybeShowAd();
+      onActivity();
+    }
+  }
+  function onConjugate(v) {
+    const raw = (v || "").trim();
+    if (!raw) {
+      setResult(null);
+      setDeconj(null);
+      setActiveInf(null);
+      return;
+    }
+
+    // 0) Reflexive infinitive (lavarse / se laver / sich freuen / zich …) → conjugate directly.
+    const Rfx = REFLEX[lang];
+    if (Rfx && Rfx.detect(raw.toLowerCase())) {
+      setDeconj(null);
+      setActiveInf(null);
+      finishConjugate(lang, raw, conjugateMaybeReflexive(lang, raw));
+      return;
+    }
+
+    // 1) Already a known infinitive → conjugate it directly.
+    if (isKnownInfinitive(lang, raw)) {
+      setDeconj(null);
+      setActiveInf(null);
+      finishConjugate(lang, raw, conjugateMaybeReflexive(lang, raw));
+      return;
+    }
+    // 2) Looks inflected → reverse-lookup the infinitive, person & tense.
+    const dq = deconjugate(lang, raw);
+    if (dq) {
+      const target = dq.infinitives[0];
+      setDeconj(dq);
+      setActiveInf(target.base);
+      setVerb(target.base); // auto-switch the field to the infinitive
+      finishConjugate(lang, target.base, conjugateMaybeReflexive(lang, target.base));
+      return;
+    }
+    // 3) Nothing recognised → fall back (shows the engine's guidance/error).
+    setDeconj(null);
+    setActiveInf(null);
+    finishConjugate(lang, raw, conjugateMaybeReflexive(lang, raw));
+  }
+  function viewInfinitive(base) {
+    setActiveInf(base);
+    setVerb(base);
+    const r = conjugateMaybeReflexive(lang, base);
+    setResult(r);
+    if (r && !r.error) addHistory(lang, r.infinitive);
+  }
+  function pickVerb(lg, vb) {
+    setTab("conjugate");
+    if (lg !== lang) {
+      pendingRef.current = vb;
+      setLang(lg);
+    } else {
+      setVerb(vb);
+      onConjugate(vb);
+    }
+  }
+  function toggleFav(lg, vb) {
+    const exists = favs.some(x => x.lang === lg && x.verb === vb);
+    const nx = exists ? favs.filter(x => !(x.lang === lg && x.verb === vb)) : [{
+      lang: lg,
+      verb: vb
+    }, ...favs];
+    persist("kunju-favs", nx);
+    setFavs(nx);
+    if (supaUser && window.__supa) {
+      if (exists) window.__supa.from("favorites").delete().match({
+        user_id: supaUser.id,
+        lang: lg,
+        verb: vb
+      });else window.__supa.from("favorites").insert({
+        user_id: supaUser.id,
+        lang: lg,
+        verb: vb
+      });
+    }
+  }
+  function clearHistory() {
+    setHistory(h => {
+      const nx = h.filter(x => x.lang !== lang);
+      persist("kunju-history", nx);
+      return nx;
+    });
+  }
+  useEffect(() => {
+    const root = document.getElementById("approot");
+    let th = t.theme;
+    if (th === "auto") th = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    root.dataset.theme = th;
+    root.dataset.accent = t.accent;
+    root.dataset.font = t.font;
+    root.dataset.density = t.density;
+    root.style.setProperty("--radius", t.radius + "px");
+    root.style.setProperty("--lang-color", LANG_META[lang].color);
+  }, [t, sysDark, lang]);
+  useEffect(() => {
+    if (!window.matchMedia) return;
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const h = e => setSysDark(e.matches);
+    mq.addEventListener ? mq.addEventListener("change", h) : mq.addListener(h);
+    return () => {
+      mq.removeEventListener ? mq.removeEventListener("change", h) : mq.removeListener(h);
+    };
+  }, []);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "device"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "phone"
+  }, /*#__PURE__*/React.createElement("header", {
+    className: "appbar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "appbar-side appbar-left"
+  }, supaUser ? /*#__PURE__*/React.createElement(UserMenu, {
+    user: supaUser,
+    name: name,
+    isPremium: isPremium,
+    premiumUntil: premiumUntil,
+    greet: tr("hi", {
+      name: name || supaUser.email.split("@")[0]
+    }),
+    onDeleted: info => {
+      setDeletedWasPremium(isPremium ? {
+        until: info?.premiumUntil || null
+      } : null);
+      persist("kunju-premium", false);
+      persist("kunju-premium-until", null);
+      setIsPremium(false);
+      setPremiumUntil(null);
+      setShowDeletedMsg(true);
+    },
+    onEditName: () => setShowOnboard(true),
+    onTarife: () => setShowPlanSelect(true),
+    onPin: () => setShowPin(true)
+  }) : name ? /*#__PURE__*/React.createElement(GuestMenu, {
+    name: name,
+    greet: tr("hi", {
+      name
+    }),
+    onLogin: () => setShowLogin(true),
+    onEditName: () => setShowOnboard(true),
+    onTarife: () => setShowPlanSelect(true),
+    onPin: () => setShowPin(true)
+  }) : /*#__PURE__*/React.createElement("span", {
+    className: "brand-tag"
+  }, tr("tagline"))), /*#__PURE__*/React.createElement("div", {
+    className: "appbar-center"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "brand-name",
+    style: {
+      color: "rgb(231, 21, 131)"
+    }
+  }, "Conju", /*#__PURE__*/React.createElement("b", null, "Expert"))), /*#__PURE__*/React.createElement("div", {
+    className: "appbar-side appbar-right"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "streakpill",
+    onClick: () => {
+      closeSkHint();
+      if (goalSet) {
+        setShowStreak(true);
+      } else {
+        setGoalStep("choose");
+        setShowGoal(true);
+      }
+    },
+    title: tr("sk_title")
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "sbars",
+    "data-done": daily.count >= daily.goal ? "1" : "0"
+  }, [0, 1, 2, 3, 4].map(i => {
+    const filled = Math.round(Math.min(daily.count / daily.goal, 1) * 5);
+    const on = i < filled;
+    const cols = ["#ff3b5c", "#ff8a18", "#ffc400", "#1fbf6b", "#0a84ff"];
+    return /*#__PURE__*/React.createElement("i", {
+      key: i,
+      className: on ? "on" : "",
+      style: on ? {
+        background: cols[i],
+        color: cols[i]
+      } : undefined
+    });
+  })), /*#__PURE__*/React.createElement("span", {
+    className: "streakflame"
+  }, "\uD83D\uDD25"), /*#__PURE__*/React.createElement("b", {
+    className: "streaknum" + (daily.streak > 0 ? "" : " zero")
+  }, daily.streak)))), showLogin && /*#__PURE__*/React.createElement(LoginModal, {
+    onClose: () => setShowLogin(false),
+    fromPayment: pendingPayment
+  }), showDeletedMsg && /*#__PURE__*/React.createElement(AccountDeletedModal, {
+    onClose: () => setShowDeletedMsg(false),
+    wasPremium: deletedWasPremium
+  }), showInstall && /*#__PURE__*/React.createElement(InstallBanner, {
+    onInstall: handleInstall,
+    onDismiss: dismissInstall
+  }), showIOSInstall && !showInstall && /*#__PURE__*/React.createElement(IOSInstallBanner, {
+    onDismiss: dismissIOSInstall
+  }), showPin && /*#__PURE__*/React.createElement(PinSheet, {
+    onClose: () => setShowPin(false),
+    onAndroid: handleInstall
+  }), (!isPremium || !supaUser) && /*#__PURE__*/React.createElement(BonusBar, {
+    onOpen: () => openPlanSelect(),
+    trialExpiry: trialExpiry,
+    bonusActive: bonusActive,
+    name: name
+  }), /*#__PURE__*/React.createElement(LanguageBar, {
+    lang: lang,
+    setLang: switchLang
+  }), /*#__PURE__*/React.createElement(Tabs, {
+    tab: tab,
+    setTab: handleTabSwitch
+  }), offline && /*#__PURE__*/React.createElement("div", {
+    className: "offlinebar"
+  }, tr("offline_note")), /*#__PURE__*/React.createElement("main", {
+    className: "content"
+  }, tab === "conjugate" && /*#__PURE__*/React.createElement(ConjugateView, {
+    engine: engine,
+    lang: lang,
+    verb: verb,
+    setVerb: setVerb,
+    result: result,
+    onConjugate: onConjugate,
+    t: t,
+    favs: favs,
+    toggleFav: toggleFav,
+    history: history,
+    clearHistory: clearHistory,
+    pickVerb: pickVerb,
+    adVisible: adVisible,
+    onAdClick: onAdClick,
+    onAdDismiss: onAdDismiss,
+    name: name,
+    translating: translating,
+    deconj: deconj,
+    activeInf: activeInf,
+    onViewInf: viewInfinitive,
+    onTab: handleTabSwitch,
+    onLearnTense: goToLearnTense
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: tab === "quiz" ? "contents" : "none"
+    }
+  }, /*#__PURE__*/React.createElement(QuizView, {
+    lang: lang,
+    favs: favs,
+    toggleFav: toggleFav,
+    sound: t.sound,
+    skill: skill,
+    onStudy: pickVerb,
+    onActivity: onActivity,
+    isActive: tab === "quiz",
+    onTab: handleTabSwitch,
+    onHint: requestHint
+  })), tab === "grammar" && /*#__PURE__*/React.createElement(LearnView, {
+    lang: lang,
+    engine: engine,
+    sound: t.sound,
+    native: native,
+    setNative: setNat,
+    onStudy: pickVerb,
+    jumpTense: learnJump,
+    onJumpDone: () => setLearnJump(null)
+  }), tab === "saved" && /*#__PURE__*/React.createElement(SavedTab, {
+    lang: lang,
+    favs: favs,
+    toggleFav: toggleFav,
+    pickVerb: pickVerb,
+    onActivity: onActivity,
+    onHint: requestHint
+  })), /*#__PURE__*/React.createElement(AppTweaks, {
+    t: t,
+    setTweak: setTweak,
+    name: name,
+    commitName: commitName
+  }), showPaySuccess && /*#__PURE__*/React.createElement(PaymentSuccess, {
+    name: name,
+    onClose: () => setShowPaySuccess(false)
+  }), showReviewPrompt && /*#__PURE__*/React.createElement(ReviewPrompt, {
+    name: name,
+    onRate: () => {
+      persist("kunju-review-done", true);
+      setShowReviewPrompt(false);
+      rateApp();
+    },
+    onFeedback: () => {
+      persist("kunju-review-done", true);
+      setShowReviewPrompt(false);
+      try {
+        window.location.href = "mailto:hello@conjuexpert.app?subject=" + encodeURIComponent("Wunsch / Feedback zu ConjuExpert");
+      } catch (e) {}
+    },
+    onClose: () => {
+      setShowReviewPrompt(false);
+      persist("kunju-active-secs", 600);
+    }
+  }), showOnboard && /*#__PURE__*/React.createElement(NameGate, {
+    initial: name,
+    editing: !!name,
+    native: native,
+    setNative: setNat,
+    skill: skill,
+    setSkill: setSkl,
+    onSubmit: commitName,
+    onClose: () => setShowOnboard(false)
+  }), !showOnboard && showTour && /*#__PURE__*/React.createElement(TourGate, {
+    onDone: finishTour
+  }), featureHint && !showOnboard && !showTour && !showPaywall && /*#__PURE__*/React.createElement(FeatureHint, {
+    kind: featureHint,
+    onClose: closeFeatureHint
+  }), showOffer && !showOnboard && !showTour && !showPaywall && /*#__PURE__*/React.createElement(WelcomeOffer, {
+    afterTrial: true,
+    onSecure: () => {
+      persist("kunju-welcomeoffer-seen", true);
+      setShowOffer(false);
+      setShowPlanSelect(true);
+    },
+    onTrial: () => {
+      persist("kunju-welcomeoffer-seen", true);
+      setShowOffer(false);
+    }
+  }), showPaywall && /*#__PURE__*/React.createElement(PaywallSheet, {
+    onUpgrade: () => {
+      setShowPaywall(false);
+      openPlanSelect();
+    },
+    onClose: () => setShowPaywall(false)
+  }), showPlanSelect && /*#__PURE__*/React.createElement(PlanSelect, {
+    plan: selPlan,
+    setPlan: setSelPlan,
+    onNext: () => {
+      goToStripe();
+    },
+    onClose: () => setShowPlanSelect(false),
+    onLogin: () => {
+      setShowPlanSelect(false);
+      setShowLogin(true);
+    },
+    onCouponLogin: () => {
+      setPendingCoupon(true);
+      setShowPlanSelect(false);
+      setShowLogin(true);
+    },
+    supaUser: supaUser,
+    onPremium: () => {
+      persist("kunju-premium", true);
+      setIsPremium(true);
+    },
+    openCoupon: pendingCoupon
+  }), showGoalSuccess && /*#__PURE__*/React.createElement(GoalSuccess, {
+    name: name,
+    goal: goal,
+    onClose: () => setShowGoalSuccess(false),
+    onQuiz: () => {
+      setShowGoalSuccess(false);
+      handleTabSwitch("quiz");
+    }
+  }), showGoalCelebration && /*#__PURE__*/React.createElement(GoalCelebration, {
+    name: name,
+    daily: daily,
+    goal: goal,
+    onClose: () => setShowGoalCelebration(false),
+    onNewGoal: () => {
+      setShowGoalCelebration(false);
+      setGoalStep("choose");
+      setShowGoal(true);
+    }
+  }), showStreak && /*#__PURE__*/React.createElement(Zieltafel, {
+    name: name,
+    lang: lang,
+    daily: daily,
+    goal: goal,
+    onClose: () => setShowStreak(false),
+    onAdjustGoal: () => {
+      setShowStreak(false);
+      setGoalStep("choose");
+      setShowGoal(true);
+    },
+    onQuiz: () => {
+      setShowStreak(false);
+      handleTabSwitch("quiz");
+    }
+  }), showGoal && /*#__PURE__*/React.createElement(GoalFlow, {
+    step: goalStep,
+    setStep: setGoalStep,
+    name: name,
+    lang: lang,
+    onClose: () => setShowGoal(false),
+    onCreate: data => {
+      persist("kunju-goal", true);
+      const saved = data ? {
+        ...data,
+        startDate: new Date().toDateString()
+      } : null;
+      if (saved) persist("kunju-goal-data", saved);
+      setGoalSet(true);
+      setGoal(saved);
+      setDaily(readDaily());
+      setShowGoal(false);
+      setShowGoalSuccess(true);
+    }
+  })), toastMsg && /*#__PURE__*/React.createElement(Toast, {
+    msg: toastMsg,
+    onDone: () => setToastMsg(null)
+  }));
+}
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null
+    };
+  }
+  static getDerivedStateFromError(error) {
+    return {
+      error
+    };
+  }
+  render() {
+    if (!this.state.error) return this.props.children;
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100dvh",
+        padding: "32px 22px",
+        textAlign: "center",
+        fontFamily: "system-ui,sans-serif",
+        color: "#14151a",
+        background: "#f3f4f8"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: "40px",
+        marginBottom: "16px"
+      }
+    }, "\u26A0\uFE0F"), /*#__PURE__*/React.createElement("h2", {
+      style: {
+        margin: "0 0 10px",
+        fontSize: "20px"
+      }
+    }, "Oops \u2014 die App ist abgest\xFCrzt"), /*#__PURE__*/React.createElement("p", {
+      style: {
+        margin: "0 0 24px",
+        color: "#707888",
+        fontSize: "15px",
+        maxWidth: "340px"
+      }
+    }, "Ein unerwarteter Fehler ist aufgetreten. Deine gespeicherten Daten bleiben erhalten."), /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        this.setState({
+          error: null
+        });
+      },
+      style: {
+        background: "#0a84ff",
+        color: "#fff",
+        border: "none",
+        borderRadius: "14px",
+        padding: "12px 28px",
+        fontSize: "15px",
+        fontWeight: 600,
+        cursor: "pointer"
+      }
+    }, "App neu starten"));
+  }
+}
+ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(ErrorBoundary, null, /*#__PURE__*/React.createElement(App, null)));
+;
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+}
+;(function(){try{var s=document.getElementById('app-splash');if(!s)return;requestAnimationFrame(function(){requestAnimationFrame(function(){s.style.opacity='0';setTimeout(function(){if(s&&s.parentNode)s.parentNode.removeChild(s);},400);});});}catch(e){}})();
