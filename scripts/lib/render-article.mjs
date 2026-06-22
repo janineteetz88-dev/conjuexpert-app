@@ -28,6 +28,8 @@ import {
   speakableSchema,
 } from "./faq.mjs";
 
+import { renderSourcesSection } from "./sources.mjs";
+
 /* ─── Sprache: neutraler Eintrag für sprach-neutrale Methodik-Artikel ────── */
 
 const NEUTRAL_LANG = {
@@ -175,40 +177,6 @@ function renderDownSection({ meta, lang, publishedSlugs, allArticles }) {
       </div>
     </section>
     <!-- /CLUSTER:DOWN -->`;
-}
-
-/* ─── Quellen (verifizierter Belegpool) ──────────────────────────────────── */
-// Quelle der Wahrheit: Notion „Quellen zu Sprache Lernen". Wird ein Beleg im
-// Text zitiert, hängt die Engine automatisch einen Quellen-Abschnitt an.
-// Keine erfundenen Belege — nur Einträge aus dieser Tabelle.
-const SOURCES = [
-  { re: /Dunlosky/i, text: "Dunlosky, J., Rawson, K. A., Marsh, E. J., Nathan, M. J. &amp; Willingham, D. T. (2013): <i>Improving Students' Learning With Effective Learning Techniques.</i> Psychological Science in the Public Interest, 14(1), 4–58.", url: "https://doi.org/10.1177/1529100612453266", label: "doi.org/10.1177/1529100612453266" },
-  { re: /Behnke,?\s*2025/i, text: "Behnke (2025): <i>Lernmythen aufgedeckt.</i>", url: null },
-  { re: /PFH\b|Private Hochschule Göttingen/i, text: "PFH Private Hochschule Göttingen (2026): <i>Active Recall — so behältst du Lernstoff schneller und langfristiger.</i>", url: null },
-  { re: /Treidt,?\s*2020/i, text: "Treidt (2020): <i>Erklärvideos im Mathematikunterricht der Sekundarstufe I.</i>", url: null },
-  { re: /Fladerer,?\s*2016/i, text: "Fladerer (2016): <i>Mehr schaffen in weniger Zeit – durch Pausen.</i>", url: null },
-  { re: /Ullmann/i, text: "Ullmann (o. D.): <i>Lernen aus neurobiologischer Perspektive.</i>", url: null },
-  { re: /Mayer,?\s*2025/i, text: "Mayer (2025): <i>Verstehen statt auswendig lernen — die Feynman-Methode.</i>", url: null },
-  { re: /Spaced Repetition \(Wikipedia\)|\(Wikipedia,?\s*2026\)/i, text: "Spaced repetition (Wikipedia, 2026).", url: "https://en.wikipedia.org/wiki/Spaced_repetition", label: "en.wikipedia.org/wiki/Spaced_repetition" },
-];
-
-function renderSourcesSection(text) {
-  const t = String(text || "");
-  const hits = SOURCES.filter((s) => s.re.test(t));
-  if (!hits.length) return "";
-  const items = hits
-    .map((s) => {
-      const link = s.url
-        ? ` <a class="inline" href="${s.url}" target="_blank" rel="noopener">${s.label}</a>`
-        : "";
-      return `          <li>${s.text}${link}</li>`;
-    })
-    .join("\n");
-  return `
-        <h2 id="quellen">Quellen</h2>
-        <ol class="sources">
-${items}
-        </ol>`;
 }
 
 /* ─── JSON-LD Graph ──────────────────────────────────────────────────────── */

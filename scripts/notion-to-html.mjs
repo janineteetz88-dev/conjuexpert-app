@@ -7,6 +7,8 @@
  * Export: generateHtmlFromNotion(pageId, spoke, cluster) → string (HTML)
  */
 
+import { renderSourcesSection } from "./lib/sources.mjs";
+
 const NOTION_VERSION = "2022-06-28";
 const BASE_URL = "https://conjuexpert.app";
 
@@ -316,6 +318,8 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
       }).join("\n")}\n        </div>`
     : "";
 
+  const sourcesHtml = renderSourcesSection(`${contentHtml} ${faqHtml}`);
+
   const crumbs = breadcrumbs(cluster, spoke, GLOBAL_PILLAR);
   const related = relatedCards(cluster, slug);
 
@@ -458,6 +462,7 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
 
         ${contentHtml}
         ${faqHtml}
+        ${sourcesHtml}
 
         <div class="quizcta">
           <span class="qi">💬</span>
