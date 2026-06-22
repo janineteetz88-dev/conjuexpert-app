@@ -6475,6 +6475,7 @@ function bumpDaily() {
   };
   d.count += 1;
   persist("kunju-daily", d);
+  try { if (window.__cePopup) window.__cePopup.fire("round"); } catch (e) {}
   let st = recall("kunju-streak", {
     last: "",
     streak: 0,
@@ -16640,6 +16641,155 @@ function Toast({
     }
   }, msg);
 }
+
+/* ═══ Pop-up-System v2 (Onboarding/Trial) — Spec §6/§9 ════════════════════════
+   Additiv & per Flag (Default AUS): aktivieren via ?popsys=1 oder
+   localStorage kunju-popsys="1". Texte: locales/<lang>.json (eine Wahrheit).
+   Entscheidungslogik spiegelt scripts/lib/popup-engine.mjs (dort unit-getestet).
+   Teil 2a verdrahtet: Rueckkehr→P8, Exit→P3, Trial-Ende→T_End/T_End_Anon,
+   Runden→P1/P2. (Quiz-/Lock-/Erfolgs-Trigger + Free-Rotation folgen in Teil 2b.) */
+var POPSYS_ON = (function () {
+  try {
+    return (typeof localStorage !== "undefined" && localStorage.getItem("kunju-popsys") === "1") ||
+      /[?&]popsys=1/.test(location.search);
+  } catch (e) { return false; }
+})();
+var PS_PAUSE_MS = 5 * 60 * 1000, PS_PAUSE_CLICKS = 10, PS_MAX_PROMOS = 3, PS_VISIT_GAP = 30 * 60 * 1000;
+var PS_CAT = { P1: "konto", P8: "konto", P2: "home", P4: "home" };
+
+function psSelect(s) {
+  if (s.plan === "premium") return null;
+  if (s.trialEndedUnseen) return s.hasAccount ? "T_End" : "T_End_Anon";
+  if ((s.exitIntent || s.nearTrialEnd) && !s.hasAccount && s.trialActive && s.shown.indexOf("P3") < 0) return "P3";
+  var capOK = (s.promosShownThisVisit < PS_MAX_PROMOS) &&
+    (s.lastPromoAt == null || (s.now - s.lastPromoAt >= PS_PAUSE_MS) || (s.clicksSinceLastPromo >= PS_PAUSE_CLICKS));
+  if (capOK) {
+    var cand = [];
+    if (s.plan === "anonym" && !s.hasAccount && s.trialActive) {
+      if (s.rounds >= 5 && s.shown.indexOf("P1") < 0) cand.push("P1");
+      if (s.rounds >= 12 && s.shown.indexOf("P2") < 0) cand.push("P2");
+    }
+    if (s.isReturnVisit && !s.hasAccount && s.hasProgress && s.shown.indexOf("P8") < 0) cand.push("P8");
+    if (cand.length) {
+      var alt = cand.filter(function (id) { return PS_CAT[id] !== s.lastPromoCategory; });
+      return alt[0] || cand[0];
+    }
+  }
+  return null;
+}
+
+function PopupHost(props) {
+  var h = React.createElement;
+  var lang = props.lang, supaUser = props.supaUser, isPremium = props.isPremium;
+  var trialExpiry = props.trialExpiry, name = props.name, blocked = props.blocked;
+  var strRef = useState(null), strings = strRef[0], setStrings = strRef[1];
+  var curRef = useState(null), cur = curRef[0], setCur = curRef[1];
+  var tickRef = useState(0), tick = tickRef[0], setTick = tickRef[1];
+  var cap = useRef(null);
+  var rounds = useRef(0);
+
+  useEffect(function () {
+    if (!POPSYS_ON) { window.__cePopup = { fire: function () {} }; return; }
+    var now = Date.now();
+    var c = recall("kunju-pop-cap", null);
+    if (!c || !c.visitStart || now - (c.lastAt || c.visitStart) > PS_VISIT_GAP) {
+      c = { visitStart: now, promosShownThisVisit: 0, lastPromoAt: null, clicksSinceLastPromo: 0, shown: [], lastPromoCategory: null, lastAt: now };
+    }
+    cap.current = c;
+    rounds.current = (recall("kunju-daily", { count: 0 }) || {}).count || 0;
+    var seen = recall("kunju-seen-before", false);
+    window.__cePReturn = !!seen;
+    persist("kunju-seen-before", true);
+    var L = String(lang || "de").slice(0, 2).toLowerCase();
+    var load = function (code, allowFb) {
+      fetch("/locales/" + code + ".json")
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+        .then(function (j) { if (j && j.popup) setStrings(j); })
+        .catch(function () { if (allowFb) load("de", false); });
+    };
+    load(L, true);
+    window.__cePopup = { fire: function () {
+      rounds.current = (recall("kunju-daily", { count: 0 }) || {}).count || rounds.current;
+      setTick(function (x) { return x + 1; });
+    } };
+    var onLeave = function (e) { if (e && e.clientY != null && e.clientY <= 0) { window.__cePExit = true; setTick(function (x) { return x + 1; }); } };
+    document.addEventListener("mouseout", onLeave);
+    return function () { document.removeEventListener("mouseout", onLeave); };
+  }, []);
+
+  var now = Date.now();
+  var hasAccount = !!supaUser;
+  var plan = isPremium ? "premium" : hasAccount ? "free" : "anonym";
+  var trialActive = !!(trialExpiry && now < trialExpiry);
+  var trialEnded = !!(trialExpiry && now >= trialExpiry) && !isPremium;
+  var hasProgress = !!name || ((recall("kunju-daily", { count: 0 }) || {}).count || 0) > 0;
+  var c = cap.current || { shown: [] };
+  var trialEndedUnseen = trialEnded && !recall("kunju-trialend-seen", false) &&
+    (c.shown || []).indexOf(hasAccount ? "T_End" : "T_End_Anon") < 0;
+  var decision = (POPSYS_ON && strings && !blocked) ? psSelect({
+    plan: plan, hasAccount: hasAccount, trialActive: trialActive, trialEndedUnseen: trialEndedUnseen,
+    rounds: rounds.current, isReturnVisit: !!window.__cePReturn, hasProgress: hasProgress,
+    exitIntent: !!window.__cePExit,
+    nearTrialEnd: trialActive && !hasAccount && (trialExpiry - now < 60 * 60 * 1000),
+    now: now, promosShownThisVisit: c.promosShownThisVisit || 0, lastPromoAt: c.lastPromoAt,
+    clicksSinceLastPromo: c.clicksSinceLastPromo || 0, shown: c.shown || [], lastPromoCategory: c.lastPromoCategory
+  }) : null;
+
+  function present(id) {
+    var cc = cap.current || { visitStart: Date.now() };
+    cc.shown = (cc.shown || []).concat([id]);
+    if (PS_CAT[id]) {
+      cc.promosShownThisVisit = (cc.promosShownThisVisit || 0) + 1;
+      cc.lastPromoAt = Date.now(); cc.clicksSinceLastPromo = 0; cc.lastPromoCategory = PS_CAT[id];
+    }
+    cc.lastAt = Date.now(); cap.current = cc; persist("kunju-pop-cap", cc);
+    if (id === "P3") window.__cePExit = false;
+    if (id === "T_End" || id === "T_End_Anon") persist("kunju-trialend-seen", true);
+    setCur(id);
+  }
+  useEffect(function () { if (POPSYS_ON && strings && !cur && decision) present(decision); }, [decision, cur, strings]);
+
+  if (!POPSYS_ON || blocked || !cur || !strings) return null;
+  var t = (strings.popup && strings.popup[cur]) || {};
+  var title = t.title || t.heading || "";
+  var close = function () { setCur(null); };
+  var act = function (fn) { return function () { setCur(null); if (fn) fn(); }; };
+  var MAP = {
+    P1: [["button_yes", props.onAccount, 1], ["button_no", close, 0]],
+    P2: [["button_yes", props.onHome, 1], ["button_no", close, 0]],
+    P3: [["button_yes", props.onAccount, 1], ["button_no", close, 0]],
+    P8: [["button_yes", props.onAccount, 1], ["button_no", close, 0]],
+    T_End: [["button_yes", props.onPlans, 1], ["button_no", close, 0]],
+    T_End_Anon: [["button_yes", props.onAccount, 1], ["button_no", close, 0]]
+  };
+  var btns = (MAP[cur] || []).map(function (b, i) {
+    var label = t[b[0]]; if (!label) return null;
+    var primary = b[2] === 1;
+    var fn = b[1] === close ? close : act(b[1]);
+    return h("button", {
+      key: i, onClick: fn,
+      style: primary ? {
+        width: "100%", padding: "14px 16px", borderRadius: "14px", border: "none",
+        background: "linear-gradient(135deg,#e71583,#a557ff)", color: "#fff",
+        fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "15px", cursor: "pointer"
+      } : {
+        width: "100%", padding: "11px 16px", borderRadius: "14px", marginTop: "8px",
+        border: "1px solid var(--border)", background: "var(--surface)", color: "var(--muted)",
+        fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "14px", cursor: "pointer"
+      }
+    }, label);
+  });
+  return h("div", { className: "namegate", onClick: close }, h("div", {
+    className: "namecard", onClick: function (e) { e.stopPropagation(); }
+  },
+    h("button", { className: "namex", onClick: close, title: "×" }, "×"),
+    h("h2", { className: "namehead", style: { margin: "0 0 8px" } }, title),
+    t.text ? h("p", { style: { color: "var(--muted)", fontSize: "14px", lineHeight: 1.5, margin: "0 0 16px" } }, t.text) : null,
+    cur === "P2" && t.ios_hint ? h("p", { style: { color: "var(--muted)", fontSize: "12px", lineHeight: 1.4, margin: "0 0 12px" } }, t.ios_hint) : null,
+    h("div", { style: { width: "100%" } }, btns)
+  ));
+}
+
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [toastMsg, setToastMsg] = useState(null);
@@ -17371,6 +17521,16 @@ function App() {
   }), showPin && /*#__PURE__*/React.createElement(PinSheet, {
     onClose: () => setShowPin(false),
     onAndroid: handleInstall
+  }), /*#__PURE__*/React.createElement(PopupHost, {
+    lang: UILANG,
+    supaUser: supaUser,
+    isPremium: isPremium,
+    trialExpiry: trialExpiry,
+    name: name,
+    blocked: showOnboard || showLogin || showPin || showPlanSelect || showPaywall || showOffer || showTour,
+    onAccount: () => setShowLogin(true),
+    onHome: () => setShowPin(true),
+    onPlans: () => openPlanSelect()
   }), (!isPremium || !supaUser) && /*#__PURE__*/React.createElement(BonusBar, {
     onOpen: () => openPlanSelect(),
     trialExpiry: trialExpiry,
