@@ -26,7 +26,11 @@ const ROOT   = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ARGS   = process.argv.slice(2);
 const DRY    = ARGS.includes("--dry-run");
 const DB_ID  = "f78defbe1d0543309b443fc134ad9127";
-const NOTION = "2022-06-28";
+// Echte Tabelle des Trackers. Dem DB hängt versehentlich eine 2. (leere) Data
+// Source an → /databases-Operationen geben 400 multiple_data_sources. Wir
+// adressieren daher direkt die Data Source (Notion-Version 2025-09-03).
+const DATA_SOURCE_ID = "675fdfec-f644-4fd4-9f7e-340b85966013";
+const NOTION = "2025-09-03";
 
 /* ─── Notion REST helper ────────────────────────────────────────────────── */
 
@@ -61,7 +65,7 @@ async function allPages() {
   do {
     const body = { page_size: 100 };
     if (cursor) body.start_cursor = cursor;
-    const data = await api(`/databases/${DB_ID}/query`, "POST", body);
+    const data = await api(`/data_sources/${DATA_SOURCE_ID}/query`, "POST", body);
     pages.push(...data.results);
     cursor = data.has_more ? data.next_cursor : null;
   } while (cursor);
@@ -102,7 +106,7 @@ function resolveSlug(url) {
 console.log(`\n🔧  Notion Tracker Migration (${new Date().toISOString().slice(0, 10)})`);
 console.log(DRY ? "    Modus: Dry-run — kein Schreibzugriff\n" : "    Modus: Live\n");
 
-const db = await api(`/databases/${DB_ID}`);
+const db = await api(`/data_sources/${DATA_SOURCE_ID}`);
 const existingProps = Object.keys(db.properties);
 console.log(`📋  Vorhandene Felder: ${existingProps.join(", ")}\n`);
 
@@ -164,7 +168,7 @@ if (existingProps.includes("Blog-Link")) {
 if (Object.keys(schemaChanges).length === 0) {
   console.log("   (keine Schema-Änderungen nötig)");
 } else if (!DRY) {
-  await api(`/databases/${DB_ID}`, "PATCH", { properties: schemaChanges });
+  await api(`/data_sources/${DATA_SOURCE_ID}`, "PATCH", { properties: schemaChanges });
   console.log("   ✓ Schema aktualisiert\n");
 } else {
   console.log("   (Dry-run — Schema nicht geändert)\n");
