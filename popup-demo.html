@@ -48,6 +48,30 @@
   .btn.ghost { background:var(--surface-2); color:var(--muted); border:1px solid var(--border); font-weight:600; }
   .links { color:var(--muted); font-size:11.5px; margin-top:10px; }
 
+  /* P0 — Onboarding (exakt wie App-Namegate) */
+  .welcome { font-weight:600; font-size:21px; letter-spacing:-0.02em; margin:2px 0 2px; }
+  .wordmark { font-weight:700; font-size:27px; letter-spacing:-0.03em; line-height:1; }
+  .wordmark b { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .bars { display:flex; align-items:flex-end; justify-content:center; gap:4px; height:30px; margin:14px 0 12px; }
+  .bars i { width:6px; border-radius:3px; display:block; }
+  .seclabel { width:100%; text-align:left; color:var(--muted); font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin:12px 0 6px; }
+  .select { width:100%; border:1px solid var(--border); background:var(--surface-2); color:var(--text); border-radius:12px; padding:11px 13px; font-size:14px; text-align:left; display:flex; justify-content:space-between; align-items:center; }
+  .select span { color:var(--muted); }
+  .levels { width:100%; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .lvl { border:1px solid var(--border); background:var(--surface-2); border-radius:14px; padding:10px 6px; text-align:center; display:flex; flex-direction:column; gap:3px; }
+  .lvl b { font-size:13.5px; }
+  .lvl span { color:var(--muted); font-size:10.5px; line-height:1.25; }
+  .lvl.sel { border-color:transparent; background:color-mix(in srgb, #a557ff 12%, var(--surface)); box-shadow:inset 0 0 0 1.5px #a557ff; }
+  .lvl.sel b { color:#a557ff; }
+  .ghostlink { background:none; border:0; color:var(--muted); font-family:var(--font); font-size:13px; cursor:pointer; margin-top:12px; }
+
+  /* K1 — echter Anmeldevorgang */
+  .ordiv { width:100%; display:flex; align-items:center; gap:10px; color:var(--muted); font-size:12px; margin:12px 0 2px; }
+  .ordiv::before, .ordiv::after { content:""; flex:1; height:1px; background:var(--border); }
+  .btn.social { display:flex; align-items:center; justify-content:center; gap:9px; }
+  .btn.social svg { width:18px; height:18px; flex:0 0 auto; }
+  .gicon { width:18px; height:18px; }
+
   .overlay { position:fixed; inset:0; z-index:50; display:none; align-items:center; justify-content:center; padding:24px; background:color-mix(in srgb, var(--bg) 80%, rgba(0,0,0,0.5)); }
   .overlay.on { display:flex; }
   .overlay .card { max-width:340px; }
@@ -57,7 +81,7 @@
   footer { color:var(--muted); font-size:12px; margin-top:34px; line-height:1.6; }
 </style>
 </head>
-<body data-theme="rose">
+<body data-theme="light">
   <div class="wrap">
     <header class="top">
       <div>
@@ -65,8 +89,8 @@
         <p class="sub">Alle Onboarding-/Trial-Fenster mit den echten Texten aus der Spec (§11), im CI-Look. Diese Seite ist eine reine Vorschau — sie ist von der App getrennt und ändert nichts am Live-Flow. Platzhalter wie <code>{name}</code> sind hier mit Beispielwerten gefüllt.</p>
       </div>
       <div class="controls">
-        <button class="ctl" data-th="rose" aria-pressed="true">Rosé</button>
-        <button class="ctl" data-th="light" aria-pressed="false">Hell</button>
+        <button class="ctl" data-th="light" aria-pressed="true">Hell</button>
+        <button class="ctl" data-th="rose" aria-pressed="false">Rosé</button>
         <button class="ctl" data-th="dark" aria-pressed="false">Dunkel</button>
       </div>
     </header>
@@ -87,18 +111,18 @@
 <script>
 /* ── Echte Popup-Texte (de) — zeichengenau aus locales/de.json ───────────── */
 var POP = {
-  "P0": { "title":"Hey! Willkommen bei ConjuExpert", "text":"Konjugiere Verben in 5 Sprachen, übe im Quiz und lern deine Lieblingssprache ganz leicht.", "field_name":"Dein Name", "field_muttersprache":"Deine Muttersprache", "field_niveau":"Dein Niveau (Anfänger/Mittel/Fortgeschritten)", "button1":"Sofort loslegen — 24 h Premiumtarif testen", "button2":"Konto erstellen → 3 Tage Premiumtarif testen 🎁", "login":"Anmelden" },
+  "P0": { "welcome":"Hey! Du wirst:", "sub":"hier kannst du Verben in 5 Sprachen konjugieren, quizzen und so easy deine Lieblingssprache lernen.", "field_name":"Dein Name…", "native_label":"Deine Muttersprache", "native_value":"Deutsch", "niveau_label":"Dein Niveau", "lets_go":"Los geht's →", "skip":"Überspringen" },
   "P1": { "title":"Stark — schon 5 Verben! 🔥", "text":"Leg dir ein kostenloses Konto an: Dein Fortschritt bleibt erhalten und du übst 2 Tage länger mit dem Premiumtarif – Quiz + Merken.", "button_yes":"Konto anlegen", "button_no":"Später" },
   "P2": { "heading":"TIPP:", "text":"Leg ConjuExpert wie eine App auf deinen Home-Bildschirm — ein Tipp, und du kannst in Sekunden Konjugieren + Quizzen!", "button_yes":"Auf den Home-Bildschirm", "button_no":"Nein danke", "ios_hint":"Tippe unten auf Teilen → „Zum Home-Bildschirm“." },
-  "P3": { "heading":"Moment – geh nicht ohne deinen Fortschritt!", "text":"Mit einem kostenlosen Konto (10 Sekunden) bleibt alles erhalten — und du sicherst dir für 2 weitere Tage den Premiumtarif (Quizzen + Merken)!", "button_yes":"Fortschritt sichern", "button_no":"Trotzdem gehen" },
+  "P3": { "heading":"Moment – geh nicht, ohne deinen Fortschritt zu sichern!", "text":"Mit einem kostenlosen Konto (10 Sekunden) bleibt alles erhalten — und du sicherst dir für 2 weitere Tage den Premiumtarif (Quizzen + Merken)!", "button_yes":"Fortschritt sichern", "button_no":"Trotzdem gehen" },
   "P4": { "title":"Kein Problem 🙂", "text":"Dann leg uns wenigstens auf deinen Home-Bildschirm, damit du uns wiederfindest.", "button_yes":"Auf den Home-Bildschirm", "button_no":"Nein danke" },
   "P5": { "title":"Wie läuft's für dich? 💬", "text":"Sag uns ehrlich: Was gefällt dir am besten — und was sollen wir besser machen?", "anreiz":"🎁 Gib uns dein Feedback und erhalte einen 5 €-Rabattcode auf das Jahres-Abo!", "button":"Feedback geben & 5 € sichern" },
-  "P5b": { "title":"Danke fürs Feedback! 🎁", "text":"Hier ist dein Geschenk: Mit dem Code WILLKOMMEN bekommst du den Premiumtarif für 24,99 €/Jahr statt 29,99 €. Gültig bis zum Ende deines Tests.", "button":"Code sichern" },
+  "P5b": { "title":"Danke fürs Feedback! 🎁", "text":"Hier ist dein Geschenk: Mit dem Code <b>WILLKOMMEN</b> bekommst du den Premiumtarif für <b>24,99 €/Jahr</b> statt <s>29,99 €</s>. Gültig <b>bis zum Ende deines Tests</b>.", "button":"Code sichern" },
   "P6": { "title":"Dein Test endet bald ⏳", "text":"Deine gemerkten Wörter, deine Serie und dein Ziel speichern wir — bis du den Premiumtarif mit deinem Rabattcode wieder freischaltest. Nutze WILLKOMMEN und spare 5 € auf dein Jahres-Abo!", "button_yes":"Premiumtarif für 24,99 € holen", "button_no":"Später" },
   "P7": { "title":"Das ist eine Premiumtarif-Funktion 🔒", "text":"Hol dir den Premiumtarif, um wieder mit deinen Lieblingsthemen & Vokabeln zu quizzen!", "button":"Premiumtarif holen" },
   "P8": { "title":"Schön, dass du wieder da bist! 👋", "text":"Dein Fortschritt ist noch da. Sichere ihn mit einem kostenlosen Konto, bevor er verloren geht.", "button_yes":"Konto anlegen", "button_no":"Später" },
   "P9": { "title":"Premiumtarif freischalten", "trial_note":"Dein Test läuft noch {restzeit}.", "plan_annual":"Jährlich 24,99 €/Jahr (mit Code · normal 29,99 €) — nur 2,08 €/Monat ⭐", "plan_monthly":"Monatlich 2,99 €/Monat", "button":"Zahlungspflichtig kaufen – 24,99 €", "payment_note":"Zahlung via Kreditkarte", "small":"Konjugieren & Lernen bleiben immer kostenlos.", "links":"AGB · Widerruf · Datenschutz" },
-  "K1": { "title":"Nur noch ein Schritt", "text":"Deine E-Mail genügt — dein Fortschritt wird gesichert und dein Premiumtarif läuft weiter.", "field_email":"E-Mail", "button":"Konto anlegen", "small":"Wir schicken dir nur Wichtiges, kein Spam. Schon dabei? Anmelden" },
+  "K1": { "title":"Konto erstellen", "text":"Sichere deinen Fortschritt — kostenlos, deine Daten liegen sicher in Deutschland.", "field_vorname":"Vorname", "field_email":"E-Mail", "field_password":"Passwort (min. 6 Zeichen)", "button":"Konto anlegen", "or":"oder", "google":"Mit Google anmelden", "apple":"Mit Apple anmelden", "small":"🔒 Daten gespeichert in Frankfurt, DE · Schon dabei? Anmelden" },
   "K2": { "title":"Geschafft – du bist drin! 🎉", "text":"Dein Fortschritt ist gesichert, und dein Premiumtarif läuft bis {enddate}. Viel Spaß!", "button":"Weiterüben" },
   "K3": { "title":"Willkommen zurück", "text":"Melde dich an und mach da weiter, wo du aufgehört hast.", "field_email":"E-Mail", "button":"Link zum Anmelden schicken", "a_sent":"Check dein Postfach 📩 — Anmelde-Link an {email}. Nichts da? Spam prüfen / neu senden.", "b_expired":"Dieser Link ist abgelaufen. Wir schicken dir gern einen neuen.", "b_button":"Neuen Link senden", "c_unknown":"Zu dieser E-Mail finden wir kein Konto. Eins anlegen?", "c_button":"Konto anlegen" },
   "B_Fail": { "title":"Das hat leider nicht geklappt", "text":"Kein Problem – dir wurde nichts berechnet. Dein Zugang bleibt wie er ist. Magst du's nochmal versuchen?", "button_yes":"Nochmal versuchen", "button_no":"Später" },
@@ -148,15 +172,58 @@ var BTN_PRIMARY = { "button_yes":1, "button":1, "button1":1, "cta":1, "b_button"
 var BTN_GHOST = { "button_no":1, "login":1 };
 var NOTE_KEYS = { "anreiz":1, "ios_hint":1, "trial_note":1, "payment_note":1, "anon_extra":1, "a_sent":1, "b_expired":1, "c_unknown":1 };
 
+/* P0 — Onboarding, exakt wie das echte App-Namegate (Screenshot) */
+function buildP0(card, p, id){
+  var bars = "#e71583,#ff7a00,#ffc400,#28c76f,#00b8d9,#5b8def,#a557ff".split(",");
+  var h = [];
+  h.push('<div class="welcome">'+p.welcome+'</div>');
+  h.push('<div class="wordmark">Conju<b>Expert</b></div>');
+  h.push('<div class="bars">'+bars.map(function(c,i){ var hgt=[16,24,12,30,20,26,14][i]; return '<i style="height:'+hgt+'px;background:'+c+'"></i>'; }).join("")+'</div>');
+  h.push('<p class="body">'+p.sub+'</p>');
+  h.push('<div class="fields"><div class="inp">'+p.field_name+'</div></div>');
+  h.push('<div class="seclabel">'+p.native_label+'</div>');
+  h.push('<div class="select">'+p.native_value+'<span>▾</span></div>');
+  h.push('<div class="seclabel">'+p.niveau_label+'</div>');
+  h.push('<div class="levels">'
+    + '<div class="lvl sel"><b>Anfänger</b><span>häufige Verben</span></div>'
+    + '<div class="lvl"><b>Mittel</b><span>+ unregelmäßige</span></div>'
+    + '<div class="lvl"><b>Fortgeschr.</b><span>alle Verben</span></div></div>');
+  h.push('<div class="btns"><button class="btn primary">'+p.lets_go+'</button></div>');
+  h.push('<button class="ghostlink">'+p.skip+'</button>');
+  var box=document.createElement("div"); box.style.cssText="width:100%;display:flex;flex-direction:column;align-items:center;text-align:center"; box.innerHTML=h.join("");
+  card.appendChild(box);
+  box.querySelectorAll(".btn,.ghostlink,.lvl").forEach(function(el){ el.style.cursor="pointer"; el.onclick=function(){ toast("Aktion: "+id+" · "+(el.textContent||"").trim()); }; });
+}
+
+/* K1 — echter Anmeldevorgang (Vorname · E-Mail · Passwort · Google · Apple) */
+function buildK1(card, p, id){
+  var gsvg = '<svg class="gicon" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-2.8-.4-4.1H24v7.4h11.9c-.2 1.9-1.5 4.8-4.4 6.8l-.04.3 6.4 4.9.4.04c4.1-3.8 6.4-9.3 6.4-15.7z"/><path fill="#34A853" d="M24 46c5.8 0 10.7-1.9 14.3-5.2l-6.8-5.3c-1.8 1.3-4.3 2.2-7.5 2.2-5.7 0-10.6-3.8-12.3-9l-.3.02-6.6 5.1-.1.3C8.1 41.1 15.5 46 24 46z"/><path fill="#FBBC05" d="M11.7 28.7c-.5-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2l-.02-.3-6.7-5.2-.2.1C3.3 17.7 2.5 20.8 2.5 24s.8 6.3 2.3 9.1l6.9-5.4z"/><path fill="#EA4335" d="M24 10.8c4 0 6.8 1.7 8.3 3.2l6.1-5.9C34.7 4.7 29.8 2.5 24 2.5 15.5 2.5 8.1 7.4 4.8 14.9l6.9 5.4c1.7-5.2 6.6-9.5 12.3-9.5z"/></svg>';
+  var asvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.04c-.03-2.4 1.96-3.55 2.05-3.61-1.12-1.64-2.86-1.86-3.48-1.89-1.48-.15-2.89.87-3.64.87-.75 0-1.91-.85-3.14-.83-1.62.02-3.11.94-3.94 2.39-1.68 2.92-.43 7.24 1.2 9.61.8 1.16 1.75 2.46 3 2.42 1.2-.05 1.66-.78 3.11-.78 1.45 0 1.86.78 3.14.75 1.3-.02 2.12-1.18 2.91-2.35.92-1.35 1.3-2.66 1.32-2.73-.03-.01-2.53-.97-2.55-3.85zM14.69 4.81c.66-.8 1.11-1.92.99-3.03-.95.04-2.1.63-2.79 1.43-.61.71-1.15 1.85-1.01 2.94 1.06.08 2.14-.54 2.81-1.34z"/></svg>';
+  var h = [];
+  h.push('<div class="head">'+p.title+'</div>');
+  h.push('<p class="body">'+p.text+'</p>');
+  h.push('<div class="fields"><div class="inp">'+p.field_vorname+'</div><div class="inp">'+p.field_email+'</div><div class="inp">'+p.field_password+'</div></div>');
+  h.push('<div class="btns"><button class="btn primary">'+p.button+'</button></div>');
+  h.push('<div class="ordiv">'+p.or+'</div>');
+  h.push('<div class="btns"><button class="btn outline social">'+gsvg+p.google+'</button>'
+    + '<button class="btn outline social">'+asvg+p.apple+'</button></div>');
+  h.push('<div class="small">'+p.small+'</div>');
+  var box=document.createElement("div"); box.style.cssText="width:100%;display:flex;flex-direction:column;align-items:center;text-align:center"; box.innerHTML=h.join("");
+  card.appendChild(box);
+  box.querySelectorAll(".btn").forEach(function(el){ el.onclick=function(){ toast("Aktion: "+id+" · "+(el.textContent||"").trim()); }; });
+}
+
 function renderCard(id, withClose){
   var p = POP[id];
   var card = document.createElement("div"); card.className = "card";
   if (withClose){ var x = document.createElement("button"); x.className="x"; x.textContent="×"; x.onclick=closeOverlay; card.appendChild(x); }
+  if (id === "P0"){ buildP0(card, p, id); return card; }
+  if (id === "K1"){ buildK1(card, p, id); return card; }
   var fields = null, btns = null;
   Object.keys(p).forEach(function(k){
     var v = sub(p[k]);
     if (k === "title" || k === "heading"){ var h=document.createElement("div"); h.className="head"; h.textContent=v; card.appendChild(h); return; }
-    if (k === "text"){ var t=document.createElement("p"); t.className="body"; t.textContent=v; card.appendChild(t); return; }
+    if (k === "text"){ var t=document.createElement("p"); t.className="body"; t.innerHTML=v; card.appendChild(t); return; }
     if (k === "gift" || k === "anreiz"){ var g=document.createElement("div"); g.className="gift"; g.textContent=v; card.appendChild(g); return; }
     if (k === "small" || NOTE_KEYS[k]){ var s=document.createElement("div"); s.className="small"; s.textContent=v; card.appendChild(s); return; }
     if (k === "links"){ var l=document.createElement("div"); l.className="links"; l.textContent=v; card.appendChild(l); return; }
