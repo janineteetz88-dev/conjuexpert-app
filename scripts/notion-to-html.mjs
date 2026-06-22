@@ -8,6 +8,7 @@
  */
 
 import { renderSourcesSection } from "./lib/sources.mjs";
+import { extractKeyTakeaways, addHeadingIdsAndToc } from "./lib/geo-blocks.mjs";
 
 const NOTION_VERSION = "2022-06-28";
 const BASE_URL = "https://conjuexpert.app";
@@ -292,7 +293,9 @@ function breadcrumbs(cluster, spoke, GLOBAL_PILLAR) {
 
 /* ─── HTML-Template ──────────────────────────────────────────────────────── */
 
-function buildHtml({ title, description, slug, langInfo, datePublished, contentHtml, faqBlocks, cluster, spoke, GLOBAL_PILLAR }) {
+function buildHtml({ title, description, slug, langInfo, datePublished, contentHtml: contentHtmlIn, takeawaysHtml = "", faqBlocks, cluster, spoke, GLOBAL_PILLAR }) {
+  // GEO-Baustein 2: H2-IDs + automatisches Inhaltsverzeichnis.
+  const { html: contentHtml, tocHtml } = addHeadingIdsAndToc(contentHtmlIn, { minToc: 3 });
   const url = `${BASE_URL}${slug}/`;
   const langCode = langInfo.code;
   const color = langInfo.color;
@@ -402,6 +405,18 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
 .faq2 details[open] summary .pm{transform:rotate(135deg)}
 .faq2 details[open] summary{border-bottom:1px solid var(--border)}
 .faq2 .a{padding:16px 20px 20px;color:var(--muted);font-size:15.5px;line-height:1.6}
+.keytakeaways{position:relative;margin:18px 0 28px;padding:20px 22px 20px 26px;border:1px solid var(--border);border-radius:18px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.keytakeaways::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:4px;border-radius:4px;background:linear-gradient(180deg,var(--pink),var(--violet))}
+.keytakeaways h2{margin:0 0 10px;font-size:18px}
+.keytakeaways p{margin:0;color:var(--ink);line-height:1.6}
+.keytakeaways ul,.keytakeaways ol{margin:0;padding-left:20px}
+.keytakeaways li{margin:6px 0;color:var(--ink);line-height:1.55}
+.toc{margin:0 0 30px;padding:16px 20px;border:1px solid var(--border);border-radius:16px;background:var(--surface-2)}
+.toc-h{margin:0 0 8px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.toc ol{margin:0;padding-left:20px}
+.toc li{margin:4px 0}
+.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+.toc a:hover{border-bottom-color:var(--pink)}
 </style>
 </head>
 <body>
@@ -460,6 +475,8 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
     <div class="artwrap">
       <div class="prose">
 
+        ${takeawaysHtml}
+        ${tocHtml}
         ${contentHtml}
         ${faqHtml}
         ${sourcesHtml}
@@ -573,8 +590,11 @@ export async function generateHtmlFromNotion(notionPageId, spoke, cluster, GLOBA
   // FAQ-Blöcke (Toggles) ans Ende
   const { faqBlocks, rest } = extractFaq(blocks);
 
+  // GEO-Baustein 1: „Das Wichtigste in Kürze"-Box aus markiertem Callout.
+  const { boxHtml: takeawaysHtml, blocks: bodyBlocks } = extractKeyTakeaways(rest, blocksToHtml);
+
   // Prose-HTML + auto-CTAs
-  const rawContent = blocksToHtml(rest);
+  const rawContent = blocksToHtml(bodyBlocks);
   const contentHtml = autoInsertCtAs(rawContent, spoke.slug);
 
   return buildHtml({
@@ -584,6 +604,7 @@ export async function generateHtmlFromNotion(notionPageId, spoke, cluster, GLOBA
     langInfo,
     datePublished,
     contentHtml,
+    takeawaysHtml,
     faqBlocks,
     cluster,
     spoke,

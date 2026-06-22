@@ -45,6 +45,36 @@
    horizontales Scrollen statt Quetschen auf schmalen Bildschirmen). NIE
    per-Artikel inline stylen. CSS-Änderung = `blog.css?v=N` hochzählen.
 
+## GEO-Bausteine (Generative Engine Optimization)
+
+Die Engine rendert vier feste Bausteine, damit Such- und Antwortmaschinen
+Artikel sauber erfassen. Helfer dafür: `scripts/lib/geo-blocks.mjs` (TOC + Box),
+`scripts/lib/faq.mjs` (FAQ), `scripts/lib/sources.mjs` (Quellen).
+
+1. **„Das Wichtigste in Kürze"-Box** (oben, vor dem Fließtext).
+   Quelle: ein **Callout** in Notion, dessen Text mit einem Trigger beginnt —
+   „Das Wichtigste in Kürze", „Kurz gesagt", „Auf einen Blick", „In Kürze"
+   (auch „TL;DR" wird erkannt). Die Engine **hebt diesen Callout aus dem Body**
+   (erscheint nicht doppelt als `.note`), erzwingt die Überschrift
+   **„Das Wichtigste in Kürze"** und entfernt Emoji/Trigger-Label. Stichpunkte
+   gehören als eingerückte Bullet-Kinder in den Callout. Kein „TL;DR"-Wording,
+   kein Emoji im Output. Ohne solchen Callout entfällt die Box.
+2. **Inhaltsverzeichnis** (`<nav class="toc">`) — **automatisch aus den H2** des
+   Fließtexts. Jede H2 bekommt eine eindeutige Anker-ID (Slug aus dem Titel;
+   Doppelte werden mit `-2`, `-3` … eindeutig). Das TOC erscheint **ab 3 H2**;
+   FAQ- und Quellen-H2 zählen nicht mit.
+3. **FAQ** als Toggle/Akkordeon (`<details>` in `.faq2`), genau **eine**
+   `<h2 id="faq">`. Robust gegen alle Eingabeformate: Notion-Toggle,
+   „▸ **Frage**"-Bullets, `<details><summary>` und ▸-Text. + `FAQPage`-JSON-LD.
+4. **Quellen-Liste** (`<h2 id="quellen">` + `<ol class="sources">`) automatisch
+   aus Inline-Zitaten `(Autor, Jahr)` gegen den Belegpool (`sources-pool.json`),
+   siehe Regel 6. Nichts erfinden — nur gepflegte Belege.
+
+Reihenfolge im `.prose`: Box → TOC → Fließtext → FAQ → Quellen.
+Styling der Bausteine lebt im Inline-`<style>` der Engine (`.keytakeaways`,
+`.toc`, `.faq2`) und nutzt die Blog-Tokens. Akzeptanz: `render-selftest.mjs`
+prüft an einem Muster-Artikel, dass **alle vier** Bausteine live erscheinen.
+
 ## Bei jeder Änderung an `notion-to-html.mjs` / `render-article.mjs`
 
 - Gegen einen v2-Referenzartikel testen (z. B. `unregelmaessige-verben-spanisch`):
