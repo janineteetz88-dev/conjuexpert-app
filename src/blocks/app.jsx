@@ -4455,6 +4455,7 @@ function GuestMenu({ name, greet, onLogin, onEditName }) {
 function LoginModal({ onClose, fromPayment }) {
   const [mode, setMode] = useState(fromPayment ? "signup" : "login");
   const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState(() => recall("kunju-name", ""));
   const [pw, setPw] = useState("");
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
@@ -4475,8 +4476,11 @@ function LoginModal({ onClose, fromPayment }) {
         if (error) throw error;
         onClose();
       } else {
-        const { error } = await supa.auth.signUp({ email, password: pw });
+        const fn = firstName.trim();
+        if (!fn) { setErr(tr("your_name")); setLoading(false); return; }
+        const { error } = await supa.auth.signUp({ email, password: pw, options: { data: { first_name: fn } } });
         if (error) throw error;
+        persist("kunju-name", fn);
         setDone(true);
       }
     } catch(e) { setErr(e.message); }
@@ -4510,6 +4514,10 @@ function LoginModal({ onClose, fromPayment }) {
           </div>
         ) : (
           <form onSubmit={submit} style={{ width: "100%" }}>
+            {mode === "signup" && (
+              <input type="text" name="given-name" aria-label={tr("your_name")} placeholder={tr("your_name")} value={firstName} onChange={e => setFirstName(e.target.value)} required
+                className="nameinput" style={{ marginBottom: "10px", fontWeight: 400, fontSize: "16px" }} autoComplete="given-name" maxLength={40} />
+            )}
             <input ref={emailRef} type="email" name="email" aria-label="E-Mail" placeholder="E-Mail" value={email} onChange={e => setEmail(e.target.value)} required
               className="nameinput" style={{ marginBottom: "10px", fontWeight: 400, fontSize: "16px" }} autoComplete="email" />
             {mode !== "reset" && (

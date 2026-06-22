@@ -13356,7 +13356,7 @@ function TourGate({
     icon: "🎁",
     title: tr("offer_trial_b"),
     text: tr("tour_trial_sub"),
-    col: "#e71583"
+    col: "#e7156b"
   }, {
     kind: "conjugate",
     icon: "▦",
@@ -13614,7 +13614,7 @@ function AccountDeletedModal({
       padding: "15px",
       borderRadius: "16px",
       border: "none",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(135deg,#e7156b,#a557ff)",
       color: "#fff",
       fontSize: "15px",
       fontWeight: 800,
@@ -13637,81 +13637,6 @@ const DD_ITEM = {
   alignItems: "center",
   gap: "8px"
 };
-function MenuRow({
-  onClick,
-  bg,
-  glyph,
-  fav,
-  label,
-  sub,
-  danger
-}) {
-  return /*#__PURE__*/React.createElement("button", {
-    onClick: onClick,
-    style: {
-      display: "flex",
-      alignItems: "center",
-      gap: "12px",
-      width: "100%",
-      padding: "9px 8px",
-      border: "none",
-      background: "none",
-      cursor: "pointer",
-      textAlign: "left",
-      borderRadius: "12px"
-    }
-  }, fav ? /*#__PURE__*/React.createElement("img", {
-    src: "/favicon.svg",
-    alt: "",
-    style: {
-      width: "38px",
-      height: "38px",
-      borderRadius: "11px",
-      flexShrink: 0,
-      display: "block"
-    }
-  }) : /*#__PURE__*/React.createElement("span", {
-    style: {
-      width: "38px",
-      height: "38px",
-      borderRadius: "11px",
-      background: bg,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontSize: "18px",
-      flexShrink: 0
-    }
-  }, glyph), /*#__PURE__*/React.createElement("span", {
-    style: {
-      flex: 1,
-      minWidth: 0
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      display: "block",
-      fontFamily: "var(--font-display)",
-      fontWeight: 800,
-      fontSize: "13.5px",
-      color: danger ? "#e0245e" : "var(--text)",
-      lineHeight: 1.25
-    }
-  }, label), sub && /*#__PURE__*/React.createElement("small", {
-    style: {
-      display: "block",
-      color: "var(--muted)",
-      fontSize: "11px",
-      marginTop: "2px"
-    }
-  }, sub)), /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: "var(--muted)",
-      opacity: 0.45,
-      fontSize: "17px",
-      flexShrink: 0
-    }
-  }, "\u203A"));
-}
 function UserChip({
   avatar,
   label,
@@ -13730,7 +13655,7 @@ function UserChip({
       gap: "5px",
       fontFamily: "inherit"
     }
-  }, /*#__PURE__*/React.createElement("span", {
+  }, avatar, /*#__PURE__*/React.createElement("span", {
     className: "brand-greet",
     style: {
       pointerEvents: "none",
@@ -13752,9 +13677,7 @@ function UserMenu({
   isPremium,
   premiumUntil,
   onDeleted,
-  onEditName,
-  onTarife,
-  onPin
+  onEditName
 }) {
   const [open, setOpen] = useState(false);
   const [panel, setPanel] = useState(null); // null | "cancel" | "delete"
@@ -13814,7 +13737,7 @@ function UserMenu({
       width: "22px",
       height: "22px",
       borderRadius: "50%",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(135deg,#e7156b,#a557ff)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -13850,7 +13773,7 @@ function UserMenu({
       borderRadius: "16px",
       boxShadow: "0 8px 28px rgba(0,0,0,.13)",
       padding: "8px",
-      minWidth: "266px",
+      minWidth: "220px",
       zIndex: 999
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -13870,42 +13793,25 @@ function UserMenu({
       fontWeight: "600",
       wordBreak: "break-all"
     }
-  }, user.email)), panel === null && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(MenuRow, {
+  }, user.email)), panel === null && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       onEditName && onEditName();
       setOpen(false);
     },
-    bg: "#f1ecff",
-    glyph: "👤",
-    label: tr("menu_edit_profile"),
-    sub: tr("msub_profil")
-  }), /*#__PURE__*/React.createElement(MenuRow, {
+    style: DD_ITEM
+  }, /*#__PURE__*/React.createElement("span", null, "\u270F\uFE0F"), " ", tr("menu_edit_profile")), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
-      onPin && onPin();
+      shareApp();
       setOpen(false);
     },
-    fav: true,
-    label: tr("menu_pin"),
-    sub: tr("msub_pin")
-  }), /*#__PURE__*/React.createElement(MenuRow, {
-    onClick: () => {
-      onTarife && onTarife();
-      setOpen(false);
-    },
-    bg: "#efeaff",
-    glyph: "💎",
-    label: tr("menu_tarife"),
-    sub: tr("msub_tarife")
-  }), /*#__PURE__*/React.createElement(MenuRow, {
+    style: DD_ITEM
+  }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDCE4"), " ", tr("menu_share")), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       rateApp();
       setOpen(false);
     },
-    bg: "#fff4e0",
-    glyph: "⭐",
-    label: tr("menu_rate"),
-    sub: tr("msub_rate")
-  }), /*#__PURE__*/React.createElement("div", {
+    style: DD_ITEM
+  }, /*#__PURE__*/React.createElement("span", null, "\u2B50"), " ", tr("menu_rate")), /*#__PURE__*/React.createElement("div", {
     style: {
       height: "1px",
       background: "var(--border)",
@@ -14147,9 +14053,7 @@ function GuestMenu({
   name,
   greet,
   onLogin,
-  onEditName,
-  onTarife,
-  onPin
+  onEditName
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -14165,16 +14069,26 @@ function GuestMenu({
       width: "22px",
       height: "22px",
       borderRadius: "50%",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "var(--surface-2)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      fontSize: "10px",
-      fontWeight: 800,
-      color: "#fff",
       flexShrink: 0
     }
-  }, (name || "").trim().charAt(0).toUpperCase() || "★");
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "11",
+    height: "11",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "var(--muted)",
+    strokeWidth: "2.5"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "12",
+    cy: "7",
+    r: "4"
+  })));
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
     style: {
@@ -14194,54 +14108,57 @@ function GuestMenu({
       borderRadius: "16px",
       boxShadow: "0 8px 28px rgba(0,0,0,.13)",
       padding: "8px",
-      minWidth: "266px",
+      minWidth: "215px",
       zIndex: 999
     }
-  }, /*#__PURE__*/React.createElement(MenuRow, {
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "6px 10px 10px",
+      borderBottom: "1px solid var(--border)",
+      marginBottom: "4px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "12px",
+      color: "var(--muted)",
+      marginBottom: "10px",
+      lineHeight: 1.5
+    }
+  }, tr("guest_login_sub")), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       onLogin();
       setOpen(false);
     },
-    bg: "#fde9f3",
-    glyph: "🔑",
-    label: tr("menu_login"),
-    sub: tr("msub_konto")
-  }), /*#__PURE__*/React.createElement(MenuRow, {
+    style: {
+      width: "100%",
+      padding: "11px",
+      borderRadius: "12px",
+      border: "none",
+      background: "linear-gradient(135deg,#e7156b,#a557ff)",
+      color: "#fff",
+      fontWeight: 700,
+      fontSize: "14px",
+      cursor: "pointer"
+    }
+  }, tr("guest_login_cta"))), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       onEditName();
       setOpen(false);
     },
-    bg: "#f1ecff",
-    glyph: "👤",
-    label: tr("menu_edit_profile"),
-    sub: tr("msub_profil")
-  }), /*#__PURE__*/React.createElement(MenuRow, {
+    style: DD_ITEM
+  }, /*#__PURE__*/React.createElement("span", null, "\u270F\uFE0F"), " ", tr("menu_edit_profile")), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
-      onPin();
+      shareApp();
       setOpen(false);
     },
-    fav: true,
-    label: tr("menu_pin"),
-    sub: tr("msub_pin")
-  }), /*#__PURE__*/React.createElement(MenuRow, {
-    onClick: () => {
-      onTarife();
-      setOpen(false);
-    },
-    bg: "#efeaff",
-    glyph: "💎",
-    label: tr("menu_tarife"),
-    sub: tr("msub_tarife")
-  }), /*#__PURE__*/React.createElement(MenuRow, {
+    style: DD_ITEM
+  }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDCE4"), " ", tr("menu_share")), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       rateApp();
       setOpen(false);
     },
-    bg: "#fff4e0",
-    glyph: "⭐",
-    label: tr("menu_rate"),
-    sub: tr("msub_rate")
-  })));
+    style: DD_ITEM
+  }, /*#__PURE__*/React.createElement("span", null, "\u2B50"), " ", tr("menu_rate"))));
 }
 
 /* ===== Login Modal ===== */
@@ -14251,6 +14168,7 @@ function LoginModal({
 }) {
   const [mode, setMode] = useState(fromPayment ? "signup" : "login");
   const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState(() => recall("kunju-name", ""));
   const [pw, setPw] = useState("");
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
@@ -14283,13 +14201,25 @@ function LoginModal({
         if (error) throw error;
         onClose();
       } else {
+        const fn = firstName.trim();
+        if (!fn) {
+          setErr(tr("your_name"));
+          setLoading(false);
+          return;
+        }
         const {
           error
         } = await supa.auth.signUp({
           email,
-          password: pw
+          password: pw,
+          options: {
+            data: {
+              first_name: fn
+            }
+          }
         });
         if (error) throw error;
+        persist("kunju-name", fn);
         setDone(true);
       }
     } catch (e) {
@@ -14367,7 +14297,23 @@ function LoginModal({
     style: {
       width: "100%"
     }
-  }, /*#__PURE__*/React.createElement("input", {
+  }, mode === "signup" && /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    name: "given-name",
+    "aria-label": tr("your_name"),
+    placeholder: tr("your_name"),
+    value: firstName,
+    onChange: e => setFirstName(e.target.value),
+    required: true,
+    className: "nameinput",
+    style: {
+      marginBottom: "10px",
+      fontWeight: 400,
+      fontSize: "16px"
+    },
+    autoComplete: "given-name",
+    maxLength: 40
+  }), /*#__PURE__*/React.createElement("input", {
     ref: emailRef,
     type: "email",
     name: "email",
@@ -14659,103 +14605,6 @@ function formatCountdown(ms) {
   }
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 }
-function PinSheet({
-  onClose
-}) {
-  const [view, setView] = useState("choose");
-  if (view === "ios") return /*#__PURE__*/React.createElement(IOSHelpModal, {
-    onClose: onClose
-  });
-  if (view === "android") return /*#__PURE__*/React.createElement(AndroidHelpModal, {
-    onClose: onClose
-  });
-  const RB = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#0a84ff"];
-  const barsSvg = `<svg viewBox="0 0 100 100" fill="none"><rect x="16" y="33" width="9" height="34" rx="3.5" fill="#ff3b5c"/><rect x="31" y="21" width="9" height="58" rx="3.5" fill="#ff8a18"/><rect x="46" y="10" width="9" height="80" rx="3.5" fill="#ffc400"/><rect x="61" y="26" width="9" height="48" rx="3.5" fill="#1fbf6b"/><rect x="76" y="36" width="9" height="28" rx="3.5" fill="#0a84ff"/></svg>`;
-  const plusSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v8M8 12h8"></path></svg>`;
-  const appleSvg = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.8-3-.8c-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7 2-1.1 2.8-2.2c.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.5-1-2.5-3.8zM14.1 4.9c.7-.8 1.1-1.9 1-3-1 0-2.1.6-2.8 1.4-.6.7-1.1 1.8-1 2.9 1.1.1 2.2-.5 2.8-1.3z"></path></svg>`;
-  const androidSvg = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.5l1.4-2.5c.1-.1 0-.3-.1-.3-.1-.1-.3 0-.3.1l-1.4 2.5C16 8.8 14.6 8.5 13 8.5s-3 .3-4.2.8L7.4 6.8c-.1-.1-.2-.2-.3-.1-.1 0-.2.2-.1.3l1.4 2.5C5.7 11 4 13.5 4 16.5h18c0-3-1.7-5.5-4.4-7zM8.8 13.4c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7zm6.4 0c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7z"></path></svg>`;
-  const h = React.createElement;
-  const gh = (s2, i) => h("span", {
-    key: i,
-    className: "pp-gh" + (s2 ? " s2" : "")
-  });
-  return h("div", {
-    className: "namegate",
-    onClick: onClose
-  }, h("div", {
-    className: "pinpop",
-    onClick: e => e.stopPropagation()
-  }, h("button", {
-    className: "pp-x",
-    onClick: onClose,
-    title: tr("ios_close")
-  }, "×"), h("div", {
-    className: "pp-head"
-  }, h("span", {
-    className: "pp-mark"
-  }, RB.map((c, i) => h("i", {
-    key: i,
-    style: {
-      background: c
-    }
-  }))), h("span", {
-    className: "pp-ey"
-  }, "Conju", h("b", null, "Expert"), " · ", tr("pin_tip"))), h("h2", {
-    className: "pp-title"
-  }, tr("pin_title")), h("p", {
-    className: "pp-sub"
-  }, tr("pin_sub")), h("div", {
-    className: "pp-stage"
-  }, h("div", {
-    className: "pp-phone"
-  }, h("span", {
-    className: "pp-island"
-  }), h("div", {
-    className: "pp-screen"
-  }, h("div", {
-    className: "pp-sbar"
-  }, h("span", null, "9:41"), h("span", null, "•••")), h("div", {
-    className: "pp-grid"
-  }, gh(false, 0), gh(true, 1), gh(false, 2), gh(true, 3), gh(true, 4), h("span", {
-    key: "slot",
-    className: "pp-slot"
-  }, h("span", {
-    className: "pp-slotbox",
-    dangerouslySetInnerHTML: {
-      __html: plusSvg
-    }
-  }), h("span", {
-    className: "pp-slotpulse"
-  }), h("span", {
-    className: "pp-ce",
-    dangerouslySetInnerHTML: {
-      __html: barsSvg
-    }
-  })), gh(false, 6), gh(true, 7), gh(false, 8), gh(true, 9), gh(false, 10), gh(true, 11)), h("div", {
-    className: "pp-dock"
-  }, gh(false, "d0"), gh(false, "d1"), gh(false, "d2"), gh(false, "d3"))))), h("p", {
-    className: "pp-bhint"
-  }, tr("pin_guide_for")), h("div", {
-    className: "pp-btns"
-  }, h("button", {
-    className: "pp-b",
-    onClick: () => setView("ios")
-  }, h("span", {
-    dangerouslySetInnerHTML: {
-      __html: appleSvg
-    }
-  }), "iPhone"), h("button", {
-    className: "pp-b",
-    onClick: () => setView("android")
-  }, h("span", {
-    dangerouslySetInnerHTML: {
-      __html: androidSvg
-    }
-  }), "Android")), h("button", {
-    className: "pp-skip",
-    onClick: onClose
-  }, tr("pin_later"))));
-}
 function InstallBanner({
   onInstall,
   onDismiss
@@ -14808,53 +14657,6 @@ function IOSInstallBanner({
 
 /* Short step-by-step explainer for adding the app to the iOS home screen
    (Safari can't trigger this from a tap — the user must use the Share menu). */
-function AndroidHelpModal({
-  onClose
-}) {
-  return /*#__PURE__*/React.createElement("div", {
-    className: "namegate",
-    onClick: onClose
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "namecard hintcard",
-    onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "namex",
-    onClick: onClose,
-    title: tr("ios_close")
-  }, "\xD7"), /*#__PURE__*/React.createElement("div", {
-    className: "tourhead-row"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "tourbadge",
-    style: {
-      background: "#1a9b46"
-    }
-  }, "\U0001F916"), /*#__PURE__*/React.createElement("h2", {
-    className: "namehead",
-    style: {
-      margin: 0
-    }
-  }, tr("and_help_title"))), /*#__PURE__*/React.createElement("ul", {
-    className: "hintlist",
-    style: {
-      "--col": "#1a9b46"
-    }
-  }, [1, 2, 3].map((n, i) => /*#__PURE__*/React.createElement("li", {
-    key: n,
-    style: {
-      animationDelay: 0.06 + i * 0.09 + "s"
-    },
-    dangerouslySetInnerHTML: {
-      __html: tr("and_help_" + n)
-    }
-  }))), /*#__PURE__*/React.createElement("button", {
-    className: "namebtn",
-    onClick: onClose
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "cta-rainbow"
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "cta-label"
-  }, tr("got_it")))));
-}
 function IOSHelpModal({
   onClose
 }) {
@@ -14916,7 +14718,7 @@ function BonusBar({
     onClick: onOpen,
     style: {
       width: "100%",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(135deg,#e7156b,#a557ff)",
       border: "none",
       padding: "6px 12px",
       fontSize: "12px",
@@ -14988,7 +14790,7 @@ function ReviewPrompt({
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      background: "linear-gradient(135deg,#e71583,#ff7a18,#a557ff)",
+      background: "linear-gradient(135deg,#e7156b,#ff7a18,#a557ff)",
       padding: "22px 22px 18px",
       textAlign: "center",
       color: "#fff"
@@ -15052,7 +14854,7 @@ function ReviewPrompt({
       border: "none",
       borderRadius: "15px",
       padding: "15px",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(135deg,#e7156b,#a557ff)",
       color: "#fff",
       fontFamily: "var(--font-display)",
       fontWeight: 800,
@@ -15209,7 +15011,7 @@ function WelcomeOffer({
     t: ""
   }), " ", /*#__PURE__*/React.createElement("span", {
     style: {
-      color: "#e71583",
+      color: "#e7156b",
       fontVariantNumeric: "tabular-nums"
     }
   }, cd))), /*#__PURE__*/React.createElement("h2", {
@@ -15515,7 +15317,7 @@ function PlanSelect({
     }
   }))), /*#__PURE__*/React.createElement("h2", {
     className: "plansel-hero-h1"
-  }, tr("plan_hero_h1")), /*#__PURE__*/React.createElement("p", {
+  }, "Lerne ohne Limits"), /*#__PURE__*/React.createElement("p", {
     className: "plansel-hero-sub"
   }, tr("plan_hero_sub"))), /*#__PURE__*/React.createElement("div", {
     className: "plansel-content"
@@ -15681,7 +15483,7 @@ function PlanSelect({
       padding: "11px 24px",
       borderRadius: "12px",
       border: "none",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(135deg,#e7156b,#a557ff)",
       color: "#fff",
       fontWeight: 700,
       fontSize: "14px",
@@ -15716,7 +15518,7 @@ function PlanSelect({
       padding: "13px",
       borderRadius: "12px",
       border: "none",
-      background: !code.trim() || codeState === "loading" ? "var(--border)" : "linear-gradient(135deg,#e71583,#a557ff)",
+      background: !code.trim() || codeState === "loading" ? "var(--border)" : "linear-gradient(135deg,#e7156b,#a557ff)",
       color: !code.trim() || codeState === "loading" ? "var(--muted)" : "#fff",
       fontWeight: 700,
       fontSize: "15px",
@@ -16769,18 +16571,15 @@ function App() {
   const deferredInstall = useRef(null);
   const [showInstall, setShowInstall] = useState(false);
   const [showIOSInstall, setShowIOSInstall] = useState(false);
-  const [showPin, setShowPin] = useState(false);
   useEffect(() => {
     if (recall("kunju-install-dismissed", false)) return;
-    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    const isStandalone = window.navigator.standalone === true || !!(window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
-    if (isStandalone) return;
-    // Deferred Prompt evtl. schon vor React-Mount gefeuert
+    // Android/Chrome: event may have already fired before React mounted
     if (window.__deferredInstallPrompt) {
       deferredInstall.current = window.__deferredInstallPrompt;
       window.__deferredInstallPrompt = null;
+      setShowInstall(true);
     }
+    // Also listen for future fires (e.g. deferred by browser heuristics)
     const handler = e => {
       e.preventDefault();
       deferredInstall.current = e;
@@ -16792,18 +16591,18 @@ function App() {
       persist("kunju-install-dismissed", true);
     };
     window.addEventListener("appinstalled", installed);
-    // Bei JEDEM Start anbieten, bis aktiv weggeklickt: iOS-Safari → Hinweis, sonst Banner.
-    if (isIOS && isSafari) setShowIOSInstall(true);else setShowInstall(true);
+    // iOS Safari: no beforeinstallprompt — show manual hint
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isStandalone = window.navigator.standalone === true;
+    if (isIOS && isSafari && !isStandalone) setShowIOSInstall(true);
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
       window.removeEventListener("appinstalled", installed);
     };
   }, []);
   async function handleInstall() {
-    if (!deferredInstall.current) {
-      dismissInstall();
-      return;
-    }
+    if (!deferredInstall.current) return;
     deferredInstall.current.prompt();
     const {
       outcome
@@ -17284,8 +17083,26 @@ function App() {
   }, /*#__PURE__*/React.createElement("header", {
     className: "appbar"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "appbar-side appbar-left"
-  }, supaUser ? /*#__PURE__*/React.createElement(UserMenu, {
+    className: "brand",
+    style: {
+      minWidth: 0,
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "brand-mark"
+  }, RAINBOW.slice(0, 5).map((c, i) => /*#__PURE__*/React.createElement("i", {
+    key: i,
+    style: {
+      background: c
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "brand-text"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "brand-name",
+    style: {
+      color: "rgb(231, 21, 131)"
+    }
+  }, "Conju", /*#__PURE__*/React.createElement("b", null, "Expert")), supaUser ? /*#__PURE__*/React.createElement(UserMenu, {
     user: supaUser,
     name: name,
     isPremium: isPremium,
@@ -17303,30 +17120,40 @@ function App() {
       setPremiumUntil(null);
       setShowDeletedMsg(true);
     },
-    onEditName: () => setShowOnboard(true),
-    onTarife: () => setShowPlanSelect(true),
-    onPin: () => setShowPin(true)
+    onEditName: () => setShowOnboard(true)
   }) : name ? /*#__PURE__*/React.createElement(GuestMenu, {
     name: name,
     greet: tr("hi", {
       name
     }),
     onLogin: () => setShowLogin(true),
-    onEditName: () => setShowOnboard(true),
-    onTarife: () => setShowPlanSelect(true),
-    onPin: () => setShowPin(true)
+    onEditName: () => setShowOnboard(true)
   }) : /*#__PURE__*/React.createElement("span", {
     className: "brand-tag"
-  }, tr("tagline"))), /*#__PURE__*/React.createElement("div", {
-    className: "appbar-center"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "brand-name",
+  }, tr("tagline")))), /*#__PURE__*/React.createElement("div", {
     style: {
-      color: "rgb(231, 21, 131)"
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-end",
+      gap: "3px",
+      flexShrink: 0
     }
-  }, "Conju", /*#__PURE__*/React.createElement("b", null, "Expert"))), /*#__PURE__*/React.createElement("div", {
-    className: "appbar-side appbar-right"
-  }, /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "9px",
+      fontWeight: 800,
+      letterSpacing: "0.07em",
+      textTransform: "uppercase",
+      color: LANG_META[lang].color,
+      lineHeight: 1
+    }
+  }, "\uD83C\uDFAF ", {
+    de: "Ziele",
+    en: "Goals",
+    es: "Metas",
+    nl: "Doelen",
+    fr: "Objectifs"
+  }[UILANG] || "Goals"), /*#__PURE__*/React.createElement("button", {
     className: "streakpill",
     onClick: () => {
       closeSkHint();
@@ -17368,9 +17195,6 @@ function App() {
     onDismiss: dismissInstall
   }), showIOSInstall && !showInstall && /*#__PURE__*/React.createElement(IOSInstallBanner, {
     onDismiss: dismissIOSInstall
-  }), showPin && /*#__PURE__*/React.createElement(PinSheet, {
-    onClose: () => setShowPin(false),
-    onAndroid: handleInstall
   }), (!isPremium || !supaUser) && /*#__PURE__*/React.createElement(BonusBar, {
     onOpen: () => openPlanSelect(),
     trialExpiry: trialExpiry,
