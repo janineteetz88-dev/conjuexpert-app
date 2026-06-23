@@ -4645,15 +4645,12 @@ function LanguageBar({
     return /*#__PURE__*/React.createElement("button", {
       key: code,
       className: "langbtn" + (active ? " active" : ""),
-      style: active ? {
-        "--lc": meta.color
-      } : {},
+      style: {
+        "--lc": "var(--text)"
+      },
       onClick: () => setLang(code)
     }, /*#__PURE__*/React.createElement("span", {
-      className: "langstripe",
-      style: {
-        background: meta.color
-      }
+      className: "langstripe"
     }), /*#__PURE__*/React.createElement("span", {
       className: "langflag"
     }, meta.code), /*#__PURE__*/React.createElement("span", {
@@ -12664,7 +12661,7 @@ function BonusBar({
     onClick: onOpen,
     style: {
       width: "100%",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(135deg,#221f1a,#3a352c)",
       border: "none",
       padding: "6px 12px",
       fontSize: "12px",
