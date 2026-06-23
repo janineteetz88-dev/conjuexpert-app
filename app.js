@@ -4426,7 +4426,7 @@ function exportPDF(result, langCode, meaning) {
   }).join("");
   const LC = {
     DE: "#ff3b5c",
-    EN: "#0a84ff",
+    EN: "#a557ff",
     ES: "#ff9f0a",
     NL: "#30c95a",
     FR: "#a557ff"
@@ -4444,7 +4444,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;c
 .mark{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;width:30px;height:30px;padding:4px;background:#f7f8fb;border-radius:8px;border:1px solid #e8eaef;flex:none}
 .mark i{display:block;border-radius:2px}
 .bname{font-size:18px;font-weight:600;letter-spacing:-.02em;color:#14151a;line-height:1.1}
-.bname b{font-weight:700;background:linear-gradient(90deg,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bname b{font-weight:700;background:linear-gradient(90deg,#e71583,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .btag{font-size:10.5px;color:#9098a8;letter-spacing:.04em;display:block;margin-top:1px}
 .verb{padding:20px 0 2px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 h1{font-size:38px;font-weight:800;margin:0;letter-spacing:-.03em}
@@ -4462,15 +4462,15 @@ td{padding:2.5px 0;font-size:13.5px}
 .fmark{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:24px;height:24px;padding:3px;background:#f7f8fb;border-radius:6px;border:1px solid #e8eaef;flex:none}
 .fmark i{display:block;border-radius:1px}
 .fname{font-size:15px;font-weight:600;letter-spacing:-.02em;color:#14151a}
-.fname b{font-weight:700;background:linear-gradient(90deg,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fname b{font-weight:700;background:linear-gradient(90deg,#e71583,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .ftag{font-size:10px;color:#9098a8;display:block;margin-top:1px}
 .langs{display:grid;grid-template-columns:1fr 1fr;gap:5px 20px;margin-bottom:14px}
 .lang{font-size:12.5px;color:#555;display:flex;gap:9px;align-items:center}
 .lc{font-size:9.5px;font-weight:700;letter-spacing:.1em;min-width:22px;font-family:ui-monospace,monospace}
-.url{font-weight:700;font-size:13px;background:linear-gradient(90deg,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-top:10px;display:block}
+.url{font-weight:700;font-size:13px;background:linear-gradient(90deg,#e71583,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-top:10px;display:block}
 .ex{margin-top:5px;padding:5px 0 0;border-top:1px dashed #edf0f5}
 .exs{display:block;font-size:12px;color:#3a3f52;font-style:italic;line-height:1.45}
-.exs b{color:#0a84ff;font-style:normal;font-weight:700}
+.exs b{color:#a557ff;font-style:normal;font-weight:700}
 .exn{display:block;font-size:11px;color:#b0b7c8;margin-top:1px}
 .rb-b{margin-top:20px}
 @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
@@ -5827,7 +5827,7 @@ function WordSentence({
   }
   const underlineStyle = {
     textDecoration: "underline",
-    textDecorationColor: "var(--lc, #0a84ff)",
+    textDecorationColor: "var(--lc, #a557ff)",
     textDecorationThickness: "2px",
     textUnderlineOffset: "3px"
   };
@@ -5995,8 +5995,8 @@ function WordSentence({
         margin: "1px 5px",
         padding: "3px 10px",
         borderRadius: "999px",
-        background: "color-mix(in srgb, var(--lc, #0a84ff) 13%, var(--surface))",
-        border: "1px solid color-mix(in srgb, var(--lc, #0a84ff) 32%, var(--border))",
+        background: "color-mix(in srgb, var(--lc, #a557ff) 13%, var(--surface))",
+        border: "1px solid color-mix(in srgb, var(--lc, #a557ff) 32%, var(--border))",
         fontSize: "13px",
         fontWeight: 600,
         whiteSpace: "nowrap"
@@ -6030,8 +6030,8 @@ function WordSentence({
         margin: "1px 5px",
         padding: "3px 10px",
         borderRadius: "999px",
-        background: "color-mix(in srgb, var(--lc, #0a84ff) 13%, var(--surface))",
-        border: "1px solid color-mix(in srgb, var(--lc, #0a84ff) 32%, var(--border))",
+        background: "color-mix(in srgb, var(--lc, #a557ff) 13%, var(--surface))",
+        border: "1px solid color-mix(in srgb, var(--lc, #a557ff) 32%, var(--border))",
         fontSize: "13px",
         fontWeight: 600,
         whiteSpace: "nowrap"
@@ -10314,7 +10314,7 @@ function VocabView({
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      background: "linear-gradient(135deg,#a557ff22,#0a84ff18)",
+      background: "linear-gradient(135deg,#a557ff22,#a557ff18)",
       padding: "22px 20px 16px",
       textAlign: "center",
       borderBottom: "1px solid var(--border)"
@@ -11293,7 +11293,7 @@ function TourGate({
 const FEATURE_HINTS = {
   learn: {
     icon: "✦",
-    col: "#0a84ff"
+    col: "#a557ff"
   },
   quiz_cards: {
     icon: "🃏",
@@ -11625,6 +11625,7 @@ function UserMenu({
   }, []);
   function openPanel(p) {
     setPanel(p);
+    setOpen(false);
     setDeleteErr("");
     setCancelErr("");
   }
@@ -11682,6 +11683,21 @@ function UserMenu({
   const untilStr = activeUntil ? fmtDate(new Date(activeUntil)) : null;
   const hasActiveSub = isPremium && !cancelledUntil; // paid and not yet cancelled
 
+  const __ov = (...kids) => /*#__PURE__*/React.createElement("div", {
+    onClick: () => setPanel(null),
+    style: { position: "fixed", inset: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "24px", background: "color-mix(in srgb, var(--bg) 80%, rgba(0,0,0,0.45))" }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "namecard",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("button", { className: "namex", onClick: () => setPanel(null) }, "×"), ...kids));
+  const __ttl = (t, col) => /*#__PURE__*/React.createElement("div", { style: { fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "21px", letterSpacing: "-0.02em", margin: "4px 0 0", color: col || "var(--text)" } }, t);
+  const __body = (t) => /*#__PURE__*/React.createElement("div", { style: { fontSize: "13.5px", lineHeight: 1.55, color: "var(--muted)", margin: "8px 0 0", textAlign: "center" } }, t);
+  const __err = (t) => t && /*#__PURE__*/React.createElement("div", { style: { fontSize: "12px", color: "#ff453a", marginTop: "10px" } }, t);
+  const __ico = (e) => /*#__PURE__*/React.createElement("div", { style: { fontSize: "30px", lineHeight: 1, marginBottom: "2px" } }, e);
+  const __primary = (label, fn, dis, bg, shadow) => /*#__PURE__*/React.createElement("button", { onClick: fn, disabled: dis, className: "namebtn", style: { background: bg, marginTop: "18px", boxShadow: shadow } }, /*#__PURE__*/React.createElement("span", { className: "cta-label" }, label));
+  const __text = (label, fn) => /*#__PURE__*/React.createElement("button", { onClick: fn, style: { width: "100%", marginTop: "10px", padding: "9px", background: "none", border: "none", cursor: "pointer", fontSize: "13px", fontWeight: "600", color: "var(--muted)" } }, label);
+  const __BRAND = "linear-gradient(135deg,#e71583,#a557ff)";
+  const __BSHADOW = "0 14px 30px -12px rgba(165,87,255,.55)";
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
     style: {
@@ -11690,7 +11706,7 @@ function UserMenu({
   }, /*#__PURE__*/React.createElement(UserChip, {
     avatar: avatar,
     label: greet,
-    onClick: () => setOpen(o => !o)
+    onClick: () => { setPanel(null); setOpen(o => !o); }
   }), open && /*#__PURE__*/React.createElement("div", {
     style: {
       position: "absolute",
@@ -11776,10 +11792,7 @@ function UserMenu({
     }
   }), hasActiveSub && /*#__PURE__*/React.createElement("button", {
     onClick: () => openPanel("cancel"),
-    style: {
-      ...DD_ITEM,
-      color: "#ff9f0a"
-    }
+    style: DD_ITEM
   }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDD14"), " ", tr("menu_cancel_sub")), isPremium && cancelledUntil && /*#__PURE__*/React.createElement("div", {
     style: {
       padding: "7px 10px",
@@ -11795,204 +11808,32 @@ function UserMenu({
       ...DD_ITEM,
       color: "#ff453a"
     }
-  }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDDD1"), " ", tr("menu_delete_acc"))), panel === "cancel" && /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: "4px 2px"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: "13px",
-      fontWeight: "700",
-      color: "var(--text)",
-      marginBottom: "6px",
-      padding: "0 8px"
-    }
-  }, tr("cancel_title")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: "12px",
-      color: "var(--muted)",
-      lineHeight: 1.55,
-      marginBottom: "10px",
-      padding: "0 8px"
-    }
-  }, tr("cancel_body", {
-    date: untilStr
-  })), cancelErr && /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: "11px",
-      color: "#ff453a",
-      marginBottom: "8px",
-      padding: "0 8px"
-    }
-  }, cancelErr), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: "6px",
-      padding: "0 2px"
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => openPanel(null),
-    style: {
-      flex: 1,
-      padding: "8px",
-      background: "var(--surface-2)",
-      border: "1px solid var(--border)",
-      borderRadius: "10px",
-      cursor: "pointer",
-      fontSize: "12px",
-      fontWeight: "600"
-    }
-  }, tr("cancel_no")), /*#__PURE__*/React.createElement("button", {
-    onClick: cancelSubscription,
-    disabled: cancelling,
-    style: {
-      flex: 1,
-      padding: "8px",
-      background: "#ff9f0a",
-      border: "none",
-      borderRadius: "10px",
-      cursor: "pointer",
-      fontSize: "12px",
-      color: "#fff",
-      fontWeight: "700"
-    }
-  }, cancelling ? "…" : tr("cancel_yes")))), panel === "delete" && /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: "4px 2px"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: "13px",
-      fontWeight: "700",
-      color: "#ff453a",
-      marginBottom: "6px",
-      padding: "0 8px"
-    }
-  }, tr("delete_title")), hasActiveSub ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: "rgba(255,159,10,0.1)",
-      border: "1px solid rgba(255,159,10,0.3)",
-      borderRadius: "10px",
-      padding: "10px",
-      marginBottom: "10px",
-      fontSize: "12px",
-      lineHeight: 1.55
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontWeight: "700",
-      color: "#ff9f0a",
-      marginBottom: "4px"
-    }
-  }, tr("delete_warn_days", {
-    n: daysLeft
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      color: "var(--muted)"
-    }
-  }, tr("delete_warn_body", {
-    date: untilStr
-  }))), deleteErr && /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: "11px",
-      color: "#ff453a",
-      marginBottom: "8px",
-      padding: "0 8px"
-    }
-  }, deleteErr), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: "6px",
-      padding: "0 2px"
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => openPanel("cancel"),
-    style: {
-      flex: "1.4",
-      padding: "8px",
-      background: "linear-gradient(135deg,#ff9f0a,#ff6b00)",
-      border: "none",
-      borderRadius: "10px",
-      cursor: "pointer",
-      fontSize: "11px",
-      color: "#fff",
-      fontWeight: "700",
-      lineHeight: 1.3
-    }
-  }, tr("delete_cancel_first")), /*#__PURE__*/React.createElement("button", {
-    onClick: deleteAccount,
-    disabled: deleting,
-    style: {
-      flex: "1",
-      padding: "8px",
-      background: "rgba(255,69,58,0.12)",
-      border: "1.5px solid #ff453a",
-      borderRadius: "10px",
-      cursor: "pointer",
-      fontSize: "11px",
-      color: "#ff453a",
-      fontWeight: "700"
-    }
-  }, deleting ? "…" : tr("delete_anyway"))), /*#__PURE__*/React.createElement("button", {
-    onClick: () => openPanel(null),
-    style: {
-      width: "100%",
-      marginTop: "6px",
-      padding: "6px",
-      background: "none",
-      border: "none",
-      cursor: "pointer",
-      fontSize: "11px",
-      color: "var(--muted)"
-    }
-  }, tr("cancel_no"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: "12px",
-      color: "var(--muted)",
-      lineHeight: 1.5,
-      marginBottom: "10px",
-      padding: "0 8px"
-    }
-  }, tr("delete_data")), deleteErr && /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: "11px",
-      color: "#ff453a",
-      marginBottom: "8px",
-      padding: "0 8px"
-    }
-  }, deleteErr), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: "6px",
-      padding: "0 2px"
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => openPanel(null),
-    style: {
-      flex: 1,
-      padding: "8px",
-      background: "var(--surface-2)",
-      border: "1px solid var(--border)",
-      borderRadius: "10px",
-      cursor: "pointer",
-      fontSize: "12px",
-      fontWeight: "600"
-    }
-  }, tr("cancel_no")), /*#__PURE__*/React.createElement("button", {
-    onClick: deleteAccount,
-    disabled: deleting,
-    style: {
-      flex: 1,
-      padding: "8px",
-      background: "#ff453a",
-      border: "none",
-      borderRadius: "10px",
-      cursor: "pointer",
-      fontSize: "12px",
-      color: "#fff",
-      fontWeight: "700"
-    }
-  }, deleting ? "…" : tr("delete_yes")))))));
+  }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDDD1"), " ", tr("menu_delete_acc")))), panel === "cancel" && __ov(
+    __ico("🔔"),
+    __ttl(tr("cancel_title")),
+    __body(tr("cancel_body", { date: untilStr })),
+    __err(cancelErr),
+    __primary(tr("cancel_no"), () => setPanel(null), false, __BRAND, __BSHADOW),
+    __text(cancelling ? "…" : tr("cancel_yes"), cancelSubscription)
+  ), panel === "delete" && __ov(
+    __ico("🗑"),
+    __ttl(tr("delete_title"), "#ff453a"),
+    hasActiveSub ? /*#__PURE__*/React.createElement(React.Fragment, null,
+      /*#__PURE__*/React.createElement("div", { style: { background: "rgba(255,69,58,0.08)", border: "1px solid rgba(255,69,58,0.25)", borderRadius: "12px", padding: "11px 13px", margin: "12px 0 0", fontSize: "12.5px", lineHeight: 1.5, textAlign: "left" } },
+        /*#__PURE__*/React.createElement("div", { style: { fontWeight: 700, color: "#ff453a", marginBottom: "3px" } }, tr("delete_warn_days", { n: daysLeft })),
+        /*#__PURE__*/React.createElement("div", { style: { color: "var(--muted)" } }, tr("delete_warn_body", { date: untilStr }))
+      ),
+      __err(deleteErr),
+      __primary(tr("delete_cancel_first"), () => openPanel("cancel"), false, __BRAND, __BSHADOW),
+      /*#__PURE__*/React.createElement("button", { onClick: deleteAccount, disabled: deleting, style: { width: "100%", marginTop: "10px", padding: "13px", background: "rgba(255,69,58,0.1)", border: "1.5px solid #ff453a", borderRadius: "14px", cursor: "pointer", fontSize: "14px", fontWeight: "700", color: "#ff453a", fontFamily: "var(--font-display)" } }, deleting ? "…" : tr("delete_anyway")),
+      __text(tr("cancel_no"), () => setPanel(null))
+    ) : /*#__PURE__*/React.createElement(React.Fragment, null,
+      __body(tr("delete_data")),
+      __err(deleteErr),
+      __primary(deleting ? "…" : tr("delete_yes"), deleteAccount, deleting, "#ff453a", "0 14px 30px -12px rgba(255,69,58,.5)"),
+      __text(tr("cancel_no"), () => setPanel(null))
+    )
+  ));
 }
 function GuestMenu({
   name,
@@ -12034,7 +11875,7 @@ function GuestMenu({
   }, /*#__PURE__*/React.createElement(UserChip, {
     avatar: avatar,
     label: greet,
-    onClick: () => setOpen(o => !o)
+    onClick: () => { setPanel(null); setOpen(o => !o); }
   }), open && /*#__PURE__*/React.createElement("div", {
     style: {
       position: "absolute",
@@ -12424,7 +12265,7 @@ function LoginModal({
       setErr("");
     },
     style: {
-      color: "var(--tc,#0a84ff)",
+      color: "var(--tc,#a557ff)",
       cursor: "pointer",
       textDecoration: "underline"
     }
@@ -12440,7 +12281,7 @@ function LoginModal({
       setErr("");
     },
     style: {
-      color: "var(--tc,#0a84ff)",
+      color: "var(--tc,#a557ff)",
       cursor: "pointer",
       textDecoration: "underline"
     }
@@ -12549,7 +12390,7 @@ function PinSheet({
   if (view === "android") return /*#__PURE__*/React.createElement(AndroidHelpModal, {
     onClose: onClose
   });
-  const RB = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#0a84ff"];
+  const RB = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#a557ff"];
   const barsSvg = `<svg viewBox="0 0 100 100" fill="none"><rect x="16" y="33" width="9" height="34" rx="3.5" fill="#ff3b5c"/><rect x="31" y="21" width="9" height="58" rx="3.5" fill="#ff8a18"/><rect x="46" y="10" width="9" height="80" rx="3.5" fill="#ffc400"/><rect x="61" y="26" width="9" height="48" rx="3.5" fill="#1fbf6b"/><rect x="76" y="36" width="9" height="28" rx="3.5" fill="#0a84ff"/></svg>`;
   const plusSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v8M8 12h8"></path></svg>`;
   const appleSvg = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.8-3-.8c-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7 2-1.1 2.8-2.2c.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.5-1-2.5-3.8zM14.1 4.9c.7-.8 1.1-1.9 1-3-1 0-2.1.6-2.8 1.4-.6.7-1.1 1.8-1 2.9 1.1.1 2.2-.5 2.8-1.3z"></path></svg>`;
@@ -12754,7 +12595,7 @@ function IOSHelpModal({
   }, /*#__PURE__*/React.createElement("span", {
     className: "tourbadge",
     style: {
-      background: "#0a84ff"
+      background: "#a557ff"
     }
   }, "\uD83D\uDCF1"), /*#__PURE__*/React.createElement("h2", {
     className: "namehead",
@@ -12764,7 +12605,7 @@ function IOSHelpModal({
   }, tr("ios_help_title"))), /*#__PURE__*/React.createElement("ul", {
     className: "hintlist",
     style: {
-      "--col": "#0a84ff"
+      "--col": "#a557ff"
     }
   }, [1, 2, 3].map((n, i) => /*#__PURE__*/React.createElement("li", {
     key: n,
@@ -12948,7 +12789,7 @@ function ReviewPrompt({
       marginTop: "10px",
       border: "none",
       background: "none",
-      color: "var(--lang-color,#0a84ff)",
+      color: "var(--lang-color,#a557ff)",
       fontFamily: "var(--font-display)",
       fontWeight: 700,
       fontSize: "13.5px",
@@ -13652,7 +13493,7 @@ function GoalSuccess({
       width: "56px",
       height: "56px",
       borderRadius: "18px",
-      background: "linear-gradient(135deg,#0a84ff,#a557ff)",
+      background: "linear-gradient(135deg,#e71583,#a557ff)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -13669,7 +13510,7 @@ function GoalSuccess({
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
-      background: "linear-gradient(95deg,#0a84ff,#a557ff)",
+      background: "linear-gradient(95deg,#e71583,#a557ff)",
       WebkitBackgroundClip: "text",
       backgroundClip: "text",
       color: "transparent"
@@ -14116,7 +13957,7 @@ function Zieltafel({
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
-      background: "linear-gradient(95deg,#0a84ff,#a557ff)",
+      background: "linear-gradient(95deg,#e71583,#a557ff)",
       color: "#fff",
       borderRadius: "14px 14px 0 14px",
       padding: "9px 13px",
@@ -15225,7 +15066,7 @@ function App() {
   }, [0, 1, 2, 3, 4].map(i => {
     const filled = Math.round(Math.min(daily.count / daily.goal, 1) * 5);
     const on = i < filled;
-    const cols = ["#ff3b5c", "#ff8a18", "#ffc400", "#1fbf6b", "#0a84ff"];
+    const cols = ["#ff3b5c", "#ff8a18", "#ffc400", "#1fbf6b", "#a557ff"];
     return /*#__PURE__*/React.createElement("i", {
       key: i,
       className: on ? "on" : "",
@@ -15509,7 +15350,7 @@ class ErrorBoundary extends React.Component {
         });
       },
       style: {
-        background: "#0a84ff",
+        background: "#a557ff",
         color: "#fff",
         border: "none",
         borderRadius: "14px",
