@@ -418,17 +418,14 @@ body {
   /* Endhöhe schon beim ersten Paint belegen + body verankert oben (align-items:flex-start)
      -> #approot kann sich nicht mehr re-zentrieren, wenn der React-Inhalt mountet (CLS) */
   min-height: 100dvh;
-  /* "Surfers Paradise" — warme Sandtöne, schwarz-weiß mit Sand, Regenbogen nur als Akzent */
-  --bg: #efe8db;
-  --surface: #fffdf8;
-  --surface-2: #f4eee2;
-  --sand: #e8dfcd;
-  --sand-2: #f0e9db;
-  --text: #1b1813;
-  --muted: #7c7466;
-  --border: rgba(60, 48, 24, 0.12);
-  --shadow: 0 18px 50px -22px rgba(70, 55, 25, 0.28);
-  --shadow-sm: 0 6px 18px -10px rgba(70, 55, 25, 0.24);
+  --bg: #f3f4f8;
+  --surface: #ffffff;
+  --surface-2: #f7f8fb;
+  --text: #14151a;
+  --muted: #646b7a;
+  --border: rgba(20, 22, 30, 0.08);
+  --shadow: 0 18px 50px -22px rgba(30, 35, 60, 0.35);
+  --shadow-sm: 0 6px 18px -10px rgba(30, 35, 60, 0.3);
 }
 /* React root: full width + flex so .phone centres on desktop.
    min-height reserves the final viewport height already at first paint so the
@@ -674,13 +671,14 @@ body {
   overflow: hidden; transition: transform 0.15s, border-color 0.2s, color 0.2s, background 0.2s;
 }
 .langbtn:active { transform: scale(0.95); }
-.langstripe { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--text); opacity: 0.14; transition: height 0.2s, opacity 0.2s; }
+.langstripe { position: absolute; top: 0; left: 0; right: 0; height: 4px; opacity: 0.55; transition: height 0.2s, opacity 0.2s; }
+#approot[data-accent="mono"] .langstripe { background: var(--text) !important; opacity: 0.3; }
 .langbtn.active {
-  color: var(--text); border-color: color-mix(in srgb, var(--text) 22%, var(--border));
-  background: var(--surface);
-  box-shadow: 0 8px 22px -14px rgba(70, 55, 25, 0.5);
+  color: var(--text); border-color: color-mix(in srgb, var(--lc) 55%, transparent);
+  background: color-mix(in srgb, var(--lc) 12%, var(--surface));
+  box-shadow: 0 8px 22px -12px var(--lc);
 }
-.langbtn.active .langstripe { height: 6px; opacity: 0.85; }
+.langbtn.active .langstripe { height: 6px; opacity: 1; }
 .langflag { font-size: 18px; line-height: 1; margin-top: 2px; font-family: var(--font-display); font-weight: 700; }
 .langname { font-size: 9.5px; font-weight: 500; letter-spacing: 0; margin-top: 1px; white-space: nowrap; }
 
@@ -698,16 +696,16 @@ body {
   transition: color 0.18s, background 0.18s, border-color 0.18s, box-shadow 0.18s, transform 0.12s;
   white-space: nowrap; overflow: hidden; min-height: 40px;
 }
-.tab-icon { font-size: 11px; opacity: 0.6; line-height: 1; }
-.tab:not(.active):hover { color: var(--text); border-color: color-mix(in srgb, var(--text) 18%, transparent); }
+.tab-icon { font-size: 11px; opacity: 0.7; line-height: 1; }
+.tab:not(.active):hover { color: var(--text); border-color: color-mix(in srgb, var(--lang-color, #a557ff) 30%, transparent); }
 .tab:active { transform: scale(0.95); }
 .tab.active {
-  color: var(--surface);
-  background: var(--text);
-  border-color: var(--text);
-  box-shadow: 0 8px 20px -12px rgba(70, 55, 25, 0.55);
+  color: var(--text);
+  background: color-mix(in srgb, var(--lang-color, #a557ff) 12%, var(--surface));
+  border-color: var(--lang-color, #a557ff);
+  box-shadow: 0 6px 16px -11px var(--lang-color, #a557ff);
 }
-.tab.active .tab-icon { opacity: 1; color: var(--surface); }
+.tab.active .tab-icon { opacity: 1; color: var(--lang-color, #a557ff); }
 #approot[data-accent="mono"] .tab.active { border-color: var(--text); background: color-mix(in srgb, var(--text) 9%, var(--surface)); }
 #approot[data-accent="mono"] .tab.active .tab-icon { color: var(--text); }
 
@@ -745,7 +743,7 @@ body {
   transition: transform 0.14s;
 }
 .cta:active { transform: scale(0.97); }
-.cta-rainbow { position: absolute; inset: 0; background: linear-gradient(135deg, #221f1a 0%, #3a352c 100%); }
+.cta-rainbow { position: absolute; inset: 0; background: linear-gradient(135deg, #ff3b5c 0%, #e71583 100%); }
 #approot[data-accent="soft"] .cta-rainbow { filter: saturate(0.75); }
 #approot[data-accent="mono"] .cta-rainbow { background: linear-gradient(135deg, #2b2f3a, #4a4f60); }
 .cta-label { position: relative; z-index: 2; }
@@ -772,15 +770,16 @@ body {
 .emptyguide { padding: 18px 14px 10px; align-items: stretch; }
 .eg-hero { position: relative; overflow: hidden; border-radius: 22px; padding: 26px 20px 22px; margin-bottom: 16px;
   background:
-    radial-gradient(120% 120% at 85% 0%, color-mix(in srgb, var(--text) 4%, transparent), transparent 60%),
+    radial-gradient(120% 120% at 85% 0%, color-mix(in srgb, var(--lc,#a557ff) 16%, transparent), transparent 60%),
+    radial-gradient(120% 120% at 0% 100%, color-mix(in srgb, var(--lc2,var(--lc,#a557ff)) 13%, transparent), transparent 55%),
     var(--surface);
   border: 1px solid var(--border); box-shadow: var(--shadow-sm); text-align: left; }
-.eg-confetti { position: absolute; filter: grayscale(1) opacity(0.35); }
-.eg-kicker { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0 0 9px; }
+.eg-confetti { position: absolute; }
+.eg-kicker { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lc,#a557ff); margin: 0 0 9px; }
 .eg-l1 { font-family: var(--font-display); font-weight: 700; font-size: 29px; line-height: 1.02; letter-spacing: -0.025em; margin: 0; color: var(--text); }
-.eg-l1 .eg-lng { color: var(--text); }
-.eg-accent { position: relative; display: inline-block; white-space: nowrap; font-family: "Caveat", cursive; font-weight: 700; font-size: 41px; line-height: 0.9; margin: 4px 0 0; background: var(--brand-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.eg-accent svg { position: absolute; left: -4px; right: -4px; bottom: -9px; width: calc(100% + 8px); height: 13px; color: var(--text); opacity: 0.5; }
+.eg-l1 .eg-lng { color: var(--lc,#a557ff); }
+.eg-accent { position: relative; display: inline-block; white-space: nowrap; font-family: "Caveat", cursive; font-weight: 700; font-size: 41px; line-height: 0.9; margin: 4px 0 0; color: var(--lc,#a557ff); }
+.eg-accent svg { position: absolute; left: -4px; right: -4px; bottom: -9px; width: calc(100% + 8px); height: 13px; }
 .eg-plan { margin: 15px 0 0; font-family: var(--font-display); font-weight: 600; font-size: 14.5px; color: var(--text); }
 .eg-cards { display: flex; flex-direction: column; gap: 10px; width: 100%; }
 .eg-card { display: flex; align-items: center; gap: 13px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px 14px; box-shadow: var(--shadow-sm); text-align: left; cursor: pointer; font-family: var(--font-display); transition: transform 0.14s, border-color 0.18s, box-shadow 0.18s; }
@@ -1849,8 +1848,8 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 /* ===== PWA Install Banner ===== */
 .install-bar {
   width: 100%; display: flex; align-items: center; gap: 10px;
-  background: var(--sand-2);
-  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, #a557ff 8%, var(--surface));
+  border-bottom: 1px solid color-mix(in srgb, #a557ff 18%, var(--border));
   padding: 9px 14px; font-size: 12.5px; font-weight: 600;
   animation: fade 0.3s ease both;
 }
@@ -1860,7 +1859,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 .install-bar-btn {
   flex: none; border: none; cursor: pointer; border-radius: 10px;
   padding: 7px 13px; font-family: var(--font-display); font-weight: 700;
-  font-size: 12px; color: var(--surface); background: var(--text);
+  font-size: 12px; color: #fff; background: #a557ff;
   white-space: nowrap; transition: opacity .15s;
 }
 .install-bar-btn:active { opacity: .82; }
@@ -2227,7 +2226,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=3c883d346c"></script>
+<script defer src="/app.js?v=16da9e9691"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
