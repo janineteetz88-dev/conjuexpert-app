@@ -816,7 +816,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;c
 .mark{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;width:30px;height:30px;padding:4px;background:#f7f8fb;border-radius:8px;border:1px solid #e8eaef;flex:none}
 .mark i{display:block;border-radius:2px}
 .bname{font-size:18px;font-weight:600;letter-spacing:-.02em;color:#14151a;line-height:1.1}
-.bname b{font-weight:700;background:linear-gradient(90deg,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bname b{font-weight:700;background:linear-gradient(90deg,#e71583,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .btag{font-size:10.5px;color:#9098a8;letter-spacing:.04em;display:block;margin-top:1px}
 .verb{padding:20px 0 2px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 h1{font-size:38px;font-weight:800;margin:0;letter-spacing:-.03em}
@@ -834,12 +834,12 @@ td{padding:2.5px 0;font-size:13.5px}
 .fmark{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:24px;height:24px;padding:3px;background:#f7f8fb;border-radius:6px;border:1px solid #e8eaef;flex:none}
 .fmark i{display:block;border-radius:1px}
 .fname{font-size:15px;font-weight:600;letter-spacing:-.02em;color:#14151a}
-.fname b{font-weight:700;background:linear-gradient(90deg,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fname b{font-weight:700;background:linear-gradient(90deg,#e71583,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .ftag{font-size:10px;color:#9098a8;display:block;margin-top:1px}
 .langs{display:grid;grid-template-columns:1fr 1fr;gap:5px 20px;margin-bottom:14px}
 .lang{font-size:12.5px;color:#555;display:flex;gap:9px;align-items:center}
 .lc{font-size:9.5px;font-weight:700;letter-spacing:.1em;min-width:22px;font-family:ui-monospace,monospace}
-.url{font-weight:700;font-size:13px;background:linear-gradient(90deg,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-top:10px;display:block}
+.url{font-weight:700;font-size:13px;background:linear-gradient(90deg,#e71583,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-top:10px;display:block}
 .ex{margin-top:5px;padding:5px 0 0;border-top:1px dashed #edf0f5}
 .exs{display:block;font-size:12px;color:#3a3f52;font-style:italic;line-height:1.45}
 .exs b{color:#0a84ff;font-style:normal;font-weight:700}
@@ -5021,10 +5021,10 @@ function GoalSuccess({ name, goal, onClose, onQuiz }) {
       <div className="zt-board" style={{alignItems:"stretch",gap:"16px",padding:"28px 24px 24px"}} onClick={e => e.stopPropagation()}>
         <button className="zt-x" onClick={onClose}>×</button>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"10px",textAlign:"center"}}>
-          <div style={{width:"56px",height:"56px",borderRadius:"18px",background:"linear-gradient(135deg,#0a84ff,#a557ff)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"26px",boxShadow:"0 10px 28px -10px #7a5cff"}}>✓</div>
+          <div style={{width:"56px",height:"56px",borderRadius:"18px",background:"linear-gradient(135deg,#e71583,#a557ff)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"26px",boxShadow:"0 10px 28px -10px #7a5cff"}}>✓</div>
           <div>
             <h2 style={{fontSize:"22px",fontWeight:900,letterSpacing:"-0.03em",margin:"0 0 6px",lineHeight:1.15}}>
-              <span style={{background:"linear-gradient(95deg,#0a84ff,#a557ff)",WebkitBackgroundClip:"text",backgroundClip:"text",color:"transparent"}}>Deine Ziele sind erfasst{name ? `, ${name}` : ""}.</span>
+              <span style={{background:"linear-gradient(95deg,#e71583,#a557ff)",WebkitBackgroundClip:"text",backgroundClip:"text",color:"transparent"}}>Deine Ziele sind erfasst{name ? `, ${name}` : ""}.</span>
             </h2>
             <p style={{fontSize:"13.5px",color:"var(--muted)",margin:0,lineHeight:1.6,maxWidth:"280px"}}>
               Viel Spaß beim Quizzen — stell dir vor, wie du bald flüssig in deiner Lieblingssprache sprichst. 🌟
@@ -5197,7 +5197,7 @@ function Zieltafel({ name, lang, daily, goal, onClose, onAdjustGoal, onQuiz }) {
             </div>
           ) : (
             <div key={i} style={{display:"flex",justifyContent:"flex-end"}}>
-              <span style={{background:"linear-gradient(95deg,#0a84ff,#a557ff)",color:"#fff",borderRadius:"14px 14px 0 14px",padding:"9px 13px",fontSize:"13.5px",maxWidth:"80%",lineHeight:1.5}}>{m.text}</span>
+              <span style={{background:"linear-gradient(95deg,#e71583,#a557ff)",color:"#fff",borderRadius:"14px 14px 0 14px",padding:"9px 13px",fontSize:"13.5px",maxWidth:"80%",lineHeight:1.5}}>{m.text}</span>
             </div>
           ))}
           {loading && <div style={{display:"flex",gap:"13px"}}><span className="zt-av">{(name||"J").slice(0,1).toUpperCase()}</span><div className="zt-body"><p style={{color:"var(--muted)",fontStyle:"italic"}}>…</p></div></div>}

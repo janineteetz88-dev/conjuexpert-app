@@ -3067,7 +3067,7 @@ function MonoBar({ onBack, backLabel }) {
           {[["#ff3b5c",20],["#ff7a18",16],["#ffc400",22],["#34c759",18],["#0a84ff",14]].map(([c,h],i) =>
             <i key={i} style={{background:c,height:h+"px"}}></i>)}
         </div>
-        <span style={{fontSize:"16px",fontWeight:700,color:"#e71583"}}>Conju<b style={{background:"linear-gradient(90deg,#0a84ff,#a557ff)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Expert</b></span>
+        <span style={{fontSize:"16px",fontWeight:700,color:"#e71583"}}>Conju<b style={{background:"linear-gradient(90deg,#e71583,#a557ff)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Expert</b></span>
       </div>
       <div style={{width:40}}/>
     </div>

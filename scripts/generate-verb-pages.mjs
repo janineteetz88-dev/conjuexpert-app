@@ -367,7 +367,7 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
   /* Nav */
   .site-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 54px; position: sticky; top: 0; z-index: 10; }
   .nav-logo { font-family: var(--display); font-weight: 800; font-size: 17px; letter-spacing: -.02em; color: var(--text); }
-  .nav-logo span { color: var(--accent); }
+  .nav-logo span { color: #e71583; }
   .nav-cta { background: var(--accent); color: #fff; padding: 7px 16px; border-radius: 10px; font-weight: 700; font-size: 13px; }
   .nav-cta:hover { text-decoration: none; background: #0070e0; }
 

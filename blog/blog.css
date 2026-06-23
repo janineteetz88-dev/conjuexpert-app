@@ -57,7 +57,7 @@ header.nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(1.5) blur(1
 .brand-mark{width:34px;height:34px;border-radius:9px;box-shadow:var(--shadow-sm);flex:none;background:#fff url("/favicon.svg") center/cover no-repeat}
 .brand-mark i{display:none}
 .brand-name{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:-.02em;color:var(--pink)}
-.brand-name b{font-weight:700;background:linear-gradient(90deg,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-name b{font-weight:700;background:linear-gradient(90deg,#e71583,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .brand-name .sub{color:var(--muted);font-weight:600}
 .nav-links{display:flex;gap:28px;font-size:15px;font-weight:600;color:var(--muted);margin-left:auto}
 .nav-links a:hover{color:var(--ink)}

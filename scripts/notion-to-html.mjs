@@ -17,7 +17,7 @@ const LANG_MAP = {
   Spanisch:      { code: "es", color: "#ff9f0a", grad: "linear-gradient(140deg,#ff9f0a,#ff3b5c)", label: "Spanisch" },
   Deutsch:       { code: "de", color: "#ff3b5c", grad: "linear-gradient(140deg,#ff3b5c,#ff7a18)", label: "Deutsch"  },
   Französisch:   { code: "fr", color: "#a557ff", grad: "linear-gradient(140deg,#a557ff,#0a84ff)", label: "Französisch" },
-  Englisch:      { code: "en", color: "#0a84ff", grad: "linear-gradient(140deg,#0a84ff,#a557ff)", label: "Englisch"  },
+  Englisch:      { code: "en", color: "#0a84ff", grad: "linear-gradient(140deg,#e71583,#a557ff)", label: "Englisch"  },
   Niederländisch:{ code: "nl", color: "#30c95a", grad: "linear-gradient(140deg,#30c95a,#0a84ff)", label: "Niederländisch" },
 };
 
