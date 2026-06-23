@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>Vorschau C · Sand &amp; Regenbogen</title>
+<title>Vorschau C · Deutsch</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
@@ -14,13 +14,14 @@
     --ink:#1b1813; --muted:#7c7264; --line:rgba(60,48,24,.12);
     --espresso:#2c2823; --shadow:0 22px 48px -26px rgba(70,55,25,.38);
     --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+    --acc:#ff3b5c;          /* DE · Rot */
     --disp:"Space Grotesk",system-ui,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   svg{display:block}
   body{font-family:var(--disp);background:var(--page);color:var(--ink);display:flex;flex-direction:column;align-items:center;min-height:100dvh;padding:14px 12px 70px}
   .label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8a7c63;margin:4px 0 12px}
-  .label b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .label b{color:var(--acc)}
   .cnav{width:100%;max-width:390px;display:flex;gap:4px;margin:0 0 12px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px}
   .cnav a{flex:1;text-align:center;text-decoration:none;color:var(--muted);font-weight:600;font-size:12px;padding:9px 4px;border-radius:999px}
   .cnav a.cur{background:var(--card2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
@@ -38,27 +39,29 @@
   .lang span{font-weight:700;font-size:16px}
   .lang small{font-size:9px;color:var(--muted)}
   .lang::before{content:"";position:absolute;top:0;left:15px;right:15px;height:2px;border-radius:0 0 2px 2px;background:var(--ink);opacity:.10}
-  .lang.on{background:var(--card);border-color:color-mix(in srgb,var(--ink) 16%,var(--line))}
-  .lang.on::before{opacity:.5}
+  .lang.on{background:color-mix(in srgb,var(--acc) 8%,var(--card));border-color:color-mix(in srgb,var(--acc) 50%,var(--line))}
+  .lang.on span{color:var(--acc)}
+  .lang.on::before{background:var(--acc);opacity:1}
   .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px 12px 10px;background:var(--card);border-bottom:1px solid var(--line)}
   .tab{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 2px 6px;border-radius:11px;background:transparent;color:var(--muted);font-weight:600;font-size:11.5px;cursor:pointer;border-bottom:2px solid transparent}
   .tab svg{width:19px;height:19px;opacity:.7}
-  .tab.on{color:var(--ink);background:var(--card2);border-bottom-color:var(--ink)}
-  .tab.on svg{opacity:1}
+  .tab.on{color:var(--ink);background:var(--card2);border-bottom-color:var(--acc)}
+  .tab.on svg{opacity:1;color:var(--acc)}
   .body{padding:16px 16px 22px}
   .inputrow{display:flex;gap:10px;margin-bottom:12px}
   .input{flex:1;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px 15px;font-size:17px;font-weight:600;box-shadow:0 3px 12px -10px rgba(70,55,25,.25)}
-  .input b{font-size:11px;font-weight:700;color:var(--muted);background:var(--card2);border-radius:6px;padding:3px 7px}
+  .input b{font-size:11px;font-weight:700;color:#fff;background:var(--acc);border-radius:6px;padding:3px 7px}
   .dice{width:54px;flex:none;border:1px solid var(--line);border-radius:15px;background:var(--card);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center}
   .dice svg{width:23px;height:23px}
   .cta{width:100%;border:0;border-radius:14px;padding:15px;font-family:var(--disp);font-weight:700;font-size:15.5px;color:#fff;background:var(--espresso);cursor:pointer;box-shadow:0 8px 20px -14px rgba(40,30,10,.45)}
-  .hero{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 20px;box-shadow:0 12px 34px -28px rgba(70,55,25,.35)}
-  .kicker{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+  .hero{position:relative;margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 20px;box-shadow:0 12px 34px -28px rgba(70,55,25,.35);overflow:hidden}
+  .hero::before{content:"";position:absolute;top:0;left:0;bottom:0;width:4px;background:var(--acc)}
+  .kicker{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:9px}
   .h1{font-size:28px;line-height:1.05;letter-spacing:-.025em;font-weight:700}
-  .accent{font-family:"Caveat",cursive;font-size:44px;line-height:.9;margin-top:2px;display:inline-block;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .accent{font-family:"Caveat",cursive;font-size:44px;line-height:.9;margin-top:2px;display:inline-block;color:var(--acc)}
   .plan{margin:16px 0 12px;font-size:14.5px;font-weight:600;color:var(--ink)}
   .pcard{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:9px;font-weight:600;font-size:13.5px;background:var(--card)}
-  .pcard .pi{width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:9px;background:var(--card2);color:var(--ink);border:1px solid var(--line)}
+  .pcard .pi{width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:9px;background:color-mix(in srgb,var(--acc) 12%,var(--card2));color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 22%,var(--line))}
   .pcard .pi svg{width:17px;height:17px}
   .switch{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:var(--shadow)}
   .switch a{width:40px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:999px;text-decoration:none;font-weight:700;color:var(--muted);font-size:14px}
@@ -66,9 +69,9 @@
 </style>
 </head>
 <body>
-  <div class="label">Variante <b>C</b> · Sand &amp; Regenbogen</div>
+  <div class="label">Variante <b>C</b> · Deutsch (Akzent Rot)</div>
   <div class="cnav">
-    <a href="c.html" class="cur">Konjugieren</a>
+    <a href="c-de.html" class="cur">Konjugieren</a>
     <a href="c-ziele.html">Ziele</a>
     <a href="c-konto.html">Konto</a>
     <a href="c-profil.html">Profil</a>
@@ -113,6 +116,6 @@
       </div>
     </div>
   </div>
-  <div class="switch"><a href="a.html">A</a><a href="b.html">B</a><a href="c.html" class="cur">C</a></div>
+  <div class="switch"><a href="a.html">A</a><a href="b.html">B</a><a href="c-de.html" class="cur">C</a></div>
 </body>
 </html>
