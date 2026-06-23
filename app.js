@@ -15139,7 +15139,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("span", {
     className: "brand-name",
     style: {
-      color: "rgb(231, 21, 131)"
+      color: "var(--text)"
     }
   }, "Conju", /*#__PURE__*/React.createElement("b", null, "Expert"))), /*#__PURE__*/React.createElement("div", {
     className: "appbar-side appbar-right"
