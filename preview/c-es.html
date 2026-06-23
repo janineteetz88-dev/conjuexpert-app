@@ -11,7 +11,7 @@
 <style>
   :root{
     --bg:#efe7d8; --page:#e3d8c4; --card:#fffdf8; --card2:#f3ecde;
-    --ink:#1b1813; --muted:#7c7264; --line:rgba(60,48,24,.12);
+    --ink:#1b1813; --muted:#675e4e; --line:rgba(60,48,24,.12);
     --espresso:#2c2823; --shadow:0 22px 48px -26px rgba(70,55,25,.38);
     --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
     --acc:#f5860f;          /* ES · Orange */
@@ -19,6 +19,7 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   svg{display:block}
+  :focus-visible{outline:2.5px solid var(--ink);outline-offset:2px;border-radius:8px}
   body{font-family:var(--disp);background:var(--page);color:var(--ink);display:flex;flex-direction:column;align-items:center;min-height:100dvh;padding:14px 12px 70px}
   .label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8a7c63;margin:4px 0 12px}
   .label b{color:var(--acc)}
@@ -50,10 +51,10 @@
   .body{padding:16px 16px 22px}
   .inputrow{display:flex;gap:10px;margin-bottom:12px}
   .input{flex:1;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px 15px;font-size:17px;font-weight:600;box-shadow:0 3px 12px -10px rgba(70,55,25,.25)}
-  .input b{font-size:11px;font-weight:700;color:#fff;background:var(--acc);border-radius:6px;padding:3px 7px}
-  .dice{width:54px;flex:none;border:1px solid var(--line);border-radius:15px;background:var(--card);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .input b{font-size:11px;font-weight:700;color:#fff;background:var(--acc);border-radius:6px;padding:3px 7px;text-shadow:0 1px 1px rgba(0,0,0,.35)}
+  .dice{width:54px;min-height:48px;flex:none;border:1.5px solid transparent;border-radius:15px;background:linear-gradient(var(--card),var(--card)) padding-box,var(--rainbow) border-box;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px -6px rgba(70,55,25,.4)}
   .dice svg{width:23px;height:23px}
-  .cta{width:100%;border:0;border-radius:14px;padding:15px;font-family:var(--disp);font-weight:700;font-size:15.5px;color:#fff;background:var(--espresso);cursor:pointer;box-shadow:0 8px 20px -14px rgba(40,30,10,.45)}
+  .cta{width:100%;min-height:50px;border:1.5px solid transparent;border-radius:14px;padding:15px;font-family:var(--disp);font-weight:700;font-size:15.5px;color:#fff;background:linear-gradient(180deg,#332e27,#211e19) padding-box,var(--rainbow) border-box;cursor:pointer;box-shadow:0 11px 24px -10px rgba(30,22,8,.65),inset 0 1px 0 rgba(255,255,255,.12)}
   .hero{position:relative;margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 20px;box-shadow:0 12px 34px -28px rgba(70,55,25,.35);overflow:hidden}
   .hero::before{content:"";position:absolute;top:0;left:0;bottom:0;width:4px;background:var(--acc)}
   .kicker{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:9px}
