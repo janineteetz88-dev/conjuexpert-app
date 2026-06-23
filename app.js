@@ -4392,7 +4392,15 @@ function makeConjCanvas(result, langCode, meaning) {
   x.font = "700 24px sans-serif";
   x.fillText("Conju", pad, py + 44);
   const cw = x.measureText("Conju").width;
-  x.fillStyle = "#a557ff";
+  const ew = x.measureText("Expert").width;
+  const eg = x.createLinearGradient(pad + cw, 0, pad + cw + ew, 0);
+  eg.addColorStop(0, "#ff3b5c");
+  eg.addColorStop(0.25, "#ff7a18");
+  eg.addColorStop(0.5, "#ffc400");
+  eg.addColorStop(0.7, "#34c759");
+  eg.addColorStop(0.85, "#0a84ff");
+  eg.addColorStop(1, "#a557ff");
+  x.fillStyle = eg;
   x.fillText("Expert", pad + cw, py + 44);
   x.fillStyle = "#8a93b0";
   x.font = "500 14px sans-serif";
@@ -11008,14 +11016,10 @@ function NameGate({
     className: "skillbtn" + (skill === s ? " on" : ""),
     onClick: () => setSkill(s)
   }, /*#__PURE__*/React.createElement("b", null, tr("skill_" + s)), /*#__PURE__*/React.createElement("small", null, tr("skill_" + s + "_sub")))))), /*#__PURE__*/React.createElement("button", {
-    className: "namebtn",
+    className: "tourbtn",
     disabled: !val.trim(),
     onClick: () => onSubmit(val.trim())
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "cta-rainbow"
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "cta-label"
-  }, tr("lets_go"))), /*#__PURE__*/React.createElement("button", {
+  }, tr("lets_go")), /*#__PURE__*/React.createElement("button", {
     className: "nameskip",
     onClick: () => onSubmit("")
   }, editing ? tr("remove_name") : tr("skip"))));
@@ -11032,39 +11036,33 @@ function TourMock({
       style: {
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
+        alignItems: "stretch",
         justifyContent: "center",
-        gap: "12px",
-        paddingTop: "2px"
+        gap: "8px"
       }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: "44px",
-        lineHeight: 1
-      }
-    }, "\uD83C\uDF81"), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: "15.5px",
-        fontWeight: 800,
-        letterSpacing: "-0.01em",
-        color: "var(--text)",
-        lineHeight: 1.3,
-        textAlign: "center",
-        fontFamily: "var(--font-display)"
-      }
-    }, tr("tour_trial_head")), [tr("tour_feat1"), tr("tour_feat2"), tr("tour_feat3")].map((t, i) => /*#__PURE__*/React.createElement("div", {
+    }, [tr("tour_feat1"), tr("tour_feat2"), tr("tour_feat3")].map((t, i) => /*#__PURE__*/React.createElement("div", {
       key: i,
       className: "tm-row",
       style: {
         animationDelay: 0.2 + i * 0.13 + "s",
-        gap: "8px"
+        gap: "9px",
+        justifyContent: "flex-start",
+        width: "100%"
       }
     }, /*#__PURE__*/React.createElement("span", {
       style: {
         color: "var(--col)",
-        fontWeight: 800
+        fontWeight: 800,
+        flex: "none"
       }
-    }, "\u2713"), /*#__PURE__*/React.createElement("span", null, t))));
+    }, "\u2713"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        textAlign: "left",
+        color: "var(--text)",
+        fontSize: "13px",
+        fontWeight: 600
+      }
+    }, t))));
   }
   if (kind === "conjugate") {
     return /*#__PURE__*/React.createElement("div", {
@@ -11230,7 +11228,7 @@ function TourGate({
   const slides = [{
     kind: "trial",
     icon: "🎁",
-    title: tr("offer_trial_b"),
+    title: tr("tour_trial_head"),
     text: tr("tour_trial_sub"),
     col: "#e71583"
   }, {
@@ -11266,48 +11264,55 @@ function TourGate({
   }];
   const last = i === slides.length - 1;
   const s = slides[i];
+  const RB = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#0a84ff"];
   return /*#__PURE__*/React.createElement("div", {
-    className: "namegate"
+    className: "namegate",
+    onClick: onDone
   }, /*#__PURE__*/React.createElement("div", {
-    className: "namecard tourcard"
+    className: "pinpop tourpop",
+    onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("button", {
-    className: "namex",
+    className: "pp-x",
     onClick: onDone,
     title: tr("tour_skip")
   }, "\xD7"), /*#__PURE__*/React.createElement("div", {
-    className: "tourstage",
+    className: "pp-head"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "pp-mark"
+  }, RB.map((c, k) => /*#__PURE__*/React.createElement("i", {
+    key: k,
+    style: {
+      background: c
+    }
+  }))), /*#__PURE__*/React.createElement("span", {
+    className: "pp-ey"
+  }, "Conju", /*#__PURE__*/React.createElement("b", null, "Expert")), /*#__PURE__*/React.createElement("span", {
+    className: "tour-step"
+  }, i + 1, " / ", slides.length)), /*#__PURE__*/React.createElement("h2", {
+    className: "pp-title tour-title"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tour-ic",
+    style: {
+      color: s.col
+    }
+  }, s.icon), s.title), /*#__PURE__*/React.createElement("p", {
+    className: "pp-sub"
+  }, s.text), /*#__PURE__*/React.createElement("div", {
+    className: "tour-demo",
     style: {
       "--col": s.col
     }
   }, /*#__PURE__*/React.createElement(TourMock, {
     kind: s.kind
-  })), s.kind !== "trial" && /*#__PURE__*/React.createElement("div", {
-    className: "tourhead-row"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "tourbadge",
-    style: {
-      background: s.col
-    }
-  }, s.icon), /*#__PURE__*/React.createElement("h2", {
-    className: "namehead",
-    style: {
-      margin: 0
-    }
-  }, s.title)), /*#__PURE__*/React.createElement("p", {
-    className: "namesub"
-  }, s.text), /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React.createElement("div", {
     className: "tourdots"
   }, slides.map((_, k) => /*#__PURE__*/React.createElement("span", {
     key: k,
     className: "tourdot" + (k === i ? " on" : "")
   }))), /*#__PURE__*/React.createElement("button", {
-    className: "namebtn",
+    className: "tourbtn",
     onClick: () => last ? onDone() : setI(i + 1)
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "cta-rainbow"
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "cta-label"
-  }, last ? tr("tour_start") : tr("tour_next")))));
+  }, last ? tr("tour_start") : tr("tour_next"))));
 }
 
 /* ---------- Contextual first-open feature hints ----------
