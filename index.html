@@ -1118,6 +1118,29 @@ body {
 .pinpop .pp-b:active { transform: scale(0.98); }
 .pinpop .pp-skip { display: block; margin: 15px auto 0; border: 0; background: transparent; color: var(--muted); font-family: var(--font-display); font-weight: 600; font-size: 12.5px; cursor: pointer; padding: 5px 10px; border-radius: 999px; }
 .pinpop .pp-skip:hover { color: var(--text); background: var(--surface-2); }
+.pr-pop { max-width: 384px; max-height: calc(100dvh - 32px); overflow: hidden auto; }
+.pr-table { margin: 16px 0 0; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.pr-thead { display: grid; grid-template-columns: 1fr 52px 60px; align-items: center; padding: 9px 13px; background: var(--surface-2); font-family: var(--font-display); font-weight: 700; font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; }
+.pr-thead .pr-th-free { text-align: center; color: var(--muted); }
+.pr-thead .pr-th-prem { text-align: center; background: linear-gradient(90deg, #e71583, #a557ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.pr-row { display: grid; grid-template-columns: 1fr 52px 60px; align-items: center; padding: 10px 13px; border-top: 1px solid var(--border); font-size: 12.5px; color: var(--text); line-height: 1.3; }
+.pr-rc { text-align: center; font-weight: 800; font-size: 14px; }
+.pr-rc.yes { color: #1a9b46; }
+.pr-rc.no { color: color-mix(in srgb, var(--muted) 55%, transparent); }
+.pr-plans { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0 0; }
+.pr-plan { position: relative; border: 1.5px solid var(--border); border-radius: 16px; padding: 15px 10px 12px; text-align: center; background: var(--surface); cursor: pointer; font: inherit; color: var(--text); transition: transform 0.14s, border-color 0.15s; }
+.pr-plan:hover { border-color: color-mix(in srgb, var(--brand-pink) 45%, var(--border)); transform: translateY(-2px); }
+.pr-plan:active { transform: scale(0.98); }
+.pr-plan.best { border-color: color-mix(in srgb, #a557ff 60%, var(--border)); background: linear-gradient(160deg, color-mix(in srgb, #a557ff 7%, var(--surface)), var(--surface)); }
+.pr-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); white-space: nowrap; background: linear-gradient(135deg, #e71583, #a557ff); color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 10px; padding: 3px 11px; border-radius: 999px; box-shadow: 0 6px 14px -6px rgba(165,87,255,0.6); }
+.pr-pname { font-family: var(--font-display); font-weight: 700; font-size: 14px; margin-top: 3px; }
+.pr-pprice { font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.02em; margin: 5px 0 3px; }
+.pr-pprice span { font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.pr-pnote { font-size: 10.5px; color: var(--muted); line-height: 1.4; }
+.pr-cta { width: 100%; margin-top: 18px; padding: 15px; border: 0; border-radius: 15px; background: linear-gradient(135deg, #e71583, #a557ff); color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 16px; cursor: pointer; box-shadow: 0 14px 30px -12px rgba(165,87,255,0.6); transition: transform 0.14s; }
+.pr-cta:active { transform: scale(0.97); }
+.pr-active { margin-top: 18px; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 14px; color: #1a9b46; padding: 13px; background: rgba(26,155,70,0.1); border-radius: 14px; }
+.pr-trust { margin-top: 13px; text-align: center; font-size: 11px; color: var(--muted); }
 .namebrand { font-family: var(--font-display); font-weight: 800; font-size: 26px; letter-spacing: -0.03em; margin: 4px 0 0; }
 .namebrand b { background: linear-gradient(90deg, #e71583, #a557ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .namesub { font-size: 13.5px; line-height: 1.5; color: var(--muted); margin: 0 0 20px; text-wrap: pretty; }
@@ -2195,7 +2218,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=716bfd0344"></script>
+<script defer src="/app.js?v=cb2e084710"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
