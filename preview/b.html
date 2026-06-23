@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Vorschau B · Soft Editorial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@500;600;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f2ece2; --page:#e7ded0; --card:#fffdf8; --card2:#f6efe3;
+    --ink:#2c2722; --muted:#8c8174; --line:rgba(70,55,30,.14);
+    --accent:#bd7c84; --accent2:#a99bc4; --shadow:0 22px 48px -26px rgba(80,60,35,.34);
+    --disp:"Space Grotesk",system-ui,sans-serif; --serif:"Fraunces",Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:var(--disp);background:var(--page);color:var(--ink);display:flex;flex-direction:column;align-items:center;min-height:100dvh;padding:14px 12px 70px}
+  .label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9a8c79;margin:4px 0 12px}
+  .label b{color:var(--accent)}
+  .phone{width:100%;max-width:390px;background:var(--bg);border-radius:30px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line)}
+  .bar{display:flex;align-items:center;gap:10px;padding:16px 18px 12px;background:var(--card);border-bottom:1px solid var(--line)}
+  .menu{width:30px;height:30px;border:1px solid var(--line);border-radius:50%;background:transparent;font-size:14px;color:var(--muted);cursor:pointer}
+  .brand{flex:1;text-align:center;font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.01em}
+  .brand b{font-weight:600;font-style:italic;color:var(--accent)}
+  .streak{display:flex;align-items:center;gap:5px;font-weight:700;font-size:13px;color:var(--muted)}
+  .langs{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:12px 14px 8px;background:var(--card)}
+  .lang{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;cursor:pointer;color:var(--muted)}
+  .lang span{font-weight:700;font-size:15px}
+  .lang small{font-size:9px}
+  .lang .dot{width:6px;height:6px;border-radius:50%;background:transparent}
+  .lang.on{color:var(--ink)}
+  .lang.on .dot{background:var(--accent)}
+  .tabs{display:flex;gap:18px;padding:6px 18px 0;background:var(--card);justify-content:center}
+  .tab{padding:8px 2px 12px;color:var(--muted);font-weight:600;font-size:13.5px;cursor:pointer;border-bottom:2px solid transparent}
+  .tab.on{color:var(--ink);border-bottom-color:var(--accent)}
+  .body{padding:20px 18px 24px}
+  .inputrow{display:flex;gap:10px;align-items:center;border-bottom:1.5px solid var(--line);padding-bottom:12px}
+  .input{flex:1;display:flex;align-items:center;gap:9px;font-family:var(--serif);font-size:21px;font-weight:600}
+  .input b{font-family:var(--disp);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.06em}
+  .dice{width:42px;height:42px;flex:none;border:1px solid var(--line);border-radius:50%;background:transparent;font-size:18px;cursor:pointer}
+  .cta{width:100%;margin-top:18px;border:0;border-radius:14px;padding:16px;font-family:var(--disp);font-weight:700;font-size:15.5px;color:#fff;background:var(--accent);cursor:pointer;box-shadow:0 16px 32px -18px var(--accent)}
+  .hero{margin-top:24px}
+  .kicker{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+  .h1{font-family:var(--serif);font-size:34px;line-height:1.04;letter-spacing:-.01em;font-weight:600}
+  .h1 .lng{font-style:italic;color:var(--accent)}
+  .accent{font-family:"Caveat",cursive;font-size:46px;line-height:.85;color:var(--accent2);margin-top:4px;display:inline-block}
+  .plan{margin:20px 0 12px;font-size:14.5px;font-weight:600;color:var(--muted)}
+  .pcard{display:flex;align-items:center;gap:13px;border:1px solid var(--line);border-radius:16px;padding:14px 15px;margin-top:10px;font-weight:600;font-size:14px;background:var(--card)}
+  .pcard .pi{width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--card2);color:var(--accent);font-size:14px}
+  .switch{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:var(--shadow)}
+  .switch a{width:40px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:999px;text-decoration:none;font-weight:700;color:var(--muted);font-size:14px}
+  .switch a.cur{background:var(--accent);color:#fff}
+</style>
+</head>
+<body>
+  <div class="label">Variante <b>B</b> · Soft Editorial</div>
+  <div class="phone">
+    <div class="bar">
+      <button class="menu">☰</button>
+      <div class="brand">Conju<b>Expert</b></div>
+      <div class="streak">🔥 0</div>
+    </div>
+    <div class="langs">
+      <div class="lang on"><span>DE</span><small>Deutsch</small><span class="dot"></span></div>
+      <div class="lang"><span>ES</span><small>Español</small><span class="dot"></span></div>
+      <div class="lang"><span>EN</span><small>English</small><span class="dot"></span></div>
+      <div class="lang"><span>NL</span><small>Nederl.</small><span class="dot"></span></div>
+      <div class="lang"><span>FR</span><small>Français</small><span class="dot"></span></div>
+    </div>
+    <div class="tabs">
+      <div class="tab on">Konjugieren</div>
+      <div class="tab">Quiz</div>
+      <div class="tab">Lernen</div>
+      <div class="tab">Gemerkt</div>
+    </div>
+    <div class="body">
+      <div class="inputrow">
+        <div class="input"><b>DE</b> gehen</div>
+        <button class="dice">🎲</button>
+      </div>
+      <button class="cta">Konjugieren</button>
+      <div class="hero">
+        <div class="kicker">Dein Plan heute</div>
+        <h2 class="h1">Sprich <span class="lng">Deutsch</span></h2>
+        <div class="accent">souverän.</div>
+        <p class="plan">Dein Plan für heute, Janine:</p>
+        <div class="pcard"><span class="pi">▦</span>12 Konjugationen üben</div>
+        <div class="pcard"><span class="pi">◆</span>Ein kurzes Quiz starten</div>
+      </div>
+    </div>
+  </div>
+  <div class="switch"><a href="a.html">A</a><a href="b.html" class="cur">B</a><a href="c.html">C</a></div>
+</body>
+</html>

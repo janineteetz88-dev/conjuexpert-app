@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Vorschau C · Sand &amp; Regenbogen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#efe7d8; --page:#e3d8c4; --card:#fffdf8; --card2:#f3ecde;
+    --ink:#1b1813; --muted:#7c7264; --line:rgba(60,48,24,.15);
+    --espresso:#221f1a; --shadow:0 22px 48px -26px rgba(70,55,25,.4);
+    --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+    --disp:"Space Grotesk",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:var(--disp);background:var(--page);color:var(--ink);display:flex;flex-direction:column;align-items:center;min-height:100dvh;padding:14px 12px 70px}
+  .label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8a7c63;margin:4px 0 12px}
+  .label b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .phone{width:100%;max-width:390px;background:var(--bg);border-radius:30px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line)}
+  .bar{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;background:var(--card);border-bottom:1px solid var(--line)}
+  .menu{width:30px;height:30px;border:1px solid var(--line);border-radius:50%;background:var(--card2);font-size:14px;color:var(--muted);cursor:pointer}
+  .brand{flex:1;text-align:center;font-weight:600;font-size:19px;letter-spacing:-.02em}
+  .brand b{font-weight:700;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .streak{display:flex;align-items:center;gap:5px;font-weight:700;font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+  .langs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:10px 12px;background:var(--card)}
+  .lang{position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 2px 7px;border:1.5px solid var(--line);border-radius:13px;background:var(--card2);cursor:pointer}
+  .lang span{font-weight:700;font-size:16px}
+  .lang small{font-size:9px;color:var(--muted)}
+  .lang::before{content:"";position:absolute;top:0;left:14px;right:14px;height:3px;border-radius:0 0 3px 3px;background:var(--ink);opacity:.14}
+  .lang.on{background:var(--card);border-color:color-mix(in srgb,var(--ink) 24%,var(--line))}
+  .lang.on::before{opacity:.85}
+  .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px 12px 10px;background:var(--card);border-bottom:1px solid var(--line)}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 2px;border:1.5px solid transparent;border-radius:12px;background:var(--card2);color:var(--muted);font-weight:600;font-size:11.5px;cursor:pointer}
+  .tab .i{font-size:12px;opacity:.6}
+  .tab.on{background:var(--espresso);color:#fff;border-color:var(--espresso)}
+  .tab.on .i{opacity:1}
+  .body{padding:16px 16px 22px}
+  .inputrow{display:flex;gap:10px;margin-bottom:12px}
+  .input{flex:1;display:flex;align-items:center;gap:8px;background:var(--card);border:1.5px solid var(--line);border-radius:15px;padding:14px 15px;font-size:17px;font-weight:600;box-shadow:0 4px 14px -10px rgba(70,55,25,.3)}
+  .input b{font-size:11px;font-weight:700;color:var(--muted);background:var(--card2);border-radius:6px;padding:3px 7px}
+  .dice{width:54px;flex:none;border:1.5px solid var(--line);border-radius:15px;background:var(--card);font-size:21px;cursor:pointer}
+  .cta{width:100%;border:0;border-radius:15px;padding:16px;font-family:var(--disp);font-weight:700;font-size:16px;color:#fff;background:linear-gradient(135deg,#221f1a,#3a352c);cursor:pointer;box-shadow:0 14px 30px -14px rgba(40,30,10,.55)}
+  .hero{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 20px;box-shadow:0 14px 36px -26px rgba(70,55,25,.4)}
+  .kicker{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+  .h1{font-size:28px;line-height:1.05;letter-spacing:-.025em;font-weight:700}
+  .accent{font-family:"Caveat",cursive;font-size:44px;line-height:.9;margin-top:2px;display:inline-block;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .plan{margin:16px 0 12px;font-size:14.5px;font-weight:600;color:var(--ink)}
+  .pcard{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:9px;font-weight:600;font-size:13.5px;background:var(--card2)}
+  .pcard .pi{width:30px;height:30px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:9px;background:var(--espresso);color:#fff;font-size:13px}
+  .switch{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:var(--shadow)}
+  .switch a{width:40px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:999px;text-decoration:none;font-weight:700;color:var(--muted);font-size:14px}
+  .switch a.cur{background:var(--espresso);color:#fff}
+</style>
+</head>
+<body>
+  <div class="label">Variante <b>C</b> · Sand &amp; Regenbogen</div>
+  <div class="phone">
+    <div class="bar">
+      <button class="menu">☰</button>
+      <div class="brand">Conju<b>Expert</b></div>
+      <div class="streak">🔥 0</div>
+    </div>
+    <div class="langs">
+      <div class="lang on"><span>DE</span><small>Deutsch</small></div>
+      <div class="lang"><span>ES</span><small>Español</small></div>
+      <div class="lang"><span>EN</span><small>English</small></div>
+      <div class="lang"><span>NL</span><small>Nederl.</small></div>
+      <div class="lang"><span>FR</span><small>Français</small></div>
+    </div>
+    <div class="tabs">
+      <div class="tab on"><span class="i">▦</span>Konjugieren</div>
+      <div class="tab"><span class="i">◆</span>Quiz</div>
+      <div class="tab"><span class="i">✦</span>Lernen</div>
+      <div class="tab"><span class="i">★</span>Gemerkt</div>
+    </div>
+    <div class="body">
+      <div class="inputrow">
+        <div class="input"><b>DE</b> gehen</div>
+        <button class="dice">🎲</button>
+      </div>
+      <button class="cta">Konjugieren</button>
+      <div class="hero">
+        <div class="kicker">Dein Plan heute</div>
+        <h2 class="h1">Sprich Deutsch</h2>
+        <div class="accent">souverän.</div>
+        <p class="plan">Dein Plan für heute, Janine:</p>
+        <div class="pcard"><span class="pi">▦</span>12 Konjugationen üben</div>
+        <div class="pcard"><span class="pi">◆</span>Ein kurzes Quiz starten</div>
+      </div>
+    </div>
+  </div>
+  <div class="switch"><a href="a.html">A</a><a href="b.html">B</a><a href="c.html" class="cur">C</a></div>
+</body>
+</html>
