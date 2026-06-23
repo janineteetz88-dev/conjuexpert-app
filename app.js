@@ -4426,7 +4426,7 @@ function exportPDF(result, langCode, meaning) {
   }).join("");
   const LC = {
     DE: "#ff3b5c",
-    EN: "#a557ff",
+    EN: "#0a84ff",
     ES: "#ff9f0a",
     NL: "#30c95a",
     FR: "#a557ff"
@@ -11617,12 +11617,13 @@ function UserMenu({
   const ref = useRef(null);
   const initial = (name || user.email || "?")[0].toUpperCase();
   useEffect(() => {
+    if (!open) return;
     function onClickOut(e) {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     }
-    document.addEventListener("mousedown", onClickOut);
-    return () => document.removeEventListener("mousedown", onClickOut);
-  }, []);
+    document.addEventListener("pointerdown", onClickOut);
+    return () => document.removeEventListener("pointerdown", onClickOut);
+  }, [open]);
   function openPanel(p) {
     setPanel(p);
     setOpen(false);
@@ -11846,12 +11847,13 @@ function GuestMenu({
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   useEffect(() => {
+    if (!open) return;
     function onClickOut(e) {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     }
-    document.addEventListener("mousedown", onClickOut);
-    return () => document.removeEventListener("mousedown", onClickOut);
-  }, []);
+    document.addEventListener("pointerdown", onClickOut);
+    return () => document.removeEventListener("pointerdown", onClickOut);
+  }, [open]);
   const avatar = /*#__PURE__*/React.createElement("div", {
     style: {
       width: "22px",
@@ -12390,7 +12392,7 @@ function PinSheet({
   if (view === "android") return /*#__PURE__*/React.createElement(AndroidHelpModal, {
     onClose: onClose
   });
-  const RB = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#a557ff"];
+  const RB = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#0a84ff"];
   const barsSvg = `<svg viewBox="0 0 100 100" fill="none"><rect x="16" y="33" width="9" height="34" rx="3.5" fill="#ff3b5c"/><rect x="31" y="21" width="9" height="58" rx="3.5" fill="#ff8a18"/><rect x="46" y="10" width="9" height="80" rx="3.5" fill="#ffc400"/><rect x="61" y="26" width="9" height="48" rx="3.5" fill="#1fbf6b"/><rect x="76" y="36" width="9" height="28" rx="3.5" fill="#0a84ff"/></svg>`;
   const plusSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v8M8 12h8"></path></svg>`;
   const appleSvg = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.8-3-.8c-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7 2-1.1 2.8-2.2c.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.5-1-2.5-3.8zM14.1 4.9c.7-.8 1.1-1.9 1-3-1 0-2.1.6-2.8 1.4-.6.7-1.1 1.8-1 2.9 1.1.1 2.2-.5 2.8-1.3z"></path></svg>`;
