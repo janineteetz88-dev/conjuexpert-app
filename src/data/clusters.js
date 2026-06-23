@@ -171,6 +171,8 @@ export const clusters = [
       { slug: "/blog/stammwechsel-spanisch", title: "Stammwechselnde Verben im Spanischen: e→ie, o→ue, e→i sicher konjugieren", live: true },
       { slug: "/blog/spanische-verbgruppen-ar-er-ir", title: "Die drei spanischen Verbgruppen: -ar, -er, -ir konjugieren", live: true },
       { slug: "/blog/estar-gerundio", title: "Die Verlaufsform: estar + gerundio (estoy hablando)", live: true },
+      { slug: "/blog/reflexive-verben-spanisch", title: "Reflexive Verben Spanisch: me levanto, te llamas & der ganze Tagesablauf", live: true },
+      { slug: "/blog/imperativo-spanisch", title: "Der Imperativo: Befehle und Bitten auf Spanisch souverän geben", live: true },
     ],
   },
   {
@@ -185,6 +187,7 @@ export const clusters = [
     },
     spokes: [
       { slug: "/blog/passe-compose-imparfait", title: "Passé composé vs. imparfait: So triffst du die richtige Wahl", live: true },
+      { slug: "/blog/futur-simple-futur-proche", title: "Futur simple vs. futur proche: welche Zukunft im Französischen?", live: true },
     ],
   },
   {
