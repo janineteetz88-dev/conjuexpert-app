@@ -381,6 +381,8 @@
   --success: #1a9b46;
   --cta-app: linear-gradient(135deg, #e71583, #a557ff);
   --cta-rainbow: linear-gradient(100deg, #ff3b5c, #ff7a18, #ffc400, #34c759, #00bcd4, #0a84ff, #a557ff);
+  /* "Expert"-Wortmarke: Regenbogen-Text (rot→lila), überall einheitlich */
+  --brand-rainbow: linear-gradient(90deg, #ff3b5c, #ff7a18, #ffc400, #34c759, #0a84ff, #a557ff);
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
@@ -651,7 +653,7 @@ body {
 .brand-mark i { display: none; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
 .brand-name { font-family: var(--font-display); font-weight: 600; font-size: clamp(15px, 4.6vw, 19px); letter-spacing: -0.02em; white-space: nowrap; }
-.brand-name b { font-weight: 700; background: linear-gradient(90deg, #e71583, #a557ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.brand-name b { font-weight: 700; background: var(--brand-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }
 #approot[data-accent="mono"] .brand-name b { background: none; color: var(--text); }
 .brand-tag { font-size: 10.5px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; white-space: nowrap; }
 
@@ -741,7 +743,7 @@ body {
   transition: transform 0.14s;
 }
 .cta:active { transform: scale(0.97); }
-.cta-rainbow { position: absolute; inset: 0; background: linear-gradient(135deg, #e71583 0%, #a557ff 100%); }
+.cta-rainbow { position: absolute; inset: 0; background: linear-gradient(135deg, #ff3b5c 0%, #e71583 100%); }
 #approot[data-accent="soft"] .cta-rainbow { filter: saturate(0.75); }
 #approot[data-accent="mono"] .cta-rainbow { background: linear-gradient(135deg, #2b2f3a, #4a4f60); }
 .cta-label { position: relative; z-index: 2; }
@@ -1088,7 +1090,7 @@ body {
 .pinpop .pp-mark { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2.5px; width: 28px; height: 28px; padding: 5px; background: var(--surface-2); border-radius: 9px; box-shadow: var(--shadow-sm); flex: none; }
 .pinpop .pp-mark i { display: block; border-radius: 2.5px; }
 .pinpop .pp-ey { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-pink); }
-.pinpop .pp-ey b { background: linear-gradient(90deg, #e71583, #a557ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.pinpop .pp-ey b { background: var(--brand-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .pinpop .pp-title { font-family: var(--font-display); font-weight: 700; font-size: 22px; letter-spacing: -0.02em; line-height: 1.16; margin: 15px 0 0; }
 .pinpop .pp-sub { font-size: 13.5px; color: var(--muted); line-height: 1.5; margin: 7px 0 0; }
 .pinpop .pp-stage { display: flex; justify-content: center; margin: 18px 0 4px; }
@@ -1144,11 +1146,11 @@ body {
 .pr-active { margin-top: 18px; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 14px; color: #1a9b46; padding: 13px; background: rgba(26,155,70,0.1); border-radius: 14px; }
 .pr-trust { margin-top: 13px; text-align: center; font-size: 11px; color: var(--muted); }
 .namebrand { font-family: var(--font-display); font-weight: 800; font-size: 26px; letter-spacing: -0.03em; margin: 4px 0 0; }
-.namebrand b { background: linear-gradient(90deg, #e71583, #a557ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.namebrand b { background: var(--brand-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .namesub { font-size: 13.5px; line-height: 1.5; color: var(--muted); margin: 0 0 20px; text-wrap: pretty; }
 .nameinput { width: 100%; border: 1.5px solid var(--border); background: var(--surface-2); border-radius: 15px; padding: 15px 16px; font-family: var(--font-display); font-weight: 600; font-size: 17px; color: var(--text); outline: 0; text-align: center; transition: border-color 0.2s, box-shadow 0.2s; }
-.nameinput:focus { border-color: #a557ff; box-shadow: 0 0 0 4px rgba(165,87,255,0.12); }
-.namebtn { position: relative; width: 100%; border: 0; cursor: pointer; border-radius: 15px; padding: 15px; margin-top: 12px; font-family: var(--font-display); font-weight: 700; font-size: 16px; color: #fff; overflow: hidden; box-shadow: 0 14px 30px -12px rgba(120, 40, 200, 0.6); transition: transform 0.14s, opacity 0.2s; }
+.nameinput:focus { border-color: var(--brand-pink); box-shadow: 0 0 0 4px rgba(231,21,131,0.12); }
+.namebtn { position: relative; width: 100%; border: 0; cursor: pointer; border-radius: 15px; padding: 15px; margin-top: 12px; font-family: var(--font-display); font-weight: 700; font-size: 16px; color: #fff; overflow: hidden; box-shadow: 0 14px 30px -12px rgba(231, 21, 131, 0.55); transition: transform 0.14s, opacity 0.2s; }
 .namebtn:active { transform: scale(0.97); }
 .namebtn:disabled { opacity: 0.5; cursor: default; }
 .namebtn .cta-label { position: relative; z-index: 2; }
@@ -1161,8 +1163,8 @@ body {
 .skillbtn { display: flex; flex-direction: column; align-items: center; gap: 2px; border: 1.5px solid var(--border); background: var(--surface-2); border-radius: 13px; padding: 10px 4px; cursor: pointer; transition: border-color 0.15s, background 0.15s, transform 0.12s; }
 .skillbtn b { font-family: var(--font-display); font-weight: 700; font-size: 13px; color: var(--text); }
 .skillbtn small { font-size: 10px; color: var(--muted); }
-.skillbtn.on { border-color: #a557ff; background: color-mix(in srgb, #a557ff 10%, var(--surface)); }
-.skillbtn.on b { color: #0a63d6; }
+.skillbtn.on { border-color: var(--brand-pink); background: color-mix(in srgb, var(--brand-pink) 10%, var(--surface)); }
+.skillbtn.on b { color: var(--brand-pink); }
 .skillbtn:active { transform: scale(0.96); }
 
 /* ===== Quiz: choice + speed modes ===== */
@@ -1419,7 +1421,7 @@ body {
 .gmins-btns button { border: 0; background: transparent; width: 40px; height: 44px; font-size: 20px; color: #7a5cff; font-weight: 700; cursor: pointer; }
 .gmins-btns .gmval { min-width: 52px; text-align: center; font-weight: 800; font-size: 17px; }
 .cw-c { background: linear-gradient(90deg,#ff3b5c,#e71583); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.cw-e { background: linear-gradient(90deg,#e71583,#a557ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.cw-e { background: var(--brand-rainbow); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .gchoice { display: flex; align-items: center; gap: 14px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 0 16px; height: 88px; box-shadow: var(--shadow-sm); cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s; }
 .gchoice:hover { transform: translateY(-1px); border-color: color-mix(in srgb, #a557ff 40%, var(--border)); box-shadow: var(--shadow); }
 .gchoice:active { transform: scale(0.99); }
@@ -2174,7 +2176,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 <body>
 <div id="approot">
   <div id="root"></div>
-  <div id="app-splash" aria-hidden="true"><div class="as-w"><span style="color:#e71583">Conju</span><span style="color:#a557ff">Expert</span></div><div class="as-b"></div></div>
+  <div id="app-splash" aria-hidden="true"><div class="as-w"><span style="color:#e71583">Conju</span><span style="background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;color:transparent">Expert</span></div><div class="as-b"></div></div>
   <script>setTimeout(function(){var s=document.getElementById('app-splash');if(s){s.style.opacity='0';setTimeout(function(){s&&s.remove&&s.remove();},400);}},8000);</script>
   <div id="seo-static" lang="de">
     <h1>Verben konjugieren in 5 Sprachen – Spanisch, Französisch, Englisch, Niederländisch &amp; Deutsch</h1>
@@ -2220,7 +2222,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=be381b5dd7"></script>
+<script defer src="/app.js?v=b88441980c"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->

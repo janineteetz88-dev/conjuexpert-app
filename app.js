@@ -4392,7 +4392,15 @@ function makeConjCanvas(result, langCode, meaning) {
   x.font = "700 24px sans-serif";
   x.fillText("Conju", pad, py + 44);
   const cw = x.measureText("Conju").width;
-  x.fillStyle = "#a557ff";
+  const ew = x.measureText("Expert").width;
+  const eg = x.createLinearGradient(pad + cw, 0, pad + cw + ew, 0);
+  eg.addColorStop(0, "#ff3b5c");
+  eg.addColorStop(0.25, "#ff7a18");
+  eg.addColorStop(0.5, "#ffc400");
+  eg.addColorStop(0.7, "#34c759");
+  eg.addColorStop(0.85, "#0a84ff");
+  eg.addColorStop(1, "#a557ff");
+  x.fillStyle = eg;
   x.fillText("Expert", pad + cw, py + 44);
   x.fillStyle = "#8a93b0";
   x.font = "500 14px sans-serif";
