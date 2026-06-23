@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Vorschau C · Konto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#efe7d8; --page:#e3d8c4; --card:#fffdf8; --card2:#f3ecde;
+    --ink:#1b1813; --muted:#7c7264; --line:rgba(60,48,24,.12);
+    --espresso:#2c2823; --shadow:0 22px 48px -26px rgba(70,55,25,.38);
+    --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+    --disp:"Space Grotesk",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:var(--disp);background:var(--page);color:var(--ink);display:flex;flex-direction:column;align-items:center;min-height:100dvh;padding:14px 12px 70px}
+  .label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8a7c63;margin:4px 0 12px}
+  .label b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .cnav{width:100%;max-width:390px;display:flex;gap:4px;margin:0 0 12px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px}
+  .cnav a{flex:1;text-align:center;text-decoration:none;color:var(--muted);font-weight:600;font-size:12px;padding:9px 4px;border-radius:999px}
+  .cnav a.cur{background:var(--card2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .phone{width:100%;max-width:390px;background:var(--bg);border-radius:30px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line)}
+  .bar{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;background:var(--card);border-bottom:1px solid var(--line)}
+  .menu{width:30px;height:30px;border:1px solid var(--line);border-radius:50%;background:var(--card2);font-size:14px;color:var(--muted);cursor:pointer}
+  .brand{flex:1;text-align:center;font-weight:600;font-size:19px;letter-spacing:-.02em}
+  .brand b{font-weight:700;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .streak{display:flex;align-items:center;gap:5px;font-weight:700;font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+  .avatar{width:32px;height:32px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-weight:700;font-size:13px;cursor:pointer}
+  .body{padding:18px 16px 24px}
+  .ptitle{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-bottom:3px}
+  .psub{font-size:13px;color:var(--muted);margin-bottom:16px}
+  /* konto card */
+  .acct{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px}
+  .acct .av{width:46px;height:46px;flex:none;border-radius:50%;background:var(--card2);border:1px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:18px}
+  .acct .info{flex:1;min-width:0}
+  .acct b{font-size:15px;display:block}
+  .acct small{font-size:11.5px;color:var(--muted);display:block;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .acct .free{flex:none;font-size:10.5px;font-weight:700;color:var(--muted);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:5px 10px}
+  /* premium hero */
+  .prem{position:relative;margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;overflow:hidden}
+  .prem::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--rainbow)}
+  .premtop{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .premtop b{font-size:18px;font-weight:700}
+  .premtop .rb{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .premsub{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.45}
+  .benefit{display:flex;align-items:center;gap:11px;font-size:13.5px;font-weight:600;margin-top:11px}
+  .benefit .ck{width:22px;height:22px;flex:none;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:12px;background:var(--rainbow)}
+  /* plan toggle */
+  .toggle{display:flex;gap:8px;margin-top:18px}
+  .opt{flex:1;border:1px solid var(--line);border-radius:15px;padding:13px;cursor:pointer;background:var(--card)}
+  .opt .t{font-size:12.5px;font-weight:600;color:var(--muted)}
+  .opt .pr{font-size:19px;font-weight:700;letter-spacing:-.02em;margin-top:3px}
+  .opt .pr span{font-size:12px;font-weight:600;color:var(--muted)}
+  .opt.sel{border-color:transparent;box-shadow:0 0 0 2px var(--ink) inset}
+  .opt .save{display:inline-block;margin-top:6px;font-size:10px;font-weight:700;color:#fff;background:var(--rainbow);border-radius:999px;padding:3px 8px}
+  .buy{width:100%;margin-top:16px;border:0;border-radius:14px;padding:16px;font-family:var(--disp);font-weight:700;font-size:15.5px;color:#fff;background:var(--rainbow);cursor:pointer;box-shadow:0 12px 26px -16px rgba(150,60,120,.6)}
+  .finehint{text-align:center;font-size:11px;color:var(--muted);margin-top:9px}
+  /* manage list */
+  .sect{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 4px 10px}
+  .list{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .row{display:flex;align-items:center;gap:12px;padding:14px 15px;font-size:13.5px;font-weight:600;cursor:pointer;border-top:1px solid var(--line)}
+  .row:first-child{border-top:0}
+  .row .ic{width:20px;text-align:center;opacity:.75}
+  .row .arr{margin-left:auto;color:var(--muted)}
+  .row .val{margin-left:auto;color:var(--muted);font-weight:600;font-size:12.5px}
+  .row.danger{color:#b4453f}
+  .switch{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:var(--shadow)}
+  .switch a{width:40px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:999px;text-decoration:none;font-weight:700;color:var(--muted);font-size:14px}
+  .switch a.cur{background:var(--espresso);color:#fff}
+</style>
+</head>
+<body>
+  <div class="label">Variante <b>C</b> · Konto &amp; Premium</div>
+  <div class="cnav">
+    <a href="c.html">Konjugieren</a>
+    <a href="c-ziele.html">Ziele</a>
+    <a href="c-konto.html" class="cur">Konto</a>
+    <a href="c-profil.html">Profil</a>
+  </div>
+  <div class="phone">
+    <div class="bar">
+      <button class="menu">☰</button>
+      <div class="brand">Conju<b>Expert</b></div>
+      <div class="streak">🔥 0</div>
+      <button class="avatar">J</button>
+    </div>
+    <div class="body">
+      <div class="ptitle">Konto &amp; Premium</div>
+      <div class="psub">Dein Plan, deine Zahlung – alles an einem Ort.</div>
+
+      <div class="acct">
+        <div class="av">J</div>
+        <div class="info">
+          <b>Janine</b>
+          <small>janine.teetz88@gmail.com</small>
+        </div>
+        <span class="free">Free-Plan</span>
+      </div>
+
+      <div class="prem">
+        <div class="premtop"><b>ConjuExpert <span class="rb">Premium</span></b></div>
+        <div class="premsub">Lerne alle 5 Sprachen ohne Grenzen – ein Plan, voller Zugriff.</div>
+        <div class="benefit"><span class="ck">✓</span>Alle 5 Sprachen freigeschaltet</div>
+        <div class="benefit"><span class="ck">✓</span>Unbegrenzt konjugieren &amp; Quiz</div>
+        <div class="benefit"><span class="ck">✓</span>Offline lernen, keine Werbung</div>
+        <div class="benefit"><span class="ck">✓</span>Detaillierte Statistiken &amp; Ziele</div>
+
+        <div class="toggle">
+          <div class="opt">
+            <div class="t">Monatlich</div>
+            <div class="pr">4,99 €<span> / Monat</span></div>
+          </div>
+          <div class="opt sel">
+            <div class="t">Jährlich</div>
+            <div class="pr">2,99 €<span> / Monat</span></div>
+            <span class="save">– 40 %</span>
+          </div>
+        </div>
+        <button class="buy">Premium starten</button>
+        <div class="finehint">Jederzeit kündbar · 7 Tage kostenlos testen</div>
+      </div>
+
+      <div class="sect">Zahlung &amp; Konto</div>
+      <div class="list">
+        <div class="row"><span class="ic">💳</span>Zahlungsart<span class="val">Keine hinterlegt</span></div>
+        <div class="row"><span class="ic">🧾</span>Rechnungen<span class="arr">›</span></div>
+        <div class="row"><span class="ic">🔁</span>Abo verwalten<span class="arr">›</span></div>
+        <div class="row"><span class="ic">↩︎</span>Käufe wiederherstellen<span class="arr">›</span></div>
+        <div class="row danger"><span class="ic">🗑</span>Konto löschen</div>
+      </div>
+    </div>
+  </div>
+  <div class="switch"><a href="a.html">A</a><a href="b.html">B</a><a href="c.html" class="cur">C</a></div>
+</body>
+</html>
