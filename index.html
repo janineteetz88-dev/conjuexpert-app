@@ -1528,18 +1528,21 @@ body {
 .exrow2 .speakbtn { flex: none; }
 
 .touricon { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #fff; margin-bottom: 18px; box-shadow: var(--shadow); }
-.tourdots { display: flex; gap: 7px; margin: 4px 0 16px; }
+.tourdots { display: flex; justify-content: center; gap: 7px; margin: 16px 0 14px; }
 .tourdot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); transition: all 0.2s; }
-.tourdot.on { background: #a557ff; width: 20px; border-radius: 4px; }
+.tourdot.on { background: var(--brand-pink); width: 20px; border-radius: 4px; }
 
-/* ===== Onboarding tour — modern mini app-screenshots ===== */
-.tourcard { padding-top: 20px; }
-.tourstage {
-  width: 100%; border-radius: 20px; padding: 18px 16px; margin-bottom: 18px;
-  background: linear-gradient(165deg, color-mix(in srgb, var(--col) 18%, var(--surface)) 0%, var(--surface) 72%);
-  border: 1px solid color-mix(in srgb, var(--col) 26%, var(--border));
-  min-height: 172px; display: flex; align-items: center; justify-content: center; overflow: hidden;
+/* ===== Onboarding tour — clean, reuses the .pinpop card ===== */
+.tour-step { margin-left: auto; font-family: var(--font-display); font-weight: 700; font-size: 11px; letter-spacing: 0.04em; color: var(--muted); flex: none; }
+.tour-title { display: flex; align-items: center; gap: 9px; }
+.tour-ic { font-size: 19px; line-height: 1; flex: none; }
+.tour-demo {
+  width: 100%; border-radius: 18px; padding: 16px 14px; margin: 16px 0 2px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  min-height: 150px; display: flex; align-items: center; justify-content: center; overflow: hidden;
 }
+.tourbtn { width: 100%; margin-top: 6px; border: 0; border-radius: 14px; padding: 15px; font-family: var(--font-display); font-weight: 700; font-size: 15.5px; cursor: pointer; background: var(--text); color: var(--surface); box-shadow: 0 12px 26px -14px rgba(0,0,0,0.45); transition: transform 0.14s, opacity 0.2s; }
+.tourbtn:active { transform: scale(0.98); }
 .tmock { width: 100%; display: flex; flex-direction: column; gap: 7px; }
 @keyframes tmpop { from { opacity: 0; transform: translateY(7px) scale(0.98); } to { opacity: 1; transform: none; } }
 @keyframes tmblink { 50% { opacity: 0; } }
@@ -1568,9 +1571,9 @@ body {
 .tm-srow b { flex: 1; font-family: var(--mono); font-weight: 700; font-size: 14.5px; color: var(--text); }
 .tm-spk { font-size: 14px; opacity: 0.7; }
 
+.tourpop .pp-sub { margin-bottom: 2px; }
 .tourhead-row { display: flex; align-items: center; gap: 11px; width: 100%; margin-bottom: 7px; }
 .tourbadge { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 19px; color: #fff; flex: none; box-shadow: var(--shadow-sm); }
-.tourcard .namesub { text-align: left; }
 /* Contextual first-open feature hints */
 .hintcard { padding-top: 26px; }
 .hintlist { list-style: none; margin: 14px 0 20px; padding: 0; width: 100%; display: flex; flex-direction: column; gap: 11px; text-align: left; }
@@ -2222,7 +2225,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=b88441980c"></script>
+<script defer src="/app.js?v=0dcf1e9651"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
