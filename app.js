@@ -11016,14 +11016,10 @@ function NameGate({
     className: "skillbtn" + (skill === s ? " on" : ""),
     onClick: () => setSkill(s)
   }, /*#__PURE__*/React.createElement("b", null, tr("skill_" + s)), /*#__PURE__*/React.createElement("small", null, tr("skill_" + s + "_sub")))))), /*#__PURE__*/React.createElement("button", {
-    className: "namebtn",
+    className: "tourbtn",
     disabled: !val.trim(),
     onClick: () => onSubmit(val.trim())
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "cta-rainbow"
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "cta-label"
-  }, tr("lets_go"))), /*#__PURE__*/React.createElement("button", {
+  }, tr("lets_go")), /*#__PURE__*/React.createElement("button", {
     className: "nameskip",
     onClick: () => onSubmit("")
   }, editing ? tr("remove_name") : tr("skip"))));

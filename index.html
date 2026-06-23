@@ -1543,6 +1543,7 @@ body {
 }
 .tourbtn { width: 100%; margin-top: 6px; border: 0; border-radius: 14px; padding: 15px; font-family: var(--font-display); font-weight: 700; font-size: 15.5px; cursor: pointer; background: var(--text); color: var(--surface); box-shadow: 0 12px 26px -14px rgba(0,0,0,0.45); transition: transform 0.14s, opacity 0.2s; }
 .tourbtn:active { transform: scale(0.98); }
+.tourbtn:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
 .tmock { width: 100%; display: flex; flex-direction: column; gap: 7px; }
 @keyframes tmpop { from { opacity: 0; transform: translateY(7px) scale(0.98); } to { opacity: 1; transform: none; } }
 @keyframes tmblink { 50% { opacity: 0; } }
@@ -2225,7 +2226,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=0dcf1e9651"></script>
+<script defer src="/app.js?v=e541682008"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
