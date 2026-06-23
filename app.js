@@ -9616,6 +9616,7 @@ function VocabView({
   const skill = recall("kunju-skill", "beginner");
   const nativeName = recall("kunju-native", "German");
   const [customCatNames, setCustomCatNames] = useState(() => recall("kunju-vocab-catnames", []));
+  const [hiddenCats, setHiddenCats] = useState(() => recall("kunju-vocab-cathidden", []));
   const [addingCat, setAddingCat] = useState(false);
   const [newCatVal, setNewCatVal] = useState("");
   const customCats = useMemo(() => {
@@ -9626,7 +9627,7 @@ function VocabView({
     const merged = new Set([...customCatNames, ...fromItems]);
     return [...merged];
   }, [items, customCatNames]);
-  const allCats = [generalCat(), ...templateCats(), ...customCats];
+  const allCats = [generalCat(), ...templateCats(), ...customCats].filter(c => isGeneralCat(c) || hiddenCats.indexOf(c) < 0);
   function persistItems(next) {
     setItems(next);
     saveVocab(next);
@@ -9953,6 +9954,40 @@ function VocabView({
     persist("kunju-vocab-cat", name);
     setTimeout(() => seedCustomCategory(name), 80);
   }
+  function deleteCat(c) {
+    if (!c || isGeneralCat(c)) return;
+    const gen = generalCat();
+    // Wörter dieses Themas nach "Allgemein" verschieben (nicht löschen).
+    const moved = items.map(it => it.cat === c ? {
+      ...it,
+      cat: gen
+    } : it);
+    persistItems(moved);
+    // aus eigenen Kategorien entfernen
+    if (customCatNames.indexOf(c) >= 0) {
+      const upd = customCatNames.filter(x => x !== c);
+      setCustomCatNames(upd);
+      persist("kunju-vocab-catnames", upd);
+    }
+    // dauerhaft ausblenden (auch Vorlagen-Themen)
+    if (hiddenCats.indexOf(c) < 0) {
+      const uph = [...hiddenCats, c];
+      setHiddenCats(uph);
+      persist("kunju-vocab-cathidden", uph);
+    }
+    if (cat === c) {
+      setCat("all");
+      persist("kunju-vocab-cat", "all");
+    }
+    const msg = {
+      de: "Thema gelöscht – die Wörter sind jetzt unter „Allgemein“.",
+      en: "Topic deleted — its words moved to General.",
+      es: "Tema eliminado: sus palabras pasaron a General.",
+      nl: "Onderwerp verwijderd — woorden staan nu onder Algemeen.",
+      fr: "Thème supprimé — les mots sont passés dans Général."
+    }[UILANG] || "Topic deleted.";
+    if (window.__toast) window.__toast(msg);
+  }
   const langItems = items.filter(it => it.lang === lang && (!it.nat || it.nat === nativeName));
   const shown = cat === "all" ? langItems : isGeneralCat(cat) ? langItems.filter(it => isGeneralCat(it.cat)) : langItems.filter(it => it.cat === cat);
 
@@ -10205,7 +10240,25 @@ function VocabView({
       setCat(c);
       persist("kunju-vocab-cat", c);
     }
-  }, c)), /*#__PURE__*/React.createElement("button", {
+  }, c, cat === c && !isGeneralCat(c) && /*#__PURE__*/React.createElement("span", {
+    role: "button",
+    "aria-label": {
+      de: "Thema löschen",
+      en: "Delete topic",
+      es: "Eliminar tema",
+      nl: "Onderwerp verwijderen",
+      fr: "Supprimer le thème"
+    }[UILANG] || "Delete topic",
+    onClick: e => {
+      e.stopPropagation();
+      deleteCat(c);
+    },
+    style: {
+      marginLeft: "6px",
+      fontWeight: 700,
+      opacity: 0.7
+    }
+  }, "×"))), /*#__PURE__*/React.createElement("button", {
     className: "voccat addcat",
     onClick: addCustomCat
   }, "+ ", tr("vocab_new_cat")))), (shown.filter(it => it.term && it.trans).length > 0 || getVMist().length > 0) && /*#__PURE__*/React.createElement("div", {
