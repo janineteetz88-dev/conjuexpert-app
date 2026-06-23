@@ -11,85 +11,96 @@
 <style>
   :root{
     --bg:#efe7d8; --page:#e3d8c4; --card:#fffdf8; --card2:#f3ecde;
-    --ink:#1b1813; --muted:#7c7264; --line:rgba(60,48,24,.12);
-    --espresso:#2c2823; --shadow:0 22px 48px -26px rgba(70,55,25,.4);
+    --ink:#1b1813; --muted:#675e4e; --line:rgba(60,48,24,.12);
+    --espresso-grad:linear-gradient(180deg,#332e27,#211e19);
+    --shadow:0 22px 48px -26px rgba(70,55,25,.4);
     --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+    --rb-deep:linear-gradient(90deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee);
     --disp:"Space Grotesk",system-ui,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   svg{display:block}
+  :focus-visible{outline:2.5px solid var(--ink);outline-offset:2px;border-radius:8px}
   body{font-family:var(--disp);background:var(--page);color:var(--ink);display:flex;flex-direction:column;align-items:center;min-height:100dvh;padding:14px 12px 80px}
-  .label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8a7c63;margin:4px 0 4px;text-align:center}
+  .label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7a6c54;margin:4px 0 4px;text-align:center}
   .label b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
   .intro{max-width:340px;text-align:center;font-size:12.5px;color:var(--muted);line-height:1.5;margin-bottom:16px}
   .step{width:100%;max-width:344px;margin-bottom:26px}
   .steplabel{display:flex;align-items:center;gap:9px;margin:0 4px 10px;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
-  .num{width:22px;height:22px;flex:none;border-radius:50%;background:var(--espresso);color:#fff;display:grid;place-items:center;font-size:12px}
+  .num{width:24px;height:24px;flex:none;border-radius:50%;background:var(--espresso-grad);color:#fff;display:grid;place-items:center;font-size:12px;box-shadow:0 3px 8px -4px rgba(30,22,8,.6)}
+
+  /* ── EINHEITLICHES BUTTON-SYSTEM (immer dünner Regenbogen-Strich + Tiefe) ── */
+  .btn{width:100%;min-height:48px;padding:14px 16px;border-radius:14px;font-family:var(--disp);font-weight:700;font-size:14.5px;cursor:pointer;border:1.5px solid transparent;display:flex;align-items:center;justify-content:center;gap:8px}
+  /* primär = schwarz mit Tiefe + Regenbogen-Kante */
+  .btn.ink{color:#fff;background:var(--espresso-grad) padding-box,var(--rainbow) border-box;
+    box-shadow:0 10px 22px -10px rgba(30,22,8,.65),inset 0 1px 0 rgba(255,255,255,.12)}
+  /* premium = Regenbogen-Fläche, Text geschützt für Kontrast */
+  .btn.rb{color:#fff;border:0;background:var(--rb-deep);text-shadow:0 1px 2px rgba(0,0,0,.45);
+    box-shadow:0 13px 26px -10px rgba(120,40,90,.55),inset 0 1px 0 rgba(255,255,255,.3)}
+  /* sekundär = hell mit Regenbogen-Kante */
+  .btn.ghost{color:var(--ink);font-weight:600;background:linear-gradient(var(--card),var(--card)) padding-box,var(--rainbow) border-box;
+    box-shadow:0 4px 10px -6px rgba(70,55,25,.4)}
 
   .pop{position:relative;background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:26px 22px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;overflow:hidden}
   .pop::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--rainbow)}
-  .x{position:absolute;top:13px;right:13px;width:28px;height:28px;border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
-  .x svg{width:13px;height:13px}
+  .x{position:absolute;top:12px;right:12px;width:34px;height:34px;border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .x svg{width:14px;height:14px}
   .badge{width:48px;height:48px;border-radius:50%;background:var(--card2);border:1px solid var(--line);display:grid;place-items:center;margin-bottom:13px;color:var(--ink)}
-  .badge.rb{background:#fff;border:0;box-shadow:0 0 0 2px transparent;background-image:linear-gradient(#fff,#fff),var(--rainbow);background-origin:border-box;background-clip:padding-box,border-box;border:2px solid transparent}
+  .badge.rb{border:2px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--rainbow) border-box}
   .badge svg{width:24px;height:24px}
   .badge.rb svg{stroke:url(#rb)}
-  .head{font-weight:700;font-size:20px;letter-spacing:-.02em;line-height:1.15;margin-bottom:8px}
-  .text{font-size:14px;line-height:1.55;color:var(--muted);margin-bottom:6px}
+  .head{font-weight:700;font-size:20px;letter-spacing:-.02em;line-height:1.15;margin-bottom:8px;color:var(--ink)}
+  .text{font-size:14px;line-height:1.55;color:#4a4438;margin-bottom:6px}
   .text b{color:var(--ink);font-weight:700}
-  .gift{width:100%;background:var(--card2);border:1px dashed color-mix(in srgb,#ff7a18 55%,var(--line));border-radius:13px;padding:10px 12px;font-size:12.5px;font-weight:600;margin:10px 0 2px}
   .btns{width:100%;margin-top:15px;display:flex;flex-direction:column;gap:9px}
-  .btn{width:100%;padding:14px 16px;border-radius:13px;font-family:var(--disp);font-weight:700;font-size:14.5px;cursor:pointer;border:1px solid transparent}
-  .btn.ink{background:var(--espresso);color:#fff}
-  .btn.rb{background:var(--rainbow);color:#fff;box-shadow:0 12px 26px -16px rgba(150,60,120,.6)}
-  .btn.ghost{background:var(--card);color:var(--muted);border:1px solid var(--line);font-weight:600}
   .small{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:11px}
 
-  /* P0 onboarding bits */
+  /* P0 onboarding */
   .welcome{font-weight:600;font-size:19px;letter-spacing:-.02em;margin-bottom:2px}
   .wordmark{font-weight:700;font-size:26px;letter-spacing:-.03em;line-height:1}
   .wordmark b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
   .bars{display:flex;align-items:flex-end;justify-content:center;gap:4px;height:30px;margin:13px 0 12px}
   .bars i{width:6px;border-radius:3px;display:block}
   .seclabel{width:100%;text-align:left;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:12px 0 6px}
-  .inp{width:100%;border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:12px;padding:12px 13px;font-size:14px;text-align:left}
-  .select{width:100%;border:1px solid var(--line);background:var(--card2);color:var(--ink);border-radius:12px;padding:12px 13px;font-size:14px;text-align:left;display:flex;justify-content:space-between;align-items:center}
+  .inp{width:100%;min-height:46px;border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:12px;padding:12px 13px;font-size:14px;text-align:left;display:flex;align-items:center}
+  .select{width:100%;min-height:46px;border:1px solid var(--line);background:var(--card2);color:var(--ink);border-radius:12px;padding:12px 13px;font-size:14px;text-align:left;display:flex;justify-content:space-between;align-items:center}
   .select span{color:var(--muted)}
   .levels{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:2px}
   .lvl{border:1px solid var(--line);background:var(--card2);border-radius:13px;padding:10px 5px;text-align:center;display:flex;flex-direction:column;gap:3px}
   .lvl b{font-size:13px}
   .lvl span{color:var(--muted);font-size:10px;line-height:1.2}
-  .lvl.sel{border-color:transparent;background:#fff;box-shadow:inset 0 0 0 1.5px #ff3b5c}
-  .lvl.sel b{color:#ff3b5c}
-  .ghostlink{background:none;border:0;color:var(--muted);font-family:var(--disp);font-size:13px;cursor:pointer;margin-top:12px}
+  /* AUSWAHL = Regenbogen-Kante (einheitlich, nicht mehr rot/lila) */
+  .lvl.sel{border:1.5px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--rainbow) border-box;box-shadow:0 6px 14px -8px rgba(70,55,25,.4)}
+  .lvl.sel b{color:var(--ink)}
+  .ghostlink{min-height:44px;background:none;border:0;color:var(--muted);font-family:var(--disp);font-size:13px;font-weight:600;cursor:pointer;margin-top:8px}
 
   /* P9 plans */
   .plan{width:100%;border:1px solid var(--line);background:var(--card2);border-radius:13px;padding:12px 13px;font-size:13px;font-weight:600;text-align:left;margin-top:8px}
-  .plan.sel{border-color:transparent;background:#fff;box-shadow:inset 0 0 0 1.5px #a557ff}
+  .plan.sel{border:1.5px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--rainbow) border-box;box-shadow:0 8px 18px -10px rgba(70,55,25,.45)}
   .plan .pt{font-size:12px;color:var(--muted);font-weight:600}
-  .plan .pp{font-size:14.5px;font-weight:700;margin-top:2px}
-  .note{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-size:12px;color:var(--muted);font-weight:600;margin-top:10px}
+  .plan .pp{font-size:14.5px;font-weight:700;margin-top:2px;color:var(--ink)}
+  .note{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:12.5px;color:#4a4438;font-weight:600;margin-top:10px}
   .links{font-size:11px;color:var(--muted);margin-top:10px}
 
   .switch{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:var(--shadow)}
-  .switch a{padding:0 14px;height:36px;display:flex;align-items:center;border-radius:999px;text-decoration:none;font-weight:700;color:var(--muted);font-size:13px}
-  .switch a.cur{background:var(--espresso);color:#fff}
+  .switch a{padding:0 14px;min-height:38px;display:flex;align-items:center;border-radius:999px;text-decoration:none;font-weight:700;color:var(--muted);font-size:13px}
+  .switch a.cur{background:var(--espresso-grad);color:#fff}
 </style>
 </head>
 <body>
-  <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="rb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff3b5c"/><stop offset=".5" stop-color="#ffc400"/><stop offset="1" stop-color="#a557ff"/></linearGradient></defs></svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="rb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff3b5c"/><stop offset=".5" stop-color="#ffae00"/><stop offset="1" stop-color="#a557ff"/></linearGradient></defs></svg>
 
   <div class="label">Variante <b>C</b> · Customer-Journey-Popups</div>
-  <div class="intro">Die 4 Kern-Fenster der Journey – exakte Texte aus der Spec, jetzt im Sand-&amp;-Regenbogen-Look mit Linien-Icons. Reine Vorschau.</div>
+  <div class="intro">Die 4 Kern-Fenster der Journey – einheitliches CI: jeder Auswahl-/Button-Rand ist ein dünner Regenbogen-Strich, schwarze Buttons mit Tiefe. Reine Vorschau.</div>
 
   <!-- 1 · Onboarding -->
   <div class="step">
     <div class="steplabel"><span class="num">1</span>Erststart · Onboarding</div>
     <div class="pop">
-      <button class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <button class="x" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       <div class="welcome">Hey! Du wirst:</div>
       <div class="wordmark">Conju<b>Expert</b></div>
-      <div class="bars">
+      <div class="bars" aria-hidden="true">
         <i style="height:16px;background:#ff3b5c"></i><i style="height:24px;background:#ff7a18"></i><i style="height:12px;background:#ffc400"></i><i style="height:30px;background:#34c759"></i><i style="height:20px;background:#0a84ff"></i><i style="height:26px;background:#5b8def"></i><i style="height:14px;background:#a557ff"></i>
       </div>
       <p class="text">hier kannst du Verben in 5 Sprachen konjugieren, quizzen und so easy deine Lieblingssprache lernen.</p>
@@ -111,7 +122,7 @@
   <div class="step">
     <div class="steplabel"><span class="num">2</span>Anonym · nach 5 Verben</div>
     <div class="pop">
-      <button class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <button class="x" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
       <div class="head">Stark — schon 5 Verben!</div>
       <p class="text">Leg dir ein kostenloses Konto an: Dein Fortschritt bleibt erhalten und du übst 2 Tage länger mit dem Premiumtarif – Quiz + Merken.</p>
@@ -126,7 +137,7 @@
   <div class="step">
     <div class="steplabel"><span class="num">3</span>Premium-Kaufdialog</div>
     <div class="pop">
-      <button class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <button class="x" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       <div class="badge rb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.7 5.3a2 2 0 0 0 1.3 1.3L20.3 11l-5.3 1.7a2 2 0 0 0-1.3 1.3L12 19.3l-1.7-5.3a2 2 0 0 0-1.3-1.3L3.7 11l5.3-1.7a2 2 0 0 0 1.3-1.3z"/></svg></div>
       <div class="head">Premiumtarif freischalten</div>
       <div class="note">Dein Test läuft noch 2 Tage.</div>
@@ -142,7 +153,7 @@
   <div class="step">
     <div class="steplabel"><span class="num">4</span>Test-Ende · mit Konto</div>
     <div class="pop">
-      <button class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <button class="x" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg></div>
       <div class="head">Dein Premiumtarif-Test ist vorbei</div>
       <p class="text">Deine gemerkten Wörter, deine Serie und dein Ziel sind sicher. Konjugieren, Lernen &amp; Karteikarten-Quiz (20/Tag) bleiben kostenlos. Quiz-Modi, KI-Sätze &amp; Merken wieder freischalten?</p>

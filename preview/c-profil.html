@@ -11,13 +11,15 @@
 <style>
   :root{
     --bg:#efe7d8; --page:#e3d8c4; --card:#fffdf8; --card2:#f3ecde;
-    --ink:#1b1813; --muted:#7c7264; --line:rgba(60,48,24,.12);
+    --ink:#1b1813; --muted:#675e4e; --line:rgba(60,48,24,.12);
     --espresso:#2c2823; --shadow:0 22px 48px -26px rgba(70,55,25,.38);
     --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+    --rb-deep:linear-gradient(90deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee);
     --disp:"Space Grotesk",system-ui,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   svg{display:block}
+  :focus-visible{outline:2.5px solid var(--ink);outline-offset:2px;border-radius:8px}
   body{font-family:var(--disp);background:var(--page);color:var(--ink);display:flex;flex-direction:column;align-items:center;min-height:100dvh;padding:14px 12px 70px}
   .label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8a7c63;margin:4px 0 12px}
   .label b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -36,7 +38,7 @@
   .behind{position:relative;padding:16px 16px 26px;filter:saturate(.9)}
   .behind::after{content:"";position:absolute;inset:0;background:rgba(20,16,8,.34);backdrop-filter:blur(1.5px);z-index:2}
   .ghost{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:15px;font-weight:600;color:var(--muted);margin-bottom:11px}
-  .ghostcta{background:var(--espresso);color:#fff;text-align:center;border-radius:14px;padding:15px;font-weight:700;margin-bottom:16px;opacity:.92}
+  .ghostcta{border:1.5px solid transparent;background:linear-gradient(180deg,#332e27,#211e19) padding-box,var(--rainbow) border-box;color:#fff;text-align:center;border-radius:14px;padding:15px;font-weight:700;margin-bottom:16px;box-shadow:0 10px 22px -12px rgba(30,22,8,.6)}
   .ghostcard{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;height:150px}
   .dd{position:absolute;z-index:4;top:54px;right:12px;width:250px;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 26px 50px -18px rgba(40,30,10,.5);overflow:hidden}
   .dd::before{content:"";position:absolute;top:-7px;right:18px;width:13px;height:13px;background:var(--card);border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
@@ -44,7 +46,7 @@
   .ddhead .av{width:42px;height:42px;flex:none;border-radius:50%;background:var(--card2);border:1px solid var(--line);color:var(--ink);display:grid;place-items:center;font-weight:700;font-size:17px}
   .ddhead b{font-size:14.5px;display:block}
   .ddhead small{font-size:11px;color:var(--muted);display:block;margin-top:1px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ddhead .lvl{margin-top:6px;display:inline-block;font-size:10px;font-weight:700;color:#fff;background:var(--rainbow);border-radius:999px;padding:3px 8px}
+  .ddhead .lvl{margin-top:6px;display:inline-block;font-size:10px;font-weight:700;color:#fff;background:var(--rb-deep);border-radius:999px;padding:3px 8px;text-shadow:0 1px 1px rgba(0,0,0,.3)}
   .ddlist{padding:6px}
   .item{display:flex;align-items:center;gap:12px;padding:11px;border-radius:11px;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer}
   .item:hover{background:var(--card2)}
