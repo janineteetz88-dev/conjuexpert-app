@@ -2353,6 +2353,14 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .qmode.on::after{ content:"" !important; position:absolute !important; left:14px !important; right:14px !important; bottom:5px !important; height:2.5px !important; border-radius:3px !important; background:var(--brand-rainbow) !important; }
 
   .quizmode-hd{ font-size:11px !important; font-weight:700 !important; letter-spacing:.08em !important; text-transform:uppercase !important; color:var(--muted) !important; padding:0 2px !important; margin:4px 0 8px !important; }
+  /* Aufklappbare Erklärung-Karte (Design 2026) */
+  .explaincard{ background:var(--surface) !important; border:1px solid var(--border) !important; border-radius:16px !important; box-shadow:var(--raise) !important; overflow:hidden !important; margin:12px 0 0 !important; }
+  .explaincard-hd{ display:flex !important; align-items:center !important; gap:9px !important; width:100% !important; padding:13px 14px !important; border:0 !important; background:transparent !important; cursor:pointer !important; font-family:var(--font-display) !important; font-weight:700 !important; font-size:14px !important; color:var(--text) !important; }
+  .explaincard-ic{ width:16px !important; height:16px !important; color:var(--gold) !important; flex:none !important; display:inline-flex !important; }
+  .explaincard-car{ margin-left:auto !important; width:13px !important; height:13px !important; color:var(--muted) !important; flex:none !important; display:inline-flex !important; transition:transform .2s !important; }
+  .explaincard.open .explaincard-car{ transform:rotate(180deg) !important; }
+  .explaincard-body{ padding:0 14px 14px !important; font-size:13px !important; line-height:1.5 !important; color:var(--muted) !important; }
+  .explaincard:not(.open) .explaincard-body{ display:none !important; }
   /* Einstell-Karte mit Regenbogen-Haarlinien */
   .quiztenses{ background:var(--surface) !important; border:1px solid var(--border) !important; border-radius:18px !important; padding:2px 14px 8px !important; box-shadow:var(--raise) !important; margin:12px 0 0 !important; }
   .qfilter-block{ position:relative !important; display:flex !important; flex-direction:row !important; align-items:center !important; justify-content:space-between !important; gap:12px !important; padding:12px 2px !important; background:none !important; border:0 !important; box-shadow:none !important; margin:0 !important; }
@@ -2431,7 +2439,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-15"></script>
+<script defer src="/app.js?v=c-sand-16"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
