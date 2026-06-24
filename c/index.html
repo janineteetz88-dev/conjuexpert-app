@@ -2395,7 +2395,10 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .langbtn .langflag{ font-size:13px !important; }
   .langbtn .langname{ font-size:8px !important; }
   .tab .tab-label{ font-size:10px !important; }
-  .tabs-track{ gap:4px !important; }
+  .tabs-track{ gap:4px !important; grid-template-columns:repeat(5,1fr) !important; }
+  .tabprofile{ width:100% !important; }
+  .streakflame{ display:inline-flex !important; align-items:center !important; }
+  .streakflame svg{ display:block !important; }
   /* Homescreen-/Install-Banner ins CI (kein Lila) */
   .install-bar{ background:var(--surface-2) !important; border-bottom:1px solid var(--border) !important; }
   .install-bar-btn{ background:var(--selbg) !important; color:var(--selfg) !important; }
@@ -2488,7 +2491,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-24"></script>
+<script defer src="/app.js?v=c-sand-25"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->

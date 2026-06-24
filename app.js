@@ -11792,7 +11792,7 @@ function UserMenu({
   const __BSHADOW = "0 14px 30px -12px rgba(165,87,255,.55)";
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
-    style: nav ? { display: "contents" } : {
+    style: {
       position: "relative"
     }
   }, /*#__PURE__*/React.createElement(UserChip, {
@@ -11802,11 +11802,11 @@ function UserMenu({
     onClick: () => { setPanel(null); setOpen(o => !o); }
   }), open && /*#__PURE__*/React.createElement("div", {
     style: {
-      position: "fixed",
+      position: nav ? "absolute" : "fixed",
       left: nav ? "auto" : "10px",
-      right: nav ? "8px" : "auto",
+      right: nav ? "0" : "auto",
       top: nav ? "auto" : "calc(env(safe-area-inset-top, 0px) + 52px)",
-      bottom: nav ? "calc(env(safe-area-inset-bottom, 0px) + 66px)" : "auto",
+      bottom: nav ? "calc(100% + 10px)" : "auto",
       background: "var(--surface)",
       border: "1px solid var(--border)",
       borderRadius: "16px",
@@ -11968,7 +11968,7 @@ function GuestMenu({
   }, (name || "").trim().charAt(0).toUpperCase() || "★");
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
-    style: nav ? { display: "contents" } : {
+    style: {
       position: "relative"
     }
   }, /*#__PURE__*/React.createElement(UserChip, {
@@ -11978,11 +11978,11 @@ function GuestMenu({
     onClick: () => setOpen(o => !o)
   }), open && /*#__PURE__*/React.createElement("div", {
     style: {
-      position: "fixed",
+      position: nav ? "absolute" : "fixed",
       left: nav ? "auto" : "10px",
-      right: nav ? "8px" : "auto",
+      right: nav ? "0" : "auto",
       top: nav ? "auto" : "calc(env(safe-area-inset-top, 0px) + 52px)",
-      bottom: nav ? "calc(env(safe-area-inset-bottom, 0px) + 66px)" : "auto",
+      bottom: nav ? "calc(100% + 10px)" : "auto",
       background: "var(--surface)",
       border: "1px solid var(--border)",
       borderRadius: "16px",
@@ -12583,7 +12583,8 @@ function PinSheet({
 }
 function InstallBanner({
   onInstall,
-  onDismiss
+  onDismiss,
+  onHow
 }) {
   return /*#__PURE__*/React.createElement("div", {
     className: "install-bar",
@@ -12594,8 +12595,8 @@ function InstallBanner({
     className: "install-bar-text"
   }, "ConjuExpert auf deinen Homescreen!", /*#__PURE__*/React.createElement("small", null, "Kein App Store n\xF6tig.")), /*#__PURE__*/React.createElement("button", {
     className: "install-bar-btn",
-    onClick: onInstall
-  }, "Installieren"), /*#__PURE__*/React.createElement("button", {
+    onClick: onHow
+  }, tr("ios_how")), /*#__PURE__*/React.createElement("button", {
     className: "install-bar-x",
     onClick: onDismiss,
     "aria-label": "Schlie\xDFen"
@@ -15307,8 +15308,9 @@ function App() {
       } : undefined
     });
   })), /*#__PURE__*/React.createElement("span", {
-    className: "streakflame"
-  }, "\uD83D\uDD25"), /*#__PURE__*/React.createElement("b", {
+    className: "streakflame",
+    dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='13' height='13' fill='currentColor'><path d='M12 2c.6 3.2-1.4 4.4-1.4 6.6a2.4 2.4 0 0 0 4.8.2c.7 1 1.1 2.2 1.1 3.4a4.5 4.5 0 1 1-9 0c0-2.7 1.6-4.2 2.8-5.6C11.6 5.4 12.3 4 12 2z'/></svg>" }
+  }), /*#__PURE__*/React.createElement("b", {
     className: "streaknum" + (daily.streak > 0 ? "" : " zero")
   }, daily.streak)))), showLogin && /*#__PURE__*/React.createElement(LoginModal, {
     onClose: () => setShowLogin(false),
@@ -15318,7 +15320,8 @@ function App() {
     wasPremium: deletedWasPremium
   }), showInstall && /*#__PURE__*/React.createElement(InstallBanner, {
     onInstall: handleInstall,
-    onDismiss: dismissInstall
+    onDismiss: dismissInstall,
+    onHow: () => setShowPin(true)
   }), showIOSInstall && !showInstall && /*#__PURE__*/React.createElement(IOSInstallBanner, {
     onDismiss: dismissIOSInstall,
     onHow: () => setShowPin(true)
