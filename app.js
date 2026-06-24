@@ -11512,6 +11512,12 @@ const DD_ITEM = {
   alignItems: "center",
   gap: "8px"
 };
+const MENU_SVG = {
+  "👤":"<svg viewBox='0 0 24 24' width='20' height='20' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='3.5'/><path d='M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6'/></svg>",
+  "💎":"<svg viewBox='0 0 24 24' width='20' height='20' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M5 3h14l3 6-10 12L2 9z'/><path d='M2 9h20'/></svg>",
+  "⭐":"<svg viewBox='0 0 24 24' width='20' height='20' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M12 4l2.3 4.9 5.2.6-3.9 3.6 1.1 5.1L12 16.1 7.2 18.8l1.1-5.1L4.4 10.1l5.2-.6z'/></svg>",
+  "🔑":"<svg viewBox='0 0 24 24' width='20' height='20' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4'/><path d='M10 17l5-5-5-5M15 12H3'/></svg>"
+};
 function MenuRow({
   onClick,
   bg,
@@ -11550,14 +11556,17 @@ function MenuRow({
       width: "38px",
       height: "38px",
       borderRadius: "11px",
-      background: bg,
+      background: "var(--surface-2)",
+      border: "1px solid var(--border)",
+      color: "var(--text)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       fontSize: "18px",
       flexShrink: 0
-    }
-  }, glyph), /*#__PURE__*/React.createElement("span", {
+    },
+    dangerouslySetInnerHTML: MENU_SVG[glyph] ? { __html: MENU_SVG[glyph] } : undefined
+  }, MENU_SVG[glyph] ? null : glyph), /*#__PURE__*/React.createElement("span", {
     style: {
       flex: 1,
       minWidth: 0
@@ -11809,7 +11818,7 @@ function UserMenu({
       setOpen(false);
     },
     style: DD_ITEM
-  }, /*#__PURE__*/React.createElement("span", null, "\u21AA"), " ", tr("menu_logout")), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", { style: { display: "inline-flex", width: "18px", height: "18px", verticalAlign: "-3px", marginRight: "2px" }, dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3'/><path d='M16 16l4-4-4-4M20 12H9'/></svg>" } }), " ", tr("menu_logout")), /*#__PURE__*/React.createElement("div", {
     style: {
       height: "1px",
       background: "var(--border)",
@@ -11818,7 +11827,7 @@ function UserMenu({
   }), hasActiveSub && /*#__PURE__*/React.createElement("button", {
     onClick: () => openPanel("cancel"),
     style: DD_ITEM
-  }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDD14"), " ", tr("menu_cancel_sub")), isPremium && cancelledUntil && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", { style: { display: "inline-flex", width: "18px", height: "18px", verticalAlign: "-3px", marginRight: "2px" }, dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M6.5 9a5.5 5.5 0 0 1 11 0c0 5 2.2 6.5 2.2 6.5H4.3S6.5 14 6.5 9z'/><path d='M10.2 19a2 2 0 0 0 3.6 0'/></svg>" } }), " ", tr("menu_cancel_sub")), isPremium && cancelledUntil && /*#__PURE__*/React.createElement("div", {
     style: {
       padding: "7px 10px",
       fontSize: "12px",
@@ -11833,7 +11842,7 @@ function UserMenu({
       ...DD_ITEM,
       color: "#ff453a"
     }
-  }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDDD1"), " ", tr("menu_delete_acc")))), panel === "cancel" && __ov(
+  }, /*#__PURE__*/React.createElement("span", { style: { display: "inline-flex", width: "18px", height: "18px", verticalAlign: "-3px", marginRight: "2px" }, dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 7h16M9 7V5.4A1.4 1.4 0 0 1 10.4 4h3.2A1.4 1.4 0 0 1 15 5.4V7'/><path d='M6 7l1 13a1.5 1.5 0 0 0 1.5 1.4h7A1.5 1.5 0 0 0 17 20l1-13'/><path d='M10 11v6M14 11v6'/></svg>" } }), " ", tr("menu_delete_acc")))), panel === "cancel" && __ov(
     __ico("🔔"),
     __ttl(tr("cancel_title")),
     __body(tr("cancel_body", { date: untilStr })),
