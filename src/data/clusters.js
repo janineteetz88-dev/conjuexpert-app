@@ -119,6 +119,7 @@ export const clusters = [
     },
     spokes: [
       { slug: "/blog/t-kofschip", title: "’t kofschip: -te oder -de im Niederländischen sicher wählen", live: true },
+      { slug: "/blog/sterke-werkwoorden", title: "Sterke werkwoorden: die wichtigsten unregelmäßigen niederländischen Verben", live: true },
     ],
   },
   {
@@ -188,6 +189,8 @@ export const clusters = [
     spokes: [
       { slug: "/blog/passe-compose-imparfait", title: "Passé composé vs. imparfait: So triffst du die richtige Wahl", live: true },
       { slug: "/blog/futur-simple-futur-proche", title: "Futur simple vs. futur proche: welche Zukunft im Französischen?", live: true },
+      { slug: "/blog/subjonctif-franzoesisch", title: "Le subjonctif: wann er kommt und wie du ihn bildest", live: true },
+      { slug: "/blog/verneinung-franzoesisch", title: "Die Verneinung im Französischen (ne … pas) und die Verbstellung", live: true },
     ],
   },
   {
