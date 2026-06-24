@@ -74,8 +74,10 @@
   .opt .t{font-size:12px;color:var(--muted);font-weight:600}
   .opt .p{font-size:14.5px;font-weight:700;margin-top:2px}
   .opt.sel{border:1.5px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box,var(--rainbow) border-box;box-shadow:0 8px 18px -10px rgba(70,55,25,.45)}
-  .opt .now{display:inline-block;margin-top:6px;font-size:9.5px;font-weight:700;color:#fff;background:var(--rb-deep);border-radius:999px;padding:2px 7px;text-shadow:0 1px 1px rgba(0,0,0,.3)}
-  .switchbtn{width:100%;min-height:46px;margin-top:12px;border:1.5px solid transparent;border-radius:13px;font-family:var(--disp);font-weight:700;font-size:14px;color:#fff;background:linear-gradient(180deg,#332e27,#211e19) padding-box,var(--rainbow) border-box;box-shadow:0 10px 22px -12px rgba(30,22,8,.6);cursor:pointer}
+  .opt .now{display:inline-block;margin-top:6px;font-size:9.5px;font-weight:700;color:var(--muted);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:2px 7px}
+  .opt .save{display:inline-block;margin-top:6px;font-size:9.5px;font-weight:700;color:#fff;background:var(--rb-deep);border-radius:999px;padding:2px 7px;text-shadow:0 1px 1px rgba(0,0,0,.3)}
+  .switchbtn{width:100%;min-height:46px;margin-top:12px;border:0;border-radius:13px;font-family:var(--disp);font-weight:700;font-size:14px;color:#fff;background:var(--rb-deep);text-shadow:0 1px 2px rgba(0,0,0,.45);box-shadow:0 12px 26px -12px rgba(120,40,90,.55),inset 0 1px 0 rgba(255,255,255,.3);cursor:pointer}
+  .caption{font-size:11px;color:var(--muted);line-height:1.45;margin-top:8px;text-align:center}
   .prow{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin-top:8px;background:var(--card)}
   .prow .ic{width:22px;flex:none;color:var(--ink)}
   .prow .ic svg{width:20px;height:20px}
@@ -91,7 +93,7 @@
 </head>
 <body>
   <div class="label">Variante <b>C</b> · Profil-Menüs</div>
-  <div class="intro">Drei Zustände wie in der echten App – mit deinen Änderungen (Feedback statt Bewerten, Abo-Einstellungen mit Popup).</div>
+  <div class="intro">Drei Zustände wie in der echten App – mit deinen Änderungen (Feedback statt Bewerten, Abo-Einstellungen mit Popup). Hinweis: „App-Icon pinnen" erscheint nur, solange die App noch nicht installiert ist – danach wird der Punkt automatisch ausgeblendet.</div>
   <div class="cnav">
     <a href="c-de.html">Konjugieren</a>
     <a href="c-profil.html" class="cur">Profil</a>
@@ -169,14 +171,15 @@
           <b>Abo-Einstellungen</b>
           <button class="x" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
         </div>
-        <div class="planline">Dein Plan: <b>Premium · Jährlich</b> · aktiv bis 25.06.2026</div>
+        <div class="planline">Dein Plan: <b>Premium · Monatlich</b> · verlängert sich am 25.07.2026</div>
 
         <div class="seclbl">Tarif ändern</div>
         <div class="toggle">
-          <div class="opt"><div class="t">Monatlich</div><div class="p">2,99 €<span style="font-size:12px;font-weight:600;color:var(--muted)"> / Mon.</span></div></div>
-          <div class="opt sel"><div class="t">Jährlich</div><div class="p">24,99 €<span style="font-size:12px;font-weight:600;color:var(--muted)"> / Jahr</span></div><span class="now">Aktuell</span></div>
+          <div class="opt"><div class="t">Monatlich</div><div class="p">2,99 €<span style="font-size:12px;font-weight:600;color:var(--muted)"> / Mon.</span></div><span class="now">Aktuell</span></div>
+          <div class="opt sel"><div class="t">Jährlich</div><div class="p">24,99 €<span style="font-size:12px;font-weight:600;color:var(--muted)"> / Jahr</span></div><span class="save">Spare 11 €</span></div>
         </div>
-        <button class="switchbtn">Auf monatlich wechseln</button>
+        <button class="switchbtn">Auf Jahresabo wechseln</button>
+        <div class="caption">Es wird immer der jeweils <b>andere</b> Tarif angeboten – hier der Wechsel vom Monats- aufs günstigere Jahresabo.</div>
 
         <div class="seclbl">Zahlung &amp; Belege</div>
         <div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 14.5h3"/></svg></span><span class="tx"><div class="t">Zahlungsart</div><div class="s">Visa · · · · 4242</div></span><span class="arr">Ändern ›</span></div>
