@@ -2245,6 +2245,25 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .tabs-track .tab:nth-child(2) .tab-icon::before{ --ti:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%271.7%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%2712%27%20r%3D%279.2%27%2F%3E%3Cpath%20d%3D%27M9.3%209.4a3%203%200%200%201%205.6%201c0%202-2.9%202.5-2.9%204.1%27%2F%3E%3Cpath%20d%3D%27M12%2017.6h.01%27%2F%3E%3C%2Fsvg%3E"); }
   .tabs-track .tab:nth-child(3) .tab-icon::before{ --ti:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%271.7%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M2.5%209%2012%204.5%2021.5%209%2012%2013.5z%27%2F%3E%3Cpath%20d%3D%27M6%2011v4.4c0%201.1%202.7%202.4%206%202.4s6-1.3%206-2.4V11%27%2F%3E%3C%2Fsvg%3E"); }
   .tabs-track .tab:nth-child(4) .tab-icon::before{ --ti:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%271.7%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M18%2020.5%2012%2016l-6%204.5V5.6A1.6%201.6%200%200%201%207.6%204h8.8A1.6%201.6%200%200%201%2018%205.6z%27%2F%3E%3C%2Fsvg%3E"); }
+  /* ===== RUHIG & ERWACHSEN: Sand + Ink, kaum Farbe (nur /c/) ===== */
+  /* Hero ohne Sprachfarbe */
+  .eg-kicker, .eg-l1 .eg-lng, .eg-accent{ color:var(--ink) !important; -webkit-text-fill-color:var(--ink) !important; background:none !important; }
+  /* Inhalt ohne Sprach-Einfärbung */
+  .content{ background:var(--bg) !important; }
+  /* Aktiver Tab neutral: dezenter Ink-Unterstrich statt Farbe */
+  .tab.active{ background:var(--surface-2) !important; border-color:transparent !important; box-shadow:inset 0 -2px 0 var(--ink) !important; }
+  .tab.active .tab-icon{ color:var(--ink) !important; }
+  /* Würfel & Eingabe-Lead neutral */
+  .dicebtn{ color:var(--ink) !important; }
+  .inputlead{ color:var(--muted) !important; background:var(--surface-2) !important; }
+  /* Sprach-Pills dezent (kein bunter Streifen; aktiv = Ink) */
+  .langstripe{ background:var(--ink) !important; opacity:.10 !important; }
+  .langbtn.active{ background:var(--surface) !important; border-color:color-mix(in srgb,var(--ink) 22%,var(--border)) !important; box-shadow:none !important; }
+  .langbtn.active .langstripe{ opacity:.55 !important; height:4px !important; }
+  .langbtn.active .langflag, .langbtn.active .langname{ color:var(--ink) !important; }
+  /* 'So geht's'-Banner & Bonus-Leiste ruhig statt bunt */
+  .bonus-banner-cta{ background:var(--ink) !important; color:var(--surface) !important; box-shadow:none !important; border:0 !important; }
+  button[style*="ef1f4d"]{ background:var(--surface-2) !important; color:var(--ink) !important; border:1px solid var(--border) !important; text-shadow:none !important; }
 </style>
 </head>
 <body>
