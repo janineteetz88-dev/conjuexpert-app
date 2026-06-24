@@ -12694,6 +12694,7 @@ function BonusBar({
   const cd = formatCountdown(trialMs);
   const label = onTrial ? "🔥 " + (name ? name + ", " : "") + tr("bonus_trial") : bonusActive ? "🎁 " + tr("bonus_welcome") : "🎯 " + tr("bonus_quiz");
   return /*#__PURE__*/React.createElement("button", {
+    className: "c-bonusbanner",
     onClick: onOpen,
     style: {
       width: "100%",
