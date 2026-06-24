@@ -4665,7 +4665,8 @@ function LanguageBar({
 /* ---------- Tabs ---------- */
 function Tabs({
   tab,
-  setTab
+  setTab,
+  profile
 }) {
   const items = [{
     id: "conjugate",
@@ -4696,7 +4697,7 @@ function Tabs({
     className: "tab-icon"
   }, it.icon), /*#__PURE__*/React.createElement("span", {
     className: "tab-label"
-  }, it.label)))));
+  }, it.label))), profile));
 }
 
 /* ---------- Tense card ---------- */
@@ -11643,8 +11644,20 @@ function MenuRow({
 function UserChip({
   avatar,
   label,
-  onClick
+  onClick,
+  nav
 }) {
+  if (nav) {
+    return /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: onClick,
+      className: "tab tabprofile"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "tabprofile-av"
+    }, avatar), /*#__PURE__*/React.createElement("span", {
+      className: "tab-label"
+    }, tr("profile")));
+  }
   return /*#__PURE__*/React.createElement("button", {
     onClick: onClick,
     style: {
@@ -11682,7 +11695,8 @@ function UserMenu({
   onDeleted,
   onEditName,
   onTarife,
-  onPin
+  onPin,
+  nav
 }) {
   const [open, setOpen] = useState(false);
   const [panel, setPanel] = useState(null); // null | "cancel" | "delete"
@@ -11778,25 +11792,28 @@ function UserMenu({
   const __BSHADOW = "0 14px 30px -12px rgba(165,87,255,.55)";
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
-    style: {
+    style: nav ? { display: "contents" } : {
       position: "relative"
     }
   }, /*#__PURE__*/React.createElement(UserChip, {
     avatar: avatar,
     label: greet,
+    nav: nav,
     onClick: () => { setPanel(null); setOpen(o => !o); }
   }), open && /*#__PURE__*/React.createElement("div", {
     style: {
       position: "fixed",
-      left: "10px",
-      top: "calc(env(safe-area-inset-top, 0px) + 52px)",
+      left: nav ? "auto" : "10px",
+      right: nav ? "8px" : "auto",
+      top: nav ? "auto" : "calc(env(safe-area-inset-top, 0px) + 52px)",
+      bottom: nav ? "calc(env(safe-area-inset-bottom, 0px) + 66px)" : "auto",
       background: "var(--surface)",
       border: "1px solid var(--border)",
       borderRadius: "16px",
       boxShadow: "0 8px 28px rgba(0,0,0,.13)",
       padding: "8px",
       width: "min(300px, calc(100vw - 20px))",
-      maxHeight: "calc(100dvh - 80px)",
+      maxHeight: "calc(100dvh - 140px)",
       overflowY: "auto",
       zIndex: 100000
     }
@@ -11921,7 +11938,8 @@ function GuestMenu({
   onLogin,
   onEditName,
   onTarife,
-  onPin
+  onPin,
+  nav
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -11950,25 +11968,28 @@ function GuestMenu({
   }, (name || "").trim().charAt(0).toUpperCase() || "★");
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
-    style: {
+    style: nav ? { display: "contents" } : {
       position: "relative"
     }
   }, /*#__PURE__*/React.createElement(UserChip, {
     avatar: avatar,
     label: greet,
-    onClick: () => { setPanel(null); setOpen(o => !o); }
+    nav: nav,
+    onClick: () => setOpen(o => !o)
   }), open && /*#__PURE__*/React.createElement("div", {
     style: {
       position: "fixed",
-      left: "10px",
-      top: "calc(env(safe-area-inset-top, 0px) + 52px)",
+      left: nav ? "auto" : "10px",
+      right: nav ? "8px" : "auto",
+      top: nav ? "auto" : "calc(env(safe-area-inset-top, 0px) + 52px)",
+      bottom: nav ? "calc(env(safe-area-inset-bottom, 0px) + 66px)" : "auto",
       background: "var(--surface)",
       border: "1px solid var(--border)",
       borderRadius: "16px",
       boxShadow: "0 8px 28px rgba(0,0,0,.13)",
       padding: "8px",
       width: "min(300px, calc(100vw - 20px))",
-      maxHeight: "calc(100dvh - 80px)",
+      maxHeight: "calc(100dvh - 140px)",
       overflowY: "auto",
       zIndex: 100000
     }
@@ -15242,37 +15263,9 @@ function App() {
     className: "appbar"
   }, /*#__PURE__*/React.createElement("div", {
     className: "appbar-side appbar-left"
-  }, supaUser ? /*#__PURE__*/React.createElement(UserMenu, {
-    user: supaUser,
-    name: name,
-    isPremium: isPremium,
-    premiumUntil: premiumUntil,
-    greet: tr("hi", {
-      name: name || supaUser.email.split("@")[0]
-    }),
-    onDeleted: info => {
-      setDeletedWasPremium(isPremium ? {
-        until: info?.premiumUntil || null
-      } : null);
-      persist("kunju-premium", false);
-      persist("kunju-premium-until", null);
-      setIsPremium(false);
-      setPremiumUntil(null);
-      setShowDeletedMsg(true);
-    },
-    onEditName: () => setShowOnboard(true),
-    onTarife: () => setShowPricing(true),
-    onPin: () => setShowPin(true)
-  }) : /*#__PURE__*/React.createElement(GuestMenu, {
-    name: name,
-    greet: name ? tr("hi", {
-      name
-    }) : tr("menu_login"),
-    onLogin: () => setShowLogin(true),
-    onEditName: () => setShowOnboard(true),
-    onTarife: () => setShowPricing(true),
-    onPin: () => setShowPin(true)
-  })), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "appbar-greet"
+  }, name ? tr("hi", { name: name }) : supaUser ? tr("hi", { name: supaUser.email.split("@")[0] }) : "👋")), /*#__PURE__*/React.createElement("div", {
     className: "appbar-center"
   }, /*#__PURE__*/React.createElement("span", {
     className: "brand-name",
@@ -15342,7 +15335,34 @@ function App() {
     setLang: switchLang
   }), /*#__PURE__*/React.createElement(Tabs, {
     tab: tab,
-    setTab: handleTabSwitch
+    setTab: handleTabSwitch,
+    profile: supaUser ? /*#__PURE__*/React.createElement(UserMenu, {
+      user: supaUser,
+      name: name,
+      isPremium: isPremium,
+      premiumUntil: premiumUntil,
+      nav: true,
+      greet: tr("hi", { name: name || supaUser.email.split("@")[0] }),
+      onDeleted: info => {
+        setDeletedWasPremium(isPremium ? { until: info?.premiumUntil || null } : null);
+        persist("kunju-premium", false);
+        persist("kunju-premium-until", null);
+        setIsPremium(false);
+        setPremiumUntil(null);
+        setShowDeletedMsg(true);
+      },
+      onEditName: () => setShowOnboard(true),
+      onTarife: () => setShowPricing(true),
+      onPin: () => setShowPin(true)
+    }) : /*#__PURE__*/React.createElement(GuestMenu, {
+      name: name,
+      nav: true,
+      greet: name ? tr("hi", { name }) : tr("menu_login"),
+      onLogin: () => setShowLogin(true),
+      onEditName: () => setShowOnboard(true),
+      onTarife: () => setShowPricing(true),
+      onPin: () => setShowPin(true)
+    })
   }), offline && /*#__PURE__*/React.createElement("div", {
     className: "offlinebar"
   }, tr("offline_note")), /*#__PURE__*/React.createElement("main", {
