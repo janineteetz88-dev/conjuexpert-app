@@ -14,6 +14,7 @@
     --ink:#221f18; --muted:#766f60; --line:rgba(60,48,24,.13);
     --acc:#3a3528; /* gedämpfter Graphit/Taupe-Akzent, keine bunte Farbe */
     --disp:"Space Grotesk",system-ui,sans-serif;
+    --rb:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
     --shadow:0 20px 46px -28px rgba(70,55,25,.4);
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -25,6 +26,7 @@
   .ic{width:34px;height:34px;border:1px solid var(--line);border-radius:11px;background:var(--card2);display:flex;align-items:center;justify-content:center;color:var(--ink)}
   .ic svg{width:17px;height:17px}
   .brand{flex:1;text-align:center;font-weight:700;font-size:19px;letter-spacing:-.02em}
+  .brand b{background:var(--rb);-webkit-background-clip:text;background-clip:text;color:transparent}
   .streak{display:flex;align-items:center;gap:5px;font-weight:700;font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
   .streak svg{width:14px;height:14px}
   .langs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:11px 12px 8px;background:var(--card)}
@@ -39,16 +41,18 @@
   .tab.on svg{opacity:1}
   .body{padding:16px 16px 24px}
   .inputrow{display:flex;gap:10px;margin-bottom:12px}
-  .input{flex:1;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:15px;font-size:17px;font-weight:600;box-shadow:0 3px 12px -10px rgba(70,55,25,.25)}
+  .input{flex:1;display:flex;align-items:center;gap:8px;background:linear-gradient(180deg,#fffefb,#fbf6ec);border:1px solid var(--line);border-radius:15px;padding:15px;font-size:17px;font-weight:600;box-shadow:0 8px 18px -12px rgba(70,55,25,.35),inset 0 1px 0 rgba(255,255,255,.8)}
   .input b{font-size:11px;font-weight:700;color:var(--muted);background:var(--card2);border-radius:6px;padding:3px 7px}
   .dice{width:54px;flex:none;border:1px solid var(--line);border-radius:15px;background:var(--card);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center}
   .dice svg{width:22px;height:22px}
-  .cta{width:100%;border:0;border-radius:15px;padding:16px;font-family:var(--disp);font-weight:700;font-size:15.5px;color:#fff;background:var(--acc);cursor:pointer;box-shadow:0 12px 26px -16px rgba(40,32,15,.5)}
-  .hero{margin-top:20px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px}
+  .cta{width:100%;border:0;border-radius:15px;padding:16px;font-family:var(--disp);font-weight:700;font-size:15.5px;color:#fff;background:linear-gradient(180deg,#4a4534,#2c2820);cursor:pointer;box-shadow:0 16px 30px -14px rgba(40,32,15,.6),0 2px 6px -3px rgba(40,32,15,.4),inset 0 1px 0 rgba(255,255,255,.14)}
+  .cta:active{transform:translateY(1px)}
+  .hero{position:relative;margin-top:20px;background:linear-gradient(180deg,#fffefb,#fbf6ed);border:1px solid var(--line);border-radius:20px;padding:22px 20px;overflow:hidden;box-shadow:0 24px 44px -28px rgba(70,55,25,.55),inset 0 1px 0 rgba(255,255,255,.8)}
+  .hero::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--rb)}
   .kick{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
   .h1{font-size:26px;line-height:1.08;letter-spacing:-.02em;font-weight:700}
   .plan{margin:16px 0 10px;font-size:13.5px;font-weight:600;color:var(--muted)}
-  .pcard{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:13px;padding:13px;margin-top:9px;font-weight:600;font-size:13.5px;background:var(--card2)}
+  .pcard{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:13px;padding:13px;margin-top:9px;font-weight:600;font-size:13.5px;background:linear-gradient(180deg,#fffdf9,#f4eee2);box-shadow:0 6px 14px -12px rgba(70,55,25,.4),inset 0 1px 0 rgba(255,255,255,.7)}
   .pcard .pi{width:30px;height:30px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:9px;background:var(--card);color:var(--ink);border:1px solid var(--line)}
   .pcard .pi svg{width:16px;height:16px}
   .pcard .arr{margin-left:auto;color:var(--muted)}
@@ -62,7 +66,7 @@
   <div class="phone">
     <div class="bar">
       <button class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-      <div class="brand">ConjuExpert</div>
+      <div class="brand">Conju<b>Expert</b></div>
       <div class="streak"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.5-2-1-3-1.1-2.1-.2-4 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.2.4-2.3 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>0</div>
     </div>
     <div class="langs">
