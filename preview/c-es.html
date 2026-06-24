@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>Vorschau C · Español</title>
+<title>Vorschau C · Español (1:1)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
@@ -14,31 +14,32 @@
     --ink:#1b1813; --muted:#675e4e; --line:rgba(60,48,24,.12);
     --espresso:#2c2823; --shadow:0 22px 48px -26px rgba(70,55,25,.38);
     --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
-    --acc:#f5860f;          /* ES · Orange */
+    --acc:#ff9f0a;          /* ES · Orange (echte App-Farbe) */
     --disp:"Space Grotesk",system-ui,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   svg{display:block}
   :focus-visible{outline:2.5px solid var(--ink);outline-offset:2px;border-radius:8px}
   body{font-family:var(--disp);background:var(--page);color:var(--ink);display:flex;flex-direction:column;align-items:center;min-height:100dvh;padding:14px 12px 70px}
-  .label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8a7c63;margin:4px 0 12px}
+  .label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7a6c54;margin:4px 0 10px;text-align:center}
   .label b{color:var(--acc)}
+  .tag1{display:inline-block;margin-left:6px;font-size:9.5px;font-weight:700;letter-spacing:.08em;color:#2f6b3a;background:#e3f0e2;border:1px solid #bcd9bb;border-radius:999px;padding:2px 7px;vertical-align:middle}
   .cnav{width:100%;max-width:390px;display:flex;gap:4px;margin:0 0 12px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px}
-  .cnav a{flex:1;text-align:center;text-decoration:none;color:var(--muted);font-weight:600;font-size:12px;padding:9px 4px;border-radius:999px}
+  .cnav a{flex:1;text-align:center;text-decoration:none;color:var(--muted);font-weight:600;font-size:11.5px;padding:9px 4px;border-radius:999px}
   .cnav a.cur{background:var(--card2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
   .phone{width:100%;max-width:390px;background:var(--bg);border-radius:30px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line)}
-  .bar{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;background:var(--card);border-bottom:1px solid var(--line)}
-  .menu{width:30px;height:30px;border:1px solid var(--line);border-radius:50%;background:var(--card2);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center}
-  .menu svg{width:15px;height:15px}
+  .bar{display:flex;align-items:center;gap:10px;padding:14px 14px 10px;background:var(--card);border-bottom:1px solid var(--line)}
+  .avatar{width:34px;height:34px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .brand{flex:1;text-align:center;font-weight:600;font-size:19px;letter-spacing:-.02em}
   .brand b{font-weight:700;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .streak{display:flex;align-items:center;gap:5px;font-weight:700;font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
-  .streak svg{width:13px;height:13px}
-  .avatar{width:32px;height:32px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--card2);color:var(--ink);font-weight:700;font-size:13px;cursor:pointer}
+  .goalpill{display:flex;align-items:center;gap:7px;flex:none;border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-weight:700;font-size:12.5px;color:var(--ink);background:var(--card);cursor:pointer}
+  .goalpill svg{width:14px;height:14px}
+  .goalpill .gsep{width:1px;height:13px;background:var(--line)}
+  .goalpill .fl{color:var(--muted)}
   .langs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:10px 12px;background:var(--card)}
   .lang{position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 2px 7px;border:1px solid var(--line);border-radius:13px;background:var(--card2);cursor:pointer;text-decoration:none;color:var(--ink)}
   .lang span{font-weight:700;font-size:16px}
-  .lang small{font-size:9px;color:var(--muted)}
+  .lang small{font-size:8.5px;color:var(--muted)}
   .lang::before{content:"";position:absolute;top:0;left:15px;right:15px;height:2px;border-radius:0 0 2px 2px;background:var(--ink);opacity:.10}
   .lang.on{background:color-mix(in srgb,var(--acc) 8%,var(--card));border-color:color-mix(in srgb,var(--acc) 50%,var(--line))}
   .lang.on span{color:var(--acc)}
@@ -57,38 +58,41 @@
   .cta{width:100%;min-height:50px;border:1.5px solid transparent;border-radius:14px;padding:15px;font-family:var(--disp);font-weight:700;font-size:15.5px;color:#fff;background:linear-gradient(180deg,#332e27,#211e19) padding-box,var(--rainbow) border-box;cursor:pointer;box-shadow:0 11px 24px -10px rgba(30,22,8,.65),inset 0 1px 0 rgba(255,255,255,.12)}
   .hero{position:relative;margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 20px;box-shadow:0 12px 34px -28px rgba(70,55,25,.35);overflow:hidden}
   .hero::before{content:"";position:absolute;top:0;left:0;bottom:0;width:4px;background:var(--acc)}
-  .kicker{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:9px}
-  .h1{font-size:28px;line-height:1.05;letter-spacing:-.025em;font-weight:700}
-  .accent{font-family:"Caveat",cursive;font-size:44px;line-height:.9;margin-top:2px;display:inline-block;color:var(--acc)}
+  .kicker{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:9px}
+  .h1{font-size:26px;line-height:1.05;letter-spacing:-.025em;font-weight:700}
+  .accent{font-family:"Caveat",cursive;font-size:42px;line-height:.9;margin-top:2px;display:inline-block;color:var(--acc)}
   .plan{margin:16px 0 12px;font-size:14.5px;font-weight:600;color:var(--ink)}
-  .pcard{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:9px;font-weight:600;font-size:13.5px;background:var(--card)}
-  .pcard .pi{width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:9px;background:color-mix(in srgb,var(--acc) 12%,var(--card2));color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 22%,var(--line))}
-  .pcard .pi svg{width:17px;height:17px}
+  .savedchip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card2);border-radius:12px;padding:9px 13px;font-weight:600;font-size:13px;color:var(--ink)}
+  .savedchip svg{width:16px;height:16px;color:var(--muted)}
+  .empty{margin-top:14px;border:1px dashed var(--line);border-radius:14px;padding:16px;text-align:center;color:var(--muted);font-size:13px;line-height:1.5}
   .switch{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:var(--shadow)}
   .switch a{width:40px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:999px;text-decoration:none;font-weight:700;color:var(--muted);font-size:14px}
   .switch a.cur{background:var(--espresso);color:#fff}
 </style>
 </head>
 <body>
-  <div class="label">Variante <b>C</b> · Español (Akzent Orange)</div>
+  <div class="label">Variante <b>C</b> · Español <span class="tag1">1:1 ECHTE APP</span></div>
   <div class="cnav">
     <a href="c-es.html" class="cur">Konjugieren</a>
-    <a href="c-ziele.html">Ziele</a>
-    <a href="c-konto.html">Konto</a>
     <a href="c-profil.html">Profil</a>
+    <a href="c-vorschlag.html">Vorschläge</a>
+    <a href="c-popups.html">Popups</a>
   </div>
   <div class="phone">
     <div class="bar">
-      <button class="menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <button class="avatar" aria-label="Menü">J</button>
       <div class="brand">Conju<b>Expert</b></div>
-      <div class="streak"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>0</div>
-      <button class="avatar">J</button>
+      <button class="goalpill" aria-label="Ziele">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>8/12
+        <span class="gsep"></span>
+        <svg class="fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>0
+      </button>
     </div>
     <div class="langs">
       <a class="lang" href="c-de.html"><span>DE</span><small>Deutsch</small></a>
       <a class="lang on" href="c-es.html"><span>ES</span><small>Español</small></a>
       <a class="lang" href="c-es.html"><span>EN</span><small>English</small></a>
-      <a class="lang" href="c-es.html"><span>NL</span><small>Nederl.</small></a>
+      <a class="lang" href="c-es.html"><span>NL</span><small>Nederlands</small></a>
       <a class="lang" href="c-es.html"><span>FR</span><small>Français</small></a>
     </div>
     <div class="tabs">
@@ -104,17 +108,17 @@
     <div class="body">
       <div class="inputrow">
         <div class="input"><b>ES</b> hablar</div>
-        <button class="dice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="8.5" cy="8.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.15" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.15" fill="currentColor" stroke="none"/></svg></button>
+        <button class="dice" aria-label="Zufälliges Verb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="8.5" cy="8.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.15" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.15" fill="currentColor" stroke="none"/></svg></button>
       </div>
       <button class="cta">Konjugieren</button>
       <div class="hero">
-        <div class="kicker">Dein Plan heute</div>
-        <h2 class="h1">Habla Español</h2>
-        <div class="accent">con soltura.</div>
+        <div class="kicker">Hey Janine 👋</div>
+        <h2 class="h1">¡Habla español</h2>
+        <div class="accent">con confianza!</div>
         <p class="plan">Dein Plan für heute, Janine:</p>
-        <div class="pcard"><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2.5"/><path d="M3 9h18M9 9v12"/></svg></span>12 Konjugationen üben</div>
-        <div class="pcard"><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M9.3 9.4a3 3 0 0 1 5.6 1c0 2-2.9 2.5-2.9 4.1"/><path d="M12 17.6h.01"/></svg></span>Ein kurzes Quiz starten</div>
+        <span class="savedchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20.5 12 16l-6 4.5V5.6A1.6 1.6 0 0 1 7.6 4h8.8A1.6 1.6 0 0 1 18 5.6z"/></svg>Gespeicherte Verben · 0</span>
       </div>
+      <div class="empty">Verb eingeben zum Konjugieren<br>Alle Zeitformen in 5 Sprachen — tippe ein Verb oder 🎲 zum Start.</div>
     </div>
   </div>
   <div class="switch"><a href="a.html">A</a><a href="b.html">B</a><a href="c-de.html" class="cur">C</a></div>
