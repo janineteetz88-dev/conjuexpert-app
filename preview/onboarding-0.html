@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Onboarding · Start</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#efe7d8; --page:#e3dccd; --card:#fffdf8; --card2:#f3ecde;
+    --ink:#1b1813; --muted:#6a6253; --line:rgba(60,48,24,.13); --espresso:#2c2823;
+    --rb:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+    --disp:"Space Grotesk",system-ui,sans-serif;
+    --shadow:0 24px 54px -28px rgba(70,55,25,.5);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  svg{display:block}
+  body{font-family:var(--disp);background:var(--page);color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100dvh;padding:14px 12px 76px}
+  .lab{position:fixed;top:14px;left:0;right:0;text-align:center;font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#8b8270}
+  .card{position:relative;width:100%;max-width:340px;background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:30px 24px 22px;overflow:hidden;text-align:center}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--rb)}
+  .word{font-weight:700;font-size:15px;letter-spacing:-.02em;margin-bottom:14px}
+  .word b{background:var(--rb);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .emoji{font-size:34px;margin-bottom:8px}
+  .h{font-size:23px;font-weight:700;letter-spacing:-.02em;line-height:1.18}
+  .sub{font-size:14px;color:var(--muted);line-height:1.5;margin:8px 0 22px}
+  .btn{width:100%;min-height:52px;border:0;border-radius:14px;font-family:var(--disp);font-weight:700;font-size:15.5px;color:#fff;background:linear-gradient(180deg,#3a352c,#211e19);cursor:pointer;box-shadow:0 14px 28px -14px rgba(30,22,8,.6),inset 0 1px 0 rgba(255,255,255,.12)}
+  .ghost{width:100%;min-height:48px;margin-top:10px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font-family:var(--disp);font-weight:600;font-size:14.5px;cursor:pointer}
+  .sw{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:var(--shadow)}
+  .sw a{padding:0 13px;height:38px;display:flex;align-items:center;border-radius:999px;text-decoration:none;font-weight:700;color:var(--muted);font-size:12px}
+  .sw a.on{background:var(--espresso);color:#fff}
+</style>
+</head>
+<body>
+  <div class="lab">Onboarding · nach Namenseingabe</div>
+  <div class="card">
+    <div class="word">Conju<b>Expert</b></div>
+    <div class="emoji">👋</div>
+    <h2 class="h">Schön, dass du da bist, Janine!</h2>
+    <p class="sub">Magst du einen kurzen Rundgang durch die App – oder direkt loslegen?</p>
+    <button class="btn">App-Rundgang starten</button>
+    <button class="ghost">Direkt loslegen</button>
+  </div>
+  <div class="sw"><a href="onboarding-0.html" class="on">0 · Start</a><a href="onboarding-1.html">1 · Überblick</a><a href="onboarding-2.html">2 · Preise</a></div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Onboarding · Preise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#efe7d8; --page:#e3dccd; --card:#fffdf8; --card2:#f3ecde;
+    --ink:#1b1813; --muted:#6a6253; --line:rgba(60,48,24,.13); --espresso:#2c2823;
+    --rb:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+    --rb-deep:linear-gradient(100deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee);
+    --disp:"Space Grotesk",system-ui,sans-serif;
+    --shadow:0 24px 54px -28px rgba(70,55,25,.5);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  svg{display:block}
+  body{font-family:var(--disp);background:var(--page);color:var(--ink);display:flex;flex-direction:column;align-items:center;min-height:100dvh;padding:14px 12px 76px}
+  .lab{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#8b8270;margin:4px 0 12px}
+  .card{position:relative;width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:26px 22px 20px;overflow:hidden}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--rb)}
+  .x{position:absolute;top:14px;right:14px;width:30px;height:30px;border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .x svg{width:13px;height:13px}
+  .h{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+  .sub{font-size:13px;color:var(--muted);margin:4px 0 16px}
+  .tier{border:1px solid var(--line);border-radius:16px;padding:15px;margin-top:11px;background:linear-gradient(180deg,#fffefb,#fbf6ed);box-shadow:0 8px 18px -14px rgba(70,55,25,.4),inset 0 1px 0 rgba(255,255,255,.7)}
+  .tier.prem{position:relative;border-color:transparent;background:linear-gradient(var(--card),var(--card)) padding-box,var(--rb) border-box;overflow:hidden}
+  .trow{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .tname{font-size:15px;font-weight:700}
+  .tname .rb{background:var(--rb);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tprice{font-size:12.5px;font-weight:700;color:var(--muted)}
+  .feat{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;font-weight:600;margin-top:7px;color:var(--ink)}
+  .feat .ck{width:18px;height:18px;flex:none;border-radius:50%;background:var(--card2);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink)}
+  .feat.on .ck{background:var(--rb-deep);border:0;color:#fff}
+  .feat .ck svg{width:11px;height:11px}
+  .gift{display:flex;align-items:center;gap:9px;margin:14px 0 2px;font-size:12.5px;font-weight:700;color:var(--ink);background:var(--card2);border:1px dashed color-mix(in srgb,#ff7a18 45%,var(--line));border-radius:12px;padding:10px 12px}
+  .dots{display:flex;justify-content:center;gap:7px;margin:18px 0 14px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--line)}
+  .dot.on{width:20px;border-radius:4px;background:var(--espresso)}
+  .btn{width:100%;min-height:52px;border:0;border-radius:14px;font-family:var(--disp);font-weight:700;font-size:15.5px;color:#fff;background:linear-gradient(180deg,#3a352c,#211e19);cursor:pointer;box-shadow:0 14px 28px -14px rgba(30,22,8,.6),inset 0 1px 0 rgba(255,255,255,.12)}
+  .sw{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:var(--shadow)}
+  .sw a{padding:0 13px;height:38px;display:flex;align-items:center;border-radius:999px;text-decoration:none;font-weight:700;color:var(--muted);font-size:12px}
+  .sw a.on{background:var(--espresso);color:#fff}
+</style>
+</head>
+<body>
+  <div class="lab">Onboarding · Slide 2 — Preise &amp; Tarife</div>
+  <div class="card">
+    <button class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <h2 class="h">Preise &amp; Tarife</h2>
+    <p class="sub">Fair &amp; einfach – das Wichtigste bleibt für immer kostenlos.</p>
+
+    <div class="tier">
+      <div class="trow"><span class="tname">Gratis</span><span class="tprice">0 €</span></div>
+      <div class="feat on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Konjugieren &amp; Lernen in 5 Sprachen</div>
+      <div class="feat on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Karteikarten-Quiz (20/Tag)</div>
+    </div>
+
+    <div class="tier prem">
+      <div class="trow"><span class="tname">Conju<span class="rb">Premium</span></span><span class="tprice">ab 2,08 €/Mon.</span></div>
+      <div class="feat on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Quiz ohne Limit · alle Modi &amp; KI-Sätze</div>
+      <div class="feat on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Merken, Lieblingsthemen &amp; Ziele voll</div>
+      <div class="feat on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Ohne Werbung, auf allen Geräten</div>
+    </div>
+
+    <div class="gift">🎁 24 h Premium gratis testen – ganz ohne Konto</div>
+
+    <div class="dots"><span class="dot"></span><span class="dot on"></span></div>
+    <button class="btn">Los geht's →</button>
+  </div>
+  <div class="sw"><a href="onboarding-0.html">0 · Start</a><a href="onboarding-1.html">1 · Überblick</a><a href="onboarding-2.html" class="on">2 · Preise</a></div>
+</body>
+</html>
