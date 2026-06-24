@@ -42,8 +42,8 @@
   .dot{width:7px;height:7px;border-radius:50%;background:var(--line)}
   .dot.on{width:20px;border-radius:4px;background:var(--espresso)}
   .btn{width:100%;min-height:52px;border:0;border-radius:14px;font-family:var(--disp);font-weight:700;font-size:15.5px;color:#fff;background:linear-gradient(180deg,#3a352c,#211e19);cursor:pointer;box-shadow:0 14px 28px -14px rgba(30,22,8,.6),inset 0 1px 0 rgba(255,255,255,.12)}
-  .sw{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:var(--shadow)}
-  .sw a{padding:0 13px;height:38px;display:flex;align-items:center;border-radius:999px;text-decoration:none;font-weight:700;color:var(--muted);font-size:12px}
+  .sw{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:5px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow);max-width:calc(100vw - 16px);overflow:auto}
+  .sw a{padding:0 10px;height:34px;display:flex;align-items:center;border-radius:999px;text-decoration:none;font-weight:700;color:var(--muted);font-size:11px;white-space:nowrap}
   .sw a.on{background:var(--espresso);color:#fff}
 </style>
 </head>
@@ -69,9 +69,9 @@
 
     <div class="gift">🎁 24 h Premium gratis testen – ganz ohne Konto</div>
 
-    <div class="dots"><span class="dot"></span><span class="dot on"></span></div>
+    <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot on"></span></div>
     <button class="btn">Los geht's →</button>
   </div>
-  <div class="sw"><a href="onboarding-0.html">0 · Start</a><a href="onboarding-1.html">1 · Überblick</a><a href="onboarding-2.html" class="on">2 · Preise</a></div>
+  <div class="sw"><a href="onboarding-0.html">Start</a><a href="onboarding-1.html">Überblick</a><a href="onboarding-quiz-tap.html">Antippen</a><a href="onboarding-quiz-type.html">Eintippen</a><a href="onboarding-quiz-text.html">Text</a><a href="onboarding-merken.html">Merken</a><a href="onboarding-2.html" class="on">Preise</a></div>
 </body>
 </html>
