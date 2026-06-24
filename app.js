@@ -11605,7 +11605,7 @@ function UserChip({
     onClick: onClick,
     style: {
       background: "none",
-      border: "1.5px solid rgba(165,87,255,.35)",
+      border: "1px solid var(--border)",
       borderRadius: "20px",
       padding: "3px 9px 3px 4px",
       cursor: "pointer",
