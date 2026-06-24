@@ -2204,6 +2204,8 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .cta-rainbow{ background:linear-gradient(180deg,#332e27,#211e19) !important; }
   .cta{ box-shadow:0 11px 24px -10px rgba(30,22,8,.62) !important; }
   .cta-label{ text-shadow:0 1px 2px rgba(0,0,0,.4); }
+  /* kein pinker Glow unter dem Haupt-Button (Onboarding/Hint) */
+  .namebtn{ box-shadow:0 12px 26px -14px rgba(30,22,8,.55) !important; }
   /* CI: Geld/Premium = Regenbogen-Fläche */
   .rcta, .pr-cta, .plansel-cta{ background:var(--rb-deep) !important; box-shadow:0 13px 28px -12px rgba(120,40,90,.55) !important; }
   /* Eingabefeld-Fokus warm */
@@ -2342,7 +2344,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-8"></script>
+<script defer src="/app.js?v=c-sand-9"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->

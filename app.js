@@ -1472,7 +1472,7 @@
   window.UI = {
     en: {
       tagline: "conjugate · quiz · learn", hi: "Hi, {name} 👋", ready: "Ready when you are, {name}",
-      hint_quiz_cards_h: "Cards: memorise verbs, relaxed", hint_quiz_cards_1: "Pick a tense &amp; favourite topic, plus the direction (mother tongue ↔ target language).", hint_quiz_cards_2: "See the verb + tense, work out the form in your head — tap the card to flip it.", hint_quiz_cards_3: "Tap unknown words in the example sentence → translate &amp; save them.", hint_quiz_cards_4: "No pressure, no typing: perfect for getting to know forms and quick review.",
+      hint_quiz_cards_h: "Cards: memorise verbs, relaxed", hint_quiz_cards_1: "Pick a tense &amp; favourite topic, plus the direction (mother tongue ↔ target language).", hint_quiz_cards_2: "See the verb + tense, work out the form in your head — tap the card to flip it.", hint_quiz_cards_3: "Tap unknown words in the example sentence → translate &amp; save them.", hint_quiz_cards_4: "No pressure, no typing: perfect for getting to know forms and quick review.", hint_quiz_speed_h: "Speed: 60 seconds, full focus", hint_quiz_speed_1: "Pick a tense &amp; topic, then start — you have 60 seconds.", hint_quiz_speed_2: "Tap the correct form as fast as you can — every right answer counts.", hint_quiz_speed_3: "Great for making forms quick to recall, with a little time pressure.",
       hint_quiz_choice_h: "Choice: spot the right form fast", hint_quiz_choice_1: "A perfect way into a new tense.", hint_quiz_choice_2: "Pick a tense &amp; favourite topic.", hint_quiz_choice_3: "Verb + required tense + four options — tap the right one for instant feedback.", hint_quiz_choice_4: "Tap unknown words in the example sentence → translate &amp; save them.",
       hint_quiz_type_h: "Type: write conjugations actively", hint_quiz_type_1: "Writing it yourself anchors the forms most — alongside <b>Speak</b>, the most intensive mode.", hint_quiz_type_2: "Pick tense, topic &amp; direction — and whether to drill single verbs or translate a whole sentence.", hint_quiz_type_3: "Tap unknown words in the example sentence → translate &amp; save them.",
       hint_quiz_speak_h: "Speak: say it out loud", hint_quiz_speak_1: "Saying it yourself anchors the forms most — alongside <b>Type</b>, the most intensive mode.", hint_quiz_speak_2: "Pick tense, topic &amp; direction — and whether to drill single verbs or a whole sentence.", hint_quiz_speak_3: "Tap the microphone to start and to stop the voice input.", hint_quiz_speak_4: "Tap unknown words → translate &amp; save them.",
@@ -1507,7 +1507,7 @@
     },
     de: {
       tagline: "konjugieren · quiz · lernen", hi: "Hi, {name} 👋", ready: "Bereit, wenn du es bist, {name}",
-      hint_quiz_cards_h: "Karten: Verben entspannt einprägen", hint_quiz_cards_1: "Zeitform &amp; Lieblingsthema wählen, dazu die Richtung (Muttersprache ↔ Lernsprache).", hint_quiz_cards_2: "Verb + Zeitform ansehen, Form im Kopf überlegen — tippe die Karte zum Umdrehen.", hint_quiz_cards_3: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.", hint_quiz_cards_4: "Kein Druck, kein Tippen: ideal zum Kennenlernen und schnellen Wiederholen.",
+      hint_quiz_cards_h: "Karten: Verben entspannt einprägen", hint_quiz_cards_1: "Zeitform &amp; Lieblingsthema wählen, dazu die Richtung (Muttersprache ↔ Lernsprache).", hint_quiz_cards_2: "Verb + Zeitform ansehen, Form im Kopf überlegen — tippe die Karte zum Umdrehen.", hint_quiz_cards_3: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.", hint_quiz_cards_4: "Kein Druck, kein Tippen: ideal zum Kennenlernen und schnellen Wiederholen.", hint_quiz_speed_h: "Speed: 60 Sekunden Vollgas", hint_quiz_speed_1: "Zeitform &amp; Thema wählen, dann starten — du hast 60 Sekunden.", hint_quiz_speed_2: "Tippe die richtige Form so schnell wie möglich an — jede richtige zählt.", hint_quiz_speed_3: "Ideal, um Formen schnell abrufbar zu machen — mit etwas Zeitdruck.",
       hint_quiz_choice_h: "Auswahl: die richtige Form schnell erkennen", hint_quiz_choice_1: "Perfekter Einstieg in eine neue Zeitform.", hint_quiz_choice_2: "Zeitform &amp; Lieblingsthema wählen.", hint_quiz_choice_3: "Verb + geforderte Zeitform + vier Varianten — tippe die richtige an, sofortige Rückmeldung.", hint_quiz_choice_4: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.",
       hint_quiz_type_h: "Tippen: Konjugationen aktiv schreiben", hint_quiz_type_1: "Selbst Schreiben verankert die Formen mit am stärksten — neben <b>Sprechen</b> der intensivste Modus.", hint_quiz_type_2: "Zeitform, Lieblingsthema &amp; Richtung wählen — einzelne Verben oder ganzen Satz übersetzen.", hint_quiz_type_3: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.",
       hint_quiz_speak_h: "Sprechen: laut aussprechen", hint_quiz_speak_1: "Selbst Sprechen verankert die Formen mit am stärksten — neben <b>Schreiben</b> der intensivste Modus.", hint_quiz_speak_2: "Zeitform, Lieblingsthema &amp; Richtung wählen — einzelne Verben oder ganzen Satz.", hint_quiz_speak_3: "Mikrofon antippen zum Starten und Beenden der Spracheingabe.", hint_quiz_speak_4: "Unbekannte Wörter antippen → übersetzen &amp; speichern.",
@@ -1542,7 +1542,7 @@
     },
     es: {
       tagline: "conjugar · quiz · aprender", hi: "¡Hola, {name}! 👋", ready: "Cuando quieras, {name}",
-      hint_quiz_cards_h: "Tarjetas: memoriza verbos sin estrés", hint_quiz_cards_1: "Elige tiempo verbal &amp; tema favorito, además del sentido (lengua materna ↔ idioma que aprendes).", hint_quiz_cards_2: "Mira el verbo + tiempo, piensa la forma en tu cabeza — toca la tarjeta para girarla.", hint_quiz_cards_3: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.", hint_quiz_cards_4: "Sin presión, sin escribir: ideal para conocer las formas y repasar rápido.",
+      hint_quiz_cards_h: "Tarjetas: memoriza verbos sin estrés", hint_quiz_cards_1: "Elige tiempo verbal &amp; tema favorito, además del sentido (lengua materna ↔ idioma que aprendes).", hint_quiz_cards_2: "Mira el verbo + tiempo, piensa la forma en tu cabeza — toca la tarjeta para girarla.", hint_quiz_cards_3: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.", hint_quiz_cards_4: "Sin presión, sin escribir: ideal para conocer las formas y repasar rápido.", hint_quiz_speed_h: "Veloz: 60 segundos a tope", hint_quiz_speed_1: "Elige tiempo &amp; tema y empieza — tienes 60 segundos.", hint_quiz_speed_2: "Toca la forma correcta lo más rápido posible — cada acierto suma.", hint_quiz_speed_3: "Ideal para recuperar las formas con rapidez, con algo de presión.",
       hint_quiz_choice_h: "Opción: reconocer rápido la forma correcta", hint_quiz_choice_1: "Una entrada perfecta a un tiempo verbal nuevo.", hint_quiz_choice_2: "Elige tiempo verbal &amp; tema favorito.", hint_quiz_choice_3: "Verbo + tiempo requerido + cuatro variantes — toca la correcta y recibe respuesta al instante.", hint_quiz_choice_4: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.",
       hint_quiz_type_h: "Escribir: conjuga de forma activa", hint_quiz_type_1: "Escribirlo tú mismo es lo que más fija las formas — junto a <b>Hablar</b>, el modo más intensivo.", hint_quiz_type_2: "Elige tiempo, tema &amp; sentido — y si practicas verbos sueltos o traduces una frase entera.", hint_quiz_type_3: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.",
       hint_quiz_speak_h: "Hablar: dilo en voz alta", hint_quiz_speak_1: "Decirlo tú mismo es lo que más fija las formas — junto a <b>Escribir</b>, el modo más intensivo.", hint_quiz_speak_2: "Elige tiempo, tema &amp; sentido — y si practicas verbos sueltos o una frase entera.", hint_quiz_speak_3: "Toca el micrófono para empezar y para terminar la entrada de voz.", hint_quiz_speak_4: "Toca las palabras desconocidas → traducir &amp; guardar.",
@@ -1577,7 +1577,7 @@
     },
     nl: {
       tagline: "vervoegen · quiz · leren", hi: "Hoi, {name} 👋", ready: "Klaar wanneer jij het bent, {name}",
-      hint_quiz_cards_h: "Kaarten: werkwoorden ontspannen inprenten", hint_quiz_cards_1: "Kies tijd &amp; favoriet thema, plus de richting (moedertaal ↔ doeltaal).", hint_quiz_cards_2: "Bekijk werkwoord + tijd, bedenk de vorm in je hoofd — tik de kaart om te draaien.", hint_quiz_cards_3: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.", hint_quiz_cards_4: "Geen druk, geen typen: ideaal om vormen te leren kennen en snel te herhalen.",
+      hint_quiz_cards_h: "Kaarten: werkwoorden ontspannen inprenten", hint_quiz_cards_1: "Kies tijd &amp; favoriet thema, plus de richting (moedertaal ↔ doeltaal).", hint_quiz_cards_2: "Bekijk werkwoord + tijd, bedenk de vorm in je hoofd — tik de kaart om te draaien.", hint_quiz_cards_3: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.", hint_quiz_cards_4: "Geen druk, geen typen: ideaal om vormen te leren kennen en snel te herhalen.", hint_quiz_speed_h: "Speed: 60 seconden vol focus", hint_quiz_speed_1: "Kies tijd &amp; thema en start — je hebt 60 seconden.", hint_quiz_speed_2: "Tik de juiste vorm zo snel mogelijk aan — elk goed antwoord telt.", hint_quiz_speed_3: "Ideaal om vormen snel paraat te krijgen, met wat tijdsdruk.",
       hint_quiz_choice_h: "Keuze: de juiste vorm snel herkennen", hint_quiz_choice_1: "Een perfecte start in een nieuwe tijd.", hint_quiz_choice_2: "Kies tijd &amp; favoriet thema.", hint_quiz_choice_3: "Werkwoord + gevraagde tijd + vier varianten — tik de juiste aan voor directe feedback.", hint_quiz_choice_4: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.",
       hint_quiz_type_h: "Typen: vervoegingen actief schrijven", hint_quiz_type_1: "Zelf schrijven verankert de vormen het sterkst — naast <b>Spreken</b> de intensiefste modus.", hint_quiz_type_2: "Kies tijd, thema &amp; richting — en of je losse werkwoorden oefent of een hele zin vertaalt.", hint_quiz_type_3: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.",
       hint_quiz_speak_h: "Spreken: zeg het hardop", hint_quiz_speak_1: "Zelf spreken verankert de vormen het sterkst — naast <b>Typen</b> de intensiefste modus.", hint_quiz_speak_2: "Kies tijd, thema &amp; richting — en of je losse werkwoorden oefent of een hele zin.", hint_quiz_speak_3: "Tik op de microfoon om te beginnen en te stoppen met de spraakinvoer.", hint_quiz_speak_4: "Tik onbekende woorden → vertalen &amp; opslaan.",
@@ -1612,7 +1612,7 @@
     },
     fr: {
       tagline: "conjuguer · quiz · apprendre", hi: "Salut, {name} 👋", ready: "Quand tu veux, {name}",
-      hint_quiz_cards_h: "Cartes : mémoriser les verbes en douceur", hint_quiz_cards_1: "Choisis un temps &amp; un thème favori, ainsi que le sens (langue maternelle ↔ langue apprise).", hint_quiz_cards_2: "Regarde le verbe + le temps, trouve la forme dans ta tête — touche la carte pour la retourner.", hint_quiz_cards_3: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.", hint_quiz_cards_4: "Sans pression, sans saisie : idéal pour découvrir les formes et réviser vite.",
+      hint_quiz_cards_h: "Cartes : mémoriser les verbes en douceur", hint_quiz_cards_1: "Choisis un temps &amp; un thème favori, ainsi que le sens (langue maternelle ↔ langue apprise).", hint_quiz_cards_2: "Regarde le verbe + le temps, trouve la forme dans ta tête — touche la carte pour la retourner.", hint_quiz_cards_3: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.", hint_quiz_cards_4: "Sans pression, sans saisie : idéal pour découvrir les formes et réviser vite.", hint_quiz_speed_h: "Rapide : 60 secondes à fond", hint_quiz_speed_1: "Choisis un temps &amp; un thème, puis démarre — tu as 60 secondes.", hint_quiz_speed_2: "Touche la bonne forme le plus vite possible — chaque bonne réponse compte.", hint_quiz_speed_3: "Idéal pour rendre les formes vite accessibles, avec un peu de pression.",
       hint_quiz_choice_h: "Choix : reconnaître vite la bonne forme", hint_quiz_choice_1: "Une entrée parfaite dans un nouveau temps.", hint_quiz_choice_2: "Choisis un temps &amp; un thème favori.", hint_quiz_choice_3: "Verbe + temps demandé + quatre variantes — touche la bonne pour un retour immédiat.", hint_quiz_choice_4: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.",
       hint_quiz_type_h: "Saisie : écrire les conjugaisons activement", hint_quiz_type_1: "Écrire soi-même ancre le plus les formes — avec <b>Parler</b>, le mode le plus intensif.", hint_quiz_type_2: "Choisis le temps, le thème &amp; le sens — et si tu travailles des verbes seuls ou traduis une phrase entière.", hint_quiz_type_3: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.",
       hint_quiz_speak_h: "Parler : prononce à voix haute", hint_quiz_speak_1: "Parler soi-même ancre le plus les formes — avec <b>Saisie</b>, le mode le plus intensif.", hint_quiz_speak_2: "Choisis le temps, le thème &amp; le sens — et si tu travailles des verbes seuls ou une phrase entière.", hint_quiz_speak_3: "Touche le micro pour démarrer et pour arrêter la saisie vocale.", hint_quiz_speak_4: "Touche les mots inconnus → traduire &amp; enregistrer.",
@@ -11336,38 +11336,34 @@ function TourGate({
    Saved sub-area, because most people click the welcome tour away too fast.
    One key set per kind in window.UI (all 5 UI languages):
    learn · quiz_cards/choice/type/speak/texte · saved_verbs/saved_vocab. */
+const HINT_ICON_OPEN = "<svg viewBox='0 0 24 24' width='20' height='20' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'>";
 const FEATURE_HINTS = {
   learn: {
-    icon: "✦",
-    col: "#a557ff"
+    svg: HINT_ICON_OPEN + "<path d='M2.5 9 12 4.5 21.5 9 12 13.5z'/><path d='M6 11v4.4c0 1.1 2.7 2.4 6 2.4s6-1.3 6-2.4V11'/></svg>"
   },
   quiz_cards: {
-    icon: "🃏",
-    col: "#34c759"
+    svg: HINT_ICON_OPEN + "<rect x='3' y='6' width='13' height='14' rx='2'/><path d='M8 3h11a2 2 0 0 1 2 2v12'/></svg>"
   },
   quiz_choice: {
-    icon: "◉",
-    col: "#34c759"
+    svg: HINT_ICON_OPEN + "<path d='M10 7h10M10 12h10M10 17h10'/><path d='M4.4 7 5.3 8 7 6M4.4 12l.9 1L7 11M4.4 17l.9 1L7 16'/></svg>"
   },
   quiz_type: {
-    icon: "⌨",
-    col: "#34c759"
+    svg: HINT_ICON_OPEN + "<rect x='3' y='6' width='18' height='12' rx='2'/><path d='M7 10h.01M11 10h.01M15 10h.01M8 14h8'/></svg>"
   },
   quiz_speak: {
-    icon: "🎤",
-    col: "#34c759"
+    svg: HINT_ICON_OPEN + "<rect x='9' y='3' width='6' height='11' rx='3'/><path d='M6 11a6 6 0 0 0 12 0M12 17v4'/></svg>"
   },
   quiz_texte: {
-    icon: "📖",
-    col: "#34c759"
+    svg: HINT_ICON_OPEN + "<path d='M6 3h8l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z'/><path d='M14 3v4h4M9 13h6M9 17h4'/></svg>"
+  },
+  quiz_speed: {
+    svg: HINT_ICON_OPEN + "<path d='M13 2 4 14h7l-1 8 9-12h-7z'/></svg>"
   },
   saved_verbs: {
-    icon: "★",
-    col: "#ffb300"
+    svg: HINT_ICON_OPEN + "<path d='M18 20.5 12 16l-6 4.5V5.6A1.6 1.6 0 0 1 7.6 4h8.8A1.6 1.6 0 0 1 18 5.6z'/></svg>"
   },
   saved_vocab: {
-    icon: "📒",
-    col: "#ffb300"
+    svg: HINT_ICON_OPEN + "<rect x='5' y='3' width='14' height='18' rx='2'/><path d='M9 3v18M13 8h3M13 12h3'/></svg>"
   }
 };
 function FeatureHint({
@@ -11390,9 +11386,12 @@ function FeatureHint({
   }, /*#__PURE__*/React.createElement("span", {
     className: "tourbadge",
     style: {
-      background: meta.col
+      background: "#2c2823"
+    },
+    dangerouslySetInnerHTML: {
+      __html: meta.svg
     }
-  }, meta.icon), /*#__PURE__*/React.createElement("h2", {
+  }), /*#__PURE__*/React.createElement("h2", {
     className: "namehead",
     style: {
       margin: 0
@@ -11400,7 +11399,7 @@ function FeatureHint({
   }, tr("hint_" + kind + "_h"))), /*#__PURE__*/React.createElement("ul", {
     className: "hintlist",
     style: {
-      "--col": meta.col
+      "--col": "var(--text)"
     }
   }, [1, 2, 3, 4].map((n, i) => {
     const txt = tr("hint_" + kind + "_" + n);
