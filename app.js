@@ -3239,6 +3239,14 @@ function QModeIcon({
   }, p)), /*#__PURE__*/React.createElement("path", _extends({
     d: "M7 10h.01M11 10h.01M15 10h.01M8 14h8"
   }, p)));
+  if (id === "speed") return /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24",
+    width: "24",
+    height: "24",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("path", _extends({
+    d: "M13 2 4 14h7l-1 8 9-12h-7z"
+  }, p)));
   if (id === "speak") return /*#__PURE__*/React.createElement("svg", {
     viewBox: "0 0 24 24",
     width: "24",
@@ -7650,6 +7658,8 @@ function QuizView({
   })), /*#__PURE__*/React.createElement("span", {
     className: "qmode-lb"
   }, m.label.replace(/^[^\s]+\s/, ""))))), /*#__PURE__*/React.createElement(ExplainCard, {
+    key: mode,
+    seenKey: "kunju-xpl-" + mode,
     title: tr("explain_hd"),
     html: quizExplainHtml(mode)
   }), TenseBar(), mistMode && mistakes.length === 0 && /*#__PURE__*/React.createElement("div", {
@@ -11351,8 +11361,9 @@ function quizExplainHtml(mode) {
   }).filter(Boolean);
   return parts.length ? parts.join(" ") : tr("mdesc_" + mode);
 }
-function ExplainCard({ title, html }) {
-  const [open, setOpen] = useState(true);
+function ExplainCard({ title, html, seenKey }) {
+  const [open, setOpen] = useState(() => !recall(seenKey, false));
+  useEffect(() => { persist(seenKey, true); }, [seenKey]);
   const h = React.createElement;
   return h("div", { className: "explaincard" + (open ? " open" : "") },
     h("button", { className: "explaincard-hd", onClick: () => setOpen(o => !o) },
