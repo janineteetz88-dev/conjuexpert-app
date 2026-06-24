@@ -2203,7 +2203,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   /* CI: Geld/Premium = Regenbogen-Fläche */
   .rcta, .pr-cta, .plansel-cta{ background:var(--rb-deep) !important; box-shadow:0 13px 28px -12px rgba(120,40,90,.55) !important; }
   /* Eingabefeld-Fokus warm */
-  .inputfield:focus-within{ border-color:#ff7a18 !important; box-shadow:0 0 0 4px rgba(255,122,24,.14) !important; }
+  .inputfield:focus-within{ border-color:var(--lc,#1b1813) !important; box-shadow:0 0 0 4px color-mix(in srgb,var(--lc,#1b1813) 16%,transparent) !important; }
   /* a11y: sichtbarer Fokus */
   :focus-visible{ outline:2.5px solid #1b1813; outline-offset:2px; }
 
@@ -2220,7 +2220,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .skillbtn.on, .plan-card.sel, .pr-plan.best{ border-color:transparent !important; background:linear-gradient(var(--surface),var(--surface)) padding-box, var(--rb-deep) border-box !important; box-shadow:0 8px 22px -12px rgba(120,40,90,.4) !important; }
   .skillbtn.on b{ color:var(--text) !important; }
   /* Fokus warm */
-  .nameinput:focus, .login-email-input:focus, .nativesel:focus{ border-color:#ff7a18 !important; box-shadow:0 0 0 4px rgba(255,122,24,.14) !important; }
+  .nameinput:focus, .login-email-input:focus, .nativesel:focus{ border-color:var(--lc,#1b1813) !important; box-shadow:0 0 0 4px color-mix(in srgb,var(--lc,#1b1813) 16%,transparent) !important; }
   /* Tour-Punkte */
   .tourdot.on{ background:var(--rb-deep) !important; }
   /* Direkte Pink-Akzente -> Sprachfarbe / Ink */
