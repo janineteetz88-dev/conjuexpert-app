@@ -7650,7 +7650,7 @@ function QuizView({
     className: "qmode-lb"
   }, m.label.replace(/^[^\s]+\s/, ""))))), /*#__PURE__*/React.createElement(ExplainCard, {
     title: tr("explain_hd"),
-    text: tr("mdesc_" + mode)
+    html: quizExplainHtml(mode)
   }), TenseBar(), mistMode && mistakes.length === 0 && /*#__PURE__*/React.createElement("div", {
     className: "mistdone"
   }, /*#__PURE__*/React.createElement("div", {
@@ -11342,7 +11342,15 @@ const HINT_ICON_OPEN = "<svg viewBox='0 0 24 24' width='20' height='20' fill='no
 /* Aufklappbare Erklärungs-Karte im Quiz-Screen (Design 2026) */
 const EXPLAIN_BULB = "<svg viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10c.7.7 1 1.3 1 2h6c0-.7.3-1.3 1-2a6 6 0 0 0-4-10z'/></svg>";
 const EXPLAIN_CARET = "<svg viewBox='0 0 24 24' width='13' height='13' fill='none' stroke='currentColor' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>";
-function ExplainCard({ title, text }) {
+function quizExplainHtml(mode) {
+  const parts = [1, 2, 3, 4].map(n => {
+    const k = "hint_quiz_" + mode + "_" + n;
+    const v = tr(k);
+    return v === k ? "" : v;
+  }).filter(Boolean);
+  return parts.length ? parts.join(" ") : tr("mdesc_" + mode);
+}
+function ExplainCard({ title, html }) {
   const [open, setOpen] = useState(true);
   const h = React.createElement;
   return h("div", { className: "explaincard" + (open ? " open" : "") },
@@ -11350,7 +11358,7 @@ function ExplainCard({ title, text }) {
       h("span", { className: "explaincard-ic", dangerouslySetInnerHTML: { __html: EXPLAIN_BULB } }),
       h("span", { className: "explaincard-t" }, title),
       h("span", { className: "explaincard-car", dangerouslySetInnerHTML: { __html: EXPLAIN_CARET } })),
-    h("div", { className: "explaincard-body" }, text));
+    h("div", { className: "explaincard-body", dangerouslySetInnerHTML: { __html: html } }));
 }
 const FEATURE_HINTS = {
   learn: {
