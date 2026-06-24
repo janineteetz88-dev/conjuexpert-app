@@ -2196,10 +2196,12 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
       radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,150,60,.10) 0%, transparent 60%),
       #d9ccb4 !important; }
   }
-  /* Primär-Buttons: Regenbogen-CI (deeper) + Tiefe; weißer Text geschützt */
-  .cta{ box-shadow:0 12px 30px -12px rgba(120,40,90,.5) !important; }
-  .cta-rainbow{ background:var(--rb-deep) !important; }
+  /* CI: neutrale Aktion = Schwarz (.cta-rainbow ist die Füllung in .cta/.namebtn) */
+  .cta-rainbow{ background:linear-gradient(180deg,#332e27,#211e19) !important; }
+  .cta{ box-shadow:0 11px 24px -10px rgba(30,22,8,.62) !important; }
   .cta-label{ text-shadow:0 1px 2px rgba(0,0,0,.4); }
+  /* CI: Geld/Premium = Regenbogen-Fläche */
+  .rcta, .pr-cta, .plansel-cta{ background:var(--rb-deep) !important; box-shadow:0 13px 28px -12px rgba(120,40,90,.55) !important; }
   /* Eingabefeld-Fokus warm */
   .inputfield:focus-within{ border-color:#ff7a18 !important; box-shadow:0 0 0 4px rgba(255,122,24,.14) !important; }
   /* a11y: sichtbarer Fokus */
