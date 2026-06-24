@@ -1571,6 +1571,15 @@ body {
 .tm-sl { font-family: var(--font-display); font-weight: 700; font-size: 10.5px; color: var(--muted); background: var(--surface-2); padding: 3px 8px; border-radius: 7px; }
 .tm-srow b { flex: 1; font-family: var(--mono); font-weight: 700; font-size: 14.5px; color: var(--text); }
 .tm-spk { font-size: 14px; opacity: 0.7; }
+/* Tour-Demos: animierte Slides (Text & Merken) */
+@keyframes tm-read { 0% { background-size: 0% 100%; } 55% { background-size: 100% 100%; } 100% { background-size: 100% 100%; } }
+.tm-story-read { background-image: linear-gradient(color-mix(in srgb, var(--col, var(--text)) 16%, transparent), color-mix(in srgb, var(--col, var(--text)) 16%, transparent)); background-repeat: no-repeat; background-position: left center; background-size: 0% 100%; border-radius: 4px; animation: tm-read 3.4s ease-in-out infinite; }
+@keyframes tm-tapdot { 0%, 50% { opacity: 0; transform: translate(-50%, 9px) scale(0.7); } 60% { opacity: 0.95; transform: translate(-50%, 0) scale(1); } 68% { transform: translate(-50%, 0) scale(0.62); } 80%, 100% { opacity: 0; transform: translate(-50%, 0) scale(1); } }
+.tm-tapdot { position: absolute; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--col, var(--text)); pointer-events: none; animation: tm-tapdot 3.6s ease-in-out infinite; }
+@keyframes tm-wordhl { 0%, 26% { background-color: transparent; } 44%, 82% { background-color: color-mix(in srgb, var(--text) 16%, transparent); } 94%, 100% { background-color: transparent; } }
+.tm-word { border-radius: 5px; padding: 1px 4px; animation: tm-wordhl 3.6s ease-in-out infinite; }
+@keyframes tm-add { 0%, 58% { opacity: 0; transform: translateY(8px); } 72%, 94% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(8px); } }
+.tm-additem { animation: tm-add 3.6s ease-in-out infinite; }
 
 .tourpop .pp-sub { margin-bottom: 2px; }
 .tourhead-row { display: flex; align-items: center; gap: 11px; width: 100%; margin-bottom: 7px; }
@@ -2340,7 +2349,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-9"></script>
+<script defer src="/app.js?v=c-sand-10"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
