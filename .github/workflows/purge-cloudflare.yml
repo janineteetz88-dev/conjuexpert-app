@@ -29,15 +29,6 @@ jobs:
             echo "::warning::CLOUDFLARE_ZONE_ID oder CLOUDFLARE_API_TOKEN fehlt — bitte als Repo-Secrets hinterlegen. Übersprungen."
             exit 0
           fi
-          # --- Diagnose (verrät keine Geheimnisse, nur Längen/Format) ---
-          echo "zone_id length = ${#CF_ZONE}  (sollte 32 sein)"
-          echo "token  length = ${#CF_TOKEN} (sollte ~40 sein)"
-          case "$CF_ZONE" in *[!0-9a-f]*) echo "WARN: zone_id enthält Nicht-Hex-Zeichen (evtl. der Token im falschen Feld?)";; esac
-          echo "== Token-Verify =="
-          curl -sS "https://api.cloudflare.com/client/v4/user/tokens/verify" \
-            -H "Authorization: Bearer $CF_TOKEN"
-          echo
-          echo "== Purge =="
           resp=$(curl -sS -X POST \
             "https://api.cloudflare.com/client/v4/zones/$CF_ZONE/purge_cache" \
             -H "Authorization: Bearer $CF_TOKEN" \
