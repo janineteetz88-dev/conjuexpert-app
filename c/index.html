@@ -2281,6 +2281,12 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .badge.reg, .badge.irr{ background:var(--surface-2) !important; color:var(--muted) !important; border:1px solid var(--border) !important; }
   .tfilterchip .dotmini{ background:var(--muted) !important; }
   .conjrow.matched{ background:color-mix(in srgb,var(--ink) 6%,transparent) !important; box-shadow:inset 3px 0 0 var(--muted) !important; }
+
+  /* === V1: aktive Sprache dunkel gefüllt + Würfel mit Regenbogen-Rand === */
+  .langbtn.active{ background:#2c2823 !important; border-color:#2c2823 !important; box-shadow:0 8px 16px -10px rgba(40,32,15,.5) !important; }
+  .langbtn.active .langflag, .langbtn.active .langname{ color:#fff !important; }
+  .langbtn.active .langstripe{ display:none !important; }
+  .dicebtn{ border:2px solid transparent !important; border-radius:15px !important; background:linear-gradient(var(--surface),var(--surface)) padding-box, var(--brand-rainbow) border-box !important; color:var(--ink) !important; box-shadow:0 6px 14px -8px rgba(70,55,25,.45) !important; }
 </style>
 </head>
 <body>
@@ -2332,7 +2338,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-5"></script>
+<script defer src="/app.js?v=c-sand-6"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
