@@ -2264,6 +2264,18 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   /* 'So geht's'-Banner & Bonus-Leiste ruhig statt bunt */
   .bonus-banner-cta{ background:var(--ink) !important; color:var(--surface) !important; box-shadow:none !important; border:0 !important; }
   button[style*="ef1f4d"]{ background:var(--surface-2) !important; color:var(--ink) !important; border:1px solid var(--border) !important; text-shadow:none !important; }
+  /* Quiz/Lernen: keine Deko-Farbe (richtig=grün / falsch=rot bleibt als Funktions-Signal) */
+  .dirseg button.on, .qmode.on, .vocstart, .tfdropsel, .mistbtn-n, .savedsubbtn.on{ background:var(--espresso) !important; color:#fff !important; box-shadow:none !important; border-color:var(--ink) !important; }
+  .modebtn.on{ border-color:var(--ink) !important; background:var(--surface-2) !important; box-shadow:inset 0 0 0 1px var(--ink) !important; }
+  .micbtn{ background:var(--espresso) !important; box-shadow:none !important; }
+  .lcard.formcard{ border-left-color:var(--ink) !important; }
+  .exrow{ border-left-color:color-mix(in srgb,var(--ink) 30%,transparent) !important; }
+  .quizlangtag{ background:var(--surface-2) !important; color:var(--ink) !important; }
+  /* Tour: ruhige Ink-Akzente statt bunter Themenfarben */
+  .hintlist, .tourpop, .pinpop, .tour-demo{ --col:#1b1813 !important; }
+  .tourbadge, .touricon{ background:var(--espresso) !important; }
+  .tm-row > span:first-child, .hintlist li::before, .hintlist li b{ background:none !important; -webkit-text-fill-color:var(--ink) !important; color:var(--ink) !important; }
+  .tourdot.on{ background:var(--ink) !important; }
 </style>
 </head>
 <body>
