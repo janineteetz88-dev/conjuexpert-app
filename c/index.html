@@ -2376,7 +2376,8 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .tab.active::after{ content:"" !important; position:absolute !important; bottom:4px !important; left:50% !important; transform:translateX(-50%) !important; width:18px !important; height:3px !important; border-radius:3px !important; background:var(--brand-rainbow) !important; }
 
   /* Bonus-/Upsell-Banner ruhig statt voller Regenbogen */
-  .c-bonusbanner{ background:var(--surface-2) !important; color:var(--text) !important; border-bottom:1px solid var(--border) !important; text-shadow:none !important; }
+  .c-bonusbanner{ background:var(--selbg) !important; color:var(--selfg) !important; text-shadow:none !important; border-top:2px solid !important; border-bottom:2px solid !important; border-left:0 !important; border-right:0 !important; border-image:var(--brand-rainbow) 1 !important; }
+  .install-bar-icon{ display:none !important; }
   /* Hauptnavigation als UNTERE Leiste (modern) + aktiver Tab deutlich */
   .tabs{ order:99 !important; border-bottom:0 !important; border-top:1px solid var(--border) !important; box-shadow:0 -10px 30px -18px rgba(60,45,15,.4) !important; background:var(--surface) !important; padding:8px var(--pad) max(10px, env(safe-area-inset-bottom)) !important; }
   .tab.active{ background:var(--surface-2) !important; border-color:transparent !important; box-shadow:inset 0 0 0 1px var(--border) !important; position:relative !important; }
@@ -2491,7 +2492,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-25"></script>
+<script defer src="/app.js?v=c-sand-26"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
