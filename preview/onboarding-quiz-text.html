@@ -28,19 +28,23 @@
   .h{font-size:21px;font-weight:700;letter-spacing:-.02em}
   .sub{font-size:13px;color:var(--muted);margin:4px 0 14px;line-height:1.45}
   .stage{position:relative;background:linear-gradient(180deg,#fffefb,#f6efe2);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
-  .story{font-size:15px;line-height:1.7;color:var(--ink)}
-  .blank{position:relative;display:inline-block;min-width:84px;text-align:center;font-weight:800;border-bottom:2px solid var(--muted)}
-  .blank .w{opacity:0;color:var(--ok);animation:fill 5s ease-in-out infinite}
-  .blank::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--ok);transform:scaleX(0);transform-origin:left;animation:line 5s ease-in-out infinite}
-  @keyframes fill{0%,38%{opacity:0}50%,80%{opacity:1}90%,100%{opacity:0}}
-  @keyframes line{0%,38%{transform:scaleX(0)}50%,80%{transform:scaleX(1)}90%,100%{transform:scaleX(0)}}
-  .chips{display:flex;gap:8px;margin-top:14px}
-  .chip{flex:1;border:1.5px solid var(--line);background:var(--card);border-radius:11px;padding:10px;text-align:center;font-weight:700;font-size:14px}
-  .chip.pick{animation:pick 5s ease-in-out infinite}
-  @keyframes pick{0%,30%{border-color:var(--line);background:var(--card)}40%,80%{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--card));color:var(--ok)}90%,100%{border-color:var(--line);background:var(--card);color:var(--ink)}}
-  .tap{position:absolute;width:28px;height:28px;border-radius:50%;border:2px solid var(--espresso);left:20%;bottom:14%;opacity:0;animation:tap 5s ease-in-out infinite}
-  @keyframes tap{0%{opacity:0;transform:translateY(16px) scale(.9)}26%{opacity:.9;transform:translateY(0) scale(1)}34%{opacity:.9;transform:scale(.72)}44%{opacity:0;transform:scale(1)}100%{opacity:0}}
-  .stepnote{display:flex;align-items:center;gap:8px;margin-top:13px;font-size:12.5px;color:var(--muted);font-weight:600}
+  .pick-h{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+  .sel{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .selcard{border:1.5px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box,var(--rb) border-box;border-radius:12px;padding:9px 6px;text-align:center;box-shadow:0 4px 10px -8px rgba(70,55,25,.4)}
+  .selcard .k{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+  .selcard .v{font-size:12.5px;font-weight:700;margin-top:3px}
+  .arrowrow{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:11.5px;font-weight:700;margin:13px 0 10px}
+  .arrowrow svg{width:15px;height:15px}
+  .story2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 13px;font-size:13px;line-height:1.6;box-shadow:inset 0 1px 0 rgba(255,255,255,.7);opacity:0;animation:storyin 6s ease-in-out infinite}
+  @keyframes storyin{0%,30%{opacity:0;transform:translateY(6px)}42%,100%{opacity:1;transform:translateY(0)}}
+  .read{display:flex;align-items:center;gap:10px;margin-top:11px}
+  .spk{width:34px;height:34px;flex:none;border-radius:10px;background:var(--espresso);color:#fff;display:grid;place-items:center}
+  .spk svg{width:17px;height:17px}
+  .rlbl{font-size:11.5px;font-weight:700;color:var(--muted)}
+  .speeds{display:flex;gap:6px;margin-left:auto}
+  .speed{border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:11px;font-weight:700;color:var(--muted);background:var(--card)}
+  .speed.on{background:var(--espresso);color:#fff;border-color:var(--espresso)}
+  .stepnote{display:flex;align-items:flex-start;gap:8px;margin-top:13px;font-size:12.5px;color:var(--muted);font-weight:600;line-height:1.4}
   .stepnote .n{width:20px;height:20px;flex:none;border-radius:50%;background:var(--espresso);color:#fff;display:grid;place-items:center;font-size:11px}
   .dots{display:flex;justify-content:center;gap:7px;margin:16px 0 12px}
   .dot{width:7px;height:7px;border-radius:50%;background:var(--line)}
@@ -57,17 +61,23 @@
     <button class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
     <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16l-3-2-2 2-2-2-2 2-3-2z"/><path d="M8 8h8M8 12h6"/></svg>Quiz · KI-Text</span>
     <h2 class="h">Text</h2>
-    <p class="sub">Eine KI-Geschichte mit Lücken – setze die Verben in der richtigen Zeit ein.</p>
+    <p class="sub">Du wählst – die KI schreibt dir daraus eine Geschichte zum Lesen &amp; Vorlesen.</p>
     <div class="stage">
-      <p class="story">Cada mañana, en casa, nosotros <span class="blank"><span class="w">hablamos</span></span> español antes del trabajo.</p>
-      <div class="chips">
-        <div class="chip">hablo</div>
-        <div class="chip pick">hablamos</div>
-        <div class="chip">hablan</div>
+      <div class="pick-h">Du wählst</div>
+      <div class="sel">
+        <div class="selcard"><div class="k">Thema</div><div class="v">Reisen</div></div>
+        <div class="selcard"><div class="k">Zeitform</div><div class="v">Presente</div></div>
+        <div class="selcard"><div class="k">Wortwahl</div><div class="v">Merkliste</div></div>
       </div>
-      <div class="tap"></div>
+      <div class="arrowrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 5.1a2 2 0 0 0 1.3 1.3L20 11l-5.1 1.6a2 2 0 0 0-1.3 1.3L12 19l-1.6-5.1a2 2 0 0 0-1.3-1.3L4 11l5.1-1.6a2 2 0 0 0 1.3-1.3z"/></svg>KI erstellt deine Geschichte</div>
+      <div class="story2">Hoy <b>viajamos</b> a Madrid. <b>Caminamos</b> por el centro y <b>hablamos</b> con la gente del barrio…</div>
+      <div class="read">
+        <span class="spk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a3 3 0 0 1 0 6"/></svg></span>
+        <span class="rlbl">Vorlesen</span>
+        <div class="speeds"><span class="speed">0,75×</span><span class="speed on">1×</span><span class="speed">1,25×</span></div>
+      </div>
     </div>
-    <div class="stepnote"><span class="n">→</span>Wähle die passende Form – sie erscheint direkt im Satz.</div>
+    <div class="stepnote"><span class="n">→</span>Thema, Zeitform &amp; Wortschatz wählen → Geschichte entsteht. Tempo beim Vorlesen frei einstellbar (Verständnisfragen optional danach).</div>
     <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot on"></span><span class="dot"></span></div>
     <button class="btn">Weiter</button>
   </div>

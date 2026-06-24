@@ -31,6 +31,8 @@
   .sub{font-size:13px;color:var(--muted);margin:4px 0 14px;line-height:1.45}
   /* demo stage */
   .stage{position:relative;background:linear-gradient(180deg,#fffefb,#f6efe2);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+  .ask{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--muted);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:5px 10px;margin-bottom:12px}
+  .ask b{color:var(--ink)}
   .prompt{text-align:center;font-size:18px;font-weight:700;margin-bottom:13px}
   .prompt .arrow{color:var(--muted);margin:0 6px}
   .opts{display:grid;grid-template-columns:1fr 1fr;gap:9px}
@@ -71,6 +73,7 @@
     <h2 class="h">Antippen</h2>
     <p class="sub">Die richtige Form aus 4 Möglichkeiten wählen – schnell &amp; ohne Tippen.</p>
     <div class="stage">
+      <div class="ask">Gesucht: <b>Presente · 1. Person Pl. (nosotros)</b></div>
       <div class="prompt">hablar <span class="arrow">→</span> nosotros</div>
       <div class="opts">
         <div class="opt">hablo</div>
