@@ -7464,6 +7464,10 @@ function QuizView({
     label: tr("m_type"),
     icon: "⌨"
   }, {
+    id: "speed",
+    label: tr("m_speed"),
+    icon: "⚡"
+  }, {
     id: "speak",
     label: tr("m_speak"),
     icon: "🎤"
@@ -11041,6 +11045,55 @@ function NameGate({
 function TourMock({
   kind
 }) {
+  const h = React.createElement;
+  if (kind === "overview") {
+    return h("div", { className: "tmock", key: "ov", style: { display: "flex", flexDirection: "column", gap: "9px" } },
+      [["Dein Ziel im Blick", "Tagesziel festlegen – Fortschritt & Serie im Blick"],
+       ["Vokabel-Merkliste", "Wörter in Sätzen antippen & speichern – oder selbst anlegen"],
+       ["Lieblingsthemen", "Eigene Themen anlegen und gezielt üben"]].map((r, i) =>
+        h("div", { key: i, style: { display: "flex", gap: "10px", alignItems: "flex-start", textAlign: "left" } },
+          h("span", { style: { width: "8px", height: "8px", borderRadius: "50%", background: "var(--text)", flex: "none", marginTop: "5px" } }),
+          h("span", null,
+            h("b", { style: { display: "block", fontSize: "13px", color: "var(--text)" } }, r[0]),
+            h("span", { style: { fontSize: "11.5px", color: "var(--muted)" } }, r[1])))));
+  }
+  if (kind === "quizmodes") {
+    return h("div", { className: "tmock", key: "qm", style: { display: "flex", flexWrap: "wrap", gap: "7px", justifyContent: "center" } },
+      ["Karten", "Antippen", "Tippen", "Sprechen", "⚡ Speed", "Text"].map((m, i) =>
+        h("span", { key: i, style: { border: "1px solid var(--border)", background: "var(--surface)", borderRadius: "999px", padding: "7px 12px", fontSize: "12.5px", fontWeight: 700, color: "var(--text)" } }, m)));
+  }
+  if (kind === "type") {
+    return h("div", { className: "tmock", key: "ty" },
+      h("div", { className: "tm-q" }, "hablar → ", h("b", null, "nosotros")),
+      h("div", { style: { display: "flex", alignItems: "center", gap: "8px", border: "1.5px solid var(--border)", background: "var(--surface)", borderRadius: "12px", padding: "13px", marginTop: "10px" } },
+        h("b", { style: { fontSize: "16px" } }, "hablamos"),
+        h("span", { style: { marginLeft: "auto", color: "#1f7a4d", fontWeight: 800 } }, "✓")));
+  }
+  if (kind === "text") {
+    return h("div", { className: "tmock", key: "tx" },
+      h("div", { style: { display: "flex", gap: "6px" } },
+        [["Thema", "Reisen"], ["Zeitform", "Presente"], ["Wortwahl", "Merkliste"]].map((c, i) =>
+          h("div", { key: i, style: { flex: 1, border: "1px solid var(--border)", borderRadius: "10px", padding: "8px 4px", textAlign: "center", background: "var(--surface)" } },
+            h("div", { style: { fontSize: "8.5px", fontWeight: 700, textTransform: "uppercase", color: "var(--muted)" } }, c[0]),
+            h("div", { style: { fontSize: "12px", fontWeight: 700, marginTop: "2px" } }, c[1])))),
+      h("div", { style: { marginTop: "10px", border: "1px solid var(--border)", borderRadius: "10px", padding: "10px", fontSize: "12.5px", lineHeight: 1.5, background: "var(--surface)", textAlign: "left" } }, "Hoy viajamos a Madrid. Caminamos por el centro y hablamos con la gente…"));
+  }
+  if (kind === "merken") {
+    return h("div", { className: "tmock", key: "mk" },
+      h("div", { style: { fontSize: "13.5px", lineHeight: 1.6, textAlign: "left" } }, "No me gusta este ",
+        h("b", { style: { background: "color-mix(in srgb, var(--text) 12%, transparent)", borderRadius: "5px", padding: "1px 4px" } }, "trabajo"), " los lunes."),
+      h("div", { style: { display: "flex", alignItems: "center", gap: "8px", marginTop: "10px", border: "1px solid var(--border)", borderRadius: "10px", padding: "9px 11px", fontWeight: 700, fontSize: "13px", background: "var(--surface)" } }, "★ trabajo",
+        h("span", { style: { marginLeft: "auto", color: "var(--muted)", fontWeight: 600 } }, "Arbeit")));
+  }
+  if (kind === "preise") {
+    return h("div", { className: "tmock", key: "pr", style: { display: "flex", flexDirection: "column", gap: "7px" } },
+      [["24 h Premium-Nutzung", "alles testen – ganz ohne Konto", false],
+       ["Mit Konto · kostenlos", "Konjugieren, Lernen & 20 Quiz-Karten / Tag", false],
+       ["ConjuPremium", "alles frei · Jahresabo 29,99 € · Monat 2,99 €", true]].map((r, i) =>
+        h("div", { key: i, style: { border: r[2] ? "1.5px solid transparent" : "1px solid var(--border)", background: r[2] ? "linear-gradient(var(--surface),var(--surface)) padding-box, var(--brand-rainbow) border-box" : "var(--surface)", borderRadius: "12px", padding: "10px 12px", textAlign: "left" } },
+          h("b", { style: { fontSize: "13px" } }, r[0]),
+          h("div", { style: { fontSize: "11px", color: "var(--muted)", marginTop: "2px" } }, r[1]))));
+  }
   if (kind === "trial") {
     return /*#__PURE__*/React.createElement("div", {
       className: "tmock",
@@ -11236,77 +11289,46 @@ function TourMock({
 function TourGate({
   onDone
 }) {
+  const h = React.createElement;
+  const [started, setStarted] = useState(false);
   const [i, setI] = useState(0);
-  const slides = [{
-    kind: "trial",
-    icon: "🎁",
-    title: tr("tour_trial_head"),
-    text: tr("tour_trial_sub"),
-    col: "#ff7a18"
-  }, {
-    kind: "conjugate",
-    icon: "▦",
-    title: tr("tab_conjugate"),
-    text: tr("tour_more1"),
-    col: "#ff3b5c"
-  }, {
-    kind: "quiz",
-    icon: "◆",
-    title: tr("tab_quiz"),
-    text: tr("tour_more2"),
-    col: "#34c759"
-  }];
+  const nm = (recall("kunju-name", "") || "").trim();
+  const RB = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#0a84ff", "#a557ff"];
+  const Logo = () => h("span", { className: "pp-mark" }, RB.map((c, k) => h("i", { key: k, style: { background: c } })));
+  if (!started) {
+    return h("div", { className: "namegate", onClick: onDone },
+      h("div", { className: "pinpop tourpop", onClick: e => e.stopPropagation(), style: { textAlign: "center" } },
+        h("button", { className: "pp-x", onClick: onDone, title: tr("tour_skip") }, "\xD7"),
+        h("div", { className: "pp-head", style: { justifyContent: "center" } }, Logo(),
+          h("span", { className: "pp-ey" }, "Conju", h("b", null, "Expert"))),
+        h("h2", { className: "pp-title", style: { marginTop: "14px" } }, nm ? "Schön, dass du da bist, " + nm + "! 👋" : "Schön, dass du da bist! 👋"),
+        h("p", { className: "pp-sub" }, "Magst du einen kurzen Rundgang durch die App – oder direkt loslegen?"),
+        h("button", { className: "tourbtn", style: { marginTop: "16px" }, onClick: () => setStarted(true) }, "App-Rundgang starten"),
+        h("button", { onClick: onDone, style: { width: "100%", marginTop: "10px", padding: "12px", background: "none", border: "0", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "14px", color: "var(--muted)" } }, "Direkt loslegen")));
+  }
+  const slides = [
+    { kind: "overview", title: "Das erwartet dich" },
+    { kind: "quizmodes", title: tr("tab_quiz"), text: "Aktiv üben, bis es sitzt – wähle deinen Modus." },
+    { kind: "quiz", title: "Quiz · Antippen", text: "Die richtige Form aus 4 Möglichkeiten wählen." },
+    { kind: "type", title: "Quiz · Eintippen", text: "Form selbst schreiben – trainiert aktiv die Schreibweise." },
+    { kind: "text", title: "Quiz · Text", text: "Thema, Zeitform & Wortschatz wählen – die KI schreibt deine Geschichte zum Vorlesen." },
+    { kind: "conjugate", title: tr("tab_conjugate"), text: "Verb eintippen oder würfeln, Zeitform wählen – per ★ in die Merkliste." },
+    { kind: "merken", title: tr("tab_saved"), text: "Wörter in Übungssätzen antippen & speichern – oder selbst anlegen." },
+    { kind: "preise", title: "Preise & Tarife", text: "Das Wichtigste bleibt für immer kostenlos." }
+  ];
   const last = i === slides.length - 1;
   const s = slides[i];
-  const RB = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#0a84ff"];
-  return /*#__PURE__*/React.createElement("div", {
-    className: "namegate",
-    onClick: onDone
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "pinpop tourpop",
-    onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "pp-x",
-    onClick: onDone,
-    title: tr("tour_skip")
-  }, "\xD7"), /*#__PURE__*/React.createElement("div", {
-    className: "pp-head"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "pp-mark"
-  }, RB.map((c, k) => /*#__PURE__*/React.createElement("i", {
-    key: k,
-    style: {
-      background: c
-    }
-  }))), /*#__PURE__*/React.createElement("span", {
-    className: "pp-ey"
-  }, "Conju", /*#__PURE__*/React.createElement("b", null, "Expert")), /*#__PURE__*/React.createElement("span", {
-    className: "tour-step"
-  }, i + 1, " / ", slides.length)), /*#__PURE__*/React.createElement("h2", {
-    className: "pp-title tour-title"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "tour-ic",
-    style: {
-      color: s.col
-    }
-  }, s.icon), s.title), /*#__PURE__*/React.createElement("p", {
-    className: "pp-sub"
-  }, s.text), /*#__PURE__*/React.createElement("div", {
-    className: "tour-demo",
-    style: {
-      "--col": s.col
-    }
-  }, /*#__PURE__*/React.createElement(TourMock, {
-    kind: s.kind
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "tourdots"
-  }, slides.map((_, k) => /*#__PURE__*/React.createElement("span", {
-    key: k,
-    className: "tourdot" + (k === i ? " on" : "")
-  }))), /*#__PURE__*/React.createElement("button", {
-    className: "tourbtn",
-    onClick: () => last ? onDone() : setI(i + 1)
-  }, last ? tr("tour_start") : tr("tour_next"))));
+  return h("div", { className: "namegate", onClick: onDone },
+    h("div", { className: "pinpop tourpop", onClick: e => e.stopPropagation() },
+      h("button", { className: "pp-x", onClick: onDone, title: tr("tour_skip") }, "\xD7"),
+      h("div", { className: "pp-head" }, Logo(),
+        h("span", { className: "pp-ey" }, "Conju", h("b", null, "Expert")),
+        h("span", { className: "tour-step" }, i + 1, " / ", slides.length)),
+      h("h2", { className: "pp-title tour-title" }, s.title),
+      s.text ? h("p", { className: "pp-sub" }, s.text) : null,
+      h("div", { className: "tour-demo", style: { "--col": "var(--text)" } }, h(TourMock, { kind: s.kind })),
+      h("div", { className: "tourdots" }, slides.map((_, k) => h("span", { key: k, className: "tourdot" + (k === i ? " on" : "") }))),
+      h("button", { className: "tourbtn", onClick: () => last ? onDone() : setI(i + 1) }, last ? tr("tour_start") : tr("tour_next"))));
 }
 
 /* ---------- Contextual first-open feature hints ----------
