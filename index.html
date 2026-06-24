@@ -2390,6 +2390,16 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .tabprofile-av{ display:flex !important; align-items:center !important; justify-content:center !important; }
   .tabprofile-av > div{ width:24px !important; height:24px !important; }
   .appbar-greet{ font-family:var(--font-display) !important; font-weight:600 !important; font-size:13.5px !important; color:var(--text) !important; white-space:nowrap !important; display:inline-flex !important; align-items:center !important; }
+  /* === Größen exakt an Designvorlage angeglichen === */
+  .quizmodes{ overflow-x:auto !important; scrollbar-width:none !important; }
+  .quizmodes::-webkit-scrollbar{ display:none !important; }
+  .qmode{ flex:none !important; width:72px !important; min-width:72px !important; }
+  .qmode .qmode-ic, .qmode .qmode-ic svg{ width:20px !important; height:20px !important; }
+  .qmode .qmode-lb{ font-size:11px !important; }
+  .langbtn .langflag{ font-size:13px !important; }
+  .langbtn .langname{ font-size:8px !important; }
+  .tab .tab-label{ font-size:10px !important; }
+  .tabs-track{ gap:4px !important; }
   /* Konjugieren-Hero beruhigen: kein Konfetti, keine Schnörkel-Schrift */
   .eg-confetti{ display:none !important; }
   .eg-hero{ background:var(--surface) !important; border:1px solid var(--border) !important; box-shadow:var(--raise) !important; }
@@ -2475,7 +2485,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-20"></script>
+<script defer src="/app.js?v=c-sand-21"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
