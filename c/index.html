@@ -2399,6 +2399,10 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   /* Homescreen-/Install-Banner ins CI (kein Lila) */
   .install-bar{ background:var(--surface-2) !important; border-bottom:1px solid var(--border) !important; }
   .install-bar-btn{ background:var(--selbg) !important; color:var(--selfg) !important; }
+  /* restliche hartcodierte Lila-Reste in Nebenscreens neutralisieren */
+  .lcard.explain{ border-left-color:color-mix(in srgb, var(--text) 30%, transparent) !important; }
+  .mixtoggle.on{ background:var(--brand-rainbow) !important; border-color:transparent !important; }
+  .inputfield:focus-within{ border-color:transparent !important; }
   /* Konjugieren-Hero beruhigen: kein Konfetti, keine Schnörkel-Schrift */
   .eg-confetti{ display:none !important; }
   .eg-hero{ background:var(--surface) !important; border:1px solid var(--border) !important; box-shadow:var(--raise) !important; }
@@ -2484,7 +2488,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-23"></script>
+<script defer src="/app.js?v=c-sand-24"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
