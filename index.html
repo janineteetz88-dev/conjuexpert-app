@@ -2210,6 +2210,33 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .inputfield:focus-within{ border-color:#ff7a18 !important; box-shadow:0 0 0 4px rgba(255,122,24,.14) !important; }
   /* a11y: sichtbarer Fokus */
   :focus-visible{ outline:2.5px solid #1b1813; outline-offset:2px; }
+
+  /* ===== CI-Bereinigung: kein Pink/Violett mehr — überall Ink + Regenbogen + Sprachfarbe ===== */
+  :root{ --brand-pink:#1b1813 !important; --brand-violet:#1b1813 !important; --brand-blue:#1b1813 !important; --cta-app:var(--rb-deep) !important; }
+  /* Fallback-Akzente vor Sprachwahl = Ink (echte Sprachfarbe wird inline gesetzt und gewinnt) */
+  #approot{ --lang-color:#1b1813; --lc:#1b1813; --tc:#1b1813; --qc:#1b1813; --cc:#1b1813; }
+  /* Premium-/Marken-Verläufe (Text) -> Regenbogen */
+  .namehead b, .pr-thead .pr-th-prem, .speedresult b, .cw-c, .zt-greet .zt-nm, .goal-sheet .qfilter-lbl{
+    background:var(--brand-rainbow) !important; -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important; -webkit-text-fill-color:transparent !important; }
+  /* Premium-/Akzent-Flächen -> Regenbogen */
+  .pr-badge, .zt-pbar i, .zt-av, .zt-chatin .zt-send, .gsumlbl::before, .learn-blog-btn .gg{ background:var(--rb-deep) !important; }
+  /* Auswahl -> Regenbogen-Kante */
+  .skillbtn.on, .plan-card.sel, .pr-plan.best{ border-color:transparent !important; background:linear-gradient(var(--surface),var(--surface)) padding-box, var(--rb-deep) border-box !important; box-shadow:0 8px 22px -12px rgba(120,40,90,.4) !important; }
+  .skillbtn.on b{ color:var(--text) !important; }
+  /* Fokus warm */
+  .nameinput:focus, .login-email-input:focus, .nativesel:focus{ border-color:#ff7a18 !important; box-shadow:0 0 0 4px rgba(255,122,24,.14) !important; }
+  /* Tour-Punkte */
+  .tourdot.on{ background:var(--rb-deep) !important; }
+  /* Direkte Pink-Akzente -> Sprachfarbe / Ink */
+  .exverb{ color:var(--lc,#1b1813) !important; background:color-mix(in srgb, var(--lc,#1b1813) 12%, transparent) !important; }
+  .glvl{ color:var(--text) !important; background:color-mix(in srgb, var(--text) 10%, transparent) !important; }
+  .pr-rc.val, .speedpts b{ color:var(--text) !important; }
+  .gchoice.sug .gci, .gchoice.ind .gci{ color:var(--text) !important; background:color-mix(in srgb, var(--text) 8%, var(--surface)) !important; border-color:color-mix(in srgb, var(--text) 18%, var(--border)) !important; }
+  /* Subtile Violett-Tints -> Sand/Ink */
+  .gkibanner, .gderive, .zt-ai, .pr-trial-note{ background:color-mix(in srgb, var(--text) 5%, var(--surface)) !important; border-color:var(--border) !important; }
+  /* Hover-/Akzent-Reste neutralisieren */
+  .chip:hover, .qopt:hover:not(:disabled), .adcta:hover, .accentkey:hover, .gchoice:hover, .exportbtn:hover, .nativego:hover:not(:disabled){ border-color:color-mix(in srgb, var(--text) 30%, transparent) !important; }
+  .adcta:hover, .nativego:hover:not(:disabled), .exportbtn:hover, .vtspk{ color:var(--text) !important; }
 </style>
 </head>
 <body>
@@ -2261,7 +2288,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=16da9e9691"></script>
+<script defer src="/app.js?v=c-sand-2"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->

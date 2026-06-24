@@ -2898,7 +2898,7 @@ const LANG_META = {
   },
   fr: {
     code: "FR",
-    color: "#a557ff"
+    color: "#1b1813"
   }
 };
 const RAINBOW = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#00bcd4", "#0a84ff", "#a557ff", "#ff5ea8"];
@@ -4004,7 +4004,7 @@ const SPONSORS = {
   fr: {
     name: "ParlezPlus",
     letter: "P",
-    color: "#a557ff",
+    color: "#1b1813",
     tag: "Your interactive French grammar coach",
     link: "https://example.com/fr"
   }
@@ -4477,7 +4477,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;c
 .mark{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;width:30px;height:30px;padding:4px;background:#f7f8fb;border-radius:8px;border:1px solid #e8eaef;flex:none}
 .mark i{display:block;border-radius:2px}
 .bname{font-size:18px;font-weight:600;letter-spacing:-.02em;color:#14151a;line-height:1.1}
-.bname b{font-weight:700;background:linear-gradient(90deg,#e71583,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bname b{font-weight:700;background:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .btag{font-size:10.5px;color:#9098a8;letter-spacing:.04em;display:block;margin-top:1px}
 .verb{padding:20px 0 2px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 h1{font-size:38px;font-weight:800;margin:0;letter-spacing:-.03em}
@@ -4495,12 +4495,12 @@ td{padding:2.5px 0;font-size:13.5px}
 .fmark{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:24px;height:24px;padding:3px;background:#f7f8fb;border-radius:6px;border:1px solid #e8eaef;flex:none}
 .fmark i{display:block;border-radius:1px}
 .fname{font-size:15px;font-weight:600;letter-spacing:-.02em;color:#14151a}
-.fname b{font-weight:700;background:linear-gradient(90deg,#e71583,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fname b{font-weight:700;background:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .ftag{font-size:10px;color:#9098a8;display:block;margin-top:1px}
 .langs{display:grid;grid-template-columns:1fr 1fr;gap:5px 20px;margin-bottom:14px}
 .lang{font-size:12.5px;color:#555;display:flex;gap:9px;align-items:center}
 .lc{font-size:9.5px;font-weight:700;letter-spacing:.1em;min-width:22px;font-family:ui-monospace,monospace}
-.url{font-weight:700;font-size:13px;background:linear-gradient(90deg,#e71583,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-top:10px;display:block}
+.url{font-weight:700;font-size:13px;background:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-top:10px;display:block}
 .ex{margin-top:5px;padding:5px 0 0;border-top:1px dashed #edf0f5}
 .exs{display:block;font-size:12px;color:#3a3f52;font-style:italic;line-height:1.45}
 .exs b{color:#a557ff;font-style:normal;font-weight:700}
@@ -11242,7 +11242,7 @@ function TourGate({
     icon: "🎁",
     title: tr("tour_trial_head"),
     text: tr("tour_trial_sub"),
-    col: "#e71583"
+    col: "#ff7a18"
   }, {
     kind: "conjugate",
     icon: "▦",
@@ -11489,7 +11489,7 @@ function AccountDeletedModal({
       padding: "15px",
       borderRadius: "16px",
       border: "none",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(100deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee)",
       color: "#fff",
       fontSize: "15px",
       fontWeight: 800,
@@ -11691,7 +11691,7 @@ function UserMenu({
       width: "22px",
       height: "22px",
       borderRadius: "50%",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(100deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -11721,7 +11721,7 @@ function UserMenu({
   const __ico = (e) => /*#__PURE__*/React.createElement("div", { style: { fontSize: "30px", lineHeight: 1, marginBottom: "2px" } }, e);
   const __primary = (label, fn, dis, bg, shadow) => /*#__PURE__*/React.createElement("button", { onClick: fn, disabled: dis, className: "namebtn", style: { background: bg, marginTop: "18px", boxShadow: shadow } }, /*#__PURE__*/React.createElement("span", { className: "cta-label" }, label));
   const __text = (label, fn) => /*#__PURE__*/React.createElement("button", { onClick: fn, style: { width: "100%", marginTop: "10px", padding: "9px", background: "none", border: "none", cursor: "pointer", fontSize: "13px", fontWeight: "600", color: "var(--muted)" } }, label);
-  const __BRAND = "linear-gradient(135deg,#e71583,#a557ff)";
+  const __BRAND = "linear-gradient(100deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee)";
   const __BSHADOW = "0 14px 30px -12px rgba(165,87,255,.55)";
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
@@ -11883,7 +11883,7 @@ function GuestMenu({
       width: "22px",
       height: "22px",
       borderRadius: "50%",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(100deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -12621,7 +12621,7 @@ function IOSHelpModal({
   }, /*#__PURE__*/React.createElement("span", {
     className: "tourbadge",
     style: {
-      background: "#a557ff"
+      background: "#1b1813"
     }
   }, "\uD83D\uDCF1"), /*#__PURE__*/React.createElement("h2", {
     className: "namehead",
@@ -12664,7 +12664,7 @@ function BonusBar({
     onClick: onOpen,
     style: {
       width: "100%",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(100deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee)",
       border: "none",
       padding: "6px 12px",
       fontSize: "12px",
@@ -12736,7 +12736,7 @@ function ReviewPrompt({
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      background: "linear-gradient(135deg,#e71583,#ff7a18,#a557ff)",
+      background: "linear-gradient(100deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee)",
       padding: "22px 22px 18px",
       textAlign: "center",
       color: "#fff"
@@ -12800,7 +12800,7 @@ function ReviewPrompt({
       border: "none",
       borderRadius: "15px",
       padding: "15px",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(100deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee)",
       color: "#fff",
       fontFamily: "var(--font-display)",
       fontWeight: 800,
@@ -12957,7 +12957,7 @@ function WelcomeOffer({
     t: ""
   }), " ", /*#__PURE__*/React.createElement("span", {
     style: {
-      color: "#e71583",
+      color: "#1b1813",
       fontVariantNumeric: "tabular-nums"
     }
   }, cd))), /*#__PURE__*/React.createElement("h2", {
@@ -13529,7 +13529,7 @@ function PlanSelect({
       padding: "11px 24px",
       borderRadius: "12px",
       border: "none",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(100deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee)",
       color: "#fff",
       fontWeight: 700,
       fontSize: "14px",
@@ -13564,7 +13564,7 @@ function PlanSelect({
       padding: "13px",
       borderRadius: "12px",
       border: "none",
-      background: !code.trim() || codeState === "loading" ? "var(--border)" : "linear-gradient(135deg,#e71583,#a557ff)",
+      background: !code.trim() || codeState === "loading" ? "var(--border)" : "linear-gradient(100deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee)",
       color: !code.trim() || codeState === "loading" ? "var(--muted)" : "#fff",
       fontWeight: 700,
       fontSize: "15px",
@@ -13619,7 +13619,7 @@ function GoalSuccess({
       width: "56px",
       height: "56px",
       borderRadius: "18px",
-      background: "linear-gradient(135deg,#e71583,#a557ff)",
+      background: "linear-gradient(100deg,#ef1f4d,#ef6a12,#d99a00,#159a43,#0a74e6,#9542ee)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -13636,7 +13636,7 @@ function GoalSuccess({
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
-      background: "linear-gradient(95deg,#e71583,#a557ff)",
+      background: "linear-gradient(95deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff)",
       WebkitBackgroundClip: "text",
       backgroundClip: "text",
       color: "transparent"
@@ -14083,7 +14083,7 @@ function Zieltafel({
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
-      background: "linear-gradient(95deg,#e71583,#a557ff)",
+      background: "linear-gradient(95deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff)",
       color: "#fff",
       borderRadius: "14px 14px 0 14px",
       padding: "9px 13px",
@@ -15568,7 +15568,7 @@ class ErrorBoundary extends React.Component {
         });
       },
       style: {
-        background: "#a557ff",
+        background: "#1b1813",
         color: "#fff",
         border: "none",
         borderRadius: "14px",

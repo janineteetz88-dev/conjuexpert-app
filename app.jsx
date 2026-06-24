@@ -15,7 +15,7 @@ const LANG_META = {
   es: { code: "ES", color: "#ff9f0a" },
   en: { code: "EN", color: "#0a84ff" },
   nl: { code: "NL", color: "#30c95a" },
-  fr: { code: "FR", color: "#a557ff" }
+  fr: { code: "FR", color: "#1b1813" }
 };
 const RAINBOW = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#00bcd4", "#0a84ff", "#a557ff", "#ff5ea8"];
 
@@ -377,7 +377,7 @@ const SPONSORS = {
   es: { name: "Verbaes", letter: "V", color: "#ff9f0a", tag: "Master Spanish tenses with 5-min drills", link: "https://example.com/es" },
   en: { name: "FluentList", letter: "F", color: "#0a84ff", tag: "Build English fluency in 5 minutes a day", link: "https://example.com/en" },
   nl: { name: "NederLearn", letter: "N", color: "#30c95a", tag: "Practice Dutch verbs the smart way", link: "https://example.com/nl" },
-  fr: { name: "ParlezPlus", letter: "P", color: "#a557ff", tag: "Your interactive French grammar coach", link: "https://example.com/fr" }
+  fr: { name: "ParlezPlus", letter: "P", color: "#1b1813", tag: "Your interactive French grammar coach", link: "https://example.com/fr" }
 };
 
 function AdCard({ sponsor, hook, onClick, onDismiss }) {
@@ -3067,7 +3067,7 @@ function MonoBar({ onBack, backLabel }) {
           {[["#ff3b5c",20],["#ff7a18",16],["#ffc400",22],["#34c759",18],["#0a84ff",14]].map(([c,h],i) =>
             <i key={i} style={{background:c,height:h+"px"}}></i>)}
         </div>
-        <span style={{fontSize:"16px",fontWeight:700,color:"#e71583"}}>Conju<b style={{background:"linear-gradient(90deg,#e71583,#a557ff)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Expert</b></span>
+        <span style={{fontSize:"16px",fontWeight:700,color:"#e71583"}}>Conju<b style={{background:"linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Expert</b></span>
       </div>
       <div style={{width:40}}/>
     </div>
