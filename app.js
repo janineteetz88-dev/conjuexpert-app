@@ -14612,7 +14612,7 @@ function App() {
   const [featureHint, setFeatureHint] = useState(null);
   const [pendingHint, setPendingHint] = useState(null);
   function requestHint(kind) {
-    if (kind && !recall("kunju-hint-" + kind, false)) setPendingHint(kind);
+    /* Feature-Hint-Popups deaktiviert — Erklärung steht jetzt inline im Screen */
   }
   function closeFeatureHint() {
     if (featureHint) persist("kunju-hint-" + featureHint, true);
