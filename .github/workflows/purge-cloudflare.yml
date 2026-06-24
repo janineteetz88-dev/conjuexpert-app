@@ -1,0 +1,36 @@
+name: Purge Cloudflare cache
+
+# Leert den Cloudflare-Edge-Cache, sobald GitHub Pages eine neue Version
+# veröffentlicht hat. Ohne diesen Schritt liefert Cloudflare die alte
+# index.html / app.js / sw.js weiter aus — auch im Inkognito-Modus.
+#
+# Benötigt zwei Repository-Secrets:
+#   CLOUDFLARE_ZONE_ID    – Zone-ID der Domain conjuexpert.app
+#   CLOUDFLARE_API_TOKEN  – API-Token mit der Berechtigung "Zone · Cache Purge · Purge"
+
+on:
+  workflow_run:
+    workflows: ["pages build and deployment"]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    # Nur purgen, wenn der Pages-Deploy erfolgreich war (oder manuell gestartet)
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Purge everything
+        run: |
+          if [ -z "${{ secrets.CLOUDFLARE_ZONE_ID }}" ] || [ -z "${{ secrets.CLOUDFLARE_API_TOKEN }}" ]; then
+            echo "::warning::CLOUDFLARE_ZONE_ID oder CLOUDFLARE_API_TOKEN fehlt — bitte als Repo-Secrets hinterlegen. Übersprungen."
+            exit 0
+          fi
+          resp=$(curl -sS -X POST \
+            "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}')
+          echo "$resp"
+          echo "$resp" | grep -q '"success":true' || { echo "::error::Cloudflare-Purge fehlgeschlagen"; exit 1; }
+          echo "Cloudflare-Cache geleert ✅"
