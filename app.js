@@ -11743,16 +11743,18 @@ function UserMenu({
     onClick: () => { setPanel(null); setOpen(o => !o); }
   }), open && /*#__PURE__*/React.createElement("div", {
     style: {
-      position: "absolute",
-      left: 0,
-      top: "calc(100% + 6px)",
+      position: "fixed",
+      left: "10px",
+      top: "calc(env(safe-area-inset-top, 0px) + 52px)",
       background: "var(--surface)",
       border: "1px solid var(--border)",
       borderRadius: "16px",
       boxShadow: "0 8px 28px rgba(0,0,0,.13)",
       padding: "8px",
-      minWidth: "266px",
-      zIndex: 999
+      width: "min(300px, calc(100vw - 20px))",
+      maxHeight: "calc(100dvh - 80px)",
+      overflowY: "auto",
+      zIndex: 100000
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -11913,16 +11915,18 @@ function GuestMenu({
     onClick: () => { setPanel(null); setOpen(o => !o); }
   }), open && /*#__PURE__*/React.createElement("div", {
     style: {
-      position: "absolute",
-      left: 0,
-      top: "calc(100% + 6px)",
+      position: "fixed",
+      left: "10px",
+      top: "calc(env(safe-area-inset-top, 0px) + 52px)",
       background: "var(--surface)",
       border: "1px solid var(--border)",
       borderRadius: "16px",
       boxShadow: "0 8px 28px rgba(0,0,0,.13)",
       padding: "8px",
-      minWidth: "266px",
-      zIndex: 999
+      width: "min(300px, calc(100vw - 20px))",
+      maxHeight: "calc(100dvh - 80px)",
+      overflowY: "auto",
+      zIndex: 100000
     }
   }, /*#__PURE__*/React.createElement(MenuRow, {
     onClick: () => {
