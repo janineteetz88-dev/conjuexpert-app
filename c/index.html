@@ -2203,7 +2203,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   /* CI: Geld/Premium = Regenbogen-Fläche */
   .rcta, .pr-cta, .plansel-cta{ background:var(--rb-deep) !important; box-shadow:0 13px 28px -12px rgba(120,40,90,.55) !important; }
   /* Eingabefeld-Fokus warm */
-  .inputfield:focus-within{ border-color:var(--lc,#1b1813) !important; box-shadow:0 0 0 4px color-mix(in srgb,var(--lc,#1b1813) 16%,transparent) !important; }
+  .inputfield:focus-within{ border:2px solid transparent !important; background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--rb-deep) border-box !important; box-shadow:0 6px 16px -10px rgba(70,55,25,.3) !important; }
   /* a11y: sichtbarer Fokus */
   :focus-visible{ outline:2.5px solid #1b1813; outline-offset:2px; }
 
@@ -2220,7 +2220,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .skillbtn.on, .plan-card.sel, .pr-plan.best{ border-color:transparent !important; background:linear-gradient(var(--surface),var(--surface)) padding-box, var(--rb-deep) border-box !important; box-shadow:0 8px 22px -12px rgba(120,40,90,.4) !important; }
   .skillbtn.on b{ color:var(--text) !important; }
   /* Fokus warm */
-  .nameinput:focus, .login-email-input:focus, .nativesel:focus{ border-color:var(--lc,#1b1813) !important; box-shadow:0 0 0 4px color-mix(in srgb,var(--lc,#1b1813) 16%,transparent) !important; }
+  .nameinput:focus, .login-email-input:focus, .nativesel:focus{ border:2px solid transparent !important; background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--rb-deep) border-box !important; box-shadow:0 6px 16px -10px rgba(70,55,25,.3) !important; }
   /* Tour-Punkte */
   .tourdot.on{ background:var(--rb-deep) !important; }
   /* Direkte Pink-Akzente -> Sprachfarbe / Ink */
@@ -2233,6 +2233,11 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   /* Hover-/Akzent-Reste neutralisieren */
   .chip:hover, .qopt:hover:not(:disabled), .adcta:hover, .accentkey:hover, .gchoice:hover, .exportbtn:hover, .nativego:hover:not(:disabled){ border-color:color-mix(in srgb, var(--text) 30%, transparent) !important; }
   .adcta:hover, .nativego:hover:not(:disabled), .exportbtn:hover, .vtspk{ color:var(--text) !important; }
+  /* Tour/Hint-Akzente = Regenbogen statt Einzelfarbe (kein Orange) */
+  .tourbadge, .touricon{ background:var(--rb-deep) !important; }
+  .tm-row > span:first-child, .hintlist li::before, .hintlist li b{ background:var(--rb-deep) !important; -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important; }
+  /* kein Orange im Streak-Hover */
+  .streakpill:hover{ border-color:color-mix(in srgb,var(--text) 30%,var(--border)) !important; box-shadow:0 8px 20px -12px rgba(70,55,25,.4) !important; }
 </style>
 </head>
 <body>
