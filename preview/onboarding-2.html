@@ -21,23 +21,29 @@
   svg{display:block}
   body{font-family:var(--disp);background:var(--page);color:var(--ink);display:flex;flex-direction:column;align-items:center;min-height:100dvh;padding:14px 12px 76px}
   .lab{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#8b8270;margin:4px 0 12px}
-  .card{position:relative;width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:26px 22px 20px;overflow:hidden}
+  .card{position:relative;width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:24px 22px 20px;overflow:hidden}
   .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--rb)}
   .x{position:absolute;top:14px;right:14px;width:30px;height:30px;border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:50%;display:flex;align-items:center;justify-content:center}
   .x svg{width:13px;height:13px}
   .h{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
-  .sub{font-size:13px;color:var(--muted);margin:4px 0 16px}
-  .tier{border:1px solid var(--line);border-radius:16px;padding:15px;margin-top:11px;background:linear-gradient(180deg,#fffefb,#fbf6ed);box-shadow:0 8px 18px -14px rgba(70,55,25,.4),inset 0 1px 0 rgba(255,255,255,.7)}
-  .tier.prem{position:relative;border-color:transparent;background:linear-gradient(var(--card),var(--card)) padding-box,var(--rb) border-box;overflow:hidden}
-  .trow{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-  .tname{font-size:15px;font-weight:700}
-  .tname .rb{background:var(--rb);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .tprice{font-size:12.5px;font-weight:700;color:var(--muted)}
-  .feat{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;font-weight:600;margin-top:7px;color:var(--ink)}
-  .feat .ck{width:18px;height:18px;flex:none;border-radius:50%;background:var(--card2);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink)}
-  .feat.on .ck{background:var(--rb-deep);border:0;color:#fff}
-  .feat .ck svg{width:11px;height:11px}
-  .gift{display:flex;align-items:center;gap:9px;margin:14px 0 2px;font-size:12.5px;font-weight:700;color:var(--ink);background:var(--card2);border:1px dashed color-mix(in srgb,#ff7a18 45%,var(--line));border-radius:12px;padding:10px 12px}
+  .sub{font-size:13px;color:var(--muted);margin:4px 0 14px}
+  /* 24h Trial oben */
+  .trial{display:flex;align-items:center;gap:13px;border:1px solid var(--line);background:linear-gradient(180deg,#fffefb,#f7f0e3);border-radius:16px;padding:14px;box-shadow:0 10px 22px -16px rgba(70,55,25,.45),inset 0 1px 0 rgba(255,255,255,.7)}
+  .gift{width:44px;height:44px;flex:none;display:grid;place-items:center}
+  .gift svg{width:30px;height:30px}
+  .trial b{font-size:15px;font-weight:700;display:block}
+  .trial p{font-size:12px;color:var(--muted);margin-top:2px}
+  /* Tiers */
+  .tier{position:relative;border:1.5px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box,var(--rb) border-box;border-radius:16px;padding:14px;margin-top:11px;box-shadow:0 10px 22px -16px rgba(70,55,25,.4)}
+  .tier .tt{font-size:15px;font-weight:700;margin-bottom:5px}
+  .tier .tt .rb{background:var(--rb);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tier p{font-size:12.5px;color:var(--ink);line-height:1.5;font-weight:500}
+  .tier.prem{background:linear-gradient(180deg,color-mix(in srgb,#a557ff 6%,var(--card)),var(--card)) padding-box,var(--rb) border-box}
+  .tier .tag{position:absolute;top:-10px;right:14px;font-size:9.5px;font-weight:700;letter-spacing:.04em;color:#fff;background:var(--rb-deep);border-radius:999px;padding:3px 9px;text-shadow:0 1px 1px rgba(0,0,0,.3)}
+  /* Preisnotiz */
+  .prices{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:12.5px;color:var(--muted);font-weight:600}
+  .yr{font-weight:700;color:var(--ink);border:1.5px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box,var(--rb) border-box;border-radius:999px;padding:6px 11px}
+  .yr b{font-weight:800}
   .dots{display:flex;justify-content:center;gap:7px;margin:18px 0 14px}
   .dot{width:7px;height:7px;border-radius:50%;background:var(--line)}
   .dot.on{width:20px;border-radius:4px;background:var(--espresso)}
@@ -48,26 +54,30 @@
 </style>
 </head>
 <body>
-  <div class="lab">Onboarding · Slide 2 — Preise &amp; Tarife</div>
+  <div class="lab">Onboarding · Slide — Preise &amp; Tarife</div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gpaint" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3b5c"/><stop offset=".35" stop-color="#ff9f0a"/><stop offset=".6" stop-color="#34c759"/><stop offset="1" stop-color="#a557ff"/></linearGradient></defs></svg>
   <div class="card">
     <button class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
     <h2 class="h">Preise &amp; Tarife</h2>
-    <p class="sub">Fair &amp; einfach – das Wichtigste bleibt für immer kostenlos.</p>
+    <p class="sub">So fair ist ConjuExpert aufgebaut:</p>
+
+    <div class="trial">
+      <span class="gift"><svg viewBox="0 0 24 24" fill="none" stroke="url(#gpaint)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8"/><path d="M16.5 8a2.5 2.5 0 0 0 0-5C13 3 12 8 12 8"/></svg></span>
+      <div><b>24 h Premium-Nutzung</b><p>Sofort alles testen – ganz ohne Konto.</p></div>
+    </div>
 
     <div class="tier">
-      <div class="trow"><span class="tname">Gratis</span><span class="tprice">0 €</span></div>
-      <div class="feat on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Konjugieren &amp; Lernen in 5 Sprachen</div>
-      <div class="feat on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Karteikarten-Quiz (20/Tag)</div>
+      <div class="tt">Mit Konto · kostenlos</div>
+      <p>Konjugieren, Lernen &amp; 20 Karten im Quiz pro Tag.</p>
     </div>
 
     <div class="tier prem">
-      <div class="trow"><span class="tname">Conju<span class="rb">Premium</span></span><span class="tprice">ab 2,08 €/Mon.</span></div>
-      <div class="feat on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Quiz ohne Limit · alle Modi &amp; KI-Sätze</div>
-      <div class="feat on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Merken, Lieblingsthemen &amp; Ziele voll</div>
-      <div class="feat on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>Ohne Werbung, auf allen Geräten</div>
+      <span class="tag">★ Premium</span>
+      <div class="tt">Conju<span class="rb">Premium</span></div>
+      <p>Quiz ohne Limit · alle Modi &amp; KI-Sätze · Merken, Lieblingsthemen &amp; Ziele · ohne Werbung.</p>
     </div>
 
-    <div class="gift">🎁 24 h Premium gratis testen – ganz ohne Konto</div>
+    <div class="prices"><span class="yr">Jahresabo <b>29,99 €</b></span><span>· Monatsabo 2,99 €</span></div>
 
     <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot on"></span></div>
     <button class="btn">Los geht's →</button>
