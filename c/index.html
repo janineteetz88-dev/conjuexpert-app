@@ -2321,6 +2321,8 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   }
   body{ background:#ded5c4 !important; }
   @media (min-width:480px){ body{ background:radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,160,70,.10), transparent 60%), #d8cdb8 !important; } }
+  /* Konstante Textgröße über alle Tabs (iOS-Auto-Sizing aus) — kein „kleiner werden" beim Wechsel */
+  html, body, #approot{ -webkit-text-size-adjust:100% !important; text-size-adjust:100% !important; }
 
   /* Wortmarke: „Expert" im Regenbogen */
   .brand-name{ font-weight:600 !important; letter-spacing:-.02em !important; }
@@ -2570,7 +2572,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-36"></script>
+<script defer src="/app.js?v=c-sand-37"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
