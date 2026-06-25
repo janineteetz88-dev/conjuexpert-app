@@ -15170,6 +15170,9 @@ function App() {
   // Learn is a whole-tab hint; quiz modes & Saved areas request theirs from
   // inside their views (see requestHint passed down below).
   useEffect(() => {
+    // Open every tab at the top (the .content container keeps its scroll otherwise).
+    const c = document.querySelector(".content");
+    if (c) c.scrollTop = 0;
     if (tab === "grammar") requestHint("learn");
   }, [tab]);
 
