@@ -2339,6 +2339,9 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .langbtn .langstripe{ display:none !important; }
   .langbtn.active{ background:var(--selbg) !important; border-color:var(--selbg) !important; box-shadow:var(--raise) !important; }
   .langbtn.active .langflag, .langbtn.active .langname{ color:var(--selfg) !important; }
+  /* Startsprache (erste Kachel, per Long-Press gesetzt): dezenter Regenbogen-Punkt */
+  .langbtn.langstart{ position:relative !important; }
+  .langbtn.langstart::after{ content:"" !important; position:absolute !important; top:5px; right:5px; width:6px; height:6px; border-radius:50%; background:var(--brand-rainbow); }
 
   /* Quiz-Modi: horizontale Pillen, Linien-Icon + Label, aktiv = Gold-Icon + Regenbogen-Unterstrich */
   .quizmodes{ display:flex !important; gap:6px !important; grid-template-columns:none !important; overflow:visible !important; padding-bottom:0 !important; }
@@ -2572,7 +2575,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-37"></script>
+<script defer src="/app.js?v=c-sand-38"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->

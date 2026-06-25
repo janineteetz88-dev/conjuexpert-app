@@ -1473,6 +1473,7 @@
     en: {
       tagline: "conjugate · quiz · learn", hi: "Hi, {name} 👋", ready: "Ready when you are, {name}",
       cj_acc: "Create account", cj_later: "Later", cj_no_thx: "No thanks",
+      lang_start_set: "{lang} now opens first", lang_reorder_hint: "Long-press: set as start language",
       cj_p1_head: "Nice — 5 verbs already!", cj_p1_text: "Create a free account: your progress is kept and you practise <b>2 days longer</b> with Premium – Quiz + Saved.",
       cj_p2_head: "Always at hand", cj_p2_text: "Add ConjuExpert to your home screen like an app – one tap, and you conjugate &amp; quiz in seconds.", cj_p2_yes: "Add to home screen",
       cj_p3_head: "Wait – don't leave without your progress!", cj_p3_text: "A free account (10 seconds) keeps everything – and gives you <b>2 more days</b> of Premium (Quiz + Saved).", cj_p3_yes: "Save my progress", cj_p3_no: "Leave anyway",
@@ -1516,6 +1517,7 @@
     de: {
       tagline: "konjugieren · quiz · lernen", hi: "Hi, {name} 👋", ready: "Bereit, wenn du es bist, {name}",
       cj_acc: "Konto anlegen", cj_later: "Später", cj_no_thx: "Nein danke",
+      lang_start_set: "{lang} öffnet jetzt zuerst", lang_reorder_hint: "Lange drücken: als Startsprache festlegen",
       cj_p1_head: "Stark — schon 5 Verben!", cj_p1_text: "Leg dir ein kostenloses Konto an: Dein Fortschritt bleibt erhalten und du übst <b>2 Tage länger</b> mit dem Premiumtarif – Quiz + Merken.",
       cj_p2_head: "Immer griffbereit", cj_p2_text: "Leg ConjuExpert wie eine App auf deinen Home-Bildschirm – ein Tipp, und du konjugierst &amp; quizzt in Sekunden.", cj_p2_yes: "Auf den Home-Bildschirm",
       cj_p3_head: "Moment – geh nicht ohne deinen Fortschritt!", cj_p3_text: "Mit einem kostenlosen Konto (10 Sekunden) bleibt alles erhalten – und du sicherst dir <b>2 weitere Tage</b> Premiumtarif (Quiz + Merken).", cj_p3_yes: "Fortschritt sichern", cj_p3_no: "Trotzdem gehen",
@@ -1559,6 +1561,7 @@
     es: {
       tagline: "conjugar · quiz · aprender", hi: "¡Hola, {name}! 👋", ready: "Cuando quieras, {name}",
       cj_acc: "Crear cuenta", cj_later: "Más tarde", cj_no_thx: "No, gracias",
+      lang_start_set: "{lang} ahora se abre primero", lang_reorder_hint: "Mantén pulsado: fijar como idioma inicial",
       cj_p1_head: "¡Genial — ya van 5 verbos!", cj_p1_text: "Crea una cuenta gratis: tu progreso se guarda y practicas <b>2 días más</b> con Premium – Quiz + Guardados.",
       cj_p2_head: "Siempre a mano", cj_p2_text: "Añade ConjuExpert a tu pantalla de inicio como una app – un toque y conjugas &amp; haces quiz en segundos.", cj_p2_yes: "A la pantalla de inicio",
       cj_p3_head: "Espera, ¡no te vayas sin tu progreso!", cj_p3_text: "Una cuenta gratis (10 segundos) lo conserva todo – y te da <b>2 días más</b> de Premium (Quiz + Guardados).", cj_p3_yes: "Guardar mi progreso", cj_p3_no: "Salir igualmente",
@@ -1602,6 +1605,7 @@
     nl: {
       tagline: "vervoegen · quiz · leren", hi: "Hoi, {name} 👋", ready: "Klaar wanneer jij het bent, {name}",
       cj_acc: "Account aanmaken", cj_later: "Later", cj_no_thx: "Nee, bedankt",
+      lang_start_set: "{lang} opent nu eerst", lang_reorder_hint: "Lang indrukken: als starttaal instellen",
       cj_p1_head: "Mooi — al 5 werkwoorden!", cj_p1_text: "Maak een gratis account: je voortgang blijft bewaard en je oefent <b>2 dagen langer</b> met Premium – Quiz + Bewaard.",
       cj_p2_head: "Altijd bij de hand", cj_p2_text: "Zet ConjuExpert als een app op je beginscherm – één tik en je vervoegt &amp; quiz in seconden.", cj_p2_yes: "Naar beginscherm",
       cj_p3_head: "Wacht – ga niet zonder je voortgang!", cj_p3_text: "Een gratis account (10 seconden) bewaart alles – en geeft je <b>2 dagen extra</b> Premium (Quiz + Bewaard).", cj_p3_yes: "Voortgang opslaan", cj_p3_no: "Toch weggaan",
@@ -1645,6 +1649,7 @@
     fr: {
       tagline: "conjuguer · quiz · apprendre", hi: "Salut, {name} 👋", ready: "Quand tu veux, {name}",
       cj_acc: "Créer un compte", cj_later: "Plus tard", cj_no_thx: "Non merci",
+      lang_start_set: "{lang} s'ouvre maintenant en premier", lang_reorder_hint: "Appui long : définir comme langue de départ",
       cj_p1_head: "Bravo — déjà 5 verbes !", cj_p1_text: "Crée un compte gratuit : ta progression est conservée et tu t'entraînes <b>2 jours de plus</b> avec Premium – Quiz + Enregistrés.",
       cj_p2_head: "Toujours à portée", cj_p2_text: "Ajoute ConjuExpert à ton écran d'accueil comme une appli – un appui et tu conjugues &amp; quiz en quelques secondes.", cj_p2_yes: "Ajouter à l'écran d'accueil",
       cj_p3_head: "Attends – ne pars pas sans ta progression !", cj_p3_text: "Un compte gratuit (10 secondes) garde tout – et t'offre <b>2 jours de plus</b> de Premium (Quiz + Enregistrés).", cj_p3_yes: "Sauvegarder ma progression", cj_p3_no: "Partir quand même",
@@ -2919,6 +2924,19 @@ const {
   useMemo
 } = React;
 const LANG_ORDER = ["de", "es", "en", "nl", "fr"];
+// User-chosen language-tile order. order[0] is the language the app opens with.
+function langOrder() {
+  const saved = recall("kunju-langorder", null);
+  if (!Array.isArray(saved)) return LANG_ORDER.slice();
+  const valid = saved.filter(c => LANG_ORDER.includes(c));
+  LANG_ORDER.forEach(c => { if (!valid.includes(c)) valid.push(c); });
+  return valid.length ? valid : LANG_ORDER.slice();
+}
+function moveLangToFront(code) {
+  const next = [code, ...langOrder().filter(c => c !== code)];
+  persist("kunju-langorder", next);
+  return next;
+}
 const LANG_META = {
   de: {
     code: "DE",
@@ -4684,19 +4702,44 @@ function LanguageBar({
   lang,
   setLang
 }) {
+  const [order, setOrder] = useState(() => langOrder());
+  const lpTimer = useRef(null);
+  const lpFired = useRef(false);
+  function startPress(code) {
+    lpFired.current = false;
+    lpTimer.current = setTimeout(() => {
+      lpFired.current = true;
+      setOrder(moveLangToFront(code));
+      setLang(code);
+      if (window.__toast) window.__toast(tr("lang_start_set", { lang: window.CONJ[code].name }));
+      if (navigator.vibrate) try { navigator.vibrate(8); } catch (e) {}
+    }, 500);
+  }
+  function endPress() {
+    if (lpTimer.current) { clearTimeout(lpTimer.current); lpTimer.current = null; }
+  }
   return /*#__PURE__*/React.createElement("div", {
     className: "langbar"
-  }, LANG_ORDER.map(code => {
+  }, order.map(code => {
     const meta = LANG_META[code];
     const engine = window.CONJ[code];
     const active = lang === code;
     return /*#__PURE__*/React.createElement("button", {
       key: code,
-      className: "langbtn" + (active ? " active" : ""),
+      className: "langbtn" + (active ? " active" : "") + (order[0] === code ? " langstart" : ""),
       style: active ? {
         "--lc": meta.color
       } : {},
-      onClick: () => setLang(code)
+      title: tr("lang_reorder_hint"),
+      onClick: () => {
+        if (lpFired.current) { lpFired.current = false; return; }
+        setLang(code);
+      },
+      onPointerDown: () => startPress(code),
+      onPointerUp: endPress,
+      onPointerLeave: endPress,
+      onPointerCancel: endPress,
+      onContextMenu: e => e.preventDefault()
     }, /*#__PURE__*/React.createElement("span", {
       className: "langstripe",
       style: {
@@ -14730,7 +14773,7 @@ function Toast({
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [toastMsg, setToastMsg] = useState(null);
-  const [lang, setLang] = useState(() => recall("kunju-lang", "de"));
+  const [lang, setLang] = useState(() => langOrder()[0] || "de");
   const [verb, setVerb] = useState("");
   const [result, setResult] = useState(null);
   const [deconj, setDeconj] = useState(null);
