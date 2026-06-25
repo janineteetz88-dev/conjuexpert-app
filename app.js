@@ -5953,6 +5953,52 @@ function cheerLine() {
   const a = CHEER[UILANG] || CHEER.en;
   return _withName(a[Math.floor(Math.random() * a.length)]);
 }
+/* Milestone praise (no emoji — the confetti carries the celebration). */
+const MILESTONE_LINES = {
+  de: { m5: "5 in Folge — stark!", m10: "10 am Stück — beeindruckend!", more: "{n} in Folge!" },
+  en: { m5: "5 in a row — strong!", m10: "10 straight — impressive!", more: "{n} in a row!" },
+  es: { m5: "¡5 seguidas — genial!", m10: "¡10 seguidas — impresionante!", more: "¡{n} seguidas!" },
+  nl: { m5: "5 op rij — sterk!", m10: "10 op rij — indrukwekkend!", more: "{n} op rij!" },
+  fr: { m5: "5 d'affilée — fort !", m10: "10 d'affilée — impressionnant !", more: "{n} d'affilée !" }
+};
+function isStreakMilestone(s) { return s === 5 || s === 10 || (s > 10 && s % 10 === 0); }
+function praiseFor(streak) {
+  if (isStreakMilestone(streak)) {
+    const m = MILESTONE_LINES[UILANG] || MILESTONE_LINES.en;
+    const line = streak === 5 ? m.m5 : streak === 10 ? m.m10 : m.more;
+    return _withName(line.replace("{n}", streak));
+  }
+  return praiseLine();
+}
+/* Short, restrained confetti burst in CI colors — non-blocking, self-removing,
+   skipped when the user prefers reduced motion. */
+function fireConfetti(intensity) {
+  try {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const COLORS = ["#ff3b5c", "#ff7a18", "#ffc400", "#34c759", "#00bcd4", "#0a84ff", "#a557ff"];
+    const n = intensity >= 10 ? 30 : 18;
+    const wrap = document.createElement("div");
+    wrap.className = "confetti-wrap";
+    document.body.appendChild(wrap);
+    for (let i = 0; i < n; i++) {
+      const p = document.createElement("i");
+      p.className = "confetti-bit";
+      p.style.background = COLORS[i % COLORS.length];
+      p.style.left = (50 + (Math.random() * 36 - 18)) + "vw";
+      p.style.top = "44vh";
+      wrap.appendChild(p);
+      const dx = (Math.random() * 2 - 1) * 230;
+      const dy = (Math.random() * -1 - 0.25) * 170;
+      const rot = (Math.random() * 2 - 1) * 540;
+      p.animate([
+        { transform: "translate(0,0) rotate(0deg)", opacity: 1 },
+        { transform: "translate(" + dx * 0.5 + "px," + dy + "px) rotate(" + rot * 0.5 + "deg)", opacity: 1, offset: 0.45 },
+        { transform: "translate(" + dx + "px," + (dy + 340) + "px) rotate(" + rot + "deg)", opacity: 0 }
+      ], { duration: 1150 + Math.random() * 450, easing: "cubic-bezier(.2,.6,.3,1)" });
+    }
+    setTimeout(() => wrap.remove(), 1750);
+  } catch (e) {}
+}
 
 /* Tappable sentence: tap a word to see its translation (shown as a stable chip
    below — robust on mobile, never clipped). Direction set via from/to. */
@@ -6712,6 +6758,8 @@ function QuizView({
       bumpMist();
     }
     onActivity && onActivity();
+    if (ok && isStreakMilestone(ns.streak)) fireConfetti(ns.streak);
+    return ns.streak;
   }
   function check() {
     if (!q || state !== "idle") return;
@@ -6723,28 +6771,28 @@ function QuizView({
       // typed → require an exact match (accents matter); allow only minor accent slips when otherwise identical
       const ok = cv === ct || deburr(cv) === deburr(ct) && cv.split(" ").length === ct.split(" ").length;
       const accentSlip = ok && cv !== ct;
-      record(ok);
+      const st = record(ok);
       setState(ok ? "correct" : "wrong");
-      setMsg(ok ? accentSlip ? tr("accent_hint") : praiseLine() : cheerLine());
+      setMsg(ok ? accentSlip ? tr("accent_hint") : praiseFor(st) : cheerLine());
       return;
     }
     const exact = norm(val) === norm(q.answer);
     const accentOnly = !exact && deburr(norm(val)) === deburr(norm(q.answer)) && norm(val).length > 0;
     const ok = exact || accentOnly;
-    record(ok);
+    const st = record(ok);
     setState(ok ? "correct" : "wrong");
     setMsg(accentOnly ? tr("accent_hint", {
       answer: q.answer
-    }) : ok ? praiseLine() : cheerLine());
+    }) : ok ? praiseFor(st) : cheerLine());
     if (ok && autoSpeak) speak(q.answer, q.ttsLang);
   }
   function choose(opt) {
     if (!q || state !== "idle") return;
     setPicked(opt);
     const ok = norm(opt) === norm(q.answer);
-    record(ok);
+    const st = record(ok);
     setState(ok ? "correct" : "wrong");
-    setMsg(ok ? praiseLine() : cheerLine());
+    setMsg(ok ? praiseFor(st) : cheerLine());
     if (ok && autoSpeak) speak(q.answer, q.ttsLang);
   }
 
@@ -6834,9 +6882,9 @@ function QuizView({
         daw = da.split(" ");
       ok = a === tg || da === dtg || a.includes(tg) || da.includes(dtg) || aw.indexOf(last) >= 0 || daw.indexOf(dlast) >= 0 || daw.some(w => w.length > 2 && (w === dlast || dlast.indexOf(w) === 0 || w.indexOf(dlast) === 0));
     }
-    record(ok);
+    const st = record(ok);
     setState(ok ? "correct" : "wrong");
-    setMsg(ok ? praiseLine() : cheerLine());
+    setMsg(ok ? praiseFor(st) : cheerLine());
     if (spkMode === "sentence" && sent) {
       if (ok) {
         if (sentMistMode) {
@@ -14135,8 +14183,7 @@ function GoalCelebration({
   const planDay = goal?.startDate ? Math.min((goal.weeks || 2) * 7, Math.floor((Date.now() - new Date(goal.startDate)) / 86400000) + 1) : null;
   const goalDays = goal ? (goal.weeks || 2) * 7 : null;
   const planDone = planDay !== null && planDay >= goalDays;
-  const EMOJIS = ["🎉", "⭐", "🏆", "💪", "🌟"];
-  const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+  React.useEffect(() => { fireConfetti(10); }, []);
   return /*#__PURE__*/React.createElement("div", {
     className: "streakmodal-bg",
     onClick: onClose
@@ -14150,12 +14197,9 @@ function GoalCelebration({
     },
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: "56px",
-      lineHeight: 1,
-      animation: "flamepulse 1.4s ease-in-out infinite"
-    }
-  }, emoji), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+    className: "celebmark",
+    dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='34' height='34' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><path d='M5 13l4 4L19 7'/></svg>" }
+  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
     style: {
       fontSize: "26px",
       fontWeight: 900,
