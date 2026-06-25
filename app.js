@@ -4832,36 +4832,94 @@ function Tabs({
   setTab,
   profile
 }) {
-  const items = [{
-    id: "conjugate",
-    label: tr("tab_conjugate"),
-    icon: "▦"
-  }, {
-    id: "quiz",
-    label: tr("tab_quiz"),
-    icon: "◆"
-  }, {
-    id: "grammar",
-    label: tr("tab_learn"),
-    icon: "✦"
-  }, {
-    id: "saved",
-    label: tr("tab_saved"),
-    icon: "★"
-  }];
+  const ITEMS = {
+    conjugate: { label: tr("tab_conjugate"), icon: "▦" },
+    quiz: { label: tr("tab_quiz"), icon: "◆" },
+    grammar: { label: tr("tab_learn"), icon: "✦" },
+    saved: { label: tr("tab_saved"), icon: "★" }
+  };
+  const IDS = ["conjugate", "quiz", "grammar", "saved"];
+  const [order, setOrder] = useState(() => {
+    const s = recall("kunju-taborder", null);
+    if (!Array.isArray(s)) return IDS.slice();
+    const v = s.filter(x => IDS.includes(x));
+    IDS.forEach(x => { if (!v.includes(x)) v.push(x); });
+    return v.length ? v : IDS.slice();
+  });
+  const [dragId, setDragId] = useState(null);
+  const lpTimer = useRef(null);
+  const lpFired = useRef(false);
+  const wrapRef = useRef(null);
+  const orderRef = useRef(order);
+  orderRef.current = order;
+  React.useEffect(() => {
+    if (!dragId) return;
+    function move(e) {
+      const wrap = wrapRef.current;
+      if (!wrap) return;
+      const x = e.clientX;
+      const rects = [].slice.call(wrap.querySelectorAll(".tab[data-id]")).map(b => {
+        const r = b.getBoundingClientRect();
+        return { id: b.getAttribute("data-id"), mid: r.left + r.width / 2 };
+      });
+      let target = rects.findIndex(r => x < r.mid);
+      if (target === -1) target = rects.length - 1;
+      const cur = orderRef.current.indexOf(dragId);
+      if (target >= 0 && target !== cur) {
+        const next = orderRef.current.slice();
+        next.splice(cur, 1);
+        next.splice(target, 0, dragId);
+        setOrder(next);
+      }
+      if (e.cancelable) e.preventDefault();
+    }
+    function up() {
+      persist("kunju-taborder", orderRef.current);
+      setDragId(null);
+    }
+    window.addEventListener("pointermove", move, { passive: false });
+    window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", up);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", up);
+    };
+  }, [dragId]);
+  function startPress(id) {
+    lpFired.current = false;
+    lpTimer.current = setTimeout(() => {
+      lpFired.current = true;
+      if (navigator.vibrate) try { navigator.vibrate(10); } catch (e) {}
+      setDragId(id);
+    }, 350);
+  }
+  function endPress() {
+    if (lpTimer.current) { clearTimeout(lpTimer.current); lpTimer.current = null; }
+  }
   return /*#__PURE__*/React.createElement("div", {
     className: "tabs"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "tabs-track"
-  }, items.map(it => /*#__PURE__*/React.createElement("button", {
-    key: it.id,
-    className: "tab" + (tab === it.id ? " active" : ""),
-    onClick: () => setTab(it.id)
+    className: "tabs-track" + (dragId ? " reordering" : ""),
+    ref: wrapRef
+  }, order.map(id => /*#__PURE__*/React.createElement("button", {
+    key: id,
+    "data-id": id,
+    className: "tab" + (tab === id ? " active" : "") + (dragId === id ? " dragging" : ""),
+    onClick: () => {
+      if (lpFired.current) { lpFired.current = false; return; }
+      setTab(id);
+    },
+    onPointerDown: () => startPress(id),
+    onPointerUp: endPress,
+    onPointerLeave: endPress,
+    onPointerCancel: endPress,
+    onContextMenu: e => e.preventDefault()
   }, /*#__PURE__*/React.createElement("span", {
     className: "tab-icon"
-  }, it.icon), /*#__PURE__*/React.createElement("span", {
+  }, ITEMS[id].icon), /*#__PURE__*/React.createElement("span", {
     className: "tab-label"
-  }, it.label))), profile));
+  }, ITEMS[id].label))), profile));
 }
 
 /* ---------- Tense card ---------- */

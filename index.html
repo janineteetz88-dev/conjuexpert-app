@@ -676,6 +676,10 @@ body {
 .langbar.reordering .langbtn:not(.dragging) { animation: langjiggle 0.32s ease-in-out infinite; }
 @keyframes langjiggle { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(1deg); } }
 @media (prefers-reduced-motion: reduce) { .langbar.reordering .langbtn:not(.dragging) { animation: none; } }
+/* Drag-Reorder der unteren Navigation */
+.tab.dragging { transform: scale(1.12); z-index: 5; opacity: 0.96; }
+.tabs-track.reordering .tab[data-id]:not(.dragging) { animation: langjiggle 0.32s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .tabs-track.reordering .tab[data-id]:not(.dragging) { animation: none; } }
 .langstripe { position: absolute; top: 0; left: 0; right: 0; height: 4px; opacity: 0.55; transition: height 0.2s, opacity 0.2s; }
 #approot[data-accent="mono"] .langstripe { background: var(--text) !important; opacity: 0.3; }
 .langbtn.active {
