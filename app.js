@@ -3394,9 +3394,7 @@ function TenseDropdown({
     className: "tdcheck"
   }, isOn(t.id) ? "✓" : ""), /*#__PURE__*/React.createElement("span", {
     className: "tdlabel"
-  }, t.label, tenseHint(lang, t.id) && /*#__PURE__*/React.createElement("span", {
-    className: "tdhint"
-  }, tenseHint(lang, t.id)))))))));
+  }, t.label)))))));
 }
 function OneDropdown({
   lang,
