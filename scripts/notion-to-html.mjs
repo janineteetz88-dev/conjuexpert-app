@@ -109,7 +109,7 @@ function rtToHtml(richText) {
       if (a.bold)          text = `<strong>${text}</strong>`;
       if (a.italic)        text = `<em>${text}</em>`;
       if (a.strikethrough) text = `<s>${text}</s>`;
-      if (t.href)          text = `<a class="inline" href="${esc(t.href)}">${text}</a>`;
+      if (t.href)          text = `<a class="inline" href="${esc(t.href.replace(/^http:\/\/conjuexpert\.app/i, "https://conjuexpert.app"))}">${text}</a>`;
       return text;
     })
     .join("");
