@@ -2282,6 +2282,13 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .goal-sheet .gstep button, .goal-sheet .gmins-btns button, .goal-sheet .gnum, .goal-sheet .gmval, .goal-sheet .gbig, .goal-sheet .gderive .gdt b, .goal-sheet .gsummary .ghl, .goal-sheet .gkibanner .gkit b{ color:var(--text) !important; }
   .goal-sheet .qfilter-lbl{ background:none !important; -webkit-text-fill-color:var(--muted) !important; color:var(--muted) !important; }
   .goal-sheet .gcta{ box-shadow:0 14px 32px -16px rgba(40,33,20,.5) !important; }
+  /* Lernziel-Eingabe: Layout-Feinschliff */
+  .goal-sheet .qfilter-block{ flex-direction:column !important; align-items:stretch !important; }
+  .goal-sheet .gsummary{ border-color:transparent !important; background:linear-gradient(var(--surface),var(--surface)) padding-box, var(--brand-rainbow) border-box !important; }
+  .goal-sheet .gbig{ font-size:22px !important; }
+  .goal-sheet .gbig-u{ font-size:14px; font-weight:600; color:var(--muted); }
+  .goal-sheet .gstepwrap{ gap:14px !important; }
+  .goal-sheet .gstepwrap .gsl small{ margin-top:3px !important; }
   /* Hover-/Akzent-Reste neutralisieren */
   .chip:hover, .qopt:hover:not(:disabled), .adcta:hover, .accentkey:hover, .gchoice:hover, .exportbtn:hover, .nativego:hover:not(:disabled){ border-color:color-mix(in srgb, var(--text) 30%, transparent) !important; }
   .adcta:hover, .nativego:hover:not(:disabled), .exportbtn:hover, .vtspk{ color:var(--text) !important; }

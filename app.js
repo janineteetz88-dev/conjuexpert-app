@@ -14729,9 +14729,11 @@ function GoalFlow({
     className: "gderive"
   }, /*#__PURE__*/React.createElement("span", {
     className: "gbig"
-  }, perDay), /*#__PURE__*/React.createElement("span", {
+  }, minsEst, /*#__PURE__*/React.createElement("small", {
+    className: "gbig-u"
+  }, " Min.")), /*#__PURE__*/React.createElement("span", {
     className: "gdt"
-  }, /*#__PURE__*/React.createElement("b", null, "\xDCbungen pro Tag \xB7 \u2248 ", minsEst, " Min."), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("small", null, "Dein Tagesziel \u2014 passt sich automatisch an."))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("b", null, perDay, " \xDCbungen pro Tag"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("small", null, "Dein Tagesziel \u2014 passt sich automatisch an."))), /*#__PURE__*/React.createElement("div", {
     className: "gsumlbl"
   }, "Lernziel Zusammenfassung"), /*#__PURE__*/React.createElement("div", {
     className: "gsummary"
@@ -14868,21 +14870,27 @@ function GoalFlow({
   }, "\u201EIch m\xF6chte \u2026 Minuten am Tag \xFCben\" \u2014 wir rechnen das Ziel aus.")), /*#__PURE__*/React.createElement("span", {
     className: "ggo"
   }, "\u2192"))), step === "suggest" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "gback"
+    className: "gback",
+    onClick: () => setStep("choose"),
+    style: { cursor: "pointer" }
   }, /*#__PURE__*/React.createElement("button", {
     className: "gbackbtn",
     onClick: () => setStep("choose")
   }, "\u2039"), /*#__PURE__*/React.createElement("span", {
     className: "gbt"
   }, "Schlag mir was vor \xB7 zur\xFCck")), renderForm(true)), step === "individual" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "gback"
+    className: "gback",
+    onClick: () => setStep("choose"),
+    style: { cursor: "pointer" }
   }, /*#__PURE__*/React.createElement("button", {
     className: "gbackbtn",
     onClick: () => setStep("choose")
   }, "\u2039"), /*#__PURE__*/React.createElement("span", {
     className: "gbt"
   }, "Individueller Lernplan \xB7 zur\xFCck")), renderForm(false)), step === "time" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "gback"
+    className: "gback",
+    onClick: () => setStep("choose"),
+    style: { cursor: "pointer" }
   }, /*#__PURE__*/React.createElement("button", {
     className: "gbackbtn",
     onClick: () => setStep("choose")
