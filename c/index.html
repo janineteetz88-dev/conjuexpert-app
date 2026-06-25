@@ -2488,6 +2488,16 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .cj-ta{ width:100%; min-height:74px; resize:vertical; margin-top:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--text); border-radius:12px; padding:11px 12px; font-family:var(--font-body); font-size:14px; line-height:1.4; }
   .cj-ta::placeholder{ color:var(--muted); }
 
+  /* Quizkarte: „Gesucht"-Cue größer · redundante Tempus-Pille (links) entfernen */
+  .cards-cue-top{ font-size:14.5px !important; padding-bottom:10px !important; }
+  .cards-cue-top b{ font-size:16px !important; }
+  .cards-cue-top + .flashtop > .flashtense,
+  .cards-cue-top + .qm-top > .flashtense{ visibility:hidden !important; }
+
+  /* Lernziel-Modal: Wortmarke „Conju" ins CI (ink), Uhr-Icon entblauen (kein Blau) */
+  .cw-c{ background:none !important; -webkit-text-fill-color:var(--text) !important; color:var(--text) !important; }
+  .gchoice.tim .gci{ color:var(--text) !important; background:color-mix(in srgb,var(--text) 8%,var(--surface)) !important; border-color:color-mix(in srgb,var(--text) 18%,var(--border)) !important; }
+
   /* Handyrahmen noch dünner/flacher (Desktop) */
   @media (min-width:480px){
     .phone{ border-radius:36px !important; box-shadow:0 30px 70px -36px rgba(60,45,15,.45), inset 0 0 0 1px rgba(60,48,24,.10) !important; }
@@ -2544,7 +2554,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-34"></script>
+<script defer src="/app.js?v=c-sand-35"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
