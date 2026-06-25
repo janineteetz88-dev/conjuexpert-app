@@ -4036,8 +4036,10 @@ function NameGate({ initial, onSubmit, onClose, editing, native, setNative, skil
       <div className="namecard">
         {editing && <button className="namex" onClick={onClose}>×</button>}
         <h2 className="namehead">{tr("welcome")}</h2>
-        <p className="namebrand">Conju<b>Expert</b></p>
-        <span className="brand-mark big">{RAINBOW.slice(0, 5).map((c, i) => <i key={i} style={{ background: c }}></i>)}</span>
+        <div className="namebrandrow">
+          <span className="brand-mark big">{RAINBOW.slice(0, 5).map((c, i) => <i key={i} style={{ background: c }}></i>)}</span>
+          <p className="namebrand">Conju<b>Expert</b></p>
+        </div>
         <p className="namesub">{tr("welcome_sub")}</p>
         <input ref={ref} className="nameinput" value={val} aria-label={tr("your_name")} placeholder={tr("your_name")} maxLength={24}
         onChange={(e) => setVal(e.target.value)}
@@ -4057,7 +4059,7 @@ function NameGate({ initial, onSubmit, onClose, editing, native, setNative, skil
           <div className="skillseg">
             {["beginner", "intermediate", "advanced"].map((s) =>
             <button key={s} className={"skillbtn" + (skill === s ? " on" : "")} onClick={() => setSkill(s)}>
-                <b>{tr("skill_" + s)}</b><small>{tr("skill_" + s + "_sub")}</small>
+                <b>{tr("skill_" + s)}</b>
               </button>
             )}
           </div>
