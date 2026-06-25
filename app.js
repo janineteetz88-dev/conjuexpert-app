@@ -7709,7 +7709,7 @@ function QuizView({
     className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
     title: "Save verb",
     onClick: () => toggleFav(lang, q.verb)
-  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement("div", {
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular }), /*#__PURE__*/React.createElement("div", {
     className: "qm-prompt"
   }, /*#__PURE__*/React.createElement("button", {
     className: "flashverb flashverb-link",
@@ -8173,7 +8173,7 @@ function QuizView({
     className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
     title: "Save verb",
     onClick: () => toggleFav(lang, q.verb)
-  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement("div", {
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular }), /*#__PURE__*/React.createElement("div", {
     className: "qm-prompt"
   }, /*#__PURE__*/React.createElement("button", {
     className: "flashverb flashverb-link",
@@ -8519,7 +8519,7 @@ function QuizView({
     className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
     title: "Save verb",
     onClick: () => toggleFav(lang, q.verb)
-  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(Prompt, null), /*#__PURE__*/React.createElement("div", {
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular }), /*#__PURE__*/React.createElement(Prompt, null), /*#__PURE__*/React.createElement("div", {
     className: "qm-mean",
     style: {
       "--lc": LANG_META[lang].color
@@ -14922,7 +14922,7 @@ function App() {
     if (!trialExpiry || Date.now() < trialExpiry) return; // still inside the 24h trial
     if (recall("kunju-welcomeoffer-seen", false)) return; // show once
     welcomeOfferShown.current = true;
-    setShowOffer(true);
+    /* Willkommensrabatt abgeschafft — WelcomeOffer-Popup deaktiviert */
   }, [showOnboard, showTour, showPaywall, isPremium, bonusActive, trialExpiry]);
 
   // Auth: listen for Supabase login/logout
