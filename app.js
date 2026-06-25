@@ -6727,7 +6727,7 @@ function QuizView({
     const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
     const myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
     const myWordTxt = myWord ? ` If it fits naturally, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence.` : "";
-    const key = `kunju-cloze6-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
+    const key = `kunju-cloze7-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {
       setCloze(cached);
@@ -6811,14 +6811,16 @@ function QuizView({
           fetchCloze(qq, attempt + 1, curTopic);
           return;
         }
-        if (!s) {
-          setCloze(null);
-          return;
-        }
+        // Quality gate: only ever show an example that actually contains the exact
+        // form being practised ("${qq.answer}"). If the AI dropped it or changed
+        // it (e.g. declined a participle: kommend → kommende), the sentence is
+        // misleading — show no example rather than a wrong one.
+        setCloze(null);
+        return;
       }
       const out = {
         full,
-        gap: hit ? gap : full,
+        gap,
         native: j && j.n ? String(j.n).trim() : ""
       };
       persist(key, out);
