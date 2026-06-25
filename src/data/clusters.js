@@ -120,6 +120,7 @@ export const clusters = [
     spokes: [
       { slug: "/blog/t-kofschip", title: "’t kofschip: -te oder -de im Niederländischen sicher wählen", live: true },
       { slug: "/blog/sterke-werkwoorden", title: "Sterke werkwoorden: die wichtigsten unregelmäßigen niederländischen Verben", live: true },
+      { slug: "/blog/hebben-of-zijn", title: "hebben of zijn? Das niederländische Perfekt sicher bilden", live: true },
     ],
   },
   {
@@ -134,6 +135,8 @@ export const clusters = [
     },
     spokes: [
       { slug: "/blog/haeufigste-probleme-sprachenlernen", title: "Die häufigsten Probleme beim Sprachenlernen — was die Community wirklich nervt (und was wirklich hilft)", live: true },
+      { slug: "/blog/feynman-methode-grammatik", title: "Die Feynman-Methode für Grammatik — erklär es, dann kannst du es", live: true },
+      { slug: "/blog/interleaving-sprachenlernen", title: "Interleaving beim Sprachenlernen: warum du Verben und Zeiten mischen solltest statt zu pauken", live: true },
     ],
   },
   {
