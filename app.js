@@ -7810,7 +7810,24 @@ function QuizView({
     seenKey: "kunju-xpl-" + mode,
     title: tr("explain_hd"),
     html: quizExplainHtml(mode)
-  }), TenseBar(), mistMode && mistakes.length === 0 && /*#__PURE__*/React.createElement("div", {
+  }), TenseBar(), q && mode !== "speed" && score.streak >= 3 && /*#__PURE__*/React.createElement("div", {
+    className: "combobadge t" + (score.streak >= 10 ? "3" : score.streak >= 5 ? "2" : "1"),
+    key: "cb" + score.streak,
+    "aria-live": "polite"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "combobars",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("b", {
+    className: "combonum"
+  }, score.streak), /*#__PURE__*/React.createElement("span", {
+    className: "combolbl"
+  }, ({
+    de: "in Folge",
+    en: "in a row",
+    es: "seguidas",
+    nl: "op rij",
+    fr: "d'affilée"
+  })[UILANG] || "in a row")), mistMode && mistakes.length === 0 && /*#__PURE__*/React.createElement("div", {
     className: "mistdone"
   }, /*#__PURE__*/React.createElement("div", {
     className: "mistdone-ic"
@@ -11129,9 +11146,9 @@ function NameGate({
     onClick: onClose
   }, "\xD7"), /*#__PURE__*/React.createElement("h2", {
     className: "namehead"
-  }, tr("welcome")), /*#__PURE__*/React.createElement("p", {
-    className: "namebrand"
-  }, "Conju", /*#__PURE__*/React.createElement("b", null, "Expert")), /*#__PURE__*/React.createElement("span", {
+  }, tr("welcome")), /*#__PURE__*/React.createElement("div", {
+    className: "namebrandrow"
+  }, /*#__PURE__*/React.createElement("span", {
     className: "brand-mark big"
   }, RAINBOW.slice(0, 5).map((c, i) => /*#__PURE__*/React.createElement("i", {
     key: i,
@@ -11139,6 +11156,8 @@ function NameGate({
       background: c
     }
   }))), /*#__PURE__*/React.createElement("p", {
+    className: "namebrand"
+  }, "Conju", /*#__PURE__*/React.createElement("b", null, "Expert"))), /*#__PURE__*/React.createElement("p", {
     className: "namesub"
   }, tr("welcome_sub")), /*#__PURE__*/React.createElement("input", {
     ref: ref,
@@ -11189,10 +11208,10 @@ function NameGate({
     type: "button",
     role: "radio",
     "aria-checked": skill === s ? "true" : "false",
-    "aria-label": tr("skill_" + s) + " \u2013 " + tr("skill_" + s + "_sub"),
+    "aria-label": tr("skill_" + s),
     className: "skillbtn" + (skill === s ? " on" : ""),
     onClick: () => setSkill(s)
-  }, /*#__PURE__*/React.createElement("b", null, tr("skill_" + s)), /*#__PURE__*/React.createElement("small", null, tr("skill_" + s + "_sub")))))), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("b", null, tr("skill_" + s)))))),/*#__PURE__*/React.createElement("button", {
     className: "tourbtn",
     disabled: !val.trim(),
     onClick: () => onSubmit(val.trim())

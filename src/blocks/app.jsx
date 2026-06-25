@@ -2446,6 +2446,13 @@ function QuizView({ lang, favs, toggleFav, sound, skill, onStudy, onActivity, is
 
           {TenseBar()}
 
+      {q && mode !== "speed" && score.streak >= 3 &&
+      <div className={"combobadge t" + (score.streak >= 10 ? "3" : score.streak >= 5 ? "2" : "1")} key={"cb" + score.streak} aria-live="polite">
+        <span className="combobars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <b className="combonum">{score.streak}</b>
+        <span className="combolbl">{({ de: "in Folge", en: "in a row", es: "seguidas", nl: "op rij", fr: "d'affilée" })[UILANG] || "in a row"}</span>
+      </div>}
+
       {mistMode && mistakes.length === 0 &&
       <div className="mistdone">
           <div className="mistdone-ic">🎉</div>

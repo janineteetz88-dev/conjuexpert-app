@@ -114,6 +114,16 @@ function injectBetweenMarkers(html, id, code) {
 function main() {
   let html = readFileSync(INDEX, "utf8");
 
+  // Schutz: index.html nutzt inzwischen /app.js als einziges App-Bundle
+  // (Engine + Übersetzungen + UI). Inline-Blöcke wurden entfernt, weil sie mit
+  // app.js kollidierten (__TwkCheck doppelt deklariert → #root leer). Ohne
+  // Marker/Babel-Blöcke würde der Bootstrap index.html zerstören – daher hier
+  // sauber abbrechen statt etwas zu schreiben.
+  if (!html.includes(markerStart("tweaks")) && !html.includes(OPEN_TAG)) {
+    console.log("Übersprungen: index.html nutzt /app.js als Bundle (keine Inline-Blöcke). app.js direkt bearbeiten.");
+    return;
+  }
+
   const hasMarkers = html.includes(markerStart("tweaks"));
   if (!hasMarkers) {
     console.log("Erstlauf: löse inline text/babel-Blöcke heraus …");
