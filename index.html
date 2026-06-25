@@ -584,6 +584,17 @@ body {
   .qmode-ic { width: 26px; height: 26px; border-radius: 9px; }
   .qmode-lb { font-size: 10px; }
   .quizintro-line { margin: 7px 0 2px; font-size: 12px; }
+  /* Quiz-Karte (Auswahl/Tippen/Sprechen) auf dem Handy kompakter → alles auf einen Screen, kein Scrollen.
+     Unter .quizcard.quizmodern gescoped, damit es die spät definierten Basisregeln überschreibt (Media Queries erhöhen die Spezifität nicht). */
+  .quizcard.quizmodern { gap: 9px; padding: 16px 15px; padding-top: 16px; }
+  .quizcard.quizmodern .qm-prompt { gap: 7px; padding: 2px 0; }
+  .quizcard.quizmodern .flashverb { font-size: 27px; }
+  .quizcard.quizmodern .spkreveal { padding: 9px 12px; gap: 4px; }
+  .quizcard.quizmodern .spkreveal-t, .quizcard.quizmodern .spkreveal .wsent.big { font-size: 15px; }
+  .quizcard.quizmodern .clozenative { font-size: 12px; margin-top: 5px; padding-top: 5px; }
+  .quizcard.quizmodern .choose-label { margin: 0 0 -3px; }
+  .quizcard.quizmodern .qopts { gap: 7px; }
+  .quizcard.quizmodern .qopt { padding: 9px 8px; font-size: 13.5px; line-height: 1.2; min-height: 38px; border-radius: 12px; }
 }
 @media (max-width: 380px) {
   .brand-tag { display: none; }
