@@ -8643,12 +8643,12 @@ function QuizView({
       e.stopPropagation();
       toggleFav(lang, q.verb);
     }
-  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(QuizTip, {
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement("div", {
+    className: "flashbody"
+  }, /*#__PURE__*/React.createElement(QuizTip, {
     formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer),
     irregular: q.isIrregular
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "flashbody"
-  }, thisDir === "native" ? transl && transl !== "…" ? /*#__PURE__*/React.createElement("span", {
+  }), thisDir === "native" ? transl && transl !== "…" ? /*#__PURE__*/React.createElement("span", {
     className: "flashnative"
   }, transl) : /*#__PURE__*/React.createElement("span", {
     className: "flashnative",
