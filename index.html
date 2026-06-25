@@ -2569,7 +2569,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 <div id="approot">
   <div id="root"></div>
   <div id="app-splash" aria-hidden="true"><div class="as-w"><span style="color:#e71583">Conju</span><span style="background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;color:transparent">Expert</span></div><div class="as-b"></div></div>
-  <script>setTimeout(function(){var s=document.getElementById('app-splash');if(s){s.style.opacity='0';setTimeout(function(){s&&s.remove&&s.remove();},400);}},8000);</script>
+  <script>(function(){var s=document.getElementById('app-splash');if(!s)return;var done=false;function hide(){if(done)return;done=true;s.style.opacity='0';setTimeout(function(){s&&s.remove&&s.remove();},400);}var root=document.getElementById('root');var iv=setInterval(function(){if(root&&root.children.length>0){clearInterval(iv);hide();}},80);setTimeout(function(){clearInterval(iv);hide();},8000);})();</script>
   <div id="seo-static" lang="de">
     <h1>Verben konjugieren in 5 Sprachen – Spanisch, Französisch, Englisch, Niederländisch &amp; Deutsch</h1>
     <p>ConjuExpert ist dein KI-Konjugationstrainer: jede Zeitform nachschlagen, mit Quiz aus deinen Lieblingsthemen üben und knifflige Verben merken – kostenlos, direkt im Browser, ohne Download.</p>
