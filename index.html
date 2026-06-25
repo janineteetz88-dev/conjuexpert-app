@@ -2502,6 +2502,22 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .cw-c{ background:none !important; -webkit-text-fill-color:var(--text) !important; color:var(--text) !important; }
   .gchoice.tim .gci{ color:var(--text) !important; background:color-mix(in srgb,var(--text) 8%,var(--surface)) !important; border-color:color-mix(in srgb,var(--text) 18%,var(--border)) !important; }
 
+  /* Plan-Karten: nur die Jahres-/Premium-Karte (links) hüpft leicht, Monatsabo nicht */
+  @keyframes cjHop{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
+  .plan-card.annual{ animation:cjHop 2.6s ease-in-out infinite; }
+  .plan-card:not(.annual){ animation:none !important; }
+  @media (prefers-reduced-motion:reduce){ .plan-card.annual{ animation:none !important; } }
+
+  /* Preistabelle: Gast vs. Konto klar unterscheiden */
+  .pr-thead .pr-th-anon{ color:var(--muted) !important; font-weight:600 !important; }
+  .pr-thead .pr-th-konto{ color:var(--text) !important; font-weight:800 !important; }
+  .pr-thead > *:nth-child(3), .pr-row > *:nth-child(3){ background:color-mix(in srgb,var(--text) 6%,var(--surface)); }
+
+  /* „Mit Konto"-Hinweis: anklickbarer Button */
+  .pr-trial-btn{ width:100%; cursor:pointer; font-family:var(--font-display); display:inline-flex; align-items:center; justify-content:center; gap:4px; }
+  .pr-trial-btn:hover{ border-color:color-mix(in srgb,var(--text) 30%,var(--border)) !important; }
+  .pr-trial-go{ font-weight:800; }
+
   /* Handyrahmen noch dünner/flacher (Desktop) */
   @media (min-width:480px){
     .phone{ border-radius:36px !important; box-shadow:0 30px 70px -36px rgba(60,45,15,.45), inset 0 0 0 1px rgba(60,48,24,.10) !important; }
@@ -2558,7 +2574,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-35"></script>
+<script defer src="/app.js?v=c-sand-36"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
