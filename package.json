@@ -2,6 +2,7 @@
   "type": "module",
   "scripts": {
     "build:app": "node scripts/build-index.mjs",
+    "check:quiz": "node scripts/check-quiz.mjs",
     "test": "node --test scripts/lib/*.test.mjs"
   },
   "devDependencies": {
