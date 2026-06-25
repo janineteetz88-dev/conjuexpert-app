@@ -2417,6 +2417,16 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .irrchip-go{ color:var(--muted) !important; }
   /* Verwendung: Haken grün bleibt, Kreuz ins CI (kein Orange) */
   .usei.no{ color:var(--muted) !important; background:var(--surface-2) !important; }
+  /* Quiz-Karte: Inline-Hinweis & reg/unreg-Tag raus → in den Tipp-Aufklapper */
+  .flashhint-inline, .flashtag{ display:none !important; }
+  .quiztip{ width:100% !important; margin:6px 0 2px !important; text-align:center !important; }
+  .quiztip-hd{ display:inline-flex !important; align-items:center !important; gap:6px !important; border:1px solid var(--border) !important; background:var(--surface-2) !important; border-radius:999px !important; padding:5px 11px !important; font-family:var(--font-display) !important; font-weight:700 !important; font-size:12px !important; color:var(--text) !important; cursor:pointer !important; }
+  .quiztip-ic{ width:14px !important; height:14px !important; color:var(--gold) !important; display:inline-flex !important; }
+  .quiztip-car{ width:11px !important; height:11px !important; color:var(--muted) !important; display:inline-flex !important; transition:transform .2s !important; }
+  .quiztip.open .quiztip-car{ transform:rotate(180deg) !important; }
+  .quiztip-body{ margin-top:7px !important; font-size:12.5px !important; color:var(--muted) !important; line-height:1.5 !important; }
+  .quiztip-body b{ color:var(--text) !important; }
+  .quiztip:not(.open) .quiztip-body{ display:none !important; }
   /* aktiver Tab: dunkler sandig hinterlegt, keine schwarze Umrandung */
   .tab.active{ background:color-mix(in srgb, var(--text) 12%, var(--surface-2)) !important; box-shadow:none !important; border:0 !important; }
   /* Konjugieren-Hero beruhigen: kein Konfetti, keine Schnörkel-Schrift */
@@ -2507,7 +2517,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-31"></script>
+<script defer src="/app.js?v=c-sand-32"></script>
 
 
 <!-- BUILD:tweaks — generiert aus src/blocks/tweaks-panel.jsx; NICHT direkt hier bearbeiten -->
