@@ -240,6 +240,19 @@ export const clusters = [
       { slug: "/blog/mit-der-sprache-umgeben", title: "Sich mit der Sprache umgeben: 10 Challenges (v2)", live: true },
     ],
   },
+  {
+    id: "methodik",
+    lang: "de",
+    label: "Methodik",
+    color: "#34c759",
+    hub: {
+      slug: "/blog/verben-konjugieren-lernen",
+      title: "Verben konjugieren lernen: der eine Bauplan für 5 Sprachen",
+      live: true,
+    },
+    spokes: [
+    ],
+  },
 ];
 
 /** Hilfsfunktion: Findet Cluster und Spoke für einen gegebenen Slug. */
