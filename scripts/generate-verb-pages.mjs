@@ -337,6 +337,16 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
     "publisher": { "@type": "Organization", "name": "ConjuExpert", "url": SITE }
   });
 
+  const breadcrumbLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "ConjuExpert", "item": `${SITE}/` },
+      { "@type": "ListItem", "position": 2, "name": meta.name, "item": `${SITE}/konjugation/${lang}/` },
+      { "@type": "ListItem", "position": 3, "name": verb, "item": `${SITE}/konjugation/${lang}/${verb}/` }
+    ]
+  });
+
   return `<!DOCTYPE html>
 <html lang="de">
 <head>
@@ -350,6 +360,7 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
 <meta property="og:url" content="${SITE}/konjugation/${lang}/${verb}/">
 <meta property="og:site_name" content="ConjuExpert">
 <script type="application/ld+json">${jsonLd}</script>
+<script type="application/ld+json">${breadcrumbLd}</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
