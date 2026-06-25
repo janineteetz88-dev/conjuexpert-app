@@ -3437,9 +3437,7 @@ function OneDropdown({
     className: "tdcheck"
   }, valueId === o.id ? "✓" : ""), /*#__PURE__*/React.createElement("span", {
     className: "tdlabel"
-  }, o.label, o.hint && /*#__PURE__*/React.createElement("span", {
-    className: "tdhint"
-  }, o.hint))))))));
+  }, o.label)))))));
 }
 function MultiDropdown({
   lang,
@@ -15353,6 +15351,14 @@ function App() {
           setPremiumUntil(null);
         }
         return;
+      }
+      // Use the first name from the login profile (Google / email signup),
+      // not the email prefix — only when the user hasn't set a name yet.
+      if (!recall("kunju-name", null)) {
+        const m = user.user_metadata || {};
+        const full = (m.full_name || m.name || "").trim();
+        const fn = (m.given_name || m.first_name || (full ? full.split(/\s+/)[0] : "")).trim();
+        if (fn) { persist("kunju-name", fn); setName(fn); }
       }
       // One-time welcome gift: creating/using a free account grants 2 days of
       // Premium. Stored device-locally (mirrors the existing trial mechanism);
