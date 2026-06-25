@@ -13086,7 +13086,12 @@ function JBadge({ name }) {
     viewBox: "0 0 24 24", fill: "none", stroke: "currentColor",
     strokeWidth: 1.6, strokeLinecap: "round", strokeLinejoin: "round"
   }, children);
-  if (name === "flame") return wrap(/*#__PURE__*/React.createElement("path", { d: "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z" }));
+  if (name === "bars") return /*#__PURE__*/React.createElement("svg", { viewBox: "0 0 24 24", fill: "none" },
+    /*#__PURE__*/React.createElement("rect", { x: 3, y: 13, width: 2.4, height: 7, rx: 1.2, fill: "#ff3b5c" }),
+    /*#__PURE__*/React.createElement("rect", { x: 7.2, y: 9, width: 2.4, height: 11, rx: 1.2, fill: "#ff8a18" }),
+    /*#__PURE__*/React.createElement("rect", { x: 11.4, y: 6, width: 2.4, height: 14, rx: 1.2, fill: "#ffc400" }),
+    /*#__PURE__*/React.createElement("rect", { x: 15.6, y: 10.5, width: 2.4, height: 9.5, rx: 1.2, fill: "#1fbf6b" }),
+    /*#__PURE__*/React.createElement("rect", { x: 19.8, y: 14, width: 2.4, height: 6, rx: 1.2, fill: "#0a84ff" }));
   if (name === "home") return wrap([
     /*#__PURE__*/React.createElement("path", { key: 1, d: "M12 3v11" }),
     /*#__PURE__*/React.createElement("path", { key: 2, d: "m8 10 4 4 4-4" }),
@@ -16009,7 +16014,7 @@ function App() {
     onSecondary: () => setShowFbThanks(false),
     onClose: () => setShowFbThanks(false)
   }), journey && !showOnboard && !showTour && !showPaywall && !showLogin && !showPlanSelect && /*#__PURE__*/React.createElement(JourneyPop, {
-    badge: journey === "p1" ? "flame" : journey === "p2" ? "home" : journey === "p3" ? "save" : journey === "tend" ? "clock" : "smile",
+    badge: journey === "p1" ? "bars" : journey === "p2" ? "home" : journey === "p3" ? "save" : journey === "tend" ? "clock" : "smile",
     head: tr(journey === "p1" ? "cj_p1_head" : journey === "p2" ? "cj_p2_head" : journey === "p3" ? "cj_p3_head" : journey === "tend" ? "cj_tend_head" : "cj_p8_head"),
     html: tr(journey === "p1" ? "cj_p1_text" : journey === "p2" ? "cj_p2_text" : journey === "p3" ? "cj_p3_text" : journey === "tend" ? "cj_tend_text" : "cj_p8_text"),
     primaryLabel: tr(journey === "p2" ? "cj_p2_yes" : journey === "p3" ? "cj_p3_yes" : journey === "tend" ? "cj_tend_yes" : "cj_acc"),
