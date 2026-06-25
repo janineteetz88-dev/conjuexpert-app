@@ -1286,7 +1286,10 @@ body {
 .flashverb { font-family: var(--font-display); font-weight: 700; font-size: 34px; letter-spacing: -0.02em; color: var(--text); line-height: 1; }
 .flashpron { font-family: var(--font-display); font-weight: 700; font-size: 17px; color: var(--lc); background: color-mix(in srgb, var(--lc) 13%, transparent); padding: 7px 16px; border-radius: 12px; }
 /* Karten-Modus: Tipp nach oben ziehen, doppelte Pronomen-Pille (steht schon im „Gesucht") weg */
-.flashface .quiztip { order: -1; margin-bottom: 2px; }
+/* Karten-Modus: Tipp bleibt unter dem „Gesucht", aber dezent (keine Pille) */
+.flashface .quiztip { margin: 2px 0; }
+.flashface .quiztip-hd { border: 0 !important; background: none !important; color: var(--muted) !important; font-weight: 600 !important; padding: 2px 6px !important; }
+.flashface .quiztip-ic { color: var(--muted) !important; }
 .flashface .flashpron { display: none; }
 .flashanswer { font-family: var(--mono); font-weight: 700; font-size: 30px; letter-spacing: -0.01em; color: var(--text); line-height: 1.15; text-wrap: balance; }
 .flashspeak { border: 0; background: color-mix(in srgb, var(--lc) 13%, var(--surface)); color: var(--lc); width: 34px; height: 34px; border-radius: 10px; font-size: 15px; cursor: pointer; flex: none; transition: transform 0.12s; }
