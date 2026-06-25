@@ -282,7 +282,7 @@
       { id: "subjunctive1", label: "Konjunktiv I (indirekte Rede)", forms: konjunktiv1 },
       { id: "conditional", label: "Konditional (würde)", forms: konditional },
       { id: "imperative", label: "Imperativ", forms: data.imperativ },
-      { id: "gerund", label: "Partizip I", forms: PRON.map(() => partizip1) }
+      { id: "gerund", label: "Partizip I", forms: PRON.map(() => partizip1), nonFinite: true }
     ];
   }
 
@@ -459,7 +459,7 @@
       { id: "subjunctive", label: "Subjunctive", forms: subj },
       { id: "conditional", label: "Conditional", forms: cond },
       { id: "imperative", label: "Imperative", forms: imperative },
-      { id: "gerund", label: "Gerund / Present Participle", forms: PRON.map(() => ger) }
+      { id: "gerund", label: "Gerund / Present Participle", forms: PRON.map(() => ger), nonFinite: true }
     ];
   }
 
@@ -1137,7 +1137,7 @@
       { id: "subjunctive", label: "Aanvoegende wijs", forms: data.subjunctive },
       { id: "conditional", label: "Voorwaardelijke wijs", forms: conditional },
       { id: "imperative", label: "Gebiedende wijs", forms: data.imperative },
-      { id: "gerund", label: "Onvoltooid deelwoord", forms: PRON.map(() => gerund) }
+      { id: "gerund", label: "Onvoltooid deelwoord", forms: PRON.map(() => gerund), nonFinite: true }
     ];
   }
 
@@ -1362,7 +1362,7 @@
       { id: "conditional", label: "Conditionnel", forms: conditionnel },
       { id: "conditionalPast", label: "Conditionnel passé", forms: condPasse },
       { id: "imperative", label: "Impératif", forms: imp },
-      { id: "gerund", label: "Participe présent", forms: PRON.map(() => ppr) }
+      { id: "gerund", label: "Participe présent", forms: PRON.map(() => ppr), nonFinite: true }
     ];
   }
 
@@ -5723,12 +5723,14 @@ function buildQuestion(lang, tenseId, pool) {
     const r = eng.conjugate(v);
     if (!r || r.error) continue;
     let t;
-    if (tenseId === "all") t = pick(r.tenses);else if (Array.isArray(tenseId)) {
-      const avail = r.tenses.filter(x => tenseId.indexOf(x.id) >= 0);
+    // Non-finite forms (Partizip I / gerund / present participle) have no person —
+    // never quiz them with a pronoun. They stay visible in the conjugation table only.
+    if (tenseId === "all") t = pick(r.tenses.filter(x => !x.nonFinite));else if (Array.isArray(tenseId)) {
+      const avail = r.tenses.filter(x => tenseId.indexOf(x.id) >= 0 && !x.nonFinite);
       if (!avail.length) continue;
       t = pick(avail);
     } else {
-      t = r.tenses.find(x => x.id === tenseId);
+      t = r.tenses.find(x => x.id === tenseId && !x.nonFinite);
       if (!t) continue;
     }
     const idxs = [];
@@ -5742,12 +5744,13 @@ function buildQuestion(lang, tenseId, pool) {
     const allowed = tenseId === "all" ? null : Array.isArray(tenseId) ? tenseId : [tenseId];
     const cand = new Set();
     r.tenses.forEach(tt => {
+      if (tt.nonFinite) return;
       if (allowed && allowed.indexOf(tt.id) < 0) return;
       tt.forms.forEach(f => {
         if (f && f !== "—" && norm(f) !== norm(answer)) cand.add(f);
       });
     });
-    if (cand.size < 3) r.tenses.forEach(tt => tt.forms.forEach(f => {
+    if (cand.size < 3) r.tenses.forEach(tt => tt.nonFinite || tt.forms.forEach(f => {
       if (f && f !== "—" && norm(f) !== norm(answer)) cand.add(f);
     }));
     const distract = shuffle([...cand]).slice(0, 3);
@@ -6358,7 +6361,7 @@ function QuizView({
   const eng = window.CONJ[lang];
   const tenseOpts = useMemo(() => {
     const r = eng.conjugate(eng.samples[0]);
-    return r && r.tenses ? r.tenses.map(t => ({
+    return r && r.tenses ? r.tenses.filter(t => !t.nonFinite).map(t => ({
       id: t.id,
       label: t.label
     })) : [];
@@ -14648,7 +14651,7 @@ function GoalFlow({
   const eng = window.CONJ[lang] || window.CONJ["de"];
   const tenseOpts = React.useMemo(() => {
     const r = eng.conjugate(eng.samples[0]);
-    return r && r.tenses ? r.tenses.map(t => ({
+    return r && r.tenses ? r.tenses.filter(t => !t.nonFinite).map(t => ({
       id: t.id,
       label: t.label
     })) : [];
