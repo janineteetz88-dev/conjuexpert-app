@@ -1,5 +1,5 @@
 /* ConjuExpert service worker — basic offline app shell */
-const CACHE = "conjuexpert-v49";
+const CACHE = "conjuexpert-v50";
 const ASSETS = [
   "./index.html", "./app.js", "./manifest.webmanifest",
   "./icon-192.png", "./icon-512.png", "./icon-maskable.png",
