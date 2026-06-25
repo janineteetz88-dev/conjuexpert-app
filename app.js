@@ -1472,6 +1472,14 @@
   window.UI = {
     en: {
       tagline: "conjugate · quiz · learn", hi: "Hi, {name} 👋", ready: "Ready when you are, {name}",
+      cj_acc: "Create account", cj_later: "Later", cj_no_thx: "No thanks",
+      cj_p1_head: "Nice — 5 verbs already!", cj_p1_text: "Create a free account: your progress is kept and you practise <b>2 days longer</b> with Premium – Quiz + Saved.",
+      cj_p2_head: "Always at hand", cj_p2_text: "Add ConjuExpert to your home screen like an app – one tap, and you conjugate &amp; quiz in seconds.", cj_p2_yes: "Add to home screen",
+      cj_p3_head: "Wait – don't leave without your progress!", cj_p3_text: "A free account (10 seconds) keeps everything – and gives you <b>2 more days</b> of Premium (Quiz + Saved).", cj_p3_yes: "Save my progress", cj_p3_no: "Leave anyway",
+      cj_tend_head: "Your 24 h Premium trial is over", cj_tend_text: "Conjugate &amp; Learn stay free. Want to keep quizzing? With a free account you practise the “Cards” quiz (20 rounds/day) – plus <b>2 days of Premium</b> for free.", cj_tend_yes: "Create account – Quiz + 2 days", cj_tend_no: "Just look up &amp; learn",
+      cj_p8_head: "Great to see you back!", cj_p8_text: "Your progress is still here. Secure it with a free account before it's gone.",
+      cj_fb_head: "How's it going for you?", cj_fb_text: "Be honest: what do you like best – and what should we do better?", cj_fb_gift: "🎁 Give us your feedback and get a <b>€5 code</b> on the yearly plan.", cj_fb_rate_q: "How do you like ConjuExpert?", cj_fb_ph: "Your feedback…", cj_fb_send: "Give feedback &amp; get €5", cj_fb_sending: "Sending…", cj_fb_err: "Couldn't send – please try again.",
+      cj_fbt_head: "Thanks for your feedback!", cj_fbt_text: "Here's your gift: with code <b>WILLKOMMEN</b> you get Premium for <b>€24.99/year</b> instead of €29.99 – valid until the end of your trial.", cj_fb_secure: "Secure code &amp; get Premium",
       hint_quiz_cards_h: "Cards: memorise verbs, relaxed", hint_quiz_cards_1: "Pick a tense &amp; favourite topic, plus the direction (mother tongue ↔ target language).", hint_quiz_cards_2: "See the verb + tense, work out the form in your head — tap the card to flip it.", hint_quiz_cards_3: "Tap unknown words in the example sentence → translate &amp; save them.", hint_quiz_cards_4: "No pressure, no typing: perfect for getting to know forms and quick review.", hint_quiz_speed_h: "Speed: 60 seconds, full focus", hint_quiz_speed_1: "Pick a tense &amp; topic, then start — you have 60 seconds.", hint_quiz_speed_2: "Tap the correct form as fast as you can — every right answer counts.", hint_quiz_speed_3: "Great for making forms quick to recall, with a little time pressure.",
       hint_quiz_choice_h: "Choice: spot the right form fast", hint_quiz_choice_1: "A perfect way into a new tense.", hint_quiz_choice_2: "Pick a tense &amp; favourite topic.", hint_quiz_choice_3: "Verb + required tense + four options — tap the right one for instant feedback.", hint_quiz_choice_4: "Tap unknown words in the example sentence → translate &amp; save them.",
       hint_quiz_type_h: "Type: write conjugations actively", hint_quiz_type_1: "Writing it yourself anchors the forms most — alongside <b>Speak</b>, the most intensive mode.", hint_quiz_type_2: "Pick tense, topic &amp; direction — and whether to drill single verbs or translate a whole sentence.", hint_quiz_type_3: "Tap unknown words in the example sentence → translate &amp; save them.",
@@ -1507,6 +1515,14 @@
     },
     de: {
       tagline: "konjugieren · quiz · lernen", hi: "Hi, {name} 👋", ready: "Bereit, wenn du es bist, {name}",
+      cj_acc: "Konto anlegen", cj_later: "Später", cj_no_thx: "Nein danke",
+      cj_p1_head: "Stark — schon 5 Verben!", cj_p1_text: "Leg dir ein kostenloses Konto an: Dein Fortschritt bleibt erhalten und du übst <b>2 Tage länger</b> mit dem Premiumtarif – Quiz + Merken.",
+      cj_p2_head: "Immer griffbereit", cj_p2_text: "Leg ConjuExpert wie eine App auf deinen Home-Bildschirm – ein Tipp, und du konjugierst &amp; quizzt in Sekunden.", cj_p2_yes: "Auf den Home-Bildschirm",
+      cj_p3_head: "Moment – geh nicht ohne deinen Fortschritt!", cj_p3_text: "Mit einem kostenlosen Konto (10 Sekunden) bleibt alles erhalten – und du sicherst dir <b>2 weitere Tage</b> Premiumtarif (Quiz + Merken).", cj_p3_yes: "Fortschritt sichern", cj_p3_no: "Trotzdem gehen",
+      cj_tend_head: "Deine 24 h Premiumtarif-Test sind vorbei", cj_tend_text: "Konjugieren &amp; Lernen bleiben kostenlos. Willst du weiter quizzen? Mit einem kostenlosen Konto übst du im Quiz „Karte“ (20 Runden/Tag) – und sicherst dir <b>2 Tage Premiumtarif</b> gratis dazu.", cj_tend_yes: "Konto anlegen – Quiz + 2 Tage", cj_tend_no: "Nur nachschlagen &amp; lernen",
+      cj_p8_head: "Schön, dass du wieder da bist!", cj_p8_text: "Dein Fortschritt ist noch da. Sichere ihn mit einem kostenlosen Konto, bevor er verloren geht.",
+      cj_fb_head: "Wie läuft's für dich?", cj_fb_text: "Sag uns ehrlich: Was gefällt dir am besten – und was sollen wir besser machen?", cj_fb_gift: "🎁 Gib uns dein Feedback und erhalte einen <b>5-€-Code</b> auf das Jahres-Abo.", cj_fb_rate_q: "Wie gefällt dir ConjuExpert?", cj_fb_ph: "Dein Feedback…", cj_fb_send: "Feedback geben &amp; 5 € sichern", cj_fb_sending: "Wird gesendet…", cj_fb_err: "Konnte nicht gesendet werden – bitte erneut versuchen.",
+      cj_fbt_head: "Danke fürs Feedback!", cj_fbt_text: "Hier ist dein Geschenk: Mit dem Code <b>WILLKOMMEN</b> bekommst du den Premiumtarif für <b>24,99 €/Jahr</b> statt 29,99 € – gültig bis zum Ende deines Tests.", cj_fb_secure: "Code sichern &amp; Premium holen",
       hint_quiz_cards_h: "Karten: Verben entspannt einprägen", hint_quiz_cards_1: "Zeitform &amp; Lieblingsthema wählen, dazu die Richtung (Muttersprache ↔ Lernsprache).", hint_quiz_cards_2: "Verb + Zeitform ansehen, Form im Kopf überlegen — tippe die Karte zum Umdrehen.", hint_quiz_cards_3: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.", hint_quiz_cards_4: "Kein Druck, kein Tippen: ideal zum Kennenlernen und schnellen Wiederholen.", hint_quiz_speed_h: "Speed: 60 Sekunden Vollgas", hint_quiz_speed_1: "Zeitform &amp; Thema wählen, dann starten — du hast 60 Sekunden.", hint_quiz_speed_2: "Tippe die richtige Form so schnell wie möglich an — jede richtige zählt.", hint_quiz_speed_3: "Ideal, um Formen schnell abrufbar zu machen — mit etwas Zeitdruck.",
       hint_quiz_choice_h: "Auswahl: die richtige Form schnell erkennen", hint_quiz_choice_1: "Perfekter Einstieg in eine neue Zeitform.", hint_quiz_choice_2: "Zeitform &amp; Lieblingsthema wählen.", hint_quiz_choice_3: "Verb + geforderte Zeitform + vier Varianten — tippe die richtige an, sofortige Rückmeldung.", hint_quiz_choice_4: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.",
       hint_quiz_type_h: "Tippen: Konjugationen aktiv schreiben", hint_quiz_type_1: "Selbst Schreiben verankert die Formen mit am stärksten — neben <b>Sprechen</b> der intensivste Modus.", hint_quiz_type_2: "Zeitform, Lieblingsthema &amp; Richtung wählen — einzelne Verben oder ganzen Satz übersetzen.", hint_quiz_type_3: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.",
@@ -1542,6 +1558,14 @@
     },
     es: {
       tagline: "conjugar · quiz · aprender", hi: "¡Hola, {name}! 👋", ready: "Cuando quieras, {name}",
+      cj_acc: "Crear cuenta", cj_later: "Más tarde", cj_no_thx: "No, gracias",
+      cj_p1_head: "¡Genial — ya van 5 verbos!", cj_p1_text: "Crea una cuenta gratis: tu progreso se guarda y practicas <b>2 días más</b> con Premium – Quiz + Guardados.",
+      cj_p2_head: "Siempre a mano", cj_p2_text: "Añade ConjuExpert a tu pantalla de inicio como una app – un toque y conjugas &amp; haces quiz en segundos.", cj_p2_yes: "A la pantalla de inicio",
+      cj_p3_head: "Espera, ¡no te vayas sin tu progreso!", cj_p3_text: "Una cuenta gratis (10 segundos) lo conserva todo – y te da <b>2 días más</b> de Premium (Quiz + Guardados).", cj_p3_yes: "Guardar mi progreso", cj_p3_no: "Salir igualmente",
+      cj_tend_head: "Tu prueba Premium de 24 h terminó", cj_tend_text: "Conjugar &amp; Aprender siguen gratis. ¿Quieres seguir con el quiz? Con una cuenta gratis practicas el quiz «Tarjetas» (20 rondas/día) – y consigues <b>2 días de Premium</b> gratis.", cj_tend_yes: "Crear cuenta – Quiz + 2 días", cj_tend_no: "Solo consultar &amp; aprender",
+      cj_p8_head: "¡Qué bien tenerte de vuelta!", cj_p8_text: "Tu progreso sigue aquí. Asegúralo con una cuenta gratis antes de que se pierda.",
+      cj_fb_head: "¿Qué tal te va?", cj_fb_text: "Sé sincero/a: ¿qué es lo que más te gusta y qué deberíamos mejorar?", cj_fb_gift: "🎁 Danos tu opinión y recibe un <b>código de 5 €</b> para el plan anual.", cj_fb_rate_q: "¿Qué te parece ConjuExpert?", cj_fb_ph: "Tu opinión…", cj_fb_send: "Opinar &amp; lograr 5 €", cj_fb_sending: "Enviando…", cj_fb_err: "No se pudo enviar, inténtalo de nuevo.",
+      cj_fbt_head: "¡Gracias por tu opinión!", cj_fbt_text: "Aquí tienes tu regalo: con el código <b>WILLKOMMEN</b> consigues Premium por <b>24,99 €/año</b> en vez de 29,99 € – válido hasta el final de tu prueba.", cj_fb_secure: "Guardar código &amp; obtener Premium",
       hint_quiz_cards_h: "Tarjetas: memoriza verbos sin estrés", hint_quiz_cards_1: "Elige tiempo verbal &amp; tema favorito, además del sentido (lengua materna ↔ idioma que aprendes).", hint_quiz_cards_2: "Mira el verbo + tiempo, piensa la forma en tu cabeza — toca la tarjeta para girarla.", hint_quiz_cards_3: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.", hint_quiz_cards_4: "Sin presión, sin escribir: ideal para conocer las formas y repasar rápido.", hint_quiz_speed_h: "Veloz: 60 segundos a tope", hint_quiz_speed_1: "Elige tiempo &amp; tema y empieza — tienes 60 segundos.", hint_quiz_speed_2: "Toca la forma correcta lo más rápido posible — cada acierto suma.", hint_quiz_speed_3: "Ideal para recuperar las formas con rapidez, con algo de presión.",
       hint_quiz_choice_h: "Opción: reconocer rápido la forma correcta", hint_quiz_choice_1: "Una entrada perfecta a un tiempo verbal nuevo.", hint_quiz_choice_2: "Elige tiempo verbal &amp; tema favorito.", hint_quiz_choice_3: "Verbo + tiempo requerido + cuatro variantes — toca la correcta y recibe respuesta al instante.", hint_quiz_choice_4: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.",
       hint_quiz_type_h: "Escribir: conjuga de forma activa", hint_quiz_type_1: "Escribirlo tú mismo es lo que más fija las formas — junto a <b>Hablar</b>, el modo más intensivo.", hint_quiz_type_2: "Elige tiempo, tema &amp; sentido — y si practicas verbos sueltos o traduces una frase entera.", hint_quiz_type_3: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.",
@@ -1577,6 +1601,14 @@
     },
     nl: {
       tagline: "vervoegen · quiz · leren", hi: "Hoi, {name} 👋", ready: "Klaar wanneer jij het bent, {name}",
+      cj_acc: "Account aanmaken", cj_later: "Later", cj_no_thx: "Nee, bedankt",
+      cj_p1_head: "Mooi — al 5 werkwoorden!", cj_p1_text: "Maak een gratis account: je voortgang blijft bewaard en je oefent <b>2 dagen langer</b> met Premium – Quiz + Bewaard.",
+      cj_p2_head: "Altijd bij de hand", cj_p2_text: "Zet ConjuExpert als een app op je beginscherm – één tik en je vervoegt &amp; quiz in seconden.", cj_p2_yes: "Naar beginscherm",
+      cj_p3_head: "Wacht – ga niet zonder je voortgang!", cj_p3_text: "Een gratis account (10 seconden) bewaart alles – en geeft je <b>2 dagen extra</b> Premium (Quiz + Bewaard).", cj_p3_yes: "Voortgang opslaan", cj_p3_no: "Toch weggaan",
+      cj_tend_head: "Je proefperiode van 24 u Premium is voorbij", cj_tend_text: "Vervoegen &amp; Leren blijven gratis. Wil je verder quizzen? Met een gratis account oefen je de quiz „Kaarten“ (20 rondes/dag) – plus <b>2 dagen Premium</b> gratis.", cj_tend_yes: "Account aanmaken – Quiz + 2 dagen", cj_tend_no: "Alleen opzoeken &amp; leren",
+      cj_p8_head: "Fijn dat je er weer bent!", cj_p8_text: "Je voortgang staat er nog. Bewaar hem met een gratis account voordat hij verdwijnt.",
+      cj_fb_head: "Hoe gaat het bij jou?", cj_fb_text: "Wees eerlijk: wat vind je het leukst – en wat kunnen wij beter doen?", cj_fb_gift: "🎁 Geef je feedback en ontvang een <b>code van € 5</b> op het jaarabonnement.", cj_fb_rate_q: "Wat vind je van ConjuExpert?", cj_fb_ph: "Jouw feedback…", cj_fb_send: "Feedback geven &amp; € 5 krijgen", cj_fb_sending: "Versturen…", cj_fb_err: "Kon niet verzonden worden – probeer opnieuw.",
+      cj_fbt_head: "Bedankt voor je feedback!", cj_fbt_text: "Hier is je cadeau: met de code <b>WILLKOMMEN</b> krijg je Premium voor <b>€ 24,99/jaar</b> in plaats van € 29,99 – geldig tot het einde van je proefperiode.", cj_fb_secure: "Code opslaan &amp; Premium halen",
       hint_quiz_cards_h: "Kaarten: werkwoorden ontspannen inprenten", hint_quiz_cards_1: "Kies tijd &amp; favoriet thema, plus de richting (moedertaal ↔ doeltaal).", hint_quiz_cards_2: "Bekijk werkwoord + tijd, bedenk de vorm in je hoofd — tik de kaart om te draaien.", hint_quiz_cards_3: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.", hint_quiz_cards_4: "Geen druk, geen typen: ideaal om vormen te leren kennen en snel te herhalen.", hint_quiz_speed_h: "Speed: 60 seconden vol focus", hint_quiz_speed_1: "Kies tijd &amp; thema en start — je hebt 60 seconden.", hint_quiz_speed_2: "Tik de juiste vorm zo snel mogelijk aan — elk goed antwoord telt.", hint_quiz_speed_3: "Ideaal om vormen snel paraat te krijgen, met wat tijdsdruk.",
       hint_quiz_choice_h: "Keuze: de juiste vorm snel herkennen", hint_quiz_choice_1: "Een perfecte start in een nieuwe tijd.", hint_quiz_choice_2: "Kies tijd &amp; favoriet thema.", hint_quiz_choice_3: "Werkwoord + gevraagde tijd + vier varianten — tik de juiste aan voor directe feedback.", hint_quiz_choice_4: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.",
       hint_quiz_type_h: "Typen: vervoegingen actief schrijven", hint_quiz_type_1: "Zelf schrijven verankert de vormen het sterkst — naast <b>Spreken</b> de intensiefste modus.", hint_quiz_type_2: "Kies tijd, thema &amp; richting — en of je losse werkwoorden oefent of een hele zin vertaalt.", hint_quiz_type_3: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.",
@@ -1612,6 +1644,14 @@
     },
     fr: {
       tagline: "conjuguer · quiz · apprendre", hi: "Salut, {name} 👋", ready: "Quand tu veux, {name}",
+      cj_acc: "Créer un compte", cj_later: "Plus tard", cj_no_thx: "Non merci",
+      cj_p1_head: "Bravo — déjà 5 verbes !", cj_p1_text: "Crée un compte gratuit : ta progression est conservée et tu t'entraînes <b>2 jours de plus</b> avec Premium – Quiz + Enregistrés.",
+      cj_p2_head: "Toujours à portée", cj_p2_text: "Ajoute ConjuExpert à ton écran d'accueil comme une appli – un appui et tu conjugues &amp; quiz en quelques secondes.", cj_p2_yes: "Ajouter à l'écran d'accueil",
+      cj_p3_head: "Attends – ne pars pas sans ta progression !", cj_p3_text: "Un compte gratuit (10 secondes) garde tout – et t'offre <b>2 jours de plus</b> de Premium (Quiz + Enregistrés).", cj_p3_yes: "Sauvegarder ma progression", cj_p3_no: "Partir quand même",
+      cj_tend_head: "Ton essai Premium de 24 h est terminé", cj_tend_text: "Conjuguer &amp; Apprendre restent gratuits. Envie de continuer le quiz ? Avec un compte gratuit, tu t'entraînes au quiz « Cartes » (20 tours/jour) – plus <b>2 jours de Premium</b> offerts.", cj_tend_yes: "Créer un compte – Quiz + 2 jours", cj_tend_no: "Juste consulter &amp; apprendre",
+      cj_p8_head: "Content de te revoir !", cj_p8_text: "Ta progression est encore là. Sauvegarde-la avec un compte gratuit avant qu'elle ne disparaisse.",
+      cj_fb_head: "Comment ça se passe pour toi ?", cj_fb_text: "Sois honnête : qu'est-ce que tu préfères – et que devrions-nous améliorer ?", cj_fb_gift: "🎁 Donne-nous ton avis et reçois un <b>code de 5 €</b> sur l'abonnement annuel.", cj_fb_rate_q: "Comment trouves-tu ConjuExpert ?", cj_fb_ph: "Ton avis…", cj_fb_send: "Donner mon avis &amp; obtenir 5 €", cj_fb_sending: "Envoi…", cj_fb_err: "Échec de l'envoi – réessaie.",
+      cj_fbt_head: "Merci pour ton retour !", cj_fbt_text: "Voici ton cadeau : avec le code <b>WILLKOMMEN</b>, tu obtiens Premium pour <b>24,99 €/an</b> au lieu de 29,99 € – valable jusqu'à la fin de ton essai.", cj_fb_secure: "Garder le code &amp; passer Premium",
       hint_quiz_cards_h: "Cartes : mémoriser les verbes en douceur", hint_quiz_cards_1: "Choisis un temps &amp; un thème favori, ainsi que le sens (langue maternelle ↔ langue apprise).", hint_quiz_cards_2: "Regarde le verbe + le temps, trouve la forme dans ta tête — touche la carte pour la retourner.", hint_quiz_cards_3: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.", hint_quiz_cards_4: "Sans pression, sans saisie : idéal pour découvrir les formes et réviser vite.", hint_quiz_speed_h: "Rapide : 60 secondes à fond", hint_quiz_speed_1: "Choisis un temps &amp; un thème, puis démarre — tu as 60 secondes.", hint_quiz_speed_2: "Touche la bonne forme le plus vite possible — chaque bonne réponse compte.", hint_quiz_speed_3: "Idéal pour rendre les formes vite accessibles, avec un peu de pression.",
       hint_quiz_choice_h: "Choix : reconnaître vite la bonne forme", hint_quiz_choice_1: "Une entrée parfaite dans un nouveau temps.", hint_quiz_choice_2: "Choisis un temps &amp; un thème favori.", hint_quiz_choice_3: "Verbe + temps demandé + quatre variantes — touche la bonne pour un retour immédiat.", hint_quiz_choice_4: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.",
       hint_quiz_type_h: "Saisie : écrire les conjugaisons activement", hint_quiz_type_1: "Écrire soi-même ancre le plus les formes — avec <b>Parler</b>, le mode le plus intensif.", hint_quiz_type_2: "Choisis le temps, le thème &amp; le sens — et si tu travailles des verbes seuls ou traduis une phrase entière.", hint_quiz_type_3: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.",
@@ -12796,6 +12836,98 @@ function BonusBar({
     }
   }, "\u23F1 ", cd));
 }
+/* ===== Customer-Journey-Popups (Design 2026 · Sand/Ink/Regenbogen) ===== */
+function JBadge({ name }) {
+  const wrap = children => /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24", fill: "none", stroke: "currentColor",
+    strokeWidth: 1.6, strokeLinecap: "round", strokeLinejoin: "round"
+  }, children);
+  if (name === "flame") return wrap(/*#__PURE__*/React.createElement("path", { d: "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z" }));
+  if (name === "home") return wrap([
+    /*#__PURE__*/React.createElement("path", { key: 1, d: "M12 3v11" }),
+    /*#__PURE__*/React.createElement("path", { key: 2, d: "m8 10 4 4 4-4" }),
+    /*#__PURE__*/React.createElement("path", { key: 3, d: "M5 20h14" })
+  ]);
+  if (name === "save") return wrap(/*#__PURE__*/React.createElement("path", { d: "M6 3h12v18l-6-4-6 4z" }));
+  if (name === "clock") return wrap([
+    /*#__PURE__*/React.createElement("circle", { key: 1, cx: 12, cy: 12, r: 9 }),
+    /*#__PURE__*/React.createElement("path", { key: 2, d: "M12 7.5V12l3 2" })
+  ]);
+  if (name === "smile") return wrap([
+    /*#__PURE__*/React.createElement("circle", { key: 1, cx: 12, cy: 12, r: 9 }),
+    /*#__PURE__*/React.createElement("path", { key: 2, d: "M8.5 14.5s1.3 1.5 3.5 1.5 3.5-1.5 3.5-1.5" }),
+    /*#__PURE__*/React.createElement("path", { key: 3, d: "M9 9.5h.01" }),
+    /*#__PURE__*/React.createElement("path", { key: 4, d: "M15 9.5h.01" })
+  ]);
+  if (name === "chat") return wrap(/*#__PURE__*/React.createElement("path", { d: "M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z" }));
+  return null;
+}
+function JCloseIcon() {
+  return /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round"
+  }, /*#__PURE__*/React.createElement("path", { d: "M6 6l12 12M18 6 6 18" }));
+}
+function JourneyPop({ badge, head, html, primaryLabel, primaryKind, onPrimary, secondaryLabel, onSecondary, onClose }) {
+  useEffect(() => {
+    const onKey = e => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+  return /*#__PURE__*/React.createElement("div", { className: "cj-ov", onClick: onClose },
+    /*#__PURE__*/React.createElement("div", { className: "cj-pop", onClick: e => e.stopPropagation() },
+      /*#__PURE__*/React.createElement("button", { className: "cj-x", "aria-label": tr("ios_close"), onClick: onClose }, /*#__PURE__*/React.createElement(JCloseIcon)),
+      badge && /*#__PURE__*/React.createElement("div", { className: "cj-badge" }, /*#__PURE__*/React.createElement(JBadge, { name: badge })),
+      /*#__PURE__*/React.createElement("div", { className: "cj-head" }, head),
+      html && /*#__PURE__*/React.createElement("p", { className: "cj-text", dangerouslySetInnerHTML: { __html: html } }),
+      /*#__PURE__*/React.createElement("div", { className: "cj-btns" },
+        /*#__PURE__*/React.createElement("button", { className: "cj-btn " + (primaryKind || "ink"), onClick: onPrimary }, primaryLabel),
+        secondaryLabel && /*#__PURE__*/React.createElement("button", { className: "cj-btn ghost", onClick: onSecondary }, secondaryLabel)
+      )
+    )
+  );
+}
+function FeedbackPop({ onSubmit, onClose }) {
+  const [stars, setStars] = useState(0);
+  const [body, setBody] = useState("");
+  const [sending, setSending] = useState(false);
+  const [err, setErr] = useState(false);
+  useEffect(() => {
+    const onKey = e => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+  async function submit() {
+    if (sending || !body.trim()) return;
+    setSending(true); setErr(false);
+    const ok = await onSubmit(stars, body.trim());
+    if (!ok) { setSending(false); setErr(true); }
+  }
+  return /*#__PURE__*/React.createElement("div", { className: "cj-ov", onClick: onClose },
+    /*#__PURE__*/React.createElement("div", { className: "cj-pop", onClick: e => e.stopPropagation() },
+      /*#__PURE__*/React.createElement("button", { className: "cj-x", "aria-label": tr("ios_close"), onClick: onClose }, /*#__PURE__*/React.createElement(JCloseIcon)),
+      /*#__PURE__*/React.createElement("div", { className: "cj-badge" }, /*#__PURE__*/React.createElement(JBadge, { name: "chat" })),
+      /*#__PURE__*/React.createElement("div", { className: "cj-head" }, tr("cj_fb_head")),
+      /*#__PURE__*/React.createElement("p", { className: "cj-text", dangerouslySetInnerHTML: { __html: tr("cj_fb_text") } }),
+      /*#__PURE__*/React.createElement("div", { className: "cj-stars", role: "radiogroup", "aria-label": tr("cj_fb_rate_q") },
+        [1, 2, 3, 4, 5].map(i => /*#__PURE__*/React.createElement("button", {
+          key: i, type: "button", className: "cj-star" + (i <= stars ? " on" : ""),
+          "aria-label": i + "/5", onClick: () => setStars(i)
+        }, i <= stars ? "★" : "☆"))
+      ),
+      /*#__PURE__*/React.createElement("textarea", {
+        className: "cj-ta", rows: 3, value: body, placeholder: tr("cj_fb_ph"),
+        onChange: e => setBody(e.target.value)
+      }),
+      /*#__PURE__*/React.createElement("div", { className: "cj-gift", dangerouslySetInnerHTML: { __html: tr("cj_fb_gift") } }),
+      err && /*#__PURE__*/React.createElement("div", { className: "cj-err" }, tr("cj_fb_err")),
+      /*#__PURE__*/React.createElement("div", { className: "cj-btns" },
+        /*#__PURE__*/React.createElement("button", {
+          className: "cj-btn ink", disabled: sending || !body.trim(), onClick: submit
+        }, sending ? tr("cj_fb_sending") : tr("cj_fb_send"))
+      )
+    )
+  );
+}
 function ReviewPrompt({
   name,
   onRate,
@@ -14654,6 +14786,11 @@ function App() {
   const [premiumUntil, setPremiumUntil] = useState(() => recall("kunju-premium-until", null));
   const [showPaySuccess, setShowPaySuccess] = useState(false);
   const [showReviewPrompt, setShowReviewPrompt] = useState(false);
+  // Customer-journey behavioural popups (one at a time). journey ∈
+  // p1 (5 verbs) · p2 (~12 rounds → home screen) · p3 (last chance) ·
+  // tend (24h over, anonymous) · p8 (welcome back, anonymous).
+  const [journey, setJourney] = useState(null);
+  const [showFbThanks, setShowFbThanks] = useState(false);
 
   // After ~30 min of total active use, ask once for a rating (gentle snooze on "later")
   useEffect(() => {
@@ -14809,7 +14946,7 @@ function App() {
         error
       } = await window.__supa.functions.invoke("create-checkout-session", {
         body: {
-          plan: selPlan === "annual" && isBonusActive() ? "annual_bonus" : selPlan,
+          plan: selPlan === "annual" && (isBonusActive() || recall("kunju-fb-given", false)) ? "annual_bonus" : selPlan,
           userId: supaUser.id,
           email: supaUser.email
         }
@@ -14924,6 +15061,98 @@ function App() {
     welcomeOfferShown.current = true;
     /* Willkommensrabatt abgeschafft — WelcomeOffer-Popup deaktiviert */
   }, [showOnboard, showTour, showPaywall, isPremium, bonusActive, trialExpiry]);
+
+  // Load-time journey triggers for anonymous users (one per load, prioritised):
+  //   T-End-Anon → 24h trial over, no account
+  //   P8         → returning visitor (gap since last visit), no account
+  const loadJourneyShown = useRef(false);
+  useEffect(() => {
+    if (loadJourneyShown.current) return;
+    if (!authResolved) return;
+    if (showOnboard || showTour) return;
+    const lastSeen = recall("kunju-lastseen", 0);
+    const now = Date.now();
+    const returning = lastSeen && now - lastSeen > 6 * 60 * 60 * 1000; // ≥6h gap
+    persist("kunju-lastseen", now);
+    if (supaUser) return; // journey nudges are for anonymous schnupperer
+    loadJourneyShown.current = true;
+    const trialOver = trialExpiry && now >= trialExpiry;
+    if (trialOver && !recall("kunju-j-tend", false)) {
+      setJourney(j => j || "tend");
+    } else if (returning && recall("kunju-name", "") && now - recall("kunju-j-p8-at", 0) > 24 * 60 * 60 * 1000) {
+      setJourney(j => j || "p8");
+    }
+  }, [authResolved, supaUser, trialExpiry, showOnboard, showTour]);
+
+  // P3 · Letzte Chance — anonymous, trial about to end (<60 min left) or exit intent.
+  const p3Shown = useRef(false);
+  useEffect(() => {
+    if (recall("kunju-j-p3", false)) return;
+    function maybe() {
+      if (p3Shown.current) return;
+      if (supaUser || !trialExpiry) return;
+      const left = trialExpiry - Date.now();
+      if (left > 0 && left < 60 * 60 * 1000) {
+        p3Shown.current = true;
+        setJourney(j => j || "p3");
+      }
+    }
+    const id = setInterval(maybe, 30000);
+    maybe();
+    // Desktop exit-intent: pointer leaves the top of the viewport.
+    const onLeave = e => {
+      if (p3Shown.current || supaUser || !trialExpiry) return;
+      if (Date.now() >= trialExpiry) return;
+      if (e.clientY <= 0) { p3Shown.current = true; setJourney(j => j || "p3"); }
+    };
+    document.addEventListener("mouseout", onLeave);
+    return () => { clearInterval(id); document.removeEventListener("mouseout", onLeave); };
+  }, [supaUser, trialExpiry]);
+
+  // Submit P5 feedback: write to the reviews table + flag the profile so the
+  // €5 discount (annual_bonus, server-verified) becomes available. Returns ok.
+  async function submitFeedback(stars, body) {
+    try {
+      if (!window.__supa || !supaUser) return false;
+      const ins = await window.__supa.from("reviews").insert({
+        user_id: supaUser.id,
+        name: name || supaUser.email.split("@")[0],
+        stars: stars || 5,
+        body: body
+      });
+      if (ins.error) return false;
+      const codeExpiry = premiumUntil || (trialExpiry ? new Date(trialExpiry).toISOString() : null);
+      await window.__supa.from("profiles").upsert({
+        id: supaUser.id,
+        feedback_given: true,
+        welcome_code: "WILLKOMMEN",
+        code_expires_at: codeExpiry
+      });
+      persist("kunju-fb-given", true);
+      persist("kunju-review-done", true);
+      setShowReviewPrompt(false);
+      setShowFbThanks(true);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  function closeJourney() {
+    if (journey === "p1") persist("kunju-j-p1", true);
+    else if (journey === "p2") persist("kunju-j-p2", true);
+    else if (journey === "p3") persist("kunju-j-p3", true);
+    else if (journey === "tend") persist("kunju-j-tend", true);
+    else if (journey === "p8") { persist("kunju-j-p8-at", Date.now()); }
+    setJourney(null);
+  }
+  function journeyAccount() {
+    closeJourney();
+    setShowLogin(true);
+  }
+  function journeyHomeScreen() {
+    closeJourney();
+    if (deferredInstall.current) handleInstall();else setShowPin(true);
+  }
 
   // Auth: listen for Supabase login/logout
   useEffect(() => {
@@ -15070,6 +15299,20 @@ function App() {
     setDaily(next);
     if (prev < next.goal && next.count >= next.goal) {
       setShowGoalCelebration(true);
+    }
+    bumpJourney();
+  }
+  // Behavioural journey counter (anonymous only): P1 after 5 verbs,
+  // P2 (home-screen tip) after ~12 rounds. One window, gated, shown once.
+  function bumpJourney() {
+    if (supaUser) return; // P1/P2 target anonymous schnupperer
+    const r = recall("kunju-jrounds", 0) + 1;
+    persist("kunju-jrounds", r);
+    const standalone = window.navigator.standalone === true || !!(window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+    if (r === 5 && !recall("kunju-j-p1", false)) {
+      setJourney(j => j || "p1");
+    } else if (r >= 12 && !standalone && !recall("kunju-j-p2", false) && !recall("kunju-install-dismissed", false)) {
+      setJourney(j => j || "p2");
     }
   }
   const adTimer = useRef(null);
@@ -15455,7 +15698,15 @@ function App() {
   }), showPaySuccess && /*#__PURE__*/React.createElement(PaymentSuccess, {
     name: name,
     onClose: () => setShowPaySuccess(false)
-  }), showReviewPrompt && /*#__PURE__*/React.createElement(ReviewPrompt, {
+  }), showReviewPrompt && (supaUser && !isPremium && !recall("kunju-fb-given", false)
+    ? /*#__PURE__*/React.createElement(FeedbackPop, {
+        onSubmit: submitFeedback,
+        onClose: () => {
+          setShowReviewPrompt(false);
+          persist("kunju-active-secs", 600);
+        }
+      })
+    : /*#__PURE__*/React.createElement(ReviewPrompt, {
     name: name,
     onRate: () => {
       persist("kunju-review-done", true);
@@ -15473,6 +15724,26 @@ function App() {
       setShowReviewPrompt(false);
       persist("kunju-active-secs", 600);
     }
+  })), showFbThanks && /*#__PURE__*/React.createElement(JourneyPop, {
+    badge: "smile",
+    head: tr("cj_fbt_head"),
+    html: tr("cj_fbt_text"),
+    primaryLabel: tr("cj_fb_secure"),
+    primaryKind: "rb",
+    onPrimary: () => { setShowFbThanks(false); setSelPlan("annual"); openPlanSelect(); },
+    secondaryLabel: tr("cj_later"),
+    onSecondary: () => setShowFbThanks(false),
+    onClose: () => setShowFbThanks(false)
+  }), journey && !showOnboard && !showTour && !showPaywall && !showLogin && !showPlanSelect && /*#__PURE__*/React.createElement(JourneyPop, {
+    badge: journey === "p1" ? "flame" : journey === "p2" ? "home" : journey === "p3" ? "save" : journey === "tend" ? "clock" : "smile",
+    head: tr(journey === "p1" ? "cj_p1_head" : journey === "p2" ? "cj_p2_head" : journey === "p3" ? "cj_p3_head" : journey === "tend" ? "cj_tend_head" : "cj_p8_head"),
+    html: tr(journey === "p1" ? "cj_p1_text" : journey === "p2" ? "cj_p2_text" : journey === "p3" ? "cj_p3_text" : journey === "tend" ? "cj_tend_text" : "cj_p8_text"),
+    primaryLabel: tr(journey === "p2" ? "cj_p2_yes" : journey === "p3" ? "cj_p3_yes" : journey === "tend" ? "cj_tend_yes" : "cj_acc"),
+    primaryKind: "ink",
+    onPrimary: journey === "p2" ? journeyHomeScreen : journeyAccount,
+    secondaryLabel: tr(journey === "p2" ? "cj_no_thx" : journey === "p3" ? "cj_p3_no" : journey === "tend" ? "cj_tend_no" : "cj_later"),
+    onSecondary: closeJourney,
+    onClose: closeJourney
   }), showOnboard && /*#__PURE__*/React.createElement(NameGate, {
     initial: name,
     editing: !!name,
