@@ -2268,6 +2268,11 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .gchoice.sug .gci, .gchoice.ind .gci{ color:var(--text) !important; background:color-mix(in srgb, var(--text) 8%, var(--surface)) !important; border-color:color-mix(in srgb, var(--text) 18%, var(--border)) !important; }
   /* Subtile Violett-Tints -> Sand/Ink */
   .gkibanner, .gderive, .zt-ai, .pr-trial-note{ background:color-mix(in srgb, var(--text) 5%, var(--surface)) !important; border-color:var(--border) !important; }
+  /* Lernziel-Eingabe (GoalFlow): restliche Lila/Bunt -> ruhiges Ink-CI */
+  .goal-sheet .gstep, .goal-sheet .gstepwrap, .goal-sheet .gmins-btns, .goal-sheet .gmins-row{ border-color:var(--border) !important; }
+  .goal-sheet .gstep button, .goal-sheet .gmins-btns button, .goal-sheet .gnum, .goal-sheet .gmval, .goal-sheet .gbig, .goal-sheet .gderive .gdt b, .goal-sheet .gsummary .ghl, .goal-sheet .gkibanner .gkit b{ color:var(--text) !important; }
+  .goal-sheet .qfilter-lbl{ background:none !important; -webkit-text-fill-color:var(--muted) !important; color:var(--muted) !important; }
+  .goal-sheet .gcta{ box-shadow:0 14px 32px -16px rgba(40,33,20,.5) !important; }
   /* Hover-/Akzent-Reste neutralisieren */
   .chip:hover, .qopt:hover:not(:disabled), .adcta:hover, .accentkey:hover, .gchoice:hover, .exportbtn:hover, .nativego:hover:not(:disabled){ border-color:color-mix(in srgb, var(--text) 30%, transparent) !important; }
   .adcta:hover, .nativego:hover:not(:disabled), .exportbtn:hover, .vtspk{ color:var(--text) !important; }

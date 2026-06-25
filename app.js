@@ -14700,9 +14700,9 @@ function GoalFlow({
   }, /*#__PURE__*/React.createElement("div", {
     className: "goal-sheet",
     style: {
-      "--lc": "#7a5cff",
-      "--lang-color": "#7a5cff",
-      "--cc": "#a557ff"
+      "--lc": "var(--text)",
+      "--lang-color": "var(--text)",
+      "--cc": "var(--text)"
     },
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("button", {
