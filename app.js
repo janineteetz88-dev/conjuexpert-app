@@ -8555,21 +8555,33 @@ function QuizView({
   })), /*#__PURE__*/React.createElement("div", {
     className: "speedpts"
   }, /*#__PURE__*/React.createElement("b", null, speedScore), /*#__PURE__*/React.createElement("span", null, tr("pts")))), /*#__PURE__*/React.createElement("div", {
-    className: "quizcard"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "quizmeta"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "quizpill"
-  }, q.tenseLabel), q.isIrregular && /*#__PURE__*/React.createElement("span", {
-    className: "quizpill irr"
-  }, "irregular")), /*#__PURE__*/React.createElement(Prompt, null), /*#__PURE__*/React.createElement("div", {
-    className: "qm-mean",
+    className: "quizcard quizmodern",
     style: {
       "--lc": LANG_META[lang].color
     }
-  }, transl ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("b", null, q.verb.replace(/^to /, "")), /*#__PURE__*/React.createElement("em", null, transl === "…" ? "…" : transl)) : /*#__PURE__*/React.createElement("span", {
-    className: "qm-mean-ph"
-  }, "\xB7")), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cards-cue cards-cue-top"
+  }, /*#__PURE__*/React.createElement("span", { style: { color: "var(--muted)", fontWeight: 600 } }, tr("req_form"), ": "), /*#__PURE__*/React.createElement("b", null, q.tenseLabel + " · " + q.pronoun)), /*#__PURE__*/React.createElement("div", {
+    className: "qm-top"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flashtense"
+  }, q.tenseLabel), q.isIrregular && /*#__PURE__*/React.createElement("span", {
+    className: "flashtag"
+  }, tr("irregular")), /*#__PURE__*/React.createElement("button", {
+    className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
+    title: "Save verb",
+    onClick: () => toggleFav(lang, q.verb)
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular, vtrans: transl }), /*#__PURE__*/React.createElement("div", {
+    className: "qm-prompt"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "flashverb flashverb-link",
+    title: tr("view_conj"),
+    onClick: () => onStudy && onStudy(lang, q.verb)
+  }, q.verb.replace(/^to /, ""), " ", /*#__PURE__*/React.createElement("span", {
+    className: "qm-study-ic"
+  }, "↗")), /*#__PURE__*/React.createElement("span", {
+    className: "flashpron"
+  }, q.pronoun)), /*#__PURE__*/React.createElement("div", {
     className: "qopts"
   }, q.options.map((opt, i) => /*#__PURE__*/React.createElement("button", {
     key: i,
