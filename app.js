@@ -10623,7 +10623,7 @@ function VocabView({
   }, dueItems.length > 0 && /*#__PURE__*/React.createElement("button", {
     className: "quizbtn vocstart vocdue",
     onClick: startDuePractice
-  }, "\uD83D\uDD25 ", tr("vocab_due"), " \xB7 ", dueItems.length), Array.from({
+  }, /*#__PURE__*/React.createElement("span", { className: "due-ic", dangerouslySetInnerHTML: { __html: DUE_BARS } }), tr("vocab_due"), " \xB7 ", dueItems.length), Array.from({
     length: portions
   }).map((_, p) => /*#__PURE__*/React.createElement("button", {
     key: p,
@@ -11103,7 +11103,7 @@ function SavedView({
   }, vbDue().length > 0 && /*#__PURE__*/React.createElement("button", {
     className: "quizbtn vocstart vocdue",
     onClick: () => startVbPractice("due")
-  }, "\uD83D\uDD25 ", tr("vocab_due"), " \xB7 ", vbDue().length), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", { className: "due-ic", dangerouslySetInnerHTML: { __html: DUE_BARS } }), tr("vocab_due"), " \xB7 ", vbDue().length), /*#__PURE__*/React.createElement("button", {
     className: "quizbtn vocstart" + (vbDue().length > 0 ? " ghost" : ""),
     onClick: () => startVbPractice("all")
   }, "\u25B6 ", tr("vocab_practice")), getVbMist().length > 0 && /*#__PURE__*/React.createElement("button", {
@@ -11658,6 +11658,9 @@ function TourGate({
    One key set per kind in window.UI (all 5 UI languages):
    learn · quiz_cards/choice/type/speak/texte · saved_verbs/saved_vocab. */
 const HINT_ICON_OPEN = "<svg viewBox='0 0 24 24' width='20' height='20' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'>";
+/* ConjuExpert internal mark (ascending rainbow bars) — used as the "due today"
+   indicator instead of a flame: it signals progress, not heat. */
+const DUE_BARS = "<svg viewBox='0 0 100 100' width='15' height='15' fill='none' aria-hidden='true'><rect x='16' y='33' width='9' height='34' rx='3.5' fill='#ff3b5c'/><rect x='31' y='21' width='9' height='58' rx='3.5' fill='#ff8a18'/><rect x='46' y='10' width='9' height='80' rx='3.5' fill='#ffc400'/><rect x='61' y='26' width='9' height='48' rx='3.5' fill='#1fbf6b'/><rect x='76' y='36' width='9' height='28' rx='3.5' fill='#0a84ff'/></svg>";
 /* Aufklappbare Erklärungs-Karte im Quiz-Screen (Design 2026) */
 const EXPLAIN_BULB = "<svg viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10c.7.7 1 1.3 1 2h6c0-.7.3-1.3 1-2a6 6 0 0 0-4-10z'/></svg>";
 const EXPLAIN_CARET = "<svg viewBox='0 0 24 24' width='13' height='13' fill='none' stroke='currentColor' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>";

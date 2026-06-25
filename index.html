@@ -1366,6 +1366,8 @@ body {
 .vocsuggest:disabled { opacity: 0.6; cursor: default; }
 .vocmist { margin-bottom: 12px; }
 .vocdue { background: linear-gradient(100deg, #ff7a18, #ff3b5c); box-shadow: 0 8px 20px -12px #ff3b5c; }
+.due-ic { display: inline-flex; align-items: center; vertical-align: -3px; margin-right: 7px; }
+.due-ic svg { display: block; }
 .vocstart.ghost { background: var(--surface-2); color: var(--text); box-shadow: none; border: 1px solid var(--border); }
 .vocsr { display: inline-flex; gap: 3px; margin-top: 5px; }
 .vocsr i { width: 14px; height: 4px; border-radius: 2px; background: var(--border); transition: background 0.2s; }
@@ -2269,7 +2271,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   /* ===== CI-Bereinigung: kein Pink/Violett mehr — überall Ink + Regenbogen + Sprachfarbe ===== */
   :root{ --brand-pink:#1b1813 !important; --brand-violet:#1b1813 !important; --brand-blue:#1b1813 !important; --cta-app:var(--rb-deep) !important; }
   /* Fallback-Akzente vor Sprachwahl = Ink (echte Sprachfarbe wird inline gesetzt und gewinnt) */
-  #approot{ --lang-color:#1b1813; --lc:#1b1813; --tc:#1b1813; --qc:#1b1813; --cc:#1b1813; }
+  #approot{ --lang-color:#1b1813; --lc:#1b1813; --tc:#1b1813; --qc:#1b1813; --cc:#1b1813; --ink:#1b1813; --espresso:#2c2823; }
   /* Premium-/Marken-Verläufe (Text) -> Regenbogen */
   .namehead b, .pr-thead .pr-th-prem, .speedresult b, .cw-c, .zt-greet .zt-nm, .goal-sheet .qfilter-lbl{
     background:var(--brand-rainbow) !important; -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important; -webkit-text-fill-color:transparent !important; }
