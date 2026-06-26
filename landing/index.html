@@ -26,6 +26,9 @@
 <meta name="twitter:description" content="Alle Funktionen, Preise und Sprachen von ConjuExpert auf einen Blick. Premium ab 2,99 €/Monat." />
 <meta name="twitter:image" content="https://conjuexpert.app/landing/og-image.png?v=3" />
 <link rel="stylesheet" href="/fonts/landing.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
 <script type="application/ld+json">
 {
@@ -45,15 +48,19 @@
 </script>
 <style>
 :root{
-  --display:"Space Grotesk",system-ui,sans-serif;
+  --display:"Schibsted Grotesk",system-ui,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,monospace;
-  --ink:#14151a;--muted:#5b6373;--surface:#fff;--surface-2:#f6f7fb;
-  --border:rgba(20,22,30,.09);
-  --shadow:0 30px 80px -34px rgba(30,35,60,.45);
-  --shadow-sm:0 12px 34px -18px rgba(30,35,60,.32);
+  /* CI: Sand & Ink (docs/ci.md) */
+  --bg:#f4eede;
+  --ink:#211d15;--muted:#8b8068;--surface:#fffdf6;--surface-2:#ece3d0;
+  --border:rgba(60,48,24,.12);
+  --espresso:#2c2823;--selbg:#211d15;--selfg:#fdf8ec;
+  --shadow:0 22px 48px -26px rgba(70,55,25,.4);
+  --shadow-sm:0 6px 18px -12px rgba(70,55,25,.32);
   --pink:#e71583;--violet:#a557ff;--blue:#0a84ff;--green:#1a9b46;
-  --vivid:linear-gradient(100deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff);
-  /* Button-/CTA-System — kanonische Tokens (docs/button-system.md) */
+  --brand-rainbow:linear-gradient(90deg,#ff5a4d,#ff9e2c,#ffcf3f,#5bbf6a,#3aa6c9,#5b8def,#a874e6);
+  --vivid:var(--brand-rainbow);
+  /* Button-/CTA-System — kanonische Tokens (docs/ci.md) */
   --brand-pink:var(--pink);--brand-violet:var(--violet);--brand-blue:var(--blue);
   --danger:#ff3b5c;--success:var(--green);--cta-rainbow:var(--vivid);
   --maxw:1180px;
@@ -67,7 +74,7 @@
 html{scroll-behavior:smooth}
 html,body{margin:0;padding:0}
 body{
-  font-family:var(--display);color:var(--ink);line-height:1.55;background:#fbfbfd;
+  font-family:var(--display);color:var(--ink);line-height:1.55;background:var(--bg);
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;
 }
 img{max-width:100%;display:block}
@@ -83,11 +90,11 @@ a{color:inherit;text-decoration:none}
 /* buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--display);font-weight:700;font-size:16px;padding:16px 26px;border-radius:16px;border:0;cursor:pointer;white-space:nowrap;transition:transform .18s,box-shadow .18s}
 .btn:active{transform:translateY(1px) scale(.99)}
-.btn-primary{position:relative;color:#fff;overflow:hidden;box-shadow:0 18px 40px -16px rgba(120,40,200,.55)}
-.btn-primary .g{position:absolute;inset:0;background:var(--vivid);background-size:240% 100%;animation:slide 5s linear infinite}
-.btn-primary .l{position:relative;z-index:2;display:inline-flex;align-items:center;gap:9px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
-.btn-primary::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-18deg);animation:sheen 5s ease-in-out infinite;z-index:1}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 24px 48px -16px rgba(120,40,200,.6)}
+.btn-primary{position:relative;color:var(--selfg);overflow:hidden;border:1.5px solid transparent;background:linear-gradient(var(--selbg),var(--selbg)) padding-box,var(--brand-rainbow) border-box;box-shadow:0 14px 30px -14px rgba(30,22,8,.55)}
+.btn-primary .g{display:none}
+.btn-primary .l{position:relative;z-index:2;display:inline-flex;align-items:center;gap:9px}
+.btn-primary::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.16),transparent);transform:skewX(-18deg);animation:sheen 5s ease-in-out infinite;z-index:1}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 40px -14px rgba(30,22,8,.65)}
 .btn-dark{background:var(--ink);color:#fff;box-shadow:var(--shadow-sm)}
 .btn-dark:hover{transform:translateY(-2px)}
 .btn-ghost{background:var(--surface);color:var(--ink);border:1.5px solid var(--border);box-shadow:var(--shadow-sm)}
@@ -96,13 +103,14 @@ a{color:inherit;text-decoration:none}
 :focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:14px}
 
 /* nav */
-header.nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(1.5) blur(14px);background:rgba(251,251,253,.78);border-bottom:1px solid var(--border)}
+header.nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(1.5) blur(14px);background:rgba(244,238,222,.82);border-bottom:1px solid var(--border)}
+header.nav::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--brand-rainbow)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:72px}
 .brand{display:flex;align-items:center;gap:11px}
 .brand-mark{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;width:32px;height:32px;padding:5px;background:var(--surface);border-radius:10px;box-shadow:var(--shadow-sm);flex:none}
 .brand-mark i{display:block;border-radius:3px}
 .brand-name{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:-.02em;color:var(--ink)}
-.brand-name b{font-weight:700;background:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-name b{font-weight:800;color:var(--ink)}
 .nav-links{display:flex;gap:28px;font-size:15px;font-weight:600;color:var(--muted)}
 .nav-links a:hover{color:var(--ink)}
 .nav .btn{padding:11px 20px;font-size:14.5px}
@@ -142,11 +150,11 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(40px,6.6vw,76px);l
 .atag{position:absolute;z-index:8;pointer-events:none}
 .atag-r{left:calc(50% + 92px);transform:translateY(-50%)}
 .atag-l{left:calc(50% - 156px);transform:translate(-100%,-50%)}
-.atag-in{position:relative;display:inline-block;white-space:nowrap;font-family:var(--mono);font-size:12px;font-weight:700;color:#fff;background:var(--violet);padding:6px 13px;border-radius:999px;box-shadow:0 10px 22px -8px rgba(120,40,200,.55);opacity:1}
-.atag-in .lead{position:absolute;top:50%;transform:translateY(-50%);height:2px;background:var(--violet)}
+.atag-in{position:relative;display:inline-block;white-space:nowrap;font-family:var(--mono);font-size:12px;font-weight:700;color:#fff;background:var(--selbg);padding:6px 13px;border-radius:999px;box-shadow:0 10px 22px -8px rgba(70,55,25,.55);opacity:1}
+.atag-in .lead{position:absolute;top:50%;transform:translateY(-50%);height:2px;background:var(--selbg)}
 .atag-r .atag-in .lead{right:100%;width:38px}
 .atag-l .atag-in .lead{left:100%;width:38px}
-.atag-in .lead::after{content:"";position:absolute;top:50%;transform:translateY(-50%);width:7px;height:7px;border-radius:50%;background:var(--violet)}
+.atag-in .lead::after{content:"";position:absolute;top:50%;transform:translateY(-50%);width:7px;height:7px;border-radius:50%;background:var(--selbg)}
 .atag-r .atag-in .lead::after{left:-3px}
 .atag-l .atag-in .lead::after{right:-3px}
 @keyframes flyR{from{transform:translateX(50px)}to{transform:none}}
@@ -158,11 +166,11 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(40px,6.6vw,76px);l
 @media(max-width:760px){
   .atag{display:none}
   .phone,.phone-wrap{width:230px}
-  .aring .rn{display:flex;align-items:center;justify-content:center;position:absolute;top:-10px;left:-10px;width:19px;height:19px;border-radius:50%;background:var(--violet);color:#fff;font:700 11px/1 var(--mono);box-shadow:0 4px 10px -3px rgba(120,40,200,.6);z-index:9}
+  .aring .rn{display:flex;align-items:center;justify-content:center;position:absolute;top:-10px;left:-10px;width:19px;height:19px;border-radius:50%;background:var(--selbg);color:#fff;font:700 11px/1 var(--mono);box-shadow:0 4px 10px -3px rgba(70,55,25,.6);z-index:9}
   .aring[style*="left:78%"] .rn{left:auto;right:-10px}
   .anno-legend{display:grid;grid-template-columns:1fr 1fr;gap:11px 16px;width:100%;max-width:320px;margin:26px auto 0;padding:0;list-style:none}
   .anno-legend li{display:flex;align-items:flex-start;gap:9px;font-family:var(--display);font-weight:600;font-size:13px;line-height:1.3;color:var(--ink)}
-  .anno-legend .ln{flex:none;display:flex;align-items:center;justify-content:center;width:20px;height:20px;margin-top:1px;border-radius:50%;background:var(--violet);color:#fff;font:700 11px/1 var(--mono)}
+  .anno-legend .ln{flex:none;display:flex;align-items:center;justify-content:center;width:20px;height:20px;margin-top:1px;border-radius:50%;background:var(--selbg);color:#fff;font:700 11px/1 var(--mono)}
   .hero-shot{flex-direction:column;align-items:center}
 }
 @media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:36px}.hero{padding:48px 0 16px}.hero p.lead{max-width:48ch}}
@@ -214,7 +222,7 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .sc-cap{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--muted)}
 .sc-cap .n{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;background:var(--surface-2);border:1px solid var(--border)}
 .sc-cap.a{color:var(--violet)}
-.sc-cap.a .n{background:var(--violet);border-color:var(--violet);color:#fff}
+.sc-cap.a .n{background:var(--selbg);border-color:var(--violet);color:#fff}
 .sc-arrow{flex:none;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--violet);font-size:18px;box-shadow:var(--shadow-sm)}
 @media(max-width:900px){.cell.showcase{grid-template-columns:1fr}.sc-phones{justify-self:start}}
 @media(max-width:520px){.sc-phones{flex-direction:column}.sc-arrow{transform:rotate(90deg)}.sc-phone img{width:212px;height:362px}}
@@ -252,7 +260,7 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-family:var(--display);font-weight:700;font-size:11.5px;color:#fff;background:linear-gradient(95deg,var(--blue),var(--violet));padding:5px 15px;border-radius:999px;white-space:nowrap;box-shadow:var(--shadow-sm)}
 .plan h3{font-family:var(--display);font-weight:700;font-size:21px;margin:0 0 4px}
 .plan .ptag{font-size:14px;color:var(--muted);margin:0 0 18px}
-.welcome{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;font-family:var(--display);font-weight:700;font-size:14.5px;color:#fff;background:var(--vivid);background-size:220% 100%;animation:slide 6s linear infinite;padding:12px 16px;border-radius:14px;margin:0 0 16px;box-shadow:0 14px 30px -12px rgba(120,40,200,.55);text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.welcome{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;font-family:var(--display);font-weight:700;font-size:14.5px;color:#fff;background:var(--vivid);background-size:220% 100%;animation:slide 6s linear infinite;padding:12px 16px;border-radius:14px;margin:0 0 16px;box-shadow:0 14px 30px -12px rgba(70,55,25,.55);text-shadow:0 1px 2px rgba(0,0,0,.4)}
 .price{display:flex;align-items:flex-end;gap:6px}
 .price .amt{font-family:var(--display);font-weight:700;font-size:48px;letter-spacing:-.03em;line-height:1}
 .price .per{font-size:15px;color:var(--muted);font-weight:600;padding-bottom:8px}
@@ -298,7 +306,7 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .faq .pm{flex:none;width:36px;height:36px;border-radius:50%;background:var(--surface-2);border:1px solid var(--border);position:relative;transition:transform .4s cubic-bezier(.2,.7,.2,1),background .3s,border-color .3s}
 .faq .pm::before,.faq .pm::after{content:"";position:absolute;top:50%;left:50%;width:13px;height:2.4px;border-radius:2px;background:var(--muted);transform:translate(-50%,-50%);transition:background .3s}
 .faq .pm::after{transform:translate(-50%,-50%) rotate(90deg)}
-.faq .qa[open] .pm{background:var(--violet);border-color:var(--violet);transform:rotate(135deg)}
+.faq .qa[open] .pm{background:var(--selbg);border-color:var(--violet);transform:rotate(135deg)}
 .faq .qa[open] .pm::before,.faq .qa[open] .pm::after{background:#fff}
 .faq .qa-body{overflow:hidden}
 @keyframes faqIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
@@ -358,7 +366,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 .langsel-menu li{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:14.5px;color:var(--ink);padding:9px 10px;border-radius:9px;cursor:pointer}
 .langsel-menu li:hover{background:var(--surface-2)}
 .langsel-menu li[aria-selected="true"]{color:var(--violet)}
-.langsel-code{font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;background:var(--violet);border-radius:6px;padding:2px 0;min-width:26px;text-align:center}
+.langsel-code{font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;background:var(--selbg);border-radius:6px;padding:2px 0;min-width:26px;text-align:center}
 @media(max-width:560px){.langsel-btn{padding:8px 9px}.langsel-cur{font-size:13px}}
 
 /* ===== Blog-Teaser ===== */
@@ -467,7 +475,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
     </div>
     <div class="wrap"><div class="marquee reveal">
       <div class="mq-track" id="mq">
-        <span class="mq-item"><span class="b" style="background:#ff3b5c"></span><span data-i18n="mq.es">Spanische Verben konjugieren</span></span><span class="mq-item lang">Subjuntivo</span><span class="mq-item"><span class="b" style="background:#ff7a18"></span><span data-i18n="mq.fr">Französische Verben konjugieren</span></span><span class="mq-item lang">Passé composé</span><span class="mq-item"><span class="b" style="background:#1a9b46"></span><span data-i18n="mq.en">Englische Verben konjugieren</span></span><span class="mq-item lang">Irregular verbs</span><span class="mq-item"><span class="b" style="background:#0a84ff"></span><span data-i18n="mq.nl">Niederländische Verben konjugieren</span></span><span class="mq-item lang">Indefinido</span><span class="mq-item"><span class="b" style="background:#a557ff"></span><span data-i18n="mq.de">Deutsche Verben konjugieren</span></span><span class="mq-item lang" data-i18n="mq.alltenses">Alle Zeitformen</span>
+        <span class="mq-item"><span class="b" style="background:#ff3b5c"></span><span data-i18n="mq.es">Spanische Verben konjugieren</span></span><span class="mq-item lang">Subjuntivo</span><span class="mq-item"><span class="b" style="background:#ff7a18"></span><span data-i18n="mq.fr">Französische Verben konjugieren</span></span><span class="mq-item lang">Passé composé</span><span class="mq-item"><span class="b" style="background:#1a9b46"></span><span data-i18n="mq.en">Englische Verben konjugieren</span></span><span class="mq-item lang">Irregular verbs</span><span class="mq-item"><span class="b" style="background:#0a84ff"></span><span data-i18n="mq.nl">Niederländische Verben konjugieren</span></span><span class="mq-item lang">Indefinido</span><span class="mq-item"><span class="b" style="background:var(--ink)"></span><span data-i18n="mq.de">Deutsche Verben konjugieren</span></span><span class="mq-item lang" data-i18n="mq.alltenses">Alle Zeitformen</span>
       </div>
     </div></div>
   </section>
@@ -517,7 +525,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
               <span class="langpill"><span class="d" style="background:#ff7a18"></span>Français</span>
               <span class="langpill"><span class="d" style="background:#1a9b46"></span>English</span>
               <span class="langpill"><span class="d" style="background:#0a84ff"></span>Nederlands</span>
-              <span class="langpill"><span class="d" style="background:#a557ff"></span>Deutsch</span>
+              <span class="langpill"><span class="d" style="background:var(--ink)"></span>Deutsch</span>
             </div>
           </div>
           <figure class="ci-pic"><img src="lifestyle/lernbereich-zeitformen-verben-lernen-laptop.jpg" alt="Frau lernt entspannt mit Laptop die Bildung der Zeitformen im ConjuExpert-Lernbereich" loading="lazy" decoding="async" width="800" height="1132" /></figure>
