@@ -13143,12 +13143,17 @@ function JCloseIcon() {
    new spot and back — shows the reorder gesture instead of only describing it. */
 function ReorderDemo() {
   const h = React.createElement;
-  const tile = (cls, key) => h("span", { key, className: "rtile " + cls });
-  return h("div", { className: "rdemo", "aria-hidden": "true" },
-    tile("c1", 1),
-    h("span", { className: "rtile c2 rmover", key: 2 }, h("span", { className: "rhold" })),
-    tile("c3", 3),
-    tile("c4", 4));
+  // Echte Sprach-Kacheln (gleiche Klassen wie die App-Leiste) → identischer Look.
+  const LS = [["de", "DE", "Deutsch", "#ff3b5c"], ["es", "ES", "Español", "#ff9f0a"], ["en", "EN", "English", "#0a84ff"], ["nl", "NL", "Nederlands", "#30c95a"], ["fr", "FR", "Français", "#1b1813"]];
+  return h("div", { className: "rdemo langbar reordering", "aria-hidden": "true" },
+    LS.map(([code, cc, name, color], i) => h("button", {
+      key: code, type: "button",
+      className: "langbtn" + (i === 0 ? " active" : "") + (i === 1 ? " dragging rmover" : ""),
+      style: i === 0 ? { "--lc": color } : null
+    },
+      h("span", { className: "langstripe", style: { background: color } }),
+      h("span", { className: "langflag" }, cc),
+      h("span", { className: "langname" }, name))));
 }
 function JourneyPop({ badge, media, head, html, primaryLabel, primaryKind, onPrimary, secondaryLabel, onSecondary, onClose }) {
   useEffect(() => {
