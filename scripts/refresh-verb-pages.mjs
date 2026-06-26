@@ -1,28 +1,44 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>geben Deutsch konjugieren — alle Zeitformen | ConjuExpert</title>
-<meta name="description" content="Konjugation von „geben" auf Deutsch: alle Zeitformen auf einen Blick, Beispielsätze und eine Geschichte zum Merken. unregelmäßiges Verb.">
-<link rel="canonical" href="https://conjuexpert.app/konjugation/de/geben/">
-<meta property="og:title" content="geben (Deutsch) — alle Zeitformen">
-<meta property="og:description" content="Vollständige Konjugationstabelle + Beispielsätze + Geschichte für „geben".">
-<meta property="og:url" content="https://conjuexpert.app/konjugation/de/geben/">
-<meta property="og:site_name" content="ConjuExpert">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"geben Deutsch konjugieren — alle Zeitformen","description":"Vollständige Konjugationstabelle für „geben\" auf Deutsch (irregular). Alle Zeitformen mit Beispielsätzen und Geschichte.","url":"https://conjuexpert.app/konjugation/de/geben/","inLanguage":"de","publisher":{"@type":"Organization","name":"ConjuExpert","url":"https://conjuexpert.app"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ConjuExpert","item":"https://conjuexpert.app/"},{"@type":"ListItem","position":2,"name":"Deutsch","item":"https://conjuexpert.app/konjugation/de/"},{"@type":"ListItem","position":3,"name":"geben","item":"https://conjuexpert.app/konjugation/de/geben/"}]}</script>
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+#!/usr/bin/env node
+/**
+ * refresh-verb-pages.mjs
+ *
+ * Hebt die bereits existierenden SEO-Verb-Seiten (konjugation/<lang>/<verb>/index.html)
+ * chirurgisch auf den neuen Stand:
+ *   1. CI aus docs/ci.md (Sand & Ink, Schibsted Grotesk, Ink-Button + Regenbogen-Kante)
+ *   2. interaktives Mini-Quiz-Widget (liest die Formen aus den Tabellen der Seite)
+ *   3. Deep-Link der App-CTAs (?lang=..&verb=..) → App öffnet direkt auf dem Verb
+ *
+ * Der SEO-Inhalt (Tabellen, Beispiele, Story, Meta, JSON-LD) bleibt unangetastet.
+ * Keine AI-Aufrufe, kein Netzwerk. Idempotent: Seiten mit Widget werden übersprungen.
+ *
+ * Aufruf:
+ *   node scripts/refresh-verb-pages.mjs            # alle
+ *   node scripts/refresh-verb-pages.mjs es/estar   # einzelne (Debug)
+ */
+
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.join(__dirname, "..");
+const KONJ = path.join(ROOT, "konjugation");
+
+// Sprach-Akzentfarben (--lc) gemäß docs/ci.md §3
+const LANG_ACCENT = { de: "#ff3b5c", es: "#ff9f0a", en: "#0a84ff", nl: "#30c95a", fr: "#1b1813" };
+
+const FONT_LINKS =
+  '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
+  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
+  '<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">';
+
+function css(accent) {
+  return `  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --bg: #f4eede; --surface: #fffdf6; --surface-2: #ece3d0;
     --text: #211d15; --muted: #8b8068; --border: rgba(60,48,24,.12);
     --ink: #1b1813; --espresso: #2c2823; --selbg: #211d15; --selfg: #fdf8ec;
-    --lc: #ff3b5c;
+    --lc: ${accent};
     --ok: #1a9b46; --bad: #ff3b5c;
     --brand-rainbow: linear-gradient(90deg,#ff5a4d,#ff9e2c,#ffcf3f,#5bbf6a,#3aa6c9,#5b8def,#a874e6);
     --font: "Schibsted Grotesk", system-ui, sans-serif;
@@ -163,134 +179,30 @@
   @media (max-width: 480px) {
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
-  }
-</style>
-</head>
-<body>
+  }`;
+}
 
-<nav class="site-nav">
-  <a class="nav-brand" href="https://conjuexpert.app/"><span class="nav-brand-mark" data-mark></span><span class="nav-brand-name">Conju<b>Expert</b></span></a>
-  <a class="nav-cta" href="https://conjuexpert.app/?lang=de&verb=geben&utm_source=seo&utm_medium=verb-page&utm_content=de-geben">App öffnen →</a>
-</nav>
-
-<main class="page-wrap">
-
-  <nav class="breadcrumb" aria-label="Breadcrumb">
-    <a href="https://conjuexpert.app/">ConjuExpert</a> › <a href="https://conjuexpert.app/konjugation/de/">Deutsch</a> › geben
-  </nav>
-
-  <div class="verb-hero">
-    <div class="verb-flag">🇩🇪</div>
-    <h1><em>geben</em> auf Deutsch konjugieren</h1>
-    <div class="verb-meta">
-      <span class="badge badge-lang">Deutsch</span>
-      <span class="badge badge-irr">⚡ unregelmäßig</span>
-    </div>
-    <p class="verb-intro">
-      <strong>geben</strong> bedeutet „to give" und ist ein unregelmäßiges Deutsch-Verb.
-      Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
-    </p>
-  </div>
-
-    <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
-  <section class="qz" id="qz" aria-label="Mini-Quiz zu geben">
+function widget(verb) {
+  return `  <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
+  <section class="qz" id="qz" aria-label="Mini-Quiz zu ${verb}">
     <div class="qz-eyebrow">★ Mini-Quiz · ein Stück echte App</div>
-    <div class="qz-title">Sitzt <em>geben</em> schon?</div>
+    <div class="qz-title">Sitzt <em>${verb}</em> schon?</div>
     <div class="qz-sub">Tippe die richtige Form — du bekommst sofort Feedback, genau wie in der App.</div>
     <div class="qz-progress" id="qzDots" aria-hidden="true"></div>
     <div id="qzBody"></div>
-  </section>
+  </section>`;
+}
 
-  <section>
-    <h2>Konjugationstabelle — die wichtigsten Zeitformen</h2>
-    <div class="tense-grid">
-      <div class="tense-block">
-  <h3 class="tense-label">Präsens</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="">gebe</td></tr><tr><td class="pron">du</td><td class="irr">gibst</td></tr><tr><td class="pron">er / sie / es</td><td class="irr">gibt</td></tr><tr><td class="pron">wir</td><td class="">geben</td></tr><tr><td class="pron">ihr</td><td class="">gebt</td></tr><tr><td class="pron">sie / Sie</td><td class="">geben</td></tr></tbody></table>
-</div><div class="tense-block">
-  <h3 class="tense-label">Präteritum</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="irr">gab</td></tr><tr><td class="pron">du</td><td class="irr">gabst</td></tr><tr><td class="pron">er / sie / es</td><td class="irr">gab</td></tr><tr><td class="pron">wir</td><td class="irr">gaben</td></tr><tr><td class="pron">ihr</td><td class="irr">gabt</td></tr><tr><td class="pron">sie / Sie</td><td class="irr">gaben</td></tr></tbody></table>
-</div><div class="tense-block">
-  <h3 class="tense-label">Futur I</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="">werde geben</td></tr><tr><td class="pron">du</td><td class="">wirst geben</td></tr><tr><td class="pron">er / sie / es</td><td class="">wird geben</td></tr><tr><td class="pron">wir</td><td class="">werden geben</td></tr><tr><td class="pron">ihr</td><td class="">werdet geben</td></tr><tr><td class="pron">sie / Sie</td><td class="">werden geben</td></tr></tbody></table>
-</div>
-    </div>
-    
-    <div class="all-tenses-wrap" style="margin-top:20px">
-      <details>
-        <summary>Alle 10 Zeitformen anzeigen</summary>
-        <div class="tense-grid" style="margin-top:16px"><div class="tense-block">
-  <h3 class="tense-label">Präsens</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="">gebe</td></tr><tr><td class="pron">du</td><td class="irr">gibst</td></tr><tr><td class="pron">er / sie / es</td><td class="irr">gibt</td></tr><tr><td class="pron">wir</td><td class="">geben</td></tr><tr><td class="pron">ihr</td><td class="">gebt</td></tr><tr><td class="pron">sie / Sie</td><td class="">geben</td></tr></tbody></table>
-</div><div class="tense-block">
-  <h3 class="tense-label">Präteritum</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="irr">gab</td></tr><tr><td class="pron">du</td><td class="irr">gabst</td></tr><tr><td class="pron">er / sie / es</td><td class="irr">gab</td></tr><tr><td class="pron">wir</td><td class="irr">gaben</td></tr><tr><td class="pron">ihr</td><td class="irr">gabt</td></tr><tr><td class="pron">sie / Sie</td><td class="irr">gaben</td></tr></tbody></table>
-</div><div class="tense-block">
-  <h3 class="tense-label">Perfekt</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="irr">habe gegeben</td></tr><tr><td class="pron">du</td><td class="irr">hast gegeben</td></tr><tr><td class="pron">er / sie / es</td><td class="irr">hat gegeben</td></tr><tr><td class="pron">wir</td><td class="irr">haben gegeben</td></tr><tr><td class="pron">ihr</td><td class="irr">habt gegeben</td></tr><tr><td class="pron">sie / Sie</td><td class="irr">haben gegeben</td></tr></tbody></table>
-</div><div class="tense-block">
-  <h3 class="tense-label">Plusquamperfekt</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="irr">hatte gegeben</td></tr><tr><td class="pron">du</td><td class="irr">hattest gegeben</td></tr><tr><td class="pron">er / sie / es</td><td class="irr">hatte gegeben</td></tr><tr><td class="pron">wir</td><td class="irr">hatten gegeben</td></tr><tr><td class="pron">ihr</td><td class="irr">hattet gegeben</td></tr><tr><td class="pron">sie / Sie</td><td class="irr">hatten gegeben</td></tr></tbody></table>
-</div><div class="tense-block">
-  <h3 class="tense-label">Futur I</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="">werde geben</td></tr><tr><td class="pron">du</td><td class="">wirst geben</td></tr><tr><td class="pron">er / sie / es</td><td class="">wird geben</td></tr><tr><td class="pron">wir</td><td class="">werden geben</td></tr><tr><td class="pron">ihr</td><td class="">werdet geben</td></tr><tr><td class="pron">sie / Sie</td><td class="">werden geben</td></tr></tbody></table>
-</div><div class="tense-block">
-  <h3 class="tense-label">Konjunktiv II</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="irr">gäbe</td></tr><tr><td class="pron">du</td><td class="irr">gäbest</td></tr><tr><td class="pron">er / sie / es</td><td class="irr">gäbe</td></tr><tr><td class="pron">wir</td><td class="irr">gäben</td></tr><tr><td class="pron">ihr</td><td class="irr">gäbet</td></tr><tr><td class="pron">sie / Sie</td><td class="irr">gäben</td></tr></tbody></table>
-</div><div class="tense-block">
-  <h3 class="tense-label">Konjunktiv I (indirekte Rede)</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="">gebe</td></tr><tr><td class="pron">du</td><td class="">gebest</td></tr><tr><td class="pron">er / sie / es</td><td class="">gebe</td></tr><tr><td class="pron">wir</td><td class="">geben</td></tr><tr><td class="pron">ihr</td><td class="">gebet</td></tr><tr><td class="pron">sie / Sie</td><td class="">geben</td></tr></tbody></table>
-</div><div class="tense-block">
-  <h3 class="tense-label">Konditional (würde)</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="">würde geben</td></tr><tr><td class="pron">du</td><td class="">würdest geben</td></tr><tr><td class="pron">er / sie / es</td><td class="">würde geben</td></tr><tr><td class="pron">wir</td><td class="">würden geben</td></tr><tr><td class="pron">ihr</td><td class="">würdet geben</td></tr><tr><td class="pron">sie / Sie</td><td class="">würden geben</td></tr></tbody></table>
-</div><div class="tense-block">
-  <h3 class="tense-label">Imperativ</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="">—</td></tr><tr><td class="pron">du</td><td class="irr">gib</td></tr><tr><td class="pron">er / sie / es</td><td class="">—</td></tr><tr><td class="pron">wir</td><td class="">geben wir</td></tr><tr><td class="pron">ihr</td><td class="">gebt</td></tr><tr><td class="pron">sie / Sie</td><td class="">geben Sie</td></tr></tbody></table>
-</div><div class="tense-block">
-  <h3 class="tense-label">Partizip I</h3>
-  <table class="conj-table"><tbody><tr><td class="pron">ich</td><td class="">gebend</td></tr><tr><td class="pron">du</td><td class="">gebend</td></tr><tr><td class="pron">er / sie / es</td><td class="">gebend</td></tr><tr><td class="pron">wir</td><td class="">gebend</td></tr><tr><td class="pron">ihr</td><td class="">gebend</td></tr><tr><td class="pron">sie / Sie</td><td class="">gebend</td></tr></tbody></table>
-</div></div>
-      </details>
-    </div>
-  </section>
-
-  
-  <section>
-    <h2>Beispielsätze mit „geben"</h2>
-    <div class="ex-tense"><span class="ex-tense-label">Präsens</span><ul><li class="ex-item"><span class="ex-tgt">I give you a book.</span><span class="ex-de">Ich gebe dir ein Buch.</span></li><li class="ex-item"><span class="ex-tgt">She gives her friend a gift.</span><span class="ex-de">Sie gibt ihrer Freundin ein Geschenk.</span></li></ul></div><div class="ex-tense"><span class="ex-tense-label">Präteritum</span><ul><li class="ex-item"><span class="ex-tgt">He gave me his phone.</span><span class="ex-de">Er gab mir sein Handy.</span></li><li class="ex-item"><span class="ex-tgt">They gave us good advice.</span><span class="ex-de">Sie gaben uns einen guten Rat.</span></li></ul></div><div class="ex-tense"><span class="ex-tense-label">Futur I</span><ul><li class="ex-item"><span class="ex-tgt">We will give them a call.</span><span class="ex-de">Wir werden sie anrufen.</span></li><li class="ex-item"><span class="ex-tgt">I will give you my answer tomorrow.</span><span class="ex-de">Ich werde dir morgen meine Antwort geben.</span></li></ul></div>
-  </section>
-
-  
-<section class="story-section">
-  <h2>Geschichte mit „geben"</h2>
-  <div class="story-wrap">
-    <div class="story-text">Es war ein sonniger Nachmittag, als Anna beschloss, ihrer besten Freundin ein Geschenk zu geben. Sie hatte ihr ein handgemachtes Armband gegeben, das sie die ganze Woche über gebastelt hatte. Als sie es überreichte, leuchteten die Augen ihrer Freundin vor Freude. "Danke, das ist das beste Geschenk, das ich je bekommen habe!" sagte sie. Anna wusste, dass es wichtig war, solche Momente zu teilen, und in diesem Augenblick wollte sie ihr noch mehr Geschenke geben – nicht nur materielle Dinge, sondern auch Erinnerungen und Liebe.</div>
-    <div class="story-trans">It was a sunny afternoon when Anna decided to give her best friend a gift. She had given her a handmade bracelet that she had crafted all week. When she presented it, her friend's eyes lit up with joy. "Thank you, this is the best gift I've ever received!" she said. Anna knew it was important to share such moments, and in that moment, she wanted to give her even more gifts – not just material things, but also memories and love.</div>
-  </div>
-</section>
-
-  <section class="cta-bottom">
-    <h3>„geben" direkt im Quiz üben</h3>
-    <p>Alle 5 Sprachen · alle Zeitformen · KI-Beispielsätze · kostenlos starten</p>
-    <a class="cta-btn-big" href="https://conjuexpert.app/?lang=de&verb=geben&utm_source=seo&utm_medium=verb-page&utm_content=de-geben">
-      <span>ConjuExpert öffnen →</span>
-    </a>
-    <span class="cta-sub">Kein Download · keine Anmeldung nötig</span>
-  </section>
-
-</main>
-
-<footer class="site-footer">
-  <p>© ConjuExpert · <a href="https://conjuexpert.app/landing/">Über uns</a> · <a href="https://conjuexpert.app/agb.html">AGB</a> · <a href="https://conjuexpert.app/datenschutz.html">Datenschutz</a> · <a href="https://conjuexpert.app/impressum.html">Impressum</a> · <a href="https://conjuexpert.app/barrierefreiheit.html">Barrierefreiheit</a></p>
-</footer>
-
-<script>(function(){var BR=["#ff5a4d","#ff9e2c","#ffcf3f","#5bbf6a","#3aa6c9"];document.querySelectorAll("[data-mark]").forEach(function(m){for(var i=0;i<5;i++){var s=document.createElement("i");s.style.background=BR[i];m.appendChild(s);}});})();</script>
-<!-- Mini-Quiz-Widget — speist sich aus den Konjugationstabellen dieser Seite -->
+function quizScript(verb, lang) {
+  const enc = encodeURIComponent(verb);
+  const app = `https://conjuexpert.app/?lang=${lang}&verb=${enc}&utm_source=seo&utm_medium=verb-quiz&utm_content=${lang}-${enc}`;
+  const jsVerb = JSON.stringify(verb);
+  return `<!-- Mini-Quiz-Widget — speist sich aus den Konjugationstabellen dieser Seite -->
 <script>(function(){
-  var VERB = "geben";
-  var APP = "https://conjuexpert.app/?lang=de&verb=geben&utm_source=seo&utm_medium=verb-quiz&utm_content=de-geben";
+  var VERB = ${jsVerb};
+  var APP = ${JSON.stringify(app)};
   var N = 5;
-  function strip(s){ return (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim(); }
+  function strip(s){ return (s||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().trim(); }
   function shuffle(a){ for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;} return a; }
   var pool = [];
   var grid = document.querySelector(".tense-grid");
@@ -302,7 +214,7 @@
       var f = tr.querySelector("td:last-child");
       if (!p || !f) return;
       var form = f.textContent.trim();
-      if (form && form !== "\u2014" && form !== "—" && form.indexOf(" ") === -1)
+      if (form && form !== "\\u2014" && form !== "—" && form.indexOf(" ") === -1)
         pool.push({ tense: tense, pron: p.textContent.trim(), form: form });
     });
   });
@@ -367,6 +279,70 @@
   }
   qs = shuffle(pool.slice()).slice(0, N);
   ask();
-})();</script>
-</body>
-</html>
+})();</script>`;
+}
+
+// ── Transform one page ─────────────────────────────────────────────────────────
+
+function transform(html, lang, verb) {
+  if (html.includes('id="qz"')) return null; // schon umgestellt
+  const accent = LANG_ACCENT[lang] || "#ff9f0a";
+  const enc = encodeURIComponent(verb);
+
+  // 1. Font-Links nach dem Icon-Link
+  if (!html.includes("Schibsted+Grotesk")) {
+    html = html.replace(
+      '<link rel="icon" href="/favicon.svg" type="image/svg+xml">',
+      '<link rel="icon" href="/favicon.svg" type="image/svg+xml">\n' + FONT_LINKS
+    );
+  }
+
+  // 2. Komplettes Stylesheet ersetzen
+  html = html.replace(/<style>[\s\S]*?<\/style>/, "<style>\n" + css(accent) + "\n</style>");
+
+  // 3. cta-top → Widget (oder Widget vor die erste <section>, falls kein cta-top)
+  if (/<a class="cta-top"[\s\S]*?<\/a>/.test(html)) {
+    html = html.replace(/<a class="cta-top"[\s\S]*?<\/a>/, widget(verb));
+  } else {
+    html = html.replace(/(\n\s*<section)/, "\n\n" + widget(verb) + "$1");
+  }
+
+  // 4. App-CTAs deep-linken (nav-cta, cta-btn-big …)
+  html = html.replace(
+    /href="https:\/\/conjuexpert\.app\/\?utm_source=seo/g,
+    `href="https://conjuexpert.app/?lang=${lang}&verb=${enc}&utm_source=seo`
+  );
+
+  // 5. Brand-Mark-Farben auf die weichen Regenbogen-Töne
+  html = html.replace(
+    '["#ff3b5c","#ff7a18","#ffc400","#34c759","#0a84ff"]',
+    '["#ff5a4d","#ff9e2c","#ffcf3f","#5bbf6a","#3aa6c9"]'
+  );
+
+  // 6. Quiz-JS vor </body>
+  html = html.replace("</body>", quizScript(verb, lang) + "\n</body>");
+
+  return html;
+}
+
+// ── Main ───────────────────────────────────────────────────────────────────────
+
+const onlyArg = process.argv[2]; // optional "lang/verb"
+let changed = 0, skipped = 0, missing = 0;
+
+for (const lang of fs.readdirSync(KONJ)) {
+  const langDir = path.join(KONJ, lang);
+  if (!fs.statSync(langDir).isDirectory()) continue;
+  for (const verb of fs.readdirSync(langDir)) {
+    if (onlyArg && onlyArg !== `${lang}/${verb}`) continue;
+    const file = path.join(langDir, verb, "index.html");
+    if (!fs.existsSync(file)) continue;
+    const before = fs.readFileSync(file, "utf8");
+    const after = transform(before, lang, verb);
+    if (after === null) { skipped++; continue; }
+    fs.writeFileSync(file, after, "utf8");
+    changed++;
+  }
+}
+
+console.log(`✓ umgestellt: ${changed} · übersprungen (schon fertig): ${skipped}`);
