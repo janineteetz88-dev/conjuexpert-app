@@ -3644,6 +3644,17 @@ function voiceGender(name) {
   if (VOICE_M.test(n)) return "m";
   return "";
 }
+// turn a raw device-voice name into a short, friendly label (mostly just the first name)
+function cleanVoiceName(name) {
+  let s = String(name || "");
+  s = s.replace(/\([^)]*\)/g, " "); // drop "(Enhanced)" etc.
+  s = s.replace(/\b(microsoft|google|apple|siri|amazon|online|offline|natural|neural|enhanced|premium|compact|voice|stimme)\b/gi, " ");
+  s = s.replace(/\b(deutsch|german|englisch|english|spanisch|spanish|espa[nñ]ol|franz[oö]sisch|french|fran[cç]ais|niederl[aä]ndisch|dutch|nederlands)\b/gi, " ");
+  s = s.replace(/[-–—,:].*/, " "); // keep the part before a dash/comma
+  s = s.replace(/\s+/g, " ").trim();
+  if (s.length < 2) s = String(name || "").replace(/\s+/g, " ").trim();
+  return s.length > 13 ? s.slice(0, 12) + "…" : s;
+}
 function pickVoice(lang) {
   if (!window.speechSynthesis) return null;
   const voices = window.speechSynthesis.getVoices() || [];
@@ -8382,26 +8393,42 @@ function QuizView({
     className: "recent-title qfilter-lbl"
   }, tr("texte_voice")), /*#__PURE__*/React.createElement("div", {
     className: "modegrid"
-  }, [["", "Auto"], ["f", tr("texte_voice_f")], ["m", tr("texte_voice_m")]].map(o => /*#__PURE__*/React.createElement("button", {
-    key: o[0],
-    className: "modebtn" + (voiceGenderSel === o[0] ? " on" : ""),
-    style: {
-      flex: "1 1 0",
-      minWidth: 0
-    },
-    onClick: () => {
-      setVoiceGenderSel(o[0]);
-      setSavedGender(ttsBase, o[0]);
-      setSavedVoice(ttsBase, "");
-      setVoiceSel("");
-      setReading("idle");
-      readIdxRef.current = 0;
-      if (window.speechSynthesis) try {
-        window.speechSynthesis.cancel();
-      } catch (x) {}
-      if (story && story.sentences && story.sentences[0]) speak(story.sentences[0].t, window.CONJ[lang].ttsLang);
+  }, (() => {
+    const rank = v => (NICE_VOICE.test(v.name) ? 2 : 0) - (BAD_VOICE.test(v.name) ? 2 : 0) + (v.localService ? 1 : 0);
+    const ranked = langVoices.slice().sort((a, b) => rank(b) - rank(a));
+    const seen = new Set();
+    const list = [];
+    for (const v of ranked) {
+      const k = cleanVoiceName(v.name).toLowerCase();
+      if (!k || seen.has(k)) continue;
+      seen.add(k);
+      list.push(v);
+      if (list.length >= 4) break;
     }
-  }, o[1]))))), /*#__PURE__*/React.createElement("button", {
+    const opts = [{ uri: "", label: "Auto" }].concat(list.map(v => ({ uri: v.voiceURI, label: cleanVoiceName(v.name) })));
+    return opts.map(o => /*#__PURE__*/React.createElement("button", {
+      key: o.uri || "auto",
+      className: "modebtn" + ((voiceSel || "") === o.uri ? " on" : ""),
+      style: {
+        flex: "1 1 0",
+        minWidth: 0
+      },
+      onClick: () => {
+        setVoiceSel(o.uri);
+        setSavedVoice(ttsBase, o.uri);
+        setSavedGender(ttsBase, "");
+        setVoiceGenderSel("");
+        setReading("idle");
+        readIdxRef.current = 0;
+        if (window.speechSynthesis) try {
+          window.speechSynthesis.cancel();
+        } catch (x) {}
+        // short, self-limiting voice sample (first few words) so it can't "run away" and is clearly a preview
+        const sample = story && story.sentences && story.sentences[0] ? String(story.sentences[0].t).split(/\s+/).slice(0, 4).join(" ") : "";
+        if (sample) speak(sample, window.CONJ[lang].ttsLang);
+      }
+    }, o.label));
+  })()))), /*#__PURE__*/React.createElement("button", {
     className: "quizbtn again",
     onClick: () => genStory(true),
     style: {
