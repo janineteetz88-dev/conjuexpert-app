@@ -29,7 +29,7 @@ export function Breadcrumb({ pageSlug }) {
     crumbs.push({ slug: cluster.hub.slug, label: cluster.hub.title, current: true });
   } else if (type === "spoke" && cluster && spoke) {
     crumbs.push({ slug: GLOBAL_PILLAR.slug, label: GLOBAL_PILLAR.title });
-    if (cluster.hub.live) {
+    if (cluster.hub && cluster.hub.live) {
       crumbs.push({ slug: cluster.hub.slug, label: cluster.hub.title });
     }
     crumbs.push({ slug: spoke.slug, label: spoke.title, current: true });
@@ -58,7 +58,7 @@ export function Breadcrumb({ pageSlug }) {
 export function HubLink({ pageSlug }) {
   const { type, cluster } = findPage(pageSlug);
 
-  if (type === "spoke" && cluster && cluster.hub.live) {
+  if (type === "spoke" && cluster && cluster.hub && cluster.hub.live) {
     return (
       <a
         className="inline"

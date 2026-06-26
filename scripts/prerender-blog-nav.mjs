@@ -52,7 +52,7 @@ function generateCrumbs(type, cluster, spoke) {
 
   } else if (type === "spoke" && cluster && spoke) {
     items.push(`<a href="${GLOBAL_PILLAR.slug}/">${esc(GLOBAL_PILLAR.title)}</a>`);
-    if (cluster.hub.live) {
+    if (cluster.hub && cluster.hub.live) {
       items.push(`<a href="${cluster.hub.slug}/">${esc(cluster.hub.title)}</a>`);
     }
     items.push(`<span class="cat gram"><span class="d"></span>${esc(spoke.title)}</span>`);

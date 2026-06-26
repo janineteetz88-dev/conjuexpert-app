@@ -264,7 +264,7 @@ export function findPage(slug) {
     return { type: "globalPillar", cluster: null, spoke: null };
   }
   for (const cluster of clusters) {
-    if (normalized === cluster.hub.slug.replace(/\/$/, "")) {
+    if (cluster.hub && normalized === cluster.hub.slug.replace(/\/$/, "")) {
       return { type: "hub", cluster, spoke: null };
     }
     const spoke = cluster.spokes.find(
