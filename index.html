@@ -1571,9 +1571,11 @@ body {
 .zt-board { position: relative; width: 100%; max-width: 360px; max-height: 95%; overflow-y: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 26px; box-shadow: var(--shadow); padding: 24px 22px; display: flex; flex-direction: column; gap: 17px; animation: skup 0.28s cubic-bezier(0.2,0.7,0.2,1) both; }
 .zt-board::-webkit-scrollbar { width: 0; }
 .zt-x { position: absolute; right: 15px; top: 15px; width: 30px; height: 30px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--border); color: var(--muted); font-size: 15px; cursor: pointer; }
-.zt-eye { display: flex; align-items: center; justify-content: space-between; padding-right: 34px; }
-.zt-eye .zt-k { font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-.zt-eye .zt-e { border: 0; background: transparent; font-family: var(--font-display); font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer; }
+.zt-eye { display: flex; align-items: center; gap: 8px; padding-right: 82px; min-height: 30px; }
+.zt-eye .zt-k { flex: 1 1 auto; min-width: 0; font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.zt-eye .zt-e { position: absolute; right: 51px; top: 15px; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--border); background: var(--surface-2); color: var(--muted); cursor: pointer; padding: 0; }
+.zt-eye .zt-e:active { transform: scale(0.92); }
+.zt-eye .zt-e svg { display: block; }
 .zt-greet { font-size: 29px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.04; margin: 0; }
 .zt-greet .zt-nm { background: var(--brand-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .zt-sub { font-size: 13.5px; color: var(--muted); margin: 8px 0 0; line-height: 1.45; }
@@ -1691,6 +1693,8 @@ body {
 /* ===== Voice quiz mic ===== */
 .micbtn { width: 84px; height: 84px; border-radius: 50%; border: 0; cursor: pointer; font-size: 34px; color: #fff; background: var(--lc, #a557ff); box-shadow: 0 14px 30px -10px color-mix(in srgb, var(--lc, #a557ff) 70%, transparent);rgba(120,40,200,0.6); align-self: center; margin: 6px 0; transition: transform 0.14s; display: inline-flex; align-items: center; justify-content: center; }
 .micicon { display: inline-flex; align-items: center; justify-content: center; }
+.txtico { display: inline-flex; align-items: center; vertical-align: -2px; }
+.txtico svg { display: block; }
 .micicon svg { display: block; }
 .micbtn:active { transform: scale(0.92); }
 .micbtn:disabled { opacity: 0.5; }

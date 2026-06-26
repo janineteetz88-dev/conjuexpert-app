@@ -6385,7 +6385,7 @@ function WordSentence({
     className: "wsentwrap"
   }, hintVisible && /*#__PURE__*/React.createElement("div", {
     className: "word-tap-hint"
-  }, "\uD83D\uDC46 W\xF6rter antippen \u2192 Bedeutung & merken"), /*#__PURE__*/React.createElement("div", {
+  }, txtIco(IC_TAP, "W\xF6rter antippen \u2192 Bedeutung & merken")), /*#__PURE__*/React.createElement("div", {
     className: "wsent" + (big ? " big" : "") + (accent ? " accent" : "")
   }, parts.map((w, i) => {
     if (/^\s+$/.test(w) || !clean(w)) return /*#__PURE__*/React.createElement("span", {
@@ -8318,7 +8318,10 @@ function QuizView({
       fontSize: "15px",
       cursor: "pointer"
     }
-  }, reading === "playing" ? "⏸" : "▶"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "txtico",
+    dangerouslySetInnerHTML: { __html: reading === "playing" ? IC_PAUSE : IC_PLAY }
+  })), /*#__PURE__*/React.createElement("button", {
     onClick: stopStory,
     style: {
       border: "1px solid var(--border)",
@@ -8379,7 +8382,7 @@ function QuizView({
     className: "recent-title qfilter-lbl"
   }, tr("texte_voice")), /*#__PURE__*/React.createElement("div", {
     className: "modegrid"
-  }, [["", "Auto"], ["f", "♀ " + tr("texte_voice_f")], ["m", "♂ " + tr("texte_voice_m")]].map(o => /*#__PURE__*/React.createElement("button", {
+  }, [["", "Auto"], ["f", tr("texte_voice_f")], ["m", tr("texte_voice_m")]].map(o => /*#__PURE__*/React.createElement("button", {
     key: o[0],
     className: "modebtn" + (voiceGenderSel === o[0] ? " on" : ""),
     style: {
@@ -8408,7 +8411,7 @@ function QuizView({
       padding: "9px 14px",
       fontSize: "14px"
     }
-  }, "\uD83D\uDD04 ", tr("texte_new")), /*#__PURE__*/React.createElement("div", {
+  }, txtIco(IC_REDO, tr("texte_new"))), /*#__PURE__*/React.createElement("div", {
     className: "quizcard quizmodern " + state,
     style: {
       "--lc": LANG_META[lang].color
@@ -8459,7 +8462,7 @@ function QuizView({
       fontSize: "14.5px",
       color: LANG_META[lang].color
     }
-  }, "\uD83D\uDCD6 ", story.topic), /*#__PURE__*/React.createElement("button", {
+  }, txtIco(IC_BOOK, story.topic)), /*#__PURE__*/React.createElement("button", {
     onClick: () => reading === "playing" ? pauseStory() : playStory(),
     style: {
       display: "inline-flex",
@@ -8476,14 +8479,14 @@ function QuizView({
       cursor: "pointer",
       flexShrink: 0
     }
-  }, reading === "playing" ? "⏸ " + tr("texte_pause") : reading === "paused" ? "▶ " + tr("texte_resume") : "🔊 " + tr("texte_read"))), /*#__PURE__*/React.createElement("div", {
+  }, reading === "playing" ? txtIco(IC_PAUSE, tr("texte_pause")) : reading === "paused" ? txtIco(IC_PLAY, tr("texte_resume")) : txtIco(IC_SPK, tr("texte_read")))), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: "11px",
       color: "var(--muted)",
       marginTop: "3px",
       marginBottom: "9px"
     }
-  }, "\uD83D\uDC46 ", tr("tap_save")), /*#__PURE__*/React.createElement("div", {
+  }, txtIco(IC_TAP, tr("tap_save"))), /*#__PURE__*/React.createElement("div", {
     className: "spkreveal-row",
     style: {
       lineHeight: "2",
@@ -11856,6 +11859,17 @@ const DUE_BARS = "<svg viewBox='0 0 100 100' width='15' height='15' fill='none' 
 const EXPLAIN_BULB = "<svg viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10c.7.7 1 1.3 1 2h6c0-.7.3-1.3 1-2a6 6 0 0 0-4-10z'/></svg>";
 const EXPLAIN_CARET = "<svg viewBox='0 0 24 24' width='13' height='13' fill='none' stroke='currentColor' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>";
 const MIC_SVG = "<svg viewBox='0 0 24 24' width='34' height='34' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x='9' y='2.5' width='6' height='11' rx='3'/><path d='M5.5 11a6.5 6.5 0 0 0 13 0'/><path d='M12 17.5V21M8.5 21h7'/></svg>";
+/* Schlanke CI-Icons statt Emojis (currentColor erbt die jeweilige Textfarbe) */
+const IC_REDO = "<svg viewBox='0 0 24 24' width='15' height='15' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M20 11a8 8 0 1 0-2.3 6'/><path d='M20 4v6h-6'/></svg>";
+const IC_BOOK = "<svg viewBox='0 0 24 24' width='15' height='15' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15.5H5.5A1.5 1.5 0 0 0 4 21z'/><path d='M20 5.5A1.5 1.5 0 0 0 18.5 4H13v15.5h5.5A1.5 1.5 0 0 1 20 21z'/></svg>";
+const IC_SPK = "<svg viewBox='0 0 24 24' width='14' height='14' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M4 9.5v5h3.5L13 19V5L7.5 9.5z'/><path d='M16.5 8.8a4.5 4.5 0 0 1 0 6.4'/></svg>";
+const IC_PAUSE = "<svg viewBox='0 0 24 24' width='14' height='14' fill='currentColor' aria-hidden='true'><rect x='6' y='5' width='4' height='14' rx='1.2'/><rect x='14' y='5' width='4' height='14' rx='1.2'/></svg>";
+const IC_PLAY = "<svg viewBox='0 0 24 24' width='14' height='14' fill='currentColor' aria-hidden='true'><path d='M8 5.2v13.6L19 12z'/></svg>";
+const IC_TAP = "<svg viewBox='0 0 24 24' width='14' height='14' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M9 11.5V5.5a1.5 1.5 0 0 1 3 0V11'/><path d='M12 10.5V9a1.5 1.5 0 0 1 3 0v2'/><path d='M15 11v-.5a1.5 1.5 0 0 1 3 0V15a5 5 0 0 1-5 5h-1a4 4 0 0 1-3-1.4L6.2 15a1.6 1.6 0 0 1 2.4-2.1L9 13.3'/></svg>";
+const IC_PENCIL = "<svg viewBox='0 0 24 24' width='15' height='15' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M14.5 5.5l4 4M4 20l1-4L16 5a2 2 0 0 1 3 3L8 19z'/></svg>";
+function txtIco(svg, label) {
+  return React.createElement(React.Fragment, null, React.createElement("span", { className: "txtico", dangerouslySetInnerHTML: { __html: svg } }), " ", label);
+}
 function quizExplainHtml(mode) {
   const parts = [1, 2, 3, 4].map(n => {
     const k = "hint_quiz_" + mode + "_" + n;
@@ -14695,8 +14709,11 @@ function Zieltafel({
     }
   }, "Tag ", planDay, " / ", goalDays)) : ""), /*#__PURE__*/React.createElement("button", {
     className: "zt-e",
-    onClick: onAdjustGoal
-  }, "\u270E Challenge")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+    onClick: onAdjustGoal,
+    title: "Challenge anpassen",
+    "aria-label": "Challenge anpassen",
+    dangerouslySetInnerHTML: { __html: IC_PENCIL }
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
     className: "zt-greet"
   }, hl, /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
     className: "zt-nm"
