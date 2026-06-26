@@ -149,6 +149,10 @@
   .qz-cta { display: inline-block; padding: 15px 28px; border-radius: 14px; font-family: var(--display); font-weight: 800; font-size: 16px; }
   .qz-again { display: block; margin-top: 12px; font-size: 13px; color: var(--muted); background: none; border: 0; cursor: pointer; width: 100%; font-family: var(--font); }
   .qz-again:hover { color: var(--text); }
+  /* Regenbogen-Button (Fläche) — direkt nach dem Feedback */
+  .qz-go-app { display: inline-block; margin-top: 14px; padding: 13px 24px; border-radius: 14px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.35); font-family: var(--display); font-weight: 800; font-size: 15px; background: var(--brand-rainbow); box-shadow: 0 12px 26px -12px rgba(60,40,10,.5); transition: transform .14s, box-shadow .14s; }
+  .qz-go-app:hover { text-decoration: none; transform: translateY(-1px); box-shadow: 0 16px 32px -12px rgba(60,40,10,.62); }
+  .qz-go-app:active { transform: translateY(0); }
 
   @media (max-width: 480px) {
     .tense-grid { grid-template-columns: 1fr; }
@@ -348,6 +352,12 @@
       else { fb.className="qz-feedback bad"; fb.textContent="✗ Richtig wäre: "+q.form; }
       inp.disabled = true;
       go.textContent = (idx < N-1) ? "Weiter →" : "Ergebnis →";
+      // Regenbogen-CTA direkt nach dem Feedback: jetzt in der App weiterüben
+      var goApp = document.createElement("a");
+      goApp.className = "qz-go-app";
+      goApp.href = APP;
+      goApp.innerHTML = "Jetzt in der App weiterüben →";
+      fb.insertAdjacentElement("afterend", goApp);
     }
     go.addEventListener("click", submit);
     inp.addEventListener("keydown", function(e){ if (e.key === "Enter"){ e.preventDefault(); submit(); } });
