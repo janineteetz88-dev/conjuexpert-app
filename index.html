@@ -1353,6 +1353,25 @@ body {
 .savedsub { display: flex; gap: 7px; margin-bottom: 14px; }
 .savedsubbtn { flex: 1; border: 1.5px solid var(--border); background: var(--surface); color: var(--muted); border-radius: 12px; padding: 10px; font-family: var(--font-display); font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.15s; }
 .savedsubbtn.on { border-color: var(--lang-color, #a557ff); background: color-mix(in srgb, var(--lang-color, #a557ff) 11%, var(--surface)); color: var(--text); }
+.savedsub .savedsubbtn { font-size: 13px; padding: 9px 5px; }
+/* Challenge-Listenansicht (3. Reiter) */
+.ch-empty { text-align: center; padding: 26px 8px; }
+.ch-empty-tx { color: var(--muted); font-size: 14.5px; line-height: 1.5; margin: 0 0 16px; }
+.ch-cta { width: 100%; }
+.ch-wrap { display: flex; flex-direction: column; gap: 14px; }
+.ch-head { display: flex; align-items: baseline; justify-content: space-between; }
+.ch-head b { font-family: var(--font-display); font-size: 18px; letter-spacing: -0.01em; }
+.ch-left { font-size: 12.5px; color: var(--muted); }
+.ch-sec { display: flex; flex-direction: column; gap: 6px; }
+.ch-sec-h { font-family: var(--font-display); font-weight: 700; font-size: 12px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--muted); }
+.ch-item { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; }
+.ch-label { flex: 1; font-family: var(--mono); font-weight: 600; font-size: 14.5px; color: var(--text); }
+.ch-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; background: var(--border); }
+.ch-learn .ch-dot { background: #ff9f0a; }
+.ch-done .ch-dot { background: #34c759; }
+.ch-done .ch-label { color: var(--muted); }
+.ch-check { color: #1a9b46; font-weight: 800; }
+.ch-btns { display: flex; flex-direction: column; gap: 9px; margin-top: 6px; }
 #approot[data-accent="mono"] .savedsubbtn.on { border-color: var(--text); background: color-mix(in srgb, var(--text) 8%, var(--surface)); }
 
 /* ===== Personal vocabulary ===== */
