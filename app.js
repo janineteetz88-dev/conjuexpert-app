@@ -14673,16 +14673,25 @@ function GoalFlow({
   const [timeMins, setTimeMins] = useState(10);
   const WEEK_OPTS = [1, 2, 3, 4];
   const days = weeks * 7;
-  const reps = verbs * tenseCount * 8 + words * 6;
+  // Aufwand pro Niveau: Anfänger brauchen mehr Wiederholungen und mehr Zeit pro
+  // Übung, Fortgeschrittene weniger. (Wdh./Verb-Zeitform · Wdh./Wort · Sek./Übung)
+  const skill = recall("kunju-skill", "beginner");
+  const GOAL_RATE = {
+    beginner: { vt: 10, word: 7, sec: 35 },
+    intermediate: { vt: 8, word: 6, sec: 30 },
+    advanced: { vt: 6, word: 5, sec: 25 }
+  };
+  const rate = GOAL_RATE[skill] || GOAL_RATE.beginner;
+  const reps = verbs * tenseCount * rate.vt + words * rate.word;
   const perDay = Math.max(6, Math.round(reps / days));
-  const minsEst = Math.max(3, Math.round(perDay * 0.5));
+  const minsEst = Math.max(3, Math.round(perDay * rate.sec / 60));
   const tenseText = !tenseSel.length || tenseSel.length === allTenseIds.length ? "allen Zeitformen" : tenseSel.map(id => (tenseOpts.find(t => t.id === id) || {}).label).filter(Boolean).join(", ");
 
   // Zeit-Pfad: from minutes → perDay → back-calc plan totals (same unit as Form: distinct items)
-  const timPerDay = Math.max(6, Math.round(timeMins * 2));
+  const timPerDay = Math.max(6, Math.round(timeMins * 60 / rate.sec));
   const timDays = 14; // fixed 2-week plan for time path
-  const timVerbs = Math.max(4, Math.round(timPerDay * timDays * 0.35 / (3 * 8)));
-  const timWords = Math.max(8, Math.round(timPerDay * timDays * 0.65 / 6));
+  const timVerbs = Math.max(4, Math.round(timPerDay * timDays * 0.35 / (3 * rate.vt)));
+  const timWords = Math.max(8, Math.round(timPerDay * timDays * 0.65 / rate.word));
   function cycleWeeks() {
     setWeeks(w => WEEK_OPTS[(WEEK_OPTS.indexOf(w) + 1) % WEEK_OPTS.length]);
   }
