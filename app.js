@@ -10874,7 +10874,8 @@ function VocabView({
 function ChallengeView({ lang, onNew, onPractice }) {
   const h = React.createElement;
   const [, setTick] = useState(0);
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(() => recall("kunju-challenge-pending-edit", false));
+  useEffect(() => { if (recall("kunju-challenge-pending-edit", false)) persist("kunju-challenge-pending-edit", false); }, []);
   const [vIn, setVIn] = useState("");
   const [wIn, setWIn] = useState("");
   const force = () => setTick(t => t + 1);
@@ -14302,7 +14303,8 @@ function GoalSuccess({
   name,
   goal,
   onClose,
-  onQuiz
+  onQuiz,
+  onCurate
 }) {
   const perDay = goal?.perDay || 12;
   const weeks = goal?.weeks || 2;
@@ -14461,6 +14463,16 @@ function GoalSuccess({
       marginTop: "2px"
     }
   }, "W\xF6rter")))), /*#__PURE__*/React.createElement("button", {
+    className: "gsec",
+    onClick: onCurate
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "gsec-ic",
+    dangerouslySetInnerHTML: {
+      __html: IC_PENCIL
+    }
+  }), /*#__PURE__*/React.createElement("span", null, "Verben selbst festlegen")), /*#__PURE__*/React.createElement("div", {
+    className: "gsec-hint"
+  }, "aus Gemerkten w\xE4hlen, selbst tippen oder vorschlagen lassen"), /*#__PURE__*/React.createElement("button", {
     className: "gcta",
     onClick: onQuiz
   }, /*#__PURE__*/React.createElement("span", {
@@ -16391,6 +16403,12 @@ function App() {
     onQuiz: () => {
       setShowGoalSuccess(false);
       handleTabSwitch("quiz");
+    },
+    onCurate: () => {
+      setShowGoalSuccess(false);
+      persist("kunju-saved-sub", "challenge");
+      persist("kunju-challenge-pending-edit", true);
+      handleTabSwitch("saved");
     }
   }), showGoalCelebration && /*#__PURE__*/React.createElement(GoalCelebration, {
     name: name,
