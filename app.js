@@ -15771,6 +15771,20 @@ function App() {
       onConjugate(vb);
     }
   }
+  // Deep-Link von den SEO-Verb-Seiten: ?lang=es&verb=estar → direkt dieses Verb
+  // konjugieren (zeigt die richtige Form). Läuft einmalig beim Laden.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const dlVerb = (params.get("verb") || "").trim().toLowerCase().replace(/[^a-zà-ÿ'’\- ]/gi, "");
+    if (!dlVerb) return;
+    let dlLang = (params.get("lang") || "").trim().toLowerCase();
+    if (!window.CONJ || !window.CONJ[dlLang]) dlLang = lang;
+    pickVerb(dlLang, dlVerb);
+    // Deep-Link-Parameter aus der URL entfernen (UTM bleibt für Analytics erhalten)
+    const url = new URL(window.location.href);
+    ["verb", "lang", "tense", "pron"].forEach(k => url.searchParams.delete(k));
+    window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+  }, []);
   function toggleFav(lg, vb) {
     const exists = favs.some(x => x.lang === lg && x.verb === vb);
     const nx = exists ? favs.filter(x => !(x.lang === lg && x.verb === vb)) : [{
