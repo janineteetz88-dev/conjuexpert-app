@@ -26,6 +26,7 @@ import {
   metasToClusters,
 } from "../lib/clusters-upsert.mjs";
 import { sortArticles, publishedBlogToday } from "../publish-from-notion.mjs";
+import { blockToHtml, normalizeTldrLabel } from "../notion-to-html.mjs";
 import {
   upsertBlogCards,
   catFromMeta,
@@ -734,6 +735,74 @@ console.log("[11] GEO-Bausteine (TOC + Das-Wichtigste-Box)");
   const inline = extractKeyTakeaways([{ type: "callout", callout: { rich_text: [{ plain_text: "Kurz gesagt: regelmäßig schlägt selten." }] }, _children: [] }], fakeBTH);
   assert(inline.boxHtml.includes("regelmäßig schlägt selten"), "Inline-Trigger-Text landet in der Box");
   assert(!inline.boxHtml.includes("Kurz gesagt"), "Trigger-Label aus Box-Text entfernt");
+}
+
+/* Test 12: TL;DR → Kurz gesagt Normalisierung (Callout-Label) */
+console.log("[12] TL;DR → Kurz gesagt (Callout-Label-Normalisierung)");
+{
+  // normalizeTldrLabel direkt testen
+  eq(
+    normalizeTldrLabel("<strong>TL;DR:</strong> Inhalt."),
+    "<strong>Kurz gesagt:</strong> Inhalt.",
+    "bold TL;DR: → Kurz gesagt:"
+  );
+  eq(
+    normalizeTldrLabel("<strong>TL;DR</strong> Inhalt."),
+    "<strong>Kurz gesagt</strong> Inhalt.",
+    "bold TL;DR ohne Separator → Kurz gesagt"
+  );
+  eq(
+    normalizeTldrLabel("<strong>TL;DR –</strong> Inhalt."),
+    "<strong>Kurz gesagt –</strong> Inhalt.",
+    "bold TL;DR – → Kurz gesagt –"
+  );
+  eq(
+    normalizeTldrLabel("TL;DR: Inhalt."),
+    "Kurz gesagt: Inhalt.",
+    "plain TL;DR: → Kurz gesagt:"
+  );
+  eq(
+    normalizeTldrLabel("TLDR: Inhalt."),
+    "Kurz gesagt: Inhalt.",
+    "TLDR (kein Semikolon) → Kurz gesagt:"
+  );
+  eq(
+    normalizeTldrLabel("TL;DR – Inhalt."),
+    "Kurz gesagt – Inhalt.",
+    "plain TL;DR – → Kurz gesagt –"
+  );
+  // Mitten im Text: NICHT ersetzen
+  eq(
+    normalizeTldrLabel("Hinweis: TL;DR folgt unten."),
+    "Hinweis: TL;DR folgt unten.",
+    "TL;DR mitten im Text bleibt unverändert"
+  );
+  // Kein TL;DR: unverändert
+  eq(
+    normalizeTldrLabel("<strong>Hinweis:</strong> Wichtig!"),
+    "<strong>Hinweis:</strong> Wichtig!",
+    "kein TL;DR → unverändert"
+  );
+
+  // blockToHtml: Callout-Block mit bold TL;DR-Label
+  const boldCallout = blockToHtml({
+    type: "callout",
+    callout: { rich_text: [
+      { plain_text: "TL;DR:", annotations: { bold: true }, href: null },
+      { plain_text: " Das Wichtigste hier.", annotations: {}, href: null },
+    ]},
+    _children: null,
+  });
+  assert(boldCallout.includes("<strong>Kurz gesagt:</strong>"), "Callout: bold TL;DR: → <strong>Kurz gesagt:</strong>");
+  assert(!boldCallout.includes("TL;DR"), "Callout: TL;DR vollständig ersetzt");
+  assert(boldCallout.includes("Das Wichtigste hier"), "Callout: Inhalt bleibt erhalten");
+
+  // blockToHtml: Paragraph bleibt unberührt
+  const para = blockToHtml({
+    type: "paragraph",
+    paragraph: { rich_text: [{ plain_text: "Hier steht TL;DR im Fließtext.", annotations: {}, href: null }] },
+  });
+  assert(para.includes("TL;DR"), "Paragraph: TL;DR im Fließtext bleibt unverändert");
 }
 
 /* ─── Ergebnis ───────────────────────────────────────────────────────────── */

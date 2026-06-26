@@ -60,6 +60,20 @@ Deno.serve(async (req) => {
     });
   }
 
+  // Verhindern, dass derselbe Nutzer denselben Code mehrfach einlöst.
+  const { data: alreadyRedeemed } = await supaAdmin
+    .from("user_promo_redemptions")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("promo_code", promo.code)
+    .maybeSingle();
+
+  if (alreadyRedeemed) {
+    return new Response(JSON.stringify({ error: "Code bereits eingelöst" }), {
+      status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   const premiumUntil = promo.months
     ? new Date(Date.now() + promo.months * 30 * 24 * 60 * 60 * 1000).toISOString()
     : "2099-12-31T00:00:00.000Z";
@@ -75,6 +89,12 @@ Deno.serve(async (req) => {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
+
+  // Einlösung festhalten — UNIQUE-Constraint (user_id, promo_code) verhindert
+  // Race-Condition-basierte Mehrfach-Einlösungen auf DB-Ebene zusätzlich ab.
+  await supaAdmin
+    .from("user_promo_redemptions")
+    .insert({ user_id: user.id, promo_code: promo.code });
 
   // Nutzungszähler erhöhen und nur deaktivieren, wenn das Limit erreicht ist.
   // max_uses === null => unbegrenzt nutzbar (z. B. öffentlicher Aktionscode),

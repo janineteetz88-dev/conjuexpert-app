@@ -99,6 +99,23 @@ function autoInsertCtAs(html, slug) {
   });
 }
 
+/* ─── TL;DR → Kurz gesagt Normalisierung (nur Callout-Label) ────────────── */
+
+// Ersetzt das Label „TL;DR" (inkl. Varianten mit Doppelpunkt / Gedankenstrich)
+// am Anfang des gerenderten Callout-Textes durch „Kurz gesagt".
+// Wirkt NUR auf Callout-Blöcke (wird ausschließlich dort aufgerufen).
+export function normalizeTldrLabel(html) {
+  return html
+    // Bold: <strong>TL;DR[separator]</strong> → <strong>Kurz gesagt[separator]</strong>
+    // Capture die Leerzeichen um den Separator mit, damit sie erhalten bleiben.
+    .replace(
+      /^(<(?:strong|b)>)TL;?DR(\s*[:–—-]\s*)?(<\/(?:strong|b)>)/i,
+      (_, open, sep, close) => `${open}Kurz gesagt${sep || ""}${close}`
+    )
+    // Plain: TL;DR[: | – | — | -] am Anfang
+    .replace(/^TL;?DR(\s*[:–—-]\s*)/i, "Kurz gesagt$1");
+}
+
 function rtToHtml(richText) {
   return (richText || [])
     .map((t) => {
@@ -109,7 +126,7 @@ function rtToHtml(richText) {
       if (a.bold)          text = `<strong>${text}</strong>`;
       if (a.italic)        text = `<em>${text}</em>`;
       if (a.strikethrough) text = `<s>${text}</s>`;
-      if (t.href)          text = `<a class="inline" href="${esc(t.href)}">${text}</a>`;
+      if (t.href)          text = `<a class="inline" href="${esc(t.href.replace(/^http:\/\/conjuexpert\.app/i, "https://conjuexpert.app"))}">${text}</a>`;
       return text;
     })
     .join("");
@@ -165,7 +182,7 @@ function blockToHtml(b) {
       return `<h3>${rtToHtml(b.heading_3.rich_text)}</h3>`;
 
     case "callout": {
-      const text = rtToHtml(b.callout.rich_text);
+      const text = normalizeTldrLabel(rtToHtml(b.callout.rich_text));
       const children = b._children ? `\n${blocksToHtml(b._children)}` : "";
       return `<div class="note">${text}${children}</div>`;
     }
