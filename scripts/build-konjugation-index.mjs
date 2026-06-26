@@ -53,7 +53,7 @@ function listVerbs(lang) {
     .sort((a, b) => a.localeCompare(b, "de"));
 }
 
-function hrefFor(lang, verb) { return `/konjugation/${lang}/${encodeURIComponent(verb)}/`; }
+function hrefFor(lang, verb) { return `${ORIGIN}/konjugation/${lang}/${encodeURIComponent(verb)}/`; }
 
 function css(accent) {
   return `  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -170,7 +170,7 @@ function renderPage(lang, verbs) {
     name: title, description: metaDesc, url: canonical, inLanguage: "de",
     mainEntity: {
       "@type": "ItemList", numberOfItems: count,
-      itemListElement: verbs.map((v, i) => ({ "@type": "ListItem", position: i + 1, name: v, url: `${ORIGIN}${hrefFor(lang, v)}` })),
+      itemListElement: verbs.map((v, i) => ({ "@type": "ListItem", position: i + 1, name: v, url: hrefFor(lang, v) })),
     },
     publisher: { "@type": "Organization", name: "ConjuExpert", url: ORIGIN },
   };
