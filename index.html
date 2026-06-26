@@ -1689,7 +1689,9 @@ body {
 .hintlist li b { color: var(--col, #a557ff); }
 
 /* ===== Voice quiz mic ===== */
-.micbtn { width: 84px; height: 84px; border-radius: 50%; border: 0; cursor: pointer; font-size: 34px; color: #fff; background: var(--lc, #a557ff); box-shadow: 0 14px 30px -10px color-mix(in srgb, var(--lc, #a557ff) 70%, transparent);rgba(120,40,200,0.6); align-self: center; margin: 6px 0; transition: transform 0.14s; }
+.micbtn { width: 84px; height: 84px; border-radius: 50%; border: 0; cursor: pointer; font-size: 34px; color: #fff; background: var(--lc, #a557ff); box-shadow: 0 14px 30px -10px color-mix(in srgb, var(--lc, #a557ff) 70%, transparent);rgba(120,40,200,0.6); align-self: center; margin: 6px 0; transition: transform 0.14s; display: inline-flex; align-items: center; justify-content: center; }
+.micicon { display: inline-flex; align-items: center; justify-content: center; }
+.micicon svg { display: block; }
 .micbtn:active { transform: scale(0.92); }
 .micbtn:disabled { opacity: 0.5; }
 .micbtn.on { animation: micpulse 1s ease-in-out infinite; }
