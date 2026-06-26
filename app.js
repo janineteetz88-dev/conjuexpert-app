@@ -1472,7 +1472,7 @@
   window.UI = {
     en: {
       tagline: "conjugate · quiz · learn", hi: "Hi, {name} 👋", ready: "Ready when you are, {name}",
-      cj_acc: "Create account", cj_later: "Later", cj_reorder_head: "Arrange the tiles your way", cj_reorder_text: "Press and hold a language tile at the top — or a menu icon at the bottom — and drag it where you want. Your order is saved.", cj_no_thx: "No thanks",
+      cj_acc: "Create account", cj_later: "Later", cj_reorder_head: "Arrange the tiles your way", cj_reorder_text: "Drag your favourite language to the front — it becomes your start language, so tapping the ConjuExpert icon on your home screen opens the app straight into it. The bottom menu reorders the same way.", cj_no_thx: "No thanks",
       lang_start_set: "{lang} now opens first", lang_reorder_hint: "Long-press & drag to reorder",
       theme_add: "Add", theme_add_ph: "Your own topic…",
       cj_p1_head: "Nice — 5 verbs already!", cj_p1_text: "Create a free account: your progress is kept and you practise <b>2 days longer</b> with Premium – Quiz + Saved.",
@@ -1517,7 +1517,7 @@
     },
     de: {
       tagline: "konjugieren · quiz · lernen", hi: "Hi, {name} 👋", ready: "Bereit, wenn du es bist, {name}",
-      cj_acc: "Konto anlegen", cj_later: "Später", cj_reorder_head: "Ordne die Kacheln frei an", cj_reorder_text: "Halte oben eine Sprach-Kachel oder unten ein Menü-Symbol gedrückt und zieh es an die gewünschte Stelle. Deine Reihenfolge bleibt gespeichert.", cj_no_thx: "Nein danke",
+      cj_acc: "Konto anlegen", cj_later: "Später", cj_reorder_head: "Ordne die Kacheln frei an", cj_reorder_text: "Zieh deine Lieblingssprache an die erste Stelle — sie wird deine Startsprache. Tippst du das ConjuExpert-Icon auf dem Home-Bildschirm an, öffnet sich die App sofort darin. Auch die Menüleiste unten lässt sich so anordnen.", cj_no_thx: "Nein danke",
       lang_start_set: "{lang} öffnet jetzt zuerst", lang_reorder_hint: "Lange drücken & ziehen zum Anordnen",
       theme_add: "Hinzufügen", theme_add_ph: "Eigenes Thema…",
       cj_p1_head: "Stark — schon 5 Verben!", cj_p1_text: "Leg dir ein kostenloses Konto an: Dein Fortschritt bleibt erhalten und du übst <b>2 Tage länger</b> mit dem Premiumtarif – Quiz + Merken.",
@@ -1562,7 +1562,7 @@
     },
     es: {
       tagline: "conjugar · quiz · aprender", hi: "¡Hola, {name}! 👋", ready: "Cuando quieras, {name}",
-      cj_acc: "Crear cuenta", cj_later: "Más tarde", cj_reorder_head: "Ordena los iconos a tu gusto", cj_reorder_text: "Mantén pulsado un idioma arriba — o un icono del menú abajo — y arrástralo donde quieras. Se guarda tu orden.", cj_no_thx: "No, gracias",
+      cj_acc: "Crear cuenta", cj_later: "Más tarde", cj_reorder_head: "Ordena los iconos a tu gusto", cj_reorder_text: "Arrastra tu idioma favorito al principio — será tu idioma de inicio, así al tocar el icono de ConjuExpert en la pantalla de inicio la app se abre directamente en él. El menú de abajo se reordena igual.", cj_no_thx: "No, gracias",
       lang_start_set: "{lang} ahora se abre primero", lang_reorder_hint: "Mantén pulsado y arrastra para reordenar",
       theme_add: "Añadir", theme_add_ph: "Tu propio tema…",
       cj_p1_head: "¡Genial — ya van 5 verbos!", cj_p1_text: "Crea una cuenta gratis: tu progreso se guarda y practicas <b>2 días más</b> con Premium – Quiz + Guardados.",
@@ -1607,7 +1607,7 @@
     },
     nl: {
       tagline: "vervoegen · quiz · leren", hi: "Hoi, {name} 👋", ready: "Klaar wanneer jij het bent, {name}",
-      cj_acc: "Account aanmaken", cj_later: "Later", cj_reorder_head: "Orden de tegels zoals jij wilt", cj_reorder_text: "Houd boven een taaltegel of onder een menu-icoon ingedrukt en sleep het waar je wilt. Je volgorde wordt bewaard.", cj_no_thx: "Nee, bedankt",
+      cj_acc: "Account aanmaken", cj_later: "Later", cj_reorder_head: "Orden de tegels zoals jij wilt", cj_reorder_text: "Sleep je favoriete taal naar voren — dat wordt je starttaal, dus als je het ConjuExpert-icoon op je beginscherm aantikt opent de app er meteen in. De menubalk onderaan orden je net zo.", cj_no_thx: "Nee, bedankt",
       lang_start_set: "{lang} opent nu eerst", lang_reorder_hint: "Lang indrukken & slepen om te ordenen",
       theme_add: "Toevoegen", theme_add_ph: "Eigen thema…",
       cj_p1_head: "Mooi — al 5 werkwoorden!", cj_p1_text: "Maak een gratis account: je voortgang blijft bewaard en je oefent <b>2 dagen langer</b> met Premium – Quiz + Bewaard.",
@@ -1652,7 +1652,7 @@
     },
     fr: {
       tagline: "conjuguer · quiz · apprendre", hi: "Salut, {name} 👋", ready: "Quand tu veux, {name}",
-      cj_acc: "Créer un compte", cj_later: "Plus tard", cj_reorder_head: "Organise les tuiles à ta façon", cj_reorder_text: "Appuie longuement sur une langue en haut — ou une icône du menu en bas — et fais-la glisser où tu veux. Ton ordre est enregistré.", cj_no_thx: "Non merci",
+      cj_acc: "Créer un compte", cj_later: "Plus tard", cj_reorder_head: "Organise les tuiles à ta façon", cj_reorder_text: "Place ta langue préférée en premier — elle devient ta langue de démarrage : touche l'icône ConjuExpert sur ton écran d'accueil et l'appli s'ouvre directement dedans. La barre de menu en bas se réorganise de la même façon.", cj_no_thx: "Non merci",
       lang_start_set: "{lang} s'ouvre maintenant en premier", lang_reorder_hint: "Appui long & glisser pour réorganiser",
       theme_add: "Ajouter", theme_add_ph: "Ton propre thème…",
       cj_p1_head: "Bravo — déjà 5 verbes !", cj_p1_text: "Crée un compte gratuit : ta progression est conservée et tu t'entraînes <b>2 jours de plus</b> avec Premium – Quiz + Enregistrés.",
@@ -16076,10 +16076,10 @@ function App() {
     media: journey === "reorder" ? /*#__PURE__*/React.createElement(ReorderDemo) : null,
     head: tr(journey === "reorder" ? "cj_reorder_head" : journey === "p1" ? "cj_p1_head" : journey === "p2" ? "cj_p2_head" : journey === "p3" ? "cj_p3_head" : journey === "tend" ? "cj_tend_head" : "cj_p8_head"),
     html: tr(journey === "reorder" ? "cj_reorder_text" : journey === "p1" ? "cj_p1_text" : journey === "p2" ? "cj_p2_text" : journey === "p3" ? "cj_p3_text" : journey === "tend" ? "cj_tend_text" : "cj_p8_text"),
-    primaryLabel: tr(journey === "reorder" ? "sk_close" : journey === "p2" ? "cj_p2_yes" : journey === "p3" ? "cj_p3_yes" : journey === "tend" ? "cj_tend_yes" : "cj_acc"),
+    primaryLabel: tr(journey === "reorder" ? "cj_p2_yes" : journey === "p2" ? "cj_p2_yes" : journey === "p3" ? "cj_p3_yes" : journey === "tend" ? "cj_tend_yes" : "cj_acc"),
     primaryKind: "ink",
-    onPrimary: journey === "reorder" ? closeJourney : journey === "p2" ? journeyHomeScreen : journeyAccount,
-    secondaryLabel: journey === "reorder" ? null : tr(journey === "p2" ? "cj_no_thx" : journey === "p3" ? "cj_p3_no" : journey === "tend" ? "cj_tend_no" : "cj_later"),
+    onPrimary: journey === "reorder" || journey === "p2" ? journeyHomeScreen : journeyAccount,
+    secondaryLabel: journey === "reorder" ? tr("sk_close") : tr(journey === "p2" ? "cj_no_thx" : journey === "p3" ? "cj_p3_no" : journey === "tend" ? "cj_tend_no" : "cj_later"),
     onSecondary: closeJourney,
     onClose: closeJourney
   }), showOnboard && /*#__PURE__*/React.createElement(NameGate, {
