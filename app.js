@@ -14838,9 +14838,9 @@ function GoalFlow({
     onClick: onClose
   }, "\xD7"), step === "choose" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h2", {
     className: "goal-h1"
-  }, "Lege dein Lernziel fest, um ", /*#__PURE__*/React.createElement(Wordmark, null), " zu werden:"), /*#__PURE__*/React.createElement("div", {
+  }, "Um ", /*#__PURE__*/React.createElement(Wordmark, null), " zu werden, mache eine Challenge mit uns:"), /*#__PURE__*/React.createElement("div", {
     className: "qfilter-lbl"
-  }, "Wie m\xF6chtest du starten?"), /*#__PURE__*/React.createElement("div", {
+  }, "Such dir deine Challenge-Art aus."), /*#__PURE__*/React.createElement("div", {
     className: "gchoice sug",
     onClick: () => setStep("suggest")
   }, /*#__PURE__*/React.createElement("span", {
