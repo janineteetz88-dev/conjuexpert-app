@@ -32,7 +32,7 @@ const FONT_LINKS =
   '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
   '<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">';
 
-function css(accent) {
+function css(accent, transFlag) {
   return `  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --bg: #f4eede; --surface: #fffdf6; --surface-2: #ece3d0;
@@ -117,7 +117,7 @@ function css(accent) {
   .story-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
   .story-text { padding: 20px 22px; font-size: 15px; line-height: 1.75; border-bottom: 1px solid var(--border); }
   .story-trans { padding: 16px 22px; font-size: 14px; color: var(--muted); line-height: 1.7; }
-  .story-trans::before { content: "🇩🇪 "; }
+  .story-trans::before { content: "${transFlag} "; }
 
   /* Hero image */
   .hero-img { margin: 0 0 24px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
@@ -297,8 +297,9 @@ function transform(html, lang, verb) {
     );
   }
 
-  // 2. Komplettes Stylesheet ersetzen
-  html = html.replace(/<style>[\s\S]*?<\/style>/, "<style>\n" + css(accent) + "\n</style>");
+  // 2. Komplettes Stylesheet ersetzen (DE-Seiten: Übersetzung ist englisch → 🇬🇧)
+  const transFlag = lang === "de" ? "🇬🇧" : "🇩🇪";
+  html = html.replace(/<style>[\s\S]*?<\/style>/, "<style>\n" + css(accent, transFlag) + "\n</style>");
 
   // 3. cta-top → Widget (oder Widget vor die erste <section>, falls kein cta-top)
   if (/<a class="cta-top"[\s\S]*?<\/a>/.test(html)) {
