@@ -15780,6 +15780,10 @@ function App() {
     let dlLang = (params.get("lang") || "").trim().toLowerCase();
     if (!window.CONJ || !window.CONJ[dlLang]) dlLang = lang;
     pickVerb(dlLang, dlVerb);
+    // Onboarding (NameGate/Tour) für Deep-Link-Besucher überspringen: sie sollen
+    // SOFORT ihre Konjugation sehen — der Aha-Moment, der konvertiert.
+    setShowOnboard(false);
+    setShowTour(false);
     // Deep-Link-Parameter aus der URL entfernen (UTM bleibt für Analytics erhalten)
     const url = new URL(window.location.href);
     ["verb", "lang", "tense", "pron"].forEach(k => url.searchParams.delete(k));
