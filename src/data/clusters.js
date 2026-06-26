@@ -152,6 +152,7 @@ export const clusters = [
       { slug: "/blog/spaced-repetition-sprachenlernen", title: "Spaced Repetition richtig nutzen — der Wiederhol-Rhythmus, der sitzt", live: true },
       { slug: "/blog/aktiv-lernen-statt-tabellen-auswendig", title: "Konjugationstabellen auswendig lernen? Warum aktives Üben dreimal mehr bringt", live: true },
       { slug: "/blog/verben-lernen-tipps", title: "Verben lernen: 7 Lerntipps, mit denen die Formen endlich sitzen", live: true },
+      { slug: "/blog/sprache-lernen-neben-dem-job", title: "Sprache lernen neben dem Job: So bringen 15 Minuten am Tag deine Verben voran", live: true },
     ],
   },
   {
@@ -217,6 +218,7 @@ export const clusters = [
       live: true,
     },
     spokes: [
+      { slug: "/blog/irregular-verbs-englisch", title: "Unregelmäßige Verben Englisch: 4 Gruppen, die das Chaos beenden", live: true },
     ],
   },
   {
