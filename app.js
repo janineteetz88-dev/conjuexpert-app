@@ -3868,7 +3868,25 @@ function buildChallengeLists(data, lang) {
   }
   const words = [], wseen = {};
   (getVocab() || []).filter(x => x.lang === lang && x.term).forEach(x => { if (words.length < m) uniqPush(words, wseen, x.term, false); });
-  return { verbList: verbs.map(v => ({ v: v, done: 0 })), wordList: words.map(w => ({ w: w, done: 0 })) };
+  return { verbList: verbs.map(v => ({ v: v, done: 0, lastDay: "" })), wordList: words.map(w => ({ w: w, done: 0, lastDay: "" })) };
+}
+/* Mastery: ein Eintrag „sitzt" nach 3 richtigen Antworten an 3 VERSCHIEDENEN Tagen. */
+const CH_DONE = 3;
+function creditChallengeVerb(lang, verb) {
+  const g = recall("kunju-goal-data", null);
+  if (!g || !Array.isArray(g.verbList)) return;
+  const base = String(verb || "").replace(/^to /, "").trim().toLowerCase();
+  if (!base) return;
+  const today = new Date().toDateString();
+  let changed = false;
+  g.verbList.forEach(it => {
+    if (String(it.v || "").toLowerCase() === base && it.lastDay !== today && (it.done || 0) < CH_DONE) {
+      it.done = (it.done || 0) + 1;
+      it.lastDay = today;
+      changed = true;
+    }
+  });
+  if (changed) persist("kunju-goal-data", g);
 }
 /* Is the raw input a known dictionary (infinitive) verb? We check pool
    membership rather than "does it conjugate", because German/Dutch accept any
@@ -5924,6 +5942,8 @@ const VERB_GROUPS = {
   es: [{
     id: "all"
   }, {
+    id: "challenge"
+  }, {
     id: "words"
   }, {
     id: "saved"
@@ -5941,6 +5961,8 @@ const VERB_GROUPS = {
   }],
   fr: [{
     id: "all"
+  }, {
+    id: "challenge"
   }, {
     id: "words"
   }, {
@@ -5960,6 +5982,8 @@ const VERB_GROUPS = {
   de: [{
     id: "all"
   }, {
+    id: "challenge"
+  }, {
     id: "words"
   }, {
     id: "saved"
@@ -5971,6 +5995,8 @@ const VERB_GROUPS = {
   nl: [{
     id: "all"
   }, {
+    id: "challenge"
+  }, {
     id: "words"
   }, {
     id: "saved"
@@ -5981,6 +6007,8 @@ const VERB_GROUPS = {
   }],
   en: [{
     id: "all"
+  }, {
+    id: "challenge"
   }, {
     id: "words"
   }, {
@@ -5994,6 +6022,7 @@ const VERB_GROUPS = {
 const GROUP_LABELS = {
   de: {
     all: "Alle",
+    challenge: "Challenge",
     words: "Gespeicherte Wörter",
     saved: "Gespeicherte Verben",
     irregular: "Unregelmäßig",
@@ -6001,6 +6030,7 @@ const GROUP_LABELS = {
   },
   en: {
     all: "All",
+    challenge: "Challenge",
     words: "Saved words",
     saved: "Saved verbs",
     irregular: "Irregular",
@@ -6008,6 +6038,7 @@ const GROUP_LABELS = {
   },
   es: {
     all: "Todos",
+    challenge: "Challenge",
     words: "Palabras guardadas",
     saved: "Verbos guardados",
     irregular: "Irregulares",
@@ -6015,6 +6046,7 @@ const GROUP_LABELS = {
   },
   nl: {
     all: "Alle",
+    challenge: "Challenge",
     words: "Bewaarde woorden",
     saved: "Bewaarde werkwoorden",
     irregular: "Onregelmatig",
@@ -6022,6 +6054,7 @@ const GROUP_LABELS = {
   },
   fr: {
     all: "Tous",
+    challenge: "Challenge",
     words: "Mots mémorisés",
     saved: "Verbes mémorisés",
     irregular: "Irréguliers",
@@ -6420,6 +6453,17 @@ function QuizView({
   }
   const filteredPool = useMemo(() => {
     if (selGroup === "all" || selGroup === "words") return pool; // "words" keeps all verbs; saved vocab goes into the sentences
+    if (selGroup === "challenge") {
+      // Vorrangig (nicht exklusiv): noch nicht „sitzende" Challenge-Verben mehrfach
+      // gewichtet + der normale Pool für Abwechslung.
+      const g = recall("kunju-goal-data", null);
+      const cv = ((g && g.verbList) || []).filter(x => (x.done || 0) < CH_DONE).map(x => String(x.v || "").replace(/^to /, "").trim()).filter(Boolean);
+      if (!cv.length) return pool;
+      const weighted = [];
+      for (let i = 0; i < 4; i++) cv.forEach(v => weighted.push(v));
+      pool.forEach(v => weighted.push(v));
+      return weighted;
+    }
     if (selGroup === "saved") {
       const f = (favs || []).filter(x => x.lang === lang).map(x => x.verb).filter(v => pool.includes(v));
       return f.length ? f : pool;
@@ -6595,6 +6639,14 @@ function QuizView({
   }, [lang]);
   useEffect(() => {
     if (isActive) reloadTenses();
+    // „Jetzt üben" aus der Challenge-Liste: einmalig die Gruppe auf „challenge" setzen.
+    if (isActive) {
+      const pend = recall("kunju-quiz-pending-group", null);
+      if (pend) {
+        persist("kunju-quiz-pending-group", null);
+        if ((VERB_GROUPS[lang] || []).some(x => x.id === pend)) pickGroup(pend);
+      }
+    }
   }, [isActive]);
   function toggleTense(id) {
     setTenseSel(prev => {
@@ -6884,6 +6936,7 @@ function QuizView({
       removeMistake(lang, q);
       bumpMist();
     }
+    if (ok && q) creditChallengeVerb(lang, q.verb);
     onActivity && onActivity();
     if (ok && isStreakMilestone(ns.streak)) fireConfetti(ns.streak);
     return ns.streak;
@@ -6950,7 +7003,7 @@ function QuizView({
   function speedAnswer(opt) {
     if (speedState !== "running") return;
     const ok = norm(opt) === norm(q.answer);
-    if (ok) setSpeedScore(s => s + 1);else {
+    if (ok) { setSpeedScore(s => s + 1); creditChallengeVerb(lang, q.verb); } else {
       addMistake(lang, q);
       bumpMist();
     }
@@ -6969,6 +7022,7 @@ function QuizView({
   }
   function nextCard(known) {
     if (known) {
+      creditChallengeVerb(lang, q.verb);
       if (mistMode) {
         removeMistake(lang, q);
         bumpMist();
@@ -10806,9 +10860,9 @@ function VocabView({
 }
 
 /* ---------- Challenge list view (3rd tab on the Saved page) ---------- */
-const CH_DONE = 3; // successful reps until an item counts as "mastered"
 function ChallengeView({ lang, onNew, onPractice }) {
   const h = React.createElement;
+  const [, setTick] = useState(0);
   const g = recall("kunju-goal-data", null);
   const vl = (g && g.verbList) || [];
   const wl = (g && g.wordList) || [];
@@ -10817,17 +10871,32 @@ function ChallengeView({ lang, onNew, onPractice }) {
       h("p", { className: "ch-empty-tx" }, tr("ch_empty")),
       h("button", { className: "quizbtn check ch-cta", onClick: onNew }, tr("ch_create")));
   }
+  // Manuelles Übersteuern: „kann ich schon" (auf voll) / „nochmal üben" (zurück auf offen).
+  function setItem(kind, i, done) {
+    const gg = recall("kunju-goal-data", null);
+    if (!gg) return;
+    const arr = kind === "v" ? gg.verbList : gg.wordList;
+    if (!arr || !arr[i]) return;
+    arr[i].done = done;
+    arr[i].lastDay = done >= CH_DONE ? new Date().toDateString() : "";
+    persist("kunju-goal-data", gg);
+    setTick(t => t + 1);
+  }
   const days = (g.weeks || 2) * 7;
   const passed = g.startDate ? Math.floor((Date.now() - new Date(g.startDate).getTime()) / 86400000) : 0;
   const left = Math.max(0, days - passed);
   const vDone = vl.filter(x => (x.done || 0) >= CH_DONE).length;
   const wDone = wl.filter(x => (x.done || 0) >= CH_DONE).length;
-  const item = (label, done, key) => {
+  const item = (label, done, kind, i) => {
     const st = (done || 0) >= CH_DONE ? "done" : (done || 0) > 0 ? "learn" : "open";
-    return h("div", { className: "ch-item ch-" + st, key: key },
+    return h("div", { className: "ch-item ch-" + st, key: kind + i },
       h("span", { className: "ch-dot" }),
       h("span", { className: "ch-label" }, label),
-      st === "done" ? h("span", { className: "ch-check" }, "✓") : null);
+      h("button", {
+        className: "ch-mark" + (st === "done" ? " on" : ""),
+        title: st === "done" ? tr("again") : tr("learned"),
+        onClick: () => setItem(kind, i, st === "done" ? 0 : CH_DONE)
+      }, "✓"));
   };
   return h("div", { className: "ch-wrap" },
     h("div", { className: "ch-head" },
@@ -10835,10 +10904,10 @@ function ChallengeView({ lang, onNew, onPractice }) {
       g.startDate ? h("span", { className: "ch-left" }, tr("ch_left", { n: left })) : null),
     vl.length ? h("div", { className: "ch-sec" },
       h("div", { className: "ch-sec-h" }, tr("saved_verbs") + " · " + tr("ch_done_v", { a: vDone, b: vl.length })),
-      vl.map((x, i) => item(x.v, x.done, "v" + i))) : null,
+      vl.map((x, i) => item(x.v, x.done, "v", i))) : null,
     wl.length ? h("div", { className: "ch-sec" },
       h("div", { className: "ch-sec-h" }, tr("saved_vocab") + " · " + tr("ch_done_w", { a: wDone, b: wl.length })),
-      wl.map((x, i) => item(x.w, x.done, "w" + i))) : null,
+      wl.map((x, i) => item(x.w, x.done, "w", i))) : null,
     h("div", { className: "ch-btns" },
       h("button", { className: "quizbtn check", onClick: onPractice }, tr("ch_practice")),
       h("button", { className: "nameskip", onClick: onNew }, tr("ch_new"))));
@@ -10890,7 +10959,7 @@ function SavedTab({
   }) : /*#__PURE__*/React.createElement(ChallengeView, {
     lang: lang,
     onNew: onOpenGoal,
-    onPractice: () => onTab && onTab("quiz")
+    onPractice: () => { persist("kunju-quiz-pending-group", "challenge"); onTab && onTab("quiz"); }
   }));
 }
 function SavedCell({

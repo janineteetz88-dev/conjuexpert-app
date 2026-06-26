@@ -1371,6 +1371,9 @@ body {
 .ch-done .ch-dot { background: #34c759; }
 .ch-done .ch-label { color: var(--muted); }
 .ch-check { color: #1a9b46; font-weight: 800; }
+.ch-mark { flex: none; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--surface); color: transparent; font-size: 13px; font-weight: 800; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.15s; }
+.ch-mark:active { transform: scale(0.9); }
+.ch-mark.on { background: #34c759; border-color: #34c759; color: #fff; }
 .ch-btns { display: flex; flex-direction: column; gap: 9px; margin-top: 6px; }
 #approot[data-accent="mono"] .savedsubbtn.on { border-color: var(--text); background: color-mix(in srgb, var(--text) 8%, var(--surface)); }
 
