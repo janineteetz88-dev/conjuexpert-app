@@ -138,9 +138,9 @@ ${FONT_FACE}
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --bg: #f3f4f8; --surface: #ffffff; --surface-2: #f7f8fb;
-    --text: #14151a; --muted: #646b7a; --border: rgba(20, 22, 30, 0.08);
+    --text: #14151a; --muted: #5b6373; --border: rgba(20, 22, 30, 0.09);
     --brand-pink: #e71583; --brand-violet: #a557ff;
-    --cta-app: linear-gradient(135deg, #e71583, #a557ff);
+    --cta-rainbow: linear-gradient(100deg, #ff3b5c, #ff7a18, #ffc400, #34c759, #00bcd4, #0a84ff, #a557ff);
     --brand-rainbow: linear-gradient(90deg, #ff3b5c, #ff7a18, #ffc400, #34c759, #0a84ff, #a557ff);
     --lang: ${cfg.accent};
     --radius: 22px;
@@ -152,15 +152,16 @@ ${FONT_FACE}
   a { color: var(--brand-violet); text-decoration: none; }
   a:hover { text-decoration: underline; }
 
-  /* Nav */
+  /* Nav — mit Rainbow-Signaturlinie wie die App */
   .site-nav { background: rgba(255,255,255,.85); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 58px; position: sticky; top: 0; z-index: 10; }
+  .site-nav::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--brand-rainbow); }
   .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
   .nav-brand-mark { display: grid; grid-template-columns: repeat(5,1fr); gap: 3px; width: 30px; height: 30px; padding: 4px; background: var(--surface); border-radius: 9px; box-shadow: 0 1px 4px rgba(0,0,0,.08); flex: none; }
   .nav-brand-mark i { display: block; border-radius: 2px; }
   .nav-brand-name { font-family: var(--font); font-weight: 600; font-size: 18px; letter-spacing: -.02em; color: var(--text); }
-  .nav-brand-name b { font-weight: 700; background: var(--cta-app); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .nav-cta { color: #fff; padding: 9px 18px; border-radius: 12px; font-weight: 700; font-size: 13px; background: var(--cta-app); box-shadow: 0 8px 20px -8px rgba(167,87,255,.6); transition: transform .14s, box-shadow .14s; }
-  .nav-cta:hover { text-decoration: none; transform: translateY(-1px); box-shadow: 0 12px 26px -8px rgba(167,87,255,.7); }
+  .nav-brand-name b { font-weight: 700; background: linear-gradient(90deg, var(--brand-pink), var(--brand-violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .nav-cta { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.28); padding: 9px 18px; border-radius: 12px; font-weight: 700; font-size: 13px; background: var(--cta-rainbow); box-shadow: 0 10px 24px -10px rgba(120,40,200,.55); transition: transform .14s, box-shadow .14s; }
+  .nav-cta:hover { text-decoration: none; transform: translateY(-1px); box-shadow: 0 14px 30px -10px rgba(120,40,200,.7); }
 
   /* Page layout */
   .page-wrap { max-width: 860px; margin: 0 auto; padding: 36px 20px 72px; }
@@ -180,7 +181,7 @@ ${FONT_FACE}
   .verb-grid li { margin: 0; }
   .verb-grid a { display: flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 13px 16px; color: var(--text); font-weight: 600; box-shadow: var(--shadow-sm); transition: border-color .14s, transform .14s, box-shadow .14s; }
   .verb-grid a::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--lang); flex: none; opacity: .55; transition: opacity .14s, transform .14s; }
-  .verb-grid a:hover { text-decoration: none; border-color: var(--brand-violet); transform: translateY(-2px); box-shadow: 0 14px 30px -16px rgba(167,87,255,.5); }
+  .verb-grid a:hover { text-decoration: none; border-color: var(--lang); transform: translateY(-2px); box-shadow: 0 14px 30px -16px color-mix(in srgb, var(--lang) 45%, transparent); }
   .verb-grid a:hover::before { opacity: 1; transform: scale(1.25); }
 
   .site-footer { text-align: center; padding: 26px 20px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 48px; }
