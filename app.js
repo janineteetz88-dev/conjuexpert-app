@@ -13139,7 +13139,18 @@ function JCloseIcon() {
     viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round"
   }, /*#__PURE__*/React.createElement("path", { d: "M6 6l12 12M18 6 6 18" }));
 }
-function JourneyPop({ badge, head, html, primaryLabel, primaryKind, onPrimary, secondaryLabel, onSecondary, onClose }) {
+/* Animated demo: a row of tiles where one is press-held, lifted and dragged to a
+   new spot and back — shows the reorder gesture instead of only describing it. */
+function ReorderDemo() {
+  const h = React.createElement;
+  const tile = (cls, key) => h("span", { key, className: "rtile " + cls });
+  return h("div", { className: "rdemo", "aria-hidden": "true" },
+    tile("c1", 1),
+    h("span", { className: "rtile c2 rmover", key: 2 }, h("span", { className: "rhold" })),
+    tile("c3", 3),
+    tile("c4", 4));
+}
+function JourneyPop({ badge, media, head, html, primaryLabel, primaryKind, onPrimary, secondaryLabel, onSecondary, onClose }) {
   useEffect(() => {
     const onKey = e => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", onKey);
@@ -13148,7 +13159,7 @@ function JourneyPop({ badge, head, html, primaryLabel, primaryKind, onPrimary, s
   return /*#__PURE__*/React.createElement("div", { className: "cj-ov", onClick: onClose },
     /*#__PURE__*/React.createElement("div", { className: "cj-pop", onClick: e => e.stopPropagation() },
       /*#__PURE__*/React.createElement("button", { className: "cj-x", "aria-label": tr("ios_close"), onClick: onClose }, /*#__PURE__*/React.createElement(JCloseIcon)),
-      badge && /*#__PURE__*/React.createElement("div", { className: "cj-badge" }, /*#__PURE__*/React.createElement(JBadge, { name: badge })),
+      media ? /*#__PURE__*/React.createElement("div", { className: "cj-media" }, media) : badge && /*#__PURE__*/React.createElement("div", { className: "cj-badge" }, /*#__PURE__*/React.createElement(JBadge, { name: badge })),
       /*#__PURE__*/React.createElement("div", { className: "cj-head" }, head),
       html && /*#__PURE__*/React.createElement("p", { className: "cj-text", dangerouslySetInnerHTML: { __html: html } }),
       /*#__PURE__*/React.createElement("div", { className: "cj-btns" },
@@ -16056,7 +16067,8 @@ function App() {
     onSecondary: () => setShowFbThanks(false),
     onClose: () => setShowFbThanks(false)
   }), journey && !showOnboard && !showTour && !showPaywall && !showLogin && !showPlanSelect && /*#__PURE__*/React.createElement(JourneyPop, {
-    badge: journey === "reorder" ? "reorder" : journey === "p1" ? "bars" : journey === "p2" ? "home" : journey === "p3" ? "save" : journey === "tend" ? "clock" : "smile",
+    badge: journey === "reorder" ? null : journey === "p1" ? "bars" : journey === "p2" ? "home" : journey === "p3" ? "save" : journey === "tend" ? "clock" : "smile",
+    media: journey === "reorder" ? /*#__PURE__*/React.createElement(ReorderDemo) : null,
     head: tr(journey === "reorder" ? "cj_reorder_head" : journey === "p1" ? "cj_p1_head" : journey === "p2" ? "cj_p2_head" : journey === "p3" ? "cj_p3_head" : journey === "tend" ? "cj_tend_head" : "cj_p8_head"),
     html: tr(journey === "reorder" ? "cj_reorder_text" : journey === "p1" ? "cj_p1_text" : journey === "p2" ? "cj_p2_text" : journey === "p3" ? "cj_p3_text" : journey === "tend" ? "cj_tend_text" : "cj_p8_text"),
     primaryLabel: tr(journey === "reorder" ? "sk_close" : journey === "p2" ? "cj_p2_yes" : journey === "p3" ? "cj_p3_yes" : journey === "tend" ? "cj_tend_yes" : "cj_acc"),
