@@ -1472,7 +1472,7 @@
   window.UI = {
     en: {
       tagline: "conjugate · quiz · learn", hi: "Hi, {name} 👋", ready: "Ready when you are, {name}",
-      cj_acc: "Create account", cj_later: "Later", cj_no_thx: "No thanks",
+      cj_acc: "Create account", cj_later: "Later", cj_reorder_head: "Arrange the tiles your way", cj_reorder_text: "Press and hold a language tile at the top — or a menu icon at the bottom — and drag it where you want. Your order is saved.", cj_no_thx: "No thanks",
       lang_start_set: "{lang} now opens first", lang_reorder_hint: "Long-press & drag to reorder",
       theme_add: "Add", theme_add_ph: "Your own topic…",
       cj_p1_head: "Nice — 5 verbs already!", cj_p1_text: "Create a free account: your progress is kept and you practise <b>2 days longer</b> with Premium – Quiz + Saved.",
@@ -1517,7 +1517,7 @@
     },
     de: {
       tagline: "konjugieren · quiz · lernen", hi: "Hi, {name} 👋", ready: "Bereit, wenn du es bist, {name}",
-      cj_acc: "Konto anlegen", cj_later: "Später", cj_no_thx: "Nein danke",
+      cj_acc: "Konto anlegen", cj_later: "Später", cj_reorder_head: "Ordne die Kacheln frei an", cj_reorder_text: "Halte oben eine Sprach-Kachel oder unten ein Menü-Symbol gedrückt und zieh es an die gewünschte Stelle. Deine Reihenfolge bleibt gespeichert.", cj_no_thx: "Nein danke",
       lang_start_set: "{lang} öffnet jetzt zuerst", lang_reorder_hint: "Lange drücken & ziehen zum Anordnen",
       theme_add: "Hinzufügen", theme_add_ph: "Eigenes Thema…",
       cj_p1_head: "Stark — schon 5 Verben!", cj_p1_text: "Leg dir ein kostenloses Konto an: Dein Fortschritt bleibt erhalten und du übst <b>2 Tage länger</b> mit dem Premiumtarif – Quiz + Merken.",
@@ -1562,7 +1562,7 @@
     },
     es: {
       tagline: "conjugar · quiz · aprender", hi: "¡Hola, {name}! 👋", ready: "Cuando quieras, {name}",
-      cj_acc: "Crear cuenta", cj_later: "Más tarde", cj_no_thx: "No, gracias",
+      cj_acc: "Crear cuenta", cj_later: "Más tarde", cj_reorder_head: "Ordena los iconos a tu gusto", cj_reorder_text: "Mantén pulsado un idioma arriba — o un icono del menú abajo — y arrástralo donde quieras. Se guarda tu orden.", cj_no_thx: "No, gracias",
       lang_start_set: "{lang} ahora se abre primero", lang_reorder_hint: "Mantén pulsado y arrastra para reordenar",
       theme_add: "Añadir", theme_add_ph: "Tu propio tema…",
       cj_p1_head: "¡Genial — ya van 5 verbos!", cj_p1_text: "Crea una cuenta gratis: tu progreso se guarda y practicas <b>2 días más</b> con Premium – Quiz + Guardados.",
@@ -1607,7 +1607,7 @@
     },
     nl: {
       tagline: "vervoegen · quiz · leren", hi: "Hoi, {name} 👋", ready: "Klaar wanneer jij het bent, {name}",
-      cj_acc: "Account aanmaken", cj_later: "Later", cj_no_thx: "Nee, bedankt",
+      cj_acc: "Account aanmaken", cj_later: "Later", cj_reorder_head: "Orden de tegels zoals jij wilt", cj_reorder_text: "Houd boven een taaltegel of onder een menu-icoon ingedrukt en sleep het waar je wilt. Je volgorde wordt bewaard.", cj_no_thx: "Nee, bedankt",
       lang_start_set: "{lang} opent nu eerst", lang_reorder_hint: "Lang indrukken & slepen om te ordenen",
       theme_add: "Toevoegen", theme_add_ph: "Eigen thema…",
       cj_p1_head: "Mooi — al 5 werkwoorden!", cj_p1_text: "Maak een gratis account: je voortgang blijft bewaard en je oefent <b>2 dagen langer</b> met Premium – Quiz + Bewaard.",
@@ -1652,7 +1652,7 @@
     },
     fr: {
       tagline: "conjuguer · quiz · apprendre", hi: "Salut, {name} 👋", ready: "Quand tu veux, {name}",
-      cj_acc: "Créer un compte", cj_later: "Plus tard", cj_no_thx: "Non merci",
+      cj_acc: "Créer un compte", cj_later: "Plus tard", cj_reorder_head: "Organise les tuiles à ta façon", cj_reorder_text: "Appuie longuement sur une langue en haut — ou une icône du menu en bas — et fais-la glisser où tu veux. Ton ordre est enregistré.", cj_no_thx: "Non merci",
       lang_start_set: "{lang} s'ouvre maintenant en premier", lang_reorder_hint: "Appui long & glisser pour réorganiser",
       theme_add: "Ajouter", theme_add_ph: "Ton propre thème…",
       cj_p1_head: "Bravo — déjà 5 verbes !", cj_p1_text: "Crée un compte gratuit : ta progression est conservée et tu t'entraînes <b>2 jours de plus</b> avec Premium – Quiz + Enregistrés.",
@@ -13109,6 +13109,12 @@ function JBadge({ name }) {
     /*#__PURE__*/React.createElement("rect", { x: 11.4, y: 6, width: 2.4, height: 14, rx: 1.2, fill: "#ffc400" }),
     /*#__PURE__*/React.createElement("rect", { x: 15.6, y: 10.5, width: 2.4, height: 9.5, rx: 1.2, fill: "#1fbf6b" }),
     /*#__PURE__*/React.createElement("rect", { x: 19.8, y: 14, width: 2.4, height: 6, rx: 1.2, fill: "#0a84ff" }));
+  if (name === "reorder") return wrap([
+    /*#__PURE__*/React.createElement("rect", { key: 1, x: 3.5, y: 3.5, width: 7, height: 7, rx: 1.8 }),
+    /*#__PURE__*/React.createElement("rect", { key: 2, x: 13.5, y: 3.5, width: 7, height: 7, rx: 1.8 }),
+    /*#__PURE__*/React.createElement("rect", { key: 3, x: 3.5, y: 13.5, width: 7, height: 7, rx: 1.8 }),
+    /*#__PURE__*/React.createElement("rect", { key: 4, x: 13.5, y: 13.5, width: 7, height: 7, rx: 1.8 })
+  ]);
   if (name === "home") return wrap([
     /*#__PURE__*/React.createElement("path", { key: 1, d: "M12 3v11" }),
     /*#__PURE__*/React.createElement("path", { key: 2, d: "m8 10 4 4 4-4" }),
@@ -15439,6 +15445,7 @@ function App() {
     else if (journey === "p3") persist("kunju-j-p3", true);
     else if (journey === "tend") persist("kunju-j-tend", true);
     else if (journey === "p8") { persist("kunju-j-p8-at", Date.now()); }
+    else if (journey === "reorder") persist("kunju-j-reorder", true);
     setJourney(null);
   }
   function journeyAccount() {
@@ -15609,6 +15616,12 @@ function App() {
   // Behavioural journey counter (anonymous only): P1 after 5 verbs,
   // P2 (home-screen tip) after ~12 rounds. One window, gated, shown once.
   function bumpJourney() {
+    // Reorder-Hinweis: einmalig für ALLE Nutzer (auch eingeloggte), nach etwas Nutzung.
+    if (!recall("kunju-j-reorder", false)) {
+      const acts = recall("kunju-acts", 0) + 1;
+      persist("kunju-acts", acts);
+      if (acts >= 8) setJourney(j => j || "reorder");
+    }
     if (supaUser) return; // P1/P2 target anonymous schnupperer
     const r = recall("kunju-jrounds", 0) + 1;
     persist("kunju-jrounds", r);
@@ -16039,13 +16052,13 @@ function App() {
     onSecondary: () => setShowFbThanks(false),
     onClose: () => setShowFbThanks(false)
   }), journey && !showOnboard && !showTour && !showPaywall && !showLogin && !showPlanSelect && /*#__PURE__*/React.createElement(JourneyPop, {
-    badge: journey === "p1" ? "bars" : journey === "p2" ? "home" : journey === "p3" ? "save" : journey === "tend" ? "clock" : "smile",
-    head: tr(journey === "p1" ? "cj_p1_head" : journey === "p2" ? "cj_p2_head" : journey === "p3" ? "cj_p3_head" : journey === "tend" ? "cj_tend_head" : "cj_p8_head"),
-    html: tr(journey === "p1" ? "cj_p1_text" : journey === "p2" ? "cj_p2_text" : journey === "p3" ? "cj_p3_text" : journey === "tend" ? "cj_tend_text" : "cj_p8_text"),
-    primaryLabel: tr(journey === "p2" ? "cj_p2_yes" : journey === "p3" ? "cj_p3_yes" : journey === "tend" ? "cj_tend_yes" : "cj_acc"),
+    badge: journey === "reorder" ? "reorder" : journey === "p1" ? "bars" : journey === "p2" ? "home" : journey === "p3" ? "save" : journey === "tend" ? "clock" : "smile",
+    head: tr(journey === "reorder" ? "cj_reorder_head" : journey === "p1" ? "cj_p1_head" : journey === "p2" ? "cj_p2_head" : journey === "p3" ? "cj_p3_head" : journey === "tend" ? "cj_tend_head" : "cj_p8_head"),
+    html: tr(journey === "reorder" ? "cj_reorder_text" : journey === "p1" ? "cj_p1_text" : journey === "p2" ? "cj_p2_text" : journey === "p3" ? "cj_p3_text" : journey === "tend" ? "cj_tend_text" : "cj_p8_text"),
+    primaryLabel: tr(journey === "reorder" ? "sk_close" : journey === "p2" ? "cj_p2_yes" : journey === "p3" ? "cj_p3_yes" : journey === "tend" ? "cj_tend_yes" : "cj_acc"),
     primaryKind: "ink",
-    onPrimary: journey === "p2" ? journeyHomeScreen : journeyAccount,
-    secondaryLabel: tr(journey === "p2" ? "cj_no_thx" : journey === "p3" ? "cj_p3_no" : journey === "tend" ? "cj_tend_no" : "cj_later"),
+    onPrimary: journey === "reorder" ? closeJourney : journey === "p2" ? journeyHomeScreen : journeyAccount,
+    secondaryLabel: journey === "reorder" ? null : tr(journey === "p2" ? "cj_no_thx" : journey === "p3" ? "cj_p3_no" : journey === "tend" ? "cj_tend_no" : "cj_later"),
     onSecondary: closeJourney,
     onClose: closeJourney
   }), showOnboard && /*#__PURE__*/React.createElement(NameGate, {
