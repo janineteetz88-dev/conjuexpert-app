@@ -38,10 +38,16 @@ Beim Erstellen (und später per „Bearbeiten") wird die Liste auf **vier Wegen*
 
 ## 3. Üben — Verflechtung ins Quiz (vorrangig, nicht exklusiv)
 
-Solange eine aktive Challenge läuft, wird der Quiz-/Übungs-Pool **gewichtet**:
+**Aktivierung über das vorhandene Dropdown „Welche Verben?"**: dort kommt ein neuer
+Eintrag **„Challenge"** dazu (neben Alle · Gespeicherte Verben · Gespeicherte Wörter · …).
+Nutzt dieselbe Gruppen-Mechanik wie `saved`/`words` (inkl. gemerkter Auswahl in
+`kunju-quiz-group`).
+
+Ist „Challenge" gewählt (oder solange eine Challenge aktiv ist), wird der Pool **gewichtet**:
 - **Challenge-Einträge** (noch nicht „sitzt") bekommen ein **hohes Pick-Gewicht** (z. B. ~3–4×, analog zur bestehenden Favoriten-Gewichtung) → tauchen **bevorzugt** auf.
-- Der **restliche Pool** (Niveau-Verben) bleibt mit kleinerem Anteil drin, damit Abwechslung erhalten bleibt.
-- „Sitzt"-Einträge fallen aus der Bevorzugung (kommen nur noch selten zur Auffrischung).
+- Der **restliche Pool** (Niveau-Verben) bleibt mit kleinerem Anteil drin, damit Abwechslung erhalten bleibt — also **vorrangig, nicht exklusiv**.
+- „Sitzt"-Einträge fallen aus der Bevorzugung (nur noch selten zur Auffrischung).
+- Komfort: Ist eine Challenge aktiv, kann das Quiz die Gruppe automatisch auf „Challenge" vorwählen (umstellbar bleibt es jederzeit).
 
 So wird sichergestellt, dass die 8 Verben **tatsächlich** geübt werden — ohne den Rest komplett auszublenden.
 
@@ -83,6 +89,6 @@ Neu: Challenge-Liste als gespeichertes Set (`verbList`/`wordList`), die Listenan
 
 1. **Datenmodell + Auto-Bestückung**: bei Challenge-Erstellung konkrete `verbList`/`wordList` erzeugen (Gemerkt zuerst, dann Auto-Auffüllen) und speichern.
 2. **Challenge-Reiter + Listenansicht** in GEMERKT (Status, Fortschritt).
-3. **Quiz-Gewichtung**: Challenge-Einträge vorrangig in den Pool.
+3. **Quiz-Anbindung**: neuer Dropdown-Eintrag „Challenge" in „Welche Verben?" + Pool-Gewichtung (Challenge-Einträge vorrangig).
 4. **Bestückungs-UI**: aus Gemerkt übernehmen · vorschlagen · selbst eingeben (beim Erstellen/Bearbeiten).
 5. **Politur**: „sitzt"-Logik, „Challenge gemeistert", Texte/Badges.
