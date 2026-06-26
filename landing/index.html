@@ -400,6 +400,33 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 .bt-post .bt-body h3{font-family:var(--headline);font-weight:700;font-size:15px;letter-spacing:-.02em;line-height:1.22;margin:0;text-wrap:balance;color:var(--ink)}
 .bt-post .bt-body p{color:var(--muted);font-size:13px;margin:0;text-wrap:pretty}
 .bt-foot{margin-top:28px;text-align:center}
+/* ── Live-Probier-Widget (Hero) ───────────────────────────── */
+.trybox{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:26px;box-shadow:var(--shadow);padding:24px 26px 26px;margin:34px 0 6px;overflow:hidden}
+.trybox::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--brand-rainbow)}
+.trybox-top{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;justify-content:space-between;margin-bottom:16px}
+.trybox-eyebrow{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.trybox-langs{display:flex;flex-wrap:wrap;gap:7px}
+.tb-lang{font-family:var(--display);font-weight:700;font-size:13px;padding:7px 13px;border-radius:999px;background:var(--surface-2);color:var(--muted);border:1px solid var(--border);cursor:pointer;transition:transform .12s,border-color .12s}
+.tb-lang:hover{transform:translateY(-1px);border-color:var(--ink)}
+.tb-lang.on{background:var(--selbg);color:var(--selfg);border-color:transparent}
+.trybox-form{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.trybox-form input{flex:1 1 240px;min-width:0;font-family:var(--display);font-size:17px;font-weight:600;padding:14px 18px;border-radius:14px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--ink)}
+.trybox-form input:focus{outline:none;border-color:var(--ink);background:var(--surface)}
+.trybox-form .btn{padding:14px 24px;font-size:15px}
+.trybox-out{min-height:38px}
+.tb-result{display:grid;grid-template-columns:1fr 1fr;gap:6px 30px;max-width:560px}
+@media(max-width:560px){.tb-result{grid-template-columns:1fr;gap:4px}}
+.tb-head{grid-column:1/-1;display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px;margin-bottom:6px}
+.tb-verb{font-family:var(--display);font-weight:800;font-size:23px;letter-spacing:-.02em}
+.tb-tense{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.tb-row{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid var(--border)}
+.tb-pron{color:var(--muted);font-size:14px}
+.tb-form{font-weight:700;font-size:15px;font-family:var(--display)}
+.tb-form.irr{color:#b45309}
+.tb-cta{grid-column:1/-1;margin-top:16px}
+.tb-cta a{display:inline-block;padding:13px 24px;border-radius:14px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35);font-family:var(--display);font-weight:800;font-size:14.5px;background:var(--brand-rainbow);box-shadow:0 12px 26px -12px rgba(60,40,10,.5);transition:transform .14s}
+.tb-cta a:hover{transform:translateY(-1px)}
+.tb-err{color:var(--muted);font-size:14px;padding:6px 0}
 </style>
 <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -473,6 +500,18 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         </ol>
       </div>
     </div>
+    <div class="wrap"><div class="trybox reveal" data-d="3">
+      <div class="trybox-top">
+        <span class="trybox-eyebrow" data-i18n="trybox.eyebrow">★ Live ausprobieren — ohne Anmeldung, direkt hier</span>
+        <div class="trybox-langs" id="tbLangs" role="tablist" aria-label="Sprache"></div>
+      </div>
+      <form class="trybox-form" id="tbForm">
+        <input id="tbInput" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Verb eingeben — z. B. hablar" aria-label="Verb eingeben" />
+        <button class="btn btn-primary" type="submit"><span class="g"></span><span class="l" data-i18n="trybox.go">Konjugieren</span></button>
+      </form>
+      <div id="tbOut" class="trybox-out" aria-live="polite"></div>
+    </div></div>
+
     <div class="wrap"><div class="marquee reveal">
       <div class="mq-track" id="mq">
         <span class="mq-item"><span class="b" style="background:#ff3b5c"></span><span data-i18n="mq.es">Spanische Verben konjugieren</span></span><span class="mq-item lang">Subjuntivo</span><span class="mq-item"><span class="b" style="background:#ff7a18"></span><span data-i18n="mq.fr">Französische Verben konjugieren</span></span><span class="mq-item lang">Passé composé</span><span class="mq-item"><span class="b" style="background:#1a9b46"></span><span data-i18n="mq.en">Englische Verben konjugieren</span></span><span class="mq-item lang">Irregular verbs</span><span class="mq-item"><span class="b" style="background:#0a84ff"></span><span data-i18n="mq.nl">Niederländische Verben konjugieren</span></span><span class="mq-item lang">Indefinido</span><span class="mq-item"><span class="b" style="background:var(--ink)"></span><span data-i18n="mq.de">Deutsche Verben konjugieren</span></span><span class="mq-item lang" data-i18n="mq.alltenses">Alle Zeitformen</span>
@@ -749,5 +788,63 @@ function rev(){var h=window.innerHeight||800;document.querySelectorAll('.fly:not
 window.addEventListener('scroll',rev,{passive:true});window.addEventListener('resize',rev);rev();setTimeout(rev,300);
 </script>
 <script src="/landing/i18n.js"></script>
+<!-- Konjugations-Engines für das Live-Widget -->
+<script src="https://conjuexpert.app/engine/conj-es.js" defer></script>
+<script src="https://conjuexpert.app/engine/conj-fr.js" defer></script>
+<script src="https://conjuexpert.app/engine/conj-en.js" defer></script>
+<script src="https://conjuexpert.app/engine/conj-nl.js" defer></script>
+<script src="https://conjuexpert.app/engine/conj-de.js" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  var LANGS=[
+    {code:"es",label:"🇪🇸 Spanisch",verb:"hablar"},
+    {code:"fr",label:"🇫🇷 Französisch",verb:"parler"},
+    {code:"en",label:"🇬🇧 Englisch",verb:"go"},
+    {code:"nl",label:"🇳🇱 Niederländisch",verb:"werken"},
+    {code:"de",label:"🇩🇪 Deutsch",verb:"gehen"}
+  ];
+  var APP="https://conjuexpert.app/";
+  var langs=document.getElementById("tbLangs"),
+      form=document.getElementById("tbForm"),
+      input=document.getElementById("tbInput"),
+      out=document.getElementById("tbOut");
+  if(!langs||!form||!input||!out) return;
+  var cur="es";
+  function defVerb(c){ for(var i=0;i<LANGS.length;i++) if(LANGS[i].code===c) return LANGS[i].verb; return ""; }
+  function esc(s){ return String(s==null?"":s).replace(/[<>&]/g,function(c){return {"<":"&lt;",">":"&gt;","&":"&amp;"}[c];}); }
+  function pills(){
+    langs.innerHTML="";
+    LANGS.forEach(function(L){
+      var b=document.createElement("button");
+      b.type="button"; b.className="tb-lang"+(L.code===cur?" on":""); b.textContent=L.label;
+      b.addEventListener("click",function(){ cur=L.code; input.value=defVerb(cur); pills(); run(); input.focus(); });
+      langs.appendChild(b);
+    });
+  }
+  function run(){
+    var v=input.value.trim();
+    var eng=window.CONJ&&window.CONJ[cur];
+    if(!eng){ out.innerHTML='<div class="tb-err">Engine lädt…</div>'; return; }
+    if(!v){ out.innerHTML=""; return; }
+    var r=eng.conjugate(v);
+    if(!r||r.error){ out.innerHTML='<div class="tb-err">'+esc((r&&r.error)||"Unbekanntes Verb — probier z. B. hablar, parler, go, werken, gehen.")+'</div>'; return; }
+    var t=null,i;
+    for(i=0;i<r.tenses.length;i++){ if(r.tenses[i].id==="present"){ t=r.tenses[i]; break; } }
+    if(!t) t=r.tenses[0];
+    var rows="";
+    for(i=0;i<t.forms.length;i++){
+      var f=t.forms[i], irr=t.reg && f!==t.reg[i];
+      rows+='<div class="tb-row"><span class="tb-pron">'+esc(r.pronouns[i])+'</span><span class="tb-form'+(irr?" irr":"")+'">'+esc(f||"—")+'</span></div>';
+    }
+    var dl=APP+"?lang="+cur+"&verb="+encodeURIComponent(r.infinitive)+"&utm_source=landing&utm_medium=trybox&utm_content="+cur+"-"+encodeURIComponent(r.infinitive);
+    out.innerHTML='<div class="tb-result"><div class="tb-head"><span class="tb-verb">'+esc(r.infinitive)+'</span>'+
+      '<span class="tb-tense">'+esc(t.label)+(r.isIrregular?" · unregelmäßig":"")+'</span></div>'+rows+
+      '<div class="tb-cta"><a href="'+dl+'">„'+esc(r.infinitive)+'" in der App üben →</a></div></div>';
+  }
+  form.addEventListener("submit",function(e){ e.preventDefault(); run(); input.blur(); });
+  input.addEventListener("input",run);
+  pills(); input.value=defVerb(cur); run();
+});
+</script>
 </body>
 </html>
