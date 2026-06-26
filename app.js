@@ -10863,6 +10863,10 @@ function VocabView({
 function ChallengeView({ lang, onNew, onPractice }) {
   const h = React.createElement;
   const [, setTick] = useState(0);
+  const [edit, setEdit] = useState(false);
+  const [vIn, setVIn] = useState("");
+  const [wIn, setWIn] = useState("");
+  const force = () => setTick(t => t + 1);
   const g = recall("kunju-goal-data", null);
   const vl = (g && g.verbList) || [];
   const wl = (g && g.wordList) || [];
@@ -10871,43 +10875,61 @@ function ChallengeView({ lang, onNew, onPractice }) {
       h("p", { className: "ch-empty-tx" }, tr("ch_empty")),
       h("button", { className: "quizbtn check ch-cta", onClick: onNew }, tr("ch_create")));
   }
-  // Manuelles Übersteuern: „kann ich schon" (auf voll) / „nochmal üben" (zurück auf offen).
-  function setItem(kind, i, done) {
-    const gg = recall("kunju-goal-data", null);
-    if (!gg) return;
-    const arr = kind === "v" ? gg.verbList : gg.wordList;
-    if (!arr || !arr[i]) return;
-    arr[i].done = done;
-    arr[i].lastDay = done >= CH_DONE ? new Date().toDateString() : "";
-    persist("kunju-goal-data", gg);
-    setTick(t => t + 1);
-  }
+  function save(fn) { const gg = recall("kunju-goal-data", null); if (!gg) return; fn(gg); persist("kunju-goal-data", gg); force(); }
+  function setItem(kind, i, done) { save(gg => { const a = kind === "v" ? gg.verbList : gg.wordList; if (a && a[i]) { a[i].done = done; a[i].lastDay = done >= CH_DONE ? new Date().toDateString() : ""; } }); }
+  function removeItem(kind, i) { save(gg => { const a = kind === "v" ? gg.verbList : gg.wordList; if (a) a.splice(i, 1); }); }
+  function addVerb(v) { const t = String(v || "").replace(/^to /, "").trim(); if (!t) return; save(gg => { gg.verbList = gg.verbList || []; if (!gg.verbList.some(x => String(x.v).toLowerCase() === t.toLowerCase())) gg.verbList.push({ v: t, done: 0, lastDay: "" }); }); }
+  function addWord(w) { const t = String(w || "").trim(); if (!t) return; save(gg => { gg.wordList = gg.wordList || []; if (!gg.wordList.some(x => String(x.w).toLowerCase() === t.toLowerCase())) gg.wordList.push({ w: t, done: 0, lastDay: "" }); }); }
+  function fillVerbs() { save(gg => { const target = gg.verbs || 0; const have = new Set((gg.verbList || []).map(x => String(x.v).toLowerCase())); let pool = []; try { pool = quizPool(lang, recall("kunju-skill", "beginner")) || []; } catch (e) {} for (let i = 0; i < pool.length && (gg.verbList || []).length < target; i++) { const v = String(pool[i]).replace(/^to /, "").trim(); if (v && !have.has(v.toLowerCase())) { have.add(v.toLowerCase()); gg.verbList.push({ v: v, done: 0, lastDay: "" }); } } }); }
   const days = (g.weeks || 2) * 7;
   const passed = g.startDate ? Math.floor((Date.now() - new Date(g.startDate).getTime()) / 86400000) : 0;
   const left = Math.max(0, days - passed);
   const vDone = vl.filter(x => (x.done || 0) >= CH_DONE).length;
   const wDone = wl.filter(x => (x.done || 0) >= CH_DONE).length;
+  const inV = new Set(vl.map(x => String(x.v).toLowerCase()));
+  const inW = new Set(wl.map(x => String(x.w).toLowerCase()));
+  const savedVerbs = (recall("kunju-favs", []) || []).filter(f => f.lang === lang && f.verb).map(f => String(f.verb).replace(/^to /, "").trim()).filter(v => v && !inV.has(v.toLowerCase()));
+  const savedWords = (getVocab() || []).filter(x => x.lang === lang && x.term).map(x => String(x.term).trim()).filter(w => w && !inW.has(w.toLowerCase()));
   const item = (label, done, kind, i) => {
     const st = (done || 0) >= CH_DONE ? "done" : (done || 0) > 0 ? "learn" : "open";
     return h("div", { className: "ch-item ch-" + st, key: kind + i },
       h("span", { className: "ch-dot" }),
       h("span", { className: "ch-label" }, label),
-      h("button", {
-        className: "ch-mark" + (st === "done" ? " on" : ""),
-        title: st === "done" ? tr("again") : tr("learned"),
-        onClick: () => setItem(kind, i, st === "done" ? 0 : CH_DONE)
-      }, "✓"));
+      edit
+        ? h("button", { className: "ch-rm", "aria-label": "remove", onClick: () => removeItem(kind, i) }, "✕")
+        : h("button", { className: "ch-mark" + (st === "done" ? " on" : ""), title: st === "done" ? tr("again") : tr("learned"), onClick: () => setItem(kind, i, st === "done" ? 0 : CH_DONE) }, "✓"));
+  };
+  const addRow = (kind) => {
+    const val = kind === "v" ? vIn : wIn;
+    const setVal = kind === "v" ? setVIn : setWIn;
+    const add = (t) => { kind === "v" ? addVerb(t) : addWord(t); };
+    const doAdd = () => { add(val); setVal(""); };
+    const chips = kind === "v" ? savedVerbs : savedWords;
+    return h("div", { className: "ch-edit" },
+      h("div", { className: "ch-addrow" },
+        h("input", { className: "ch-input", value: val, placeholder: tr("ch_add_ph"), onChange: e => setVal(e.target.value), onKeyDown: e => { if (e.key === "Enter") doAdd(); } }),
+        h("button", { className: "ch-addbtn", onClick: doAdd }, "+")),
+      chips.length ? h("div", { className: "ch-from" },
+        h("span", { className: "ch-from-lbl" }, tr("ch_from_saved")),
+        h("div", { className: "ch-chips" }, chips.slice(0, 24).map((c, ci) => h("button", { key: ci, className: "ch-chip", onClick: () => add(c) }, "+ " + c)))) : null,
+      kind === "v" ? h("button", { className: "ch-fill", onClick: fillVerbs }, tr("ch_fill")) : null);
+  };
+  const section = (kind) => {
+    const lst = kind === "v" ? vl : wl;
+    if (!lst.length && !edit) return null;
+    const head = (kind === "v" ? tr("saved_verbs") + " · " + tr("ch_done_v", { a: vDone, b: vl.length }) : tr("saved_vocab") + " · " + tr("ch_done_w", { a: wDone, b: wl.length }));
+    return h("div", { className: "ch-sec" },
+      h("div", { className: "ch-sec-h" }, head),
+      lst.map((x, i) => item(kind === "v" ? x.v : x.w, x.done, kind, i)),
+      edit ? addRow(kind) : null);
   };
   return h("div", { className: "ch-wrap" },
     h("div", { className: "ch-head" },
       h("b", null, "Challenge"),
-      g.startDate ? h("span", { className: "ch-left" }, tr("ch_left", { n: left })) : null),
-    vl.length ? h("div", { className: "ch-sec" },
-      h("div", { className: "ch-sec-h" }, tr("saved_verbs") + " · " + tr("ch_done_v", { a: vDone, b: vl.length })),
-      vl.map((x, i) => item(x.v, x.done, "v", i))) : null,
-    wl.length ? h("div", { className: "ch-sec" },
-      h("div", { className: "ch-sec-h" }, tr("saved_vocab") + " · " + tr("ch_done_w", { a: wDone, b: wl.length })),
-      wl.map((x, i) => item(x.w, x.done, "w", i))) : null,
+      h("button", { className: "ch-editbtn" + (edit ? " on" : ""), onClick: () => setEdit(e => !e) }, edit ? tr("ch_editdone") : tr("ch_edit"))),
+    g.startDate ? h("div", { className: "ch-sub" }, tr("ch_left", { n: left })) : null,
+    section("v"),
+    section("w"),
     h("div", { className: "ch-btns" },
       h("button", { className: "quizbtn check", onClick: onPractice }, tr("ch_practice")),
       h("button", { className: "nameskip", onClick: onNew }, tr("ch_new"))));
