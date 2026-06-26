@@ -15174,8 +15174,7 @@ function App() {
       persist("kunju-install-dismissed", true);
     };
     window.addEventListener("appinstalled", installed);
-    // Bei JEDEM Start anbieten, bis aktiv weggeklickt: iOS-Safari → Hinweis, sonst Banner.
-    if (isIOS && isSafari) setShowIOSInstall(true);else setShowInstall(true);
+    if (isIOS && isSafari) setShowIOSInstall(true);else if (deferredInstall.current) setShowInstall(true);
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
       window.removeEventListener("appinstalled", installed);
