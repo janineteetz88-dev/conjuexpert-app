@@ -9,6 +9,7 @@
 
 import { renderSourcesSection } from "./lib/sources.mjs";
 import { extractKeyTakeaways, addHeadingIdsAndToc } from "./lib/geo-blocks.mjs";
+import { firstHeadIntro } from "./lib/notion-adapt.mjs";
 
 const NOTION_VERSION = "2022-06-28";
 const BASE_URL = "https://conjuexpert.app";
@@ -589,11 +590,11 @@ export async function generateHtmlFromNotion(notionPageId, spoke, cluster, GLOBA
   const langLabel = props["Sprache"]?.select?.name || cluster.label;
   const langInfo = LANG_MAP[langLabel] || LANG_MAP["Deutsch"];
 
-  // Beschreibung
-  const description =
+  // Beschreibung (Phase 1: aus Notion-Properties)
+  let description =
     props["Beschreibung"]?.rich_text?.[0]?.plain_text ||
     props["Meta-Description"]?.rich_text?.[0]?.plain_text ||
-    `${title} — verstehen, wie es funktioniert. Mit Beispielen, Erklärungen und Übungen auf ConjuExpert.`;
+    null;
 
   // Datum
   const datePublished =
@@ -603,6 +604,14 @@ export async function generateHtmlFromNotion(notionPageId, spoke, cluster, GLOBA
 
   // Alle Blöcke laden
   const blocks = await fetchBlocks(notionPageId, apiKey);
+
+  // Beschreibung (Phase 2): kursiver Intro-Satz als Fallback, wenn Property fehlt
+  if (!description) {
+    const intro = firstHeadIntro(blocks, { italicOnly: true }) || firstHeadIntro(blocks);
+    description = intro
+      ? (intro.length > 150 ? intro.slice(0, 147) + "…" : intro)
+      : `${title} — verstehen, wie es funktioniert. Mit Beispielen, Erklärungen und Übungen auf ConjuExpert.`;
+  }
 
   // FAQ-Blöcke (Toggles) ans Ende
   const { faqBlocks, rest } = extractFaq(blocks);
