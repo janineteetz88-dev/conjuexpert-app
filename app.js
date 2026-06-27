@@ -14768,6 +14768,10 @@ function Zieltafel({
   const goalDays = goal ? (goal.weeks || 2) * 7 : 14;
   const goalVerbs = goal ? goal.verbs : null;
   const goalWords = goal ? goal.words : null;
+  const vTot = goal && Array.isArray(goal.verbList) ? goal.verbList.length : goalVerbs;
+  const wTot = goal && Array.isArray(goal.wordList) ? goal.wordList.length : goalWords;
+  const vMast = goal && Array.isArray(goal.verbList) ? goal.verbList.filter(x => (x.done || 0) >= CH_DONE).length : 0;
+  const wMast = goal && Array.isArray(goal.wordList) ? goal.wordList.filter(x => (x.done || 0) >= CH_DONE).length : 0;
   const minsLeft = Math.max(1, Math.round(left * 0.5));
   const planDay = goal?.startDate ? Math.min(goalDays, Math.floor((Date.now() - new Date(goal.startDate)) / 86400000) + 1) : daily.streak;
   return /*#__PURE__*/React.createElement("div", {
@@ -14825,23 +14829,23 @@ function Zieltafel({
       fontSize: "12.5px",
       fontWeight: 700
     }
-  }, goalVerbs && /*#__PURE__*/React.createElement("span", {
+  }, vTot && /*#__PURE__*/React.createElement("span", {
     style: {
-      color: "var(--text)"
+      color: "var(--muted)"
     }
   }, "Verben ", /*#__PURE__*/React.createElement("span", {
     style: {
       color: "var(--text)"
     }
-  }, goalVerbs)), goalWords && /*#__PURE__*/React.createElement("span", {
+  }, vMast, "/", vTot, " sitzen")), wTot && /*#__PURE__*/React.createElement("span", {
     style: {
-      color: "var(--text)"
+      color: "var(--muted)"
     }
   }, "W\xF6rter ", /*#__PURE__*/React.createElement("span", {
     style: {
       color: "var(--text)"
     }
-  }, goalWords)), daily.streak > 0 && /*#__PURE__*/React.createElement("span", {
+  }, wMast, "/", wTot)), daily.streak > 0 && /*#__PURE__*/React.createElement("span", {
     style: {
       color: "var(--muted)",
       display: "inline-flex",
