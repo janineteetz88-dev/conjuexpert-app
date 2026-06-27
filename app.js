@@ -7197,17 +7197,6 @@ function QuizView({
       setHeard("__nomic__");
       return;
     }
-    // iPhone-Chrome/Firefox/Edge: Mikro wird zwar freigegeben, aber die
-    // Web-Speech-Spracherkennung läuft auf iOS NUR in Safari. Erst gar nicht
-    // versuchen → klaren „in Safari öffnen"-Hinweis zeigen statt „blockiert".
-    {
-      const _d = detectUA();
-      if (_d.iOS && _d.browser && _d.browser !== "Safari") {
-        setListening(false);
-        setHeard("__usesafari__");
-        return;
-      }
-    }
     const target = spkMode === "sentence" && sent && sent.t ? sent.t : q.answer;
     const recLang = spkMode === "sentence" ? window.CONJ[spkTarget].ttsLang : q.ttsLang;
     function startSR() {
@@ -9223,20 +9212,15 @@ function QuizView({
     }, tr("speak_nomic")), heard === "__denied__" && /*#__PURE__*/React.createElement("div", {
       className: "feedback no",
       style: { display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" }
-    }, /*#__PURE__*/React.createElement("span", null, tr("speak_denied")), /*#__PURE__*/React.createElement("button", {
+    }, /*#__PURE__*/React.createElement("span", null, tr("speak_denied")), /*#__PURE__*/React.createElement("span", {
+      style: { fontSize: "13px", lineHeight: "1.45", fontWeight: 600, maxWidth: "300px" }
+    }, ({ de: "Bist du im privaten / Inkognito-Modus? Dort sperrt der Browser das Mikrofon und vergisst die Erlaubnis sofort — öffne conjuexpert.app in einem normalen Tab.", en: "Are you in private / incognito mode? The browser blocks the mic there and forgets the permission — open conjuexpert.app in a normal tab.", es: "¿Estás en modo privado / incógnito? Ahí el navegador bloquea el micrófono y olvida el permiso — abre conjuexpert.app en una pestaña normal.", fr: "Tu es en navigation privée / incognito ? Le navigateur y bloque le micro et oublie l’autorisation — ouvre conjuexpert.app dans un onglet normal.", nl: "Zit je in privé / incognito? Daar blokkeert de browser de microfoon en vergeet de toestemming — open conjuexpert.app in een gewoon tabblad." })[UILANG] || "Are you in private / incognito mode? Open conjuexpert.app in a normal tab."), /*#__PURE__*/React.createElement("button", {
       className: "quizbtn check",
       type: "button",
       onClick: requestMic
     }, ({ de: "🎤 Mikrofon aktivieren", en: "🎤 Enable microphone", es: "🎤 Activar micrófono", fr: "🎤 Activer le micro", nl: "🎤 Microfoon inschakelen" })[UILANG] || "🎤 Enable microphone"), /*#__PURE__*/React.createElement("span", {
       style: { fontSize: "12px", lineHeight: "1.45", opacity: 0.85, fontWeight: 500, maxWidth: "300px" }
-    }, micHintText())), heard === "__usesafari__" && /*#__PURE__*/React.createElement("div", {
-      className: "feedback no",
-      style: { display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" }
-    }, /*#__PURE__*/React.createElement("span", null, ({ de: "Die Spracheingabe funktioniert auf dem iPhone nur in Safari — nicht in Chrome & Co. Öffne conjuexpert.app in Safari, dann geht das Mikro.", en: "On iPhone, voice input only works in Safari — not in Chrome & co. Open conjuexpert.app in Safari and the mic will work.", es: "En el iPhone la entrada de voz solo funciona en Safari, no en Chrome y similares. Abre conjuexpert.app en Safari y el micro funcionará.", fr: "Sur iPhone, la saisie vocale ne marche que dans Safari, pas dans Chrome & co. Ouvre conjuexpert.app dans Safari et le micro fonctionnera.", nl: "Op de iPhone werkt spraakinvoer alleen in Safari, niet in Chrome e.d. Open conjuexpert.app in Safari en de microfoon werkt." })[UILANG] || "On iPhone, voice input only works in Safari. Open conjuexpert.app in Safari."), /*#__PURE__*/React.createElement("button", {
-      className: "quizbtn check",
-      type: "button",
-      onClick: () => { try { navigator.clipboard && navigator.clipboard.writeText("https://conjuexpert.app/"); } catch (e) {} }
-    }, ({ de: "🔗 Link kopieren (für Safari)", en: "🔗 Copy link (for Safari)", es: "🔗 Copiar enlace (para Safari)", fr: "🔗 Copier le lien (pour Safari)", nl: "🔗 Link kopiëren (voor Safari)" })[UILANG] || "🔗 Copy link (for Safari)")), heard === "__nospeech__" && /*#__PURE__*/React.createElement("div", {
+    }, micHintText())), heard === "__nospeech__" && /*#__PURE__*/React.createElement("div", {
       className: "feedback no"
     }, tr("speak_nospeech")), heard && heard.indexOf("__") !== 0 && /*#__PURE__*/React.createElement("div", {
       className: "heardline"
