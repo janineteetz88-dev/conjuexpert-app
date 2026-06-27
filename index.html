@@ -1400,6 +1400,27 @@ body {
 .ch-from-all { border: 0; background: var(--selbg); color: var(--selfg); border-radius: 999px; padding: 5px 12px; font-family: var(--font-display); font-weight: 700; font-size: 11.5px; cursor: pointer; flex: none; }
 .ch-from-all:active { transform: scale(0.95); }
 .ch-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ch-addbtns { display: flex; gap: 8px; }
+.ch-choose { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); border-radius: 11px; padding: 10px; font-family: var(--font-display); font-weight: 700; font-size: 12.5px; cursor: pointer; }
+.ch-choose:active { transform: scale(0.97); }
+.ch-choose-ic { display: inline-flex; align-items: center; color: var(--muted); }
+.ch-choose-ic svg { display: block; }
+/* Picker-Sheet: gemerkte Verben/Wörter auswählen */
+.chpick-bg { position: fixed; inset: 0; z-index: 6000; background: rgba(0,0,0,.45); display: flex; align-items: flex-end; justify-content: center; }
+.chpick { width: 100%; max-width: 460px; max-height: 82vh; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 22px 22px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,.28); padding: 18px 18px calc(16px + env(safe-area-inset-bottom)); animation: skup 0.28s cubic-bezier(0.2,0.7,0.2,1) both; }
+.chpick-hd { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.chpick-hd b { font-family: var(--font-display); font-weight: 800; font-size: 16px; color: var(--text); }
+.chpick-x { width: 30px; height: 30px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--border); color: var(--muted); font-size: 15px; cursor: pointer; flex: none; }
+.chpick-list { overflow-y: auto; display: flex; flex-direction: column; gap: 7px; padding: 2px; }
+.chpick-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; border: 1px solid var(--border); background: var(--surface); border-radius: 12px; padding: 12px 14px; font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--text); cursor: pointer; text-align: left; }
+.chpick-row.on { background: color-mix(in srgb, var(--text) 6%, var(--surface)); border-color: color-mix(in srgb, var(--text) 24%, var(--border)); }
+.chpick-lb { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chpick-mk { flex: none; width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; border: 1px solid var(--border); color: var(--muted); }
+.chpick-row.on .chpick-mk { background: #1fbf6b; border-color: #1fbf6b; color: #fff; }
+.chpick-empty { color: var(--muted); font-size: 13px; text-align: center; padding: 26px 10px; line-height: 1.5; }
+.chpick-foot { display: flex; gap: 8px; margin-top: 12px; flex: none; }
+.chpick-foot .ch-from-all { flex: none; }
+.chpick-done { flex: 1; }
 .ch-chip { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 999px; padding: 6px 11px; font-family: var(--mono); font-weight: 600; font-size: 12.5px; cursor: pointer; }
 .ch-chip:active { transform: scale(0.96); }
 .ch-fill { align-self: flex-start; border: 1px dashed color-mix(in srgb, var(--text) 28%, var(--border)); background: var(--surface); color: var(--text); border-radius: 12px; padding: 8px 14px; font-family: var(--font-display); font-weight: 700; font-size: 13px; cursor: pointer; }
@@ -1611,6 +1632,8 @@ body {
 .zt-chatin .zt-send { flex: none; width: 34px; height: 34px; border-radius: 10px; border: 0; background: var(--selbg); color: var(--selfg); display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; }
 .gsec { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border: 1.5px solid color-mix(in srgb, var(--ink) 22%, var(--border)); background: var(--surface); border-radius: 15px; padding: 14px; font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--text); cursor: pointer; transition: border-color 0.15s, background 0.15s; flex-shrink: 0; }
 .gsec:active { transform: scale(0.985); }
+.gsec.gsec-primary { background: var(--selbg); border-color: var(--selbg); color: var(--selfg); }
+.gsec.gsec-primary .gsec-ic { color: var(--selfg); opacity: 0.85; }
 .gsec .gsec-ic { display: inline-flex; align-items: center; color: var(--muted); }
 .gsec .gsec-ic svg { display: block; }
 .gsec-hint { text-align: center; font-size: 11.5px; color: var(--muted); margin: -8px 0 2px; line-height: 1.4; }
@@ -2757,7 +2780,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-41"></script>
+<script defer src="/app.js?v=c-sand-42"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
