@@ -110,7 +110,7 @@ header.nav::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height
 .brand-mark{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;width:32px;height:32px;padding:5px;background:var(--surface);border-radius:10px;box-shadow:var(--shadow-sm);flex:none}
 .brand-mark i{display:block;border-radius:3px}
 .brand-name{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:-.02em;color:var(--ink)}
-.brand-name b{font-weight:800;color:var(--ink)}
+.brand-name b{font-weight:800;background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
 .nav-links{display:flex;gap:28px;font-size:15px;font-weight:600;color:var(--muted)}
 .nav-links a:hover{color:var(--ink)}
 .nav .btn{padding:11px 20px;font-size:14.5px}
@@ -128,7 +128,8 @@ header.nav::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height
 /* hero */
 .hero{position:relative;padding:84px 0 30px}
 .hero::before{content:"";position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:1100px;height:560px;background:var(--vivid);filter:blur(120px);opacity:.16;z-index:-1;border-radius:50%}
-.hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:50px;align-items:center}
+.hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:34px 50px;align-items:center}
+.hero-grid #try{grid-column:1/-1;margin:0}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:var(--surface);border:1px solid var(--border);padding:8px 14px;border-radius:999px;box-shadow:var(--shadow-sm)}
 .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px color-mix(in srgb,var(--green) 22%,transparent)}
 h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,5.8vw,64px);line-height:1.02;letter-spacing:-.03em;margin:18px 0 18px;text-wrap:balance}
@@ -176,7 +177,7 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,5.8vw,64px);l
   .anno-legend .ln{flex:none;display:flex;align-items:center;justify-content:center;width:20px;height:20px;margin-top:1px;border-radius:50%;background:var(--selbg);color:#fff;font:700 11px/1 var(--mono)}
   .hero-shot{flex-direction:column;align-items:center}
 }
-@media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:36px}.hero{padding:48px 0 16px}.hero p.lead{max-width:48ch}}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:30px}.hero{padding:48px 0 16px}.hero p.lead{max-width:48ch}.hero-grid #try{order:2}.hero-shot{order:3}}
 
 /* marquee */
 .marquee{margin:42px 0 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
@@ -502,8 +503,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
           <li><span class="ln">5</span><span data-i18n="anno.tenses">Bis zu 12 Zeitformen</span></li>
         </ol>
       </div>
-    </div>
-    <div class="wrap" id="try"><div class="trybox reveal" data-d="3">
+      <div class="trybox reveal" id="try" data-d="3">
       <div class="trybox-top">
         <span class="trybox-eyebrow" data-i18n="trybox.eyebrow">★ Live ausprobieren — ohne Anmeldung, direkt hier</span>
         <div class="trybox-langs" id="tbLangs" role="tablist" aria-label="Sprache"></div>
@@ -513,7 +513,8 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         <button class="btn btn-primary" type="submit"><span class="g"></span><span class="l" data-i18n="trybox.go">Konjugieren</span></button>
       </form>
       <div id="tbOut" class="trybox-out" aria-live="polite"></div>
-    </div></div>
+      </div>
+    </div>
 
     <div class="wrap"><div class="marquee reveal">
       <div class="mq-track" id="mq">
@@ -782,7 +783,7 @@ durch deine Lieblingsthemen.</h2>
 </footer>
 
 <script>
-var BR=["#ff3b5c","#ff7a18","#ffc400","#34c759","#0a84ff"];
+var BR=["#ff5a4d","#ff9e2c","#ffcf3f","#5bbf6a","#3aa6c9"];
 document.querySelectorAll('[data-mark]').forEach(function(m){for(var i=0;i<5;i++){var s=document.createElement('i');s.style.background=BR[i];m.appendChild(s);}});
 // duplicate marquee for seamless loop
 var mq=document.getElementById('mq'); if(mq){ mq.innerHTML+=mq.innerHTML; }
