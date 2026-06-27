@@ -16124,25 +16124,54 @@ function App() {
   }), /*#__PURE__*/React.createElement(LanguageBar, {
     lang: lang,
     setLang: switchLang
-  }), goalSet && hasPaidAccess() && goal && (() => {
-    const gd = (goal.weeks || 2) * 7;
-    const day = goal.startDate ? Math.min(gd, Math.floor((Date.now() - new Date(goal.startDate)) / 86400000) + 1) : 1;
-    const left = Math.max(0, (daily.goal || 0) - (daily.count || 0));
-    const done = left <= 0;
-    return /*#__PURE__*/React.createElement("button", {
-      className: "chstrip",
-      onClick: () => setShowStreak(true),
-      title: tr("sk_title")
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "chstrip-ic",
-      dangerouslySetInnerHTML: { __html: IC_LIST }
-    }), /*#__PURE__*/React.createElement("span", {
-      className: "chstrip-main"
-    }, "Challenge \xB7 Tag ", day, "/", gd), /*#__PURE__*/React.createElement("span", {
-      className: "chstrip-right" + (done ? " done" : "")
-    }, done ? "heute geschafft ✓" : "noch " + left), /*#__PURE__*/React.createElement("span", {
-      className: "chstrip-arr"
-    }, "›"));
+  }), (() => {
+    // Aktive Challenge → Status-/Rückhol-Leiste. Keine Challenge (aber onboarded)
+    // → einladende „Challenge starten"-Leiste (sichtbarer Einstieg, #27).
+    const onboarded = !!(name && String(name).trim());
+    if (goalSet && hasPaidAccess() && goal) {
+      const gd = (goal.weeks || 2) * 7;
+      const day = goal.startDate ? Math.min(gd, Math.floor((Date.now() - new Date(goal.startDate)) / 86400000) + 1) : 1;
+      const left = Math.max(0, (daily.goal || 0) - (daily.count || 0));
+      const done = left <= 0;
+      return /*#__PURE__*/React.createElement("button", {
+        className: "chstrip",
+        onClick: () => setShowStreak(true),
+        title: tr("sk_title")
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-ic",
+        dangerouslySetInnerHTML: { __html: IC_LIST }
+      }), /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-main"
+      }, "Challenge \xB7 Tag ", day, "/", gd), /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-right" + (done ? " done" : "")
+      }, done ? "heute geschafft ✓" : "noch " + left), /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-arr"
+      }, "›"));
+    }
+    if (!goalSet && onboarded) {
+      return /*#__PURE__*/React.createElement("button", {
+        className: "chstrip chstrip-start",
+        onClick: () => {
+          if (!hasPaidAccess()) {
+            setShowPaywall(true);
+            return;
+          }
+          setGoalStep("choose");
+          setShowGoal(true);
+        },
+        title: tr("sk_title")
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-ic",
+        dangerouslySetInnerHTML: { __html: IC_LIST }
+      }), /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-main"
+      }, "Challenge starten"), /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-right"
+      }, "dein Lernplan"), /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-arr"
+      }, "›"));
+    }
+    return null;
   })(), /*#__PURE__*/React.createElement(Tabs, {
     tab: tab,
     setTab: handleTabSwitch,
