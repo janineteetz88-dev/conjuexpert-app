@@ -12800,6 +12800,42 @@ function LoginModal({
   useEffect(() => {
     setTimeout(() => emailRef.current && emailRef.current.focus(), 200);
   }, []);
+  // Supabase-Fehler in eine verständliche Meldung in der UI-Sprache übersetzen.
+  function friendlyAuthErr(e) {
+    const code = (e && (e.code || e.error_code)) || "";
+    const msg = ((e && e.message) || "").toLowerCase();
+    const status = e && e.status;
+    const L = UILANG;
+    const pick = m => m[L] || m.en;
+    if (code === "over_email_send_rate_limit" || status === 429 || msg.includes("rate limit")) {
+      return pick({
+        de: "Zu viele Anmelde-Versuche in kurzer Zeit. Bitte in etwa einer Stunde noch einmal versuchen.",
+        en: "Too many attempts in a short time. Please try again in about an hour.",
+        es: "Demasiados intentos en poco tiempo. Inténtalo de nuevo en aproximadamente una hora.",
+        fr: "Trop de tentatives en peu de temps. Réessaie dans environ une heure.",
+        nl: "Te veel pogingen in korte tijd. Probeer het over ongeveer een uur opnieuw."
+      });
+    }
+    if (msg.includes("already registered") || msg.includes("already been registered") || code === "user_already_exists") {
+      return pick({
+        de: "Diese E-Mail ist bereits registriert. Melde dich an oder setze dein Passwort zurück.",
+        en: "This email is already registered. Log in or reset your password.",
+        es: "Este correo ya está registrado. Inicia sesión o restablece tu contraseña.",
+        fr: "Cet e-mail est déjà enregistré. Connecte-toi ou réinitialise ton mot de passe.",
+        nl: "Dit e-mailadres is al geregistreerd. Log in of stel je wachtwoord opnieuw in."
+      });
+    }
+    if (code === "invalid_credentials" || msg.includes("invalid login credentials")) {
+      return pick({
+        de: "E-Mail oder Passwort stimmt nicht.",
+        en: "Email or password is incorrect.",
+        es: "El correo o la contraseña no son correctos.",
+        fr: "L’e-mail ou le mot de passe est incorrect.",
+        nl: "E-mailadres of wachtwoord klopt niet."
+      });
+    }
+    return (e && e.message) || "Fehler";
+  }
   async function submit(e) {
     e.preventDefault();
     setErr("");
@@ -12846,7 +12882,7 @@ function LoginModal({
         setDone(true);
       }
     } catch (e) {
-      setErr(e.message);
+      setErr(friendlyAuthErr(e));
     }
     setLoading(false);
   }
