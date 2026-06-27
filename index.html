@@ -1420,6 +1420,21 @@ body {
 .chpick-empty { color: var(--muted); font-size: 13px; text-align: center; padding: 26px 10px; line-height: 1.5; }
 .chpick-foot { display: flex; gap: 8px; margin-top: 12px; flex: none; }
 .chpick-foot .ch-from-all { flex: none; }
+/* Fehler-melden Link unter Beispielsätzen */
+.rep-link { display: inline-flex; align-items: center; gap: 5px; margin: 8px auto 0; border: 0; background: transparent; color: var(--muted); font-family: var(--font-display); font-weight: 600; font-size: 11.5px; cursor: pointer; padding: 4px 8px; }
+.rep-link:active { opacity: 0.6; }
+.rep-link-ic { display: inline-flex; align-items: center; }
+.rep-link-ic svg { display: block; }
+/* Melde-Sheet */
+.chrep { max-width: 380px; }
+.chrep-sent { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--text); background: var(--surface-2); border-radius: 12px; padding: 11px 13px; margin: 0 0 12px; line-height: 1.4; }
+.chrep-reasons { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.chrep-reason { border: 1px solid var(--border); background: var(--surface-2); color: var(--text); border-radius: 999px; padding: 8px 13px; font-family: var(--font-display); font-weight: 600; font-size: 12.5px; cursor: pointer; }
+.chrep-reason.on { border-color: var(--text); background: color-mix(in srgb, var(--text) 8%, var(--surface)); }
+.chrep-note { width: 100%; box-sizing: border-box; border: 1px solid var(--border); background: var(--surface-2); border-radius: 12px; padding: 11px 13px; font-family: var(--font-body); font-size: 15px; color: var(--text); outline: 0; resize: none; margin-bottom: 12px; }
+.chrep-send { width: 100%; }
+.chrep-send:disabled { opacity: 0.45; }
+.chrep-thanks { text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 15px; color: #1fbf6b; padding: 24px 8px; margin: 0; }
 .chpick-done { flex: 1; }
 .ch-chip { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 999px; padding: 6px 11px; font-family: var(--mono); font-weight: 600; font-size: 12.5px; cursor: pointer; }
 .ch-chip:active { transform: scale(0.96); }
@@ -2799,7 +2814,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-45"></script>
+<script defer src="/app.js?v=c-sand-46"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
