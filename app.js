@@ -3644,6 +3644,34 @@ function voiceGender(name) {
   if (VOICE_M.test(n)) return "m";
   return "";
 }
+/* Grammatik-Wächter (DE): erkennt den häufigsten KI-Fehler — eine einfache
+   Präteritum-Form, die fälschlich in einen Perfekt-/Futur-Rahmen gesetzt wurde
+   (z. B. "Haben sie die Karten schon SCHICKTEN?" statt "geschickt"). */
+const DE_PERF_AUX = ["habe", "hast", "hat", "haben", "habt", "bin", "bist", "ist", "sind", "seid", "werde", "wirst", "wird", "werden", "werdet"];
+function deClozeBadFrame(full, answer) {
+  try {
+    const s = " " + String(full).toLowerCase().replace(/[?!.,;:]/g, " ").replace(/\s+/g, " ") + " ";
+    const form = String(answer).toLowerCase().trim();
+    if (!form || form.indexOf(" ") >= 0) return false; // nur einfache (einwortige) Formen
+    const fi = s.indexOf(" " + form + " ");
+    if (fi < 0) return false;
+    // Ein Perfekt/Futur-Hilfsverb VOR der einfachen Form → der Satz erwartet ein
+    // Partizip/Infinitiv, nicht die Präteritum-Form. Das ist der Fehler.
+    return DE_PERF_AUX.some(a => { const ai = s.indexOf(" " + a + " "); return ai >= 0 && ai < fi; });
+  } catch (e) { return false; }
+}
+// Deterministische, immer grammatikalisch korrekte Beispiel-Vorlage (Fallback).
+function deClozeTemplate(qq) {
+  try {
+    const ans = String(qq.answer || "").trim();
+    let pron = String(qq.pronoun || "").split("/")[0].trim();
+    if (!ans || !pron) return null;
+    const cap = pron.charAt(0).toUpperCase() + pron.slice(1);
+    const full = cap + " " + ans + ".";
+    const gap = full.replace(ans, "…");
+    return { full, gap, native: "" };
+  } catch (e) { return null; }
+}
 // turn a raw device-voice name into a short, friendly label (mostly just the first name)
 function cleanVoiceName(name) {
   let s = String(name || "");
@@ -6946,6 +6974,23 @@ function QuizView({
         // form being practised ("${qq.answer}"). If the AI dropped it or changed
         // it (e.g. declined a participle: kommend → kommende), the sentence is
         // misleading — show no example rather than a wrong one.
+        setCloze(null);
+        return;
+      }
+      // Grammatik-Wächter (DE, Präteritum): wurde die einfache Form in einen
+      // Perfekt-/Futur-Rahmen gezwängt (z. B. "haben … schickten"), neu generieren —
+      // und nach Versuchen lieber eine korrekte Vorlage als einen falschen Satz zeigen.
+      if (lang === "de" && !isCompound && /pr[äa]teritum/i.test(qq.tenseLabel || "") && deClozeBadFrame(full, qq.answer)) {
+        if (attempt < 2) {
+          fetchCloze(qq, attempt + 1, curTopic);
+          return;
+        }
+        const tpl = deClozeTemplate(qq);
+        if (tpl) {
+          persist(key, tpl);
+          setCloze(tpl);
+          return;
+        }
         setCloze(null);
         return;
       }
