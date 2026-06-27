@@ -1438,8 +1438,9 @@ body {
 .vocaddbtn { flex: none; width: 48px; border: 0; background: var(--lc); color: #fff; border-radius: 12px; font-size: 24px; font-weight: 700; cursor: pointer; transition: transform 0.12s; }
 .vocaddbtn:active { transform: scale(0.93); }
 .vocaddbtn:disabled { opacity: 0.4; }
-.voccats { display: flex; flex-wrap: wrap; gap: 6px; }
-.voccat { border: 1px solid var(--border); background: var(--surface-2); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-family: var(--font-display); font-weight: 600; font-size: 12.5px; cursor: pointer; transition: all 0.15s; }
+.voccats { display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding-bottom: 2px; -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent); }
+.voccats::-webkit-scrollbar { display: none; }
+.voccat { flex: none; border: 1px solid var(--border); background: var(--surface-2); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-family: var(--font-display); font-weight: 600; font-size: 12.5px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
 .voccat.on { border-color: var(--lc); background: color-mix(in srgb, var(--lc) 13%, var(--surface)); color: var(--text); }
 .voccat.addcat { color: var(--lc); border-style: dashed; }
 .vocpractice-bar { display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px; }
@@ -2780,7 +2781,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-42"></script>
+<script defer src="/app.js?v=c-sand-43"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
