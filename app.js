@@ -6506,6 +6506,7 @@ function QuizView({
   const [picked, setPicked] = useState(null);
   const [flipped, setFlipped] = useState(false);
   const [transl, setTransl] = useState(null);
+  const translReqRef = useRef(""); // guards against stale async translations landing on the next card
   const [prevCards, setPrevCards] = useState([]);
   const [speedLog, setSpeedLog] = useState([]);
   const [mver, setMver] = useState(0);
@@ -6735,6 +6736,8 @@ function QuizView({
   }
   function fetchTransl(rawVerb) {
     const base = (rawVerb || "").replace(/^to /, "");
+    const reqId = lang + "|" + base; // identifies this request; a later card invalidates it
+    translReqRef.current = reqId;
     const nativeName = recall("kunju-native", "German");
     const key = `kunju-vtr-${lang}-${base}-${nativeName}`;
     const cached = recall(key, null);
@@ -6771,8 +6774,8 @@ function QuizView({
     window.aiComplete(`Translate the ${eng.name} verb "${base}" into ${nativeName}. Reply with ONLY the ${nativeName} translation in its base/infinitive form, nothing else.`).then(txt => {
       const t = String(txt || "").trim().replace(/^["'«»]+|["'«».]+$/g, "").split("\n")[0].trim();
       persist(key, t);
-      setTransl(t);
-    }).catch(() => setTransl(""));
+      if (translReqRef.current === reqId) setTransl(t); // ignore if the user already moved to another card
+    }).catch(() => { if (translReqRef.current === reqId) setTransl(""); });
   }
   function flipCard() {
     if (!flipped) {
