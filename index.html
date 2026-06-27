@@ -870,6 +870,9 @@ body {
 .quizcard.quizmodern::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--lc); opacity: 0.9; }
 .qm-top { display: flex; align-items: center; gap: 8px; }
 .qm-star { margin-left: auto; width: 34px; height: 34px; }
+/* Stern auf den Quiz-Karten ausgeblendet (auf Wunsch entfernt). Verben lassen sich
+   weiterhin in der Konjugationsansicht per ☆ merken. Zum Wiederherstellen: Zeile entfernen. */
+.qm-star { display: none !important; }
 .flashverb-link { border: 0; background: transparent; cursor: pointer; font: inherit; color: inherit; padding: 2px 6px; display: inline-flex; align-items: center; gap: 7px; border-radius: 10px; transition: background 0.15s, transform 0.12s; }
 .flashverb-link:hover { background: color-mix(in srgb, var(--lc, #a557ff) 9%, transparent); }
 .flashverb-link:active { transform: scale(0.97); }
