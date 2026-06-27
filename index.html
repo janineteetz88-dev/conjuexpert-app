@@ -1406,8 +1406,8 @@ body {
 .ch-choose-ic { display: inline-flex; align-items: center; color: var(--muted); }
 .ch-choose-ic svg { display: block; }
 /* Picker-Sheet: gemerkte Verben/Wörter auswählen */
-.chpick-bg { position: fixed; inset: 0; z-index: 6000; background: rgba(0,0,0,.45); display: flex; align-items: flex-end; justify-content: center; }
-.chpick { width: 100%; max-width: 460px; max-height: 82vh; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 22px 22px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,.28); padding: 18px 18px calc(16px + env(safe-area-inset-bottom)); animation: skup 0.28s cubic-bezier(0.2,0.7,0.2,1) both; }
+.chpick-bg { position: fixed; inset: 0; z-index: 6000; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; padding: 22px; }
+.chpick { width: 100%; max-width: 360px; max-height: 72vh; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); padding: 20px; animation: skup 0.28s cubic-bezier(0.2,0.7,0.2,1) both; }
 .chpick-hd { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
 .chpick-hd b { font-family: var(--font-display); font-weight: 800; font-size: 16px; color: var(--text); }
 .chpick-x { width: 30px; height: 30px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--border); color: var(--muted); font-size: 15px; cursor: pointer; flex: none; }
@@ -1438,9 +1438,11 @@ body {
 .vocaddbtn { flex: none; width: 48px; border: 0; background: var(--lc); color: #fff; border-radius: 12px; font-size: 24px; font-weight: 700; cursor: pointer; transition: transform 0.12s; }
 .vocaddbtn:active { transform: scale(0.93); }
 .vocaddbtn:disabled { opacity: 0.4; }
-.voccats { display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding-bottom: 2px; -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent); }
-.voccats::-webkit-scrollbar { display: none; }
-.voccat { flex: none; border: 1px solid var(--border); background: var(--surface-2); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-family: var(--font-display); font-weight: 600; font-size: 12.5px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.voccats { display: flex; flex-wrap: wrap; gap: 6px; max-height: 78px; overflow: hidden; transition: max-height 0.22s ease; }
+.voccats.open { max-height: 520px; }
+.voccats-actions { display: flex; gap: 6px; margin-top: 7px; }
+.voccat-toggle { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 999px; padding: 6px 13px; font-family: var(--font-display); font-weight: 700; font-size: 12.5px; cursor: pointer; }
+.voccat { border: 1px solid var(--border); background: var(--surface-2); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-family: var(--font-display); font-weight: 600; font-size: 12.5px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
 .voccat.on { border-color: var(--lc); background: color-mix(in srgb, var(--lc) 13%, var(--surface)); color: var(--text); }
 .voccat.addcat { color: var(--lc); border-style: dashed; }
 .vocpractice-bar { display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px; }
@@ -1458,6 +1460,22 @@ body {
 .vocsr.lvl1 i:nth-child(-n+1), .vocsr.lvl2 i:nth-child(-n+2), .vocsr.lvl3 i:nth-child(-n+3), .vocsr.lvl4 i:nth-child(-n+4), .vocsr.lvl5 i:nth-child(-n+5), .vocsr.lvl6 i { background: var(--lc); }
 .vocsr.lvl6 i { background: #1a9b46; }
 #approot[data-accent="mono"] .vocstart { background: var(--text); }
+/* Highlights = nur Regenbogen-RAND auf den Haupt-Aktionen (ruhiger Body) */
+.ch-go, .gsec.gsec-primary, .vocstart:not(.vocdue) {
+  border: 2px solid transparent !important;
+  background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(100deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff) border-box !important;
+  color: var(--text) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+.gsec.gsec-primary .gsec-ic { color: var(--muted) !important; opacity: 1 !important; }
+/* 'Heute fällig' ruhig & hell statt großer dunkler Balken */
+.vocstart.vocdue { background: var(--surface) !important; color: var(--text) !important; border: 1px solid var(--border) !important; box-shadow: var(--shadow-sm) !important; }
+.vocsuggest {
+  border: 1.5px solid transparent !important;
+  background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(100deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff) border-box !important;
+  color: var(--text) !important;
+}
+.vocsuggest .txtico { color: #ff7a18; }
 .voclist { display: flex; flex-direction: column; gap: 8px; }
 .vocitem { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lc); border-radius: 12px; padding: 11px 13px; box-shadow: var(--shadow-sm); }
 .vocitem-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
@@ -2781,7 +2799,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-43"></script>
+<script defer src="/app.js?v=c-sand-44"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
