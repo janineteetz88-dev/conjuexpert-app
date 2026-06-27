@@ -1495,7 +1495,7 @@
       empty_title: "Type a verb to conjugate", empty_sub: "All tenses across {n} languages — type a verb or hit 🎲 to start.",
       regular: "regular", irregular: "irregular", recommended: "Recommended", ad_cta: "Practice →",
       mode: "Mode", m_type: "⌨ Type", m_choice: "◉ Choice", m_speed: "⚡ Speed", m_texte: "📖 Texts", mdesc_texte: "Read an AI story — translate, fill in verbs or answer questions", texte_question: "Comprehension", texte_cloze: "Fill verbs", texte_translate: "Translate", texte_new: "New story", texte_writing: "Writing your story…", texte_error: "Couldn't write a story — please try again.", texte_comprehension: "Comprehension", texte_done: "Story complete!", texte_fill_hint: "Put the verb in the right tense", texte_learn: "Learn this verb", texte_translation: "Translation", texte_read: "Read aloud", texte_speed: "Which speed?", texte_voice: "Which voice?", texte_voice_auto: "Automatic (best)", texte_almost: "almost done …", texte_voice_f: "Female", texte_voice_m: "Male", texte_pause: "Pause", texte_resume: "Resume", texte_mywords_lbl: "My words", texte_mywords: "Use my saved words",
-      which_tense: "Tense", tense_word: "Tense", all_tenses: "All tenses", all_themes: "All topics", which_verbs: "Words", which_dir: "Direction", dir_produce: "PRODUCE", dir_recognize: "RECOGNIZE", dir_random: "RANDOM", which_theme: "Topics", quiz_mode_hd: "Quiz mode", explain_hd: "Explanation", req_form: "Asked", tip_label: "Tip", tip_meaning: "Meaning", tip_sentence: "Sentence", none_all: "None selected — all tenses are practiced", all_btn: "All", none_btn: "None", mist_clear_title: "All mistakes cleared!", mist_clear_sub: "Nice work — you reviewed every verb you got wrong.", mist_practice: "Practice mistakes", view_conj: "See full conjugation", mist_exit: "Back to all verbs",
+      which_tense: "Tense", tense_word: "Tense", all_tenses: "All tenses", all_themes: "All topics", which_verbs: "Verbs", which_dir: "Direction", dir_produce: "PRODUCE", dir_recognize: "RECOGNIZE", dir_random: "RANDOM", which_theme: "Topics", quiz_mode_hd: "Quiz mode", explain_hd: "Explanation", req_form: "Asked", tip_label: "Tip", tip_meaning: "Meaning", tip_sentence: "Sentence", none_all: "None selected — all tenses are practiced", all_btn: "All", none_btn: "None", mist_clear_title: "All mistakes cleared!", mist_clear_sub: "Nice work — you reviewed every verb you got wrong.", mist_practice: "Practice mistakes", view_conj: "See full conjugation", mist_exit: "Back to all verbs",
       correct: "correct", accuracy: "accuracy", streak: "streak",
       type_form: "type the form…", check: "Check", next: "Next →", correct_excl: "✓ Correct!", accent_hint: "Right! Just mind the accent: {answer}", answer: "Answer:",
       hint_type: "Type the correct form for the pronoun and tense.", hint_choice: "Pick the correct form — 4 options.",
@@ -1508,7 +1508,7 @@
       fb_net: "Couldn't reach the explainer just now. Here are the core rules:",
       welcome: "Hey! You'll:", welcome_sub: "Conjugate verbs in 5 languages, quiz yourself and easily learn your favourite language.",
       your_name: "Your name…", mother_tongue: "Your mother tongue", skill_q: "Your level", skill_beginner: "Beginner", skill_beginner_sub: "common verbs", skill_intermediate: "Inter.", skill_intermediate_sub: "+ irregular", skill_advanced: "Advanced", skill_advanced_sub: "all verbs", lets_go: "Let's go →", skip: "Skip for now", remove_name: "Remove name", profile: "Profile", listen: "Listen", m_cards: "🃏 Cards", flip: "Tap to flip", got_it: "Got it", again: "Practice again", mistakes: "Mistakes", no_mistakes: "No mistakes yet — they appear here to review.", tab_saved: "Saved", reveal: "Show translation", learned: "Learned ✓", saved_empty: "No saved verbs yet. Tap the ☆ on any conjugation to save it here.", tour_conj: "The core: conjugate any verb in 5 languages, across every tense — at a glance.", tour_quiz: "Quiz yourself — cards, choice, typing & speaking — with fresh AI example sentences each round.", tour_learn: "Understand each tense bilingually, with auto-generated examples you can tap to save.", tour_saved: "Save verbs & words, build your own vocabulary, and practice them with spaced repetition.", tour_more1: "The core: every verb in 5 languages across all tenses — plus bilingual learning with AI examples.", tour_more2: "Practice with the quiz (cards, choice, typing & speaking), save words and stay on track with challenges.", tour_goals_h: "Challenges", tour_goal: "Build your personal challenge — AI suggestion, time-based, or fully custom. Track your daily progress and stay motivated.", tour_trial_head: "Your gift: 24h Premium", tour_trial_sub: "Then unlock your welcome discount — the conjugation tables stay free forever.", tour_feat1: "Quiz & Saved — fully unlocked", tour_feat2: "All tenses & AI example sentences", tour_feat3: "5 languages, no ads", eg_step1: "Random verb – tap ★ to save", eg_step2: "Practice in Quiz & pick favourite topics", eg_step3: "Train saved words under 'Saved'", hero_kicker: "Hey {name} 👋", hero_plan: "Your challenge for today, {name}:", hero_plan_anon: "Your challenge for today:", tour_next: "Next", tour_start: "Start learning", tour_skip: "Skip", t2_hi: "Great to have you here, {name}! 👋", t2_hi_anon: "Great to have you here! 👋", t2_ask: "Want a quick tour of the app — or jump right in?", t2_start_tour: "Start the tour", t2_skip_tour: "Jump right in", t2_overview_t: "Here's what's waiting for you", t2_quiz_tap_t: "Quiz · Tap", t2_quiz_type_t: "Quiz · Type", t2_quiz_text_t: "Quiz · Text", t2_prices_t: "Plans & pricing", t2_quizmodes_x: "Practise actively until it sticks — pick your mode.", t2_tap_x: "Choose the right form from 4 options.", t2_type_x: "Write the form yourself — actively trains your spelling.", t2_text_x: "Pick a topic, tense & vocabulary — the AI reads your story aloud: test & train your listening.", t2_conj_x: "Type a verb or roll the dice, pick a tense — save it to your list with ★.", t2_merken_x: "Tap & save words in practice sentences — or add your own.", t2_prices_x: "Conjugating & learning stay free forever · 24 hours of Premium to try", t2_ov1_t: "Your challenge in sight", t2_ov1_d: "Set a daily, weekly or monthly challenge — track progress & streak", t2_ov2_t: "Vocabulary list", t2_ov2_d: "Tap & save words in sentences — or add your own", t2_ov3_t: "Favourite topics", t2_ov3_d: "Create your own topics under Saved and practise them in the quizzes", t2_m_cards: "Cards", t2_m_tap: "Tap", t2_m_type: "Type", t2_m_speak: "Speak", t2_m_speed: "⚡ Speed", t2_m_text: "Text", t2_f_topic: "Topic", t2_f_tense: "Tense", t2_f_words: "Words", t2_v_travel: "Travel", t2_v_saved: "Saved list", t2_v_work: "work", t2_p1_t: "24 h Premium", t2_p1_d: "try everything — no account needed", t2_p2_t: "With account · free", t2_p2_d: "Conjugate, Learn & 20 quiz cards / day", t2_p3_t: "ConjuPremium", t2_p3_d: "all unlocked · yearly €29.99 · monthly €2.99", m_speak: "🎤 Speak", speak_tap: "Tap the mic and say the form", speak_heard: "Heard:", speak_nomic: "Voice input isn’t supported here.", spk_form: "Speak word", spk_sentence: "Speak sentence", spk_what: "What to practice", spk_say: "Say it in {lang}",
-      dq_form: "Conjugated form", vocab_translate: "Translate", offline_note: "⚡ Offline — examples & translations need internet", aux_title: "Building compound tenses", aux_logic: "All compound tenses are built the same way: conjugate the helper verb {aux} for the person + tense, then add the unchanging past participle {part}. Only the helper changes — the participle stays the same.", aux_note: "Compound tenses = auxiliary verb + past participle.", aux_participle: "Past participle", cards_hint: "Conjugate the verb in the required tense in your head – tap for the answer", cards_hint_type: "Conjugate the verb in the required tense · type it in the box", cards_hint_speak: "Conjugate the verb in the required tense · tap the mic to speak", choose_label: "Choose:", tap_retry: "Tap to translate", dq_infinitive: "Infinitive", dq_belongs: "From", dq_participle: "Past participle", dq_gerund: "Gerund", spk_relearn: "Still learning — show answer", spk_correct_is: "The correct sentence:", spk_next_sentence: "Next sentence →", speak_denied: "Microphone blocked — allow mic access in your browser.", speak_nospeech: "Didn't catch that — try again.", mic_start: "Tap to speak", sent_mist_practice: "Practice wrong sentences", spk_context: "In a sentence", cloze_instr: "Put the verb in the right tense", choose_tile: "pick the right tile", mic_stop: "Tap when done", tap_word: "tap a word for its meaning", practice_again: "Practice again", sk_title: "Challenge & streak", sk_today: "Today", sk_streak: "Day streak", sk_best: "Best", sk_days: "days", sk_done: "Challenge done!", sk_left: "{n} more to finish today's challenge", sk_explain: "Every conjugation and quiz answer counts. Finish your daily challenge to keep your streak alive — miss a day and it resets.", sk_close: "Got it", dq_fuzzy: "matched ignoring accents", dq_switched: "switched to infinitive", dq_guess: "best guess from the ending", tfilter_hint: "Swipe sideways · tap to show / hide a tense", verb_ph: "Type a verb…", autoread: "Read answer aloud", autoread_sub: "when correct", review: "Review", native_ph: "…or a verb in your language", saved_verbs: "Verbs", saved_vocab: "Vocabulary", ch_tab: "Challenge", ch_empty: "No challenge yet — create one and practise with focus.", ch_create: "Create challenge", ch_new: "New challenge", ch_practice: "Practise now", ch_left: "{n} days left", ch_done_v: "{a} of {b} verbs mastered", ch_done_w: "{a} of {b} words mastered", ch_edit: "Edit", ch_editdone: "Done", ch_add_ph: "Verb or word…", ch_fill: "Fill up", ch_from_saved: "From Saved", ch_mastered: "Challenge mastered!", ch_mastered_sub: "Every item is solid — time for a new challenge.", vocab_all: "All", vocab_new_cat: "New", vocab_new_cat_q: "Name of the new category:", vocab_add_ph: "Add a word or phrase…", vocab_empty: "No words yet — add your first above.", vocab_practice: "Practice", vocab_word: "word", vocab_phrase: "phrase", vocab_type_target: "Type it in {lang}…", vocab_done: "Round complete!", vocab_save: "Save", vocab_saved: "Saved", vocab_seeding: "Loading starter words…", vocab_suggest: "Suggest 10 new words", vocab_due: "Due today", vocab_strength: "Memory strength", vocab_starter: "Load 5 starter words", gr_ind: "Indicative", gr_subj: "Subjunctive", gr_cond: "Conditional", gr_imp: "Imperative", gr_cont: "Continuous", gr_forms: "Non-finite forms", how_formed: "How it's formed", key_irregulars: "Key irregular verbs", irr_note: "Tap a verb to see its full conjugation.", tap_save: "tap a word — meaning & save", type_word: "Type word", type_sentence: "Type sentence", spk_translate: "Translate this", qi_title: "How do you want to practice?", qi_sub: "Pick a mode — each trains a different skill.", qi_foot: "Tip: change tense & verb filters after picking a mode.", qi_back: "Overview", mdesc_cards: "Flip cards — see the answer, no pressure", mdesc_choice: "Multiple choice — pick the right form", mdesc_speed: "60-second sprint — how many can you do?", mdesc_type: "Type the form or translate a sentence", mdesc_speak: "Say it out loud — speech recognition",
+      dq_form: "Conjugated form", vocab_translate: "Translate", offline_note: "⚡ Offline — examples & translations need internet", aux_title: "Building compound tenses", aux_logic: "All compound tenses are built the same way: conjugate the helper verb {aux} for the person + tense, then add the unchanging past participle {part}. Only the helper changes — the participle stays the same.", aux_note: "Compound tenses = auxiliary verb + past participle.", aux_participle: "Past participle", cards_hint: "Conjugate the verb in the required tense in your head – tap for the answer", cards_hint_type: "Conjugate the verb in the required tense · type it in the box", cards_hint_speak: "Conjugate the verb in the required tense · tap the mic to speak", choose_label: "Choose:", tap_retry: "Tap to translate", dq_infinitive: "Infinitive", dq_belongs: "From", dq_participle: "Past participle", dq_gerund: "Gerund", spk_relearn: "Still learning — show answer", spk_correct_is: "The correct sentence:", spk_next_sentence: "Next sentence →", speak_denied: "Microphone blocked — allow mic access in your browser.", speak_nospeech: "Didn't catch that — try again.", mic_start: "Tap once to record", sent_mist_practice: "Practice wrong sentences", spk_context: "In a sentence", cloze_instr: "Put the verb in the right tense", choose_tile: "pick the right tile", mic_stop: "Tap when done", tap_word: "tap a word for its meaning", practice_again: "Practice again", sk_title: "Challenge & streak", sk_today: "Today", sk_streak: "Day streak", sk_best: "Best", sk_days: "days", sk_done: "Challenge done!", sk_left: "{n} more to finish today's challenge", sk_explain: "Every conjugation and quiz answer counts. Finish your daily challenge to keep your streak alive — miss a day and it resets.", sk_close: "Got it", dq_fuzzy: "matched ignoring accents", dq_switched: "switched to infinitive", dq_guess: "best guess from the ending", tfilter_hint: "Swipe sideways · tap to show / hide a tense", verb_ph: "Type a verb…", autoread: "Read answer aloud", autoread_sub: "when correct", review: "Review", native_ph: "…or a verb in your language", saved_verbs: "Verbs", saved_vocab: "Vocabulary", saved_tap_hint: "Tap a cell to hear it · ✕ removes the verb", ch_tab: "Challenge", ch_empty: "No challenge yet — create one and practise with focus.", ch_create: "Create challenge", cs_day: "Day", cs_left: "{n} left", cs_done: "done today ✓", cs_start: "Start challenge", cs_plan: "your plan", ch_moment: "“{v}” is locked in — mastered!", ch_words_hint: "Words are practised in your Vocabulary", ch_words_go: "To Vocabulary →", ch_new: "New challenge", ch_practice: "Practise now", ch_left: "{n} days left", ch_done_v: "{a} of {b} verbs mastered", ch_done_w: "{a} of {b} words mastered", ch_edit: "Edit", ch_editdone: "Done", ch_add_ph: "Verb or word…", ch_fill: "Fill up", ch_from_saved: "From Saved", ch_add_all: "Add all", ch_choose: "Choose from saved", ch_pick_verbs: "Your saved verbs", ch_pick_words: "Your saved words", ch_pick_empty_v: "No saved verbs yet — star verbs with ☆ while conjugating.", ch_pick_empty_w: "No saved words yet — add them under Vocabulary.", ch_timeup: "Time's up — {a} of {b} mastered.", ch_extend: "+1 week", ch_mastered: "Challenge mastered!", ch_mastered_sub: "Every item is solid — time for a new challenge.", vocab_all: "All", vocab_new_cat: "New", vocab_cats_all: "All topics", vocab_cats_less: "Less", vocab_new_cat_q: "Name of the new category:", vocab_add_ph: "Add a word or phrase…", vocab_empty: "No words yet — add your first above.", vocab_practice: "Practice", vocab_word: "word", vocab_phrase: "phrase", vocab_type_target: "Type it in {lang}…", vocab_done: "Round complete!", vocab_save: "Save", vocab_saved: "Saved", vocab_seeding: "Loading starter words…", vocab_suggest: "Suggest 10 new words", vocab_due: "Due today", vocab_strength: "Memory strength", vocab_starter: "Load 5 starter words", gr_ind: "Indicative", gr_subj: "Subjunctive", gr_cond: "Conditional", gr_imp: "Imperative", gr_cont: "Continuous", gr_forms: "Non-finite forms", how_formed: "How it's formed", key_irregulars: "Key irregular verbs", irr_note: "Tap a verb to see its full conjugation.", tap_save: "tap a word — meaning & save", report_link: "Report error", report_title: "What's wrong?", r_grammar: "Wrong grammar", r_unnatural: "Unnatural", r_translation: "Wrong translation", r_other: "Something else", report_note: "Add a note (optional)…", report_send: "Send", report_thanks: "Thanks — we'll look into it!", acct_created: "✓ Account created — welcome!", report_general: "Send feedback", report_general_sub: "Idea, bug or praise", type_word: "Type word", type_sentence: "Type sentence", spk_translate: "Translate this", qi_title: "How do you want to practice?", qi_sub: "Pick a mode — each trains a different skill.", qi_foot: "Tip: change tense & verb filters after picking a mode.", qi_back: "Overview", mdesc_cards: "Flip cards — see the answer, no pressure", mdesc_choice: "Multiple choice — pick the right form", mdesc_speed: "60-second sprint — how many can you do?", mdesc_type: "Type the form or translate a sentence", mdesc_speak: "Say it out loud — speech recognition",
       paywall_lock: "🔒 Quiz & Saved are Premium", paywall_h1: "Conjugate without thinking", paywall_sub: "The Quiz trains you actively until the forms stick — and Saved lets you practise exactly the vocabulary that matters to you.", paywall_unlock: "Unlock Premium", paywall_later: "Maybe later", pw_feat1: "Interactive Quiz", pw_feat1v: "4 modes", pw_feat2: "Saved & vocab lists", pw_feat2v: "unlimited", pw_feat3: "Conjugation & Learn", pw_feat3v: "stays free",
       offer_badge: "🚀 WELCOME OFFER · −{disc} %", offer_expires: "Offer expires in {t}", offer_instead: "instead of", offer_mo: "mo.", offer_yr: "/ year", offer_you_pay: "you pay:", offer_save: "you save {save} € (−{disc} %)", offer_secure: "Secure offer", offer_trial: "Try free for 24 h first", offer_trial_b: "24 h Premium free", offer_close: "Close offer", offer_price_label: "Price: {price} € per year, instead of {eq} € billed monthly",
       plan_hero_h1: "Learn without limits", plan_hero_sub: "Unlimited Quiz & Saved in all 5 languages", plan_annual: "Annual plan", plan_monthly: "Monthly plan", plan_best: "★ Most popular", plan_bonus: "🎁 Welcome bonus", plan_per_mo: "/ month", plan_per_yr: "/ year", plan_instead: "instead of", plan_save: "you save {save} € (−{disc} %)", plan_mo_label: "~{price} € / month · instead of {eq} €", plan_flex: "flexible · equiv. {eq} € / year", plan_feat1: "Interactive conjugation quiz", plan_feat2: "Saved & vocab lists", plan_feat3: "5 languages — ES, FR, EN, NL, DE", plan_feat4: "All devices · no ads", plan_cta: "Continue to payment", plan_cancelable: "cancel anytime", plan_have_account: "Already have an account?", sign_in: "Sign in", plan_coupon: "Redeem coupon code", pr_title: "Pricing & Plans", pr_eyebrow: "Pricing", pr_free: "Free", pr_premium: "Premium", pr_feat_conj: "Conjugate verbs · all tenses", pr_active: "You have Premium – thank you! 💜", pr_anon: "Guest", pr_konto: "Account", pr_quiz_day: "20/day", pr_trial_note: "🎁 With an account: 2 extra days of Premium, free", pr_feat_goals: "Challenges & progress", ap_lock: "🔓 Free account", ap_h1: "Quiz with a free account", ap_sub: "Create a free account to practice with the quiz — plus 2 days of Premium, free.", ap_feat1: "20 quiz cards per day", ap_feat2: "2 days of Premium, free", ap_feat3: "Progress on all your devices", ap_cta: "Create free account", ql_lock: "🔓 Daily limit reached", ql_h1: "20 cards done for today!", ql_sub: "Nice work! With Premium you practice without limits — or come back tomorrow for 20 fresh cards.", ql_feat1: "Unlimited quiz — every mode", ql_cta: "Unlock Premium", coupon_title: "Coupon code", coupon_need_login: "Please sign in first to redeem a code.", coupon_sign_in: "Sign in now", coupon_ph: "Enter code", coupon_redeem: "Redeem", coupon_redeeming: "Redeeming…",
@@ -1540,7 +1540,7 @@
       empty_title: "Verb eingeben zum Konjugieren", empty_sub: "Alle Zeitformen in {n} Sprachen — tippe ein Verb oder 🎲 zum Start.",
       regular: "regelmäßig", irregular: "unregelmäßig", recommended: "Empfohlen", ad_cta: "Üben →",
       mode: "Modus", m_type: "⌨ Tippen", m_choice: "◉ Auswahl", m_speed: "⚡ Speed", m_texte: "📖 Texte", mdesc_texte: "Lies eine KI-Geschichte — übersetzen, Verben einsetzen oder Fragen beantworten", texte_question: "Verständnis", texte_cloze: "Verben einsetzen", texte_translate: "Übersetzen", texte_new: "Neue Geschichte", texte_writing: "Deine Geschichte wird geschrieben…", texte_error: "Konnte keine Geschichte schreiben — versuch es nochmal.", texte_comprehension: "Verständnisfragen", texte_done: "Geschichte geschafft!", texte_fill_hint: "Setze das Verb in die richtige Zeitform", texte_learn: "Verb lernen", texte_translation: "Übersetzung", texte_read: "Vorlesen", texte_speed: "Welches Tempo?", texte_voice: "Welche Stimme?", texte_voice_auto: "Automatisch (beste)", texte_almost: "gleich fertig …", texte_voice_f: "Weiblich", texte_voice_m: "Männlich", texte_pause: "Pause", texte_resume: "Weiter", texte_mywords_lbl: "Mein Wortschatz", texte_mywords: "Gemerkte Wörter einbauen",
-      which_tense: "Zeitform", tense_word: "Zeitform", all_tenses: "Alle Zeitformen", all_themes: "Alle Themen", which_verbs: "Wörter", which_dir: "Richtung", dir_produce: "PRODUZIEREN", dir_recognize: "ERKENNEN", dir_random: "ZUFÄLLIG", which_theme: "Themen", quiz_mode_hd: "Quiz-Modus", explain_hd: "Erklärung", req_form: "Gesucht", tip_label: "Tipp", tip_meaning: "Bedeutung", tip_sentence: "Satz", none_all: "Nichts gewählt — es werden alle Zeitformen geübt", all_btn: "Alle", none_btn: "Keine", mist_clear_title: "Alle Fehler gemeistert!", mist_clear_sub: "Stark — du hast jedes falsch gemachte Verb wiederholt.", mist_practice: "Fehler üben", view_conj: "Volle Konjugation ansehen", mist_exit: "Zurück zu allen Verben",
+      which_tense: "Zeitform", tense_word: "Zeitform", all_tenses: "Alle Zeitformen", all_themes: "Alle Themen", which_verbs: "Verben", which_dir: "Richtung", dir_produce: "PRODUZIEREN", dir_recognize: "ERKENNEN", dir_random: "ZUFÄLLIG", which_theme: "Themen", quiz_mode_hd: "Quiz-Modus", explain_hd: "Erklärung", req_form: "Gesucht", tip_label: "Tipp", tip_meaning: "Bedeutung", tip_sentence: "Satz", none_all: "Nichts gewählt — es werden alle Zeitformen geübt", all_btn: "Alle", none_btn: "Keine", mist_clear_title: "Alle Fehler gemeistert!", mist_clear_sub: "Stark — du hast jedes falsch gemachte Verb wiederholt.", mist_practice: "Fehler üben", view_conj: "Volle Konjugation ansehen", mist_exit: "Zurück zu allen Verben",
       correct: "richtig", accuracy: "Genauigkeit", streak: "Serie",
       type_form: "Form eintippen…", check: "Prüfen", next: "Weiter →", correct_excl: "✓ Richtig!", accent_hint: "Richtig! Achte nur auf den Akzent: {answer}", answer: "Antwort:",
       hint_type: "Tippe die richtige Form für Pronomen und Zeitform.", hint_choice: "Wähle die richtige Form — 4 Optionen.",
@@ -1553,7 +1553,7 @@
       fb_net: "Erklärung gerade nicht erreichbar. Hier die Kernregeln:",
       welcome: "Hey! Du wirst:", welcome_sub: "hier kannst du Verben in 5 Sprachen konjugieren, quizzen und so easy deine Lieblingssprache lernen.",
       your_name: "Dein Name…", mother_tongue: "Deine Muttersprache", skill_q: "Dein Niveau", skill_beginner: "Anfänger", skill_beginner_sub: "häufige Verben", skill_intermediate: "Mittel", skill_intermediate_sub: "+ unregelmäßige", skill_advanced: "Fortgeschr.", skill_advanced_sub: "alle Verben", lets_go: "Los geht's →", skip: "Überspringen", remove_name: "Namen entfernen", profile: "Profil", listen: "Anhören", m_cards: "🃏 Karten", flip: "Tippen zum Umdrehen", got_it: "Gewusst", again: "Nochmal üben", mistakes: "Fehler", no_mistakes: "Noch keine Fehler — sie erscheinen hier zum Wiederholen.", tab_saved: "Gemerkt", reveal: "Übersetzung zeigen", learned: "Gelernt ✓", saved_empty: "Noch keine gemerkten Verben. Tippe bei einer Konjugation auf das ☆.", tour_conj: "Das Herzstück: jedes Verb in 5 Sprachen über alle Zeitformen konjugieren — auf einen Blick.", tour_quiz: "Quize dich — Karten, Auswahl, Tippen & Sprechen — mit automatisch erzeugten KI-Beispielsätzen.", tour_learn: "Jede Zeitform zweisprachig verstehen, mit KI-Beispielen — antippen & in den Wortschatz merken.", tour_saved: "Speichere Verben & Wörter, baue deinen eigenen Wortschatz auf und übe mit Spaced Repetition — die KI schlägt automatisch Startwörter vor.", tour_more1: "Das Herzstück: jedes Verb in 5 Sprachen über alle Zeitformen – plus zweisprachiges Lernen mit KI-Beispielen.", tour_more2: "Übe mit Quiz (Karten, Auswahl, Tippen & Sprechen), merke dir Wörter und bleib mit Challenges am Ball.", tour_goals_h: "Challenges", tour_goal: "Erstelle deine persönliche Challenge — KI-Vorschlag, nach Zeit oder individuell. Verfolge täglich deinen Fortschritt und bleib motiviert.", tour_trial_head: "Dein Geschenk: 24 h Premium", tour_trial_sub: "Danach Willkommensrabatt freischalten — die Konjugationstabellen bleiben für immer kostenlos.", tour_feat1: "Quiz & Gemerkt – voll freigeschaltet", tour_feat2: "Alle Zeitformen & KI-Beispielsätze", tour_feat3: "5 Sprachen, keine Werbung", eg_step1: "Zufälliges Verb – per ★ speichern", eg_step2: "Im Quiz üben & Lieblingsthemen wählen", eg_step3: "Gespeicherte Wörter gezielt im Tab 'Gemerkt' trainieren", hero_kicker: "Hey {name} 👋", hero_plan: "Deine Challenge für heute, {name}:", hero_plan_anon: "Deine Challenge für heute:", tour_next: "Weiter", tour_start: "Los geht\u0027s", tour_skip: "Überspringen", t2_hi: "Schön, dass du da bist, {name}! 👋", t2_hi_anon: "Schön, dass du da bist! 👋", t2_ask: "Magst du einen kurzen Rundgang durch die App – oder direkt loslegen?", t2_start_tour: "App-Rundgang starten", t2_skip_tour: "Direkt loslegen", t2_overview_t: "Das erwartet dich", t2_quiz_tap_t: "Quiz · Antippen", t2_quiz_type_t: "Quiz · Eintippen", t2_quiz_text_t: "Quiz · Text", t2_prices_t: "Preise & Tarife", t2_quizmodes_x: "Aktiv üben, bis es sitzt – wähle deinen Modus.", t2_tap_x: "Die richtige Form aus 4 Möglichkeiten wählen.", t2_type_x: "Form selbst schreiben – trainiert aktiv die Schreibweise.", t2_text_x: "Thema, Zeitform & Wortschatz wählen – die KI liest dir die Geschichte vor: Hörverständnis testen & üben.", t2_conj_x: "Verb eintippen oder würfeln, Zeitform wählen – per ★ in die Merkliste.", t2_merken_x: "Wörter in Übungssätzen antippen & speichern – oder selbst anlegen.", t2_prices_x: "Konjugieren & Lernen bleiben für immer kostenlos · 24 Stunden Premium zum Testen.", t2_ov1_t: "Deine Challenge im Blick", t2_ov1_d: "Tages-, Wochen- oder Monats-Challenge festlegen – Fortschritt & Serie im Blick behalten", t2_ov2_t: "Vokabel-Merkliste", t2_ov2_d: "Wörter in Sätzen antippen & speichern – oder selbst anlegen", t2_ov3_t: "Lieblingsthemen", t2_ov3_d: "Eigene Themen unter Gemerkt anlegen und gezielt in den Quizzes üben", t2_m_cards: "Karten", t2_m_tap: "Antippen", t2_m_type: "Tippen", t2_m_speak: "Sprechen", t2_m_speed: "⚡ Speed", t2_m_text: "Text", t2_f_topic: "Thema", t2_f_tense: "Zeitform", t2_f_words: "Wortwahl", t2_v_travel: "Reisen", t2_v_saved: "Merkliste", t2_v_work: "Arbeit", t2_p1_t: "24 h Premium-Nutzung", t2_p1_d: "alles testen – ganz ohne Konto", t2_p2_t: "Mit Konto · kostenlos", t2_p2_d: "Konjugieren, Lernen & 20 Quiz-Karten/Tag", t2_p3_t: "ConjuPremium", t2_p3_d: "alles frei · Jahr 29,99 € · Monat 2,99 €", m_speak: "🎤 Sprechen", speak_tap: "Tippe aufs Mikro und sprich die Form", speak_heard: "Gehört:", speak_nomic: "Spracheingabe wird hier nicht unterstützt.", spk_form: "Wort sprechen", spk_sentence: "Satz sprechen", spk_what: "Was üben?", spk_say: "Sag es auf {lang}",
-      dq_form: "Konjugierte Form", vocab_translate: "Übersetzen", offline_note: "⚡ Offline — Beispiele & Übersetzungen brauchen Internet", aux_title: "Zusammengesetzte Zeiten bilden", aux_logic: "Alle zusammengesetzten Zeiten funktionieren gleich: Du konjugierst das Hilfsverb {aux} nach Person + Zeit und hängst das unveränderliche Partizip {part} an. Nur das Hilfsverb ändert sich — das Partizip bleibt gleich.", aux_note: "Zusammengesetzte Zeiten = Hilfsverb + Partizip.", aux_participle: "Partizip", cards_hint: "Konjugiere das Verb in der geforderten Zeitform gedanklich – tippe für die Lösung", cards_hint_type: "Konjugiere das Verb in der geforderten Zeitform · tippe das Wort in das Kästchen", cards_hint_speak: "Konjugiere das Verb in der geforderten Zeitform · tippe auf das Mikro zum Einsprechen", choose_label: "Wähle aus:", tap_retry: "Antippen zum Übersetzen", dq_infinitive: "Infinitiv", dq_belongs: "Von", dq_participle: "Partizip II", dq_gerund: "Gerundium / Verlaufsform", spk_relearn: "Muss ich noch lernen", spk_correct_is: "So heißt der Satz richtig:", spk_next_sentence: "Nächster Satz →", speak_denied: "Mikrofon blockiert — erlaube den Zugriff im Browser.", speak_nospeech: "Nichts verstanden — versuch es nochmal.", mic_start: "Tippen zum Sprechen", sent_mist_practice: "Falsche Sätze üben", spk_context: "Im Satz", cloze_instr: "Konjugiere das Verb in der geforderten Zeitform", choose_tile: "wähle die richtige Kachel", mic_stop: "Tippen wenn fertig", tap_word: "tippe ein Wort für die Bedeutung", practice_again: "Nochmal üben", sk_title: "Challenge & Serie", sk_today: "Heute", sk_streak: "Tage in Folge", sk_best: "Bestwert", sk_days: "Tage", sk_done: "Challenge geschafft!", sk_left: "Noch {n} bis zur Tages-Challenge", sk_explain: "Jede Konjugation und jede Quiz-Antwort zählt. Schaffe deine Tages-Challenge, um deine Serie zu halten — verpasst du einen Tag, beginnt sie von vorn.", sk_close: "Verstanden", dq_fuzzy: "ohne Akzente erkannt", dq_switched: "zum Infinitiv gewechselt", dq_guess: "geschätzt anhand der Endung", tfilter_hint: "Seitlich wischen · tippen zum Ein-/Ausblenden", verb_ph: "Verb eingeben…", autoread: "Antwort vorlesen", autoread_sub: "bei richtig", review: "Auswertung", native_ph: "…oder ein Verb in deiner Sprache", saved_verbs: "Verben", saved_vocab: "Wortschatz", ch_tab: "Challenge", ch_empty: "Noch keine Challenge — leg eine an und übe gezielt.", ch_create: "Challenge erstellen", ch_new: "Neue Challenge", ch_practice: "Jetzt üben", ch_left: "noch {n} Tage", ch_done_v: "{a} von {b} Verben sitzen", ch_done_w: "{a} von {b} Wörtern", ch_edit: "Bearbeiten", ch_editdone: "Fertig", ch_add_ph: "Verb oder Wort…", ch_fill: "Auffüllen", ch_from_saved: "Aus Gemerkt", ch_mastered: "Challenge gemeistert!", ch_mastered_sub: "Alle Einträge sitzen — Zeit für eine neue Challenge.", vocab_all: "Alle", vocab_new_cat: "Neu", vocab_new_cat_q: "Name der neuen Kategorie:", vocab_add_ph: "Wort oder Satz hinzufügen…", vocab_empty: "Noch keine Wörter — füge oben dein erstes hinzu.", vocab_practice: "Üben", vocab_word: "Wort", vocab_phrase: "Satz", vocab_type_target: "Auf {lang} eintippen…", vocab_done: "Runde geschafft!", vocab_save: "Merken", vocab_saved: "Gemerkt", vocab_seeding: "Starter-Wörter werden geladen…", vocab_suggest: "10 neue Wörter vorschlagen", vocab_due: "Heute fällig", vocab_strength: "Gedächtnisstärke", vocab_starter: "5 Startwörter laden", gr_ind: "Indikativ", gr_subj: "Konjunktiv", gr_cond: "Konditional", gr_imp: "Imperativ", gr_cont: "Verlaufsform", gr_forms: "Infinite Formen", how_formed: "Wie wird es gebildet?", key_irregulars: "Wichtige unregelmäßige Verben", irr_note: "Tippe ein Verb für die volle Konjugation.", tap_save: "Wort antippen – Bedeutung & merken", type_word: "Wort tippen", type_sentence: "Satz tippen", spk_translate: "Übersetze das", qi_title: "Wie möchtest du üben?", qi_sub: "Wähl einen Modus — jeder trainiert eine andere Fähigkeit.", qi_foot: "Tipp: Zeitform- & Verbfilter stellst du nach der Auswahl ein.", qi_back: "Übersicht", mdesc_cards: "Karten umdrehen — Antwort sehen, ganz entspannt", mdesc_choice: "Multiple Choice — die richtige Form wählen", mdesc_speed: "60-Sekunden-Sprint — wie viele schaffst du?", mdesc_type: "Form tippen oder einen Satz übersetzen", mdesc_speak: "Laut aussprechen — mit Spracherkennung",
+      dq_form: "Konjugierte Form", vocab_translate: "Übersetzen", offline_note: "⚡ Offline — Beispiele & Übersetzungen brauchen Internet", aux_title: "Zusammengesetzte Zeiten bilden", aux_logic: "Alle zusammengesetzten Zeiten funktionieren gleich: Du konjugierst das Hilfsverb {aux} nach Person + Zeit und hängst das unveränderliche Partizip {part} an. Nur das Hilfsverb ändert sich — das Partizip bleibt gleich.", aux_note: "Zusammengesetzte Zeiten = Hilfsverb + Partizip.", aux_participle: "Partizip", cards_hint: "Konjugiere das Verb in der geforderten Zeitform gedanklich – tippe für die Lösung", cards_hint_type: "Konjugiere das Verb in der geforderten Zeitform · tippe das Wort in das Kästchen", cards_hint_speak: "Konjugiere das Verb in der geforderten Zeitform · tippe auf das Mikro zum Einsprechen", choose_label: "Wähle aus:", tap_retry: "Antippen zum Übersetzen", dq_infinitive: "Infinitiv", dq_belongs: "Von", dq_participle: "Partizip II", dq_gerund: "Gerundium / Verlaufsform", spk_relearn: "Muss ich noch lernen", spk_correct_is: "So heißt der Satz richtig:", spk_next_sentence: "Nächster Satz →", speak_denied: "Mikrofon blockiert — erlaube den Zugriff im Browser.", speak_nospeech: "Nichts verstanden — versuch es nochmal.", mic_start: "Einmal antippen zum Aufnehmen", sent_mist_practice: "Falsche Sätze üben", spk_context: "Im Satz", cloze_instr: "Konjugiere das Verb in der geforderten Zeitform", choose_tile: "wähle die richtige Kachel", mic_stop: "Tippen wenn fertig", tap_word: "tippe ein Wort für die Bedeutung", practice_again: "Nochmal üben", sk_title: "Challenge & Serie", sk_today: "Heute", sk_streak: "Tage in Folge", sk_best: "Bestwert", sk_days: "Tage", sk_done: "Challenge geschafft!", sk_left: "Noch {n} bis zur Tages-Challenge", sk_explain: "Jede Konjugation und jede Quiz-Antwort zählt. Schaffe deine Tages-Challenge, um deine Serie zu halten — verpasst du einen Tag, beginnt sie von vorn.", sk_close: "Verstanden", dq_fuzzy: "ohne Akzente erkannt", dq_switched: "zum Infinitiv gewechselt", dq_guess: "geschätzt anhand der Endung", tfilter_hint: "Seitlich wischen · tippen zum Ein-/Ausblenden", verb_ph: "Verb eingeben…", autoread: "Antwort vorlesen", autoread_sub: "bei richtig", review: "Auswertung", native_ph: "…oder ein Verb in deiner Sprache", saved_verbs: "Verben", saved_vocab: "Wortschatz", saved_tap_hint: "Zelle antippen zum Anhören · ✕ entfernt das Verb", ch_tab: "Challenge", ch_empty: "Noch keine Challenge — leg eine an und übe gezielt.", ch_create: "Challenge erstellen", cs_day: "Tag", cs_left: "noch {n}", cs_done: "heute geschafft ✓", cs_start: "Challenge starten", cs_plan: "dein Lernplan", ch_moment: "„{v}“ sitzt jetzt — gemeistert!", ch_words_hint: "Wörter übst du im Wortschatz", ch_words_go: "Zum Wortschatz →", ch_new: "Neue Challenge", ch_practice: "Jetzt üben", ch_left: "noch {n} Tage", ch_done_v: "{a} von {b} Verben sitzen", ch_done_w: "{a} von {b} Wörtern", ch_edit: "Bearbeiten", ch_editdone: "Fertig", ch_add_ph: "Verb oder Wort…", ch_fill: "Auffüllen", ch_from_saved: "Aus Gemerkt", ch_add_all: "Alle übernehmen", ch_choose: "Aus Gemerkt wählen", ch_pick_verbs: "Deine gemerkten Verben", ch_pick_words: "Deine gemerkten Wörter", ch_pick_empty_v: "Noch keine gemerkten Verben — speichere Verben beim Konjugieren mit ☆.", ch_pick_empty_w: "Noch keine gemerkten Wörter — leg sie im Wortschatz an.", ch_timeup: "Zeit um — {a} von {b} sitzen.", ch_extend: "+1 Woche", ch_mastered: "Challenge gemeistert!", ch_mastered_sub: "Alle Einträge sitzen — Zeit für eine neue Challenge.", vocab_all: "Alle", vocab_new_cat: "Neu", vocab_cats_all: "Alle Themen", vocab_cats_less: "Weniger", vocab_new_cat_q: "Name der neuen Kategorie:", vocab_add_ph: "Wort oder Satz hinzufügen…", vocab_empty: "Noch keine Wörter — füge oben dein erstes hinzu.", vocab_practice: "Üben", vocab_word: "Wort", vocab_phrase: "Satz", vocab_type_target: "Auf {lang} eintippen…", vocab_done: "Runde geschafft!", vocab_save: "Merken", vocab_saved: "Gemerkt", vocab_seeding: "Starter-Wörter werden geladen…", vocab_suggest: "10 neue Wörter vorschlagen", vocab_due: "Heute fällig", vocab_strength: "Gedächtnisstärke", vocab_starter: "5 Startwörter laden", gr_ind: "Indikativ", gr_subj: "Konjunktiv", gr_cond: "Konditional", gr_imp: "Imperativ", gr_cont: "Verlaufsform", gr_forms: "Infinite Formen", how_formed: "Wie wird es gebildet?", key_irregulars: "Wichtige unregelmäßige Verben", irr_note: "Tippe ein Verb für die volle Konjugation.", tap_save: "Wort antippen – Bedeutung & merken", report_link: "Fehler melden", report_title: "Was stimmt nicht?", r_grammar: "Falsche Grammatik", r_unnatural: "Unnatürlich", r_translation: "Falsche Übersetzung", r_other: "Sonstiges", report_note: "Notiz (optional)…", report_send: "Senden", report_thanks: "Danke — wir schauen es uns an!", acct_created: "✓ Konto angelegt — willkommen!", report_general: "Feedback geben", report_general_sub: "Idee, Fehler oder Lob", type_word: "Wort tippen", type_sentence: "Satz tippen", spk_translate: "Übersetze das", qi_title: "Wie möchtest du üben?", qi_sub: "Wähl einen Modus — jeder trainiert eine andere Fähigkeit.", qi_foot: "Tipp: Zeitform- & Verbfilter stellst du nach der Auswahl ein.", qi_back: "Übersicht", mdesc_cards: "Karten umdrehen — Antwort sehen, ganz entspannt", mdesc_choice: "Multiple Choice — die richtige Form wählen", mdesc_speed: "60-Sekunden-Sprint — wie viele schaffst du?", mdesc_type: "Form tippen oder einen Satz übersetzen", mdesc_speak: "Laut aussprechen — mit Spracherkennung",
       paywall_lock: "🔒 Quiz & Merken sind Premium", paywall_h1: "Konjugieren, ohne nachzudenken", paywall_sub: "Mit dem Quiz trainierst du aktiv, bis die Formen sitzen — und mit Merken übst du genau den Wortschatz, der dir wichtig ist.", paywall_unlock: "Premium freischalten", paywall_later: "Vielleicht später", pw_feat1: "Interaktives Quiz", pw_feat1v: "4 Modi", pw_feat2: "Merken & Vokabellisten", pw_feat2v: "unbegrenzt", pw_feat3: "Konjugation & Lernen", pw_feat3v: "bleibt frei",
       offer_badge: "🚀 WILLKOMMENSANGEBOT · −{disc} %", offer_expires: "Angebot läuft ab in {t}", offer_instead: "anstatt", offer_mo: "mtl.", offer_yr: "/ Jahr", offer_you_pay: "zahlst du:", offer_save: "du sparst {save} € (−{disc} %)", offer_secure: "Angebot sichern", offer_trial: "Erst 24 h kostenlos testen", offer_trial_b: "24 h Premium gratis", offer_close: "Angebot schließen", offer_price_label: "Preis: {price} € pro Jahr, statt {eq} € bei monatlicher Abrechnung",
       plan_hero_h1: "Lerne ohne Limits", plan_hero_sub: "Unlimitiertes Quiz & Merken in allen 5 Sprachen", plan_annual: "Jahresabo", plan_monthly: "Monatsabo", plan_best: "★ Beliebteste Wahl", plan_bonus: "🎁 Willkommensbonus", plan_per_mo: "/ Monat", plan_per_yr: "/ Jahr", plan_instead: "statt", plan_save: "du sparst {save} € (−{disc} %)", plan_mo_label: "~{price} € / Monat · statt {eq} €", plan_flex: "flexibel · entspricht {eq} € / Jahr", plan_feat1: "Interaktives Konjugations-Quiz", plan_feat2: "Favoriten & Vokabellisten", plan_feat3: "5 Sprachen — ES, FR, EN, NL, DE", plan_feat4: "Auf allen Geräten · ohne Werbung", plan_cta: "Weiter zum Bezahlen", plan_cancelable: "jederzeit kündbar", plan_have_account: "Bereits Konto?", sign_in: "Anmelden", plan_coupon: "Gutscheincode einlösen", pr_title: "Preise & Tarife", pr_eyebrow: "Preise", pr_free: "Gratis", pr_premium: "Premium", pr_feat_conj: "Verben konjugieren · alle Zeiten", pr_active: "Du hast Premium – danke! 💜", pr_anon: "Anonym", pr_konto: "Konto", pr_quiz_day: "20/Tag", pr_trial_note: "🎁 Mit Konto: 2 Tage Premium gratis testen", pr_feat_goals: "Challenges & Fortschritt", ap_lock: "🔓 Kostenloses Konto", ap_h1: "Quiz mit kostenlosem Konto", ap_sub: "Erstelle ein kostenloses Konto und übe mit dem Quiz – plus 2 Tage Premium gratis.", ap_feat1: "20 Quiz-Karten pro Tag", ap_feat2: "2 Tage Premium gratis", ap_feat3: "Fortschritt auf allen Geräten", ap_cta: "Kostenloses Konto erstellen", ql_lock: "🔓 Tageslimit erreicht", ql_h1: "20 Karten für heute geschafft!", ql_sub: "Stark! Mit Premium übst du unbegrenzt – oder komm morgen für 20 neue Karten wieder.", ql_feat1: "Quiz ohne Limit – alle Modi", ql_cta: "Premium freischalten", coupon_title: "Gutscheincode", coupon_need_login: "Bitte zuerst anmelden um einen Code einzulösen.", coupon_sign_in: "Jetzt anmelden", coupon_ph: "Code eingeben", coupon_redeem: "Einlösen", coupon_redeeming: "Wird eingelöst…",
@@ -1585,7 +1585,7 @@
       empty_title: "Escribe un verbo para conjugar", empty_sub: "Todos los tiempos en {n} idiomas — escribe un verbo o pulsa 🎲.",
       regular: "regular", irregular: "irregular", recommended: "Recomendado", ad_cta: "Practicar →",
       mode: "Modo", m_type: "⌨ Escribir", m_choice: "◉ Opción", m_speed: "⚡ Veloz", m_texte: "📖 Textos", mdesc_texte: "Lee una historia con IA — traduce, completa verbos o responde preguntas", texte_question: "Comprensión", texte_cloze: "Completar verbos", texte_translate: "Traducir", texte_new: "Nueva historia", texte_writing: "Escribiendo tu historia…", texte_error: "No se pudo escribir una historia — inténtalo de nuevo.", texte_comprehension: "Preguntas de comprensión", texte_done: "¡Historia completada!", texte_fill_hint: "Pon el verbo en el tiempo correcto", texte_learn: "Aprender el verbo", texte_translation: "Traducción", texte_read: "Leer en voz alta", texte_speed: "¿Qué velocidad?", texte_voice: "¿Qué voz?", texte_voice_auto: "Automática (mejor)", texte_almost: "casi listo …", texte_voice_f: "Mujer", texte_voice_m: "Hombre", texte_pause: "Pausa", texte_resume: "Seguir", texte_mywords_lbl: "Mi vocabulario", texte_mywords: "Usar mis palabras",
-      which_tense: "Tiempo", tense_word: "Tiempo", all_tenses: "Todos los tiempos", all_themes: "Todos los temas", which_verbs: "Palabras", which_dir: "Dirección", dir_produce: "PRODUCIR", dir_recognize: "RECONOCER", dir_random: "ALEATORIO", which_theme: "Temas", quiz_mode_hd: "Modo quiz", explain_hd: "Explicación", req_form: "Buscado", tip_label: "Consejo", tip_meaning: "Significado", tip_sentence: "Frase", none_all: "Ninguno — se practican todos los tiempos", all_btn: "Todos", none_btn: "Ninguno", mist_clear_title: "¡Errores superados!", mist_clear_sub: "¡Bien hecho! Repasaste todos los verbos que fallaste.", mist_practice: "Practicar errores", view_conj: "Ver conjugación completa", mist_exit: "Volver a todos los verbos",
+      which_tense: "Tiempo", tense_word: "Tiempo", all_tenses: "Todos los tiempos", all_themes: "Todos los temas", which_verbs: "Verbos", which_dir: "Dirección", dir_produce: "PRODUCIR", dir_recognize: "RECONOCER", dir_random: "ALEATORIO", which_theme: "Temas", quiz_mode_hd: "Modo quiz", explain_hd: "Explicación", req_form: "Buscado", tip_label: "Consejo", tip_meaning: "Significado", tip_sentence: "Frase", none_all: "Ninguno — se practican todos los tiempos", all_btn: "Todos", none_btn: "Ninguno", mist_clear_title: "¡Errores superados!", mist_clear_sub: "¡Bien hecho! Repasaste todos los verbos que fallaste.", mist_practice: "Practicar errores", view_conj: "Ver conjugación completa", mist_exit: "Volver a todos los verbos",
       correct: "correctas", accuracy: "precisión", streak: "racha",
       type_form: "escribe la forma…", check: "Comprobar", next: "Siguiente →", correct_excl: "✓ ¡Correcto!", accent_hint: "¡Bien! Solo cuida la tilde: {answer}", answer: "Respuesta:",
       hint_type: "Escribe la forma correcta para el pronombre y el tiempo.", hint_choice: "Elige la forma correcta — 4 opciones.",
@@ -1598,7 +1598,7 @@
       fb_net: "No se pudo cargar la explicación. Aquí las reglas básicas:",
       welcome: "¡Hey! Vas a:", welcome_sub: "conjugar verbos en 5 idiomas, hacer quizzes y aprender tu idioma favorito de forma fácil.",
       your_name: "Tu nombre…", mother_tongue: "Tu lengua materna", skill_q: "Tu nivel", skill_beginner: "Principiante", skill_beginner_sub: "verbos comunes", skill_intermediate: "Medio", skill_intermediate_sub: "+ irregulares", skill_advanced: "Avanzado", skill_advanced_sub: "todos", lets_go: "¡Vamos! →", skip: "Omitir", remove_name: "Quitar nombre", profile: "Perfil", listen: "Escuchar", m_cards: "🃏 Tarjetas", flip: "Toca para girar", got_it: "Lo sé", again: "Repasar", mistakes: "Errores", no_mistakes: "Aún no hay errores — aparecerán aquí para repasar.", tab_saved: "Guardados", reveal: "Ver traducción", learned: "Aprendido ✓", saved_empty: "Aún no hay verbos guardados. Pulsa la ☆ en una conjugación para guardarlo.", tour_conj: "El núcleo: conjuga cualquier verbo en 5 idiomas, en todos los tiempos — de un vistazo.", tour_quiz: "Ponte a prueba — tarjetas, opción, escribir y hablar — con frases de ejemplo generadas por IA.", tour_learn: "Entiende cada tiempo de forma bilingüe, con ejemplos de IA que puedes tocar y guardar.", tour_saved: "Guarda verbos y palabras, crea tu vocabulario y practícalo con repetición espaciada.", tour_more1: "Lo esencial: cada verbo en 5 idiomas y todos los tiempos, más aprendizaje bilingüe con ejemplos de IA.", tour_more2: "Practica con el quiz (tarjetas, opción, escribir y hablar), guarda palabras y avanza con challenges.", tour_goals_h: "Challenges", tour_goal: "Crea tu challenge personal — sugerencia IA, por tiempo o a medida. Sigue tu progreso diario y mantente constante.", tour_trial_head: "Tu regalo: 24 h Premium", tour_trial_sub: "Después activa tu descuento de bienvenida — las tablas de conjugación siempre son gratis.", tour_feat1: "Quiz y Guardados — todo desbloqueado", tour_feat2: "Todos los tiempos y frases con IA", tour_feat3: "5 idiomas, sin anuncios", eg_step1: "Verbo aleatorio – guarda con ★", eg_step2: "Practica en el Quiz y elige temas favoritos", eg_step3: "Entrena las palabras guardadas en 'Guardados'", hero_kicker: "¡Hola {name}! 👋", hero_plan: "Tu challenge de hoy, {name}:", hero_plan_anon: "Tu challenge de hoy:", tour_next: "Siguiente", tour_start: "Empezar", tour_skip: "Omitir", t2_hi: "¡Qué bien que estés aquí, {name}! 👋", t2_hi_anon: "¡Qué bien que estés aquí! 👋", t2_ask: "¿Quieres un recorrido rápido por la app — o empezar directamente?", t2_start_tour: "Empezar el recorrido", t2_skip_tour: "Empezar directamente", t2_overview_t: "Esto te espera", t2_quiz_tap_t: "Quiz · Tocar", t2_quiz_type_t: "Quiz · Escribir", t2_quiz_text_t: "Quiz · Texto", t2_prices_t: "Planes y precios", t2_quizmodes_x: "Practica activamente hasta dominarlo — elige tu modo.", t2_tap_x: "Elige la forma correcta entre 4 opciones.", t2_type_x: "Escribe tú la forma — entrena la ortografía de forma activa.", t2_text_x: "Elige tema, tiempo y vocabulario — la IA te lee la historia: pon a prueba tu comprensión auditiva.", t2_conj_x: "Escribe un verbo o tira el dado, elige el tiempo — guárdalo con ★.", t2_merken_x: "Toca y guarda palabras en frases de práctica — o añádelas tú.", t2_prices_x: "Conjugar y aprender son gratis para siempre · 24 h de Premium para probar", t2_ov1_t: "Tu challenge a la vista", t2_ov1_d: "Fija una challenge diaria, semanal o mensual — sigue tu progreso y racha", t2_ov2_t: "Lista de vocabulario", t2_ov2_d: "Toca y guarda palabras en frases — o añádelas tú", t2_ov3_t: "Temas favoritos", t2_ov3_d: "Crea tus propios temas en Guardado y practícalos en los quizzes", t2_m_cards: "Tarjetas", t2_m_tap: "Tocar", t2_m_type: "Escribir", t2_m_speak: "Hablar", t2_m_speed: "⚡ Veloz", t2_m_text: "Texto", t2_f_topic: "Tema", t2_f_tense: "Tiempo", t2_f_words: "Palabras", t2_v_travel: "Viajes", t2_v_saved: "Mi lista", t2_v_work: "trabajo", t2_p1_t: "24 h Premium", t2_p1_d: "prueba todo — sin cuenta", t2_p2_t: "Con cuenta · gratis", t2_p2_d: "Conjugar, Aprender y 20 tarjetas / día", t2_p3_t: "ConjuPremium", t2_p3_d: "todo libre · anual 29,99 € · mensual 2,99 €", m_speak: "🎤 Hablar", speak_tap: "Toca el micro y di la forma", speak_heard: "Oído:", speak_nomic: "La entrada de voz no está disponible aquí.", spk_form: "Decir palabra", spk_sentence: "Decir frase", spk_what: "¿Qué practicar?", spk_say: "Dilo en {lang}",
-      dq_form: "Forma conjugada", vocab_translate: "Traducir", offline_note: "⚡ Sin conexión — ejemplos y traducciones necesitan internet", aux_title: "Formar los tiempos compuestos", aux_logic: "Todos los tiempos compuestos se forman igual: conjugas el verbo auxiliar {aux} según persona y tiempo, y añades el participio invariable {part}. Solo cambia el auxiliar — el participio no cambia.", aux_note: "Tiempos compuestos = verbo auxiliar + participio.", aux_participle: "Participio", cards_hint: "Conjuga el verbo en el tiempo pedido mentalmente – toca para ver la solución", cards_hint_type: "Conjuga el verbo en el tiempo pedido · escríbelo en la casilla", cards_hint_speak: "Conjuga el verbo en el tiempo pedido · toca el micro para hablar", choose_label: "Elige:", tap_retry: "Tocar para traducir", dq_infinitive: "Infinitivo", dq_belongs: "De", dq_participle: "Participio", dq_gerund: "Gerundio", spk_relearn: "Sigo aprendiendo — ver respuesta", spk_correct_is: "La frase correcta:", spk_next_sentence: "Siguiente frase →", speak_denied: "Micrófono bloqueado — permite el acceso en el navegador.", speak_nospeech: "No te he oído — inténtalo de nuevo.", mic_start: "Toca para hablar", sent_mist_practice: "Practicar frases falladas", spk_context: "En una frase", cloze_instr: "Conjuga el verbo en el tiempo pedido", choose_tile: "elige la casilla correcta", mic_stop: "Toca al terminar", tap_word: "toca una palabra para ver su significado", practice_again: "Practicar otra vez", sk_title: "Challenge y racha", sk_today: "Hoy", sk_streak: "Días seguidos", sk_best: "Récord", sk_days: "días", sk_done: "¡Challenge lograda!", sk_left: "{n} más para la challenge de hoy", sk_explain: "Cada conjugación y respuesta del quiz cuenta. Completa tu challenge diaria para mantener tu racha — si faltas un día, se reinicia.", sk_close: "Entendido", dq_fuzzy: "reconocido sin tildes", dq_switched: "cambiado al infinitivo", dq_guess: "deducido por la terminación", tfilter_hint: "Desliza · toca para mostrar / ocultar un tiempo", verb_ph: "Escribe un verbo…", autoread: "Leer la respuesta", autoread_sub: "si es correcta", review: "Resumen", native_ph: "…o un verbo en tu idioma", saved_verbs: "Verbos", saved_vocab: "Vocabulario", ch_tab: "Challenge", ch_empty: "Aún no hay challenge — crea una y practica con foco.", ch_create: "Crear challenge", ch_new: "Nueva challenge", ch_practice: "Practicar ahora", ch_left: "quedan {n} días", ch_done_v: "{a} de {b} verbos dominados", ch_done_w: "{a} de {b} palabras", ch_edit: "Editar", ch_editdone: "Listo", ch_add_ph: "Verbo o palabra…", ch_fill: "Completar", ch_from_saved: "De Guardados", ch_mastered: "¡Challenge dominada!", ch_mastered_sub: "Todo dominado — hora de una nueva challenge.", vocab_all: "Todo", vocab_new_cat: "Nueva", vocab_new_cat_q: "Nombre de la nueva categoría:", vocab_add_ph: "Añade una palabra o frase…", vocab_empty: "Aún no hay palabras — añade la primera arriba.", vocab_practice: "Practicar", vocab_word: "palabra", vocab_phrase: "frase", vocab_type_target: "Escríbelo en {lang}…", vocab_done: "¡Ronda completada!", vocab_save: "Guardar", vocab_saved: "Guardado", vocab_seeding: "Cargando palabras iniciales…", vocab_suggest: "Sugerir 10 palabras nuevas", vocab_due: "Para hoy", vocab_strength: "Fuerza de memoria", vocab_starter: "Cargar 5 palabras iniciales", gr_ind: "Indicativo", gr_subj: "Subjuntivo", gr_cond: "Condicional", gr_imp: "Imperativo", gr_cont: "Continuo", gr_forms: "Formas no personales", how_formed: "¿Cómo se forma?", key_irregulars: "Verbos irregulares clave", irr_note: "Toca un verbo para ver su conjugación completa.", tap_save: "toca una palabra – significado y guardar", type_word: "Escribir palabra", type_sentence: "Escribir frase", spk_translate: "Traduce esto", qi_title: "¿Cómo quieres practicar?", qi_sub: "Elige un modo — cada uno entrena una habilidad distinta.", qi_foot: "Consejo: ajusta los filtros de tiempo y verbos tras elegir.", qi_back: "Resumen", mdesc_cards: "Voltear tarjetas — ver la respuesta, sin presión", mdesc_choice: "Opción múltiple — elige la forma correcta", mdesc_speed: "Sprint de 60 s — ¿cuántas puedes?", mdesc_type: "Escribe la forma o traduce una frase", mdesc_speak: "Dílo en voz alta — reconocimiento de voz",
+      dq_form: "Forma conjugada", vocab_translate: "Traducir", offline_note: "⚡ Sin conexión — ejemplos y traducciones necesitan internet", aux_title: "Formar los tiempos compuestos", aux_logic: "Todos los tiempos compuestos se forman igual: conjugas el verbo auxiliar {aux} según persona y tiempo, y añades el participio invariable {part}. Solo cambia el auxiliar — el participio no cambia.", aux_note: "Tiempos compuestos = verbo auxiliar + participio.", aux_participle: "Participio", cards_hint: "Conjuga el verbo en el tiempo pedido mentalmente – toca para ver la solución", cards_hint_type: "Conjuga el verbo en el tiempo pedido · escríbelo en la casilla", cards_hint_speak: "Conjuga el verbo en el tiempo pedido · toca el micro para hablar", choose_label: "Elige:", tap_retry: "Tocar para traducir", dq_infinitive: "Infinitivo", dq_belongs: "De", dq_participle: "Participio", dq_gerund: "Gerundio", spk_relearn: "Sigo aprendiendo — ver respuesta", spk_correct_is: "La frase correcta:", spk_next_sentence: "Siguiente frase →", speak_denied: "Micrófono bloqueado — permite el acceso en el navegador.", speak_nospeech: "No te he oído — inténtalo de nuevo.", mic_start: "Toca una vez para grabar", sent_mist_practice: "Practicar frases falladas", spk_context: "En una frase", cloze_instr: "Conjuga el verbo en el tiempo pedido", choose_tile: "elige la casilla correcta", mic_stop: "Toca al terminar", tap_word: "toca una palabra para ver su significado", practice_again: "Practicar otra vez", sk_title: "Challenge y racha", sk_today: "Hoy", sk_streak: "Días seguidos", sk_best: "Récord", sk_days: "días", sk_done: "¡Challenge lograda!", sk_left: "{n} más para la challenge de hoy", sk_explain: "Cada conjugación y respuesta del quiz cuenta. Completa tu challenge diaria para mantener tu racha — si faltas un día, se reinicia.", sk_close: "Entendido", dq_fuzzy: "reconocido sin tildes", dq_switched: "cambiado al infinitivo", dq_guess: "deducido por la terminación", tfilter_hint: "Desliza · toca para mostrar / ocultar un tiempo", verb_ph: "Escribe un verbo…", autoread: "Leer la respuesta", autoread_sub: "si es correcta", review: "Resumen", native_ph: "…o un verbo en tu idioma", saved_verbs: "Verbos", saved_vocab: "Vocabulario", saved_tap_hint: "Toca una celda para oírla · ✕ elimina el verbo", ch_tab: "Challenge", ch_empty: "Aún no hay challenge — crea una y practica con foco.", ch_create: "Crear challenge", cs_day: "Día", cs_left: "quedan {n}", cs_done: "¡hecho hoy! ✓", cs_start: "Empezar challenge", cs_plan: "tu plan", ch_moment: "«{v}» ya lo dominas — ¡hecho!", ch_words_hint: "Las palabras se practican en tu Vocabulario", ch_words_go: "Al Vocabulario →", ch_new: "Nueva challenge", ch_practice: "Practicar ahora", ch_left: "quedan {n} días", ch_done_v: "{a} de {b} verbos dominados", ch_done_w: "{a} de {b} palabras", ch_edit: "Editar", ch_editdone: "Listo", ch_add_ph: "Verbo o palabra…", ch_fill: "Completar", ch_from_saved: "De Guardados", ch_add_all: "Añadir todos", ch_choose: "Elegir de guardados", ch_pick_verbs: "Tus verbos guardados", ch_pick_words: "Tus palabras guardadas", ch_pick_empty_v: "Aún no hay verbos guardados — guárdalos con ☆ al conjugar.", ch_pick_empty_w: "Aún no hay palabras guardadas — añádelas en Vocabulario.", ch_timeup: "Se acabó el tiempo — {a} de {b} dominados.", ch_extend: "+1 semana", ch_mastered: "¡Challenge dominada!", ch_mastered_sub: "Todo dominado — hora de una nueva challenge.", vocab_all: "Todo", vocab_new_cat: "Nueva", vocab_cats_all: "Todos los temas", vocab_cats_less: "Menos", vocab_new_cat_q: "Nombre de la nueva categoría:", vocab_add_ph: "Añade una palabra o frase…", vocab_empty: "Aún no hay palabras — añade la primera arriba.", vocab_practice: "Practicar", vocab_word: "palabra", vocab_phrase: "frase", vocab_type_target: "Escríbelo en {lang}…", vocab_done: "¡Ronda completada!", vocab_save: "Guardar", vocab_saved: "Guardado", vocab_seeding: "Cargando palabras iniciales…", vocab_suggest: "Sugerir 10 palabras nuevas", vocab_due: "Para hoy", vocab_strength: "Fuerza de memoria", vocab_starter: "Cargar 5 palabras iniciales", gr_ind: "Indicativo", gr_subj: "Subjuntivo", gr_cond: "Condicional", gr_imp: "Imperativo", gr_cont: "Continuo", gr_forms: "Formas no personales", how_formed: "¿Cómo se forma?", key_irregulars: "Verbos irregulares clave", irr_note: "Toca un verbo para ver su conjugación completa.", tap_save: "toca una palabra – significado y guardar", report_link: "Reportar error", report_title: "¿Qué falla?", r_grammar: "Gramática incorrecta", r_unnatural: "Poco natural", r_translation: "Traducción incorrecta", r_other: "Otra cosa", report_note: "Nota (opcional)…", report_send: "Enviar", report_thanks: "¡Gracias, lo revisaremos!", acct_created: "✓ Cuenta creada — ¡bienvenido/a!", report_general: "Enviar comentarios", report_general_sub: "Idea, error o elogio", type_word: "Escribir palabra", type_sentence: "Escribir frase", spk_translate: "Traduce esto", qi_title: "¿Cómo quieres practicar?", qi_sub: "Elige un modo — cada uno entrena una habilidad distinta.", qi_foot: "Consejo: ajusta los filtros de tiempo y verbos tras elegir.", qi_back: "Resumen", mdesc_cards: "Voltear tarjetas — ver la respuesta, sin presión", mdesc_choice: "Opción múltiple — elige la forma correcta", mdesc_speed: "Sprint de 60 s — ¿cuántas puedes?", mdesc_type: "Escribe la forma o traduce una frase", mdesc_speak: "Dílo en voz alta — reconocimiento de voz",
       paywall_lock: "🔒 El Quiz y Guardados son Premium", paywall_h1: "Conjuga sin pensar", paywall_sub: "El Quiz te entrena activamente hasta que las formas se quedan fijas — y Guardados te permite practicar exactamente el vocabulario que te importa.", paywall_unlock: "Desbloquear Premium", paywall_later: "Quizás más tarde", pw_feat1: "Quiz interactivo", pw_feat1v: "4 modos", pw_feat2: "Guardados y listas de vocab.", pw_feat2v: "ilimitado", pw_feat3: "Conjugación y Aprender", pw_feat3v: "sigue gratis",
       offer_badge: "🚀 OFERTA DE BIENVENIDA · −{disc} %", offer_expires: "La oferta expira en {t}", offer_instead: "en vez de", offer_mo: "mes.", offer_yr: "/ año", offer_you_pay: "pagas:", offer_save: "ahorras {save} € (−{disc} %)", offer_secure: "Aprovechar oferta", offer_trial: "Probar 24 h gratis primero", offer_trial_b: "24 h Premium gratis", offer_close: "Cerrar oferta", offer_price_label: "Precio: {price} € al año, en vez de {eq} € mensuales",
       plan_hero_h1: "Aprende sin límites", plan_hero_sub: "Quiz y Guardados ilimitados en los 5 idiomas", plan_annual: "Plan anual", plan_monthly: "Plan mensual", plan_best: "★ Más popular", plan_bonus: "🎁 Bono de bienvenida", plan_per_mo: "/ mes", plan_per_yr: "/ año", plan_instead: "en vez de", plan_save: "ahorras {save} € (−{disc} %)", plan_mo_label: "~{price} € / mes · en vez de {eq} €", plan_flex: "flexible · equiv. {eq} € / año", plan_feat1: "Quiz de conjugación interactivo", plan_feat2: "Guardados y listas de vocabulario", plan_feat3: "5 idiomas — ES, FR, EN, NL, DE", plan_feat4: "Todos los dispositivos · sin anuncios", plan_cta: "Continuar al pago", plan_cancelable: "cancela cuando quieras", plan_have_account: "¿Ya tienes cuenta?", sign_in: "Iniciar sesión", plan_coupon: "Canjear código de descuento", pr_title: "Precios y planes", pr_eyebrow: "Precios", pr_free: "Gratis", pr_premium: "Premium", pr_feat_conj: "Conjugar verbos · todos los tiempos", pr_active: "Tienes Premium, ¡gracias! 💜", pr_anon: "Anónimo", pr_konto: "Cuenta", pr_quiz_day: "20/día", pr_trial_note: "🎁 Con cuenta: 2 días de Premium gratis", pr_feat_goals: "Challenges y progreso", ap_lock: "🔓 Cuenta gratis", ap_h1: "Quiz con cuenta gratis", ap_sub: "Crea una cuenta gratis para practicar con el quiz, y 2 días de Premium gratis.", ap_feat1: "20 tarjetas de quiz al día", ap_feat2: "2 días de Premium gratis", ap_feat3: "Progreso en todos tus dispositivos", ap_cta: "Crear cuenta gratis", ql_lock: "🔓 Límite diario alcanzado", ql_h1: "¡20 tarjetas hechas por hoy!", ql_sub: "¡Bien hecho! Con Premium practicas sin límites, o vuelve mañana para 20 tarjetas nuevas.", ql_feat1: "Quiz sin límite — todos los modos", ql_cta: "Desbloquear Premium", coupon_title: "Código de descuento", coupon_need_login: "Por favor, inicia sesión para canjear un código.", coupon_sign_in: "Iniciar sesión", coupon_ph: "Introduce el código", coupon_redeem: "Canjear", coupon_redeeming: "Canjeando…",
@@ -1630,7 +1630,7 @@
       empty_title: "Typ een werkwoord om te vervoegen", empty_sub: "Alle tijden in {n} talen — typ een werkwoord of tik 🎲.",
       regular: "regelmatig", irregular: "onregelmatig", recommended: "Aanbevolen", ad_cta: "Oefenen →",
       mode: "Modus", m_type: "⌨ Typen", m_choice: "◉ Keuze", m_speed: "⚡ Speed", m_texte: "📖 Teksten", mdesc_texte: "Lees een AI-verhaal — vertaal, vul werkwoorden in of beantwoord vragen", texte_question: "Begrip", texte_cloze: "Werkwoorden invullen", texte_translate: "Vertalen", texte_new: "Nieuw verhaal", texte_writing: "Je verhaal wordt geschreven…", texte_error: "Kon geen verhaal schrijven — probeer opnieuw.", texte_comprehension: "Begripsvragen", texte_done: "Verhaal voltooid!", texte_fill_hint: "Zet het werkwoord in de juiste tijd", texte_learn: "Werkwoord leren", texte_translation: "Vertaling", texte_read: "Voorlezen", texte_speed: "Welk tempo?", texte_voice: "Welke stem?", texte_voice_auto: "Automatisch (beste)", texte_almost: "bijna klaar …", texte_voice_f: "Vrouw", texte_voice_m: "Man", texte_pause: "Pauze", texte_resume: "Verder", texte_mywords_lbl: "Mijn woorden", texte_mywords: "Mijn woorden gebruiken",
-      which_tense: "Tijd", tense_word: "Tijd", all_tenses: "Alle tijden", all_themes: "Alle thema's", which_verbs: "Woorden", which_dir: "Richting", dir_produce: "PRODUCEREN", dir_recognize: "HERKENNEN", dir_random: "WILLEKEURIG", which_theme: "Thema's", quiz_mode_hd: "Quizmodus", explain_hd: "Uitleg", req_form: "Gevraagd", tip_label: "Tip", tip_meaning: "Betekenis", tip_sentence: "Zin", none_all: "Niets gekozen — alle tijden worden geoefend", all_btn: "Alle", none_btn: "Geen", mist_clear_title: "Alle fouten weggewerkt!", mist_clear_sub: "Goed gedaan — je hebt elk fout werkwoord herhaald.", mist_practice: "Fouten oefenen", view_conj: "Volledige vervoeging", mist_exit: "Terug naar alle werkwoorden",
+      which_tense: "Tijd", tense_word: "Tijd", all_tenses: "Alle tijden", all_themes: "Alle thema's", which_verbs: "Werkwoorden", which_dir: "Richting", dir_produce: "PRODUCEREN", dir_recognize: "HERKENNEN", dir_random: "WILLEKEURIG", which_theme: "Thema's", quiz_mode_hd: "Quizmodus", explain_hd: "Uitleg", req_form: "Gevraagd", tip_label: "Tip", tip_meaning: "Betekenis", tip_sentence: "Zin", none_all: "Niets gekozen — alle tijden worden geoefend", all_btn: "Alle", none_btn: "Geen", mist_clear_title: "Alle fouten weggewerkt!", mist_clear_sub: "Goed gedaan — je hebt elk fout werkwoord herhaald.", mist_practice: "Fouten oefenen", view_conj: "Volledige vervoeging", mist_exit: "Terug naar alle werkwoorden",
       correct: "goed", accuracy: "nauwkeurigheid", streak: "reeks",
       type_form: "typ de vorm…", check: "Controleren", next: "Volgende →", correct_excl: "✓ Goed!", accent_hint: "Goed! Let alleen op het accent: {answer}", answer: "Antwoord:",
       hint_type: "Typ de juiste vorm voor het voornaamwoord en de tijd.", hint_choice: "Kies de juiste vorm — 4 opties.",
@@ -1643,7 +1643,7 @@
       fb_net: "Kon de uitleg niet laden. Hier de kernregels:",
       welcome: "Hey! Je gaat:", welcome_sub: "werkwoorden in 5 talen vervoegen, quizzen en op een makkelijke manier je favoriete taal leren.",
       your_name: "Je naam…", mother_tongue: "Je moedertaal", skill_q: "Je niveau", skill_beginner: "Beginner", skill_beginner_sub: "veelgebruikt", skill_intermediate: "Middel", skill_intermediate_sub: "+ onregelmatig", skill_advanced: "Gevorderd", skill_advanced_sub: "alle", lets_go: "Let's go →", skip: "Overslaan", remove_name: "Naam verwijderen", profile: "Profiel", listen: "Luister", m_cards: "🃏 Kaarten", flip: "Tik om te draaien", got_it: "Gewust", again: "Nog oefenen", mistakes: "Fouten", no_mistakes: "Nog geen fouten — ze verschijnen hier om te herhalen.", tab_saved: "Bewaard", reveal: "Toon vertaling", learned: "Geleerd ✓", saved_empty: "Nog geen bewaarde werkwoorden. Tik op de ☆ bij een vervoeging.", tour_conj: "De kern: vervoeg elk werkwoord in 5 talen, in alle tijden — in één oogopslag.", tour_quiz: "Test jezelf — kaarten, keuze, typen & spreken — met AI-voorbeeldzinnen elke ronde.", tour_learn: "Begrijp elke tijd tweetalig, met AI-voorbeelden die je kunt aantikken en opslaan.", tour_saved: "Bewaar werkwoorden & woorden, bouw je woordenschat op en oefen met gespreide herhaling.", tour_more1: "De kern: elk werkwoord in 5 talen door alle tijden — plus tweetalig leren met AI-voorbeelden.", tour_more2: "Oefen met de quiz (kaarten, keuze, typen & spreken), bewaar woorden en blijf op koers met challenges.", tour_goals_h: "Challenges", tour_goal: "Stel je persoonlijke challenge in — AI-voorstel, op tijd of volledig eigen. Volg je dagelijkse voortgang en blijf gemotiveerd.", tour_trial_head: "Jouw cadeau: 24 u Premium", tour_trial_sub: "Daarna je welkomstkorting vrijspelen — de vervoegingstabellen blijven altijd gratis.", tour_feat1: "Quiz & Bewaard — volledig vrij", tour_feat2: "Alle tijden & AI-voorbeeldzinnen", tour_feat3: "5 talen, geen advertenties", eg_step1: "Willekeurig werkwoord – sla op met ★", eg_step2: "Oefen in Quiz & kies favoriete thema's", eg_step3: "Train opgeslagen woorden onder 'Bewaard'", hero_kicker: "Hé {name} 👋", hero_plan: "Jouw challenge voor vandaag, {name}:", hero_plan_anon: "Jouw challenge voor vandaag:", tour_next: "Volgende", tour_start: "Beginnen", tour_skip: "Overslaan", t2_hi: "Fijn dat je er bent, {name}! 👋", t2_hi_anon: "Fijn dat je er bent! 👋", t2_ask: "Wil je een korte rondleiding door de app — of meteen beginnen?", t2_start_tour: "Rondleiding starten", t2_skip_tour: "Meteen beginnen", t2_overview_t: "Dit staat je te wachten", t2_quiz_tap_t: "Quiz · Tikken", t2_quiz_type_t: "Quiz · Typen", t2_quiz_text_t: "Quiz · Tekst", t2_prices_t: "Abonnementen & prijzen", t2_quizmodes_x: "Actief oefenen tot het zit — kies je modus.", t2_tap_x: "Kies de juiste vorm uit 4 opties.", t2_type_x: "Schrijf de vorm zelf — traint actief je spelling.", t2_text_x: "Kies thema, tijd & woorden — de AI leest je verhaal voor: test & train je luistervaardigheid.", t2_conj_x: "Typ een werkwoord of gooi de dobbelsteen, kies de tijd — bewaar met ★.", t2_merken_x: "Tik & bewaar woorden in oefenzinnen — of voeg ze zelf toe.", t2_prices_x: "Vervoegen & leren blijven voor altijd gratis · 24 uur Premium om te proberen", t2_ov1_t: "Je challenge in zicht", t2_ov1_d: "Stel een dag-, week- of maand-challenge in — volg voortgang & reeks", t2_ov2_t: "Woordenlijst", t2_ov2_d: "Tik & bewaar woorden in zinnen — of voeg ze zelf toe", t2_ov3_t: "Favoriete thema's", t2_ov3_d: "Maak je eigen thema's onder Bewaard en oefen ze in de quizzes", t2_m_cards: "Kaarten", t2_m_tap: "Tikken", t2_m_type: "Typen", t2_m_speak: "Spreken", t2_m_speed: "⚡ Speed", t2_m_text: "Tekst", t2_f_topic: "Thema", t2_f_tense: "Tijd", t2_f_words: "Woorden", t2_v_travel: "Reizen", t2_v_saved: "Mijn lijst", t2_v_work: "werk", t2_p1_t: "24 u Premium", t2_p1_d: "alles testen — zonder account", t2_p2_t: "Met account · gratis", t2_p2_d: "Vervoegen, Leren & 20 quizkaarten / dag", t2_p3_t: "ConjuPremium", t2_p3_d: "alles vrij · jaar €29,99 · maand €2,99", m_speak: "🎤 Spreken", speak_tap: "Tik op de microfoon en zeg de vorm", speak_heard: "Gehoord:", speak_nomic: "Spraakinvoer wordt hier niet ondersteund.", spk_form: "Woord zeggen", spk_sentence: "Zin zeggen", spk_what: "Wat oefenen?", spk_say: "Zeg het in {lang}",
-      dq_form: "Vervoegde vorm", vocab_translate: "Vertalen", offline_note: "⚡ Offline — voorbeelden & vertalingen vereisen internet", aux_title: "Samengestelde tijden vormen", aux_logic: "Alle samengestelde tijden werken hetzelfde: je vervoegt het hulpwerkwoord {aux} naar persoon + tijd en voegt het onveranderlijke voltooid deelwoord {part} toe. Alleen het hulpwerkwoord verandert — het deelwoord blijft gelijk.", aux_note: "Samengestelde tijden = hulpwerkwoord + voltooid deelwoord.", aux_participle: "Voltooid deelwoord", cards_hint: "Vervoeg het werkwoord in de gevraagde tijd in gedachten – tik voor de oplossing", cards_hint_type: "Vervoeg het werkwoord in de gevraagde tijd · typ het in het vak", cards_hint_speak: "Vervoeg het werkwoord in de gevraagde tijd · tik op de microfoon om te spreken", choose_label: "Kies:", tap_retry: "Tik om te vertalen", dq_infinitive: "Hele werkwoord", dq_belongs: "Van", dq_participle: "Voltooid deelwoord", dq_gerund: "Onvoltooid deelwoord", spk_relearn: "Nog aan het leren — toon antwoord", spk_correct_is: "De juiste zin:", spk_next_sentence: "Volgende zin →", speak_denied: "Microfoon geblokkeerd — geef toegang in je browser.", speak_nospeech: "Niet verstaan — probeer opnieuw.", mic_start: "Tik om te spreken", sent_mist_practice: "Foute zinnen oefenen", spk_context: "In een zin", cloze_instr: "Vervoeg het werkwoord in de gevraagde tijd", choose_tile: "kies de juiste tegel", mic_stop: "Tik als je klaar bent", tap_word: "tik op een woord voor de betekenis", practice_again: "Opnieuw oefenen", sk_title: "Challenge & reeks", sk_today: "Vandaag", sk_streak: "Dagen op rij", sk_best: "Record", sk_days: "dagen", sk_done: "Challenge gehaald!", sk_left: "Nog {n} tot de challenge van vandaag", sk_explain: "Elke vervoeging en quizantwoord telt. Haal je dag-challenge om je reeks te behouden — mis je een dag, dan begint hij opnieuw.", sk_close: "Begrepen", dq_fuzzy: "herkend zonder accenten", dq_switched: "naar hele werkwoord gewisseld", dq_guess: "geschat op basis van de uitgang", tfilter_hint: "Veeg opzij · tik om een tijd te tonen / verbergen", verb_ph: "Typ een werkwoord…", autoread: "Antwoord voorlezen", autoread_sub: "bij goed", review: "Overzicht", native_ph: "…of een werkwoord in je taal", saved_verbs: "Werkwoorden", saved_vocab: "Woordenschat", ch_tab: "Challenge", ch_empty: "Nog geen challenge — maak er een en oefen gericht.", ch_create: "Challenge maken", ch_new: "Nieuwe challenge", ch_practice: "Nu oefenen", ch_left: "nog {n} dagen", ch_done_v: "{a} van {b} werkwoorden", ch_done_w: "{a} van {b} woorden", ch_edit: "Bewerken", ch_editdone: "Klaar", ch_add_ph: "Werkwoord of woord…", ch_fill: "Aanvullen", ch_from_saved: "Uit Bewaard", ch_mastered: "Challenge voltooid!", ch_mastered_sub: "Alles zit — tijd voor een nieuwe challenge.", vocab_all: "Alle", vocab_new_cat: "Nieuw", vocab_new_cat_q: "Naam van de nieuwe categorie:", vocab_add_ph: "Voeg een woord of zin toe…", vocab_empty: "Nog geen woorden — voeg hierboven je eerste toe.", vocab_practice: "Oefenen", vocab_word: "woord", vocab_phrase: "zin", vocab_type_target: "Typ het in {lang}…", vocab_done: "Ronde voltooid!", vocab_save: "Bewaren", vocab_saved: "Bewaard", vocab_seeding: "Startwoorden laden…", vocab_suggest: "10 nieuwe woorden voorstellen", vocab_due: "Vandaag aan de beurt", vocab_strength: "Geheugenkracht", vocab_starter: "5 startwoorden laden", gr_ind: "Aantonende wijs", gr_subj: "Aanvoegende wijs", gr_cond: "Voorwaardelijk", gr_imp: "Gebiedende wijs", gr_cont: "Duurvorm", gr_forms: "Onbepaalde vormen", how_formed: "Hoe wordt het gevormd?", key_irregulars: "Belangrijke onregelmatige werkwoorden", irr_note: "Tik op een werkwoord voor de volledige vervoeging.", tap_save: "tik op een woord – betekenis & bewaren", type_word: "Woord typen", type_sentence: "Zin typen", spk_translate: "Vertaal dit", qi_title: "Hoe wil je oefenen?", qi_sub: "Kies een modus — elk traint een andere vaardigheid.", qi_foot: "Tip: stel tijd- & werkwoordfilters in na het kiezen.", qi_back: "Overzicht", mdesc_cards: "Kaarten omdraaien — antwoord zien, ontspannen", mdesc_choice: "Meerkeuze — kies de juiste vorm", mdesc_speed: "Sprint van 60 s — hoeveel haal je?", mdesc_type: "Typ de vorm of vertaal een zin", mdesc_speak: "Zeg het hardop — spraakherkenning",
+      dq_form: "Vervoegde vorm", vocab_translate: "Vertalen", offline_note: "⚡ Offline — voorbeelden & vertalingen vereisen internet", aux_title: "Samengestelde tijden vormen", aux_logic: "Alle samengestelde tijden werken hetzelfde: je vervoegt het hulpwerkwoord {aux} naar persoon + tijd en voegt het onveranderlijke voltooid deelwoord {part} toe. Alleen het hulpwerkwoord verandert — het deelwoord blijft gelijk.", aux_note: "Samengestelde tijden = hulpwerkwoord + voltooid deelwoord.", aux_participle: "Voltooid deelwoord", cards_hint: "Vervoeg het werkwoord in de gevraagde tijd in gedachten – tik voor de oplossing", cards_hint_type: "Vervoeg het werkwoord in de gevraagde tijd · typ het in het vak", cards_hint_speak: "Vervoeg het werkwoord in de gevraagde tijd · tik op de microfoon om te spreken", choose_label: "Kies:", tap_retry: "Tik om te vertalen", dq_infinitive: "Hele werkwoord", dq_belongs: "Van", dq_participle: "Voltooid deelwoord", dq_gerund: "Onvoltooid deelwoord", spk_relearn: "Nog aan het leren — toon antwoord", spk_correct_is: "De juiste zin:", spk_next_sentence: "Volgende zin →", speak_denied: "Microfoon geblokkeerd — geef toegang in je browser.", speak_nospeech: "Niet verstaan — probeer opnieuw.", mic_start: "Tik één keer om op te nemen", sent_mist_practice: "Foute zinnen oefenen", spk_context: "In een zin", cloze_instr: "Vervoeg het werkwoord in de gevraagde tijd", choose_tile: "kies de juiste tegel", mic_stop: "Tik als je klaar bent", tap_word: "tik op een woord voor de betekenis", practice_again: "Opnieuw oefenen", sk_title: "Challenge & reeks", sk_today: "Vandaag", sk_streak: "Dagen op rij", sk_best: "Record", sk_days: "dagen", sk_done: "Challenge gehaald!", sk_left: "Nog {n} tot de challenge van vandaag", sk_explain: "Elke vervoeging en quizantwoord telt. Haal je dag-challenge om je reeks te behouden — mis je een dag, dan begint hij opnieuw.", sk_close: "Begrepen", dq_fuzzy: "herkend zonder accenten", dq_switched: "naar hele werkwoord gewisseld", dq_guess: "geschat op basis van de uitgang", tfilter_hint: "Veeg opzij · tik om een tijd te tonen / verbergen", verb_ph: "Typ een werkwoord…", autoread: "Antwoord voorlezen", autoread_sub: "bij goed", review: "Overzicht", native_ph: "…of een werkwoord in je taal", saved_verbs: "Werkwoorden", saved_vocab: "Woordenschat", saved_tap_hint: "Tik op een cel om te horen · ✕ verwijdert het werkwoord", ch_tab: "Challenge", ch_empty: "Nog geen challenge — maak er een en oefen gericht.", ch_create: "Challenge maken", cs_day: "Dag", cs_left: "nog {n}", cs_done: "vandaag klaar ✓", cs_start: "Challenge starten", cs_plan: "jouw plan", ch_moment: "‚{v}' zit erin — onder de knie!", ch_words_hint: "Woorden oefen je in je Woordenschat", ch_words_go: "Naar Woordenschat →", ch_new: "Nieuwe challenge", ch_practice: "Nu oefenen", ch_left: "nog {n} dagen", ch_done_v: "{a} van {b} werkwoorden", ch_done_w: "{a} van {b} woorden", ch_edit: "Bewerken", ch_editdone: "Klaar", ch_add_ph: "Werkwoord of woord…", ch_fill: "Aanvullen", ch_from_saved: "Uit Bewaard", ch_add_all: "Alle toevoegen", ch_choose: "Uit bewaard kiezen", ch_pick_verbs: "Je bewaarde werkwoorden", ch_pick_words: "Je bewaarde woorden", ch_pick_empty_v: "Nog geen bewaarde werkwoorden — bewaar ze met ☆ bij het vervoegen.", ch_pick_empty_w: "Nog geen bewaarde woorden — voeg ze toe in Woordenschat.", ch_timeup: "Tijd om — {a} van {b} onder de knie.", ch_extend: "+1 week", ch_mastered: "Challenge voltooid!", ch_mastered_sub: "Alles zit — tijd voor een nieuwe challenge.", vocab_all: "Alle", vocab_new_cat: "Nieuw", vocab_cats_all: "Alle thema's", vocab_cats_less: "Minder", vocab_new_cat_q: "Naam van de nieuwe categorie:", vocab_add_ph: "Voeg een woord of zin toe…", vocab_empty: "Nog geen woorden — voeg hierboven je eerste toe.", vocab_practice: "Oefenen", vocab_word: "woord", vocab_phrase: "zin", vocab_type_target: "Typ het in {lang}…", vocab_done: "Ronde voltooid!", vocab_save: "Bewaren", vocab_saved: "Bewaard", vocab_seeding: "Startwoorden laden…", vocab_suggest: "10 nieuwe woorden voorstellen", vocab_due: "Vandaag aan de beurt", vocab_strength: "Geheugenkracht", vocab_starter: "5 startwoorden laden", gr_ind: "Aantonende wijs", gr_subj: "Aanvoegende wijs", gr_cond: "Voorwaardelijk", gr_imp: "Gebiedende wijs", gr_cont: "Duurvorm", gr_forms: "Onbepaalde vormen", how_formed: "Hoe wordt het gevormd?", key_irregulars: "Belangrijke onregelmatige werkwoorden", irr_note: "Tik op een werkwoord voor de volledige vervoeging.", tap_save: "tik op een woord – betekenis & bewaren", report_link: "Fout melden", report_title: "Wat klopt er niet?", r_grammar: "Verkeerde grammatica", r_unnatural: "Onnatuurlijk", r_translation: "Verkeerde vertaling", r_other: "Iets anders", report_note: "Notitie (optioneel)…", report_send: "Versturen", report_thanks: "Bedankt — we kijken ernaar!", acct_created: "✓ Account aangemaakt — welkom!", report_general: "Feedback geven", report_general_sub: "Idee, fout of lof", type_word: "Woord typen", type_sentence: "Zin typen", spk_translate: "Vertaal dit", qi_title: "Hoe wil je oefenen?", qi_sub: "Kies een modus — elk traint een andere vaardigheid.", qi_foot: "Tip: stel tijd- & werkwoordfilters in na het kiezen.", qi_back: "Overzicht", mdesc_cards: "Kaarten omdraaien — antwoord zien, ontspannen", mdesc_choice: "Meerkeuze — kies de juiste vorm", mdesc_speed: "Sprint van 60 s — hoeveel haal je?", mdesc_type: "Typ de vorm of vertaal een zin", mdesc_speak: "Zeg het hardop — spraakherkenning",
       paywall_lock: "🔒 Quiz & Bewaard zijn Premium", paywall_h1: "Vervoegen zonder nadenken", paywall_sub: "De Quiz traint je actief totdat de vormen blijven hangen — en met Bewaard oefen je precies de woordenschat die jou belangrijk is.", paywall_unlock: "Premium ontgrendelen", paywall_later: "Misschien later", pw_feat1: "Interactieve Quiz", pw_feat1v: "4 modi", pw_feat2: "Bewaard & woordenlijsten", pw_feat2v: "onbeperkt", pw_feat3: "Vervoeging & Leren", pw_feat3v: "blijft gratis",
       offer_badge: "🚀 WELKOMSTAANBIEDING · −{disc} %", offer_expires: "Aanbieding verloopt in {t}", offer_instead: "in plaats van", offer_mo: "mnd.", offer_yr: "/ jaar", offer_you_pay: "je betaalt:", offer_save: "je bespaart {save} € (−{disc} %)", offer_secure: "Aanbieding aannemen", offer_trial: "Eerst 24 u gratis uitproberen", offer_trial_b: "24 u Premium gratis", offer_close: "Aanbieding sluiten", offer_price_label: "Prijs: {price} € per jaar, in plaats van {eq} € maandelijks",
       plan_hero_h1: "Leer zonder limieten", plan_hero_sub: "Onbeperkte Quiz & Bewaard in alle 5 talen", plan_annual: "Jaarabonnement", plan_monthly: "Maandabonnement", plan_best: "★ Populairste keuze", plan_bonus: "🎁 Welkomstbonus", plan_per_mo: "/ maand", plan_per_yr: "/ jaar", plan_instead: "i.p.v.", plan_save: "je bespaart {save} € (−{disc} %)", plan_mo_label: "~{price} € / maand · i.p.v. {eq} €", plan_flex: "flexibel · gelijk aan {eq} € / jaar", plan_feat1: "Interactieve vervoeging-quiz", plan_feat2: "Bewaard & woordenlijsten", plan_feat3: "5 talen — ES, FR, EN, NL, DE", plan_feat4: "Alle apparaten · geen advertenties", plan_cta: "Doorgaan naar betaling", plan_cancelable: "op elk moment opzegbaar", plan_have_account: "Al een account?", sign_in: "Inloggen", plan_coupon: "Kortingscode inwisselen", pr_title: "Prijzen & abonnementen", pr_eyebrow: "Prijzen", pr_free: "Gratis", pr_premium: "Premium", pr_feat_conj: "Werkwoorden vervoegen · alle tijden", pr_active: "Je hebt Premium – bedankt! 💜", pr_anon: "Anoniem", pr_konto: "Account", pr_quiz_day: "20/dag", pr_trial_note: "🎁 Met account: 2 dagen Premium gratis testen", pr_feat_goals: "Challenges & voortgang", ap_lock: "🔓 Gratis account", ap_h1: "Quiz met gratis account", ap_sub: "Maak een gratis account om met de quiz te oefenen — plus 2 dagen Premium gratis.", ap_feat1: "20 quizkaarten per dag", ap_feat2: "2 dagen Premium gratis", ap_feat3: "Voortgang op al je apparaten", ap_cta: "Gratis account aanmaken", ql_lock: "🔓 Daglimiet bereikt", ql_h1: "20 kaarten klaar voor vandaag!", ql_sub: "Goed gedaan! Met Premium oefen je onbeperkt — of kom morgen terug voor 20 nieuwe kaarten.", ql_feat1: "Onbeperkte quiz — elke modus", ql_cta: "Premium ontgrendelen", coupon_title: "Kortingscode", coupon_need_login: "Log eerst in om een code in te wisselen.", coupon_sign_in: "Nu inloggen", coupon_ph: "Code invoeren", coupon_redeem: "Inwisselen", coupon_redeeming: "Inwisselen…",
@@ -1675,7 +1675,7 @@
       empty_title: "Saisis un verbe à conjuguer", empty_sub: "Tous les temps en {n} langues — saisis un verbe ou appuie sur 🎲.",
       regular: "régulier", irregular: "irrégulier", recommended: "Recommandé", ad_cta: "S'entraîner →",
       mode: "Mode", m_type: "⌨ Saisie", m_choice: "◉ Choix", m_speed: "⚡ Rapide", m_texte: "📖 Textes", mdesc_texte: "Lis une histoire IA — traduis, complète les verbes ou réponds aux questions", texte_question: "Compréhension", texte_cloze: "Compléter les verbes", texte_translate: "Traduire", texte_new: "Nouvelle histoire", texte_writing: "Rédaction de ton histoire…", texte_error: "Impossible d'écrire une histoire — réessaie.", texte_comprehension: "Questions de compréhension", texte_done: "Histoire terminée !", texte_fill_hint: "Mets le verbe au bon temps", texte_learn: "Apprendre le verbe", texte_translation: "Traduction", texte_read: "Lire à voix haute", texte_speed: "Quelle vitesse ?", texte_voice: "Quelle voix ?", texte_voice_auto: "Automatique (meilleure)", texte_almost: "presque terminé …", texte_voice_f: "Femme", texte_voice_m: "Homme", texte_pause: "Pause", texte_resume: "Reprendre", texte_mywords_lbl: "Mon vocabulaire", texte_mywords: "Utiliser mes mots",
-      which_tense: "Temps", tense_word: "Temps", all_tenses: "Tous les temps", all_themes: "Tous les thèmes", which_verbs: "Mots", which_dir: "Direction", dir_produce: "PRODUIRE", dir_recognize: "RECONNAÎTRE", dir_random: "ALÉATOIRE", which_theme: "Thèmes", quiz_mode_hd: "Mode quiz", explain_hd: "Explication", req_form: "Demandé", tip_label: "Astuce", tip_meaning: "Sens", tip_sentence: "Phrase", none_all: "Aucun — tous les temps sont révisés", all_btn: "Tous", none_btn: "Aucun", mist_clear_title: "Erreurs maîtrisées !", mist_clear_sub: "Bravo — tu as revu chaque verbe raté.", mist_practice: "Réviser les erreurs", view_conj: "Voir la conjugaison", mist_exit: "Revenir à tous les verbes",
+      which_tense: "Temps", tense_word: "Temps", all_tenses: "Tous les temps", all_themes: "Tous les thèmes", which_verbs: "Verbes", which_dir: "Direction", dir_produce: "PRODUIRE", dir_recognize: "RECONNAÎTRE", dir_random: "ALÉATOIRE", which_theme: "Thèmes", quiz_mode_hd: "Mode quiz", explain_hd: "Explication", req_form: "Demandé", tip_label: "Astuce", tip_meaning: "Sens", tip_sentence: "Phrase", none_all: "Aucun — tous les temps sont révisés", all_btn: "Tous", none_btn: "Aucun", mist_clear_title: "Erreurs maîtrisées !", mist_clear_sub: "Bravo — tu as revu chaque verbe raté.", mist_practice: "Réviser les erreurs", view_conj: "Voir la conjugaison", mist_exit: "Revenir à tous les verbes",
       correct: "correctes", accuracy: "précision", streak: "série",
       type_form: "saisis la forme…", check: "Vérifier", next: "Suivant →", correct_excl: "✓ Correct !", accent_hint: "Bien ! Attention juste à l’accent : {answer}", answer: "Réponse :",
       hint_type: "Saisis la forme correcte pour le pronom et le temps.", hint_choice: "Choisis la bonne forme — 4 options.",
@@ -1688,7 +1688,7 @@
       fb_net: "Impossible de charger l'explication. Voici les règles clés :",
       welcome: "Hey ! Tu vas :", welcome_sub: "conjuguer des verbes en 5 langues, faire des quiz et apprendre facilement ta langue préférée.",
       your_name: "Ton nom…", mother_tongue: "Ta langue maternelle", skill_q: "Ton niveau", skill_beginner: "Débutant", skill_beginner_sub: "verbes courants", skill_intermediate: "Moyen", skill_intermediate_sub: "+ irréguliers", skill_advanced: "Avancé", skill_advanced_sub: "tous", lets_go: "C'est parti →", skip: "Passer", remove_name: "Retirer le nom", profile: "Profil", listen: "Écouter", m_cards: "🃏 Cartes", flip: "Touche pour retourner", got_it: "Je sais", again: "À revoir", mistakes: "Erreurs", no_mistakes: "Aucune erreur — elles apparaîtront ici à revoir.", tab_saved: "Favoris", reveal: "Voir la traduction", learned: "Appris ✓", saved_empty: "Aucun verbe enregistré pour le moment. Touche la ★ sur une conjugaison.", tour_conj: "Le cœur : conjugue n\u2019importe quel verbe en 5 langues, à tous les temps — en un coup d\u2019œil.", tour_quiz: "Teste-toi — cartes, choix, saisie & oral — avec des phrases d\u2019exemple générées par IA.", tour_learn: "Comprends chaque temps en bilingue, avec des exemples IA à toucher et mémoriser.", tour_saved: "Mémorise verbes & mots, construis ton vocabulaire et révise-le en répétition espacée.", tour_more1: "L’essentiel : chaque verbe dans 5 langues à tous les temps — plus un apprentissage bilingue avec exemples IA.", tour_more2: "Entraîne-toi avec le quiz (cartes, choix, saisie & oral), mémorise des mots et progresse avec des challenges.", tour_goals_h: "Challenges", tour_goal: "Crée ton challenge personnel — suggestion IA, par temps ou sur-mesure. Suis tes progrès quotidiens et reste motivé(e).", tour_trial_head: "Ton cadeau : 24 h Premium", tour_trial_sub: "Ensuite, débloque ta remise de bienvenue — les tableaux de conjugaison restent toujours gratuits.", tour_feat1: "Quiz & Favoris — tout débloqué", tour_feat2: "Tous les temps & phrases IA", tour_feat3: "5 langues, sans pub", eg_step1: "Verbe au hasard – touche ★ pour garder", eg_step2: "Pratique en Quiz & choisis tes thèmes", eg_step3: "Entraîne les mots gardés dans l'onglet 'Favoris'", hero_kicker: "Salut {name} 👋", hero_plan: "Ton challenge du jour, {name} :", hero_plan_anon: "Ton challenge du jour :", tour_next: "Suivant", tour_start: "Commencer", tour_skip: "Passer", t2_hi: "Ravi de te voir ici, {name} ! 👋", t2_hi_anon: "Ravi de te voir ici ! 👋", t2_ask: "Tu veux un petit tour de l'appli — ou commencer directement ?", t2_start_tour: "Démarrer la visite", t2_skip_tour: "Commencer directement", t2_overview_t: "Voici ce qui t'attend", t2_quiz_tap_t: "Quiz · Toucher", t2_quiz_type_t: "Quiz · Saisie", t2_quiz_text_t: "Quiz · Texte", t2_prices_t: "Offres & tarifs", t2_quizmodes_x: "Entraîne-toi activement jusqu'à la maîtrise — choisis ton mode.", t2_tap_x: "Choisis la bonne forme parmi 4 options.", t2_type_x: "Écris la forme toi-même — entraîne activement l'orthographe.", t2_text_x: "Choisis thème, temps & vocabulaire — l'IA lit ton histoire à voix haute : teste ta compréhension orale.", t2_conj_x: "Saisis un verbe ou lance le dé, choisis le temps — garde-le avec ★.", t2_merken_x: "Touche & garde des mots dans les phrases d'exemple — ou ajoute les tiens.", t2_prices_x: "Conjuguer & apprendre restent gratuits pour toujours · 24 h de Premium à l'essai", t2_ov1_t: "Ton challenge en vue", t2_ov1_d: "Fixe un challenge quotidien, hebdomadaire ou mensuel — suis tes progrès & ta série", t2_ov2_t: "Liste de vocabulaire", t2_ov2_d: "Touche & garde des mots dans des phrases — ou ajoute les tiens", t2_ov3_t: "Thèmes favoris", t2_ov3_d: "Crée tes propres thèmes dans Mémorisés et entraîne-les dans les quiz", t2_m_cards: "Cartes", t2_m_tap: "Toucher", t2_m_type: "Saisie", t2_m_speak: "Parler", t2_m_speed: "⚡ Rapide", t2_m_text: "Texte", t2_f_topic: "Thème", t2_f_tense: "Temps", t2_f_words: "Mots", t2_v_travel: "Voyages", t2_v_saved: "Ma liste", t2_v_work: "travail", t2_p1_t: "24 h Premium", t2_p1_d: "tout tester — sans compte", t2_p2_t: "Avec compte · gratuit", t2_p2_d: "Conjuguer, Apprendre & 20 cartes / jour", t2_p3_t: "ConjuPremium", t2_p3_d: "tout débloqué · an 29,99 € · mois 2,99 €", m_speak: "🎤 Parler", speak_tap: "Touche le micro et dis la forme", speak_heard: "Entendu :", speak_nomic: "La saisie vocale n’est pas disponible ici.", spk_form: "Dire un mot", spk_sentence: "Dire une phrase", spk_what: "Quoi pratiquer ?", spk_say: "Dis-le en {lang}",
-      dq_form: "Forme conjuguée", vocab_translate: "Traduire", offline_note: "⚡ Hors ligne — exemples et traductions nécessitent internet", aux_title: "Former les temps composés", aux_logic: "Tous les temps composés se forment pareil : tu conjugues l'auxiliaire {aux} selon la personne et le temps, puis tu ajoutes le participe passé invariable {part}. Seul l'auxiliaire change — le participe reste identique.", aux_note: "Temps composés = auxiliaire + participe passé.", aux_participle: "Participe passé", cards_hint: "Conjugue le verbe au temps demandé mentalement – touche pour la solution", cards_hint_type: "Conjugue le verbe au temps demandé · tape-le dans la case", cards_hint_speak: "Conjugue le verbe au temps demandé · touche le micro pour parler", choose_label: "Choisis :", tap_retry: "Toucher pour traduire", dq_infinitive: "Infinitif", dq_belongs: "De", dq_participle: "Participe passé", dq_gerund: "Gérondif", spk_relearn: "À revoir — voir la réponse", spk_correct_is: "La phrase correcte :", spk_next_sentence: "Phrase suivante →", speak_denied: "Micro bloqué — autorise l'accès dans le navigateur.", speak_nospeech: "Je n'ai pas entendu — réessaie.", mic_start: "Touche pour parler", sent_mist_practice: "Réviser les phrases ratées", spk_context: "Dans une phrase", cloze_instr: "Conjugue le verbe au temps demandé", choose_tile: "choisis la bonne case", mic_stop: "Touche quand c'est fini", tap_word: "touche un mot pour sa traduction", practice_again: "Réviser encore", sk_title: "Challenge & série", sk_today: "Aujourd'hui", sk_streak: "Jours d'affilée", sk_best: "Record", sk_days: "jours", sk_done: "Challenge réussie !", sk_left: "Encore {n} pour le challenge du jour", sk_explain: "Chaque conjugaison et réponse de quiz compte. Termine ton challenge du jour pour garder ta série — un jour manqué la remet à zéro.", sk_close: "Compris", dq_fuzzy: "reconnu sans accents", dq_switched: "passé à l\u2019infinitif", dq_guess: "déduit d\u2019après la terminaison", tfilter_hint: "Glisse · touche pour afficher / masquer un temps", verb_ph: "Saisis un verbe…", autoread: "Lire la réponse", autoread_sub: "si correct", review: "Bilan", native_ph: "…ou un verbe dans ta langue", saved_verbs: "Verbes", saved_vocab: "Vocabulaire", ch_tab: "Challenge", ch_empty: "Pas encore de challenge — crées-en un et entraîne-toi ciblé.", ch_create: "Créer un challenge", ch_new: "Nouveau challenge", ch_practice: "S'entraîner", ch_left: "encore {n} jours", ch_done_v: "{a} de {b} verbes maîtrisés", ch_done_w: "{a} de {b} mots", ch_edit: "Modifier", ch_editdone: "Terminé", ch_add_ph: "Verbe ou mot…", ch_fill: "Compléter", ch_from_saved: "Depuis Favoris", ch_mastered: "Challenge maîtrisée !", ch_mastered_sub: "Tout est acquis — place à un nouveau challenge.", vocab_all: "Tout", vocab_new_cat: "Nouvelle", vocab_new_cat_q: "Nom de la nouvelle catégorie :", vocab_add_ph: "Ajoute un mot ou une phrase…", vocab_empty: "Pas encore de mots — ajoute le premier ci-dessus.", vocab_practice: "Réviser", vocab_word: "mot", vocab_phrase: "phrase", vocab_type_target: "Écris-le en {lang}…", vocab_done: "Tour terminé !", vocab_save: "Garder", vocab_saved: "Gardé", vocab_seeding: "Chargement des mots de départ…", vocab_suggest: "Suggérer 10 nouveaux mots", vocab_due: "À revoir aujourd'hui", vocab_strength: "Force mémoire", vocab_starter: "Charger 5 mots de départ", gr_ind: "Indicatif", gr_subj: "Subjonctif", gr_cond: "Conditionnel", gr_imp: "Impératif", gr_cont: "Forme progressive", gr_forms: "Formes non personnelles", how_formed: "Comment se forme-t-il ?", key_irregulars: "Verbes irréguliers clés", irr_note: "Touche un verbe pour voir sa conjugaison complète.", tap_save: "touche un mot – sens & garder", type_word: "Écrire un mot", type_sentence: "Écrire une phrase", spk_translate: "Traduis ceci", qi_title: "Comment veux-tu t'entraîner ?", qi_sub: "Choisis un mode — chacun entraîne une compétence.", qi_foot: "Astuce : règle les filtres de temps et de verbes après.", qi_back: "Aperçu", mdesc_cards: "Retourner des cartes — voir la réponse, sans stress", mdesc_choice: "Choix multiple — choisis la bonne forme", mdesc_speed: "Sprint de 60 s — combien en fais-tu ?", mdesc_type: "Écris la forme ou traduis une phrase", mdesc_speak: "Dis-le à voix haute — reconnaissance vocale",
+      dq_form: "Forme conjuguée", vocab_translate: "Traduire", offline_note: "⚡ Hors ligne — exemples et traductions nécessitent internet", aux_title: "Former les temps composés", aux_logic: "Tous les temps composés se forment pareil : tu conjugues l'auxiliaire {aux} selon la personne et le temps, puis tu ajoutes le participe passé invariable {part}. Seul l'auxiliaire change — le participe reste identique.", aux_note: "Temps composés = auxiliaire + participe passé.", aux_participle: "Participe passé", cards_hint: "Conjugue le verbe au temps demandé mentalement – touche pour la solution", cards_hint_type: "Conjugue le verbe au temps demandé · tape-le dans la case", cards_hint_speak: "Conjugue le verbe au temps demandé · touche le micro pour parler", choose_label: "Choisis :", tap_retry: "Toucher pour traduire", dq_infinitive: "Infinitif", dq_belongs: "De", dq_participle: "Participe passé", dq_gerund: "Gérondif", spk_relearn: "À revoir — voir la réponse", spk_correct_is: "La phrase correcte :", spk_next_sentence: "Phrase suivante →", speak_denied: "Micro bloqué — autorise l'accès dans le navigateur.", speak_nospeech: "Je n'ai pas entendu — réessaie.", mic_start: "Touche une fois pour enregistrer", sent_mist_practice: "Réviser les phrases ratées", spk_context: "Dans une phrase", cloze_instr: "Conjugue le verbe au temps demandé", choose_tile: "choisis la bonne case", mic_stop: "Touche quand c'est fini", tap_word: "touche un mot pour sa traduction", practice_again: "Réviser encore", sk_title: "Challenge & série", sk_today: "Aujourd'hui", sk_streak: "Jours d'affilée", sk_best: "Record", sk_days: "jours", sk_done: "Challenge réussie !", sk_left: "Encore {n} pour le challenge du jour", sk_explain: "Chaque conjugaison et réponse de quiz compte. Termine ton challenge du jour pour garder ta série — un jour manqué la remet à zéro.", sk_close: "Compris", dq_fuzzy: "reconnu sans accents", dq_switched: "passé à l\u2019infinitif", dq_guess: "déduit d\u2019après la terminaison", tfilter_hint: "Glisse · touche pour afficher / masquer un temps", verb_ph: "Saisis un verbe…", autoread: "Lire la réponse", autoread_sub: "si correct", review: "Bilan", native_ph: "…ou un verbe dans ta langue", saved_verbs: "Verbes", saved_vocab: "Vocabulaire", saved_tap_hint: "Touche une cellule pour l'écouter · ✕ retire le verbe", ch_tab: "Challenge", ch_empty: "Pas encore de challenge — crées-en un et entraîne-toi ciblé.", ch_create: "Créer un challenge", cs_day: "Jour", cs_left: "encore {n}", cs_done: "fait aujourd'hui ✓", cs_start: "Démarrer le challenge", cs_plan: "ton plan", ch_moment: "« {v} » est acquis — maîtrisé !", ch_words_hint: "Les mots se révisent dans ton Vocabulaire", ch_words_go: "Vers le Vocabulaire →", ch_new: "Nouveau challenge", ch_practice: "S'entraîner", ch_left: "encore {n} jours", ch_done_v: "{a} de {b} verbes maîtrisés", ch_done_w: "{a} de {b} mots", ch_edit: "Modifier", ch_editdone: "Terminé", ch_add_ph: "Verbe ou mot…", ch_fill: "Compléter", ch_from_saved: "Depuis Favoris", ch_add_all: "Tout ajouter", ch_choose: "Choisir parmi les favoris", ch_pick_verbs: "Tes verbes favoris", ch_pick_words: "Tes mots favoris", ch_pick_empty_v: "Pas encore de verbes favoris — garde-les avec ☆ en conjuguant.", ch_pick_empty_w: "Pas encore de mots favoris — ajoute-les dans Vocabulaire.", ch_timeup: "Temps écoulé — {a} sur {b} maîtrisés.", ch_extend: "+1 semaine", ch_mastered: "Challenge maîtrisée !", ch_mastered_sub: "Tout est acquis — place à un nouveau challenge.", vocab_all: "Tout", vocab_new_cat: "Nouvelle", vocab_cats_all: "Tous les thèmes", vocab_cats_less: "Moins", vocab_new_cat_q: "Nom de la nouvelle catégorie :", vocab_add_ph: "Ajoute un mot ou une phrase…", vocab_empty: "Pas encore de mots — ajoute le premier ci-dessus.", vocab_practice: "Réviser", vocab_word: "mot", vocab_phrase: "phrase", vocab_type_target: "Écris-le en {lang}…", vocab_done: "Tour terminé !", vocab_save: "Garder", vocab_saved: "Gardé", vocab_seeding: "Chargement des mots de départ…", vocab_suggest: "Suggérer 10 nouveaux mots", vocab_due: "À revoir aujourd'hui", vocab_strength: "Force mémoire", vocab_starter: "Charger 5 mots de départ", gr_ind: "Indicatif", gr_subj: "Subjonctif", gr_cond: "Conditionnel", gr_imp: "Impératif", gr_cont: "Forme progressive", gr_forms: "Formes non personnelles", how_formed: "Comment se forme-t-il ?", key_irregulars: "Verbes irréguliers clés", irr_note: "Touche un verbe pour voir sa conjugaison complète.", tap_save: "touche un mot – sens & garder", report_link: "Signaler une erreur", report_title: "Qu'est-ce qui ne va pas ?", r_grammar: "Grammaire incorrecte", r_unnatural: "Pas naturel", r_translation: "Mauvaise traduction", r_other: "Autre chose", report_note: "Remarque (facultatif)…", report_send: "Envoyer", report_thanks: "Merci — on regarde ça !", acct_created: "✓ Compte créé — bienvenue !", report_general: "Donner un avis", report_general_sub: "Idée, bug ou compliment", type_word: "Écrire un mot", type_sentence: "Écrire une phrase", spk_translate: "Traduis ceci", qi_title: "Comment veux-tu t'entraîner ?", qi_sub: "Choisis un mode — chacun entraîne une compétence.", qi_foot: "Astuce : règle les filtres de temps et de verbes après.", qi_back: "Aperçu", mdesc_cards: "Retourner des cartes — voir la réponse, sans stress", mdesc_choice: "Choix multiple — choisis la bonne forme", mdesc_speed: "Sprint de 60 s — combien en fais-tu ?", mdesc_type: "Écris la forme ou traduis une phrase", mdesc_speak: "Dis-le à voix haute — reconnaissance vocale",
       paywall_lock: "🔒 Le Quiz et Mémorisés sont Premium", paywall_h1: "Conjugue sans réfléchir", paywall_sub: "Le Quiz t'entraîne activement jusqu'à ce que les formes soient ancrées — et Mémorisés te permet de pratiquer exactement le vocabulaire qui compte pour toi.", paywall_unlock: "Débloquer Premium", paywall_later: "Peut-être plus tard", pw_feat1: "Quiz interactif", pw_feat1v: "4 modes", pw_feat2: "Mémorisés & listes de vocab.", pw_feat2v: "illimité", pw_feat3: "Conjugaison & Apprendre", pw_feat3v: "reste gratuit",
       offer_badge: "🚀 OFFRE DE BIENVENUE · −{disc} %", offer_expires: "L'offre expire dans {t}", offer_instead: "au lieu de", offer_mo: "mois.", offer_yr: "/ an", offer_you_pay: "tu paies :", offer_save: "tu économises {save} € (−{disc} %)", offer_secure: "Profiter de l'offre", offer_trial: "Essayer 24 h gratuit d'abord", offer_trial_b: "24 h Premium gratuit", offer_close: "Fermer l'offre", offer_price_label: "Prix : {price} € par an, au lieu de {eq} € mensuels",
       plan_hero_h1: "Apprends sans limites", plan_hero_sub: "Quiz & Mémorisés illimités dans les 5 langues", plan_annual: "Abonnement annuel", plan_monthly: "Abonnement mensuel", plan_best: "★ Le plus populaire", plan_bonus: "🎁 Bonus de bienvenue", plan_per_mo: "/ mois", plan_per_yr: "/ an", plan_instead: "au lieu de", plan_save: "tu économises {save} € (−{disc} %)", plan_mo_label: "~{price} € / mois · au lieu de {eq} €", plan_flex: "flexible · équiv. {eq} € / an", plan_feat1: "Quiz de conjugaison interactif", plan_feat2: "Mémorisés & listes de vocabulaire", plan_feat3: "5 langues — ES, FR, EN, NL, DE", plan_feat4: "Tous appareils · sans pub", plan_cta: "Continuer vers le paiement", plan_cancelable: "annulable à tout moment", plan_have_account: "Déjà un compte ?", sign_in: "Se connecter", plan_coupon: "Utiliser un code promo", pr_title: "Tarifs & abonnements", pr_eyebrow: "Tarifs", pr_free: "Gratuit", pr_premium: "Premium", pr_feat_conj: "Conjuguer les verbes · tous les temps", pr_active: "Tu as Premium – merci ! 💜", pr_anon: "Anonyme", pr_konto: "Compte", pr_quiz_day: "20/jour", pr_trial_note: "🎁 Avec compte : 2 jours de Premium offerts", pr_feat_goals: "Challenges & progrès", ap_lock: "🔓 Compte gratuit", ap_h1: "Quiz avec un compte gratuit", ap_sub: "Crée un compte gratuit pour t'entraîner avec le quiz — plus 2 jours de Premium offerts.", ap_feat1: "20 cartes de quiz par jour", ap_feat2: "2 jours de Premium offerts", ap_feat3: "Progression sur tous tes appareils", ap_cta: "Créer un compte gratuit", ql_lock: "🔓 Limite quotidienne atteinte", ql_h1: "20 cartes faites pour aujourd'hui !", ql_sub: "Bravo ! Avec Premium tu t'entraînes sans limite — ou reviens demain pour 20 nouvelles cartes.", ql_feat1: "Quiz sans limite — tous les modes", ql_cta: "Débloquer Premium", coupon_title: "Code promo", coupon_need_login: "Connecte-toi d'abord pour utiliser un code.", coupon_sign_in: "Se connecter maintenant", coupon_ph: "Saisir le code", coupon_redeem: "Utiliser", coupon_redeeming: "En cours…",
@@ -3644,6 +3644,45 @@ function voiceGender(name) {
   if (VOICE_M.test(n)) return "m";
   return "";
 }
+/* Grammatik-Wächter (DE): erkennt den häufigsten KI-Fehler — eine einfache
+   Präteritum-Form, die fälschlich in einen Perfekt-/Futur-Rahmen gesetzt wurde
+   (z. B. "Haben sie die Karten schon SCHICKTEN?" statt "geschickt"). */
+const DE_PERF_AUX = ["habe", "hast", "hat", "haben", "habt", "bin", "bist", "ist", "sind", "seid", "werde", "wirst", "wird", "werden", "werdet"];
+function deClozeBadFrame(full, answer) {
+  try {
+    const s = " " + String(full).toLowerCase().replace(/[?!.,;:]/g, " ").replace(/\s+/g, " ") + " ";
+    const form = String(answer).toLowerCase().trim();
+    if (!form || form.indexOf(" ") >= 0) return false; // nur einfache (einwortige) Formen
+    const fi = s.indexOf(" " + form + " ");
+    if (fi < 0) return false;
+    // Ein Perfekt/Futur-Hilfsverb VOR der einfachen Form → der Satz erwartet ein
+    // Partizip/Infinitiv, nicht die Präteritum-Form. Das ist der Fehler.
+    return DE_PERF_AUX.some(a => { const ai = s.indexOf(" " + a + " "); return ai >= 0 && ai < fi; });
+  } catch (e) { return false; }
+}
+// Deterministische, immer grammatikalisch korrekte Beispiel-Vorlage (Fallback).
+function deClozeTemplate(qq) {
+  try {
+    const ans = String(qq.answer || "").trim();
+    let pron = String(qq.pronoun || "").split("/")[0].trim();
+    if (!ans || !pron) return null;
+    const cap = pron.charAt(0).toUpperCase() + pron.slice(1);
+    const full = cap + " " + ans + ".";
+    const gap = full.replace(ans, "…");
+    return { full, gap, native: "" };
+  } catch (e) { return null; }
+}
+// turn a raw device-voice name into a short, friendly label (mostly just the first name)
+function cleanVoiceName(name) {
+  let s = String(name || "");
+  s = s.replace(/\([^)]*\)/g, " "); // drop "(Enhanced)" etc.
+  s = s.replace(/\b(microsoft|google|apple|siri|amazon|online|offline|natural|neural|enhanced|premium|compact|voice|stimme)\b/gi, " ");
+  s = s.replace(/\b(deutsch|german|englisch|english|spanisch|spanish|espa[nñ]ol|franz[oö]sisch|french|fran[cç]ais|niederl[aä]ndisch|dutch|nederlands)\b/gi, " ");
+  s = s.replace(/[-–—,:].*/, " "); // keep the part before a dash/comma
+  s = s.replace(/\s+/g, " ").trim();
+  if (s.length < 2) s = String(name || "").replace(/\s+/g, " ").trim();
+  return s.length > 13 ? s.slice(0, 12) + "…" : s;
+}
 function pickVoice(lang) {
   if (!window.speechSynthesis) return null;
   const voices = window.speechSynthesis.getVoices() || [];
@@ -3878,15 +3917,18 @@ function creditChallengeVerb(lang, verb) {
   const base = String(verb || "").replace(/^to /, "").trim().toLowerCase();
   if (!base) return;
   const today = new Date().toDateString();
-  let changed = false;
+  let changed = false,
+    mastered = false;
   g.verbList.forEach(it => {
     if (String(it.v || "").toLowerCase() === base && it.lastDay !== today && (it.done || 0) < CH_DONE) {
       it.done = (it.done || 0) + 1;
       it.lastDay = today;
       changed = true;
+      if (it.done >= CH_DONE) mastered = true;
     }
   });
   if (changed) persist("kunju-goal-data", g);
+  return mastered ? base : null; // base = verb that just "sitzt"
 }
 function creditChallengeWord(lang, term) {
   const g = recall("kunju-goal-data", null);
@@ -6385,7 +6427,7 @@ function WordSentence({
     className: "wsentwrap"
   }, hintVisible && /*#__PURE__*/React.createElement("div", {
     className: "word-tap-hint"
-  }, "\uD83D\uDC46 W\xF6rter antippen \u2192 Bedeutung & merken"), /*#__PURE__*/React.createElement("div", {
+  }, txtIco(IC_TAP, "W\xF6rter antippen \u2192 Bedeutung & merken")), /*#__PURE__*/React.createElement("div", {
     className: "wsent" + (big ? " big" : "") + (accent ? " accent" : "")
   }, parts.map((w, i) => {
     if (/^\s+$/.test(w) || !clean(w)) return /*#__PURE__*/React.createElement("span", {
@@ -6459,9 +6501,14 @@ function QuizView({
   const [mistMode, setMistMode] = useState(false);
   const allTensesOn = tenseSel.length > 0 && tenseSel.length === allTenseIds.length;
   const [selGroup, setSelGroup] = useState(() => recall("kunju-quiz-group", "all"));
-  const groups = VERB_GROUPS[lang] || [{
+  const _chActive = (() => {
+    const g = recall("kunju-goal-data", null);
+    return !!(g && Array.isArray(g.verbList) && g.verbList.length);
+  })();
+  // "Challenge" nur als Auswahl zeigen, wenn wirklich eine aktiv ist (#28/🅔)
+  const groups = (VERB_GROUPS[lang] || [{
     id: "all"
-  }];
+  }]).filter(g => g.id !== "challenge" || _chActive);
   function pickGroup(id) {
     setSelGroup(id);
     persist("kunju-quiz-group", id);
@@ -6536,6 +6583,26 @@ function QuizView({
     streak: 0
   });
   const inRef = useRef(null);
+  const [chMoment, setChMoment] = useState(null); // Verb, das gerade „sitzt" → kurzer Erfolgsmoment (🅓)
+  const chMomentTimer = useRef(null);
+  function showChMoment(verb) {
+    const v = String(verb || "").replace(/^to /, "").trim();
+    if (!v) return;
+    setChMoment(v);
+    try {
+      fireConfetti(6);
+    } catch (e) {}
+    if (chMomentTimer.current) clearTimeout(chMomentTimer.current);
+    chMomentTimer.current = setTimeout(() => setChMoment(null), 3200);
+  }
+  // „Fehler melden"-Link unter KI-Beispielsätzen
+  function reportBtn() {
+    if (!cloze || cloze.loading || !cloze.full) return null;
+    return /*#__PURE__*/React.createElement("button", {
+      className: "rep-link",
+      onClick: () => window.__openReport && window.__openReport({ kind: "sentence", lang: lang, sentence: cloze.full, translation: cloze.native, verb: q && q.verb, tense: q && q.tenseLabel, pronoun: q && q.pronoun })
+    }, /*#__PURE__*/React.createElement("span", { className: "rep-link-ic", dangerouslySetInnerHTML: { __html: IC_FLAG } }), tr("report_link"));
+  }
   const recentRef = useRef([]);
   const recentSentRef = useRef({});
   const recRef = useRef(null);
@@ -6841,7 +6908,7 @@ function QuizView({
     const provN = isProverb ? Math.floor(Math.random() * 40) : 0;
     const clozeStyles = [" Make it a normal statement.", " Phrase it as a QUESTION ending with '?'.", " Phrase it as an EXCLAMATION ending with '!'.", " Make it a short line of spoken dialogue."];
     const clozeStyle = isProverb ? "" : clozeStyles[Math.floor(Math.random() * clozeStyles.length)];
-    const prompt = isProverb ? `Give ONE of the MOST FAMOUS, standard ${targetName} proverbs ("Sprichwort") — the kind every native speaker knows and that appears in proverb collections (e.g. for German: "Übung macht den Meister", "Morgenstund hat Gold im Mund", "Wer A sagt, muss auch B sagen"). It must be a real, complete proverb in standard ${targetName}, NOT regional slang, NOT an everyday idiom, NOT invented. Pick a varied one (variety #${provN}). Wrap its main conjugated verb in **double asterisks**. Then give its meaning in ${nativeName}. Do NOT use double-quote characters. Reply with ONLY minified JSON: {"t":"<the proverb with **verb**>","n":"<${nativeName} meaning>"}` : `Write ONE short, natural ${lvl} sentence in ${targetName} (max 9 words) ${splitLang && isCompound ? `that correctly expresses the ${qq.tenseLabel} of "${qq.verb}" for "${qq.pronoun}" — its parts are ${qq.answer.split(" ").map(p => `"${p}"`).join(" + ")}. Use natural ${targetName} word order: the finite/auxiliary verb stays in SECOND position and the participle or infinitive moves to the END of the clause (e.g. "Ich habe das Buch gestern gelesen").` : `that CONTAINS exactly the verb form "${qq.answer}" (the ${qq.tenseLabel} of "${qq.verb}", ${qq.pronoun}).`}${clozeStyle}${advConn}${splitLang ? ` IMPORTANT: if "${qq.verb}" is a separable-prefix verb (trennbares Verb / scheidbaar werkwoord), split the prefix to the END of the main clause in simple tenses (e.g. "ausbreiten" → "Das Feuer breitete sich schnell aus", NEVER "ausbreitete").` : ""}${topicTxt}${myWordTxt} End with proper punctuation (. ! or ?). Before replying, silently PROOFREAD and guarantee the sentence is 100% correct standard ${targetName} (verb position, separable-prefix split, case government, agreement, word order); if anything is off, fix it and output only the corrected sentence. Then give a natural ${nativeName} translation of the WHOLE sentence. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`;
+    const prompt = isProverb ? `Give ONE of the MOST FAMOUS, standard ${targetName} proverbs ("Sprichwort") — the kind every native speaker knows and that appears in proverb collections (e.g. for German: "Übung macht den Meister", "Morgenstund hat Gold im Mund", "Wer A sagt, muss auch B sagen"). It must be a real, complete proverb in standard ${targetName}, NOT regional slang, NOT an everyday idiom, NOT invented. Pick a varied one (variety #${provN}). Wrap its main conjugated verb in **double asterisks**. Then give its meaning in ${nativeName}. Do NOT use double-quote characters. Reply with ONLY minified JSON: {"t":"<the proverb with **verb**>","n":"<${nativeName} meaning>"}` : `Write ONE short, natural ${lvl} sentence in ${targetName} (max 9 words) ${splitLang && isCompound ? `that correctly expresses the ${qq.tenseLabel} of "${qq.verb}" for "${qq.pronoun}" — its parts are ${qq.answer.split(" ").map(p => `"${p}"`).join(" + ")}. Use natural ${targetName} word order: the finite/auxiliary verb stays in SECOND position and the participle or infinitive moves to the END of the clause (e.g. "Ich habe das Buch gestern gelesen").` : `that CONTAINS exactly the verb form "${qq.answer}" (the ${qq.tenseLabel} of "${qq.verb}", ${qq.pronoun}).`}${clozeStyle}${advConn}${splitLang ? ` IMPORTANT: if "${qq.verb}" is a separable-prefix verb (trennbares Verb / scheidbaar werkwoord), split the prefix to the END of the main clause in simple tenses (e.g. "ausbreiten" → "Das Feuer breitete sich schnell aus", NEVER "ausbreitete").` : ""}${topicTxt}${myWordTxt} End with proper punctuation (. ! or ?). Before replying, silently PROOFREAD and guarantee the sentence is 100% correct standard ${targetName} (verb position, separable-prefix split, case government, agreement, word order); if anything is off, fix it and output only the corrected sentence. Above all it must sound NATURAL to a native speaker in everyday register — pick a context and sentence type where exactly "${qq.answer}" is idiomatic. In German the simple-past Präteritum of everyday verbs belongs in written narration, NOT in spoken questions or dialogue (a native would say the Perfekt there), so if the requested style would sound stilted with this form, use whatever sentence type sounds most natural instead. Then give a natural ${nativeName} translation of the WHOLE sentence — and in that translation render the verb "${qq.verb}" with its most standard, DIRECT ${nativeName} equivalent (the dictionary meaning), NOT a loose synonym or paraphrase, so the practised verb is clearly recognizable in the translation. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`;
     window.aiComplete(prompt).then(txt => {
       if (clozeTokenRef.current !== myTok) return; // stale response — a newer question is active
       let j = null;
@@ -6913,6 +6980,23 @@ function QuizView({
         setCloze(null);
         return;
       }
+      // Grammatik-Wächter (DE, Präteritum): wurde die einfache Form in einen
+      // Perfekt-/Futur-Rahmen gezwängt (z. B. "haben … schickten"), neu generieren —
+      // und nach Versuchen lieber eine korrekte Vorlage als einen falschen Satz zeigen.
+      if (lang === "de" && !isCompound && /pr[äa]teritum/i.test(qq.tenseLabel || "") && deClozeBadFrame(full, qq.answer)) {
+        if (attempt < 2) {
+          fetchCloze(qq, attempt + 1, curTopic);
+          return;
+        }
+        const tpl = deClozeTemplate(qq);
+        if (tpl) {
+          persist(key, tpl);
+          setCloze(tpl);
+          return;
+        }
+        setCloze(null);
+        return;
+      }
       const out = {
         full,
         gap,
@@ -6955,7 +7039,7 @@ function QuizView({
       removeMistake(lang, q);
       bumpMist();
     }
-    if (ok && q) creditChallengeVerb(lang, q.verb);
+    if (ok && q && creditChallengeVerb(lang, q.verb)) showChMoment(q.verb);
     onActivity && onActivity();
     if (ok && isStreakMilestone(ns.streak)) fireConfetti(ns.streak);
     return ns.streak;
@@ -7022,7 +7106,7 @@ function QuizView({
   function speedAnswer(opt) {
     if (speedState !== "running") return;
     const ok = norm(opt) === norm(q.answer);
-    if (ok) { setSpeedScore(s => s + 1); creditChallengeVerb(lang, q.verb); } else {
+    if (ok) { setSpeedScore(s => s + 1); if (creditChallengeVerb(lang, q.verb)) showChMoment(q.verb); } else {
       addMistake(lang, q);
       bumpMist();
     }
@@ -7041,7 +7125,7 @@ function QuizView({
   }
   function nextCard(known) {
     if (known) {
-      creditChallengeVerb(lang, q.verb);
+      if (creditChallengeVerb(lang, q.verb)) showChMoment(q.verb);
       if (mistMode) {
         removeMistake(lang, q);
         bumpMist();
@@ -8036,7 +8120,13 @@ function QuizView({
     style: {
       "--lc": LANG_META[lang].color
     }
-  }, /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, chMoment && /*#__PURE__*/React.createElement("div", {
+    className: "chmoment",
+    onClick: () => setChMoment(null)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "chmoment-ic",
+    dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='17' height='17' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><path d='M5 13l4 4L19 7'/></svg>" }
+  }), /*#__PURE__*/React.createElement("span", null, tr("ch_moment", { v: chMoment }))), /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "quizmode-hd"
   }, tr("quiz_mode_hd")), /*#__PURE__*/React.createElement("div", {
     className: "quizmodes"
@@ -8321,7 +8411,10 @@ function QuizView({
       fontSize: "15px",
       cursor: "pointer"
     }
-  }, reading === "playing" ? "⏸" : "▶"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "txtico",
+    dangerouslySetInnerHTML: { __html: reading === "playing" ? IC_PAUSE : IC_PLAY }
+  })), /*#__PURE__*/React.createElement("button", {
     onClick: stopStory,
     style: {
       border: "1px solid var(--border)",
@@ -8382,26 +8475,42 @@ function QuizView({
     className: "recent-title qfilter-lbl"
   }, tr("texte_voice")), /*#__PURE__*/React.createElement("div", {
     className: "modegrid"
-  }, [["", "Auto"], ["f", "♀ " + tr("texte_voice_f")], ["m", "♂ " + tr("texte_voice_m")]].map(o => /*#__PURE__*/React.createElement("button", {
-    key: o[0],
-    className: "modebtn" + (voiceGenderSel === o[0] ? " on" : ""),
-    style: {
-      flex: "1 1 0",
-      minWidth: 0
-    },
-    onClick: () => {
-      setVoiceGenderSel(o[0]);
-      setSavedGender(ttsBase, o[0]);
-      setSavedVoice(ttsBase, "");
-      setVoiceSel("");
-      setReading("idle");
-      readIdxRef.current = 0;
-      if (window.speechSynthesis) try {
-        window.speechSynthesis.cancel();
-      } catch (x) {}
-      if (story && story.sentences && story.sentences[0]) speak(story.sentences[0].t, window.CONJ[lang].ttsLang);
+  }, (() => {
+    const rank = v => (NICE_VOICE.test(v.name) ? 2 : 0) - (BAD_VOICE.test(v.name) ? 2 : 0) + (v.localService ? 1 : 0);
+    const ranked = langVoices.slice().sort((a, b) => rank(b) - rank(a));
+    const seen = new Set();
+    const list = [];
+    for (const v of ranked) {
+      const k = cleanVoiceName(v.name).toLowerCase();
+      if (!k || seen.has(k)) continue;
+      seen.add(k);
+      list.push(v);
+      if (list.length >= 4) break;
     }
-  }, o[1]))))), /*#__PURE__*/React.createElement("button", {
+    const opts = [{ uri: "", label: "Auto" }].concat(list.map(v => ({ uri: v.voiceURI, label: cleanVoiceName(v.name) })));
+    return opts.map(o => /*#__PURE__*/React.createElement("button", {
+      key: o.uri || "auto",
+      className: "modebtn" + ((voiceSel || "") === o.uri ? " on" : ""),
+      style: {
+        flex: "1 1 0",
+        minWidth: 0
+      },
+      onClick: () => {
+        setVoiceSel(o.uri);
+        setSavedVoice(ttsBase, o.uri);
+        setSavedGender(ttsBase, "");
+        setVoiceGenderSel("");
+        setReading("idle");
+        readIdxRef.current = 0;
+        if (window.speechSynthesis) try {
+          window.speechSynthesis.cancel();
+        } catch (x) {}
+        // short, self-limiting voice sample (first few words) so it can't "run away" and is clearly a preview
+        const sample = story && story.sentences && story.sentences[0] ? String(story.sentences[0].t).split(/\s+/).slice(0, 4).join(" ") : "";
+        if (sample) speak(sample, window.CONJ[lang].ttsLang);
+      }
+    }, o.label));
+  })()))), /*#__PURE__*/React.createElement("button", {
     className: "quizbtn again",
     onClick: () => genStory(true),
     style: {
@@ -8411,7 +8520,7 @@ function QuizView({
       padding: "9px 14px",
       fontSize: "14px"
     }
-  }, "\uD83D\uDD04 ", tr("texte_new")), /*#__PURE__*/React.createElement("div", {
+  }, txtIco(IC_REDO, tr("texte_new"))), /*#__PURE__*/React.createElement("div", {
     className: "quizcard quizmodern " + state,
     style: {
       "--lc": LANG_META[lang].color
@@ -8462,7 +8571,7 @@ function QuizView({
       fontSize: "14.5px",
       color: LANG_META[lang].color
     }
-  }, "\uD83D\uDCD6 ", story.topic), /*#__PURE__*/React.createElement("button", {
+  }, txtIco(IC_BOOK, story.topic)), /*#__PURE__*/React.createElement("button", {
     onClick: () => reading === "playing" ? pauseStory() : playStory(),
     style: {
       display: "inline-flex",
@@ -8479,14 +8588,14 @@ function QuizView({
       cursor: "pointer",
       flexShrink: 0
     }
-  }, reading === "playing" ? "⏸ " + tr("texte_pause") : reading === "paused" ? "▶ " + tr("texte_resume") : "🔊 " + tr("texte_read"))), /*#__PURE__*/React.createElement("div", {
+  }, reading === "playing" ? txtIco(IC_PAUSE, tr("texte_pause")) : reading === "paused" ? txtIco(IC_PLAY, tr("texte_resume")) : txtIco(IC_SPK, tr("texte_read")))), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: "11px",
       color: "var(--muted)",
       marginTop: "3px",
       marginBottom: "9px"
     }
-  }, "\uD83D\uDC46 ", tr("tap_save")), /*#__PURE__*/React.createElement("div", {
+  }, txtIco(IC_TAP, tr("tap_save"))), /*#__PURE__*/React.createElement("div", {
     className: "spkreveal-row",
     style: {
       lineHeight: "2",
@@ -8614,7 +8723,7 @@ function QuizView({
     onClick: () => speak(cloze.full, q.ttsLang)
   }, "\uD83D\uDD0A")), cloze.native && skill === "beginner" && /*#__PURE__*/React.createElement("div", {
     className: "clozenative"
-  }, cloze.native))), /*#__PURE__*/React.createElement("div", {
+  }, cloze.native))), reportBtn(), /*#__PURE__*/React.createElement("div", {
     className: "choose-label"
   }, tr("choose_label")), /*#__PURE__*/React.createElement("div", {
     className: "qopts"
@@ -8748,14 +8857,7 @@ function QuizView({
     className: "flashtop"
   }, /*#__PURE__*/React.createElement("span", {
     className: "flashtense"
-  }, q.tenseLabel), /*#__PURE__*/React.createElement("button", {
-    className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
-    title: "Save verb",
-    onClick: e => {
-      e.stopPropagation();
-      toggleFav(lang, q.verb);
-    }
-  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement("div", {
+  }, q.tenseLabel)), /*#__PURE__*/React.createElement("div", {
     className: "flashbody"
   }, /*#__PURE__*/React.createElement(QuizTip, {
     formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer),
@@ -8778,7 +8880,14 @@ function QuizView({
     }
   }, q.verb.replace(/^to /, ""), " ", /*#__PURE__*/React.createElement("span", {
     className: "qm-study-ic"
-  }, "\u2197")), /*#__PURE__*/React.createElement("span", {
+  }, "\u2197")), /*#__PURE__*/React.createElement("button", {
+    className: "starbtn qm-star qm-star-inline" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
+    title: "Save verb",
+    onClick: e => {
+      e.stopPropagation();
+      toggleFav(lang, q.verb);
+    }
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "\u2605" : "\u2606"), /*#__PURE__*/React.createElement("span", {
     className: "flashpron"
   }, q.pronoun), cloze && !cloze.loading && /*#__PURE__*/React.createElement("div", {
     className: "flashcloze clozebox",
@@ -8794,7 +8903,7 @@ function QuizView({
     saveDir: "fromTarget"
   }), cloze.native && skill === "beginner" && /*#__PURE__*/React.createElement("div", {
     className: "clozenative"
-  }, cloze.native))), /*#__PURE__*/React.createElement("div", {
+  }, cloze.native))), reportBtn(), /*#__PURE__*/React.createElement("div", {
     className: "flashfoot"
   }, /*#__PURE__*/React.createElement("span", {
     className: "flashflip"
@@ -8826,7 +8935,7 @@ function QuizView({
     saveDir: "fromTarget"
   }), cloze.native && /*#__PURE__*/React.createElement("div", {
     className: "clozenative"
-  }, cloze.native))), /*#__PURE__*/React.createElement("div", {
+  }, cloze.native))), reportBtn(), /*#__PURE__*/React.createElement("div", {
     className: "flashfoot"
   }, transl ? /*#__PURE__*/React.createElement("span", {
     className: "flashmean"
@@ -8940,14 +9049,7 @@ function QuizView({
     className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
     title: "Save verb",
     onClick: () => toggleFav(lang, q.verb)
-  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular }), /*#__PURE__*/React.createElement(Prompt, null), /*#__PURE__*/React.createElement("div", {
-    className: "qm-mean",
-    style: {
-      "--lc": LANG_META[lang].color
-    }
-  }, transl ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("b", null, q.verb.replace(/^to /, "")), /*#__PURE__*/React.createElement("em", null, transl === "…" ? "…" : transl)) : /*#__PURE__*/React.createElement("span", {
-    className: "qm-mean-ph"
-  }, "\xB7")), cloze && (cloze.loading ? /*#__PURE__*/React.createElement("div", {
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular, vtrans: transl }), /*#__PURE__*/React.createElement(Prompt, null), cloze && (cloze.loading ? /*#__PURE__*/React.createElement("div", {
     className: "spkreveal"
   }, /*#__PURE__*/React.createElement("span", {
     className: "exloading"
@@ -8997,7 +9099,10 @@ function QuizView({
       onClick: listen
     }, listening ? /*#__PURE__*/React.createElement("span", {
       className: "micstop"
-    }) : "🎤"), /*#__PURE__*/React.createElement("div", {
+    }) : /*#__PURE__*/React.createElement("span", {
+      className: "micicon",
+      dangerouslySetInnerHTML: { __html: MIC_SVG }
+    })), /*#__PURE__*/React.createElement("div", {
       className: "michint"
     }, listening ? tr("mic_stop") : tr("mic_start"))), spkMode === "sentence" && sent && sent.t && state === "idle" && !revealed && /*#__PURE__*/React.createElement("button", {
       className: "relearnbtn",
@@ -9063,12 +9168,7 @@ function QuizView({
     }, "\u21BB ", tr("practice_again")), /*#__PURE__*/React.createElement("button", {
       className: "quizbtn next",
       onClick: next
-    }, tr("spk_next_sentence"))) : state === "idle" ? spkMode === "form" && /*#__PURE__*/React.createElement("p", {
-      className: "quizhint",
-      style: {
-        margin: 0
-      }
-    }, tr("speak_tap")) : /*#__PURE__*/React.createElement("button", {
+    }, tr("spk_next_sentence"))) : state === "idle" ? spkMode === "form" && null : /*#__PURE__*/React.createElement("button", {
       className: "quizbtn next",
       onClick: next
     }, tr("next")));
@@ -9360,7 +9460,7 @@ function AuxExample({
     const variety = fresh ? ` Give a DIFFERENT example than before (variety #${Math.floor(Math.random() * 1000)}).` : "";
     const lvlNote = skill === "advanced" ? " Use C1-level vocabulary and a complex structure." : skill === "intermediate" ? " Use B1-level everyday vocabulary." : " Use very simple A1–A2 vocabulary (max 7 words).";
     setBusy(true);
-    window.aiComplete(`Write ONE short, natural ${targetName} sentence that uses EXACTLY the verb form "${form}" (the ${tenseLabel} of "${sample}", ${pron}).${lvlNote} Keep that exact form in the sentence.${variety} Then give its natural ${nativeName} translation. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`).then(txt => {
+    window.aiComplete(`Write ONE short, natural ${targetName} sentence that uses EXACTLY the verb form "${form}" (the ${tenseLabel} of "${sample}", ${pron}).${lvlNote} Keep that exact form in the sentence.${variety} Then give its natural ${nativeName} translation, rendering the verb "${sample}" with its most standard, DIRECT ${nativeName} equivalent (the dictionary meaning), NOT a loose synonym, so the practised verb is recognizable in the translation. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`).then(txt => {
       let j = null;
       try {
         j = looseParse(txt);
@@ -10079,6 +10179,7 @@ function VocabView({
 }) {
   const [items, setItems] = useState(() => getVocab());
   const [cat, setCat] = useState(() => recall("kunju-vocab-cat", "all"));
+  const [catsOpen, setCatsOpen] = useState(false); // Themen-Block auf-/zugeklappt
   const [dir, setDir] = useState("native"); // native = type mother tongue → translate to target
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
@@ -10664,12 +10765,12 @@ function VocabView({
   return /*#__PURE__*/React.createElement("div", {
     className: "view",
     style: {
-      "--lc": LANG_META[lang].color
+      "--lc": "var(--ink)"
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "vocadd",
     style: {
-      "--lc": LANG_META[lang].color
+      "--lc": "var(--ink)"
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "vocdir"
@@ -10698,7 +10799,7 @@ function VocabView({
     onClick: addEntry,
     disabled: busy || !text.trim()
   }, "+")), /*#__PURE__*/React.createElement("div", {
-    className: "voccats"
+    className: "voccats" + (catsOpen ? " open" : "")
   }, /*#__PURE__*/React.createElement("button", {
     className: "voccat" + (cat === "all" ? " on" : ""),
     onClick: () => {
@@ -10730,7 +10831,12 @@ function VocabView({
       fontWeight: 700,
       opacity: 0.7
     }
-  }, "×"))), /*#__PURE__*/React.createElement("button", {
+  }, "×")))), /*#__PURE__*/React.createElement("div", {
+    className: "voccats-actions"
+  }, allCats.length > 5 ? /*#__PURE__*/React.createElement("button", {
+    className: "voccat-toggle",
+    onClick: () => setCatsOpen(o => !o)
+  }, catsOpen ? tr("vocab_cats_less") : tr("vocab_cats_all")) : null, /*#__PURE__*/React.createElement("button", {
     className: "voccat addcat",
     onClick: addCustomCat
   }, "+ ", tr("vocab_new_cat")))), (shown.filter(it => it.term && it.trans).length > 0 || getVMist().length > 0) && /*#__PURE__*/React.createElement("div", {
@@ -10760,7 +10866,7 @@ function VocabView({
     className: "vocsuggest",
     onClick: suggestMore,
     disabled: !!seeding
-  }, seeding ? "✨ …" : "✨ " + tr("vocab_suggest")), addingCat && /*#__PURE__*/React.createElement("div", {
+  }, seeding ? txtIco(IC_SPARK, "…") : txtIco(IC_SPARK, tr("vocab_suggest"))), addingCat && /*#__PURE__*/React.createElement("div", {
     onClick: () => setAddingCat(false),
     style: {
       position: "fixed",
@@ -10857,7 +10963,7 @@ function VocabView({
     className: "vocitem",
     key: it.id,
     style: {
-      "--lc": LANG_META[lang].color
+      "--lc": "var(--ink)"
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "vocitem-main"
@@ -10880,21 +10986,25 @@ function VocabView({
 }
 
 /* ---------- Challenge list view (3rd tab on the Saved page) ---------- */
-function ChallengeView({ lang, onNew, onPractice }) {
+function ChallengeView({ lang, onNew, onPractice, onWords }) {
   const h = React.createElement;
   const [, setTick] = useState(0);
-  const [edit, setEdit] = useState(false);
+  const g = recall("kunju-goal-data", null);
+  // Beim Leeren der Verbliste NICHT rauswerfen: Bearbeiten-Modus automatisch an,
+  // damit man neue Verben hinzufügen / gemerkte übernehmen kann.
+  const [edit, setEdit] = useState(() => recall("kunju-challenge-pending-edit", false) || !!g && !((g.verbList || []).length));
+  useEffect(() => { if (recall("kunju-challenge-pending-edit", false)) persist("kunju-challenge-pending-edit", false); }, []);
   const [vIn, setVIn] = useState("");
   const [wIn, setWIn] = useState("");
+  const [picker, setPicker] = useState(null); // null | "v" | "w" — Auswahl aus gemerkter Liste
   const force = () => setTick(t => t + 1);
-  const g = recall("kunju-goal-data", null);
   const vl = (g && g.verbList) || [];
   const wl = (g && g.wordList) || [];
   const vDone = vl.filter(x => (x.done || 0) >= CH_DONE).length;
   const wDone = wl.filter(x => (x.done || 0) >= CH_DONE).length;
   const allDone = (vl.length + wl.length) > 0 && vDone === vl.length && wDone === wl.length;
   useEffect(() => { if (allDone) { try { fireConfetti(8); } catch (e) {} } }, [allDone]);
-  if (!g || (vl.length === 0 && wl.length === 0)) {
+  if (!g) {
     return h("div", { className: "ch-empty" },
       h("p", { className: "ch-empty-tx" }, tr("ch_empty")),
       h("button", { className: "quizbtn check ch-cta", onClick: onNew }, tr("ch_create")));
@@ -10902,6 +11012,7 @@ function ChallengeView({ lang, onNew, onPractice }) {
   function save(fn) { const gg = recall("kunju-goal-data", null); if (!gg) return; fn(gg); persist("kunju-goal-data", gg); force(); }
   function setItem(kind, i, done) { save(gg => { const a = kind === "v" ? gg.verbList : gg.wordList; if (a && a[i]) { a[i].done = done; a[i].lastDay = done >= CH_DONE ? new Date().toDateString() : ""; } }); }
   function removeItem(kind, i) { save(gg => { const a = kind === "v" ? gg.verbList : gg.wordList; if (a) a.splice(i, 1); }); }
+  function removeName(kind, t) { save(gg => { const a = kind === "v" ? gg.verbList : gg.wordList; if (!a) return; const i = a.findIndex(x => String(kind === "v" ? x.v : x.w).toLowerCase() === String(t).toLowerCase()); if (i >= 0) a.splice(i, 1); }); }
   function addVerb(v) { const t = String(v || "").replace(/^to /, "").trim(); if (!t) return; save(gg => { gg.verbList = gg.verbList || []; if (!gg.verbList.some(x => String(x.v).toLowerCase() === t.toLowerCase())) gg.verbList.push({ v: t, done: 0, lastDay: "" }); }); }
   function addWord(w) { const t = String(w || "").trim(); if (!t) return; save(gg => { gg.wordList = gg.wordList || []; if (!gg.wordList.some(x => String(x.w).toLowerCase() === t.toLowerCase())) gg.wordList.push({ w: t, done: 0, lastDay: "" }); }); }
   function fillVerbs() { save(gg => { const target = gg.verbs || 0; const have = new Set((gg.verbList || []).map(x => String(x.v).toLowerCase())); let pool = []; try { pool = quizPool(lang, recall("kunju-skill", "beginner")) || []; } catch (e) {} for (let i = 0; i < pool.length && (gg.verbList || []).length < target; i++) { const v = String(pool[i]).replace(/^to /, "").trim(); if (v && !have.has(v.toLowerCase())) { have.add(v.toLowerCase()); gg.verbList.push({ v: v, done: 0, lastDay: "" }); } } }); }
@@ -10910,8 +11021,10 @@ function ChallengeView({ lang, onNew, onPractice }) {
   const left = Math.max(0, days - passed);
   const inV = new Set(vl.map(x => String(x.v).toLowerCase()));
   const inW = new Set(wl.map(x => String(x.w).toLowerCase()));
-  const savedVerbs = (recall("kunju-favs", []) || []).filter(f => f.lang === lang && f.verb).map(f => String(f.verb).replace(/^to /, "").trim()).filter(v => v && !inV.has(v.toLowerCase()));
-  const savedWords = (getVocab() || []).filter(x => x.lang === lang && x.term).map(x => String(x.term).trim()).filter(w => w && !inW.has(w.toLowerCase()));
+  const allSavedV = Array.from(new Set((recall("kunju-favs", []) || []).filter(f => f.lang === lang && f.verb).map(f => String(f.verb).replace(/^to /, "").trim()).filter(Boolean)));
+  const allSavedW = Array.from(new Set((getVocab() || []).filter(x => x.lang === lang && x.term).map(x => String(x.term).trim()).filter(Boolean)));
+  const savedVerbs = allSavedV.filter(v => !inV.has(v.toLowerCase()));
+  const savedWords = allSavedW.filter(w => !inW.has(w.toLowerCase()));
   const item = (label, done, kind, i) => {
     const st = (done || 0) >= CH_DONE ? "done" : (done || 0) > 0 ? "learn" : "open";
     return h("div", { className: "ch-item ch-" + st, key: kind + i },
@@ -10926,15 +11039,33 @@ function ChallengeView({ lang, onNew, onPractice }) {
     const setVal = kind === "v" ? setVIn : setWIn;
     const add = (t) => { kind === "v" ? addVerb(t) : addWord(t); };
     const doAdd = () => { add(val); setVal(""); };
-    const chips = kind === "v" ? savedVerbs : savedWords;
+    const open = picker === kind;
+    const all = kind === "v" ? allSavedV : allSavedW;
+    const inSet = kind === "v" ? inV : inW;
+    const notIn = all.filter(c => !inSet.has(c.toLowerCase()));
+    const addOne = c => kind === "v" ? addVerb(c) : addWord(c);
     return h("div", { className: "ch-edit" },
       h("div", { className: "ch-addrow" },
         h("input", { className: "ch-input", value: val, placeholder: tr("ch_add_ph"), onChange: e => setVal(e.target.value), onKeyDown: e => { if (e.key === "Enter") doAdd(); } }),
-        h("button", { className: "ch-addbtn", onClick: doAdd }, "+")),
-      chips.length ? h("div", { className: "ch-from" },
-        h("span", { className: "ch-from-lbl" }, tr("ch_from_saved")),
-        h("div", { className: "ch-chips" }, chips.slice(0, 24).map((c, ci) => h("button", { key: ci, className: "ch-chip", onClick: () => add(c) }, "+ " + c)))) : null,
-      kind === "v" ? h("button", { className: "ch-fill", onClick: fillVerbs }, tr("ch_fill")) : null);
+        // "+": Text vorhanden → hinzufügen; leer → gemerkte Liste hier aufklappen
+        h("button", { className: "ch-addbtn", title: tr("ch_choose"), onClick: () => { if (String(val).trim()) doAdd(); else setPicker(open ? null : kind); } }, "+")),
+      h("div", { className: "ch-addbtns" },
+        h("button", { className: "ch-choose" + (open ? " on" : ""), onClick: () => setPicker(open ? null : kind) },
+          h("span", { className: "ch-choose-ic", dangerouslySetInnerHTML: { __html: IC_LIST } }),
+          tr("ch_choose"),
+          h("span", { className: "ch-choose-car" }, open ? "▴" : "▾")),
+        kind === "v" ? h("button", { className: "ch-fill", onClick: fillVerbs }, tr("ch_fill")) : null),
+      // Inline-Dropdown (öffnet an Ort und Stelle, kein Popup)
+      open ? h("div", { className: "ch-pick-inline" },
+        all.length
+          ? h("div", { className: "ch-pick-list" }, all.map((c, ci) => {
+              const on = inSet.has(c.toLowerCase());
+              return h("button", { key: ci, className: "chpick-row" + (on ? " on" : ""), onClick: () => on ? removeName(kind, c) : addOne(c) },
+                h("span", { className: "chpick-lb" }, c),
+                h("span", { className: "chpick-mk" }, on ? "✓" : "+"));
+            }))
+          : h("p", { className: "chpick-empty" }, kind === "v" ? tr("ch_pick_empty_v") : tr("ch_pick_empty_w")),
+        notIn.length ? h("button", { className: "ch-from-all", onClick: () => notIn.forEach(addOne) }, tr("ch_add_all")) : null) : null);
   };
   const section = (kind) => {
     const lst = kind === "v" ? vl : wl;
@@ -10943,7 +11074,12 @@ function ChallengeView({ lang, onNew, onPractice }) {
     return h("div", { className: "ch-sec" },
       h("div", { className: "ch-sec-h" }, head),
       lst.map((x, i) => item(kind === "v" ? x.v : x.w, x.done, kind, i)),
-      edit ? addRow(kind) : null);
+      edit ? addRow(kind) : null,
+      kind === "w" && lst.length && !edit
+        ? h("button", { className: "ch-wordhint", onClick: () => onWords && onWords() },
+            h("span", null, tr("ch_words_hint")),
+            h("span", { className: "ch-wordhint-go" }, tr("ch_words_go")))
+        : null);
   };
   return h("div", { className: "ch-wrap" },
     h("div", { className: "ch-head" },
@@ -10951,11 +11087,17 @@ function ChallengeView({ lang, onNew, onPractice }) {
       h("button", { className: "ch-editbtn" + (edit ? " on" : ""), onClick: () => setEdit(e => !e) }, edit ? tr("ch_editdone") : tr("ch_edit"))),
     allDone
       ? h("div", { className: "ch-master" }, h("b", null, tr("ch_mastered")), h("span", null, tr("ch_mastered_sub")))
-      : (g.startDate ? h("div", { className: "ch-sub" }, tr("ch_left", { n: left })) : null),
+      : (g.startDate && left <= 0
+          ? h("div", { className: "ch-timeup" },
+              h("b", null, tr("ch_timeup", { a: vDone + wDone, b: vl.length + wl.length })),
+              h("div", { className: "ch-timeup-btns" },
+                h("button", { className: "ch-extend", onClick: () => save(gg => { gg.weeks = (gg.weeks || 2) + 1; }) }, tr("ch_extend")),
+                h("button", { className: "nameskip", onClick: onNew }, tr("ch_new"))))
+          : (g.startDate ? h("div", { className: "ch-sub" }, tr("ch_left", { n: left })) : null)),
     section("v"),
     section("w"),
     h("div", { className: "ch-btns" },
-      h("button", { className: "quizbtn check", onClick: onPractice }, tr("ch_practice")),
+      h("button", { className: "quizbtn check ch-go", onClick: onPractice }, tr("ch_practice")),
       h("button", { className: "nameskip", onClick: onNew }, tr("ch_new"))));
 }
 /* ---------- Saved verbs (heart tab) ---------- */
@@ -11005,7 +11147,8 @@ function SavedTab({
   }) : /*#__PURE__*/React.createElement(ChallengeView, {
     lang: lang,
     onNew: onOpenGoal,
-    onPractice: () => { persist("kunju-quiz-pending-group", "challenge"); onTab && onTab("quiz"); }
+    onPractice: () => { persist("kunju-quiz-pending-group", "challenge"); onTab && onTab("quiz"); },
+    onWords: () => pick("vocab")
   }));
 }
 function SavedCell({
@@ -11362,7 +11505,7 @@ function SavedView({
     style: {
       marginTop: 4
     }
-  }, "Tap a cell to hear it \xB7 \u2715 removes the verb")));
+  }, tr("saved_tap_hint"))));
 }
 
 /* ---------- Tweaks ---------- */
@@ -11867,6 +12010,56 @@ const DUE_BARS = "<svg viewBox='0 0 100 100' width='15' height='15' fill='none' 
 /* Aufklappbare Erklärungs-Karte im Quiz-Screen (Design 2026) */
 const EXPLAIN_BULB = "<svg viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10c.7.7 1 1.3 1 2h6c0-.7.3-1.3 1-2a6 6 0 0 0-4-10z'/></svg>";
 const EXPLAIN_CARET = "<svg viewBox='0 0 24 24' width='13' height='13' fill='none' stroke='currentColor' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>";
+const MIC_SVG = "<svg viewBox='0 0 24 24' width='34' height='34' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x='9' y='2.5' width='6' height='11' rx='3'/><path d='M5.5 11a6.5 6.5 0 0 0 13 0'/><path d='M12 17.5V21M8.5 21h7'/></svg>";
+/* Schlanke CI-Icons statt Emojis (currentColor erbt die jeweilige Textfarbe) */
+const IC_REDO = "<svg viewBox='0 0 24 24' width='15' height='15' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M20 11a8 8 0 1 0-2.3 6'/><path d='M20 4v6h-6'/></svg>";
+const IC_BOOK = "<svg viewBox='0 0 24 24' width='15' height='15' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15.5H5.5A1.5 1.5 0 0 0 4 21z'/><path d='M20 5.5A1.5 1.5 0 0 0 18.5 4H13v15.5h5.5A1.5 1.5 0 0 1 20 21z'/></svg>";
+const IC_SPK = "<svg viewBox='0 0 24 24' width='14' height='14' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M4 9.5v5h3.5L13 19V5L7.5 9.5z'/><path d='M16.5 8.8a4.5 4.5 0 0 1 0 6.4'/></svg>";
+const IC_PAUSE = "<svg viewBox='0 0 24 24' width='14' height='14' fill='currentColor' aria-hidden='true'><rect x='6' y='5' width='4' height='14' rx='1.2'/><rect x='14' y='5' width='4' height='14' rx='1.2'/></svg>";
+const IC_PLAY = "<svg viewBox='0 0 24 24' width='14' height='14' fill='currentColor' aria-hidden='true'><path d='M8 5.2v13.6L19 12z'/></svg>";
+const IC_TAP = "<svg viewBox='0 0 24 24' width='14' height='14' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M9 11.5V5.5a1.5 1.5 0 0 1 3 0V11'/><path d='M12 10.5V9a1.5 1.5 0 0 1 3 0v2'/><path d='M15 11v-.5a1.5 1.5 0 0 1 3 0V15a5 5 0 0 1-5 5h-1a4 4 0 0 1-3-1.4L6.2 15a1.6 1.6 0 0 1 2.4-2.1L9 13.3'/></svg>";
+const IC_PENCIL = "<svg viewBox='0 0 24 24' width='15' height='15' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M14.5 5.5l4 4M4 20l1-4L16 5a2 2 0 0 1 3 3L8 19z'/></svg>";
+const IC_LIST = "<svg viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M9 6h11M9 12h11M9 18h11'/><path d='M4 6h.01M4 12h.01M4 18h.01'/></svg>";
+const IC_SPARK = "<svg viewBox='0 0 24 24' width='15' height='15' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 3l1.7 5.1a3 3 0 0 0 1.9 1.9L21 12l-5.4 1.7a3 3 0 0 0-1.9 1.9L12 21l-1.7-5.4a3 3 0 0 0-1.9-1.9L3 12l5.4-1.7a3 3 0 0 0 1.9-1.9z'/></svg>";
+function txtIco(svg, label) {
+  return React.createElement(React.Fragment, null, React.createElement("span", { className: "txtico", dangerouslySetInnerHTML: { __html: svg } }), " ", label);
+}
+const IC_FLAG = "<svg viewBox='0 0 24 24' width='13' height='13' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M5 21V4M5 4c3-2 6 2 9 0s5-1 5-1v9s-2 1-5 1-6-2-9 0'/></svg>";
+const APP_VER = (() => { try { const sc = [...document.scripts].find(x => /app\.js/.test(x.src || "")); const m = sc && sc.src.match(/[?&]v=([\w.-]+)/); return m ? m[1] : ""; } catch (e) { return ""; } })();
+// Nutzer-Meldung an die Edge-Function 'report' (speichert + mailt an hello@). Best effort.
+function sendReport(payload) {
+  try {
+    const u = window.__supaUser || null;
+    const body = Object.assign({ app_version: APP_VER }, payload || {});
+    if (u) { body.user_id = u.id; body.user_email = u.email; }
+    if (window.__supa && window.__supa.functions) return window.__supa.functions.invoke("report", { body });
+  } catch (e) {}
+  return Promise.resolve();
+}
+/* Melde-Sheet: falscher/komischer Inhalt oder allgemeines Feedback */
+function ReportSheet({ ctx, onClose }) {
+  const h = React.createElement;
+  const isSentence = ctx.kind === "sentence";
+  const [reason, setReason] = useState(isSentence ? "" : "feedback");
+  const [note, setNote] = useState("");
+  const [sent, setSent] = useState(false);
+  const reasons = [["grammar", tr("r_grammar")], ["unnatural", tr("r_unnatural")], ["translation", tr("r_translation")], ["other", tr("r_other")]];
+  function submit() {
+    sendReport({ kind: ctx.kind, lang: ctx.lang, reason: reason || "feedback", note: note, verb: ctx.verb, tense: ctx.tense, pronoun: ctx.pronoun, sentence: ctx.sentence, translation: ctx.translation });
+    setSent(true);
+    setTimeout(onClose, 1300);
+  }
+  return h("div", { className: "chpick-bg", onClick: onClose },
+    h("div", { className: "chpick chrep", onClick: e => e.stopPropagation() },
+      sent
+        ? h("p", { className: "chrep-thanks" }, "✓ ", tr("report_thanks"))
+        : h(React.Fragment, null,
+            h("div", { className: "chpick-hd" }, h("b", null, isSentence ? tr("report_title") : tr("report_general")), h("button", { className: "chpick-x", "aria-label": "close", onClick: onClose }, "×")),
+            isSentence && ctx.sentence ? h("p", { className: "chrep-sent" }, ctx.sentence) : null,
+            isSentence ? h("div", { className: "chrep-reasons" }, reasons.map(r => h("button", { key: r[0], className: "chrep-reason" + (reason === r[0] ? " on" : ""), onClick: () => setReason(r[0]) }, r[1]))) : null,
+            h("textarea", { className: "chrep-note", value: note, placeholder: tr("report_note"), onChange: e => setNote(e.target.value), rows: 3 }),
+            h("button", { className: "quizbtn check chrep-send", disabled: isSentence && !reason && !note.trim(), onClick: submit }, tr("report_send")))));
+}
 function quizExplainHtml(mode) {
   const parts = [1, 2, 3, 4].map(n => {
     const k = "hint_quiz_" + mode + "_" + n;
@@ -12410,6 +12603,15 @@ function UserMenu({
     glyph: "⭐",
     label: tr("menu_rate"),
     sub: tr("msub_rate")
+  }), /*#__PURE__*/React.createElement(MenuRow, {
+    onClick: () => {
+      window.__openReport && window.__openReport({ kind: "general" });
+      setOpen(false);
+    },
+    bg: "#eaf6ff",
+    glyph: "✉",
+    label: tr("report_general"),
+    sub: tr("report_general_sub")
   }), /*#__PURE__*/React.createElement("div", {
     style: {
       height: "1px",
@@ -14299,7 +14501,8 @@ function GoalSuccess({
   name,
   goal,
   onClose,
-  onQuiz
+  onQuiz,
+  onCurate
 }) {
   const perDay = goal?.perDay || 12;
   const weeks = goal?.weeks || 2;
@@ -14458,17 +14661,22 @@ function GoalSuccess({
       marginTop: "2px"
     }
   }, "W\xF6rter")))), /*#__PURE__*/React.createElement("button", {
-    className: "gcta",
-    onClick: onQuiz
+    className: "gsec gsec-primary",
+    onClick: onCurate
   }, /*#__PURE__*/React.createElement("span", {
-    className: "gg"
-  }), /*#__PURE__*/React.createElement("span", null, "Los geht's \u2014 zum Quiz \u2192")), /*#__PURE__*/React.createElement("button", {
+    className: "gsec-ic",
+    dangerouslySetInnerHTML: {
+      __html: IC_PENCIL
+    }
+  }), /*#__PURE__*/React.createElement("span", null, "Verben festlegen \u2192")), /*#__PURE__*/React.createElement("div", {
+    className: "gsec-hint"
+  }, "aus Gemerkten w\xE4hlen, selbst tippen oder vorschlagen lassen"), /*#__PURE__*/React.createElement("button", {
     className: "zt-act",
     onClick: onClose,
     style: {
       textAlign: "center"
     }
-  }, "Sp\xE4ter starten")));
+  }, "Sp\xE4ter")));
 }
 
 /* ---------- GoalCelebration ---------- */
@@ -14631,7 +14839,8 @@ function Zieltafel({
   goal,
   onClose,
   onAdjustGoal,
-  onQuiz
+  onQuiz,
+  onChallenge
 }) {
   const LNAME = {
     de: "Deutsch",
@@ -14685,6 +14894,10 @@ function Zieltafel({
   const goalDays = goal ? (goal.weeks || 2) * 7 : 14;
   const goalVerbs = goal ? goal.verbs : null;
   const goalWords = goal ? goal.words : null;
+  const vTot = goal && Array.isArray(goal.verbList) ? goal.verbList.length : goalVerbs;
+  const wTot = goal && Array.isArray(goal.wordList) ? goal.wordList.length : goalWords;
+  const vMast = goal && Array.isArray(goal.verbList) ? goal.verbList.filter(x => (x.done || 0) >= CH_DONE).length : 0;
+  const wMast = goal && Array.isArray(goal.wordList) ? goal.wordList.filter(x => (x.done || 0) >= CH_DONE).length : 0;
   const minsLeft = Math.max(1, Math.round(left * 0.5));
   const planDay = goal?.startDate ? Math.min(goalDays, Math.floor((Date.now() - new Date(goal.startDate)) / 86400000) + 1) : daily.streak;
   return /*#__PURE__*/React.createElement("div", {
@@ -14706,8 +14919,11 @@ function Zieltafel({
     }
   }, "Tag ", planDay, " / ", goalDays)) : ""), /*#__PURE__*/React.createElement("button", {
     className: "zt-e",
-    onClick: onAdjustGoal
-  }, "\u270E Challenge")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+    onClick: onAdjustGoal,
+    title: "Challenge anpassen",
+    "aria-label": "Challenge anpassen",
+    dangerouslySetInnerHTML: { __html: IC_PENCIL }
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
     className: "zt-greet"
   }, hl, /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
     className: "zt-nm"
@@ -14739,23 +14955,23 @@ function Zieltafel({
       fontSize: "12.5px",
       fontWeight: 700
     }
-  }, goalVerbs && /*#__PURE__*/React.createElement("span", {
+  }, vTot && /*#__PURE__*/React.createElement("span", {
     style: {
-      color: "var(--text)"
+      color: "var(--muted)"
     }
   }, "Verben ", /*#__PURE__*/React.createElement("span", {
     style: {
       color: "var(--text)"
     }
-  }, goalVerbs)), goalWords && /*#__PURE__*/React.createElement("span", {
+  }, vMast, "/", vTot, " sitzen")), wTot && /*#__PURE__*/React.createElement("span", {
     style: {
-      color: "var(--text)"
+      color: "var(--muted)"
     }
   }, "W\xF6rter ", /*#__PURE__*/React.createElement("span", {
     style: {
       color: "var(--text)"
     }
-  }, goalWords)), daily.streak > 0 && /*#__PURE__*/React.createElement("span", {
+  }, wMast, "/", wTot)), daily.streak > 0 && /*#__PURE__*/React.createElement("span", {
     style: {
       color: "var(--muted)",
       display: "inline-flex",
@@ -14764,81 +14980,15 @@ function Zieltafel({
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "combobars"
-  }, /*#__PURE__*/React.createElement("i"), /*#__PURE__*/React.createElement("i"), /*#__PURE__*/React.createElement("i"), /*#__PURE__*/React.createElement("i")), daily.streak, " Tage in Folge"))), /*#__PURE__*/React.createElement("div", {
-    className: "zt-ai",
-    ref: scrollRef,
-    style: {
-      flexDirection: "column",
-      gap: "12px",
-      maxHeight: "220px",
-      overflowY: "auto"
-    }
-  }, messages.map((m, i) => m.role === "ai" ? /*#__PURE__*/React.createElement("div", {
-    key: i,
-    style: {
-      display: "flex",
-      gap: "13px",
-      alignItems: "flex-start"
-    }
+  }, /*#__PURE__*/React.createElement("i"), /*#__PURE__*/React.createElement("i"), /*#__PURE__*/React.createElement("i"), /*#__PURE__*/React.createElement("i")), daily.streak, " Tage in Folge"))), /*#__PURE__*/React.createElement("button", {
+    className: "zt-chbtn",
+    onClick: onChallenge
   }, /*#__PURE__*/React.createElement("span", {
-    className: "zt-av"
-  }, (name || "J").slice(0, 1).toUpperCase()), /*#__PURE__*/React.createElement("div", {
-    className: "zt-body"
-  }, /*#__PURE__*/React.createElement("p", null, m.text), i === 0 && /*#__PURE__*/React.createElement("div", {
-    className: "zt-chips"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "zt-chip",
-    onClick: () => send("Ja, im Dialog üben")
-  }, "Ja, im Dialog \xFCben"), /*#__PURE__*/React.createElement("span", {
-    className: "zt-chip",
-    onClick: onQuiz
-  }, "Lieber Quiz"), /*#__PURE__*/React.createElement("span", {
-    className: "zt-chip",
-    onClick: () => send("Ich erkläre dir, wobei ich Probleme habe.")
-  }, "Wo's hakt sagen")))) : /*#__PURE__*/React.createElement("div", {
-    key: i,
-    style: {
-      display: "flex",
-      justifyContent: "flex-end"
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      background: "linear-gradient(95deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff)",
-      color: "#fff",
-      borderRadius: "14px 14px 0 14px",
-      padding: "9px 13px",
-      fontSize: "13.5px",
-      maxWidth: "80%",
-      lineHeight: 1.5
-    }
-  }, m.text))), loading && /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: "13px"
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "zt-av"
-  }, (name || "J").slice(0, 1).toUpperCase()), /*#__PURE__*/React.createElement("div", {
-    className: "zt-body"
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "var(--muted)",
-      fontStyle: "italic"
-    }
-  }, "\u2026")))), /*#__PURE__*/React.createElement("div", {
-    className: "zt-chatin"
-  }, /*#__PURE__*/React.createElement("input", {
-    value: input,
-    "aria-label": "Nachricht",
-    onChange: e => setInput(e.target.value),
-    onKeyDown: e => e.key === "Enter" && send(),
-    placeholder: "Antworte hier \u2026",
-    disabled: loading
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "zt-send",
-    onClick: () => send(),
-    disabled: loading || !input.trim()
-  }, "\u2191")), /*#__PURE__*/React.createElement("div", {
+    className: "zt-chbtn-ic",
+    dangerouslySetInnerHTML: { __html: IC_LIST }
+  }), /*#__PURE__*/React.createElement("span", null, "Zur Challenge-Liste"), /*#__PURE__*/React.createElement("span", {
+    className: "zt-chbtn-arr"
+  }, "\u2192")), /*#__PURE__*/React.createElement("div", {
     className: "zt-acts"
   }, /*#__PURE__*/React.createElement("button", {
     className: "zt-act primary",
@@ -15704,6 +15854,8 @@ function App() {
         });
         persist("kunju-acct-trial", true);
         setTrialExpiry(exp);
+        // Bestätigung nach der Konto-Erstellung (E-Mail bestätigt + zurück in der App)
+        setToastMsg(tr("acct_created"));
       }
       if (user && window.__supa) {
         // Load cloud favorites + premium status on login
@@ -15790,11 +15942,27 @@ function App() {
   const [daily, setDaily] = useState(() => readDaily());
   const [showGoalCelebration, setShowGoalCelebration] = useState(false);
   const [showGoalSuccess, setShowGoalSuccess] = useState(false);
+  const [reportCtx, setReportCtx] = useState(null); // Melde-Sheet (Fehler/Feedback)
+  useEffect(() => { window.__openReport = (c) => setReportCtx(Object.assign({ kind: "general", lang: lang }, c || {})); }, [lang]);
   const [showStreak, setShowStreak] = useState(false);
   const [showGoal, setShowGoal] = useState(false);
   const [goalStep, setGoalStep] = useState("choose");
   const [goalSet, setGoalSet] = useState(() => recall("kunju-goal", false));
   const [goal, setGoal] = useState(() => recall("kunju-goal-data", null));
+  // Eine echte, aktive Challenge = gespeicherte Liste mit mind. einem Eintrag.
+  // (Der reine kunju-goal-Flag kann nach abgebrochenen Flows veralten.)
+  function hasRealChallenge() {
+    return !!(goal && Array.isArray(goal.verbList) && (goal.verbList.length || (goal.wordList || []).length));
+  }
+  // Einheitlicher Challenge-Einstieg: Konto zuerst (anonym), dann Premium,
+  // dann Zieltafel NUR bei echter Challenge — sonst der Erstell-Flow.
+  function openChallenge() {
+    if (typeof closeSkHint === "function") closeSkHint();
+    if (!supaUser) { setShowPaywall(true); return; }      // anonym → erst Konto anlegen
+    if (!hasPaidAccess()) { setShowPaywall(true); return; } // Konto, aber kein Premium
+    if (hasRealChallenge()) { setShowStreak(true); return; } // echte Challenge → Zieltafel
+    setGoalStep("choose"); setShowGoal(true);              // sonst: Challenge anlegen
+  }
   const [skHint, setSkHint] = useState(() => !recall("kunju-skhint", false));
   function closeSkHint() {
     setSkHint(false);
@@ -16091,20 +16259,7 @@ function App() {
     className: "appbar-side appbar-right"
   }, /*#__PURE__*/React.createElement("button", {
     className: "streakpill",
-    onClick: () => {
-      closeSkHint();
-      // Lernziele & Fortschritt are Premium.
-      if (!hasPaidAccess()) {
-        setShowPaywall(true);
-        return;
-      }
-      if (goalSet) {
-        setShowStreak(true);
-      } else {
-        setGoalStep("choose");
-        setShowGoal(true);
-      }
-    },
+    onClick: () => openChallenge(),
     title: tr("sk_title")
   }, /*#__PURE__*/React.createElement("span", {
     className: "sbars",
@@ -16150,7 +16305,48 @@ function App() {
   }), /*#__PURE__*/React.createElement(LanguageBar, {
     lang: lang,
     setLang: switchLang
-  }), /*#__PURE__*/React.createElement(Tabs, {
+  }), (() => {
+    // Aktive Challenge → Status-/Rückhol-Leiste. Keine Challenge (aber onboarded)
+    // → einladende „Challenge starten"-Leiste (sichtbarer Einstieg, #27).
+    const onboarded = !!(name && String(name).trim());
+    if (hasRealChallenge() && hasPaidAccess()) {
+      const gd = (goal.weeks || 2) * 7;
+      const day = goal.startDate ? Math.min(gd, Math.floor((Date.now() - new Date(goal.startDate)) / 86400000) + 1) : 1;
+      const left = Math.max(0, (daily.goal || 0) - (daily.count || 0));
+      const done = left <= 0;
+      return /*#__PURE__*/React.createElement("button", {
+        className: "chstrip",
+        onClick: () => openChallenge(),
+        title: tr("sk_title")
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-ic",
+        dangerouslySetInnerHTML: { __html: IC_LIST }
+      }), /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-main"
+      }, "Challenge \xB7 ", tr("cs_day"), " ", day, "/", gd), /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-right" + (done ? " done" : "")
+      }, done ? tr("cs_done") : tr("cs_left", { n: left })), /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-arr"
+      }, "›"));
+    }
+    if (!hasRealChallenge() && onboarded) {
+      return /*#__PURE__*/React.createElement("button", {
+        className: "chstrip chstrip-start",
+        onClick: () => openChallenge(),
+        title: tr("sk_title")
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-ic",
+        dangerouslySetInnerHTML: { __html: IC_LIST }
+      }), /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-main"
+      }, tr("cs_start")), /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-right"
+      }, tr("cs_plan")), /*#__PURE__*/React.createElement("span", {
+        className: "chstrip-arr"
+      }, "›"));
+    }
+    return null;
+  })(), /*#__PURE__*/React.createElement(Tabs, {
     tab: tab,
     setTab: handleTabSwitch,
     profile: supaUser ? /*#__PURE__*/React.createElement(UserMenu, {
@@ -16232,6 +16428,7 @@ function App() {
     jumpTense: learnJump,
     onJumpDone: () => setLearnJump(null)
   }), tab === "saved" && /*#__PURE__*/React.createElement(SavedTab, {
+    key: "saved-" + recall("kunju-saved-sub", "verbs"),
     lang: lang,
     favs: favs,
     toggleFav: toggleFav,
@@ -16392,6 +16589,12 @@ function App() {
     onQuiz: () => {
       setShowGoalSuccess(false);
       handleTabSwitch("quiz");
+    },
+    onCurate: () => {
+      setShowGoalSuccess(false);
+      persist("kunju-saved-sub", "challenge");
+      persist("kunju-challenge-pending-edit", true);
+      handleTabSwitch("saved");
     }
   }), showGoalCelebration && /*#__PURE__*/React.createElement(GoalCelebration, {
     name: name,
@@ -16422,6 +16625,11 @@ function App() {
     onQuiz: () => {
       setShowStreak(false);
       handleTabSwitch("quiz");
+    },
+    onChallenge: () => {
+      setShowStreak(false);
+      persist("kunju-saved-sub", "challenge");
+      handleTabSwitch("saved");
     }
   }), showGoal && /*#__PURE__*/React.createElement(GoalFlow, {
     step: goalStep,
@@ -16446,6 +16654,9 @@ function App() {
   })), toastMsg && /*#__PURE__*/React.createElement(Toast, {
     msg: toastMsg,
     onDone: () => setToastMsg(null)
+  }), reportCtx && /*#__PURE__*/React.createElement(ReportSheet, {
+    ctx: reportCtx,
+    onClose: () => setReportCtx(null)
   }));
 }
 class ErrorBoundary extends React.Component {
