@@ -197,6 +197,10 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .sec-head p{font-size:17.5px;color:var(--muted);margin:0;text-wrap:pretty}
 
 /* bento */
+.modes-note{max-width:760px;margin:-22px auto 34px;text-align:center;font-size:15.5px;line-height:1.5;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);border-radius:16px;padding:14px 20px;position:relative}
+.modes-note::before{content:"";position:absolute;top:0;left:18px;right:18px;height:3px;border-radius:0 0 3px 3px;background:var(--brand-rainbow)}
+.modes-note strong{color:var(--ink);font-weight:800}
+@media(max-width:760px){.modes-note{margin:-8px auto 28px;font-size:14.5px}}
 .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
 .cell{grid-column:span 2;background:var(--surface);border:1px solid var(--border);border-radius:26px;padding:28px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease}
 .cell:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
@@ -413,6 +417,13 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 .tb-lang{font-family:var(--display);font-weight:700;font-size:13px;padding:7px 13px;border-radius:999px;background:var(--surface-2);color:var(--muted);border:1px solid var(--border);cursor:pointer;transition:transform .12s,border-color .12s}
 .tb-lang:hover{transform:translateY(-1px);border-color:var(--ink)}
 .tb-lang.on{background:var(--selbg);color:var(--selfg);border-color:transparent}
+.trybox-tensewrap{margin:0 0 16px}
+.trybox-tensewrap[hidden]{display:none}
+.trybox-tenses{display:flex;flex-wrap:wrap;gap:6px}
+.tb-tlabel{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.tb-tchip{font-family:var(--display);font-weight:700;font-size:12.5px;padding:6px 12px;border-radius:999px;background:var(--surface-2);color:var(--muted);border:1px solid var(--border);cursor:pointer;transition:transform .12s,border-color .12s}
+.tb-tchip:hover{transform:translateY(-1px);border-color:var(--ink)}
+.tb-tchip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .trybox-form{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
 .trybox-form input{flex:1 1 240px;min-width:0;font-family:var(--display);font-size:17px;font-weight:600;padding:14px 18px;border-radius:14px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--ink)}
 .trybox-form input:focus{outline:none;border-color:var(--ink);background:var(--surface)}
@@ -492,9 +503,13 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         <div class="trybox-langs" id="tbLangs" role="tablist" aria-label="Sprache"></div>
       </div>
       <form class="trybox-form" id="tbForm">
-        <input id="tbInput" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Verb eingeben — z. B. hablar" aria-label="Verb eingeben" />
+        <input id="tbInput" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Verb eingeben — z. B. hablar" data-i18n-ph="trybox.ph" aria-label="Verb eingeben" />
         <button class="btn btn-primary" type="submit"><span class="g"></span><span class="l" data-i18n="trybox.go">Konjugieren</span></button>
       </form>
+      <div class="trybox-tensewrap" id="tbTenseWrap" hidden>
+        <span class="tb-tlabel" data-i18n="trybox.tense">Zeitform wählen</span>
+        <div class="trybox-tenses" id="tbTenses" role="tablist" aria-label="Zeitform"></div>
+      </div>
       <div id="tbOut" class="trybox-out" aria-live="polite"></div>
       </div>
     </div>
@@ -519,6 +534,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         <h2 data-i18n="feat.h2">Verben konjugieren lernen heißt nicht auswendig lernen — sondern verinnerlichen.</h2>
         <p data-i18n="feat.p">Wissenschaftlich fundiert: Was du mit Themen verknüpfst, die dich interessieren, bleibt schneller hängen. Genau hier setzen wir an.</p>
       </div>
+      <div class="modes-note reveal" data-i18n="feat.modes"><strong>6 Quizmodi</strong> — Karten · Auswahl · Speed · Tippen · Sprechen · Texte. Jeder trainiert eine andere Fähigkeit, alle nach lernwissenschaftlichen Prinzipien aufgebaut.</div>
       <div class="bento">
         <div class="cell prem full reveal showcase">
           <div>
@@ -824,9 +840,11 @@ document.addEventListener("DOMContentLoaded", function(){
   var langs=document.getElementById("tbLangs"),
       form=document.getElementById("tbForm"),
       input=document.getElementById("tbInput"),
+      tenseWrap=document.getElementById("tbTenseWrap"),
+      tenses=document.getElementById("tbTenses"),
       out=document.getElementById("tbOut");
   if(!langs||!form||!input||!out) return;
-  var cur="es";
+  var cur="es", curTense=null;
   function defVerb(c){ for(var i=0;i<LANGS.length;i++) if(LANGS[i].code===c) return LANGS[i].verb; return ""; }
   function esc(s){ return String(s==null?"":s).replace(/[<>&]/g,function(c){return {"<":"&lt;",">":"&gt;","&":"&amp;"}[c];}); }
   function pills(){
@@ -834,20 +852,39 @@ document.addEventListener("DOMContentLoaded", function(){
     LANGS.forEach(function(L){
       var b=document.createElement("button");
       b.type="button"; b.className="tb-lang"+(L.code===cur?" on":""); b.textContent=L.label;
-      b.addEventListener("click",function(){ cur=L.code; input.value=defVerb(cur); pills(); run(); input.focus(); });
+      b.addEventListener("click",function(){ cur=L.code; curTense=null; input.value=defVerb(cur); pills(); run(); input.focus(); });
       langs.appendChild(b);
+    });
+  }
+  // finite tenses only (skip gerund/participle) so the chips show real conjugations
+  function finite(r){ return r.tenses.filter(function(t){ return !t.nonFinite && t.forms && t.forms.length>1; }); }
+  function pickTense(list){
+    var i;
+    if(curTense){ for(i=0;i<list.length;i++) if(list[i].id===curTense) return list[i]; }
+    for(i=0;i<list.length;i++) if(list[i].id==="present") return list[i];
+    return list[0];
+  }
+  function tenseChips(list,activeId){
+    if(tenseWrap) tenseWrap.hidden = list.length<2;
+    if(!tenses) return;
+    tenses.innerHTML="";
+    list.forEach(function(t){
+      var b=document.createElement("button");
+      b.type="button"; b.className="tb-tchip"+(t.id===activeId?" on":""); b.textContent=t.label;
+      b.addEventListener("click",function(){ curTense=t.id; run(); });
+      tenses.appendChild(b);
     });
   }
   function run(){
     var v=input.value.trim();
     var eng=window.CONJ&&window.CONJ[cur];
+    if(tenseWrap) tenseWrap.hidden=true;
     if(!eng){ out.innerHTML='<div class="tb-err">Engine lädt…</div>'; return; }
     if(!v){ out.innerHTML=""; return; }
     var r=eng.conjugate(v);
     if(!r||r.error){ out.innerHTML='<div class="tb-err">'+esc((r&&r.error)||"Unbekanntes Verb — probier z. B. hablar, parler, go, werken, gehen.")+'</div>'; return; }
-    var t=null,i;
-    for(i=0;i<r.tenses.length;i++){ if(r.tenses[i].id==="present"){ t=r.tenses[i]; break; } }
-    if(!t) t=r.tenses[0];
+    var list=finite(r), t=pickTense(list), i;
+    tenseChips(list, t.id);
     var rows="";
     for(i=0;i<t.forms.length;i++){
       var f=t.forms[i], irr=t.reg && f!==t.reg[i];
@@ -858,8 +895,8 @@ document.addEventListener("DOMContentLoaded", function(){
       '<span class="tb-tense">'+esc(t.label)+(r.isIrregular?" · unregelmäßig":"")+'</span></div>'+rows+
       '<div class="tb-cta"><a href="'+dl+'">„'+esc(r.infinitive)+'" in der App üben →</a></div></div>';
   }
-  form.addEventListener("submit",function(e){ e.preventDefault(); run(); input.blur(); });
-  input.addEventListener("input",run);
+  form.addEventListener("submit",function(e){ e.preventDefault(); curTense=null; run(); input.blur(); });
+  input.addEventListener("input",function(){ curTense=null; run(); });
   pills(); input.value=defVerb(cur); run();
 });
 </script>
