@@ -73,26 +73,24 @@ Status je Eintrag: **offen** (done 0) · **am Lernen** (1–2) · **sitzt ✅** 
 
 ---
 
-## 3. Offene Punkte für gute Userführung
+## 3. Userführung — umgesetzt
 
-Stand-Audit. Kern-Loop (Liste → vorrangig üben → 3 Tage → sitzt → gemeistert) ist
-stimmig. Schwachstellen:
+Kern-Loop (Liste → vorrangig üben → 3 Tage → sitzt → gemeistert) plus alle
+Führungs-Verbesserungen sind jetzt gebaut:
 
-- **🅐 Wörter-Pfad unklar** *(Task #25)* — Verben werden ins Quiz eingeflochten,
-  **Wörter nicht**. `wordList`-Einträge bekommen `done` nur im Wortschatz-Trainer.
-  Nirgends steht, dass man Wörter dort separat übt. → Wörter einweben **oder**
-  in der Liste klar verlinken.
-- **🅑 Kein Rückhol-Anker** *(Task #26)* — nach Tag 1 erinnert nichts sichtbar an
-  die Challenge. → kleiner Status auf dem Hauptscreen („Tag 3/14 · noch 6") + Tap
-  → Zieltafel.
-- **🅒 Start versteckt** *(Task #27)* — Erstellen geht nur über die Punkte-Kachel.
-  → klarer „Challenge starten"-Einstieg.
-- **🅓 Kein In-Quiz-Erfolg** — wird ein Verb durch das Quiz „sitzt", passiert
-  sichtbar nichts. → Mikro-Moment „‚warten' sitzt jetzt ✅ (3/3 Tage)".
-- **🅔 Dropdown ohne Challenge** — „Challenge" steht im Dropdown auch ohne aktive
-  Challenge (fällt still auf den normalen Pool zurück). → nur zeigen, wenn aktiv.
-- **🅕 Zeit-Ende offen** — kein definiertes Ende, wenn die Wochen um sind, aber
-  nicht alles sitzt. → sanfter Abschluss „Zeit um — verlängern / neue Challenge?".
+- **🅐 Wörter-Pfad** *(erledigt #25)* — die Challenge-Liste verlinkt den Wörter-
+  Bereich klar zum Wortschatz-Trainer („Wörter übst du im Wortschatz →"), wo
+  Challenge-Wörter automatisch gewertet werden.
+- **🅑 Rückhol-Anker** *(erledigt #26)* — schlanke Leiste unter den Sprachkacheln
+  („Challenge · Tag X/Y — noch N"), Tap → Zieltafel.
+- **🅒 Sichtbarer Einstieg** *(erledigt #27)* — ohne aktive Challenge zeigt dieselbe
+  Leiste „Challenge starten · dein Lernplan".
+- **🅓 In-Quiz-Erfolg** *(erledigt #29)* — meistert man ein Verb (3/3 Tage),
+  erscheint ein kurzer Toast „‚verb' sitzt jetzt — gemeistert!" mit Konfetti.
+- **🅔 Dropdown bedingt** *(erledigt #28)* — „Challenge" steht im „Welche Verben?"-
+  Dropdown nur bei aktiver Challenge.
+- **🅕 Sanftes Zeit-Ende** *(erledigt #30)* — sind die Wochen um, zeigt die Liste
+  „Zeit um — a von b sitzen" mit „+1 Woche" / „Neue Challenge".
 
 ---
 
