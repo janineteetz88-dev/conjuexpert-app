@@ -14,7 +14,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 import { parseMetaBlock, validateMeta } from "./meta-block.mjs";
-import { blocksToMetaText } from "./notion-adapt.mjs";
+import { blocksToMetaText, firstHeadIntro } from "./notion-adapt.mjs";
 
 /* ─── Notion-Block-Fixtures ──────────────────────────────────────────────── */
 
@@ -157,4 +157,57 @@ test("leere/kein Meta-Block → alle Pflichtfelder fehlen", () => {
   const res = validateMeta(parseMetaBlock(""));
   assert.equal(res.ok, false);
   assert.ok(res.errors.length >= 3);
+});
+
+/* ─── firstHeadIntro — Meta-Description-Fallback ─────────────────────────── */
+
+const italicPara = (text) => ({
+  type: "paragraph",
+  paragraph: { rich_text: [{ plain_text: text, annotations: { italic: true } }] },
+});
+const plainPara = (text) => ({
+  type: "paragraph",
+  paragraph: { rich_text: [{ plain_text: text, annotations: {} }] },
+});
+const h1Block = (text) => ({
+  type: "heading_1",
+  heading_1: { rich_text: [{ plain_text: text, annotations: {} }] },
+});
+
+test("firstHeadIntro: kursiven Intro-Satz vor H1 extrahieren", () => {
+  const blocks = [
+    italicPara("Spanische Verben konjugieren — so funktioniert das Muster."),
+    h1Block("Spanisch konjugieren"),
+    plainPara("Fließtext des Artikels."),
+  ];
+  assert.equal(
+    firstHeadIntro(blocks, { italicOnly: true }),
+    "Spanische Verben konjugieren — so funktioniert das Muster."
+  );
+});
+
+test("firstHeadIntro: ohne italicOnly auch gewöhnlichen Absatz nehmen", () => {
+  const blocks = [
+    plainPara("Ein normaler Einleitungssatz."),
+    h1Block("Titel"),
+  ];
+  assert.equal(firstHeadIntro(blocks), "Ein normaler Einleitungssatz.");
+  assert.equal(firstHeadIntro(blocks, { italicOnly: true }), "");
+});
+
+test("firstHeadIntro: Meta-Description-Zeile wird übersprungen", () => {
+  const blocks = [
+    plainPara("Meta-Description: Bereits vorhanden."),
+    italicPara("Echter Intro-Satz."),
+    h1Block("Titel"),
+  ];
+  assert.equal(
+    firstHeadIntro(blocks, { italicOnly: true }),
+    "Echter Intro-Satz."
+  );
+});
+
+test("firstHeadIntro: leere Blöcke → leerer String", () => {
+  assert.equal(firstHeadIntro([]), "");
+  assert.equal(firstHeadIntro(null), "");
 });

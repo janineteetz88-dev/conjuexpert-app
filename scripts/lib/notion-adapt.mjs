@@ -39,7 +39,7 @@ function isMetaHeaderText(s) {
  * Meta-/Slug-Zeile ist. Mit { italicOnly:true } nur kursive Absätze (*…*) —
  * der typische unbeschriftete Standfirst. Dient als Meta-Description-Fallback.
  */
-function firstHeadIntro(list, { italicOnly = false } = {}) {
+export function firstHeadIntro(list, { italicOnly = false } = {}) {
   for (const b of list || []) {
     if (b.type === "heading_1") break; // Kopf endet an der H1
     if (b.type !== "paragraph") continue;
