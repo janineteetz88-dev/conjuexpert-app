@@ -197,6 +197,16 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .sec-head p{font-size:17.5px;color:var(--muted);margin:0;text-wrap:pretty}
 
 /* bento */
+/* pain / symptoms */
+.pain{padding-bottom:36px}
+.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:30px}
+@media(max-width:760px){.pain-grid{grid-template-columns:1fr;gap:14px}}
+.pain-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px 22px 24px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:14px}
+.pain-ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);color:var(--ink);border:1px solid var(--border)}
+.pain-ic svg{width:22px;height:22px}
+.pain-card p{margin:0;font-size:16px;line-height:1.5;color:var(--ink);font-weight:500;text-wrap:pretty}
+.pain-bridge{max-width:680px;margin:0 auto;text-align:center;font-size:18px;line-height:1.55;color:var(--muted);text-wrap:pretty}
+.pain-bridge strong{color:var(--ink);font-weight:800}
 .modes-note{max-width:760px;margin:-22px auto 34px;text-align:center;font-size:15.5px;line-height:1.5;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);border-radius:16px;padding:14px 20px;position:relative}
 .modes-note::before{content:"";position:absolute;top:0;left:18px;right:18px;height:3px;border-radius:0 0 3px 3px;background:var(--brand-rainbow)}
 .modes-note strong{color:var(--ink);font-weight:800}
@@ -521,11 +531,30 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
     </div></div>
   </section>
 
-  <div class="wrap band-solo reveal">
-    <div class="feat-band">
-      <figure class="ci-pic"><img src="lifestyle/gemeinsam-sprachen-lernen-paar-band.jpg" alt="Paar lernt gemeinsam Sprachen und konjugiert Verben mit ConjuExpert – mit Freude statt Pauken" loading="lazy" decoding="async" width="1600" height="533" /><span class="band-cap">Gemeinsam lernen, länger behalten.</span></figure>
+  <section class="block pain" id="pain">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-tag" data-i18n="pain.tag">Kennst du das?</span>
+        <h2 data-i18n="pain.h2">Geht's dir beim Sprachenlernen auch so?</h2>
+        <p data-i18n="pain.p">Wenn dir einer dieser Punkte bekannt vorkommt, bist du hier goldrichtig.</p>
+      </div>
+      <div class="pain-grid">
+        <div class="pain-card reveal">
+          <span class="pain-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10h8M8 14h5"/><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-5.2A8 8 0 1 1 21 12z"/></svg></span>
+          <p data-i18n="pain.a">Du paukst Vokabeln und Regeln — aber im echten Gespräch fällt dir die richtige Form einfach nicht ein.</p>
+        </div>
+        <div class="pain-card reveal" data-d="2">
+          <span class="pain-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <p data-i18n="pain.b">Die Zeitformen kennst du in der Theorie. Beim Sprechen rätst du — und verlierst den Faden.</p>
+        </div>
+        <div class="pain-card reveal" data-d="3">
+          <span class="pain-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H7l-3 3z"/><path d="M9 10h6"/></svg></span>
+          <p data-i18n="pain.c">Nach Wochen mit der Lern-App verstehst du viel — frei sprechen tust du trotzdem nicht.</p>
+        </div>
+      </div>
+      <p class="pain-bridge reveal" data-i18n="pain.bridge">Genau hier setzt <strong>ConjuExpert</strong> an: Du konjugierst aktiv in echten Sätzen aus deinen Themen — bis die richtige Form im Gespräch von allein kommt.</p>
     </div>
-  </div>
+  </section>
 
   <section class="block" id="features">
     <div class="wrap">
@@ -639,6 +668,12 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
       </div>
     </div>
   </section>
+
+  <div class="wrap band-solo reveal">
+    <div class="feat-band">
+      <figure class="ci-pic"><img src="lifestyle/gemeinsam-sprachen-lernen-paar-band.jpg" alt="Paar lernt gemeinsam Sprachen und konjugiert Verben mit ConjuExpert – mit Freude statt Pauken" loading="lazy" decoding="async" width="1600" height="533" /><span class="band-cap">Gemeinsam lernen, länger behalten.</span></figure>
+    </div>
+  </div>
 
   <section class="block" id="vergleich">
     <div class="wrap">
