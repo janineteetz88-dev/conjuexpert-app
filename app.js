@@ -11895,6 +11895,7 @@ const IC_PAUSE = "<svg viewBox='0 0 24 24' width='14' height='14' fill='currentC
 const IC_PLAY = "<svg viewBox='0 0 24 24' width='14' height='14' fill='currentColor' aria-hidden='true'><path d='M8 5.2v13.6L19 12z'/></svg>";
 const IC_TAP = "<svg viewBox='0 0 24 24' width='14' height='14' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M9 11.5V5.5a1.5 1.5 0 0 1 3 0V11'/><path d='M12 10.5V9a1.5 1.5 0 0 1 3 0v2'/><path d='M15 11v-.5a1.5 1.5 0 0 1 3 0V15a5 5 0 0 1-5 5h-1a4 4 0 0 1-3-1.4L6.2 15a1.6 1.6 0 0 1 2.4-2.1L9 13.3'/></svg>";
 const IC_PENCIL = "<svg viewBox='0 0 24 24' width='15' height='15' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M14.5 5.5l4 4M4 20l1-4L16 5a2 2 0 0 1 3 3L8 19z'/></svg>";
+const IC_LIST = "<svg viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M9 6h11M9 12h11M9 18h11'/><path d='M4 6h.01M4 12h.01M4 18h.01'/></svg>";
 function txtIco(svg, label) {
   return React.createElement(React.Fragment, null, React.createElement("span", { className: "txtico", dangerouslySetInnerHTML: { __html: svg } }), " ", label);
 }
@@ -14673,7 +14674,8 @@ function Zieltafel({
   goal,
   onClose,
   onAdjustGoal,
-  onQuiz
+  onQuiz,
+  onChallenge
 }) {
   const LNAME = {
     de: "Deutsch",
@@ -14809,81 +14811,15 @@ function Zieltafel({
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "combobars"
-  }, /*#__PURE__*/React.createElement("i"), /*#__PURE__*/React.createElement("i"), /*#__PURE__*/React.createElement("i"), /*#__PURE__*/React.createElement("i")), daily.streak, " Tage in Folge"))), /*#__PURE__*/React.createElement("div", {
-    className: "zt-ai",
-    ref: scrollRef,
-    style: {
-      flexDirection: "column",
-      gap: "12px",
-      maxHeight: "220px",
-      overflowY: "auto"
-    }
-  }, messages.map((m, i) => m.role === "ai" ? /*#__PURE__*/React.createElement("div", {
-    key: i,
-    style: {
-      display: "flex",
-      gap: "13px",
-      alignItems: "flex-start"
-    }
+  }, /*#__PURE__*/React.createElement("i"), /*#__PURE__*/React.createElement("i"), /*#__PURE__*/React.createElement("i"), /*#__PURE__*/React.createElement("i")), daily.streak, " Tage in Folge"))), /*#__PURE__*/React.createElement("button", {
+    className: "zt-chbtn",
+    onClick: onChallenge
   }, /*#__PURE__*/React.createElement("span", {
-    className: "zt-av"
-  }, (name || "J").slice(0, 1).toUpperCase()), /*#__PURE__*/React.createElement("div", {
-    className: "zt-body"
-  }, /*#__PURE__*/React.createElement("p", null, m.text), i === 0 && /*#__PURE__*/React.createElement("div", {
-    className: "zt-chips"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "zt-chip",
-    onClick: () => send("Ja, im Dialog üben")
-  }, "Ja, im Dialog \xFCben"), /*#__PURE__*/React.createElement("span", {
-    className: "zt-chip",
-    onClick: onQuiz
-  }, "Lieber Quiz"), /*#__PURE__*/React.createElement("span", {
-    className: "zt-chip",
-    onClick: () => send("Ich erkläre dir, wobei ich Probleme habe.")
-  }, "Wo's hakt sagen")))) : /*#__PURE__*/React.createElement("div", {
-    key: i,
-    style: {
-      display: "flex",
-      justifyContent: "flex-end"
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      background: "linear-gradient(95deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff)",
-      color: "#fff",
-      borderRadius: "14px 14px 0 14px",
-      padding: "9px 13px",
-      fontSize: "13.5px",
-      maxWidth: "80%",
-      lineHeight: 1.5
-    }
-  }, m.text))), loading && /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: "13px"
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "zt-av"
-  }, (name || "J").slice(0, 1).toUpperCase()), /*#__PURE__*/React.createElement("div", {
-    className: "zt-body"
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "var(--muted)",
-      fontStyle: "italic"
-    }
-  }, "\u2026")))), /*#__PURE__*/React.createElement("div", {
-    className: "zt-chatin"
-  }, /*#__PURE__*/React.createElement("input", {
-    value: input,
-    "aria-label": "Nachricht",
-    onChange: e => setInput(e.target.value),
-    onKeyDown: e => e.key === "Enter" && send(),
-    placeholder: "Antworte hier \u2026",
-    disabled: loading
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "zt-send",
-    onClick: () => send(),
-    disabled: loading || !input.trim()
-  }, "\u2191")), /*#__PURE__*/React.createElement("div", {
+    className: "zt-chbtn-ic",
+    dangerouslySetInnerHTML: { __html: IC_LIST }
+  }), /*#__PURE__*/React.createElement("span", null, "Zur Challenge-Liste"), /*#__PURE__*/React.createElement("span", {
+    className: "zt-chbtn-arr"
+  }, "\u2192")), /*#__PURE__*/React.createElement("div", {
     className: "zt-acts"
   }, /*#__PURE__*/React.createElement("button", {
     className: "zt-act primary",
@@ -16466,6 +16402,11 @@ function App() {
     onQuiz: () => {
       setShowStreak(false);
       handleTabSwitch("quiz");
+    },
+    onChallenge: () => {
+      setShowStreak(false);
+      persist("kunju-saved-sub", "challenge");
+      handleTabSwitch("saved");
     }
   }), showGoal && /*#__PURE__*/React.createElement(GoalFlow, {
     step: goalStep,
