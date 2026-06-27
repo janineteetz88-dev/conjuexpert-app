@@ -5403,7 +5403,7 @@ function ConjugateView({
     if (!window.__hasAI()) return;
     setNativeBusy(true);
     window.aiComplete(`Translate the ${natName} verb "${w}" to its ${engine.name} infinitive. Reply with ONLY the single infinitive word in ${engine.name}, lowercase, no article, no extra text.`).then(txt => {
-      const out = String(txt || "").trim().toLowerCase().split(/\s+/)[0].replace(/[^a-zà-ÿ'’\-]/gi, "");
+      const out = String(txt || "").trim().toLowerCase().replace(/^to\s+/, "").split(/\s+/)[0].replace(/[^a-zà-ÿ'’\-]/gi, "");
       setNativeBusy(false);
       if (out) {
         persist(key, out);
@@ -15915,7 +15915,7 @@ function App() {
         toName = window.CONJ[newLang].name;
       setLang(newLang);
       window.aiComplete(`Translate the verb "${cur}" from ${fromName} to its ${toName} infinitive. Reply with ONLY the single infinitive word in ${toName}, lowercase, no article, no extra text.`).then(txt => {
-        const w = String(txt || "").trim().toLowerCase().split(/\s+/)[0].replace(/[^a-zà-ÿ'’-]/gi, "");
+        const w = String(txt || "").trim().toLowerCase().replace(/^to\s+/, "").split(/\s+/)[0].replace(/[^a-zà-ÿ'’-]/gi, "");
         if (w) {
           setVerb(w);
           const r = window.CONJ[newLang].conjugate(w);
