@@ -6559,6 +6559,7 @@ function QuizView({
   const [mver, setMver] = useState(0);
   const [listening, setListening] = useState(false);
   const [heard, setHeard] = useState("");
+  const [micHint, setMicHint] = useState(false); // true → native Prompt half nicht, geräte­genaue Anleitung zeigen
   const [msg, setMsg] = useState("");
   const [autoSpeak, setAutoSpeak] = useState(() => recall("kunju-autospeak", false));
   function toggleAutoSpeak() {
@@ -7238,6 +7239,51 @@ function QuizView({
       setListening(false);
       setHeard("__nomic__");
     }
+  }
+  // Blockiertes Mikro: löst die native Erlaubnis-Abfrage des Browsers aus.
+  // Klappt der Prompt (noch nicht gefragt / einmal weggetippt) → direkt weiter aufnehmen.
+  // Ist es dauerhaft blockiert → geräte­genaue Anleitung einblenden.
+  async function requestMic() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setMicHint(true);
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach(t => t.stop()); // wir wollten nur die Erlaubnis
+      setMicHint(false);
+      setHeard("");
+      listen(); // jetzt erlaubt → Aufnahme direkt starten
+    } catch (e) {
+      setMicHint(true); // dauerhaft blockiert → Prompt kommt nicht mehr
+    }
+  }
+  function micHintText() {
+    const ua = (navigator.userAgent || "");
+    const iOS = /iPhone|iPad|iPod/.test(ua);
+    const android = /Android/.test(ua);
+    const L = UILANG, pick = m => m[L] || m.en;
+    if (iOS) return pick({
+      de: "Safari: oben in der Adressleiste auf „aA\" → Website-Einstellungen → Mikrofon → Erlauben. Im privaten Tab ist das Mikro gesperrt — normalen Tab nutzen.",
+      en: "Safari: tap „aA\" in the address bar → Website Settings → Microphone → Allow. Private tabs block the mic — use a normal tab.",
+      es: "Safari: toca „aA\" en la barra de direcciones → Ajustes del sitio → Micrófono → Permitir. En pestañas privadas el micro está bloqueado.",
+      fr: "Safari : touche « aA » dans la barre d’adresse → Réglages du site → Micro → Autoriser. En navigation privée, le micro est bloqué.",
+      nl: "Safari: tik op „aA\" in de adresbalk → Website-instellingen → Microfoon → Sta toe. In privétabbladen is de microfoon geblokkeerd."
+    });
+    if (android) return pick({
+      de: "Chrome: auf das Schloss-Symbol links in der Adressleiste tippen → Berechtigungen → Mikrofon erlauben.",
+      en: "Chrome: tap the lock icon in the address bar → Permissions → allow Microphone.",
+      es: "Chrome: toca el candado en la barra de direcciones → Permisos → permite el micrófono.",
+      fr: "Chrome : touche le cadenas dans la barre d’adresse → Autorisations → autorise le micro.",
+      nl: "Chrome: tik op het slotje in de adresbalk → Rechten → microfoon toestaan."
+    });
+    return pick({
+      de: "Im Browser neben der Adressleiste den Mikrofon-Zugriff für diese Seite erlauben.",
+      en: "In your browser, allow microphone access for this site next to the address bar.",
+      es: "En el navegador, permite el acceso al micrófono para este sitio junto a la barra de direcciones.",
+      fr: "Dans le navigateur, autorise l’accès au micro pour ce site à côté de la barre d’adresse.",
+      nl: "Sta in je browser de microfoontoegang voor deze site toe naast de adresbalk."
+    });
   }
   function sentSim(a, b) {
     const words = s => deburr(norm(s)).replace(/[^\p{L}\p{N}\s]/gu, " ").split(/\s+/).filter(w => w.length > 1);
@@ -9124,8 +9170,15 @@ function QuizView({
     }, "\u21BB ", tr("spk_relearn")), heard === "__nomic__" && /*#__PURE__*/React.createElement("div", {
       className: "feedback no"
     }, tr("speak_nomic")), heard === "__denied__" && /*#__PURE__*/React.createElement("div", {
-      className: "feedback no"
-    }, tr("speak_denied")), heard === "__nospeech__" && /*#__PURE__*/React.createElement("div", {
+      className: "feedback no",
+      style: { display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" }
+    }, /*#__PURE__*/React.createElement("span", null, tr("speak_denied")), /*#__PURE__*/React.createElement("button", {
+      className: "quizbtn check",
+      type: "button",
+      onClick: requestMic
+    }, ({ de: "🎤 Mikrofon aktivieren", en: "🎤 Enable microphone", es: "🎤 Activar micrófono", fr: "🎤 Activer le micro", nl: "🎤 Microfoon inschakelen" })[UILANG] || "🎤 Enable microphone"), micHint && /*#__PURE__*/React.createElement("span", {
+      style: { fontSize: "12px", lineHeight: "1.45", opacity: 0.85, fontWeight: 500 }
+    }, micHintText())), heard === "__nospeech__" && /*#__PURE__*/React.createElement("div", {
       className: "feedback no"
     }, tr("speak_nospeech")), heard && heard.indexOf("__") !== 0 && /*#__PURE__*/React.createElement("div", {
       className: "heardline"
