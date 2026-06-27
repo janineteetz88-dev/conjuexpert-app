@@ -10708,12 +10708,12 @@ function VocabView({
   return /*#__PURE__*/React.createElement("div", {
     className: "view",
     style: {
-      "--lc": LANG_META[lang].color
+      "--lc": "var(--ink)"
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "vocadd",
     style: {
-      "--lc": LANG_META[lang].color
+      "--lc": "var(--ink)"
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "vocdir"
@@ -10901,7 +10901,7 @@ function VocabView({
     className: "vocitem",
     key: it.id,
     style: {
-      "--lc": LANG_META[lang].color
+      "--lc": "var(--ink)"
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "vocitem-main"
