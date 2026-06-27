@@ -35,7 +35,7 @@
   "@context": "https://schema.org",
   "@graph": [
     { "@type": "WebSite", "@id": "https://conjuexpert.app/#website", "url": "https://conjuexpert.app/", "name": "ConjuExpert", "description": "Verben konjugieren in 5 Sprachen – mit Quiz, Lernen und Merken.", "inLanguage": "de" },
-    { "@type": "SoftwareApplication", "name": "ConjuExpert", "applicationCategory": "EducationalApplication", "operatingSystem": "Web, iOS, Android (PWA)", "description": "Verben konjugieren in Spanisch, Französisch, Englisch, Niederländisch und Deutsch – alle Zeitformen, KI-Quiz aus Lieblingsthemen, Merken.", "url": "https://conjuexpert.app/", "inLanguage": ["de","es","en","nl","fr"], "offers": [ { "@type": "Offer", "name": "Kostenlos", "price": "0", "priceCurrency": "EUR" }, { "@type": "Offer", "name": "Premium-Tarif (monatlich)", "price": "2.99", "priceCurrency": "EUR" }, { "@type": "Offer", "name": "Premium-Tarif (jährlich)", "price": "29.99", "priceCurrency": "EUR" } ] },
+    { "@type": "SoftwareApplication", "name": "ConjuExpert", "applicationCategory": "EducationalApplication", "operatingSystem": "Web, iOS, Android (PWA)", "description": "Verben konjugieren in Spanisch, Französisch, Englisch, Niederländisch und Deutsch – alle Zeitformen, Quiz aus deinen Lieblingsthemen, Merken.", "url": "https://conjuexpert.app/", "inLanguage": ["de","es","en","nl","fr"], "offers": [ { "@type": "Offer", "name": "Kostenlos", "price": "0", "priceCurrency": "EUR" }, { "@type": "Offer", "name": "Premium-Tarif (monatlich)", "price": "2.99", "priceCurrency": "EUR" }, { "@type": "Offer", "name": "Premium-Tarif (jährlich)", "price": "29.99", "priceCurrency": "EUR" } ] },
     { "@type": "FAQPage", "mainEntity": [
       { "@type": "Question", "name": "Was ist das Besondere an ConjuExpert?", "acceptedAnswer": { "@type": "Answer", "text": "Du kennst das Verb, hast es zehnmal nachgeschlagen – doch im Gespräch ist es plötzlich weg. ConjuExpert ändert das: Im Quiz trainierst du den blitzschnellen Abruf genau der Form, die gerade gefragt ist (z. B. Subjuntivo, 3. Person von tener – tenga), und übst in beide Richtungen, bis die Form sitzt, bevor du nachdenkst. So fällt dir die richtige konjugierte Zeitform ein, wenn du sie brauchst – durch spielerisches Anwenden und Lernen im Kontext deiner Lieblingsthemen." } },
       { "@type": "Question", "name": "Welche Sprachen werden unterstützt?", "acceptedAnswer": { "@type": "Answer", "text": "Du kannst spanische Verben, französische Verben, englische Verben, niederländische Verben und deutsche Verben konjugieren — und jederzeit zwischen den Sprachen wechseln." } },
@@ -61,7 +61,7 @@
   --brand-rainbow:linear-gradient(90deg,#ff5a4d,#ff9e2c,#ffcf3f,#5bbf6a,#3aa6c9,#5b8def,#a874e6);
   --vivid:var(--brand-rainbow);
   /* Button-/CTA-System — kanonische Tokens (docs/ci.md) */
-  --brand-pink:var(--pink);--brand-violet:var(--violet);--brand-blue:var(--blue);
+  --brand-pink:var(--pink);--brand-violet:var(--ink);--brand-blue:var(--blue);
   --danger:#ff3b5c;--success:var(--green);--cta-rainbow:var(--vivid);
   --maxw:1180px;
   /* === Bildsprache-CI: Sand-Duoton (Blog · Social · Marketing-Fotos) ===
@@ -145,8 +145,11 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,5.8vw,64px);l
 .phone img{display:block;width:100%}
 /* hero annotation tags */
 .phone-wrap{position:relative;width:300px}
-.aring{position:absolute;border:2.5px dashed var(--violet);border-radius:48% / 54%;animation:ringPulse 2.8s ease-in-out infinite;z-index:6;pointer-events:none}
-@keyframes ringPulse{0%,100%{box-shadow:0 0 0 3px color-mix(in srgb,var(--violet) 16%,transparent)}50%{box-shadow:0 0 0 10px color-mix(in srgb,var(--violet) 0%,transparent)}}
+.aring{position:absolute;border:2.5px dashed var(--ink);border-radius:48% / 54%;z-index:6;pointer-events:none;opacity:0;transform:scale(.7);transition:opacity .55s cubic-bezier(.2,.7,.2,1),transform .55s cubic-bezier(.2,.7,.2,1)}
+.anno-go .aring{opacity:1;transform:scale(1);animation:ringPulse 2.8s ease-in-out 1.3s infinite}
+.anno-legend li{opacity:0;transform:translateY(9px);transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+.anno-go .anno-legend li{opacity:1;transform:none}
+@keyframes ringPulse{0%,100%{box-shadow:0 0 0 3px color-mix(in srgb,var(--ink) 16%,transparent)}50%{box-shadow:0 0 0 10px color-mix(in srgb,var(--ink) 0%,transparent)}}
 .atag{position:absolute;z-index:8;pointer-events:none}
 .atag-r{left:calc(50% + 92px);transform:translateY(-50%)}
 .atag-l{left:calc(50% - 156px);transform:translate(-100%,-50%)}
@@ -202,28 +205,28 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 @media(max-width:560px){.bento{grid-template-columns:1fr}.cell,.cell.wide,.cell.full{grid-column:span 1}}
 .tier{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:6px;margin-bottom:14px}
 .tier.free{color:var(--green);background:color-mix(in srgb,var(--green) 13%,transparent)}
-.tier.prem{color:var(--violet);background:color-mix(in srgb,var(--violet) 13%,transparent)}
+.tier.prem{color:var(--ink);background:color-mix(in srgb,var(--ink) 13%,transparent)}
 .cell h3{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.02em;margin:0 0 8px}
 .cell p{margin:0;color:var(--muted);font-size:15.5px;text-wrap:pretty}
 .cell p + p{margin-top:13px}
 .cell .ic{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;background:var(--surface-2);border:1px solid var(--border)}
 .cell .ic svg{width:23px;height:23px;color:var(--ink)}
 .cell.free .ic{background:color-mix(in srgb,var(--green) 11%,var(--surface));border-color:color-mix(in srgb,var(--green) 18%,transparent)}.cell.free .ic svg{color:var(--green)}
-.cell.prem .ic{background:color-mix(in srgb,var(--violet) 11%,var(--surface));border-color:color-mix(in srgb,var(--violet) 18%,transparent)}.cell.prem .ic svg{color:var(--violet)}
+.cell.prem .ic{background:color-mix(in srgb,var(--ink) 11%,var(--surface));border-color:color-mix(in srgb,var(--ink) 18%,transparent)}.cell.prem .ic svg{color:var(--ink)}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
 .chip{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);padding:5px 11px;border-radius:999px}
 .cell.flexcol{display:flex;flex-direction:column}
 .cell.flexcol .chips{margin-top:auto;padding-top:18px}
 /* showcase cells with screenshots */
 .cell.showcase{display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center}
-.sc-phones{display:flex;align-items:center;gap:16px;background:linear-gradient(155deg,color-mix(in srgb,var(--violet) 9%,var(--surface)),color-mix(in srgb,var(--blue) 7%,var(--surface)));border:1px solid var(--border);border-radius:28px;padding:24px 26px}
+.sc-phones{display:flex;align-items:center;gap:16px;background:linear-gradient(155deg,color-mix(in srgb,var(--ink) 9%,var(--surface)),color-mix(in srgb,var(--blue) 7%,var(--surface)));border:1px solid var(--border);border-radius:28px;padding:24px 26px}
 .sc-phone{display:flex;flex-direction:column;align-items:center;gap:11px}
 .sc-phone img{width:190px;height:325px;object-fit:cover;object-position:top;border:6px solid #0c0e16;border-radius:27px;background:#0c0e16;box-shadow:var(--shadow);display:block}
 .sc-cap{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--muted)}
 .sc-cap .n{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;background:var(--surface-2);border:1px solid var(--border)}
-.sc-cap.a{color:var(--violet)}
-.sc-cap.a .n{background:var(--selbg);border-color:var(--violet);color:#fff}
-.sc-arrow{flex:none;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--violet);font-size:18px;box-shadow:var(--shadow-sm)}
+.sc-cap.a{color:var(--ink)}
+.sc-cap.a .n{background:var(--selbg);border-color:var(--ink);color:#fff}
+.sc-arrow{flex:none;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:18px;box-shadow:var(--shadow-sm)}
 @media(max-width:900px){.cell.showcase{grid-template-columns:1fr}.sc-phones{justify-self:start}}
 @media(max-width:520px){.sc-phones{flex-direction:column}.sc-arrow{transform:rotate(90deg)}.sc-phone img{width:212px;height:362px}}
 .langwrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
@@ -256,8 +259,8 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 @media(max-width:680px){.plans{grid-template-columns:1fr}}
 .plan{position:relative;border:1.5px solid var(--border);border-radius:26px;padding:32px;transition:transform .3s}
 .plan:hover{transform:translateY(-5px)}
-.plan.best{border-color:var(--violet);background:linear-gradient(180deg,color-mix(in srgb,var(--violet) 6%,var(--surface)),var(--surface));box-shadow:0 26px 56px -28px var(--violet)}
-.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-family:var(--display);font-weight:700;font-size:11.5px;color:#fff;background:linear-gradient(95deg,var(--blue),var(--violet));padding:5px 15px;border-radius:999px;white-space:nowrap;box-shadow:var(--shadow-sm)}
+.plan.best{border-color:var(--ink);background:linear-gradient(180deg,color-mix(in srgb,var(--ink) 6%,var(--surface)),var(--surface));box-shadow:0 26px 56px -28px var(--ink)}
+.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-family:var(--display);font-weight:700;font-size:11.5px;color:#fff;background:linear-gradient(95deg,var(--blue),var(--ink));padding:5px 15px;border-radius:999px;white-space:nowrap;box-shadow:var(--shadow-sm)}
 .plan h3{font-family:var(--display);font-weight:700;font-size:21px;margin:0 0 4px}
 .plan .ptag{font-size:14px;color:var(--muted);margin:0 0 18px}
 .welcome{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;font-family:var(--display);font-weight:700;font-size:14.5px;color:#fff;background:var(--vivid);background-size:220% 100%;animation:slide 6s linear infinite;padding:12px 16px;border-radius:14px;margin:0 0 16px;box-shadow:0 14px 30px -12px rgba(70,55,25,.55);text-shadow:0 1px 2px rgba(0,0,0,.4)}
@@ -286,8 +289,8 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .hl-card p{margin:0;color:var(--muted);font-size:14.5px;text-wrap:pretty}
 .hl-tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;margin-top:14px}
 .hl-tag.free{color:var(--green);background:color-mix(in srgb,var(--green) 13%,transparent)}
-.hl-tag.prem{color:var(--violet);background:color-mix(in srgb,var(--violet) 13%,transparent)}
-.hl-card.prem .hl-num{color:var(--violet)}
+.hl-tag.prem{color:var(--ink);background:color-mix(in srgb,var(--ink) 13%,transparent)}
+.hl-card.prem .hl-num{color:var(--ink)}
 @keyframes flyUp{from{transform:translateY(42px)}to{transform:none}}
 .fly{opacity:1}
 .js .fly.in{animation:flyUp .75s cubic-bezier(.2,.7,.2,1)}
@@ -296,24 +299,24 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .faq{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 .faq .qa{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:0 26px;box-shadow:var(--shadow-sm);overflow:hidden;transition:box-shadow .3s,border-color .3s,background .3s}
 .faq .qa::before{content:"";position:absolute;left:0;top:20px;bottom:20px;width:4px;border-radius:0 4px 4px 0;background:var(--vivid);opacity:0;transition:opacity .3s}
-.faq .qa:hover{border-color:color-mix(in srgb,var(--violet) 22%,var(--border))}
-.faq .qa[open]{border-color:color-mix(in srgb,var(--violet) 32%,var(--border));box-shadow:var(--shadow);background:linear-gradient(180deg,color-mix(in srgb,var(--violet) 5%,var(--surface)),var(--surface))}
+.faq .qa:hover{border-color:color-mix(in srgb,var(--ink) 22%,var(--border))}
+.faq .qa[open]{border-color:color-mix(in srgb,var(--ink) 32%,var(--border));box-shadow:var(--shadow);background:linear-gradient(180deg,color-mix(in srgb,var(--ink) 5%,var(--surface)),var(--surface))}
 .faq .qa[open]::before{opacity:1}
 .faq summary{list-style:none;cursor:pointer;padding:24px 0;display:flex;align-items:center;gap:18px}
 .faq summary::-webkit-details-marker{display:none}
-.faq .q-no{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--violet);letter-spacing:.04em;flex:none;width:22px;transition:color .3s}
+.faq .q-no{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ink);letter-spacing:.04em;flex:none;width:22px;transition:color .3s}
 .faq .q-txt{font-family:var(--display);font-weight:600;font-size:18.5px;letter-spacing:-.015em;line-height:1.3;flex:1;text-wrap:balance}
 .faq .pm{flex:none;width:36px;height:36px;border-radius:50%;background:var(--surface-2);border:1px solid var(--border);position:relative;transition:transform .4s cubic-bezier(.2,.7,.2,1),background .3s,border-color .3s}
 .faq .pm::before,.faq .pm::after{content:"";position:absolute;top:50%;left:50%;width:13px;height:2.4px;border-radius:2px;background:var(--muted);transform:translate(-50%,-50%);transition:background .3s}
 .faq .pm::after{transform:translate(-50%,-50%) rotate(90deg)}
-.faq .qa[open] .pm{background:var(--selbg);border-color:var(--violet);transform:rotate(135deg)}
+.faq .qa[open] .pm{background:var(--selbg);border-color:var(--ink);transform:rotate(135deg)}
 .faq .qa[open] .pm::before,.faq .qa[open] .pm::after{background:#fff}
 .faq .qa-body{overflow:hidden}
 @keyframes faqIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 .js .faq .qa[open] .qa-body{animation:faqIn .4s cubic-bezier(.2,.7,.2,1)}
 .faq .qa-body p{margin:0 0 22px;color:var(--muted);font-size:16px;line-height:1.62;text-wrap:pretty}
 .faq .qa-body p:first-child{margin-top:-4px}
-.faq .qa-body em{font-style:normal;font-weight:700;color:var(--violet);font-family:var(--mono);font-size:.94em}
+.faq .qa-body em{font-style:normal;font-weight:700;color:var(--ink);font-family:var(--mono);font-size:.94em}
 
 /* compare table */
 .cmp{max-width:860px;margin:0 auto;border:1px solid var(--border);border-radius:24px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow-sm)}
@@ -321,8 +324,8 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .cmp th,.cmp td{padding:15px 18px;text-align:left;border-top:1px solid var(--border);font-size:15px;vertical-align:middle}
 .cmp thead th{border-top:0;background:var(--surface-2);font-family:var(--display);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
 .cmp th.c,.cmp td.c{text-align:center;width:108px}
-.cmp td.c.p,.cmp th.c.p{background:color-mix(in srgb,var(--violet) 7%,transparent);width:128px}
-.cmp thead th.c.p{color:var(--violet)}
+.cmp td.c.p,.cmp th.c.p{background:color-mix(in srgb,var(--ink) 7%,transparent);width:128px}
+.cmp thead th.c.p{color:var(--ink)}
 .cmp .nu{font-weight:600}
 .cmp .nu small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
 .cmp .y{color:var(--green);font-weight:700;font-size:17px}
@@ -355,8 +358,8 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 /* language switcher */
 .nav-right{display:flex;align-items:center;gap:10px}
 .langsel{position:relative}
-.langsel-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-weight:700;font-size:14px;color:var(--violet);background:color-mix(in srgb,var(--violet) 9%,var(--surface));border:1.6px solid color-mix(in srgb,var(--violet) 42%,transparent);border-radius:12px;padding:9px 12px;cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .15s,box-shadow .15s,background .15s}
-.langsel-btn:hover{transform:translateY(-1px);background:color-mix(in srgb,var(--violet) 16%,var(--surface));box-shadow:var(--shadow)}
+.langsel-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-weight:700;font-size:14px;color:var(--ink);background:color-mix(in srgb,var(--ink) 9%,var(--surface));border:1.6px solid color-mix(in srgb,var(--ink) 42%,transparent);border-radius:12px;padding:9px 12px;cursor:pointer;box-shadow:var(--shadow-sm);transition:transform .15s,box-shadow .15s,background .15s}
+.langsel-btn:hover{transform:translateY(-1px);background:color-mix(in srgb,var(--ink) 16%,var(--surface));box-shadow:var(--shadow)}
 .langsel-btn>svg:first-child{opacity:.9}
 .langsel-cur{font-family:var(--mono);font-weight:700;letter-spacing:.02em}
 .langsel-caret{opacity:.6;transition:transform .2s}
@@ -365,7 +368,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 .langsel.open .langsel-menu{display:block;animation:revealUp .2s cubic-bezier(.2,.7,.2,1)}
 .langsel-menu li{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:14.5px;color:var(--ink);padding:9px 10px;border-radius:9px;cursor:pointer}
 .langsel-menu li:hover{background:var(--surface-2)}
-.langsel-menu li[aria-selected="true"]{color:var(--violet)}
+.langsel-menu li[aria-selected="true"]{color:var(--ink)}
 .langsel-code{font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;background:var(--selbg);border-radius:6px;padding:2px 0;min-width:26px;text-align:center}
 @media(max-width:560px){.langsel-btn{padding:8px 9px}.langsel-cur{font-size:13px}}
 
@@ -468,9 +471,9 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow reveal"><span class="dot"></span><span data-i18n="hero.eyebrow">KI-Konjugationstrainer · 5 Sprachen</span></span>
+        <span class="eyebrow reveal"><span class="dot"></span><span data-i18n="hero.eyebrow">Konjugationstrainer · 5 Sprachen</span></span>
         <h1 class="reveal" data-d="1" data-i18n="hero.h1">Verben konjugieren, bis sie <span class="grad-word">im Gespräch sitzen</span>.</h1>
-        <p class="lead reveal" data-d="2" data-i18n="hero.lead">Verben konjugieren und behalten — im aktiven Sprachwechsel, mit KI-Sätzen aus deinen Lieblingsthemen. Alle Zeitformen, in 5 Sprachen. Kostenlos starten.</p>
+        <p class="lead reveal" data-d="2" data-i18n="hero.lead">Verben konjugieren und behalten — im aktiven Sprachwechsel, mit Sätzen aus deinen Lieblingsthemen. Alle Zeitformen, in 5 Sprachen. Kostenlos starten.</p>
         <div class="hero-cta reveal" data-d="3">
           <a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l" data-i18n="hero.ctaOpen">App kostenlos öffnen</span></a>
           <a class="btn btn-ghost" href="#try" data-i18n="hero.ctaTry">Verb hier ausprobieren ↓</a>
@@ -536,9 +539,9 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         <div class="cell prem full reveal showcase">
           <div>
             <span class="tier prem" data-i18n="c4.tier">PREMIUM · SPRECH-QUIZ</span>
-            <h3 data-i18n="c4.h3">Sag die Form laut — die KI hört zu.</h3>
-            <p data-i18n="c4.p">Dein Verb erscheint als Lücke in einem KI-Satz aus deinen Lieblingsthemen. Du sprichst die richtige Form ins Mikro, die Spracherkennung prüft dich sofort — und du siehst den vollen Satz samt Übersetzung. So sitzt die Form genau dort, wo du sie brauchst: im echten Sprechen.</p>
-            <div class="chips"><span class="chip" data-i18n="c4.chip1">Spracherkennung</span><span class="chip" data-i18n="c1.chip1">KI-Satz aus Lieblingsthemen</span><span class="chip" data-i18n="c4.chip3">Sofort-Feedback</span></div>
+            <h3 data-i18n="c4.h3">Sag die Form laut — die Spracherkennung hört zu.</h3>
+            <p data-i18n="c4.p">Dein Verb erscheint als Lücke in einem Satz aus deinen Lieblingsthemen. Du sprichst die richtige Form ins Mikro, die Spracherkennung prüft dich sofort — und du siehst den vollen Satz samt Übersetzung. So sitzt die Form genau dort, wo du sie brauchst: im echten Sprechen.</p>
+            <div class="chips"><span class="chip" data-i18n="c4.chip1">Spracherkennung</span><span class="chip" data-i18n="c1.chip1">Satz aus deinen Lieblingsthemen</span><span class="chip" data-i18n="c4.chip3">Sofort-Feedback</span></div>
           </div>
           <div class="sc-phones">
             <div class="sc-phone">
@@ -573,9 +576,9 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         <div class="cell prem half withpic picleft reveal" data-d="2">
           <figure class="ci-pic"><img src="lifestyle/wortschatz-merken-vokabeln-lernpause-kaffee.jpg" alt="Kaffeepause beim Vokabeln merken – entspannt den Wortschatz mit ConjuExpert wiederholen" loading="lazy" decoding="async" width="800" height="1132" /></figure>
           <div class="cell-body">
-            <span class="tier prem" data-i18n="c3.tier">PREMIUM · KI-DYNAMIK</span>
+            <span class="tier prem" data-i18n="c3.tier">PREMIUM · DEIN FORTSCHRITT</span>
             <h3 data-i18n="c3.h3">Dein Wortschatz wächst — und bleibt.</h3>
-            <p data-i18n="c3.p">Durch KI entsteht Dynamik im Lernfortschritt: Mit der Merkfunktion erweiterst du deinen Wortschatz, speicherst ihn und wiederholst ihn gezielt — so wird aus Üben echtes Behalten. In jedem Satz tippst du ein unbekanntes Wort an, um es zu übersetzen — und per Klick auf das Sternchen kommt es in deine Merkliste. Im Quiz-Bereich kannst du genau diese gemerkten Wörter wieder anwählen, sodass sie in deine Übungen einfließen. Auch im Bereich „Text" kannst du deine Merk-Verben per Klick integrieren lassen. Der Text wird dann automatisch nach deinen Anforderungen an Zeitform, Lieblingsthema und bevorzugte Verben erstellt. So individuell macht Lernen richtig Spaß!</p>
+            <p data-i18n="c3.p">So entsteht Dynamik in deinem Lernfortschritt: Mit der Merkfunktion erweiterst du deinen Wortschatz, speicherst ihn und wiederholst ihn gezielt — so wird aus Üben echtes Behalten. In jedem Satz tippst du ein unbekanntes Wort an, um es zu übersetzen — und per Klick auf das Sternchen kommt es in deine Merkliste. Im Quiz-Bereich kannst du genau diese gemerkten Wörter wieder anwählen, sodass sie in deine Übungen einfließen. Auch im Bereich „Text" kannst du deine Merk-Verben per Klick integrieren lassen. Der Text wird dann automatisch nach deinen Anforderungen an Zeitform, Lieblingsthema und bevorzugte Verben erstellt. So individuell macht Lernen richtig Spaß!</p>
             <div class="chips"><span class="chip" data-i18n="c3.chip1">Adaptiv ans Niveau</span><span class="chip" data-i18n="c3.chip2">Gezielte Wiederholung</span><span class="chip" data-i18n="c3.chip3">Merken</span></div>
           </div>
         </div>
@@ -584,8 +587,8 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
           <div>
             <span class="tier prem" data-i18n="c1.tier">PREMIUM · KARTEN-QUIZ</span>
             <h3 data-i18n="c1.h3">Lücke füllen, umdrehen, merken.</h3>
-            <p data-i18n="c1.p">Jede Karte setzt dein Verb als Lücke in einen KI-Satz aus deinen Lieblingsthemen. Du konjugierst im Kopf, drehst die Karte um — und siehst die Lösung im ganzen Satz, zweisprachig erklärt. Und das Beste: Tippst du auf das Verb, wandert es direkt in deinen „Gemerkt"-Speicher und kommt gezielt wieder, bis es wirklich sitzt.</p>
-            <div class="chips"><span class="chip" data-i18n="c1.chip1">KI-Satz aus Lieblingsthemen</span><span class="chip" data-i18n="c1.chip2">Zwischen Mutter- &amp; Lernsprache wechseln</span><span class="chip" data-i18n="c1.chip3">Tippen auf ein unbekanntes Wort → Übersetzen lassen und Merkfunktion nutzen</span></div>
+            <p data-i18n="c1.p">Jede Karte setzt dein Verb als Lücke in einen Satz aus deinen Lieblingsthemen. Du konjugierst im Kopf, drehst die Karte um — und siehst die Lösung im ganzen Satz, zweisprachig erklärt. Und das Beste: Tippst du auf das Verb, wandert es direkt in deinen „Gemerkt"-Speicher und kommt gezielt wieder, bis es wirklich sitzt.</p>
+            <div class="chips"><span class="chip" data-i18n="c1.chip1">Satz aus deinen Lieblingsthemen</span><span class="chip" data-i18n="c1.chip2">Zwischen Mutter- &amp; Lernsprache wechseln</span><span class="chip" data-i18n="c1.chip3">Tippen auf ein unbekanntes Wort → Übersetzen lassen und Merkfunktion nutzen</span></div>
           </div>
           <div class="sc-phones">
             <div class="sc-phone">
@@ -611,7 +614,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
       <div class="hl-grid">
         <div class="hl-card fly"><figure class="ci-pic hl-pic"><img src="lifestyle/sprach-switching-mehrsprachig-lernen-mann.jpg" alt="Mann lernt mehrsprachig und wechselt zwischen Mutter- und Fremdsprache mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure><div class="hl-body"><div class="hl-num">01</div><h3 data-i18n="hl1.h3">Sprach-Switching</h3><p data-i18n="hl1.p">Du wechselst ständig zwischen Mutter- und Fremdsprache und verknüpfst Bedeutung mit der richtigen Zeitform — aktiv statt passiv.</p><span class="hl-tag prem">PREMIUM</span></div></div>
         <div class="hl-card fly"><figure class="ci-pic hl-pic"><img src="lifestyle/kontext-signalwoerter-muster-erkennen.jpg" alt="Muster und Signalwörter erkennen – Verben im Kontext lernen mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure><div class="hl-body"><div class="hl-num">02</div><h3 data-i18n="hl2.h3">Kontext &amp; Signalwörter</h3><p data-i18n="hl2.p">Jede Form erscheint im echten Satz mit Signalwörtern. Dein Gehirn erkennt das Muster sofort — ohne Regeln zu pauken.</p><span class="hl-tag free" data-i18n="tag.free">KOSTENLOS</span></div></div>
-        <div class="hl-card fly"><figure class="ci-pic hl-pic"><img src="lifestyle/adaptiv-niveau-verben-ueben-frau.jpg" alt="Frau übt adaptiv Verben auf ihrem Niveau mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure><div class="hl-body"><div class="hl-num">03</div><h3 data-i18n="hl3.h3">Adaptiv ans Niveau</h3><p data-i18n="hl3.p">Jede Runde passt sich an: du trainierst genau die Fehler aus der letzten Runde. Die KI weiß, welcher Wortschatz unter „gemerkt" gespeichert ist, und ruft ihn immer wieder auf.</p><span class="hl-tag prem">PREMIUM</span></div></div>
+        <div class="hl-card fly"><figure class="ci-pic hl-pic"><img src="lifestyle/adaptiv-niveau-verben-ueben-frau.jpg" alt="Frau übt adaptiv Verben auf ihrem Niveau mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure><div class="hl-body"><div class="hl-num">03</div><h3 data-i18n="hl3.h3">Adaptiv ans Niveau</h3><p data-i18n="hl3.p">Jede Runde passt sich an: du trainierst genau die Fehler aus der letzten Runde. Dein Trainer weiß, welcher Wortschatz unter „gemerkt" gespeichert ist, und ruft ihn immer wieder auf.</p><span class="hl-tag prem">PREMIUM</span></div></div>
         <div class="hl-card prem fly"><figure class="ci-pic hl-pic"><img src="lifestyle/merken-vokabeln-favoriten-kopfhoerer.jpg" alt="Knifflige Verben merken und als Favoriten speichern mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure><div class="hl-body"><div class="hl-num">04</div><h3 data-i18n="hl4.h3">Merken</h3><p data-i18n="hl4.p">Speichere knifflige Verben als Favoriten, baue eigene Vokabellisten und lass dir mit „Muss ich noch lernen" gezielt die Lücken abfragen.</p><span class="hl-tag prem">PREMIUM</span></div></div>
       </div>
     </div>
@@ -628,14 +631,14 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
             <tr><td class="nu"><span data-i18n="cmp.r2">Grammatik verstehen</span><small data-i18n="cmp.r2s">Eselsbrücken, Signalwörter, Beispielsätze</small></td><td class="c y">✓</td><td class="c p y">✓</td></tr>
             <tr><td class="nu"><span data-i18n="cmp.r3">Alle 5 Sprachen, zweisprachig</span></td><td class="c y">✓</td><td class="c p y">✓</td></tr>
             <tr><td class="nu"><span data-i18n="cmp.r4">Üben, bis es sitzt: 4 Quiz-Varianten</span><small data-i18n="cmp.r4s">Karten · Auswahl · Tippen · Sprechen</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r5">Aktiv switchen: Mutter ↔ Fremdsprache</span><small data-i18n="cmp.r5s">produzieren &amp; erkennen, KI-Sätze aus Lieblingsthemen</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.r5">Aktiv switchen: Mutter ↔ Fremdsprache</span><small data-i18n="cmp.r5s">produzieren &amp; erkennen, Sätze aus Lieblingsthemen</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
             <tr><td class="nu"><span data-i18n="cmp.r6">Merken im Übungssatz</span><small data-i18n="cmp.r6s">knifflige Verben direkt im Kontext wiederholen</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
             <tr><td class="nu"><span data-i18n="cmp.r7">Wortschatzspeicher</span><small data-i18n="cmp.r7s">Favoriten &amp; eigene Vokabellisten</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
             <tr><td class="nu"><span data-i18n="cmp.r8">Fortschrittsmerker</span><small data-i18n="cmp.r8s">behalte deinen Lernstand im Blick</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="reveal" style="text-align:center;margin:24px auto 0"><span style="display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-weight:700;font-size:15px;background:color-mix(in srgb,var(--violet) 9%,transparent);border:1px solid color-mix(in srgb,var(--violet) 24%,transparent);color:var(--violet);padding:11px 20px;border-radius:999px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="cmp.badge">Premium 24h kostenlos testen — ohne Risiko, jederzeit kündbar.</span></span></p>
+      <p class="reveal" style="text-align:center;margin:24px auto 0"><span style="display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-weight:700;font-size:15px;background:color-mix(in srgb,var(--ink) 9%,transparent);border:1px solid color-mix(in srgb,var(--ink) 24%,transparent);color:var(--ink);padding:11px 20px;border-radius:999px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="cmp.badge">Premium 24h kostenlos testen — ohne Risiko, jederzeit kündbar.</span></span></p>
     </div>
   </section>
 
@@ -669,7 +672,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
           <span class="save" data-i18n="pr.save">24,99 € statt 29,99 € · du sparst 5 €</span>
           <ul>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi1">Alles aus dem „genialer Basis-Tarif" &amp;</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi2">Quiz — 4 Modi, KI-Sätze, Sprach-Switch</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi2">Quiz — 4 Modi, Sätze, Sprach-Switch</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi3">Merken — Favoriten &amp; Vokabellisten</span></li>
           </ul>
           <a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l" data-i18n="pr.premBtn">Premium-Tarif holen</span></a>
@@ -766,7 +769,7 @@ durch deine Lieblingsthemen.</h2>
     <div class="foot">
       <div>
         <a class="brand" href="#top"><span class="brand-mark" data-mark></span><span class="brand-name">Conju<b>Expert</b></span></a>
-        <p style="color:var(--muted);font-size:14.5px;max-width:30ch;margin:14px 0 0" data-i18n="ft.tagline">Der KI-Konjugationstrainer für 5 Sprachen — Quiz, Merken &amp; Lernen.</p>
+        <p style="color:var(--muted);font-size:14.5px;max-width:30ch;margin:14px 0 0" data-i18n="ft.tagline">Der Konjugationstrainer für 5 Sprachen — Quiz, Merken &amp; Lernen.</p>
       </div>
       <div class="links">
         <div><h4 data-i18n="ft.product">Produkt</h4><ul><li><a href="#features" data-i18n="nav.features">Funktionen</a></li><li><a href="#preise" data-i18n="nav.prices">Preise</a></li><li><a href="#faq" data-i18n="nav.faq">FAQ</a></li><li><a href="/bewertungen/" data-i18n="nav.reviews">Bewertungen</a></li><li><a href="/blog/">Blog</a></li><li><a href="https://conjuexpert.app" data-i18n="nav.openApp">App öffnen</a></li></ul></div>
@@ -786,6 +789,16 @@ var mq=document.getElementById('mq'); if(mq){ mq.innerHTML+=mq.innerHTML; }
 // scroll fly-in
 function rev(){var h=window.innerHeight||800;document.querySelectorAll('.fly:not(.in)').forEach(function(e){if(e.getBoundingClientRect().top < h*0.85){e.classList.add('in');}});}
 window.addEventListener('scroll',rev,{passive:true});window.addEventListener('resize',rev);rev();setTimeout(rev,300);
+// Phone-Annotationen gestaffelt einfliegen lassen (Ringe + Legende)
+(function(){
+  var pw=document.querySelector('.phone-wrap'); if(!pw) return;
+  Array.prototype.forEach.call(pw.querySelectorAll('.aring'),function(r,i){ r.style.transitionDelay=(0.15+i*0.15)+'s'; });
+  Array.prototype.forEach.call(document.querySelectorAll('.anno-legend li'),function(l,i){ l.style.transitionDelay=(0.2+i*0.1)+'s'; });
+  function go(){ if(pw.getBoundingClientRect().top < (window.innerHeight||800)*0.85){ pw.classList.add('anno-go'); window.removeEventListener('scroll',go); } }
+  window.addEventListener('scroll',go,{passive:true}); go(); setTimeout(go,450);
+})();
+// bestehende Fly-Karten innerhalb der Grids staffeln (Kaskade)
+Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ Array.prototype.forEach.call(g.children,function(c,i){ c.style.animationDelay=(i*0.1)+'s'; }); });
 </script>
 <script src="/landing/i18n.js"></script>
 <!-- Konjugations-Engines für das Live-Widget -->
