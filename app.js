@@ -15492,6 +15492,13 @@ function App() {
     }
     setTab(id);
   }
+  // Beim Tab-Wechsel immer nach oben scrollen, damit der Header (Begrüßung,
+  // Logo, Sprachen, Challenge) statisch oben bleibt und nicht „mitwandert".
+  useEffect(() => {
+    try { window.scrollTo(0, 0); } catch (e) {}
+    const se = document.scrollingElement; if (se) se.scrollTop = 0;
+    const ph = document.querySelector(".phone"); if (ph) ph.scrollTop = 0;
+  }, [tab]);
   // Jump from a Conjugate card straight into the Learn tab at that tense.
   const [learnJump, setLearnJump] = useState(null);
   function goToLearnTense(tenseId) {
