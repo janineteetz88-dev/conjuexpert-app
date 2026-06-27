@@ -5431,7 +5431,7 @@ function ConjugateView({
     if (!window.__hasAI()) return;
     setNativeBusy(true);
     window.aiComplete(`Translate the ${natName} verb "${w}" to its ${engine.name} infinitive. Reply with ONLY the single infinitive word in ${engine.name}, lowercase, no article, no extra text.`).then(txt => {
-      const out = String(txt || "").trim().toLowerCase().split(/\s+/)[0].replace(/[^a-zà-ÿ'’\-]/gi, "");
+      const out = String(txt || "").trim().toLowerCase().replace(/^to\s+/, "").split(/\s+/)[0].replace(/[^a-zà-ÿ'’\-]/gi, "");
       setNativeBusy(false);
       if (out) {
         persist(key, out);
@@ -6553,6 +6553,7 @@ function QuizView({
   const [picked, setPicked] = useState(null);
   const [flipped, setFlipped] = useState(false);
   const [transl, setTransl] = useState(null);
+  const translReqRef = useRef(""); // guards against stale async translations landing on the next card
   const [prevCards, setPrevCards] = useState([]);
   const [speedLog, setSpeedLog] = useState([]);
   const [mver, setMver] = useState(0);
@@ -6802,6 +6803,8 @@ function QuizView({
   }
   function fetchTransl(rawVerb) {
     const base = (rawVerb || "").replace(/^to /, "");
+    const reqId = lang + "|" + base; // identifies this request; a later card invalidates it
+    translReqRef.current = reqId;
     const nativeName = recall("kunju-native", "German");
     const key = `kunju-vtr-${lang}-${base}-${nativeName}`;
     const cached = recall(key, null);
@@ -6838,8 +6841,8 @@ function QuizView({
     window.aiComplete(`Translate the ${eng.name} verb "${base}" into ${nativeName}. Reply with ONLY the ${nativeName} translation in its base/infinitive form, nothing else.`).then(txt => {
       const t = String(txt || "").trim().replace(/^["'«»]+|["'«».]+$/g, "").split("\n")[0].trim();
       persist(key, t);
-      setTransl(t);
-    }).catch(() => setTransl(""));
+      if (translReqRef.current === reqId) setTransl(t); // ignore if the user already moved to another card
+    }).catch(() => { if (translReqRef.current === reqId) setTransl(""); });
   }
   function flipCard() {
     if (!flipped) {
@@ -15639,6 +15642,13 @@ function App() {
     }
     setTab(id);
   }
+  // Beim Tab-Wechsel immer nach oben scrollen, damit der Header (Begrüßung,
+  // Logo, Sprachen, Challenge) statisch oben bleibt und nicht „mitwandert".
+  useEffect(() => {
+    try { window.scrollTo(0, 0); } catch (e) {}
+    const se = document.scrollingElement; if (se) se.scrollTop = 0;
+    const ph = document.querySelector(".phone"); if (ph) ph.scrollTop = 0;
+  }, [tab]);
   // Jump from a Conjugate card straight into the Learn tab at that tense.
   const [learnJump, setLearnJump] = useState(null);
   function goToLearnTense(tenseId) {
@@ -16060,7 +16070,7 @@ function App() {
         toName = window.CONJ[newLang].name;
       setLang(newLang);
       window.aiComplete(`Translate the verb "${cur}" from ${fromName} to its ${toName} infinitive. Reply with ONLY the single infinitive word in ${toName}, lowercase, no article, no extra text.`).then(txt => {
-        const w = String(txt || "").trim().toLowerCase().split(/\s+/)[0].replace(/[^a-zà-ÿ'’-]/gi, "");
+        const w = String(txt || "").trim().toLowerCase().replace(/^to\s+/, "").split(/\s+/)[0].replace(/[^a-zà-ÿ'’-]/gi, "");
         if (w) {
           setVerb(w);
           const r = window.CONJ[newLang].conjugate(w);
