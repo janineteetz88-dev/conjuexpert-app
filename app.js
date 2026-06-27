@@ -8854,14 +8854,7 @@ function QuizView({
     className: "flashtop"
   }, /*#__PURE__*/React.createElement("span", {
     className: "flashtense"
-  }, q.tenseLabel), /*#__PURE__*/React.createElement("button", {
-    className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
-    title: "Save verb",
-    onClick: e => {
-      e.stopPropagation();
-      toggleFav(lang, q.verb);
-    }
-  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement("div", {
+  }, q.tenseLabel)), /*#__PURE__*/React.createElement("div", {
     className: "flashbody"
   }, /*#__PURE__*/React.createElement(QuizTip, {
     formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer),
@@ -8884,7 +8877,14 @@ function QuizView({
     }
   }, q.verb.replace(/^to /, ""), " ", /*#__PURE__*/React.createElement("span", {
     className: "qm-study-ic"
-  }, "\u2197")), /*#__PURE__*/React.createElement("span", {
+  }, "\u2197")), /*#__PURE__*/React.createElement("button", {
+    className: "starbtn qm-star qm-star-inline" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
+    title: "Save verb",
+    onClick: e => {
+      e.stopPropagation();
+      toggleFav(lang, q.verb);
+    }
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "\u2605" : "\u2606"), /*#__PURE__*/React.createElement("span", {
     className: "flashpron"
   }, q.pronoun), cloze && !cloze.loading && /*#__PURE__*/React.createElement("div", {
     className: "flashcloze clozebox",
@@ -11036,39 +11036,33 @@ function ChallengeView({ lang, onNew, onPractice, onWords }) {
     const setVal = kind === "v" ? setVIn : setWIn;
     const add = (t) => { kind === "v" ? addVerb(t) : addWord(t); };
     const doAdd = () => { add(val); setVal(""); };
+    const open = picker === kind;
+    const all = kind === "v" ? allSavedV : allSavedW;
+    const inSet = kind === "v" ? inV : inW;
+    const notIn = all.filter(c => !inSet.has(c.toLowerCase()));
+    const addOne = c => kind === "v" ? addVerb(c) : addWord(c);
     return h("div", { className: "ch-edit" },
       h("div", { className: "ch-addrow" },
         h("input", { className: "ch-input", value: val, placeholder: tr("ch_add_ph"), onChange: e => setVal(e.target.value), onKeyDown: e => { if (e.key === "Enter") doAdd(); } }),
-        // "+": Text vorhanden → hinzufügen; leer → gemerkte Liste öffnen
-        h("button", { className: "ch-addbtn", title: tr("ch_choose"), onClick: () => { if (String(val).trim()) doAdd(); else setPicker(kind); } }, "+")),
+        // "+": Text vorhanden → hinzufügen; leer → gemerkte Liste hier aufklappen
+        h("button", { className: "ch-addbtn", title: tr("ch_choose"), onClick: () => { if (String(val).trim()) doAdd(); else setPicker(open ? null : kind); } }, "+")),
       h("div", { className: "ch-addbtns" },
-        h("button", { className: "ch-choose", onClick: () => setPicker(kind) },
+        h("button", { className: "ch-choose" + (open ? " on" : ""), onClick: () => setPicker(open ? null : kind) },
           h("span", { className: "ch-choose-ic", dangerouslySetInnerHTML: { __html: IC_LIST } }),
-          tr("ch_choose")),
-        kind === "v" ? h("button", { className: "ch-fill", onClick: fillVerbs }, tr("ch_fill")) : null));
-  };
-  const pickerSheet = () => {
-    if (!picker) return null;
-    const all = picker === "v" ? allSavedV : allSavedW;
-    const inSet = picker === "v" ? inV : inW;
-    const notIn = all.filter(c => !inSet.has(c.toLowerCase()));
-    const addOne = c => picker === "v" ? addVerb(c) : addWord(c);
-    return h("div", { className: "chpick-bg", onClick: () => setPicker(null) },
-      h("div", { className: "chpick", onClick: e => e.stopPropagation() },
-        h("div", { className: "chpick-hd" },
-          h("b", null, picker === "v" ? tr("ch_pick_verbs") : tr("ch_pick_words")),
-          h("button", { className: "chpick-x", "aria-label": "close", onClick: () => setPicker(null) }, "×")),
+          tr("ch_choose"),
+          h("span", { className: "ch-choose-car" }, open ? "▴" : "▾")),
+        kind === "v" ? h("button", { className: "ch-fill", onClick: fillVerbs }, tr("ch_fill")) : null),
+      // Inline-Dropdown (öffnet an Ort und Stelle, kein Popup)
+      open ? h("div", { className: "ch-pick-inline" },
         all.length
-          ? h("div", { className: "chpick-list" }, all.map((c, ci) => {
+          ? h("div", { className: "ch-pick-list" }, all.map((c, ci) => {
               const on = inSet.has(c.toLowerCase());
-              return h("button", { key: ci, className: "chpick-row" + (on ? " on" : ""), onClick: () => on ? removeName(picker, c) : addOne(c) },
+              return h("button", { key: ci, className: "chpick-row" + (on ? " on" : ""), onClick: () => on ? removeName(kind, c) : addOne(c) },
                 h("span", { className: "chpick-lb" }, c),
                 h("span", { className: "chpick-mk" }, on ? "✓" : "+"));
             }))
-          : h("p", { className: "chpick-empty" }, picker === "v" ? tr("ch_pick_empty_v") : tr("ch_pick_empty_w")),
-        h("div", { className: "chpick-foot" },
-          notIn.length ? h("button", { className: "ch-from-all", onClick: () => notIn.forEach(addOne) }, tr("ch_add_all")) : null,
-          h("button", { className: "quizbtn check chpick-done", onClick: () => setPicker(null) }, tr("ch_editdone")))));
+          : h("p", { className: "chpick-empty" }, kind === "v" ? tr("ch_pick_empty_v") : tr("ch_pick_empty_w")),
+        notIn.length ? h("button", { className: "ch-from-all", onClick: () => notIn.forEach(addOne) }, tr("ch_add_all")) : null) : null);
   };
   const section = (kind) => {
     const lst = kind === "v" ? vl : wl;
@@ -11101,8 +11095,7 @@ function ChallengeView({ lang, onNew, onPractice, onWords }) {
     section("w"),
     h("div", { className: "ch-btns" },
       h("button", { className: "quizbtn check ch-go", onClick: onPractice }, tr("ch_practice")),
-      h("button", { className: "nameskip", onClick: onNew }, tr("ch_new"))),
-    pickerSheet());
+      h("button", { className: "nameskip", onClick: onNew }, tr("ch_new"))));
 }
 /* ---------- Saved verbs (heart tab) ---------- */
 function SavedTab({
