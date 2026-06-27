@@ -2508,6 +2508,10 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .quiztenses{ background:var(--surface) !important; border:1px solid var(--border) !important; border-radius:18px !important; padding:2px 14px 8px !important; box-shadow:var(--raise) !important; margin:12px 0 0 !important; }
   .qfilter-block{ position:relative !important; display:flex !important; flex-direction:row !important; align-items:center !important; justify-content:space-between !important; gap:12px !important; padding:12px 2px !important; background:none !important; border:0 !important; box-shadow:none !important; margin:0 !important; }
   .qfilter-block:not(:last-child)::after{ content:"" !important; position:absolute !important; left:0; right:0; bottom:0; height:2px !important; border-radius:2px !important; background:var(--brand-rainbow) !important; opacity:.5 !important; }
+  /* zwei aufeinanderfolgende Einstellungs-Karten zu EINEM ruhigen Panel verschmelzen (#24) */
+  .quiztenses + .quiztenses{ margin-top:0 !important; border-top:0 !important; border-top-left-radius:0 !important; border-top-right-radius:0 !important; padding-top:0 !important; }
+  .quiztenses:has(+ .quiztenses){ border-bottom-left-radius:0 !important; border-bottom-right-radius:0 !important; padding-bottom:0 !important; }
+  .quiztenses:has(+ .quiztenses) .qfilter-block:last-child::after{ content:"" !important; position:absolute !important; left:0; right:0; bottom:0; height:2px !important; border-radius:2px !important; background:var(--brand-rainbow) !important; opacity:.5 !important; }
   .qfilter-lbl{ font-size:14px !important; font-weight:700 !important; color:var(--text) !important; margin:0 !important; flex:0 1 auto !important; min-width:0 !important; -webkit-text-fill-color:var(--text) !important; background:none !important; }
   .tdbtn{ height:40px !important; flex:none !important; padding:0 12px !important; border-radius:12px !important; background:linear-gradient(180deg,#fffefa,var(--surface-2)) !important; border:1px solid var(--border) !important; box-shadow:var(--raise) !important; }
   .tdbtn-lbl{ display:none !important; }
