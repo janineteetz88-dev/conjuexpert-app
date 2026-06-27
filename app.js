@@ -7258,31 +7258,55 @@ function QuizView({
       setMicHint(true); // dauerhaft blockiert → Prompt kommt nicht mehr
     }
   }
-  function micHintText() {
-    const ua = (navigator.userAgent || "");
-    const iOS = /iPhone|iPad|iPod/.test(ua);
+  function detectUA() {
+    const ua = navigator.userAgent || "";
+    const iOS = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && (navigator.maxTouchPoints || 0) > 1);
     const android = /Android/.test(ua);
+    let browser = "";
+    if (/CriOS/.test(ua)) browser = "Chrome";
+    else if (/FxiOS/.test(ua)) browser = "Firefox";
+    else if (/EdgiOS/.test(ua)) browser = "Edge";
+    else if (/SamsungBrowser/.test(ua)) browser = "Samsung Internet";
+    else if (/Edg\//.test(ua)) browser = "Edge";
+    else if (/Firefox/.test(ua)) browser = "Firefox";
+    else if (/CriOS|Chrome|Chromium/.test(ua)) browser = "Chrome";
+    else if (/Safari/.test(ua)) browser = "Safari";
+    return { iOS, android, browser };
+  }
+  // Geräte- UND browser-genaue Anleitung. Ein echter Auto-Deeplink in die
+  // OS-/Browser-Einstellungen ist von einer Webseite aus nicht erlaubt — hier
+  // steht stattdessen der exakte Weg für das jeweilige Handy + den Browser.
+  function micHintText() {
+    const { iOS, android, browser } = detectUA();
     const L = UILANG, pick = m => m[L] || m.en;
+    const b = browser || (iOS ? "Safari" : "Browser");
+    if (iOS && (browser === "Safari" || !browser)) return pick({
+      de: "Safari: in der Adressleiste auf „aA“ → Website-Einstellungen → Mikrofon → Erlauben. (Im privaten Tab ist das Mikro gesperrt — normalen Tab nutzen.)",
+      en: "Safari: tap „aA“ in the address bar → Website Settings → Microphone → Allow. (Private tabs block the mic — use a normal tab.)",
+      es: "Safari: toca „aA“ en la barra de direcciones → Ajustes del sitio → Micrófono → Permitir. (En pestañas privadas el micro está bloqueado.)",
+      fr: "Safari : touche « aA » dans la barre d’adresse → Réglages du site → Micro → Autoriser. (En navigation privée, le micro est bloqué.)",
+      nl: "Safari: tik op „aA“ in de adresbalk → Website-instellingen → Microfoon → Sta toe. (In privétabbladen is de microfoon geblokkeerd.)"
+    });
     if (iOS) return pick({
-      de: "Safari: oben in der Adressleiste auf „aA\" → Website-Einstellungen → Mikrofon → Erlauben. Im privaten Tab ist das Mikro gesperrt — normalen Tab nutzen.",
-      en: "Safari: tap „aA\" in the address bar → Website Settings → Microphone → Allow. Private tabs block the mic — use a normal tab.",
-      es: "Safari: toca „aA\" en la barra de direcciones → Ajustes del sitio → Micrófono → Permitir. En pestañas privadas el micro está bloqueado.",
-      fr: "Safari : touche « aA » dans la barre d’adresse → Réglages du site → Micro → Autoriser. En navigation privée, le micro est bloqué.",
-      nl: "Safari: tik op „aA\" in de adresbalk → Website-instellingen → Microfoon → Sta toe. In privétabbladen is de microfoon geblokkeerd."
+      de: `${b}: iPhone-Einstellungen → ${b} → Mikrofon erlauben. (Im privaten Tab ist das Mikro gesperrt.)`,
+      en: `${b}: iPhone Settings → ${b} → allow Microphone. (Private tabs block the mic.)`,
+      es: `${b}: Ajustes del iPhone → ${b} → permitir Micrófono. (En pestañas privadas el micro está bloqueado.)`,
+      fr: `${b} : Réglages de l’iPhone → ${b} → autoriser le micro. (En navigation privée, le micro est bloqué.)`,
+      nl: `${b}: iPhone-instellingen → ${b} → microfoon toestaan. (In privétabbladen is de microfoon geblokkeerd.)`
     });
     if (android) return pick({
-      de: "Chrome: auf das Schloss-Symbol links in der Adressleiste tippen → Berechtigungen → Mikrofon erlauben.",
-      en: "Chrome: tap the lock icon in the address bar → Permissions → allow Microphone.",
-      es: "Chrome: toca el candado en la barra de direcciones → Permisos → permite el micrófono.",
-      fr: "Chrome : touche le cadenas dans la barre d’adresse → Autorisations → autorise le micro.",
-      nl: "Chrome: tik op het slotje in de adresbalk → Rechten → microfoon toestaan."
+      de: `${b}: auf das Schloss-Symbol in der Adressleiste tippen → Berechtigungen → Mikrofon erlauben.`,
+      en: `${b}: tap the lock icon in the address bar → Permissions → allow Microphone.`,
+      es: `${b}: toca el candado en la barra de direcciones → Permisos → permite el micrófono.`,
+      fr: `${b} : touche le cadenas dans la barre d’adresse → Autorisations → autorise le micro.`,
+      nl: `${b}: tik op het slotje in de adresbalk → Rechten → microfoon toestaan.`
     });
     return pick({
-      de: "Im Browser neben der Adressleiste den Mikrofon-Zugriff für diese Seite erlauben.",
-      en: "In your browser, allow microphone access for this site next to the address bar.",
-      es: "En el navegador, permite el acceso al micrófono para este sitio junto a la barra de direcciones.",
-      fr: "Dans le navigateur, autorise l’accès au micro pour ce site à côté de la barre d’adresse.",
-      nl: "Sta in je browser de microfoontoegang voor deze site toe naast de adresbalk."
+      de: `${b}: auf das Schloss-/Info-Symbol neben der Adressleiste klicken → Website-Einstellungen → Mikrofon → Erlauben.`,
+      en: `${b}: click the lock/info icon next to the address bar → Site settings → Microphone → Allow.`,
+      es: `${b}: haz clic en el icono de candado/info junto a la barra de direcciones → Configuración del sitio → Micrófono → Permitir.`,
+      fr: `${b} : clique sur l’icône cadenas/info à côté de la barre d’adresse → Réglages du site → Micro → Autoriser.`,
+      nl: `${b}: klik op het slot-/infopictogram naast de adresbalk → Site-instellingen → Microfoon → Toestaan.`
     });
   }
   function sentSim(a, b) {
@@ -9176,8 +9200,8 @@ function QuizView({
       className: "quizbtn check",
       type: "button",
       onClick: requestMic
-    }, ({ de: "🎤 Mikrofon aktivieren", en: "🎤 Enable microphone", es: "🎤 Activar micrófono", fr: "🎤 Activer le micro", nl: "🎤 Microfoon inschakelen" })[UILANG] || "🎤 Enable microphone"), micHint && /*#__PURE__*/React.createElement("span", {
-      style: { fontSize: "12px", lineHeight: "1.45", opacity: 0.85, fontWeight: 500 }
+    }, ({ de: "🎤 Mikrofon aktivieren", en: "🎤 Enable microphone", es: "🎤 Activar micrófono", fr: "🎤 Activer le micro", nl: "🎤 Microfoon inschakelen" })[UILANG] || "🎤 Enable microphone"), /*#__PURE__*/React.createElement("span", {
+      style: { fontSize: "12px", lineHeight: "1.45", opacity: 0.85, fontWeight: 500, maxWidth: "300px" }
     }, micHintText())), heard === "__nospeech__" && /*#__PURE__*/React.createElement("div", {
       className: "feedback no"
     }, tr("speak_nospeech")), heard && heard.indexOf("__") !== 0 && /*#__PURE__*/React.createElement("div", {
