@@ -16166,14 +16166,11 @@ function App() {
   // Standard bekommt eine vorgegebene Challenge. Zieltafel bei echter Challenge.
   function openChallenge() {
     if (typeof closeSkHint === "function") closeSkHint();
-    if (!supaUser) { setShowPaywall(true); return; }      // anonym → erst Konto anlegen
-    if (hasRealChallenge()) { setShowStreak(true); return; } // echte Challenge → Zieltafel
-    if (!hasPaidAccess()) {                                // Konto ohne Premium → Standard-Challenge
-      createPresetChallenge();
-      setShowStreak(true);
-      return;
-    }
-    setGoalStep("choose"); setShowGoal(true);              // Premium → frei anlegen
+    if (hasRealChallenge()) { setShowStreak(true); return; }  // echte Challenge → Zieltafel
+    if (hasPaidAccess()) { setGoalStep("choose"); setShowGoal(true); return; } // Premium/Trial → frei anlegen
+    if (!supaUser) { setShowPaywall(true); return; }          // anonym ohne Zugang → erst Konto anlegen
+    createPresetChallenge();                                  // Konto ohne Premium → Standard-Challenge
+    setShowStreak(true);
   }
   const [skHint, setSkHint] = useState(() => !recall("kunju-skhint", false));
   function closeSkHint() {
