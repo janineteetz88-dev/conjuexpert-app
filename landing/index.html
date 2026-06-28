@@ -207,6 +207,30 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .pain-card p{margin:0;font-size:16px;line-height:1.5;color:var(--ink);font-weight:500;text-wrap:pretty}
 .pain-bridge{max-width:680px;margin:0 auto;text-align:center;font-size:18px;line-height:1.55;color:var(--muted);text-wrap:pretty}
 .pain-bridge strong{color:var(--ink);font-weight:800}
+/* result / outcome */
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:30px}
+@media(max-width:760px){.result-grid{grid-template-columns:1fr;gap:14px}}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px 22px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:14px}
+.result-ic{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(26,155,70,.12);color:var(--green)}
+.result-ic svg{width:22px;height:22px}
+.result-card p{margin:0;font-size:16px;line-height:1.5;color:var(--ink);font-weight:600;text-wrap:pretty}
+.result-cta{margin-top:2px}
+/* social proof */
+.proof[hidden]{display:none}
+.proof-sum{display:inline-flex;align-items:center;gap:9px;margin-top:14px;flex-wrap:wrap;justify-content:center}
+.proof-stars{color:var(--gold,#f5a623);font-size:18px;letter-spacing:1px}
+.proof-avg{font-family:var(--display);font-weight:800;font-size:18px;color:var(--ink)}
+.proof-cnt{font-size:14px;color:var(--muted)}
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:26px}
+@media(max-width:860px){.proof-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.proof-grid{grid-template-columns:1fr}}
+.proof-item{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 20px 18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:11px}
+.proof-item .pi-top{display:flex;align-items:center;gap:9px}
+.proof-item .pi-stars{color:var(--gold,#f5a623);font-size:14px;letter-spacing:1px}
+.proof-item .pi-when{margin-left:auto;font-size:11.5px;color:var(--muted);font-family:var(--mono)}
+.proof-item .pi-body{margin:0;font-size:14.5px;line-height:1.6;color:#444b58;text-wrap:pretty}
+.proof-item .pi-foot{display:flex;align-items:center;gap:8px;margin-top:2px;font-size:13px;font-weight:600;color:var(--ink)}
+.proof-item .pi-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:800}
 .modes-note{max-width:760px;margin:-22px auto 34px;text-align:center;font-size:15.5px;line-height:1.5;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);border-radius:16px;padding:14px 20px;position:relative}
 .modes-note::before{content:"";position:absolute;top:0;left:18px;right:18px;height:3px;border-radius:0 0 3px 3px;background:var(--brand-rainbow)}
 .modes-note strong{color:var(--ink);font-weight:800}
@@ -669,6 +693,43 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
     </div>
   </section>
 
+  <section class="block result" id="ergebnis">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-tag" data-i18n="res.tag">Dein Ergebnis</span>
+        <h2 data-i18n="res.h2">Das Ergebnis: Die Formen sitzen — und du sprichst einfach.</h2>
+        <p data-i18n="res.p">Aus „verstehen" wird „können". Genau das erzeugt ConjuExpert.</p>
+      </div>
+      <div class="result-grid">
+        <div class="result-card reveal">
+          <span class="result-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <p data-i18n="res.a">Die richtige Verbform kommt im Gespräch von allein — du musst nicht mehr überlegen.</p>
+        </div>
+        <div class="result-card reveal" data-d="2">
+          <span class="result-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <p data-i18n="res.b">Du sprichst flüssig und sicher, statt zu raten und den Faden zu verlieren.</p>
+        </div>
+        <div class="result-card reveal" data-d="3">
+          <span class="result-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <p data-i18n="res.c">Aus passivem Verstehen wird aktives Sprechen — in 5 Sprachen, über deine eigenen Themen.</p>
+        </div>
+      </div>
+      <div class="reveal result-cta" style="text-align:center"><a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l" data-i18n="res.cta">Kostenlos starten — und dranbleiben</span></a></div>
+    </div>
+  </section>
+
+  <section class="block proof" id="stimmen" hidden>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-tag" data-i18n="proof.tag">Was Lernende sagen</span>
+        <h2 data-i18n="proof.h2">Echtes Feedback aus der App.</h2>
+        <div class="proof-sum" id="lpSum" hidden><span class="proof-stars" id="lpStars">★★★★★</span><span class="proof-avg" id="lpAvg"></span><span class="proof-cnt" id="lpCnt"></span></div>
+      </div>
+      <div class="proof-grid notranslate" id="lpReviews" translate="no"></div>
+      <div class="reveal proof-foot" style="text-align:center"><a class="btn btn-ghost" href="/bewertungen/" data-i18n="proof.all">Alle Bewertungen ansehen →</a></div>
+    </div>
+  </section>
+
   <div class="wrap band-solo reveal">
     <div class="feat-band">
       <figure class="ci-pic"><img src="lifestyle/gemeinsam-sprachen-lernen-paar-band.jpg" alt="Paar lernt gemeinsam Sprachen und konjugiert Verben mit ConjuExpert – mit Freude statt Pauken" loading="lazy" decoding="async" width="1600" height="533" /><span class="band-cap">Gemeinsam lernen, länger behalten.</span></figure>
@@ -862,6 +923,55 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
 <script src="https://conjuexpert.app/engine/conj-en.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-nl.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-de.js" defer></script>
+<!-- Social Proof: echte Bewertungen aus Supabase (gleiche Quelle wie /bewertungen/) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
+<script defer>
+document.addEventListener("DOMContentLoaded", function(){
+  if(!window.supabase) return;
+  var sec=document.getElementById("stimmen"),
+      grid=document.getElementById("lpReviews");
+  if(!sec||!grid) return;
+  var db=window.supabase.createClient("https://lrhmyboevoxtlvoxnrny.supabase.co","sb_publishable_HJMTA3em7L69hzbQrwgwOA_WsYgyN3P");
+  var COLORS=["#ff3b5c","#ff7a18","#1a9b46","#0a84ff","#a557ff","#e71583"];
+  var CNT={de:"Bewertungen",en:"reviews",es:"opiniones",fr:"avis",nl:"beoordelingen"};
+  function esc(s){return String(s||"").replace(/[<>&]/g,function(c){return{"<":"&lt;",">":"&gt;","&":"&amp;"}[c];});}
+  function ini(n){return(n||"A").trim().split(/\s+/).map(function(w){return w[0]||"";}).join("").slice(0,2).toUpperCase()||"A";}
+  function stars(n){n=Math.max(0,Math.min(5,n|0));return"★★★★★".slice(0,n)+"☆☆☆☆☆".slice(0,5-n);}
+  function lang(){return(document.documentElement.lang||"de").slice(0,2);}
+  function when(iso){try{return new Date(iso).toLocaleDateString((lang()==="en"?"en-GB":lang()+"-"+lang().toUpperCase()));}catch(e){return"";}}
+  db.from("reviews").select("name,stars,body,created_at").gte("stars",4).not("body","is",null).order("created_at",{ascending:false}).limit(6).then(function(res){
+    var rows=(res&&res.data)||[];
+    rows=rows.filter(function(r){return r.body&&String(r.body).trim().length>2;});
+    if(!rows.length) return; // nichts anzeigen, wenn kein echtes Feedback
+    // Aggregat über ALLE Bewertungen separat holen (für Schnitt + Anzahl)
+    db.from("reviews").select("stars").gte("stars",1).then(function(ag){
+      var all=(ag&&ag.data)||[],sum=0,c=0;
+      all.forEach(function(r){var s=parseInt(r.stars,10);if(s>=1&&s<=5){sum+=s;c++;}});
+      if(c){
+        var avg=(sum/c);
+        var sumBox=document.getElementById("lpSum");
+        document.getElementById("lpStars").textContent=stars(Math.round(avg));
+        document.getElementById("lpAvg").textContent=avg.toFixed(1).replace(".",",");
+        document.getElementById("lpCnt").textContent="· "+c+" "+(CNT[lang()]||CNT.de);
+        if(sumBox) sumBox.hidden=false;
+      }
+    });
+    grid.innerHTML="";
+    rows.forEach(function(r,i){
+      var col=COLORS[i%COLORS.length];
+      var nm=(r.name||"").trim()||"Anonym";
+      var el=document.createElement("div");
+      el.className="proof-item";
+      el.innerHTML='<div class="pi-top"><span class="pi-stars">'+stars(r.stars)+'</span><span class="pi-when">'+esc(when(r.created_at))+'</span></div>'+
+        '<p class="pi-body">'+esc(r.body)+'</p>'+
+        '<div class="pi-foot"><span class="pi-av" style="background:'+col+'">'+esc(ini(nm))+'</span><span>'+esc(nm)+'</span></div>';
+      grid.appendChild(el);
+    });
+    sec.hidden=false;
+    if(typeof window.__lpReveal==="function") window.__lpReveal();
+  }).catch(function(){ /* offline / blockiert: Sektion bleibt versteckt */ });
+});
+</script>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
   var LANGS=[
