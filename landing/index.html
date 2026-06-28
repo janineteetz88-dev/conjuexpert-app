@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 <title>ConjuExpert – Preise, Funktionen &amp; Sprachen | Konjugationstrainer</title>
 <meta name="description" content="ConjuExpert: Alle Funktionen &amp; Preise – 5 Sprachen (Spanisch, Französisch, Englisch, Niederländisch, Deutsch). Kostenlos starten, Premium ab 2,99 €." />
 <meta name="keywords" content="spanische verben konjugieren üben, subjuntivo bildung übungen, indefinido unregelmäßige verben, passé composé bilden, irregular verbs üben, französische verben konjugieren, niederländische verben konjugieren, zeitformen üben, konjugationstrainer, ConjuExpert" />
@@ -202,12 +205,9 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 /* bento */
 /* pain / symptoms */
 .pain{padding-bottom:36px}
-.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:30px}
-@media(max-width:760px){.pain-grid{grid-template-columns:1fr;gap:14px}}
-.pain-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px 22px 24px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:14px}
-.pain-ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);color:var(--ink);border:1px solid var(--border)}
-.pain-ic svg{width:22px;height:22px}
-.pain-card p{margin:0;font-size:16px;line-height:1.5;color:var(--ink);font-weight:500;text-wrap:pretty}
+.pain-quotes{max-width:680px;margin:0 auto 30px;display:flex;flex-direction:column;gap:18px}
+.pain-q{position:relative;margin:0;padding:4px 0 4px 22px;font-family:var(--display);font-weight:600;font-size:clamp(18px,2.4vw,23px);line-height:1.35;color:var(--ink);letter-spacing:-.01em;text-wrap:pretty}
+.pain-q::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:4px;border-radius:4px;background:var(--brand-rainbow)}
 .pain-bridge{max-width:680px;margin:0 auto;text-align:center;font-size:18px;line-height:1.55;color:var(--muted);text-wrap:pretty}
 .pain-bridge strong{color:var(--ink);font-weight:800}
 /* persona / für wen */
@@ -624,19 +624,10 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         <h2 data-i18n="pain.h2">Geht's dir beim Sprachenlernen auch so?</h2>
         <p data-i18n="pain.p">Wenn dir einer dieser Punkte bekannt vorkommt, bist du hier goldrichtig.</p>
       </div>
-      <div class="pain-grid">
-        <div class="pain-card reveal">
-          <span class="pain-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10h8M8 14h5"/><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-5.2A8 8 0 1 1 21 12z"/></svg></span>
-          <p data-i18n="pain.a">Du paukst Vokabeln und Regeln — aber im echten Gespräch fällt dir die richtige Form einfach nicht ein.</p>
-        </div>
-        <div class="pain-card reveal" data-d="2">
-          <span class="pain-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
-          <p data-i18n="pain.b">Die Zeitformen kennst du in der Theorie. Beim Sprechen rätst du — und verlierst den Faden.</p>
-        </div>
-        <div class="pain-card reveal" data-d="3">
-          <span class="pain-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H7l-3 3z"/><path d="M9 10h6"/></svg></span>
-          <p data-i18n="pain.c">Nach Wochen mit der Lern-App verstehst du viel — frei sprechen tust du trotzdem nicht.</p>
-        </div>
+      <div class="pain-quotes">
+        <p class="pain-q reveal" data-i18n="pain.a">Du paukst Vokabeln und Regeln — aber im echten Gespräch fällt dir die richtige Form einfach nicht ein.</p>
+        <p class="pain-q reveal" data-d="2" data-i18n="pain.b">Die Zeitformen kennst du in der Theorie. Beim Sprechen rätst du — und verlierst den Faden.</p>
+        <p class="pain-q reveal" data-d="3" data-i18n="pain.c">Nach Wochen mit der Lern-App verstehst du viel — frei sprechen tust du trotzdem nicht.</p>
       </div>
       <p class="pain-bridge reveal" data-i18n="pain.bridge">Genau hier setzt <strong>ConjuExpert</strong> an: Du konjugierst aktiv in echten Sätzen aus deinen Themen — bis die richtige Form im Gespräch von allein kommt.</p>
     </div>
@@ -1054,7 +1045,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   v.addEventListener('click',tryPlay); // Tap aufs Mockup startet/weckt das Video
 })();
 </script>
-<script src="/landing/i18n.js"></script>
+<script src="/landing/i18n.js?v=20260628a"></script>
 <!-- Konjugations-Engines für das Live-Widget -->
 <script src="https://conjuexpert.app/engine/conj-es.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-fr.js" defer></script>
