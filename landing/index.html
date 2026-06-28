@@ -546,7 +546,11 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 .tb-cta a:hover{transform:translateY(-1px)}
 .tb-err{color:var(--muted);font-size:14px;padding:6px 0}
 </style>
-<script>document.documentElement.classList.add('js');</script>
+<script>document.documentElement.classList.add('js');
+/* Refresh soll immer oben starten (nicht in der Seitenmitte) + alten #try-Anker entfernen */
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+if(location.hash==='#try') history.replaceState(null,'',location.pathname+location.search);
+window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,0); });
 </head>
 <body>
 
