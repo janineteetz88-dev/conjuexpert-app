@@ -255,7 +255,13 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .func-card h4{font-family:var(--display);font-weight:800;font-size:17px;margin:0 0 6px;color:var(--ink)}
 .func-card p{margin:0;font-size:14px;line-height:1.55;color:var(--muted);text-wrap:pretty}
 .qm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
-@media(max-width:760px){.qm-grid{grid-template-columns:repeat(2,1fr);gap:12px}.qm-item{min-height:210px}.qm-face{padding:14px 14px}.qm-item h4{font-size:15px}.qm-front p,.qm-back p{font-size:12.5px}}
+@media(max-width:760px){
+  .qm-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:12px;padding:2px 0 12px;scrollbar-width:none}
+  .qm-grid::-webkit-scrollbar{display:none}
+  .qm-item{flex:0 0 80%;scroll-snap-align:center;min-height:198px}
+  .qm-item h4{font-size:15px}
+  .qm-front p,.qm-back p{font-size:12.7px}
+}
 .qm-item{position:relative;perspective:1100px;min-height:194px;cursor:pointer;background:none;border:0;padding:0;outline:none}
 @media(max-width:760px){.qm-item{min-height:172px}}
 .qm-flip{position:relative;width:100%;height:100%;min-height:inherit;transition:transform .55s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
