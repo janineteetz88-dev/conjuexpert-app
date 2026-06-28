@@ -5201,7 +5201,7 @@ function TenseCard({
       ev.stopPropagation();
       speak(f, ttsLang);
     }
-  }, "\uD83D\uDD0A"))))), hasAnyForm && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } })))))), hasAnyForm && /*#__PURE__*/React.createElement("div", {
     className: "tcard-exbtn-row"
   }, /*#__PURE__*/React.createElement("button", {
     className: "tcard-exbtn",
@@ -5231,7 +5231,7 @@ function TenseCard({
       ev.stopPropagation();
       speak(stripMark(tenseEx.s), ttsLang);
     }
-  }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } })), /*#__PURE__*/React.createElement("button", {
     className: "speakbtn exrefresh",
     title: "New example",
     onClick: ev => {
@@ -8408,7 +8408,7 @@ function QuizView({
   }), state !== "idle" && /*#__PURE__*/React.createElement("button", {
     className: "flashspeak",
     onClick: () => speak(cloze.full, q.ttsLang)
-  }, "\uD83D\uDD0A")), cloze.native && skill === "beginner" && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), cloze.native && skill === "beginner" && /*#__PURE__*/React.createElement("div", {
     className: "clozenative"
   }, cloze.native))), /*#__PURE__*/React.createElement("div", {
     className: "quizinput"
@@ -8516,7 +8516,7 @@ function QuizView({
   }), /*#__PURE__*/React.createElement("button", {
     className: "flashspeak",
     onClick: () => speak(sent.t, window.CONJ[lang].ttsLang)
-  }, "\uD83D\uDD0A"))), state === "idle" ? /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } })))), state === "idle" ? /*#__PURE__*/React.createElement("button", {
     className: "quizbtn check qm-check",
     onClick: check
   }, tr("check")) : /*#__PURE__*/React.createElement("button", {
@@ -8886,7 +8886,7 @@ function QuizView({
   }), state !== "idle" && /*#__PURE__*/React.createElement("button", {
     className: "flashspeak",
     onClick: () => speak(cloze.full, q.ttsLang)
-  }, "\uD83D\uDD0A")), cloze.native && skill === "beginner" && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), cloze.native && skill === "beginner" && /*#__PURE__*/React.createElement("div", {
     className: "clozenative"
   }, cloze.native))), reportBtn(), /*#__PURE__*/React.createElement("div", {
     className: "choose-label"
@@ -9082,7 +9082,7 @@ function QuizView({
       e.stopPropagation();
       speak(q.answer, q.ttsLang);
     }
-  }, "\uD83D\uDD0A")), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), /*#__PURE__*/React.createElement("div", {
     className: "flashbody"
   }, /*#__PURE__*/React.createElement("span", {
     className: "flashanswer"
@@ -9234,7 +9234,7 @@ function QuizView({
   }), state !== "idle" && /*#__PURE__*/React.createElement("button", {
     className: "flashspeak",
     onClick: () => speak(cloze.full, q.ttsLang)
-  }, "\uD83D\uDD0A")), cloze.native && skill === "beginner" && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), cloze.native && skill === "beginner" && /*#__PURE__*/React.createElement("div", {
     className: "clozenative"
   }, cloze.native)))) : /*#__PURE__*/React.createElement("div", {
     className: "spksent"
@@ -9333,7 +9333,7 @@ function QuizView({
     }), /*#__PURE__*/React.createElement("button", {
       className: "flashspeak",
       onClick: () => speak(sent.t, window.CONJ[spkTarget].ttsLang)
-    }, "\uD83D\uDD0A"))), showAns ? /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } })))), showAns ? /*#__PURE__*/React.createElement("div", {
       className: "cardbtns"
     }, /*#__PURE__*/React.createElement("button", {
       className: "quizbtn again",
@@ -9781,7 +9781,7 @@ function LearnContent({
     className: "speakbtn",
     title: "Listen",
     onClick: () => speak(stripMark(ex.s), engine.ttsLang)
-  }, "\uD83D\uDD0A")), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), /*#__PURE__*/React.createElement("div", {
     className: "exnative"
   }, ex.n))))), (arr(d.use).length > 0 || arr(d.avoid).length > 0) && /*#__PURE__*/React.createElement("div", {
     className: "lcard"
@@ -11150,7 +11150,7 @@ function VocabView({
   }, it.term || "…", it.term && /*#__PURE__*/React.createElement("button", {
     className: "vocspk",
     onClick: () => speak(it.term, window.CONJ[lang].ttsLang)
-  }, "\uD83D\uDD0A")), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), /*#__PURE__*/React.createElement("span", {
     className: "voctrans"
   }, it.trans), it.term && /*#__PURE__*/React.createElement("span", {
     className: "vocsr lvl" + Math.min(srInfo(it.term).lvl, 6),
@@ -11382,7 +11382,7 @@ function SavedCell({
     onClick: () => speak(val, window.CONJ[to].ttsLang)
   }, /*#__PURE__*/React.createElement("span", null, val), /*#__PURE__*/React.createElement("span", {
     className: "vtspk"
-  }, "\uD83D\uDD0A"));
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } })));
   return /*#__PURE__*/React.createElement("button", {
     className: "vtcell vtword empty",
     onClick: fetchT,
@@ -12135,7 +12135,7 @@ function TourMock({
     className: "tm-sl"
   }, c[0]), /*#__PURE__*/React.createElement("b", null, c[1]), /*#__PURE__*/React.createElement("span", {
     className: "tm-spk"
-  }, "\uD83D\uDD0A"))));
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } })))));
 }
 function TourGate({
   onDone
