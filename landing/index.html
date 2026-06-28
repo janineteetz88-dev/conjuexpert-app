@@ -208,6 +208,9 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .pain-quotes{max-width:680px;margin:0 auto 30px;display:flex;flex-direction:column;gap:18px}
 .pain-q{position:relative;margin:0;padding:4px 0 4px 22px;font-family:var(--display);font-weight:600;font-size:clamp(18px,2.4vw,23px);line-height:1.35;color:var(--ink);letter-spacing:-.01em;text-wrap:pretty}
 .pain-q::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:4px;border-radius:4px;background:var(--brand-rainbow)}
+.pain-personas{max-width:700px;margin:2px auto 26px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+.pp-lead{font-size:14px;color:var(--muted);font-weight:600;margin-right:4px}
+.pp-chip{font-family:var(--display);font-weight:700;font-size:13.5px;padding:7px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--ink)}
 .pain-bridge{max-width:680px;margin:0 auto;text-align:center;font-size:18px;line-height:1.55;color:var(--muted);text-wrap:pretty}
 .pain-bridge strong{color:var(--ink);font-weight:800}
 /* persona / für wen */
@@ -628,39 +631,14 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
         <p class="pain-q reveal" data-d="2" data-i18n="pain.b">Die Zeitformen kennst du in der Theorie. Beim Sprechen rätst du — und verlierst den Faden.</p>
         <p class="pain-q reveal" data-d="3" data-i18n="pain.c">Nach Wochen mit der Lern-App verstehst du viel — frei sprechen tust du trotzdem nicht.</p>
       </div>
+      <div class="pain-personas reveal" data-d="3">
+        <span class="pp-lead" data-i18n="per.lead">Egal warum du übst:</span>
+        <span class="pp-chip" data-i18n="per.1h">Im Job</span>
+        <span class="pp-chip" data-i18n="per.2h">Auf Reisen</span>
+        <span class="pp-chip" data-i18n="per.3h">Neues Leben im Ausland</span>
+        <span class="pp-chip" data-i18n="per.4h">Wieder aktiv werden</span>
+      </div>
       <p class="pain-bridge reveal" data-i18n="pain.bridge">Genau hier setzt <strong>ConjuExpert</strong> an: Du konjugierst aktiv in echten Sätzen aus deinen Themen — bis die richtige Form im Gespräch von allein kommt.</p>
-    </div>
-  </section>
-
-  <section class="block persona" id="fuer-wen">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-tag" data-i18n="per.tag">Für wen?</span>
-        <h2 data-i18n="per.h2">Du erkennst dich wieder?</h2>
-        <p data-i18n="per.p">ConjuExpert ist für Erwachsene mit wenig Zeit, die eine Sprache wirklich sprechen wollen — egal, warum.</p>
-      </div>
-      <div class="per-grid">
-        <div class="per-card reveal">
-          <span class="per-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span>
-          <h4 data-i18n="per.1h">Im Job</h4>
-          <p data-i18n="per.1p">Du arbeitest international — oder willst den Job, für den die Sprache zählt. In Meeting und Mail muss die richtige Form sitzen.</p>
-        </div>
-        <div class="per-card reveal" data-d="2">
-          <span class="per-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20a15 15 0 0 1 0-20z"/><circle cx="12" cy="12" r="10"/></svg></span>
-          <h4 data-i18n="per.2h">Auf Reisen</h4>
-          <p data-i18n="per.2p">Du willst im Urlaub nicht nur bestellen, sondern wirklich ins Gespräch kommen — ohne bei jedem Verb zu stocken.</p>
-        </div>
-        <div class="per-card reveal" data-d="3">
-          <span class="per-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></span>
-          <h4 data-i18n="per.3h">Neues Leben im Ausland</h4>
-          <p data-i18n="per.3p">Behörde, Arzt, die Familie deines Partners: Im Alltag zählt, dass du dich klar und richtig ausdrückst.</p>
-        </div>
-        <div class="per-card reveal" data-d="4">
-          <span class="per-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 5.5V20.5"/></svg></span>
-          <h4 data-i18n="per.4h">Wieder aktiv werden</h4>
-          <p data-i18n="per.4p">Du hattest die Sprache mal in der Schule — jetzt willst du sie endlich aktiv sprechen statt nur zu verstehen.</p>
-        </div>
-      </div>
     </div>
   </section>
 
