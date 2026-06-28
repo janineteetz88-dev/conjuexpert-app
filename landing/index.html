@@ -206,8 +206,14 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 /* pain / symptoms */
 .pain{padding-bottom:36px}
 .pain-quotes{max-width:680px;margin:0 auto 30px;display:flex;flex-direction:column;gap:18px}
-.pain-q{position:relative;margin:0;padding:4px 0 4px 22px;font-family:var(--display);font-weight:600;font-size:clamp(18px,2.4vw,23px);line-height:1.35;color:var(--ink);letter-spacing:-.01em;text-wrap:pretty}
-.pain-q::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:4px;border-radius:4px;background:var(--brand-rainbow)}
+.pain-rotator{position:relative;max-width:660px;margin:0 auto;min-height:140px}
+@media(max-width:560px){.pain-rotator{min-height:170px}}
+.pain-q{position:absolute;inset:0;margin:0;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--display);font-weight:600;font-size:clamp(19px,2.6vw,25px);line-height:1.35;color:var(--ink);letter-spacing:-.01em;text-wrap:pretty;opacity:0;transform:translateY(12px);transition:opacity .55s cubic-bezier(.2,.7,.2,1),transform .55s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.pain-q.on{opacity:1;transform:none;pointer-events:auto}
+.pain-dots{display:flex;gap:9px;justify-content:center;margin:16px 0 26px}
+.pain-dots span{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .25s,transform .25s}
+.pain-dots span.on{background:var(--pink);transform:scale(1.3)}
+@media(prefers-reduced-motion:reduce){.pain-q{transition:none}}
 .pain-personas{max-width:700px;margin:2px auto 26px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
 .pp-lead{font-size:14px;color:var(--muted);font-weight:600;margin-right:4px}
 .pp-chip{font-family:var(--display);font-weight:700;font-size:13.5px;padding:7px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--ink)}
@@ -626,11 +632,12 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
         <h2 data-i18n="pain.h2">Geht's dir beim Sprachenlernen auch so?</h2>
         <p data-i18n="pain.p">Wenn dir einer dieser Punkte bekannt vorkommt, bist du hier goldrichtig.</p>
       </div>
-      <div class="pain-quotes">
-        <p class="pain-q reveal" data-i18n="pain.a">Du paukst Vokabeln und Regeln — aber im echten Gespräch fällt dir die richtige Form einfach nicht ein.</p>
-        <p class="pain-q reveal" data-d="2" data-i18n="pain.b">Die Zeitformen kennst du in der Theorie. Beim Sprechen rätst du — und verlierst den Faden.</p>
-        <p class="pain-q reveal" data-d="3" data-i18n="pain.c">Nach Wochen mit der Lern-App verstehst du viel — frei sprechen tust du trotzdem nicht.</p>
+      <div class="pain-rotator reveal" id="painRot">
+        <p class="pain-q on" data-i18n="pain.a">Du paukst Vokabeln und Regeln — aber im echten Gespräch fällt dir die richtige Form einfach nicht ein.</p>
+        <p class="pain-q" data-i18n="pain.b">Die Zeitformen kennst du in der Theorie. Beim Sprechen rätst du — und verlierst den Faden.</p>
+        <p class="pain-q" data-i18n="pain.c">Nach Wochen mit der Lern-App verstehst du viel — frei sprechen tust du trotzdem nicht.</p>
       </div>
+      <div class="pain-dots" id="painDots" aria-hidden="true"><span class="on"></span><span></span><span></span></div>
       <div class="pain-personas reveal" data-d="3">
         <span class="pp-lead" data-i18n="per.lead">Egal warum du übst:</span>
         <span class="pp-chip" data-i18n="per.1h">Im Job</span>
@@ -1206,6 +1213,22 @@ document.addEventListener("DOMContentLoaded", function(){
     card.addEventListener("click", flip);
     card.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); flip(); } });
   });
+});
+</script>
+<script>
+/* Symptome-Rotator: zeigt immer eine Aussage, wechselt automatisch durch. */
+document.addEventListener("DOMContentLoaded", function(){
+  var rot=document.getElementById("painRot"); if(!rot) return;
+  var qs=rot.querySelectorAll(".pain-q"), dots=document.querySelectorAll("#painDots span");
+  if(qs.length<2) return;
+  var i=0,timer=null;
+  function show(n){ i=(n+qs.length)%qs.length; for(var k=0;k<qs.length;k++){ qs[k].classList.toggle("on",k===i); if(dots[k]) dots[k].classList.toggle("on",k===i); } }
+  function next(){ show(i+1); }
+  function start(){ stop(); timer=setInterval(next,3600); }
+  function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+  for(var k=0;k<dots.length;k++){ (function(idx){ dots[idx].addEventListener("click",function(){ show(idx); start(); }); })(k); }
+  rot.addEventListener("mouseenter",stop); rot.addEventListener("mouseleave",start);
+  start();
 });
 </script>
 </body>
