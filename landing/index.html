@@ -376,28 +376,19 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .plan .btn{width:100%}
 
 /* highlights */
-.hl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-@media(max-width:900px){.hl-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){
-  .hl-grid{grid-template-columns:repeat(2,1fr);gap:12px}
-  .hl-card .hl-pic{aspect-ratio:5/4}
-  .hl-card .hl-body{padding:12px 13px 14px}
-  .hl-card h3{font-size:15px;margin:7px 0 5px;line-height:1.15}
-  .hl-card p{font-size:12.3px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-  .hl-card .hl-body .hl-tag{font-size:9px;margin:0 0 8px}
-}
-.hl-card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:0;overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .3s,box-shadow .3s;display:flex;flex-direction:column}
-.hl-card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
-.hl-card .hl-pic{margin:0;aspect-ratio:4/3;border-radius:0;min-height:0}
-.hl-card .hl-body{padding:18px 24px 24px;display:flex;flex-direction:column;flex:1}
-.hl-card .hl-body .hl-tag{order:-1;align-self:flex-start;margin:0 0 12px}
+/* Highlights als alternierende Reihen (Zickzack) */
+.hl-rows{max-width:940px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+.hl-row{display:grid;grid-template-columns:1.02fr .98fr;gap:32px;align-items:center}
+.hl-row:nth-child(even) .hl-fig{order:2}
+.hl-fig{margin:0;border-radius:22px;overflow:hidden;aspect-ratio:4/3;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+.hl-fig img{display:block;width:100%;height:100%;object-fit:cover}
 .hl-num{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--pink);letter-spacing:.08em}
-.hl-card h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.02em;margin:14px 0 8px}
-.hl-card p{margin:0;color:var(--muted);font-size:14.5px;text-wrap:pretty}
-.hl-tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;margin-top:14px}
+.hl-rbody h3{font-family:var(--display);font-weight:800;font-size:clamp(20px,2.6vw,27px);letter-spacing:-.02em;margin:7px 0 9px;line-height:1.1}
+.hl-rbody p{margin:0 0 12px;color:var(--muted);font-size:15.5px;line-height:1.55;text-wrap:pretty}
+.hl-tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px}
 .hl-tag.free{color:var(--green);background:color-mix(in srgb,var(--green) 13%,transparent)}
 .hl-tag.prem{color:var(--ink);background:color-mix(in srgb,var(--ink) 13%,transparent)}
-.hl-card.prem .hl-num{color:var(--pink)}
+@media(max-width:760px){.hl-rows{gap:26px}.hl-row{grid-template-columns:1fr;gap:14px}.hl-row:nth-child(even) .hl-fig{order:0}}
 @keyframes flyUp{from{transform:translateY(42px)}to{transform:none}}
 .fly{opacity:1}
 .js .fly.in{animation:flyUp .75s cubic-bezier(.2,.7,.2,1)}
@@ -797,11 +788,23 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
     <div class="wrap">
       <div class="sec-head reveal"><span class="sec-tag" data-i18n="hl.tag">Highlights</span><h2 data-i18n="hl.h2">Warum Verben konjugieren lernen hier so einfach ist.</h2>
 <p data-i18n="hl.p">Vier Bausteine, die das Üben von Zeitformen und unregelmäßigen Verben zum Selbstläufer machen.</p></div>
-      <div class="hl-grid">
-        <div class="hl-card fly"><figure class="ci-pic hl-pic"><img src="lifestyle/sprach-switching-mehrsprachig-lernen-mann.jpg" alt="Mann lernt mehrsprachig und wechselt zwischen Mutter- und Fremdsprache mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure><div class="hl-body"><div class="hl-num">01</div><h3 data-i18n="hl1.h3">Sprach-Switching</h3><p data-i18n="hl1.p">Du wechselst ständig zwischen Mutter- und Fremdsprache und verknüpfst Bedeutung mit der richtigen Zeitform — aktiv statt passiv.</p><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div></div>
-        <div class="hl-card fly"><figure class="ci-pic hl-pic"><img src="lifestyle/kontext-signalwoerter-muster-erkennen.jpg" alt="Muster und Signalwörter erkennen – Verben im Kontext lernen mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure><div class="hl-body"><div class="hl-num">02</div><h3 data-i18n="hl2.h3">Kontext &amp; Signalwörter</h3><p data-i18n="hl2.p">Jede Form erscheint im echten Satz mit Signalwörtern. Dein Gehirn erkennt das Muster sofort — ohne Regeln zu pauken.</p><span class="hl-tag free" data-i18n="tag.free">KOSTENLOS</span></div></div>
-        <div class="hl-card fly"><figure class="ci-pic hl-pic"><img src="lifestyle/adaptiv-niveau-verben-ueben-frau.jpg" alt="Frau übt adaptiv Verben auf ihrem Niveau mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure><div class="hl-body"><div class="hl-num">03</div><h3 data-i18n="hl3.h3">Adaptiv ans Niveau</h3><p data-i18n="hl3.p">Jede Runde passt sich an: du trainierst genau die Fehler aus der letzten Runde. Dein Trainer weiß, welcher Wortschatz unter „gemerkt" gespeichert ist, und ruft ihn immer wieder auf.</p><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div></div>
-        <div class="hl-card prem fly"><figure class="ci-pic hl-pic"><img src="lifestyle/merken-vokabeln-favoriten-kopfhoerer.jpg" alt="Knifflige Verben merken und als Favoriten speichern mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure><div class="hl-body"><div class="hl-num">04</div><h3 data-i18n="hl4.h3">Merken</h3><p data-i18n="hl4.p">Speichere knifflige Verben als Favoriten, baue eigene Vokabellisten und lass dir mit „Muss ich noch lernen" gezielt die Lücken abfragen.</p><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div></div>
+      <div class="hl-rows">
+        <div class="hl-row reveal">
+          <figure class="hl-fig"><img src="lifestyle/sprach-switching-mehrsprachig-lernen-mann.jpg" alt="Mann lernt mehrsprachig und wechselt zwischen Mutter- und Fremdsprache mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure>
+          <div class="hl-rbody"><span class="hl-num">01</span><h3 data-i18n="hl1.h3">Sprach-Switching</h3><p data-i18n="hl1.p">Du wechselst ständig zwischen Mutter- und Fremdsprache und verknüpfst Bedeutung mit der richtigen Zeitform — aktiv statt passiv.</p><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div>
+        </div>
+        <div class="hl-row reveal">
+          <figure class="hl-fig"><img src="lifestyle/kontext-signalwoerter-muster-erkennen.jpg" alt="Muster und Signalwörter erkennen – Verben im Kontext lernen mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure>
+          <div class="hl-rbody"><span class="hl-num">02</span><h3 data-i18n="hl2.h3">Kontext &amp; Signalwörter</h3><p data-i18n="hl2.p">Jede Form erscheint im echten Satz mit Signalwörtern. Dein Gehirn erkennt das Muster sofort — ohne Regeln zu pauken.</p><span class="hl-tag free" data-i18n="tag.free">KOSTENLOS</span></div>
+        </div>
+        <div class="hl-row reveal">
+          <figure class="hl-fig"><img src="lifestyle/adaptiv-niveau-verben-ueben-frau.jpg" alt="Frau übt adaptiv Verben auf ihrem Niveau mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure>
+          <div class="hl-rbody"><span class="hl-num">03</span><h3 data-i18n="hl3.h3">Adaptiv ans Niveau</h3><p data-i18n="hl3.p">Jede Runde passt sich an: du trainierst genau die Fehler aus der letzten Runde. Dein Trainer weiß, welcher Wortschatz unter „gemerkt" gespeichert ist, und ruft ihn immer wieder auf.</p><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div>
+        </div>
+        <div class="hl-row reveal">
+          <figure class="hl-fig"><img src="lifestyle/merken-vokabeln-favoriten-kopfhoerer.jpg" alt="Knifflige Verben merken und als Favoriten speichern mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure>
+          <div class="hl-rbody"><span class="hl-num">04</span><h3 data-i18n="hl4.h3">Merken</h3><p data-i18n="hl4.p">Speichere knifflige Verben als Favoriten, baue eigene Vokabellisten und lass dir mit „Muss ich noch lernen" gezielt die Lücken abfragen.</p><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div>
+        </div>
       </div>
     </div>
   </section>
