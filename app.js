@@ -11164,13 +11164,14 @@ function VocabView({
 }
 
 /* ---------- Challenge list view (3rd tab on the Saved page) ---------- */
-function ChallengeView({ lang, onNew, onPractice, onWords }) {
+function ChallengeView({ lang, onNew, onPractice, onWords, canEdit = true }) {
   const h = React.createElement;
   const [, setTick] = useState(0);
   const g = recall("kunju-goal-data", null);
   // Beim Leeren der Verbliste NICHT rauswerfen: Bearbeiten-Modus automatisch an,
   // damit man neue Verben hinzufügen / gemerkte übernehmen kann.
-  const [edit, setEdit] = useState(() => recall("kunju-challenge-pending-edit", false) || !!g && !((g.verbList || []).length));
+  // Standard-Tarif (canEdit=false): vorgegebene Challenge, nur ansehen.
+  const [edit, setEdit] = useState(() => canEdit && (recall("kunju-challenge-pending-edit", false) || !!g && !((g.verbList || []).length)));
   useEffect(() => { if (recall("kunju-challenge-pending-edit", false)) persist("kunju-challenge-pending-edit", false); }, []);
   const [vIn, setVIn] = useState("");
   const [wIn, setWIn] = useState("");
@@ -11262,7 +11263,7 @@ function ChallengeView({ lang, onNew, onPractice, onWords }) {
   return h("div", { className: "ch-wrap" },
     h("div", { className: "ch-head" },
       h("b", null, "Challenge"),
-      h("button", { className: "ch-editbtn" + (edit ? " on" : ""), onClick: () => setEdit(e => !e) }, edit ? tr("ch_editdone") : tr("ch_edit"))),
+      canEdit ? h("button", { className: "ch-editbtn" + (edit ? " on" : ""), onClick: () => setEdit(e => !e) }, edit ? tr("ch_editdone") : tr("ch_edit")) : null),
     allDone
       ? h("div", { className: "ch-master" }, h("b", null, tr("ch_mastered")), h("span", null, tr("ch_mastered_sub")))
       : (g.startDate && left <= 0
@@ -11287,7 +11288,8 @@ function SavedTab({
   onActivity,
   onHint,
   onOpenGoal,
-  onTab
+  onTab,
+  challengeEditable
 }) {
   const [sub, setSub] = useState(() => recall("kunju-saved-sub", "verbs"));
   // First time the user opens each Saved area (Verbs / Vocabulary), explain it.
@@ -11324,6 +11326,7 @@ function SavedTab({
     lang: lang
   }) : /*#__PURE__*/React.createElement(ChallengeView, {
     lang: lang,
+    canEdit: challengeEditable !== false,
     onNew: onOpenGoal,
     onPractice: () => { persist("kunju-quiz-pending-group", "challenge"); onTab && onTab("quiz"); },
     onWords: () => pick("vocab")
@@ -16143,14 +16146,34 @@ function App() {
   function hasRealChallenge() {
     return !!(goal && Array.isArray(goal.verbList) && (goal.verbList.length || (goal.wordList || []).length));
   }
-  // Einheitlicher Challenge-Einstieg: Konto zuerst (anonym), dann Premium,
-  // dann Zieltafel NUR bei echter Challenge — sonst der Erstell-Flow.
+  // Standard-Challenge (Konto ohne Premium): fest vorgegeben, nichts einzustellen.
+  // An ~20 Karten/Tag angelehnt — kompakter 2-Wochen-Plan.
+  function createPresetChallenge() {
+    const data = { weeks: 2, verbs: 8, words: 0, tenseCount: 2, perDay: 12, preset: true };
+    const saved = {
+      ...data,
+      startDate: new Date().toDateString(),
+      ...buildChallengeLists(data, lang)
+    };
+    persist("kunju-goal", true);
+    persist("kunju-goal-data", saved);
+    setGoalSet(true);
+    setGoal(saved);
+    setDaily(readDaily());
+    return saved;
+  }
+  // Einheitlicher Challenge-Einstieg: Konto zuerst (anonym). Premium legt frei an,
+  // Standard bekommt eine vorgegebene Challenge. Zieltafel bei echter Challenge.
   function openChallenge() {
     if (typeof closeSkHint === "function") closeSkHint();
     if (!supaUser) { setShowPaywall(true); return; }      // anonym → erst Konto anlegen
-    if (!hasPaidAccess()) { setShowPaywall(true); return; } // Konto, aber kein Premium
     if (hasRealChallenge()) { setShowStreak(true); return; } // echte Challenge → Zieltafel
-    setGoalStep("choose"); setShowGoal(true);              // sonst: Challenge anlegen
+    if (!hasPaidAccess()) {                                // Konto ohne Premium → Standard-Challenge
+      createPresetChallenge();
+      setShowStreak(true);
+      return;
+    }
+    setGoalStep("choose"); setShowGoal(true);              // Premium → frei anlegen
   }
   const [skHint, setSkHint] = useState(() => !recall("kunju-skhint", false));
   function closeSkHint() {
@@ -16625,7 +16648,8 @@ function App() {
     onActivity: onActivity,
     onHint: requestHint,
     onOpenGoal: () => { setGoalStep("choose"); setShowGoal(true); },
-    onTab: handleTabSwitch
+    onTab: handleTabSwitch,
+    challengeEditable: hasPaidAccess()
   })), /*#__PURE__*/React.createElement(AppTweaks, {
     t: t,
     setTweak: setTweak,
@@ -16808,6 +16832,7 @@ function App() {
     onClose: () => setShowStreak(false),
     onAdjustGoal: () => {
       setShowStreak(false);
+      if (!hasPaidAccess()) { setShowPaywall(true); return; } // Standard: vorgegeben, nicht einstellbar
       setGoalStep("choose");
       setShowGoal(true);
     },

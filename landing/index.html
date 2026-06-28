@@ -39,7 +39,7 @@
     { "@type": "FAQPage", "mainEntity": [
       { "@type": "Question", "name": "Was ist das Besondere an ConjuExpert?", "acceptedAnswer": { "@type": "Answer", "text": "Du kennst das Verb, hast es zehnmal nachgeschlagen – doch im Gespräch ist es plötzlich weg. ConjuExpert ändert das: Im Quiz trainierst du den blitzschnellen Abruf genau der Form, die gerade gefragt ist (z. B. Subjuntivo, 3. Person von tener – tenga), und übst in beide Richtungen, bis die Form sitzt, bevor du nachdenkst. So fällt dir die richtige konjugierte Zeitform ein, wenn du sie brauchst – durch spielerisches Anwenden und Lernen im Kontext deiner Lieblingsthemen." } },
       { "@type": "Question", "name": "Welche Sprachen werden unterstützt?", "acceptedAnswer": { "@type": "Answer", "text": "Du kannst spanische Verben, französische Verben, englische Verben, niederländische Verben und deutsche Verben konjugieren — und jederzeit zwischen den Sprachen wechseln." } },
-      { "@type": "Question", "name": "Was kostet der Premium-Tarif?", "acceptedAnswer": { "@type": "Answer", "text": "2,99 € pro Monat oder 24,99 € pro Jahr (rund 30 % günstiger). Die Premium-Funktionen 24 Stunden kostenlos testen, jederzeit kündbar." } },
+      { "@type": "Question", "name": "Was kostet der Premium-Tarif?", "acceptedAnswer": { "@type": "Answer", "text": "2,99 € pro Monat oder 29,99 € pro Jahr. Die Premium-Funktionen 2 Tage kostenlos testen, jederzeit kündbar." } },
       { "@type": "Question", "name": "Was kann die Premium-Funktion Merken?", "acceptedAnswer": { "@type": "Answer", "text": "Die \"Merken\"-Funktion ist dein Game-Changer! Du kannst Wörter aus den Übungssätzen im Quiz speichern, eigene Vokabellisten bauen und gezielt die Verben wiederholen, die noch nicht sitzen — dein persönlicher Wortschatz wächst und du verinnerlichst diesen spielerisch." } },
       { "@type": "Question", "name": "Ist ConjuExpert kostenlos?", "acceptedAnswer": { "@type": "Answer", "text": "Ja. Die Funktionen \"Konjugieren\" und \"Lernen\" sind dauerhaft kostenlos. \"Quiz\" und \"Merken\" sind die Premium-Funktionen — du kannst die App 24 Stunden mit allen Features in Ruhe lieben lernen, bevor du dich für die dauerhafte Nutzung entscheidest." } }
     ] }
@@ -240,6 +240,29 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .modes-note::before{content:"";position:absolute;top:0;left:18px;right:18px;height:3px;border-radius:0 0 3px 3px;background:var(--brand-rainbow)}
 .modes-note strong{color:var(--ink);font-weight:800}
 @media(max-width:760px){.modes-note{margin:-8px auto 28px;font-size:14.5px}}
+/* App-Funktionen + Quizmodi */
+.mini-head{text-align:center;max-width:640px;margin:0 auto 22px}
+.mini-head.qm-sep{margin-top:52px}
+.mini-tag{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--pink)}
+.mini-h{font-family:var(--display);font-weight:700;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;line-height:1.1;margin:8px 0 0;text-wrap:balance}
+.mini-p{font-size:16px;color:var(--muted);margin:10px 0 0;text-wrap:pretty}
+.func-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:8px}
+@media(max-width:900px){.func-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.func-grid{grid-template-columns:1fr}}
+.func-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:var(--shadow-sm)}
+.func-ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);color:var(--ink);border:1px solid var(--border);margin-bottom:13px}
+.func-ic svg{width:22px;height:22px}
+.func-card h4{font-family:var(--display);font-weight:800;font-size:17px;margin:0 0 6px;color:var(--ink)}
+.func-card p{margin:0;font-size:14px;line-height:1.55;color:var(--muted);text-wrap:pretty}
+.qm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
+@media(max-width:760px){.qm-grid{grid-template-columns:1fr}}
+.qm-item{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 18px 16px}
+.qm-n{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--pink)}
+.qm-item h4{font-family:var(--display);font-weight:800;font-size:16px;margin:3px 0 5px;color:var(--ink)}
+.qm-item p{margin:0;font-size:13.7px;line-height:1.5;color:var(--muted);text-wrap:pretty}
+.qm-example{margin-bottom:8px}
+.qm-ex-cap{text-align:center;font-size:14px;color:var(--muted);margin:14px auto 0;max-width:440px;text-wrap:pretty}
+.qm-ex-cap strong{color:var(--ink);font-weight:700}
 .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
 .cell{grid-column:span 2;background:var(--surface);border:1px solid var(--border);border-radius:26px;padding:28px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease}
 .cell:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
@@ -367,20 +390,24 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .cmp table{width:100%;border-collapse:collapse}
 .cmp th,.cmp td{padding:15px 18px;text-align:left;border-top:1px solid var(--border);font-size:15px;vertical-align:middle}
 .cmp thead th{border-top:0;background:var(--surface-2);font-family:var(--display);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
-.cmp th.c,.cmp td.c{text-align:center;width:108px}
-.cmp td.c.p,.cmp th.c.p{background:color-mix(in srgb,var(--ink) 7%,transparent);width:128px}
+.cmp th.c,.cmp td.c{text-align:center;width:92px}
+.cmp td.c.s,.cmp th.c.s{background:color-mix(in srgb,var(--ink) 3.5%,transparent);width:100px}
+.cmp thead th.c.s{color:var(--ink)}
+.cmp td.c.p,.cmp th.c.p{background:color-mix(in srgb,var(--ink) 8%,transparent);width:112px}
 .cmp thead th.c.p{color:var(--ink)}
+.cmp td.c .v{display:block;font-size:12.5px;font-weight:700;line-height:1.15;color:var(--ink)}
 .cmp .nu{font-weight:600}
 .cmp .nu small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
 .cmp .y{color:var(--green);font-weight:700;font-size:17px}
 .cmp .n{color:color-mix(in srgb,var(--muted) 55%,transparent)}
-@media(max-width:560px){.cmp th,.cmp td{padding:12px 11px;font-size:13px}.cmp th.c,.cmp td.c{width:60px}.cmp td.c.p,.cmp th.c.p{width:68px}}
+@media(max-width:560px){.cmp th,.cmp td{padding:11px 7px;font-size:12.5px}.cmp th.c,.cmp td.c{width:50px}.cmp td.c.s,.cmp th.c.s{width:52px}.cmp td.c.p,.cmp th.c.p{width:56px}.cmp td.c .v{font-size:10px}.cmp .nu small{font-size:11px}}
 
 /* CTA band */
 .band{padding:96px 0}
 .band-in{position:relative;overflow:hidden;border-radius:34px;padding:64px 40px;text-align:center;color:#fff}
 .band-in .g{position:absolute;inset:0;background:var(--vivid);background-size:240% 100%;animation:slide 8s linear infinite}
 .band-in>*{position:relative;z-index:2}
+.band-in .btn{max-width:100%;white-space:normal;line-height:1.25;text-align:center}
 .band h2{font-family:var(--display);font-weight:700;font-size:clamp(30px,4.4vw,46px);letter-spacing:-.03em;margin:0 0 14px;text-shadow:0 2px 10px rgba(0,0,0,.24)}
 .band p{font-size:18px;margin:0 auto 30px;max-width:46ch;text-shadow:0 1px 5px rgba(0,0,0,.24)}
 .band .btn-ghost{background:#fff;border-color:#fff}
@@ -601,74 +628,64 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         <h2 data-i18n="feat.h2">Verben konjugieren lernen heißt nicht auswendig lernen — sondern verinnerlichen.</h2>
         <p data-i18n="feat.p">Wissenschaftlich fundiert: Was du mit Themen verknüpfst, die dich interessieren, bleibt schneller hängen. Genau hier setzen wir an.</p>
       </div>
-      <div class="modes-note reveal" data-i18n="feat.modes"><strong>6 Quizmodi</strong> — Karten · Auswahl · Speed · Tippen · Sprechen · Texte. Jeder trainiert eine andere Fähigkeit, alle nach lernwissenschaftlichen Prinzipien aufgebaut.</div>
+      <!-- App-Funktionen: was die App kann -->
+      <div class="mini-head reveal">
+        <span class="mini-tag" data-i18n="func.tag">Das steckt in der App</span>
+        <h3 class="mini-h" data-i18n="func.h">Vier Bereiche — ein flüssiges Lernsystem.</h3>
+      </div>
+      <div class="func-grid">
+        <div class="func-card reveal">
+          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h7"/></svg></span>
+          <h4 data-i18n="func.1h">Konjugieren</h4>
+          <p data-i18n="func.1p">Jedes Verb in allen Zeitformen — unregelmäßige Formen farbig markiert, mit Beispielsätzen.</p>
+        </div>
+        <div class="func-card reveal" data-d="2">
+          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 5.5V20.5"/></svg></span>
+          <h4 data-i18n="func.2h">Lernen</h4>
+          <p data-i18n="func.2p">Dein Spickzettel: Bildung der Zeitformen, Signalwörter &amp; Eselsbrücken — alles griffbereit.</p>
+        </div>
+        <div class="func-card reveal" data-d="3">
+          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></span>
+          <h4 data-i18n="func.3h">Quiz</h4>
+          <p data-i18n="func.3p">Sechs Modi, die dich aktiv abfragen, bis die Formen wirklich sitzen.</p>
+        </div>
+        <div class="func-card reveal" data-d="4">
+          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 17l-5.3 2.6 1-5.8-4.2-4.1 5.9-.9z"/></svg></span>
+          <h4 data-i18n="func.4h">Gemerkt</h4>
+          <p data-i18n="func.4p">Knifflige Verben &amp; dein eigener Wortschatz — gespeichert und gezielt wiederholt.</p>
+        </div>
+      </div>
+
+      <!-- Quizmodi: genauer -->
+      <div class="mini-head reveal qm-sep">
+        <span class="mini-tag" data-i18n="qm.tag">Die 6 Quizmodi</span>
+        <h3 class="mini-h" data-i18n="qm.h">Sechs Wege, eine Form zu verankern.</h3>
+        <p class="mini-p" data-i18n="qm.p">Jeder Modus trainiert eine andere Fähigkeit — alle nach lernwissenschaftlichen Prinzipien.</p>
+      </div>
+      <div class="qm-grid">
+        <div class="qm-item reveal"><span class="qm-n">01</span><h4 data-i18n="qm.1h">Karten</h4><p data-i18n="qm.1p">Lücke füllen, umdrehen, Lösung im ganzen Satz sehen.</p></div>
+        <div class="qm-item reveal" data-d="2"><span class="qm-n">02</span><h4 data-i18n="qm.2h">Auswahl</h4><p data-i18n="qm.2p">Aus mehreren Formen die richtige antippen.</p></div>
+        <div class="qm-item reveal" data-d="2"><span class="qm-n">03</span><h4 data-i18n="qm.3h">Speed</h4><p data-i18n="qm.3p">Gegen die Uhr — so viele Formen wie möglich.</p></div>
+        <div class="qm-item reveal" data-d="3"><span class="qm-n">04</span><h4 data-i18n="qm.4h">Tippen</h4><p data-i18n="qm.4p">Form selbst eintippen oder ganze Sätze in beide Richtungen übersetzen.</p></div>
+        <div class="qm-item reveal" data-d="3"><span class="qm-n">05</span><h4 data-i18n="qm.5h">Sprechen</h4><p data-i18n="qm.5p">Die Form laut sagen — die Spracherkennung prüft sofort.</p></div>
+        <div class="qm-item reveal" data-d="4"><span class="qm-n">06</span><h4 data-i18n="qm.6h">Texte</h4><p data-i18n="qm.6p">KI-Geschichte aus deinen Themen — lesen, Verben einsetzen, Fragen beantworten.</p></div>
+      </div>
+      <div class="qm-example reveal">
+        <div class="sc-phones">
+          <div class="sc-phone">
+            <img src="screenshots/scr-karten-luecke.png" alt="ConjuExpert Karten-Quiz: niederländischer Lückensatz mit „kopen" – Verb in der richtigen Zeitform konjugieren" />
+            <span class="sc-cap"><span class="n">1</span><span data-i18n="cap.cloze">Lückensatz</span></span>
+          </div>
+          <div class="sc-arrow" aria-hidden="true">→</div>
+          <div class="sc-phone">
+            <img src="screenshots/scr-karten-ergebnis.png" alt="ConjuExpert Karten-Quiz: Ergebnis – voller niederländischer Satz mit deutscher Übersetzung" />
+            <span class="sc-cap a"><span class="n">2</span><span data-i18n="cap.result">Ergebnis</span></span>
+          </div>
+        </div>
+        <p class="qm-ex-cap" data-i18n="qm.excap">Beispiel <strong>Karten-Modus</strong>: Lücke füllen, umdrehen — Lösung im ganzen Satz, zweisprachig erklärt.</p>
+      </div>
+
       <div class="bento">
-        <div class="cell prem full reveal showcase">
-          <div>
-            <span class="tier prem" data-i18n="c4.tier">PREMIUM · SPRECH-QUIZ</span>
-            <h3 data-i18n="c4.h3">Sag die Form laut — die Spracherkennung hört zu.</h3>
-            <p data-i18n="c4.p">Dein Verb erscheint als Lücke in einem Satz aus deinen Lieblingsthemen. Du sprichst die richtige Form ins Mikro, die Spracherkennung prüft dich sofort — und du siehst den vollen Satz samt Übersetzung. So sitzt die Form genau dort, wo du sie brauchst: im echten Sprechen.</p>
-            <div class="chips"><span class="chip" data-i18n="c4.chip1">Spracherkennung</span><span class="chip" data-i18n="c1.chip1">Satz aus deinen Lieblingsthemen</span><span class="chip" data-i18n="c4.chip3">Sofort-Feedback</span></div>
-          </div>
-          <div class="sc-phones">
-            <div class="sc-phone">
-              <img src="screenshots/scr-sprechen-prompt.png" alt="ConjuExpert Sprech-Quiz: spanischer Lückensatz, Verb konjugieren, Mikrofon zum Einsprechen" />
-              <span class="sc-cap"><span class="n">1</span><span data-i18n="cap.task">Aufgabe</span></span>
-            </div>
-            <div class="sc-arrow" aria-hidden="true">→</div>
-            <div class="sc-phone">
-              <img src="screenshots/scr-sprechen-ergebnis.png" alt="ConjuExpert Sprech-Quiz: Ergebnis – voller spanischer Satz mit deutschen Übersetzung" />
-              <span class="sc-cap a"><span class="n">2</span><span data-i18n="cap.feedback">Feedback</span></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="cell free half withpic picright reveal" data-d="2">
-          <div class="cell-body">
-            <span class="tier free" data-i18n="c2.tier">Basis-Tarif — 5 SPRACHEN · Wechsle zwischen deinen Lieblingssprachen!</span>
-            <h3 data-i18n="c2.h3">Dein Lernbereich für Zeitformen von Verben – bei uns wie dein Lieblings-Spickzettel!</h3>
-            <p data-i18n="c2.p1">Mit ConjuExpert konjugierst du spanische, französische, englische, niederländische oder deutsche Verben innerhalb einer App. Das Besondere ist der Lernbereich: dein digitaler Spickzettel, der dir die ganze Systematik auf einen Blick erklärt – Bildung der Zeitformen, die wichtigsten unregelmäßigen Verbgruppen, Signalwörter und Eselsbrücken, alles griffbereit statt mühsam zusammengesucht.</p>
-            <p data-i18n="c2.p2">Jede Verbform steht im Kontext der Sprache, die du schon sprichst. Durch Beispielsätze und farbig markierte unregelmäßige Formen merkst du sie dir schneller. Und was du im Lernbereich verstehst, rufst du im Quiz sofort wieder ab – bis es sitzt. Fünf Sprachen, verständlich erklärt, an einem Ort.</p>
-            <div class="langwrap">
-              <span class="langpill"><span class="d" style="background:#ff3b5c"></span>Español</span>
-              <span class="langpill"><span class="d" style="background:#ff7a18"></span>Français</span>
-              <span class="langpill"><span class="d" style="background:#1a9b46"></span>English</span>
-              <span class="langpill"><span class="d" style="background:#0a84ff"></span>Nederlands</span>
-              <span class="langpill"><span class="d" style="background:var(--ink)"></span>Deutsch</span>
-            </div>
-          </div>
-          <figure class="ci-pic"><img src="lifestyle/lernbereich-zeitformen-verben-lernen-laptop.jpg" alt="Frau lernt entspannt mit Laptop die Bildung der Zeitformen im ConjuExpert-Lernbereich" loading="lazy" decoding="async" width="800" height="1132" /></figure>
-        </div>
-
-        <div class="cell prem half withpic picleft reveal" data-d="2">
-          <figure class="ci-pic"><img src="lifestyle/wortschatz-merken-vokabeln-lernpause-kaffee.jpg" alt="Kaffeepause beim Vokabeln merken – entspannt den Wortschatz mit ConjuExpert wiederholen" loading="lazy" decoding="async" width="800" height="1132" /></figure>
-          <div class="cell-body">
-            <span class="tier prem" data-i18n="c3.tier">PREMIUM · DEIN FORTSCHRITT</span>
-            <h3 data-i18n="c3.h3">Dein Wortschatz wächst — und bleibt.</h3>
-            <p data-i18n="c3.p">So entsteht Dynamik in deinem Lernfortschritt: Mit der Merkfunktion erweiterst du deinen Wortschatz, speicherst ihn und wiederholst ihn gezielt — so wird aus Üben echtes Behalten. In jedem Satz tippst du ein unbekanntes Wort an, um es zu übersetzen — und per Klick auf das Sternchen kommt es in deine Merkliste. Im Quiz-Bereich kannst du genau diese gemerkten Wörter wieder anwählen, sodass sie in deine Übungen einfließen. Auch im Bereich „Text" kannst du deine Merk-Verben per Klick integrieren lassen. Der Text wird dann automatisch nach deinen Anforderungen an Zeitform, Lieblingsthema und bevorzugte Verben erstellt. So individuell macht Lernen richtig Spaß!</p>
-            <div class="chips"><span class="chip" data-i18n="c3.chip1">Adaptiv ans Niveau</span><span class="chip" data-i18n="c3.chip2">Gezielte Wiederholung</span><span class="chip" data-i18n="c3.chip3">Merken</span></div>
-          </div>
-        </div>
-
-        <div class="cell prem full reveal showcase" data-d="2">
-          <div>
-            <span class="tier prem" data-i18n="c1.tier">PREMIUM · KARTEN-QUIZ</span>
-            <h3 data-i18n="c1.h3">Lücke füllen, umdrehen, merken.</h3>
-            <p data-i18n="c1.p">Jede Karte setzt dein Verb als Lücke in einen Satz aus deinen Lieblingsthemen. Du konjugierst im Kopf, drehst die Karte um — und siehst die Lösung im ganzen Satz, zweisprachig erklärt. Und das Beste: Tippst du auf das Verb, wandert es direkt in deinen „Gemerkt"-Speicher und kommt gezielt wieder, bis es wirklich sitzt.</p>
-            <div class="chips"><span class="chip" data-i18n="c1.chip1">Satz aus deinen Lieblingsthemen</span><span class="chip" data-i18n="c1.chip2">Zwischen Mutter- &amp; Lernsprache wechseln</span><span class="chip" data-i18n="c1.chip3">Tippen auf ein unbekanntes Wort → Übersetzen lassen und Merkfunktion nutzen</span></div>
-          </div>
-          <div class="sc-phones">
-            <div class="sc-phone">
-              <img src="screenshots/scr-karten-luecke.png" alt="ConjuExpert Karten-Quiz: niederländischer Lückensatz mit „kopen" – Verb in der richtigen Zeitform konjugieren" />
-              <span class="sc-cap"><span class="n">1</span><span data-i18n="cap.cloze">Lückensatz</span></span>
-            </div>
-            <div class="sc-arrow" aria-hidden="true">→</div>
-            <div class="sc-phone">
-              <img src="screenshots/scr-karten-ergebnis.png" alt="ConjuExpert Karten-Quiz: Ergebnis – voller niederländischer Satz mit deutscher Übersetzung" />
-              <span class="sc-cap a"><span class="n">2</span><span data-i18n="cap.result">Ergebnis</span></span>
-            </div>
-          </div>
-        </div>
 
         <div class="cell free full reveal showcase" data-d="2">
           <div>
@@ -753,23 +770,25 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 
   <section class="block" id="vergleich">
     <div class="wrap">
-      <div class="sec-head reveal"><span class="sec-tag" data-i18n="cmp.tag">Free vs. Premium-Tarif</span><h2 data-i18n="cmp.h2">Was kostenlos ist — und was der Premium-Tarif freischaltet.</h2><p data-i18n="cmp.p">Der Unterschied unseres Angebots der Verben-Konjugier-App auf einen Blick.</p></div>
+      <div class="sec-head reveal"><span class="sec-tag" data-i18n="cmp.tag2">Tarife im Vergleich</span><h2 data-i18n="cmp.h2">Was kostenlos ist — und was der Premium-Tarif freischaltet.</h2><p data-i18n="cmp.p">Der Unterschied unseres Angebots der Verben-Konjugier-App auf einen Blick.</p></div>
       <div class="cmp reveal">
         <table>
-          <thead><tr><th style="font-size:15px" data-i18n="cmp.th0">Das bekommst du</th><th class="c" data-i18n="cmp.thFree">Kostenlos</th><th class="c p" data-i18n="cmp.thPrem">Premium-Tarif</th></tr></thead>
+          <thead><tr><th style="font-size:15px" data-i18n="cmp.th0">Das bekommst du</th><th class="c" data-i18n="cmp.thGuest">Gast</th><th class="c s" data-i18n="cmp.thStd">Standard</th><th class="c p" data-i18n="cmp.thPrem">Premium</th></tr></thead>
           <tbody>
-            <tr><td class="nu"><span data-i18n="cmp.r1">Alle Zeitformen nachschlagen &amp; konjugieren</span><small data-i18n="cmp.r1s">jede Person, unregelmäßige hervorgehoben</small></td><td class="c y">✓</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r2">Grammatik verstehen</span><small data-i18n="cmp.r2s">Eselsbrücken, Signalwörter, Beispielsätze</small></td><td class="c y">✓</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r3">Alle 5 Sprachen, zweisprachig</span></td><td class="c y">✓</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r4">Üben, bis es sitzt: 4 Quiz-Varianten</span><small data-i18n="cmp.r4s">Karten · Auswahl · Tippen · Sprechen</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r5">Aktiv switchen: Mutter ↔ Fremdsprache</span><small data-i18n="cmp.r5s">produzieren &amp; erkennen, Sätze aus Lieblingsthemen</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r6">Merken im Übungssatz</span><small data-i18n="cmp.r6s">knifflige Verben direkt im Kontext wiederholen</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r7">Wortschatzspeicher</span><small data-i18n="cmp.r7s">Favoriten &amp; eigene Vokabellisten</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r8">Fortschrittsmerker</span><small data-i18n="cmp.r8s">behalte deinen Lernstand im Blick</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.r1">Alle Zeitformen nachschlagen &amp; konjugieren</span><small data-i18n="cmp.r1s">jede Person, unregelmäßige hervorgehoben</small></td><td class="c y">✓</td><td class="c s y">✓</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.r2">Grammatik verstehen</span><small data-i18n="cmp.r2s">Eselsbrücken, Signalwörter, Beispielsätze</small></td><td class="c y">✓</td><td class="c s y">✓</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.r3">Alle 5 Sprachen, zweisprachig</span></td><td class="c y">✓</td><td class="c s y">✓</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.rcards">Karten-Quiz</span><small data-i18n="cmp.rcards_s">Lückensätze aus deinen Themen</small></td><td class="c n">—</td><td class="c s"><span class="v" data-i18n="cmp.v_perday">20/Tag</span></td><td class="c p"><span class="v" data-i18n="cmp.v_unlimited">unbegrenzt</span></td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.rprog">Fortschritt &amp; Serie</span><small data-i18n="cmp.rprog_s">Tagesziel und Lernstand im Blick</small></td><td class="c n">—</td><td class="c s y">✓</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.rtrial">2 Tage Premium gratis testen</span><small data-i18n="cmp.rtrial_s">mit kostenlosem Konto</small></td><td class="c n">—</td><td class="c s y">✓</td><td class="c p"><span class="v" data-i18n="cmp.v_incl">inkl.</span></td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.rchal">Challenge</span><small data-i18n="cmp.rchal_s">Standard vorgegeben · Premium frei einstellbar</small></td><td class="c n">—</td><td class="c s"><span class="v" data-i18n="cmp.v_std">Standard</span></td><td class="c p"><span class="v" data-i18n="cmp.v_indiv">individuell</span></td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.rmodes">Alle Quizmodi</span><small data-i18n="cmp.rmodes_s">Auswahl · Speed · Tippen · Sprechen · Texte</small></td><td class="c n">—</td><td class="c s n">—</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.r5">Aktiv switchen: Mutter ↔ Fremdsprache</span><small data-i18n="cmp.r5s">produzieren &amp; erkennen, Sätze aus Lieblingsthemen</small></td><td class="c n">—</td><td class="c s n">—</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.rsave">Merken &amp; Wortschatz</span><small data-i18n="cmp.rsave_s">Favoriten &amp; eigene Vokabellisten</small></td><td class="c n">—</td><td class="c s n">—</td><td class="c p y">✓</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="reveal" style="text-align:center;margin:24px auto 0"><span style="display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-weight:700;font-size:15px;background:color-mix(in srgb,var(--ink) 9%,transparent);border:1px solid color-mix(in srgb,var(--ink) 24%,transparent);color:var(--ink);padding:11px 20px;border-radius:999px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="cmp.badge">Premium 24h kostenlos testen — ohne Risiko, jederzeit kündbar.</span></span></p>
+      <p class="reveal" style="text-align:center;margin:24px auto 0"><span style="display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-weight:700;font-size:15px;background:color-mix(in srgb,var(--ink) 9%,transparent);border:1px solid color-mix(in srgb,var(--ink) 24%,transparent);color:var(--ink);padding:11px 20px;border-radius:999px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="cmp.badge2">Mit Konto: 2 Tage Premium gratis testen — ohne Risiko, jederzeit kündbar.</span></span></p>
     </div>
   </section>
 
@@ -797,10 +816,9 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
           <span class="plan-badge" data-i18n="pr.badge">★ Beliebteste Wahl</span>
           <h3 data-i18n="pr.premName">Premium-Tarif</h3>
           <p class="ptag" data-i18n="pr.premTag">Account erstellen und „Quizzen &amp; Merken" in allen 5 Sprachen freischalten.</p>
-          <div class="welcome" data-i18n="pr.welcome">★ Willkommensbonus · 24h gratis testen</div>
-          <div class="price"><span class="amt">24,99 €</span><span class="per" data-i18n="pr.perYear">/ Jahr</span></div>
-          <div class="calc"><span class="a" data-i18n="pr.welcomePrice">Willkommenspreis</span><span data-i18n="pr.premCalc"> · danach regulär 29,99 €/Jahr oder 2,99 €/Monat</span></div>
-          <span class="save" data-i18n="pr.save">24,99 € statt 29,99 € · du sparst 5 €</span>
+          <div class="welcome" data-i18n="pr.welcome">★ 2 Tage gratis testen</div>
+          <div class="price"><span class="amt">29,99 €</span><span class="per" data-i18n="pr.perYear">/ Jahr</span></div>
+          <div class="calc" data-i18n="pr.premCalc">oder 2,99 €/Monat</div>
           <ul>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi1">Alles aus dem „genialer Basis-Tarif" &amp;</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi2">Quiz — 4 Modi, Sätze, Sprach-Switch</span></li>
@@ -819,9 +837,10 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
       <div class="faq">
         <details open class="qa fly"><summary><span class="q-no">01</span><span class="q-txt" data-i18n="faq.q1">Was ist das Besondere an ConjuExpert?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a1"><p>Du kennst das Verb. Hast es nachgeschlagen – zehnmal vielleicht. Doch im Gespräch ist es plötzlich weg, und du suchst, während die anderen längst weiterreden.</p><p>ConjuExpert ändert das. Hier schlägst du Verben nicht nur nach, du machst sie zu deinen. Im Quiz trainierst du den blitzschnellen Abruf genau der Form, die gerade gefragt ist: Subjuntivo, 3. Person Singular von „tener" – <em>tenga</em>. Du übst in beide Richtungen, bis die Form da ist, bevor du überhaupt nachdenkst.</p><p>Und dann kommt der schönste Moment: Wenn du im Gespräch mit einem Muttersprachler oder einer Muttersprachlerin bist, fällt dir die richtige konjugierte Zeitform ein, wenn du sie brauchst.</p><p>Mit ConjuExpert verinnerlichst du durch spielerisches Anwenden – insbesondere durch das Lernen im Kontext deiner Lieblingsthemen. Das ist der Unterschied.</p></div></details>
         <details class="qa fly"><summary><span class="q-no">02</span><span class="q-txt" data-i18n="faq.q2">Welche Sprachen werden unterstützt?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a2"><p>Du kannst spanische Verben, französische Verben, englische Verben, niederländische Verben und deutsche Verben konjugieren — und jederzeit zwischen den Sprachen wechseln.</p></div></details>
-        <details class="qa fly"><summary><span class="q-no">03</span><span class="q-txt" data-i18n="faq.q3">Was kostet der Premium-Tarif?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a3"><p>2,99 € pro Monat oder 24,99 € pro Jahr im Willkommensangebot, danach regulär 29,99 € / Jahr. Die Premium-Funktionen 24 Stunden gratis — jederzeit kündbar.</p></div></details>
+        <details class="qa fly"><summary><span class="q-no">03</span><span class="q-txt" data-i18n="faq.q3">Was kostet der Premium-Tarif?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a3"><p>2,99 € pro Monat oder 29,99 € pro Jahr. Die Premium-Funktionen kannst du vorher 2 Tage gratis testen — jederzeit kündbar.</p></div></details>
         <details class="qa fly"><summary><span class="q-no">04</span><span class="q-txt" data-i18n="faq.q4">Was kann die Premium-Funktion „Merken"?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a4"><p>Die "Merken"-Funktion ist dein Game-Changer! Du kannst Wörter aus den Übungssätzen im Quiz speichern, eigene Vokabellisten bauen und gezielt die Verben wiederholen, die noch nicht sitzen — dein persönlicher Wortschatz wächst und du verinnerlichst diesen spielerisch.</p></div></details>
         <details class="qa fly"><summary><span class="q-no">05</span><span class="q-txt" data-i18n="faq.q5">Ist ConjuExpert kostenlos?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a5"><p>Ja. Die Funktionen "Konjugieren" und "Lernen" sind dauerhaft kostenlos. "Quiz" und "Merken" sind die Premium-Funktionen — du kannst die App 24 Stunden mit allen Features in Ruhe lieben lernen, bevor du dich für die dauerhafte Nutzung entscheidest.</p></div></details>
+        <details class="qa fly"><summary><span class="q-no">06</span><span class="q-txt" data-i18n="faq.q6">Wie funktioniert die Challenge — und was steckt dahinter?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a6"><p>Eine Challenge ist dein persönlicher Lernplan: Du wählst Zeitraum, Zeitformen und wie viele Verben &amp; Wörter du dir vornimmst — oder gibst einfach deine Minuten pro Tag vor. Daraus rechnet ConjuExpert dein Tagesziel aus.</p><p>Jeden Tag übst du vorrangig deine Challenge-Verben im Quiz. Ein Verb gilt als „sitzt", wenn du es an drei verschiedenen Tagen richtig konjugierst — so wird aus kurzem Merken echtes Langzeitwissen.</p><p>Dahinter stecken zwei bewährte Lernprinzipien: <em>Spaced Repetition</em> (verteiltes Wiederholen über mehrere Tage schlägt einmaliges Pauken) und <em>aktives Abrufen</em> (Retrieval Practice — wer die Form aktiv produziert statt sie nur wiederzuerkennen, behält deutlich mehr). Tagesziel und Serie halten dich mit kleinen, machbaren Schritten dran.</p></div></details>
       </div>
     </div>
   </section>
