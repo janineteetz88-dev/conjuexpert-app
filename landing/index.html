@@ -85,7 +85,11 @@ a{color:inherit;text-decoration:none}
 /* reveal */
 @keyframes revealUp{from{transform:translateY(24px)}to{transform:none}}
 .reveal{opacity:1}
-.js .reveal{animation:revealUp .7s cubic-bezier(.2,.7,.2,1)}
+.js .reveal{opacity:0;transform:translateY(28px) scale(.985);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1);will-change:opacity,transform}
+.js .reveal.in{opacity:1;transform:none}
+.js .reveal.rv-l{transform:translateX(-34px)}
+.js .reveal.rv-r{transform:translateX(34px)}
+.js .reveal.rv-l.in,.js .reveal.rv-r.in{transform:none}
 
 /* buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--display);font-weight:700;font-size:16px;padding:16px 26px;border-radius:16px;border:0;cursor:pointer;white-space:nowrap;transition:transform .18s,box-shadow .18s}
@@ -594,7 +598,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         </div>
         <p class="hero-meta reveal" data-d="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="hero.meta">Direkt im Browser · installierbar · ohne Anmeldung testen</span></p>
       </div>
-      <div class="hero-shot reveal" data-d="2">
+      <div class="hero-shot reveal rv-r" data-d="2">
         <div class="phone-wrap">
           <div class="phone"><video id="heroVid" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="app-demo-poster.jpg" aria-label="ConjuExpert in Aktion: ein Verb live konjugieren"><source src="app-demo.mp4" type="video/mp4"></video></div>
         </div>
@@ -1018,9 +1022,11 @@ var BR=["#ff5a4d","#ff9e2c","#ffcf3f","#5bbf6a","#3aa6c9"];
 document.querySelectorAll('[data-mark]').forEach(function(m){for(var i=0;i<5;i++){var s=document.createElement('i');s.style.background=BR[i];m.appendChild(s);}});
 // duplicate marquee for seamless loop
 var mq=document.getElementById('mq'); if(mq){ mq.innerHTML+=mq.innerHTML; }
-// scroll fly-in
-function rev(){var h=window.innerHeight||800;document.querySelectorAll('.fly:not(.in)').forEach(function(e){if(e.getBoundingClientRect().top < h*0.85){e.classList.add('in');}});}
-window.addEventListener('scroll',rev,{passive:true});window.addEventListener('resize',rev);rev();setTimeout(rev,300);
+// Einflug-Stagger: Karten/Elemente einer Sektion leicht versetzt einfliegen lassen
+document.querySelectorAll('.reveal').forEach(function(e){var d=+e.getAttribute('data-d')||0; if(d) e.style.transitionDelay=(d*0.08)+'s';});
+// scroll fly-in (reveal + fly werden beim Reinscrollen aktiviert)
+function rev(){var h=window.innerHeight||800;document.querySelectorAll('.fly:not(.in),.reveal:not(.in)').forEach(function(e){if(e.getBoundingClientRect().top < h*0.88){e.classList.add('in');}});}
+window.addEventListener('scroll',rev,{passive:true});window.addEventListener('resize',rev);rev();setTimeout(rev,150);setTimeout(rev,500);
 // Phone-Annotationen gestaffelt einfliegen lassen (Ringe + Legende)
 (function(){
   var pw=document.querySelector('.phone-wrap'); if(!pw) return;
