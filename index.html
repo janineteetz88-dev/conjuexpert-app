@@ -1314,6 +1314,10 @@ body {
 .flashpron { display: none; }
 .flashanswer { font-family: var(--mono); font-weight: 700; font-size: 30px; letter-spacing: -0.01em; color: var(--text); line-height: 1.15; text-wrap: balance; }
 .flashspeak { border: 0; background: color-mix(in srgb, var(--lc) 13%, var(--surface)); color: var(--lc); width: 34px; height: 34px; border-radius: 10px; font-size: 15px; cursor: pointer; flex: none; transition: transform 0.12s; }
+/* Sauberes Lautsprecher-SVG statt Emoji – passt sich Größe & Farbe des Buttons an */
+.ico-spk { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; }
+.ico-spk svg { width: 1.1em; height: 1.1em; display: block; }
+.speakbtn .ico-spk svg, .vocspk .ico-spk svg, .vtspk .ico-spk svg { width: 1.25em; height: 1.25em; }
 .flashspeak:active { transform: scale(0.88); }
 .flashfoot { display: flex; align-items: center; justify-content: center; min-height: 26px; }
 .flashflip { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600; }
