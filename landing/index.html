@@ -390,14 +390,17 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .cmp table{width:100%;border-collapse:collapse}
 .cmp th,.cmp td{padding:15px 18px;text-align:left;border-top:1px solid var(--border);font-size:15px;vertical-align:middle}
 .cmp thead th{border-top:0;background:var(--surface-2);font-family:var(--display);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
-.cmp th.c,.cmp td.c{text-align:center;width:108px}
-.cmp td.c.p,.cmp th.c.p{background:color-mix(in srgb,var(--ink) 7%,transparent);width:128px}
+.cmp th.c,.cmp td.c{text-align:center;width:92px}
+.cmp td.c.s,.cmp th.c.s{background:color-mix(in srgb,var(--ink) 3.5%,transparent);width:100px}
+.cmp thead th.c.s{color:var(--ink)}
+.cmp td.c.p,.cmp th.c.p{background:color-mix(in srgb,var(--ink) 8%,transparent);width:112px}
 .cmp thead th.c.p{color:var(--ink)}
+.cmp td.c .v{display:block;font-size:12.5px;font-weight:700;line-height:1.15;color:var(--ink)}
 .cmp .nu{font-weight:600}
 .cmp .nu small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
 .cmp .y{color:var(--green);font-weight:700;font-size:17px}
 .cmp .n{color:color-mix(in srgb,var(--muted) 55%,transparent)}
-@media(max-width:560px){.cmp th,.cmp td{padding:12px 11px;font-size:13px}.cmp th.c,.cmp td.c{width:60px}.cmp td.c.p,.cmp th.c.p{width:68px}}
+@media(max-width:560px){.cmp th,.cmp td{padding:11px 7px;font-size:12.5px}.cmp th.c,.cmp td.c{width:50px}.cmp td.c.s,.cmp th.c.s{width:52px}.cmp td.c.p,.cmp th.c.p{width:56px}.cmp td.c .v{font-size:10px}.cmp .nu small{font-size:11px}}
 
 /* CTA band */
 .band{padding:96px 0}
@@ -767,23 +770,25 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 
   <section class="block" id="vergleich">
     <div class="wrap">
-      <div class="sec-head reveal"><span class="sec-tag" data-i18n="cmp.tag">Free vs. Premium-Tarif</span><h2 data-i18n="cmp.h2">Was kostenlos ist — und was der Premium-Tarif freischaltet.</h2><p data-i18n="cmp.p">Der Unterschied unseres Angebots der Verben-Konjugier-App auf einen Blick.</p></div>
+      <div class="sec-head reveal"><span class="sec-tag" data-i18n="cmp.tag2">Tarife im Vergleich</span><h2 data-i18n="cmp.h2">Was kostenlos ist — und was der Premium-Tarif freischaltet.</h2><p data-i18n="cmp.p">Der Unterschied unseres Angebots der Verben-Konjugier-App auf einen Blick.</p></div>
       <div class="cmp reveal">
         <table>
-          <thead><tr><th style="font-size:15px" data-i18n="cmp.th0">Das bekommst du</th><th class="c" data-i18n="cmp.thFree">Kostenlos</th><th class="c p" data-i18n="cmp.thPrem">Premium-Tarif</th></tr></thead>
+          <thead><tr><th style="font-size:15px" data-i18n="cmp.th0">Das bekommst du</th><th class="c" data-i18n="cmp.thGuest">Gast</th><th class="c s" data-i18n="cmp.thStd">Standard</th><th class="c p" data-i18n="cmp.thPrem">Premium</th></tr></thead>
           <tbody>
-            <tr><td class="nu"><span data-i18n="cmp.r1">Alle Zeitformen nachschlagen &amp; konjugieren</span><small data-i18n="cmp.r1s">jede Person, unregelmäßige hervorgehoben</small></td><td class="c y">✓</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r2">Grammatik verstehen</span><small data-i18n="cmp.r2s">Eselsbrücken, Signalwörter, Beispielsätze</small></td><td class="c y">✓</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r3">Alle 5 Sprachen, zweisprachig</span></td><td class="c y">✓</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r4">Üben, bis es sitzt: 4 Quiz-Varianten</span><small data-i18n="cmp.r4s">Karten · Auswahl · Tippen · Sprechen</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r5">Aktiv switchen: Mutter ↔ Fremdsprache</span><small data-i18n="cmp.r5s">produzieren &amp; erkennen, Sätze aus Lieblingsthemen</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r6">Merken im Übungssatz</span><small data-i18n="cmp.r6s">knifflige Verben direkt im Kontext wiederholen</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r7">Wortschatzspeicher</span><small data-i18n="cmp.r7s">Favoriten &amp; eigene Vokabellisten</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
-            <tr><td class="nu"><span data-i18n="cmp.r8">Fortschrittsmerker</span><small data-i18n="cmp.r8s">behalte deinen Lernstand im Blick</small></td><td class="c n">—</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.r1">Alle Zeitformen nachschlagen &amp; konjugieren</span><small data-i18n="cmp.r1s">jede Person, unregelmäßige hervorgehoben</small></td><td class="c y">✓</td><td class="c s y">✓</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.r2">Grammatik verstehen</span><small data-i18n="cmp.r2s">Eselsbrücken, Signalwörter, Beispielsätze</small></td><td class="c y">✓</td><td class="c s y">✓</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.r3">Alle 5 Sprachen, zweisprachig</span></td><td class="c y">✓</td><td class="c s y">✓</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.rcards">Karten-Quiz</span><small data-i18n="cmp.rcards_s">Lückensätze aus deinen Themen</small></td><td class="c n">—</td><td class="c s"><span class="v" data-i18n="cmp.v_perday">20/Tag</span></td><td class="c p"><span class="v" data-i18n="cmp.v_unlimited">unbegrenzt</span></td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.rprog">Fortschritt &amp; Serie</span><small data-i18n="cmp.rprog_s">Tagesziel und Lernstand im Blick</small></td><td class="c n">—</td><td class="c s y">✓</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.rtrial">2 Tage Premium gratis testen</span><small data-i18n="cmp.rtrial_s">mit kostenlosem Konto</small></td><td class="c n">—</td><td class="c s y">✓</td><td class="c p"><span class="v" data-i18n="cmp.v_incl">inkl.</span></td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.rchal">Challenge</span><small data-i18n="cmp.rchal_s">Standard vorgegeben · Premium frei einstellbar</small></td><td class="c n">—</td><td class="c s"><span class="v" data-i18n="cmp.v_std">Standard</span></td><td class="c p"><span class="v" data-i18n="cmp.v_indiv">individuell</span></td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.rmodes">Alle Quizmodi</span><small data-i18n="cmp.rmodes_s">Auswahl · Speed · Tippen · Sprechen · Texte</small></td><td class="c n">—</td><td class="c s n">—</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.r5">Aktiv switchen: Mutter ↔ Fremdsprache</span><small data-i18n="cmp.r5s">produzieren &amp; erkennen, Sätze aus Lieblingsthemen</small></td><td class="c n">—</td><td class="c s n">—</td><td class="c p y">✓</td></tr>
+            <tr><td class="nu"><span data-i18n="cmp.rsave">Merken &amp; Wortschatz</span><small data-i18n="cmp.rsave_s">Favoriten &amp; eigene Vokabellisten</small></td><td class="c n">—</td><td class="c s n">—</td><td class="c p y">✓</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="reveal" style="text-align:center;margin:24px auto 0"><span style="display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-weight:700;font-size:15px;background:color-mix(in srgb,var(--ink) 9%,transparent);border:1px solid color-mix(in srgb,var(--ink) 24%,transparent);color:var(--ink);padding:11px 20px;border-radius:999px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="cmp.badge">Premium 24h kostenlos testen — ohne Risiko, jederzeit kündbar.</span></span></p>
+      <p class="reveal" style="text-align:center;margin:24px auto 0"><span style="display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-weight:700;font-size:15px;background:color-mix(in srgb,var(--ink) 9%,transparent);border:1px solid color-mix(in srgb,var(--ink) 24%,transparent);color:var(--ink);padding:11px 20px;border-radius:999px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="cmp.badge2">Mit Konto: 2 Tage Premium gratis testen — ohne Risiko, jederzeit kündbar.</span></span></p>
     </div>
   </section>
 
