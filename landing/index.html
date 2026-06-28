@@ -214,6 +214,8 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .result-ic{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(26,155,70,.12);color:var(--green)}
 .result-ic svg{width:22px;height:22px}
 .result-card p{margin:0;font-size:16px;line-height:1.5;color:var(--ink);font-weight:600;text-wrap:pretty}
+.result-how{max-width:720px;margin:0 auto 26px;text-align:center;font-size:16px;line-height:1.6;color:var(--muted);text-wrap:pretty}
+.result-how strong{color:var(--ink);font-weight:800}
 .result-cta{margin-top:2px}
 /* social proof */
 .proof[hidden]{display:none}
@@ -221,14 +223,17 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .proof-stars{color:var(--gold,#f5a623);font-size:18px;letter-spacing:1px}
 .proof-avg{font-family:var(--display);font-weight:800;font-size:18px;color:var(--ink)}
 .proof-cnt{font-size:14px;color:var(--muted)}
-.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:26px}
-@media(max-width:860px){.proof-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.proof-grid{grid-template-columns:1fr}}
-.proof-item{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 20px 18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:11px}
+.proof-marq{overflow:hidden;margin-bottom:26px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.proof-track{display:flex;gap:18px;width:max-content;animation:revscroll 64s linear infinite}
+.proof-marq:hover .proof-track{animation-play-state:paused}
+@keyframes revscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.proof-track{animation:none}}
+.proof-item{flex:0 0 320px;width:320px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 20px 18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:11px}
+@media(max-width:560px){.proof-item{flex-basis:80vw;width:80vw}}
 .proof-item .pi-top{display:flex;align-items:center;gap:9px}
 .proof-item .pi-stars{color:var(--gold,#f5a623);font-size:14px;letter-spacing:1px}
 .proof-item .pi-when{margin-left:auto;font-size:11.5px;color:var(--muted);font-family:var(--mono)}
-.proof-item .pi-body{margin:0;font-size:14.5px;line-height:1.6;color:#444b58;text-wrap:pretty}
+.proof-item .pi-body{margin:0;font-size:14.5px;line-height:1.6;color:#444b58;text-wrap:pretty;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 .proof-item .pi-foot{display:flex;align-items:center;gap:8px;margin-top:2px;font-size:13px;font-weight:600;color:var(--ink)}
 .proof-item .pi-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:800}
 .modes-note{max-width:760px;margin:-22px auto 34px;text-align:center;font-size:15.5px;line-height:1.5;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);border-radius:16px;padding:14px 20px;position:relative}
@@ -453,11 +458,17 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 .tb-lang.on{background:var(--selbg);color:var(--selfg);border-color:transparent}
 .trybox-tensewrap{margin:0 0 16px}
 .trybox-tensewrap[hidden]{display:none}
-.trybox-tenses{display:flex;flex-wrap:wrap;gap:6px}
 .tb-tlabel{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
-.tb-tchip{font-family:var(--display);font-weight:700;font-size:12.5px;padding:6px 12px;border-radius:999px;background:var(--surface-2);color:var(--muted);border:1px solid var(--border);cursor:pointer;transition:transform .12s,border-color .12s}
-.tb-tchip:hover{transform:translateY(-1px);border-color:var(--ink)}
-.tb-tchip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tb-tdd{position:relative;max-width:300px}
+.tb-tdd-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;font-family:var(--display);font-weight:700;font-size:14.5px;color:var(--ink);background:var(--surface-2);border:1.5px solid var(--border);border-radius:13px;padding:11px 14px;cursor:pointer;transition:border-color .15s}
+.tb-tdd-btn:hover{border-color:var(--ink)}
+.tb-tdd-caret{width:18px;height:18px;opacity:.6;flex:none;transition:transform .2s}
+.tb-tdd.open .tb-tdd-caret{transform:rotate(180deg)}
+.tb-tdd-menu{position:absolute;top:calc(100% + 6px);left:0;right:0;max-height:280px;overflow:auto;list-style:none;margin:0;padding:6px;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);z-index:40;display:none}
+.tb-tdd.open .tb-tdd-menu{display:block;animation:revealUp .18s cubic-bezier(.2,.7,.2,1)}
+.tb-tdd-menu li{font-family:var(--display);font-weight:600;font-size:14.5px;color:var(--ink);padding:10px 12px;border-radius:9px;cursor:pointer}
+.tb-tdd-menu li:hover{background:var(--surface-2)}
+.tb-tdd-menu li[aria-selected="true"]{background:var(--selbg);color:var(--selfg)}
 .trybox-form{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
 .trybox-form input{flex:1 1 240px;min-width:0;font-family:var(--display);font-size:17px;font-weight:600;padding:14px 18px;border-radius:14px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--ink)}
 .trybox-form input:focus{outline:none;border-color:var(--ink);background:var(--surface)}
@@ -542,7 +553,10 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
       </form>
       <div class="trybox-tensewrap" id="tbTenseWrap" hidden>
         <span class="tb-tlabel" data-i18n="trybox.tense">Zeitform wählen</span>
-        <div class="trybox-tenses" id="tbTenses" role="tablist" aria-label="Zeitform"></div>
+        <div class="tb-tdd" id="tbTdd">
+          <button type="button" class="tb-tdd-btn" id="tbTddBtn" aria-haspopup="listbox" aria-expanded="false"><span class="tb-tdd-cur" id="tbTddCur"></span><svg class="tb-tdd-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <ul class="tb-tdd-menu" id="tbTddMenu" role="listbox"></ul>
+        </div>
       </div>
       <div id="tbOut" class="trybox-out" aria-live="polite"></div>
       </div>
@@ -711,9 +725,10 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         </div>
         <div class="result-card reveal" data-d="3">
           <span class="result-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
-          <p data-i18n="res.c">Aus passivem Verstehen wird aktives Sprechen — in 5 Sprachen, über deine eigenen Themen.</p>
+          <p data-i18n="res.c">Aus passivem Verstehen wird aktives Sprechen — über deine eigenen Themen.</p>
         </div>
       </div>
+      <p class="result-how reveal" data-i18n="res.how"><strong>Warum das funktioniert:</strong> Du erkennst die Formen nicht nur wieder — du rufst sie aktiv ab: konjugieren in echten Sätzen, im Tipp-Quiz in beide Richtungen übersetzen (Mutter- ↔ Lernsprache) und laut sprechen. Und mit deiner eigenen <strong>Challenge</strong> — Tagesziel und feste Verbliste — bleibst du dran und kommst schneller voran, bis die Formen im Gespräch von allein kommen.</p>
       <div class="reveal result-cta" style="text-align:center"><a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l" data-i18n="res.cta">Kostenlos starten — und dranbleiben</span></a></div>
     </div>
   </section>
@@ -725,7 +740,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         <h2 data-i18n="proof.h2">Echtes Feedback aus der App.</h2>
         <div class="proof-sum" id="lpSum" hidden><span class="proof-stars" id="lpStars">★★★★★</span><span class="proof-avg" id="lpAvg"></span><span class="proof-cnt" id="lpCnt"></span></div>
       </div>
-      <div class="proof-grid notranslate" id="lpReviews" translate="no"></div>
+      <div class="proof-marq notranslate" translate="no"><div class="proof-track" id="lpReviews"></div></div>
       <div class="reveal proof-foot" style="text-align:center"><a class="btn btn-ghost" href="/bewertungen/" data-i18n="proof.all">Alle Bewertungen ansehen →</a></div>
     </div>
   </section>
@@ -939,7 +954,7 @@ document.addEventListener("DOMContentLoaded", function(){
   function stars(n){n=Math.max(0,Math.min(5,n|0));return"★★★★★".slice(0,n)+"☆☆☆☆☆".slice(0,5-n);}
   function lang(){return(document.documentElement.lang||"de").slice(0,2);}
   function when(iso){try{return new Date(iso).toLocaleDateString((lang()==="en"?"en-GB":lang()+"-"+lang().toUpperCase()));}catch(e){return"";}}
-  db.from("reviews").select("name,stars,body,created_at").gte("stars",4).not("body","is",null).order("created_at",{ascending:false}).limit(6).then(function(res){
+  db.from("reviews").select("name,stars,body,created_at").gte("stars",4).not("body","is",null).order("created_at",{ascending:false}).limit(12).then(function(res){
     var rows=(res&&res.data)||[];
     rows=rows.filter(function(r){return r.body&&String(r.body).trim().length>2;});
     if(!rows.length) return; // nichts anzeigen, wenn kein echtes Feedback
@@ -956,8 +971,7 @@ document.addEventListener("DOMContentLoaded", function(){
         if(sumBox) sumBox.hidden=false;
       }
     });
-    grid.innerHTML="";
-    rows.forEach(function(r,i){
+    function card(r,i){
       var col=COLORS[i%COLORS.length];
       var nm=(r.name||"").trim()||"Anonym";
       var el=document.createElement("div");
@@ -965,10 +979,17 @@ document.addEventListener("DOMContentLoaded", function(){
       el.innerHTML='<div class="pi-top"><span class="pi-stars">'+stars(r.stars)+'</span><span class="pi-when">'+esc(when(r.created_at))+'</span></div>'+
         '<p class="pi-body">'+esc(r.body)+'</p>'+
         '<div class="pi-foot"><span class="pi-av" style="background:'+col+'">'+esc(ini(nm))+'</span><span>'+esc(nm)+'</span></div>';
-      grid.appendChild(el);
-    });
+      return el;
+    }
+    // Genug Karten für ein volles Band: Basisliste ggf. wiederholen, dann fürs nahtlose Looping verdoppeln.
+    var seq=rows.slice();
+    while(seq.length<6){ seq=seq.concat(rows); }
+    grid.innerHTML="";
+    for(var pass=0;pass<2;pass++){
+      seq.forEach(function(r,i){ var c=card(r,i); if(pass===1) c.setAttribute("aria-hidden","true"); grid.appendChild(c); });
+    }
+    grid.style.animationDuration=Math.max(28, seq.length*7)+"s";
     sec.hidden=false;
-    if(typeof window.__lpReveal==="function") window.__lpReveal();
   }).catch(function(){ /* offline / blockiert: Sektion bleibt versteckt */ });
 });
 </script>
@@ -986,7 +1007,10 @@ document.addEventListener("DOMContentLoaded", function(){
       form=document.getElementById("tbForm"),
       input=document.getElementById("tbInput"),
       tenseWrap=document.getElementById("tbTenseWrap"),
-      tenses=document.getElementById("tbTenses"),
+      tdd=document.getElementById("tbTdd"),
+      tddBtn=document.getElementById("tbTddBtn"),
+      tddCur=document.getElementById("tbTddCur"),
+      tddMenu=document.getElementById("tbTddMenu"),
       out=document.getElementById("tbOut");
   if(!langs||!form||!input||!out) return;
   var cur="es", curTense=null;
@@ -1001,7 +1025,7 @@ document.addEventListener("DOMContentLoaded", function(){
       langs.appendChild(b);
     });
   }
-  // finite tenses only (skip gerund/participle) so the chips show real conjugations
+  // finite tenses only (skip gerund/participle) so the dropdown shows real conjugations
   function finite(r){ return r.tenses.filter(function(t){ return !t.nonFinite && t.forms && t.forms.length>1; }); }
   function pickTense(list){
     var i;
@@ -1009,16 +1033,26 @@ document.addEventListener("DOMContentLoaded", function(){
     for(i=0;i<list.length;i++) if(list[i].id==="present") return list[i];
     return list[0];
   }
-  function tenseChips(list,activeId){
+  function closeTdd(){ if(tdd){ tdd.classList.remove("open"); if(tddBtn) tddBtn.setAttribute("aria-expanded","false"); } }
+  function tenseDD(list,activeId){
     if(tenseWrap) tenseWrap.hidden = list.length<2;
-    if(!tenses) return;
-    tenses.innerHTML="";
+    if(!tdd||!tddMenu||!tddCur) return;
+    var act=null; for(var k=0;k<list.length;k++) if(list[k].id===activeId) act=list[k];
+    tddCur.textContent=(act||list[0]||{}).label||"";
+    tddMenu.innerHTML="";
     list.forEach(function(t){
-      var b=document.createElement("button");
-      b.type="button"; b.className="tb-tchip"+(t.id===activeId?" on":""); b.textContent=t.label;
-      b.addEventListener("click",function(){ curTense=t.id; run(); });
-      tenses.appendChild(b);
+      var li=document.createElement("li");
+      li.setAttribute("role","option");
+      li.setAttribute("aria-selected", t.id===activeId?"true":"false");
+      li.textContent=t.label;
+      li.addEventListener("click",function(){ curTense=t.id; closeTdd(); run(); });
+      tddMenu.appendChild(li);
     });
+  }
+  if(tddBtn){
+    tddBtn.addEventListener("click",function(e){ e.stopPropagation(); var open=tdd.classList.toggle("open"); tddBtn.setAttribute("aria-expanded",open?"true":"false"); });
+    document.addEventListener("click",function(e){ if(tdd&&!tdd.contains(e.target)) closeTdd(); });
+    document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeTdd(); });
   }
   function run(){
     var v=input.value.trim();
@@ -1029,7 +1063,7 @@ document.addEventListener("DOMContentLoaded", function(){
     var r=eng.conjugate(v);
     if(!r||r.error){ out.innerHTML='<div class="tb-err">'+esc((r&&r.error)||"Unbekanntes Verb — probier z. B. hablar, parler, go, werken, gehen.")+'</div>'; return; }
     var list=finite(r), t=pickTense(list), i;
-    tenseChips(list, t.id);
+    tenseDD(list, t.id);
     var rows="";
     for(i=0;i<t.forms.length;i++){
       var f=t.forms[i], irr=t.reg && f!==t.reg[i];
