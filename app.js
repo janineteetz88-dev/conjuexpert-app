@@ -7328,10 +7328,11 @@ function QuizView({
     form.append("file", blob, "audio." + ext);
     const lang2 = (recLang || "").split("-")[0];
     if (lang2) form.append("language", lang2);
-    const res = await fetch("/api/ai", { method: "POST", body: form });
-    if (!res.ok) throw new Error("http " + res.status);
-    const data = await res.json();
-    if (data && data.error) throw new Error(data.error.message || "transcription failed");
+    if (!window.__supa) throw new Error("no backend");
+    // Transkription über die Supabase-Edge-Function "transcribe" (OpenAI Whisper).
+    const { data, error } = await window.__supa.functions.invoke("transcribe", { body: form });
+    if (error) throw new Error(error.message || "transcription failed");
+    if (data && data.error) throw new Error((data.error && data.error.message) || "transcription failed");
     return data && data.text;
   }
   // Blockiertes Mikro: löst die native Erlaubnis-Abfrage des Browsers aus.
