@@ -458,11 +458,17 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 .tb-lang.on{background:var(--selbg);color:var(--selfg);border-color:transparent}
 .trybox-tensewrap{margin:0 0 16px}
 .trybox-tensewrap[hidden]{display:none}
-.trybox-tenses{display:flex;flex-wrap:wrap;gap:6px}
 .tb-tlabel{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
-.tb-tchip{font-family:var(--display);font-weight:700;font-size:12.5px;padding:6px 12px;border-radius:999px;background:var(--surface-2);color:var(--muted);border:1px solid var(--border);cursor:pointer;transition:transform .12s,border-color .12s}
-.tb-tchip:hover{transform:translateY(-1px);border-color:var(--ink)}
-.tb-tchip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tb-tdd{position:relative;max-width:300px}
+.tb-tdd-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;font-family:var(--display);font-weight:700;font-size:14.5px;color:var(--ink);background:var(--surface-2);border:1.5px solid var(--border);border-radius:13px;padding:11px 14px;cursor:pointer;transition:border-color .15s}
+.tb-tdd-btn:hover{border-color:var(--ink)}
+.tb-tdd-caret{width:18px;height:18px;opacity:.6;flex:none;transition:transform .2s}
+.tb-tdd.open .tb-tdd-caret{transform:rotate(180deg)}
+.tb-tdd-menu{position:absolute;top:calc(100% + 6px);left:0;right:0;max-height:280px;overflow:auto;list-style:none;margin:0;padding:6px;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);z-index:40;display:none}
+.tb-tdd.open .tb-tdd-menu{display:block;animation:revealUp .18s cubic-bezier(.2,.7,.2,1)}
+.tb-tdd-menu li{font-family:var(--display);font-weight:600;font-size:14.5px;color:var(--ink);padding:10px 12px;border-radius:9px;cursor:pointer}
+.tb-tdd-menu li:hover{background:var(--surface-2)}
+.tb-tdd-menu li[aria-selected="true"]{background:var(--selbg);color:var(--selfg)}
 .trybox-form{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
 .trybox-form input{flex:1 1 240px;min-width:0;font-family:var(--display);font-size:17px;font-weight:600;padding:14px 18px;border-radius:14px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--ink)}
 .trybox-form input:focus{outline:none;border-color:var(--ink);background:var(--surface)}
@@ -547,7 +553,10 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
       </form>
       <div class="trybox-tensewrap" id="tbTenseWrap" hidden>
         <span class="tb-tlabel" data-i18n="trybox.tense">Zeitform wählen</span>
-        <div class="trybox-tenses" id="tbTenses" role="tablist" aria-label="Zeitform"></div>
+        <div class="tb-tdd" id="tbTdd">
+          <button type="button" class="tb-tdd-btn" id="tbTddBtn" aria-haspopup="listbox" aria-expanded="false"><span class="tb-tdd-cur" id="tbTddCur"></span><svg class="tb-tdd-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <ul class="tb-tdd-menu" id="tbTddMenu" role="listbox"></ul>
+        </div>
       </div>
       <div id="tbOut" class="trybox-out" aria-live="polite"></div>
       </div>
@@ -998,7 +1007,10 @@ document.addEventListener("DOMContentLoaded", function(){
       form=document.getElementById("tbForm"),
       input=document.getElementById("tbInput"),
       tenseWrap=document.getElementById("tbTenseWrap"),
-      tenses=document.getElementById("tbTenses"),
+      tdd=document.getElementById("tbTdd"),
+      tddBtn=document.getElementById("tbTddBtn"),
+      tddCur=document.getElementById("tbTddCur"),
+      tddMenu=document.getElementById("tbTddMenu"),
       out=document.getElementById("tbOut");
   if(!langs||!form||!input||!out) return;
   var cur="es", curTense=null;
@@ -1013,7 +1025,7 @@ document.addEventListener("DOMContentLoaded", function(){
       langs.appendChild(b);
     });
   }
-  // finite tenses only (skip gerund/participle) so the chips show real conjugations
+  // finite tenses only (skip gerund/participle) so the dropdown shows real conjugations
   function finite(r){ return r.tenses.filter(function(t){ return !t.nonFinite && t.forms && t.forms.length>1; }); }
   function pickTense(list){
     var i;
@@ -1021,16 +1033,26 @@ document.addEventListener("DOMContentLoaded", function(){
     for(i=0;i<list.length;i++) if(list[i].id==="present") return list[i];
     return list[0];
   }
-  function tenseChips(list,activeId){
+  function closeTdd(){ if(tdd){ tdd.classList.remove("open"); if(tddBtn) tddBtn.setAttribute("aria-expanded","false"); } }
+  function tenseDD(list,activeId){
     if(tenseWrap) tenseWrap.hidden = list.length<2;
-    if(!tenses) return;
-    tenses.innerHTML="";
+    if(!tdd||!tddMenu||!tddCur) return;
+    var act=null; for(var k=0;k<list.length;k++) if(list[k].id===activeId) act=list[k];
+    tddCur.textContent=(act||list[0]||{}).label||"";
+    tddMenu.innerHTML="";
     list.forEach(function(t){
-      var b=document.createElement("button");
-      b.type="button"; b.className="tb-tchip"+(t.id===activeId?" on":""); b.textContent=t.label;
-      b.addEventListener("click",function(){ curTense=t.id; run(); });
-      tenses.appendChild(b);
+      var li=document.createElement("li");
+      li.setAttribute("role","option");
+      li.setAttribute("aria-selected", t.id===activeId?"true":"false");
+      li.textContent=t.label;
+      li.addEventListener("click",function(){ curTense=t.id; closeTdd(); run(); });
+      tddMenu.appendChild(li);
     });
+  }
+  if(tddBtn){
+    tddBtn.addEventListener("click",function(e){ e.stopPropagation(); var open=tdd.classList.toggle("open"); tddBtn.setAttribute("aria-expanded",open?"true":"false"); });
+    document.addEventListener("click",function(e){ if(tdd&&!tdd.contains(e.target)) closeTdd(); });
+    document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeTdd(); });
   }
   function run(){
     var v=input.value.trim();
@@ -1041,7 +1063,7 @@ document.addEventListener("DOMContentLoaded", function(){
     var r=eng.conjugate(v);
     if(!r||r.error){ out.innerHTML='<div class="tb-err">'+esc((r&&r.error)||"Unbekanntes Verb — probier z. B. hablar, parler, go, werken, gehen.")+'</div>'; return; }
     var list=finite(r), t=pickTense(list), i;
-    tenseChips(list, t.id);
+    tenseDD(list, t.id);
     var rows="";
     for(i=0;i<t.forms.length;i++){
       var f=t.forms[i], irr=t.reg && f!==t.reg[i];
