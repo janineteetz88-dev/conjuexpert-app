@@ -6608,6 +6608,8 @@ function QuizView({
   const recentSentRef = useRef({});
   const recRef = useRef(null);
   const transcriptRef = useRef("");
+  const mediaRecRef = useRef(null); // MediaRecorder für Server-Spracherkennung (Browser ohne Web Speech API)
+  const mediaChunksRef = useRef([]);
   // ---- TEXTE (story) mode ----
   const [texteMode, setTexteMode] = useState("question"); // Texte = Lesen + Verständnisfragen
   const [story, setStory] = useState(null); // null | {loading} | {error} | {sentences:[{t,n}], topic}
@@ -7186,10 +7188,25 @@ function QuizView({
   function listen() {
     if (state !== "idle") return;
     // tap again while recording → stop & evaluate (like sending a voice message)
+    if (mediaRecRef.current) {
+      try {
+        mediaRecRef.current.stop();
+      } catch (e) {}
+      return;
+    }
     if (recRef.current) {
       try {
         recRef.current.stop();
       } catch (e) {}
+      return;
+    }
+    const target = spkMode === "sentence" && sent && sent.t ? sent.t : q.answer;
+    const recLang = spkMode === "sentence" ? window.CONJ[spkTarget].ttsLang : q.ttsLang;
+    // Chrome/Firefox auf iOS unterstützen die Web Speech API nicht → Stimme
+    // aufnehmen und serverseitig transkribieren (gleicher /api/ai-Endpunkt).
+    const _ua = detectUA();
+    if (_ua.iOS && _ua.browser && _ua.browser !== "Safari") {
+      startRecorder(target, recLang);
       return;
     }
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -7197,8 +7214,6 @@ function QuizView({
       setHeard("__nomic__");
       return;
     }
-    const target = spkMode === "sentence" && sent && sent.t ? sent.t : q.answer;
-    const recLang = spkMode === "sentence" ? window.CONJ[spkTarget].ttsLang : q.ttsLang;
     function startSR() {
       const rec = new SR();
       rec.lang = recLang;
@@ -7246,6 +7261,78 @@ function QuizView({
     // getUserMedia) aufgerufen, ist der „user gesture“-Kontext weg und iOS
     // verweigert mit „not-allowed“. Deshalb hier synchron starten.
     startSR();
+  }
+  // Server-Spracherkennung: Audio aufnehmen (funktioniert auch dort, wo die
+  // Web Speech API fehlt, z. B. Chrome auf iOS), dann an /api/ai transkribieren.
+  async function startRecorder(target, recLang) {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === "undefined") {
+      setHeard("__nomic__");
+      return;
+    }
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (e) {
+      setHeard("__denied__");
+      return;
+    }
+    let mime = "";
+    const cands = ["audio/mp4", "audio/webm;codecs=opus", "audio/webm", "audio/mpeg"];
+    for (let i = 0; i < cands.length; i++) {
+      if (typeof MediaRecorder.isTypeSupported === "function" && MediaRecorder.isTypeSupported(cands[i])) { mime = cands[i]; break; }
+    }
+    let rec;
+    try {
+      rec = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+    } catch (e) {
+      stream.getTracks().forEach(t => t.stop());
+      setHeard("__nomic__");
+      return;
+    }
+    mediaChunksRef.current = [];
+    rec.ondataavailable = e => { if (e.data && e.data.size) mediaChunksRef.current.push(e.data); };
+    rec.onstop = async () => {
+      stream.getTracks().forEach(t => t.stop());
+      mediaRecRef.current = null;
+      setListening(false);
+      const type = rec.mimeType || mime || "audio/webm";
+      const blob = new Blob(mediaChunksRef.current, { type: type });
+      mediaChunksRef.current = [];
+      if (!blob.size) { setHeard("__nospeech__"); return; }
+      setHeard("__transcribing__");
+      try {
+        const said = (await transcribeBlob(blob, recLang) || "").trim();
+        if (!said) { setHeard("__nospeech__"); return; }
+        setHeard(said);
+        evaluateSpoken(said, target, recLang);
+      } catch (e) {
+        setHeard("__transcribe_err__");
+      }
+    };
+    mediaRecRef.current = rec;
+    setHeard("");
+    setListening(true);
+    try {
+      rec.start();
+    } catch (e) {
+      stream.getTracks().forEach(t => t.stop());
+      mediaRecRef.current = null;
+      setListening(false);
+      setHeard("__nomic__");
+    }
+  }
+  async function transcribeBlob(blob, recLang) {
+    const t = blob.type || "";
+    const ext = t.indexOf("mp4") >= 0 ? "mp4" : t.indexOf("mpeg") >= 0 ? "mp3" : t.indexOf("wav") >= 0 ? "wav" : "webm";
+    const form = new FormData();
+    form.append("file", blob, "audio." + ext);
+    const lang2 = (recLang || "").split("-")[0];
+    if (lang2) form.append("language", lang2);
+    const res = await fetch("/api/ai", { method: "POST", body: form });
+    if (!res.ok) throw new Error("http " + res.status);
+    const data = await res.json();
+    if (data && data.error) throw new Error(data.error.message || "transcription failed");
+    return data && data.text;
   }
   // Blockiertes Mikro: löst die native Erlaubnis-Abfrage des Browsers aus.
   // Klappt der Prompt (noch nicht gefragt / einmal weggetippt) → direkt weiter aufnehmen.
@@ -9213,7 +9300,11 @@ function QuizView({
       style: { fontSize: "12px", lineHeight: "1.45", opacity: 0.85, fontWeight: 500, maxWidth: "300px" }
     }, micHintText())), heard === "__nospeech__" && /*#__PURE__*/React.createElement("div", {
       className: "feedback no"
-    }, tr("speak_nospeech")), heard && heard.indexOf("__") !== 0 && /*#__PURE__*/React.createElement("div", {
+    }, tr("speak_nospeech")), heard === "__transcribing__" && /*#__PURE__*/React.createElement("div", {
+      className: "heardline"
+    }, ({ de: "\u2026 erkenne deine Aufnahme \u2026", en: "\u2026 transcribing \u2026", es: "\u2026 transcribiendo \u2026", fr: "\u2026 transcription \u2026", nl: "\u2026 herkennen \u2026" })[UILANG] || "\u2026 transcribing \u2026"), heard === "__transcribe_err__" && /*#__PURE__*/React.createElement("div", {
+      className: "feedback no"
+    }, ({ de: "Spracherkennung gerade nicht erreichbar \u2014 bitte nochmal antippen.", en: "Speech service unavailable \u2014 tap to try again.", es: "Servicio de voz no disponible \u2014 toca para reintentar.", fr: "Service vocal indisponible \u2014 retouche pour r\u00E9essayer.", nl: "Spraakdienst niet bereikbaar \u2014 tik opnieuw." })[UILANG] || "Speech service unavailable \u2014 tap to try again."), heard && heard.indexOf("__") !== 0 && /*#__PURE__*/React.createElement("div", {
       className: "heardline"
     }, tr("speak_heard"), " \u201C", heard, "\u201D"), state === "correct" && /*#__PURE__*/React.createElement("div", {
       className: "feedback ok"
