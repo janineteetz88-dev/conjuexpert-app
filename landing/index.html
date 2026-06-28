@@ -214,9 +214,12 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .pain-checks{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:13px}
 .pain-checks li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;font-size:16px;line-height:1.45;color:var(--ink);text-wrap:pretty}
 .pc-x{width:25px;height:25px;border-radius:50%;background:color-mix(in srgb,var(--pink) 14%,transparent);color:var(--pink);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex:none;margin-top:1px}
-.pain-personas{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 20px}
+.pain-personas{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:0 0 20px}
 .pp-lead{font-size:14px;color:var(--muted);font-weight:600;margin-right:4px}
-.pp-chip{font-family:var(--display);font-weight:700;font-size:13.5px;padding:7px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--ink)}
+.pp-chip{display:inline-flex;align-items:center;font-family:var(--display);font-weight:700;font-size:13.5px;padding:8px 15px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--ink);box-shadow:var(--shadow-sm)}
+.ppd{width:9px;height:9px;border-radius:50%;flex:none;margin-right:8px}
+.js .reveal.pop{transform:translateY(8px) scale(.78)}
+.js .reveal.pop.in{transform:none}
 .pain-bridge{margin:0;font-size:16.5px;line-height:1.55;color:var(--muted);text-wrap:pretty}
 .pain-bridge strong{color:var(--ink);font-weight:800}
 /* persona / für wen */
@@ -627,21 +630,21 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
 
   <section class="block pain" id="pain">
     <div class="wrap pain-split">
-      <figure class="pain-fig reveal rv-l"><img src="lifestyle/wortschatz-merken-vokabeln-lernpause-kaffee.jpg" alt="Erwachsene Lernende bei einer Kaffeepause – sie überlegt, wie sie eine Sprache wirklich sprechen lernt" loading="lazy" decoding="async" width="800" height="1132" /></figure>
+      <figure class="pain-fig reveal rv-l"><img src="lifestyle/lernbereich-zeitformen-verben-lernen-laptop.jpg" alt="Erwachsene Lernende mit Laptop – sie will eine Sprache wirklich sprechen lernen" loading="lazy" decoding="async" width="800" height="1132" /></figure>
       <div class="pain-content reveal">
         <span class="sec-tag" data-i18n="pain.tag">Kennst du das?</span>
         <h2 class="pain-h2" data-i18n="pain.h2">Geht's dir beim Sprachenlernen auch so?</h2>
         <ul class="pain-checks">
-          <li><span class="pc-x" aria-hidden="true">✕</span><span data-i18n="pain.a">Du paukst Vokabeln und Regeln — aber im echten Gespräch fällt dir die richtige Form einfach nicht ein.</span></li>
-          <li><span class="pc-x" aria-hidden="true">✕</span><span data-i18n="pain.b">Die Zeitformen kennst du in der Theorie. Beim Sprechen rätst du — und verlierst den Faden.</span></li>
-          <li><span class="pc-x" aria-hidden="true">✕</span><span data-i18n="pain.c">Nach Wochen mit der Lern-App verstehst du viel — frei sprechen tust du trotzdem nicht.</span></li>
+          <li class="reveal" data-d="1"><span class="pc-x" aria-hidden="true">✕</span><span data-i18n="pain.a">Du paukst Vokabeln und Regeln — aber im echten Gespräch fällt dir die richtige Form einfach nicht ein.</span></li>
+          <li class="reveal" data-d="2"><span class="pc-x" aria-hidden="true">✕</span><span data-i18n="pain.b">Die Zeitformen kennst du in der Theorie. Beim Sprechen rätst du — und verlierst den Faden.</span></li>
+          <li class="reveal" data-d="3"><span class="pc-x" aria-hidden="true">✕</span><span data-i18n="pain.c">Nach Wochen mit der Lern-App verstehst du viel — frei sprechen tust du trotzdem nicht.</span></li>
         </ul>
         <div class="pain-personas">
-          <span class="pp-lead" data-i18n="per.lead">Egal warum du übst:</span>
-          <span class="pp-chip" data-i18n="per.1h">Im Job</span>
-          <span class="pp-chip" data-i18n="per.2h">Auf Reisen</span>
-          <span class="pp-chip" data-i18n="per.3h">Neues Leben im Ausland</span>
-          <span class="pp-chip" data-i18n="per.4h">Wieder aktiv werden</span>
+          <span class="pp-lead reveal" data-d="3" data-i18n="per.lead">Egal warum du übst:</span>
+          <span class="pp-chip reveal pop" data-d="4"><span class="ppd" style="background:#ff3b5c"></span><span data-i18n="per.1h">Im Job</span></span>
+          <span class="pp-chip reveal pop" data-d="5"><span class="ppd" style="background:#ff7a18"></span><span data-i18n="per.2h">Auf Reisen</span></span>
+          <span class="pp-chip reveal pop" data-d="6"><span class="ppd" style="background:#0a84ff"></span><span data-i18n="per.3h">Neues Leben im Ausland</span></span>
+          <span class="pp-chip reveal pop" data-d="7"><span class="ppd" style="background:#34c759"></span><span data-i18n="per.4h">Wieder aktiv werden</span></span>
         </div>
         <p class="pain-bridge" data-i18n="pain.bridge">Genau hier setzt <strong>ConjuExpert</strong> an: Du konjugierst aktiv in echten Sätzen aus deinen Themen — bis die richtige Form im Gespräch von allein kommt.</p>
       </div>
