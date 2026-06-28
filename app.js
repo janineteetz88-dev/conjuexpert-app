@@ -7241,20 +7241,11 @@ function QuizView({
         setHeard("__nomic__");
       }
     }
-    // Beim Antippen aktiv die Mikrofon-Erlaubnis direkt aus der App anfragen:
-    // getUserMedia bringt die native In-App-Abfrage ("Mikrofon erlauben?") hoch —
-    // genau so funktionierte es beim ersten Mal. Danach Spracherkennung starten.
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-        stream.getTracks().forEach(t => t.stop()); // Erlaubnis geholt, Stream wieder freigeben
-        startSR();
-      }).catch(() => {
-        setListening(false);
-        setHeard("__denied__");
-      });
-    } else {
-      startSR();
-    }
+    // WICHTIG (iOS): Die Spracherkennung MUSS direkt im Tap-Gesten-Handler
+    // starten. Wird rec.start() erst in einem async-Callback (z. B. nach
+    // getUserMedia) aufgerufen, ist der „user gesture“-Kontext weg und iOS
+    // verweigert mit „not-allowed“. Deshalb hier synchron starten.
+    startSR();
   }
   // Blockiertes Mikro: löst die native Erlaubnis-Abfrage des Browsers aus.
   // Klappt der Prompt (noch nicht gefragt / einmal weggetippt) → direkt weiter aufnehmen.
