@@ -578,24 +578,6 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
           <div class="phone"><video autoplay muted loop playsinline poster="app-demo-poster.jpg" aria-label="ConjuExpert in Aktion: ein Verb live konjugieren"><source src="app-demo.mp4" type="video/mp4"></video></div>
         </div>
       </div>
-      <div class="trybox reveal" id="try" data-d="3">
-      <div class="trybox-top">
-        <span class="trybox-eyebrow" data-i18n="trybox.eyebrow">★ Live ausprobieren — ohne Anmeldung, direkt hier</span>
-        <div class="trybox-langs" id="tbLangs" role="tablist" aria-label="Sprache"></div>
-      </div>
-      <form class="trybox-form" id="tbForm">
-        <input id="tbInput" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Verb eingeben — z. B. hablar" data-i18n-ph="trybox.ph" aria-label="Verb eingeben" />
-        <button class="btn btn-primary" type="submit"><span class="g"></span><span class="l" data-i18n="trybox.go">Konjugieren</span></button>
-      </form>
-      <div class="trybox-tensewrap" id="tbTenseWrap" hidden>
-        <span class="tb-tlabel" data-i18n="trybox.tense">Zeitform wählen</span>
-        <div class="tb-tdd" id="tbTdd">
-          <button type="button" class="tb-tdd-btn" id="tbTddBtn" aria-haspopup="listbox" aria-expanded="false"><span class="tb-tdd-cur" id="tbTddCur"></span><svg class="tb-tdd-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-          <ul class="tb-tdd-menu" id="tbTddMenu" role="listbox"></ul>
-        </div>
-      </div>
-      <div id="tbOut" class="trybox-out" aria-live="polite"></div>
-      </div>
     </div>
 
     <div class="wrap"><div class="marquee reveal">
@@ -663,6 +645,26 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
           <h4 data-i18n="func.4h">Gemerkt</h4>
           <p data-i18n="func.4p">Knifflige Verben &amp; dein eigener Wortschatz — gespeichert und gezielt wiederholt.</p>
         </div>
+      </div>
+
+      <!-- Live-Widget: Konjugieren direkt ausprobieren -->
+      <div class="trybox reveal" id="try">
+      <div class="trybox-top">
+        <span class="trybox-eyebrow" data-i18n="trybox.eyebrow">★ Live ausprobieren — ohne Anmeldung, direkt hier</span>
+        <div class="trybox-langs" id="tbLangs" role="tablist" aria-label="Sprache"></div>
+      </div>
+      <form class="trybox-form" id="tbForm">
+        <input id="tbInput" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Verb eingeben — z. B. hablar" data-i18n-ph="trybox.ph" aria-label="Verb eingeben" />
+        <button class="btn btn-primary" type="submit"><span class="g"></span><span class="l" data-i18n="trybox.go">Konjugieren</span></button>
+      </form>
+      <div class="trybox-tensewrap" id="tbTenseWrap" hidden>
+        <span class="tb-tlabel" data-i18n="trybox.tense">Zeitform wählen</span>
+        <div class="tb-tdd" id="tbTdd">
+          <button type="button" class="tb-tdd-btn" id="tbTddBtn" aria-haspopup="listbox" aria-expanded="false"><span class="tb-tdd-cur" id="tbTddCur"></span><svg class="tb-tdd-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <ul class="tb-tdd-menu" id="tbTddMenu" role="listbox"></ul>
+        </div>
+      </div>
+      <div id="tbOut" class="trybox-out" aria-live="polite"></div>
       </div>
 
       <!-- Quizmodi: genauer -->
