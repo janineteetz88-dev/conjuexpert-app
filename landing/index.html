@@ -518,6 +518,10 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 .trybox-tensewrap[hidden]{display:none}
 .tb-tlabel{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
 .tb-tdd{position:relative;max-width:300px}
+.tb-langdd{max-width:none;min-width:150px}
+.tb-langdd .tb-tdd-btn{width:auto;padding:9px 13px;font-size:13.5px}
+.tb-langdd .tb-tdd-menu{left:auto;right:0;min-width:180px}
+.tb-inlabel{display:block;font-family:var(--display);font-weight:700;font-size:13.5px;color:var(--ink);margin:0 0 8px;display:flex;align-items:center;gap:5px}
 .tb-tdd-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;font-family:var(--display);font-weight:700;font-size:14.5px;color:var(--ink);background:var(--surface-2);border:1.5px solid var(--border);border-radius:13px;padding:11px 14px;cursor:pointer;transition:border-color .15s}
 .tb-tdd-btn:hover{border-color:var(--ink)}
 .tb-tdd-caret{width:18px;height:18px;opacity:.6;flex:none;transition:transform .2s}
@@ -699,10 +703,14 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
       <div class="trybox reveal" id="try">
       <div class="trybox-top">
         <span class="trybox-eyebrow" data-i18n="trybox.eyebrow">★ Verb hier ausprobieren — ohne Anmeldung</span>
-        <div class="trybox-langs" id="tbLangs" role="tablist" aria-label="Sprache"></div>
+        <div class="tb-tdd tb-langdd" id="tbLangDd">
+          <button type="button" class="tb-tdd-btn" id="tbLangBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Sprache wählen"><span class="tb-tdd-cur" id="tbLangCur"></span><svg class="tb-tdd-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <ul class="tb-tdd-menu" id="tbLangMenu" role="listbox"></ul>
+        </div>
       </div>
+      <label class="tb-inlabel" for="tbInput" data-i18n="trybox.inlabel">↓ Tippe dein eigenes Verb ein</label>
       <form class="trybox-form" id="tbForm">
-        <input id="tbInput" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Verb eingeben — z. B. hablar" data-i18n-ph="trybox.ph" aria-label="Verb eingeben" />
+        <input id="tbInput" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="z. B. hablar — oder dein Verb" data-i18n-ph="trybox.ph" aria-label="Verb eingeben" />
         <button class="btn btn-primary" type="submit"><span class="g"></span><span class="l" data-i18n="trybox.go">Konjugieren</span></button>
       </form>
       <div class="trybox-tensewrap" id="tbTenseWrap" hidden>
@@ -1124,7 +1132,10 @@ document.addEventListener("DOMContentLoaded", function(){
     {code:"de",label:"🇩🇪 Deutsch",verb:"gehen"}
   ];
   var APP="https://conjuexpert.app/";
-  var langs=document.getElementById("tbLangs"),
+  var langDd=document.getElementById("tbLangDd"),
+      langBtn=document.getElementById("tbLangBtn"),
+      langCur=document.getElementById("tbLangCur"),
+      langMenu=document.getElementById("tbLangMenu"),
       form=document.getElementById("tbForm"),
       input=document.getElementById("tbInput"),
       tenseWrap=document.getElementById("tbTenseWrap"),
@@ -1133,19 +1144,27 @@ document.addEventListener("DOMContentLoaded", function(){
       tddCur=document.getElementById("tbTddCur"),
       tddMenu=document.getElementById("tbTddMenu"),
       out=document.getElementById("tbOut");
-  if(!langs||!form||!input||!out) return;
+  if(!langBtn||!form||!input||!out) return;
   var cur="es", curTense=null;
   function defVerb(c){ for(var i=0;i<LANGS.length;i++) if(LANGS[i].code===c) return LANGS[i].verb; return ""; }
   function esc(s){ return String(s==null?"":s).replace(/[<>&]/g,function(c){return {"<":"&lt;",">":"&gt;","&":"&amp;"}[c];}); }
-  function pills(){
-    langs.innerHTML="";
+  function closeLang(){ if(langDd){ langDd.classList.remove("open"); langBtn.setAttribute("aria-expanded","false"); } }
+  function langDD(){
+    var curL=null,i; for(i=0;i<LANGS.length;i++) if(LANGS[i].code===cur) curL=LANGS[i];
+    langCur.textContent=(curL||LANGS[0]).label;
+    langMenu.innerHTML="";
     LANGS.forEach(function(L){
-      var b=document.createElement("button");
-      b.type="button"; b.className="tb-lang"+(L.code===cur?" on":""); b.textContent=L.label;
-      b.addEventListener("click",function(){ cur=L.code; curTense=null; input.value=defVerb(cur); pills(); run(); input.focus(); });
-      langs.appendChild(b);
+      var li=document.createElement("li");
+      li.setAttribute("role","option");
+      li.setAttribute("aria-selected", L.code===cur?"true":"false");
+      li.textContent=L.label;
+      li.addEventListener("click",function(){ cur=L.code; curTense=null; input.value=defVerb(cur); closeLang(); langDD(); run(); });
+      langMenu.appendChild(li);
     });
   }
+  langBtn.addEventListener("click",function(e){ e.stopPropagation(); var open=langDd.classList.toggle("open"); langBtn.setAttribute("aria-expanded",open?"true":"false"); });
+  document.addEventListener("click",function(e){ if(langDd&&!langDd.contains(e.target)) closeLang(); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeLang(); });
   // finite tenses only (skip gerund/participle) so the dropdown shows real conjugations
   function finite(r){ return r.tenses.filter(function(t){ return !t.nonFinite && t.forms && t.forms.length>1; }); }
   function pickTense(list){
@@ -1197,7 +1216,8 @@ document.addEventListener("DOMContentLoaded", function(){
   }
   form.addEventListener("submit",function(e){ e.preventDefault(); curTense=null; run(); input.blur(); });
   input.addEventListener("input",function(){ curTense=null; run(); });
-  pills(); input.value=defVerb(cur); run();
+  input.addEventListener("focus",function(){ try{ input.select(); }catch(e){} });
+  langDD(); input.value=defVerb(cur); run();
 });
 </script>
 <script>
