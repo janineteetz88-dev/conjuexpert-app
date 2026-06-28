@@ -368,6 +368,8 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 /* pricing */
 .pricing{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .plans{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:840px;margin:0 auto}
+.plans-3{grid-template-columns:repeat(3,1fr);max-width:1000px;align-items:start}
+@media(max-width:860px){.plans-3{grid-template-columns:1fr;max-width:460px}}
 @media(max-width:680px){.plans{grid-template-columns:1fr}}
 .plan{position:relative;border:1.5px solid var(--border);border-radius:26px;padding:32px;transition:transform .3s}
 .plan:hover{transform:translateY(-5px)}
@@ -883,10 +885,10 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
         <h2 data-i18n="pr.h2">Kostenlos starten. Upgraden, wenn du mehr willst.</h2>
         <p data-i18n="pr.p">"Konjugieren" &amp; "Lernen" bleiben gratis. Der Premium-Tarif schaltet "Quiz" &amp; "Merken" in allen 5 Sprachen frei.</p>
       </div>
-      <div class="plans">
+      <div class="plans plans-3">
         <div class="plan reveal">
-          <h3 data-i18n="pr.freeName">genialer Basis-Tarif</h3>
-          <p class="ptag" data-i18n="pr.freeTag">Nachschlagen &amp; verstehen.</p>
+          <h3 data-i18n="pr.freeName">Gast-Tarif</h3>
+          <p class="ptag" data-i18n="pr.freeTag">Ohne Konto — sofort loslegen</p>
           <div class="price"><span class="amt">0 €</span></div>
           <div class="calc" data-i18n="pr.freeCalc">dauerhaft kostenlos</div>
           <ul>
@@ -896,17 +898,30 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
           </ul>
           <a class="btn btn-ghost" href="https://conjuexpert.app" data-i18n="pr.freeBtn">Für immer kostenlos konjugieren</a>
         </div>
-        <div class="plan best reveal" data-d="1">
+        <div class="plan reveal" data-d="1">
+          <h3 data-i18n="pr.stdName">Standard-Tarif</h3>
+          <p class="ptag" data-i18n="pr.stdTag">Mit kostenlosem Konto</p>
+          <div class="price"><span class="amt">0 €</span></div>
+          <div class="calc" data-i18n="pr.stdCalc">kostenlos · Konto in 10 Sek.</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.stdLi1">Alles aus dem Gast-Tarif &amp;</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.stdLi2">Karten-Quiz — 20 Karten/Tag</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.stdLi3">Fortschritt, Serie &amp; Standard-Challenge</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.stdLi4">2 Tage Premium gratis testen</span></li>
+          </ul>
+          <a class="btn btn-ghost" href="https://conjuexpert.app" data-i18n="pr.stdBtn">Kostenloses Konto anlegen</a>
+        </div>
+        <div class="plan best reveal" data-d="2">
           <span class="plan-badge" data-i18n="pr.badge">★ Beliebteste Wahl</span>
           <h3 data-i18n="pr.premName">Premium-Tarif</h3>
-          <p class="ptag" data-i18n="pr.premTag">Account erstellen und „Quizzen &amp; Merken" in allen 5 Sprachen freischalten.</p>
+          <p class="ptag" data-i18n="pr.premTag">Alles unbegrenzt — Quiz, Merken &amp; eigene Challenges.</p>
           <div class="welcome" data-i18n="pr.welcome">★ 2 Monate geschenkt</div>
           <div class="price"><span class="amt">29,99 €</span><span class="per" data-i18n="pr.perYear">/ Jahr</span></div>
           <div class="calc" data-i18n="pr.premCalc">≈ 2,50 €/Monat · 12 Monate zum Preis von 10</div>
           <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi1">Alles aus dem „genialer Basis-Tarif" &amp;</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi2">Quiz — 4 Modi, Sätze, Sprach-Switch</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi3">Merken — Favoriten &amp; Vokabellisten</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi1">Alles aus dem Standard-Tarif &amp;</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi2">Alle 6 Quizmodi · unbegrenzt</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi3">Merken, Wortschatz &amp; eigene Challenges</span></li>
           </ul>
           <a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l" data-i18n="pr.premBtn">Premium-Tarif holen</span></a>
         </div>
