@@ -223,14 +223,17 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .proof-stars{color:var(--gold,#f5a623);font-size:18px;letter-spacing:1px}
 .proof-avg{font-family:var(--display);font-weight:800;font-size:18px;color:var(--ink)}
 .proof-cnt{font-size:14px;color:var(--muted)}
-.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:26px}
-@media(max-width:860px){.proof-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.proof-grid{grid-template-columns:1fr}}
-.proof-item{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 20px 18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:11px}
+.proof-marq{overflow:hidden;margin-bottom:26px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.proof-track{display:flex;gap:18px;width:max-content;animation:revscroll 64s linear infinite}
+.proof-marq:hover .proof-track{animation-play-state:paused}
+@keyframes revscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.proof-track{animation:none}}
+.proof-item{flex:0 0 320px;width:320px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 20px 18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:11px}
+@media(max-width:560px){.proof-item{flex-basis:80vw;width:80vw}}
 .proof-item .pi-top{display:flex;align-items:center;gap:9px}
 .proof-item .pi-stars{color:var(--gold,#f5a623);font-size:14px;letter-spacing:1px}
 .proof-item .pi-when{margin-left:auto;font-size:11.5px;color:var(--muted);font-family:var(--mono)}
-.proof-item .pi-body{margin:0;font-size:14.5px;line-height:1.6;color:#444b58;text-wrap:pretty}
+.proof-item .pi-body{margin:0;font-size:14.5px;line-height:1.6;color:#444b58;text-wrap:pretty;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 .proof-item .pi-foot{display:flex;align-items:center;gap:8px;margin-top:2px;font-size:13px;font-weight:600;color:var(--ink)}
 .proof-item .pi-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:800}
 .modes-note{max-width:760px;margin:-22px auto 34px;text-align:center;font-size:15.5px;line-height:1.5;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);border-radius:16px;padding:14px 20px;position:relative}
@@ -728,7 +731,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         <h2 data-i18n="proof.h2">Echtes Feedback aus der App.</h2>
         <div class="proof-sum" id="lpSum" hidden><span class="proof-stars" id="lpStars">★★★★★</span><span class="proof-avg" id="lpAvg"></span><span class="proof-cnt" id="lpCnt"></span></div>
       </div>
-      <div class="proof-grid notranslate" id="lpReviews" translate="no"></div>
+      <div class="proof-marq notranslate" translate="no"><div class="proof-track" id="lpReviews"></div></div>
       <div class="reveal proof-foot" style="text-align:center"><a class="btn btn-ghost" href="/bewertungen/" data-i18n="proof.all">Alle Bewertungen ansehen →</a></div>
     </div>
   </section>
@@ -942,7 +945,7 @@ document.addEventListener("DOMContentLoaded", function(){
   function stars(n){n=Math.max(0,Math.min(5,n|0));return"★★★★★".slice(0,n)+"☆☆☆☆☆".slice(0,5-n);}
   function lang(){return(document.documentElement.lang||"de").slice(0,2);}
   function when(iso){try{return new Date(iso).toLocaleDateString((lang()==="en"?"en-GB":lang()+"-"+lang().toUpperCase()));}catch(e){return"";}}
-  db.from("reviews").select("name,stars,body,created_at").gte("stars",4).not("body","is",null).order("created_at",{ascending:false}).limit(6).then(function(res){
+  db.from("reviews").select("name,stars,body,created_at").gte("stars",4).not("body","is",null).order("created_at",{ascending:false}).limit(12).then(function(res){
     var rows=(res&&res.data)||[];
     rows=rows.filter(function(r){return r.body&&String(r.body).trim().length>2;});
     if(!rows.length) return; // nichts anzeigen, wenn kein echtes Feedback
@@ -959,8 +962,7 @@ document.addEventListener("DOMContentLoaded", function(){
         if(sumBox) sumBox.hidden=false;
       }
     });
-    grid.innerHTML="";
-    rows.forEach(function(r,i){
+    function card(r,i){
       var col=COLORS[i%COLORS.length];
       var nm=(r.name||"").trim()||"Anonym";
       var el=document.createElement("div");
@@ -968,10 +970,17 @@ document.addEventListener("DOMContentLoaded", function(){
       el.innerHTML='<div class="pi-top"><span class="pi-stars">'+stars(r.stars)+'</span><span class="pi-when">'+esc(when(r.created_at))+'</span></div>'+
         '<p class="pi-body">'+esc(r.body)+'</p>'+
         '<div class="pi-foot"><span class="pi-av" style="background:'+col+'">'+esc(ini(nm))+'</span><span>'+esc(nm)+'</span></div>';
-      grid.appendChild(el);
-    });
+      return el;
+    }
+    // Genug Karten für ein volles Band: Basisliste ggf. wiederholen, dann fürs nahtlose Looping verdoppeln.
+    var seq=rows.slice();
+    while(seq.length<6){ seq=seq.concat(rows); }
+    grid.innerHTML="";
+    for(var pass=0;pass<2;pass++){
+      seq.forEach(function(r,i){ var c=card(r,i); if(pass===1) c.setAttribute("aria-hidden","true"); grid.appendChild(c); });
+    }
+    grid.style.animationDuration=Math.max(28, seq.length*7)+"s";
     sec.hidden=false;
-    if(typeof window.__lpReveal==="function") window.__lpReveal();
   }).catch(function(){ /* offline / blockiert: Sektion bleibt versteckt */ });
 });
 </script>
