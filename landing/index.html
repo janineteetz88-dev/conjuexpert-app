@@ -587,7 +587,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
       </div>
       <div class="hero-shot reveal" data-d="2">
         <div class="phone-wrap">
-          <div class="phone"><video autoplay muted loop playsinline poster="app-demo-poster.jpg" aria-label="ConjuExpert in Aktion: ein Verb live konjugieren"><source src="app-demo.mp4" type="video/mp4"></video></div>
+          <div class="phone"><video id="heroVid" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="app-demo-poster.jpg" aria-label="ConjuExpert in Aktion: ein Verb live konjugieren"><source src="app-demo.mp4" type="video/mp4"></video></div>
         </div>
       </div>
     </div>
@@ -990,6 +990,17 @@ window.addEventListener('scroll',rev,{passive:true});window.addEventListener('re
 })();
 // bestehende Fly-Karten innerhalb der Grids staffeln (Kaskade)
 Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ Array.prototype.forEach.call(g.children,function(c,i){ c.style.animationDelay=(i*0.1)+'s'; }); });
+// Hero-Video robust starten (iOS Safari ignoriert manchmal autoplay übers Attribut)
+(function(){
+  var v=document.getElementById('heroVid'); if(!v) return;
+  v.muted=true; v.defaultMuted=true; v.setAttribute('muted','');
+  function tryPlay(){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); }
+  tryPlay();
+  v.addEventListener('canplay',tryPlay,{once:true});
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') tryPlay(); });
+  ['touchstart','click'].forEach(function(ev){ window.addEventListener(ev,function once(){ tryPlay(); window.removeEventListener(ev,once); },{passive:true}); });
+  v.addEventListener('click',tryPlay); // Tap aufs Mockup startet/weckt das Video
+})();
 </script>
 <script src="/landing/i18n.js"></script>
 <!-- Konjugations-Engines für das Live-Widget -->
