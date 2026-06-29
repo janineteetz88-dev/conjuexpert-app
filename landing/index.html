@@ -883,7 +883,7 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
     </div>
   </section>
 
-  <section class="block proof" id="stimmen" hidden>
+  <section class="block proof" id="stimmen">
     <div class="wrap">
       <div class="sec-head reveal">
         <span class="sec-tag" data-i18n="proof.tag">Was Lernende sagen</span>
@@ -1086,7 +1086,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
 <script defer>
 document.addEventListener("DOMContentLoaded", function(){
-  if(!window.supabase) return;
+  if(!window.supabase){ var s0=document.getElementById("stimmen"); if(s0) s0.hidden=true; return; }
   var sec=document.getElementById("stimmen"),
       grid=document.getElementById("lpReviews");
   if(!sec||!grid) return;
@@ -1101,7 +1101,7 @@ document.addEventListener("DOMContentLoaded", function(){
   db.from("reviews").select("name,stars,body,created_at").gte("stars",4).not("body","is",null).order("created_at",{ascending:false}).limit(12).then(function(res){
     var rows=(res&&res.data)||[];
     rows=rows.filter(function(r){return r.body&&String(r.body).trim().length>2;});
-    if(!rows.length) return; // nichts anzeigen, wenn kein echtes Feedback
+    if(!rows.length){ sec.hidden=true; return; } // nichts anzeigen, wenn kein echtes Feedback
     // Aggregat über ALLE Bewertungen separat holen (für Schnitt + Anzahl)
     db.from("reviews").select("stars").gte("stars",1).then(function(ag){
       var all=(ag&&ag.data)||[],sum=0,c=0;
@@ -1134,7 +1134,7 @@ document.addEventListener("DOMContentLoaded", function(){
     }
     grid.style.animationDuration=Math.max(28, seq.length*7)+"s";
     sec.hidden=false;
-  }).catch(function(){ /* offline / blockiert: Sektion bleibt versteckt */ });
+  }).catch(function(){ sec.hidden=true; /* offline / blockiert: kein leeres Band */ });
 });
 </script>
 <script>
