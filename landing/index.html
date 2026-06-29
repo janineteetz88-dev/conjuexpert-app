@@ -280,15 +280,14 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .mini-h{font-family:var(--display);font-weight:700;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;line-height:1.1;margin:8px 0 0;text-wrap:balance}
 .mini-p{font-size:16px;color:var(--muted);margin:10px 0 0;text-wrap:pretty}
 /* Bento-Grid „Das steckt in der App" */
-.bento-app{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:8px}
-.bento-app .func-card{margin:0}
-@media(max-width:760px){.bento-app{gap:10px}.bento-app .func-card{padding:15px}.func-card h3{font-size:15px}.func-card p{font-size:12.5px;line-height:1.45}.func-ic{width:36px;height:36px;margin-bottom:9px}.func-ic svg{width:19px;height:19px}}
-@media(max-width:430px){.bento-app{gap:9px}}
-.func-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:var(--shadow-sm)}
-.func-ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);color:var(--ink);border:1px solid var(--border);margin-bottom:13px;font-size:21px;line-height:1}
-.func-ic svg{width:22px;height:22px}
+.bento-app{display:grid;grid-template-columns:repeat(4,1fr);gap:30px 22px;margin-bottom:8px}
+.bento-app .func-card{margin:0;background:transparent;border:0;box-shadow:none;padding:0;text-align:center}
+.func-ic{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--surface);color:var(--ink);border:1px solid var(--border);box-shadow:var(--shadow-sm);margin:0 auto 14px;font-size:21px;line-height:1}
+.func-ic svg{width:24px;height:24px}
 .func-card h3{font-family:var(--display);font-weight:800;font-size:17px;margin:0 0 6px;color:var(--ink)}
-.func-card p{margin:0;font-size:14px;line-height:1.55;color:var(--muted);text-wrap:pretty}
+.func-card p{margin:0 auto;max-width:25ch;font-size:13.5px;line-height:1.5;color:var(--muted);text-wrap:pretty}
+@media(max-width:680px){.bento-app{grid-template-columns:repeat(2,1fr);gap:26px 16px}.func-card p{font-size:13px}}
+@media(max-width:380px){.bento-app{grid-template-columns:1fr;gap:22px}}
 .qm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
 .qm-wrap{position:relative;margin-top:22px}
 .qm-wrap::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:96%;height:72%;background:linear-gradient(90deg,#ff5a4d,#ff9e2c,#ffcf3f,#5bbf6a,#3aa6c9,#5b8def,#a874e6);filter:blur(50px);opacity:.3;border-radius:60px;z-index:0;pointer-events:none}
