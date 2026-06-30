@@ -161,11 +161,14 @@ Falls der Artikel-Titel in Notion nicht mit einem Eintrag in `clusters.js` über
 
 ## Änderungen nach Veröffentlichung
 
+> **⚠️ Update-Regel (Dubletten-Schutz):** Ein bestehender Artikel (Status „Update – an Hans" / Slug existiert bereits) wird **überarbeitet — nie neu angelegt**: gleicher Slug, gleicher Tracker-Eintrag, gleicher Entwurf. Die Pipeline rendert nach `/blog/[slug]/index.html`; bei gleichem Slug **überschreibt** sie die Live-Seite (Update), ein abweichender Slug erzeugt eine **Dublette**. Maßgeblich: `.agents/blog-style.md` → „Update-Regel".
+
 | Was | Wie |
 |---|---|
 | Kleiner Fehler im Text | Direkt in der HTML-Datei im Repo bearbeiten |
 | Größere Inhaltliche Änderung | In Notion bearbeiten → Claude oder Hans bitten, HTML neu zu generieren |
 | Titel ändern | In Notion + HTML anpassen (slug bleibt gleich) |
+| Update bestehender Artikel | **Gleichen Slug** behalten → Pipeline überschreibt Live-Seite. Nie neuen Slug/Eintrag/Kopie anlegen (sonst Dublette) |
 | Artikel offline nehmen | In clusters.js `live: true` → `live: false` |
 
 ---
