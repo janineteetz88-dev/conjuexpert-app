@@ -6733,6 +6733,14 @@ function QuizView({
         persist("kunju-quiz-pending-group", null);
         if ((VERB_GROUPS[lang] || []).some(x => x.id === pend)) pickGroup(pend);
       }
+    } else {
+      // Tab verlassen: Vorlesen stoppen, damit das Play/Stop-Feld nicht hängen bleibt.
+      setReading("idle");
+      readIdxRef.current = 0;
+      setReadIdx(0);
+      if (window.speechSynthesis) try {
+        window.speechSynthesis.cancel();
+      } catch (e) {}
     }
   }, [isActive]);
   function toggleTense(id) {
@@ -8528,7 +8536,7 @@ function QuizView({
       setMsg("");
       genSentence(lang);
     }
-  }, tr("spk_next_sentence"))))), mode === "texte" && /*#__PURE__*/React.createElement(React.Fragment, null, reading !== "idle" && story && story.sentences && typeof ReactDOM !== "undefined" && ReactDOM.createPortal(/*#__PURE__*/React.createElement("div", {
+  }, tr("spk_next_sentence"))))), mode === "texte" && /*#__PURE__*/React.createElement(React.Fragment, null, isActive && reading !== "idle" && story && story.sentences && typeof ReactDOM !== "undefined" && ReactDOM.createPortal(/*#__PURE__*/React.createElement("div", {
     style: {
       position: "absolute",
       right: "12px",
