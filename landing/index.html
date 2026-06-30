@@ -17,7 +17,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="ConjuExpert" />
 <meta property="og:title" content="ConjuExpert – Preise, Funktionen &amp; Sprachen" />
-<meta property="og:description" content="Alle Funktionen, Preise und Sprachen von ConjuExpert auf einen Blick. Premium ab 2,99 €/Monat, Premiumfunktionen 24h gratis testen." />
+<meta property="og:description" content="Alle Funktionen, Preise und Sprachen von ConjuExpert auf einen Blick. Premium ab 2,99 €/Monat, Premiumfunktionen 2 Tage gratis testen." />
 <meta property="og:url" content="https://conjuexpert.app/landing/" />
 <meta property="og:image" content="https://conjuexpert.app/landing/og-image.png?v=3" />
 <meta property="og:image:type" content="image/png" />
@@ -41,7 +41,7 @@
       { "@type": "Question", "name": "Welche Sprachen werden unterstützt?", "acceptedAnswer": { "@type": "Answer", "text": "Du kannst spanische Verben, französische Verben, englische Verben, niederländische Verben und deutsche Verben konjugieren — und jederzeit zwischen den Sprachen wechseln." } },
       { "@type": "Question", "name": "Was kostet der Premium-Tarif?", "acceptedAnswer": { "@type": "Answer", "text": "2,99 € pro Monat oder 29,99 € pro Jahr. Die Premium-Funktionen 2 Tage kostenlos testen, jederzeit kündbar." } },
       { "@type": "Question", "name": "Was kann die Premium-Funktion Merken?", "acceptedAnswer": { "@type": "Answer", "text": "Die \"Merken\"-Funktion ist dein Game-Changer! Du kannst Wörter aus den Übungssätzen im Quiz speichern, eigene Vokabellisten bauen und gezielt die Verben wiederholen, die noch nicht sitzen — dein persönlicher Wortschatz wächst und du verinnerlichst diesen spielerisch." } },
-      { "@type": "Question", "name": "Ist ConjuExpert kostenlos?", "acceptedAnswer": { "@type": "Answer", "text": "Ja. Die Funktionen \"Konjugieren\" und \"Lernen\" sind dauerhaft kostenlos. \"Quiz\" und \"Merken\" sind die Premium-Funktionen — du kannst die App 24 Stunden mit allen Features in Ruhe lieben lernen, bevor du dich für die dauerhafte Nutzung entscheidest." } }
+      { "@type": "Question", "name": "Ist ConjuExpert kostenlos?", "acceptedAnswer": { "@type": "Answer", "text": "Ja. Die Funktionen \"Konjugieren\" und \"Lernen\" sind dauerhaft kostenlos. \"Quiz\" und \"Merken\" sind die Premium-Funktionen — du kannst die App 2 Tage mit allen Features in Ruhe lieben lernen, bevor du dich für die dauerhafte Nutzung entscheidest." } }
     ] }
   ]
 }
@@ -138,9 +138,11 @@ header.nav::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height
 h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,5.8vw,64px);line-height:1.02;letter-spacing:-.03em;margin:18px 0 18px;text-wrap:balance}
 .grad-word{background:var(--vivid);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hue 6s linear infinite}
 @keyframes hue{to{background-position:200% 0}}
-.hero p.lead{font-size:clamp(17px,1.7vw,20px);color:var(--muted);max-width:34ch;margin:0 0 30px;text-wrap:pretty}
+.hero p.lead{font-size:clamp(17px,1.7vw,20px);color:#574f3b;font-weight:500;max-width:34ch;margin:0 0 30px;text-wrap:pretty}
 .hero-cta{display:flex;flex-wrap:wrap;gap:13px}
 .hero-meta{margin-top:20px;display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--muted)}
+.rb-mark{position:relative;color:var(--ink);font-weight:700;white-space:nowrap}
+.rb-mark::before{content:"";position:absolute;left:-2px;right:-2px;bottom:0;height:48%;background:var(--brand-rainbow);opacity:.55;border-radius:3px;z-index:-1}
 .hero-meta svg{width:16px;height:16px;color:var(--green)}
 .hero-shot{display:flex;justify-content:center;position:relative;animation:float 6.5s ease-in-out infinite}
 .hero-shot::before{content:"";position:absolute;inset:6% 12%;background:var(--vivid);filter:blur(60px);opacity:.3;border-radius:50%;z-index:0}
@@ -180,7 +182,7 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,5.8vw,64px);l
   .anno-legend .ln{flex:none;display:flex;align-items:center;justify-content:center;width:20px;height:20px;margin-top:1px;border-radius:50%;background:var(--selbg);color:#fff;font:700 11px/1 var(--mono)}
   .hero-shot{flex-direction:column;align-items:center}
 }
-@media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:30px}.hero{padding:48px 0 16px}.hero p.lead{max-width:48ch}.hero-grid #try{order:2}.hero-shot{order:3}}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:34px}.hero{padding:44px 0 24px}.hero p.lead{max-width:48ch}.hero-grid #try{order:2}.hero-shot{order:3}}
 
 /* marquee */
 .marquee{margin:42px 0 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
@@ -192,33 +194,39 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,5.8vw,64px);l
 
 /* sections */
 section.block{padding:96px 0;scroll-margin-top:84px}
+.pain{padding-bottom:36px}
+#features{padding-top:44px}
 .sec-head{max-width:680px;margin:0 auto 50px;text-align:center}
 .cta-foot{margin-top:48px}
-@media(max-width:760px){section.block{padding:46px 0}.sec-head{margin-bottom:28px}.cta-foot{margin-top:30px}.mini-head.qm-sep{margin-top:36px}.pain{padding-bottom:18px}}
+@media(max-width:760px){section.block{padding:60px 0}.sec-head{margin-bottom:34px}.cta-foot{margin-top:36px}.mini-head.qm-sep{margin-top:52px}.pain{padding-bottom:24px}}
 .sec-tag{font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--pink)}
 .sec-head h2{font-family:var(--display);font-weight:700;font-size:clamp(30px,4.2vw,48px);letter-spacing:-.03em;line-height:1.04;margin:12px 0 14px;text-wrap:balance}
 .sec-head p{font-size:17.5px;color:var(--muted);margin:0;text-wrap:pretty}
 
 /* bento */
-/* pain / symptoms */
-.pain-split{display:grid;grid-template-columns:.82fr 1.18fr;gap:42px;align-items:center}
-@media(max-width:820px){.pain-split{grid-template-columns:1fr;gap:22px}}
-.pain-fig{margin:0;border-radius:24px;overflow:hidden;aspect-ratio:4/5;border:2px solid transparent;background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--brand-rainbow) border-box;box-shadow:var(--shadow)}
-.pain-fig img{display:block;width:100%;height:100%;object-fit:cover}
-@media(max-width:820px){.pain-fig{aspect-ratio:16/10;max-height:300px}}
-.pain-content .sec-tag{color:var(--pink)}
-.pain-h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,3.4vw,38px);letter-spacing:-.03em;line-height:1.06;margin:10px 0 18px;text-wrap:balance}
-.pain-checks{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:13px}
-.pain-checks li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;font-size:16px;line-height:1.45;color:var(--ink);text-wrap:pretty}
-.pc-x{width:25px;height:25px;border-radius:50%;background:color-mix(in srgb,var(--pink) 14%,transparent);color:var(--pink);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex:none;margin-top:1px}
-.pain-personas{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:0 0 20px}
-.pp-lead{font-size:14px;color:var(--muted);font-weight:600;margin-right:4px}
-.pp-chip{display:inline-flex;align-items:center;font-family:var(--display);font-weight:700;font-size:13.5px;padding:8px 15px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--ink);box-shadow:var(--shadow-sm)}
-.ppd{width:9px;height:9px;border-radius:50%;flex:none;margin-right:8px}
+/* pain / symptoms — quote cards */
+.pain-head{text-align:center;max-width:740px;margin:0 auto 38px}
+.pain-head .sec-tag{color:var(--pink)}
+.pain-h2{font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,46px);letter-spacing:-.03em;line-height:1.05;margin:12px 0 0;text-wrap:balance}
+.pain-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:36px;align-items:stretch}
+@media(max-width:820px){.pain-cards{grid-template-columns:1fr;gap:14px;max-width:520px;margin-left:auto;margin-right:auto}}
+.pain-card{position:relative;margin:0;padding:30px 24px 26px;border-radius:22px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-sm);overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.pain-card::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--brand-rainbow)}
+.pain-card::after{content:"\201C";position:absolute;top:0;right:18px;font-family:Georgia,serif;font-size:92px;line-height:1;color:var(--ink);opacity:.08;font-weight:700;pointer-events:none}
+@media(hover:hover){.pain-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}}
+.pain-card blockquote{margin:0;font-family:var(--display);font-weight:600;font-size:18px;line-height:1.42;color:var(--ink);letter-spacing:-.01em;position:relative;z-index:1;text-wrap:pretty}
+.pain-bridge-band{text-align:center;max-width:720px;margin:0 auto}
+.pain-lead-h{margin:0 0 14px;font-size:clamp(23px,5.8vw,32px);font-weight:700;line-height:1.16;letter-spacing:-.02em;color:var(--ink);text-wrap:balance}
+.pain-lead-h strong{font-weight:800}
+.pain-arrow{display:block;width:42px;height:52px;margin:0 auto 14px}
+.pain-bridge{max-width:580px;margin:0 auto 24px;font-size:clamp(17px,4.2vw,21px);font-weight:600;line-height:1.5;color:#574f3b;text-wrap:pretty}
+.pain-bridge strong{color:var(--ink);font-weight:800}
+.pain-personas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.pp-chip{display:inline-flex;align-items:center;font-family:var(--display);font-weight:700;font-size:13.5px;padding:9px 16px;border-radius:999px;background:color-mix(in srgb,var(--c,var(--pink)) 7%,var(--surface));border:1px solid color-mix(in srgb,var(--c,var(--pink)) 32%,transparent);color:var(--ink);box-shadow:var(--shadow-sm);transition:transform .2s,box-shadow .2s}
+@media(hover:hover){.pp-chip:hover{transform:translateY(-2px);box-shadow:var(--shadow)}}
+.ppd{width:9px;height:9px;border-radius:50%;flex:none;margin-right:8px;background:var(--c,var(--pink))}
 .js .reveal.pop{transform:translateY(8px) scale(.78)}
 .js .reveal.pop.in{transform:none}
-.pain-bridge{margin:0;font-size:16.5px;line-height:1.55;color:var(--muted);text-wrap:pretty}
-.pain-bridge strong{color:var(--ink);font-weight:800}
 /* persona / für wen */
 .per-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 @media(max-width:620px){.per-grid{grid-template-columns:1fr}}
@@ -228,11 +236,13 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .per-card h4{font-family:var(--display);font-weight:800;font-size:16.5px;margin:0 0 4px;color:var(--ink)}
 .per-card p{margin:0;font-size:13.8px;line-height:1.5;color:var(--muted);text-wrap:pretty}
 /* result / outcome */
-.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:30px}
-@media(max-width:760px){.result-grid{grid-template-columns:1fr;gap:14px}}
-.result-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px 22px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:14px}
-.result-ic{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(26,155,70,.12);color:var(--green)}
-.result-ic svg{width:22px;height:22px}
+.result-grid{display:flex;flex-direction:column;max-width:600px;margin:0 auto 30px;background:var(--surface);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow-sm);overflow:hidden;position:relative}
+.result-grid::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--brand-rainbow)}
+@media(max-width:760px){.result-grid{max-width:none}}
+.result-card{display:flex;flex-direction:row;align-items:center;text-align:left;gap:16px;padding:20px 22px;border-bottom:1px solid var(--border);background:transparent;border-radius:0;box-shadow:none}
+.result-card:last-child{border-bottom:0}
+.result-ic{flex:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--green) 15%,transparent);color:#1a9b46}
+.result-ic svg{width:21px;height:21px}
 .result-card p{margin:0;font-size:16px;line-height:1.5;color:var(--ink);font-weight:600;text-wrap:pretty}
 .result-how{max-width:720px;margin:0 auto 26px;text-align:center;font-size:16px;line-height:1.6;color:var(--muted);text-wrap:pretty}
 .result-how strong{color:var(--ink);font-weight:800}
@@ -267,44 +277,87 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .mini-h{font-family:var(--display);font-weight:700;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;line-height:1.1;margin:8px 0 0;text-wrap:balance}
 .mini-p{font-size:16px;color:var(--muted);margin:10px 0 0;text-wrap:pretty}
 /* Bento-Grid „Das steckt in der App" */
-.bento-app{display:grid;grid-template-columns:repeat(6,1fr);grid-template-areas:"k k k k q q" "l l m m q q";gap:14px;margin-bottom:8px}
-.ba-konj{grid-area:k}.ba-quiz{grid-area:q}.ba-lern{grid-area:l}.ba-merk{grid-area:m}
-.bento-app .func-card{margin:0}
-.ba-konj{display:flex;flex-direction:column;justify-content:center}
-.ba-konj h4{font-size:20px}.ba-konj p{font-size:15px;max-width:46ch}
-.ba-quiz{background:linear-gradient(160deg,color-mix(in srgb,var(--ink) 7%,var(--surface)),var(--surface))}
-.ba-quiz .func-ic{background:var(--surface)}
-@media(max-width:760px){.bento-app{grid-template-columns:repeat(2,1fr);grid-template-areas:"k k" "q q" "l m";gap:12px}.ba-konj h4{font-size:18px}}
-@media(max-width:430px){.bento-app{grid-template-columns:1fr;grid-template-areas:"k" "q" "l" "m"}}
-.func-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:var(--shadow-sm)}
-.func-ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);color:var(--ink);border:1px solid var(--border);margin-bottom:13px;font-size:21px;line-height:1}
-.func-ic svg{width:22px;height:22px}
-.func-card h4{font-family:var(--display);font-weight:800;font-size:17px;margin:0 0 6px;color:var(--ink)}
-.func-card p{margin:0;font-size:14px;line-height:1.55;color:var(--muted);text-wrap:pretty}
+.bento-app{display:grid;grid-template-columns:repeat(4,1fr);gap:30px 22px;margin-bottom:8px}
+.bento-app .func-card{margin:0;background:transparent;border:0;box-shadow:none;padding:0;text-align:center}
+.func-ic{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--surface);color:var(--ink);border:1px solid var(--border);box-shadow:var(--shadow-sm);margin:0 auto 14px;font-size:21px;line-height:1}
+.func-ic svg{width:24px;height:24px}
+.func-card h3{font-family:var(--display);font-weight:800;font-size:17px;margin:0 0 6px;color:var(--ink)}
+.func-card p{margin:0 auto;max-width:25ch;font-size:13.5px;line-height:1.5;color:var(--muted);text-wrap:pretty}
+@media(max-width:680px){.bento-app{grid-template-columns:repeat(2,1fr);gap:26px 16px}.func-card p{font-size:13px}}
+@media(max-width:380px){.bento-app{grid-template-columns:1fr;gap:22px}}
 .qm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
+.qm-wrap{position:relative;margin-top:22px}
+.qm-wrap::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:96%;height:72%;background:linear-gradient(90deg,#ff5a4d,#ff9e2c,#ffcf3f,#5bbf6a,#3aa6c9,#5b8def,#a874e6);filter:blur(50px);opacity:.3;border-radius:60px;z-index:0;pointer-events:none}
+.qm-wrap .qm-grid{position:relative;z-index:1}
 @media(max-width:760px){
   .qm-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:12px;padding:2px 0 12px;scrollbar-width:none}
   .qm-grid::-webkit-scrollbar{display:none}
-  .qm-item{flex:0 0 80%;scroll-snap-align:center;min-height:198px}
-  .qm-item h4{font-size:15px}
-  .qm-front p,.qm-back p{font-size:12.7px}
+  .qm-item{flex:0 0 90%;scroll-snap-align:center;min-height:268px}
+  .qm-item h3{font-size:15px}
+  .qm-front p,.qm-back p{font-size:13.6px}
 }
-.qm-item{position:relative;perspective:1100px;min-height:194px;cursor:pointer;background:none;border:0;padding:0;outline:none}
-@media(max-width:760px){.qm-item{min-height:172px}}
+.qm-swipe{display:none}
+@media(max-width:760px){
+  .qm-swipe{display:block;height:6px;border-radius:6px;background:var(--surface-2);box-shadow:inset 0 1px 2px rgba(50,38,12,.12);margin:-4px auto 22px;width:140px;max-width:60%;position:relative;overflow:hidden;cursor:pointer}
+  .qm-swipe-thumb{position:absolute;top:0;bottom:0;left:0;width:40%;border-radius:6px;background:var(--brand-rainbow);transition:left .05s linear}
+}
+.qm-item{position:relative;perspective:1100px;min-height:240px;cursor:pointer;background:none;border:0;padding:0;outline:none}
+@media(max-width:760px){.qm-item{min-height:268px}}
 .qm-flip{position:relative;width:100%;height:100%;min-height:inherit;transition:transform .55s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
 .qm-item.flipped .qm-flip{transform:rotateY(180deg)}
 .qm-item:focus-visible .qm-flip{box-shadow:0 0 0 2px var(--ink)}
-.qm-face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;overflow:auto}
+.qm-face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;overflow:auto}
 .qm-back{transform:rotateY(180deg);background:var(--surface-2)}
 .qm-n{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--pink)}
-.qm-item h4{font-family:var(--display);font-weight:800;font-size:16px;margin:3px 0 5px;color:var(--ink)}
+.qm-item h3{font-family:var(--display);font-weight:800;font-size:16px;margin:3px 0 5px;color:var(--ink)}
 .qm-front p{margin:0;font-size:13.7px;line-height:1.5;color:var(--muted);text-wrap:pretty}
 .qm-why{margin-top:auto;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--pink);padding-top:10px}
 .qm-sci-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pink)}
-.qm-back p{margin:5px 0 0;font-size:13px;line-height:1.5;color:var(--ink);text-wrap:pretty}
-.qm-example{margin-bottom:8px}
-.qm-ex-cap{text-align:center;font-size:14px;color:var(--muted);margin:14px auto 0;max-width:440px;text-wrap:pretty}
+.qm-back p{margin:5px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink);text-wrap:pretty}
+.qm-example{margin:48px 0 8px}
+.qm-phone{max-width:300px;margin:0 auto;background:#0c0e16;border-radius:34px;box-shadow:var(--shadow),0 0 0 7px #0c0e16,0 0 0 9px rgba(255,255,255,.06)}
+.qm-screen{background:var(--bg);border-radius:30px;padding:16px 13px;overflow:hidden}
+.pain-photo{margin:24px auto 0;max-width:400px;border-radius:20px;overflow:hidden;aspect-ratio:4/5;background:var(--img-tile);box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+.pain-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;mix-blend-mode:luminosity;filter:var(--img-filter)}
+.qm-ex-cap{text-align:center;font-size:14px;color:var(--muted);margin:16px auto 0;max-width:440px;text-wrap:pretty}
+.qm-livecta{display:flex;align-items:center;justify-content:center;gap:10px;width:max-content;max-width:100%;margin:0 auto 22px;padding:15px 26px;border-radius:16px;color:var(--selfg);background:linear-gradient(var(--selbg),var(--selbg)) padding-box,var(--brand-rainbow) border-box;border:2px solid transparent;font-size:clamp(15px,4vw,17px);font-weight:700;letter-spacing:-.01em;box-shadow:0 14px 30px -12px rgba(30,22,8,.6);text-align:center;text-wrap:balance;cursor:pointer}
+.qm-livecta .ar{flex:none;transition:transform .25s}
+.qm-livecta:hover .ar{transform:translateX(4px)}
 .qm-ex-cap strong{color:var(--ink);font-weight:700}
+.flipdemo{max-width:440px;margin:0 auto;--lc:#0a84ff;--lcd:#0a6fd6}
+.flipcard{perspective:1300px;cursor:pointer;outline:none}
+.fc-inner{position:relative;min-height:372px;transition:transform .6s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+.flipdemo.flipped .fc-inner{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;background:var(--surface);border-radius:24px;box-shadow:var(--shadow);border:2px solid color-mix(in srgb,var(--lc) 48%,transparent);padding:22px 20px 18px;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.fc-face::before{content:"";position:absolute;top:0;left:0;right:0;height:70px;background:linear-gradient(180deg,color-mix(in srgb,var(--lc) 15%,transparent),transparent);pointer-events:none}
+.fc-back{transform:rotateY(180deg)}
+.qc-asked{font-size:19px;font-weight:700;color:var(--lcd);text-align:center;line-height:1.3;letter-spacing:-.01em}
+.qc-asked b{font-weight:800}
+.qc-div{width:100%;height:1px;background:var(--border);margin:14px 0}
+.qc-tip{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.qc-verb{font-size:42px;font-weight:800;letter-spacing:-.03em;color:var(--ink);margin:8px 0 18px;display:flex;align-items:center;gap:10px;line-height:1}
+.qc-arr{color:var(--lc);font-size:30px}
+.qc-cloze{width:100%;background:var(--surface-2);border-radius:16px;padding:18px 16px;text-align:center}
+.qc-sent{font-size:21px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.qc-gap{color:var(--lcd);border-bottom:2px dotted var(--lc);padding:0 16px;margin:0 3px}
+.qc-sent u{text-decoration:none;color:var(--ink);border-bottom:2px dotted color-mix(in srgb,var(--lc) 75%,transparent)}
+.qc-clozediv{border-top:1px dashed color-mix(in srgb,var(--ink) 22%,transparent);margin:12px 10px}
+.qc-trans{font-size:15px;font-style:italic;color:var(--muted)}
+.qc-pair{font-size:18px;font-weight:700;color:var(--ink);margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px}
+.qc-pair .ar{color:var(--muted)}
+.qc-pair .tg{color:var(--lcd)}
+.qc-flip{margin-top:auto;padding-top:14px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.qc-backtop{display:flex;align-items:center;justify-content:space-between;width:100%;margin-bottom:6px}
+.qc-small{font-size:14px;color:var(--muted);font-weight:600}
+.qc-spk{width:34px;height:34px;border-radius:10px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:15px}
+.qc-cta{display:flex;align-items:center;justify-content:center;width:100%;margin:14px 0 0;height:58px;border:0;border-radius:18px;background:var(--lc);color:#fff;font-family:inherit;font-weight:800;font-size:18px;cursor:pointer;box-shadow:0 14px 30px -12px rgba(10,132,255,.5)}
+.flipdemo.flipped .qc-cta{display:none}
+.qc-actions{display:none;grid-template-columns:1fr 1.1fr;gap:12px;margin:14px 0 0}
+.flipdemo.flipped .qc-actions{display:grid}
+.qc-actions button{height:58px;border-radius:16px;font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.qc-again{background:var(--surface);border:1.5px solid var(--border);color:var(--ink)}
+.qc-got{background:var(--lc);border:0;color:#fff;box-shadow:0 14px 30px -12px rgba(10,132,255,.5)}
+@media(max-width:430px){.qc-verb{font-size:36px}.fc-inner{min-height:392px}.qc-sent{font-size:19px}}
 .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
 .cell{grid-column:span 2;background:var(--surface);border:1px solid var(--border);border-radius:26px;padding:28px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease}
 .cell:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
@@ -328,15 +381,21 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .cell.flexcol .chips{margin-top:auto;padding-top:18px}
 /* showcase cells with screenshots */
 .cell.showcase{display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center}
-.sc-phones{display:flex;align-items:center;gap:16px;background:linear-gradient(155deg,color-mix(in srgb,var(--ink) 9%,var(--surface)),color-mix(in srgb,var(--blue) 7%,var(--surface)));border:1px solid var(--border);border-radius:28px;padding:24px 26px}
+.cell.showcase::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--brand-rainbow)}
+.cell.showcase .chips{gap:9px;margin-top:18px}
+.cell.showcase .chip{font-size:12.5px;font-weight:700;color:var(--ink);background:var(--surface);padding:9px 14px 9px 11px;box-shadow:var(--shadow-sm)}
+.cell.showcase .chip::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brand-rainbow);margin-right:8px;vertical-align:middle}
+.ch-mark{position:relative;white-space:nowrap}
+.ch-mark::after{content:"";position:absolute;left:-2px;right:-2px;bottom:4px;height:12px;background:var(--brand-rainbow);opacity:.85;border-radius:6px;z-index:-1}
+.sc-phones{display:flex;align-items:center;gap:18px;background:transparent;border:0;border-radius:0;padding:0}
 .sc-phone{display:flex;flex-direction:column;align-items:center;gap:11px}
-.sc-phone img{width:188px;height:322px;object-fit:cover;object-position:top;border-radius:30px;background:#0c0e16;box-shadow:var(--shadow),0 0 0 7px #0c0e16,0 0 0 9px rgba(255,255,255,.06);display:block}
+.sc-phone img{width:188px;height:322px;object-fit:cover;object-position:center;border-radius:30px;background:#0c0e16;box-shadow:var(--shadow),0 0 0 7px #0c0e16,0 0 0 9px rgba(255,255,255,.06);display:block}
 .sc-cap{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--muted)}
 .sc-cap .n{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;background:var(--surface-2);border:1px solid var(--border)}
 .sc-cap.a{color:var(--ink)}
 .sc-cap.a .n{background:var(--selbg);border-color:var(--ink);color:#fff}
 .sc-arrow{flex:none;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:18px;box-shadow:var(--shadow-sm)}
-@media(max-width:900px){.cell.showcase{grid-template-columns:1fr}.sc-phones{justify-self:start}}
+@media(max-width:900px){.cell.showcase{grid-template-columns:1fr}.sc-phones{justify-self:center;justify-content:center}}
 @media(max-width:520px){.sc-phones{flex-direction:column}.sc-arrow{transform:rotate(90deg)}.sc-phone img{width:212px;height:362px}}
 .langwrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .langpill{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;background:var(--surface-2);border:1px solid var(--border);padding:8px 13px;border-radius:999px}
@@ -371,10 +430,10 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .plan{position:relative;border:1.5px solid var(--border);border-radius:26px;padding:32px;transition:transform .3s}
 .plan:hover{transform:translateY(-5px)}
 .plan.best{border-color:var(--ink);background:linear-gradient(180deg,color-mix(in srgb,var(--ink) 6%,var(--surface)),var(--surface));box-shadow:0 26px 56px -28px var(--ink)}
-.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-family:var(--display);font-weight:700;font-size:11.5px;color:#fff;background:linear-gradient(95deg,var(--blue),var(--ink));padding:5px 15px;border-radius:999px;white-space:nowrap;box-shadow:var(--shadow-sm)}
+.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-family:var(--display);font-weight:700;font-size:11.5px;color:#fff;background:var(--rb-deep);text-shadow:0 1px 2px rgba(0,0,0,.35);padding:5px 15px;border-radius:999px;white-space:nowrap;box-shadow:var(--shadow-sm)}
 .plan h3{font-family:var(--display);font-weight:700;font-size:21px;margin:0 0 4px}
 .plan .ptag{font-size:14px;color:var(--muted);margin:0 0 18px}
-.welcome{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;font-family:var(--display);font-weight:700;font-size:14.5px;color:#fff;background:var(--vivid);background-size:220% 100%;animation:slide 6s linear infinite;padding:12px 16px;border-radius:14px;margin:0 0 16px;box-shadow:0 14px 30px -12px rgba(70,55,25,.55);text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.welcome{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;font-family:var(--display);font-weight:700;font-size:14.5px;color:var(--green);font-weight:800;background:transparent;background-size:220% 100%;animation:slide 6s linear infinite;padding:12px 16px;border-radius:14px;margin:0 0 16px;box-shadow:0 14px 30px -12px rgba(70,55,25,.55);text-shadow:0 1px 2px rgba(0,0,0,.4)}
 .price{display:flex;align-items:flex-end;gap:6px}
 .price .amt{font-family:var(--display);font-weight:700;font-size:48px;letter-spacing:-.03em;line-height:1}
 .price .per{font-size:15px;color:var(--muted);font-weight:600;padding-bottom:8px}
@@ -391,10 +450,12 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .hl-rows{max-width:940px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
 .hl-row{display:grid;grid-template-columns:1.02fr .98fr;gap:32px;align-items:center}
 .hl-row:nth-child(even) .hl-fig{order:2}
-.hl-fig{margin:0;border-radius:22px;overflow:hidden;aspect-ratio:4/3;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
-.hl-fig img{display:block;width:100%;height:100%;object-fit:cover}
+.hl-fig{margin:0;border-radius:22px;overflow:hidden;aspect-ratio:4/3;box-shadow:var(--shadow-sm);border:1px solid var(--border);background:var(--img-tile)}
+.hl-fig img{display:block;width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:var(--img-filter)}
 .hl-num{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--pink);letter-spacing:.08em}
 .hl-rbody h3{font-family:var(--display);font-weight:800;font-size:clamp(20px,2.6vw,27px);letter-spacing:-.02em;margin:7px 0 9px;line-height:1.1}
+.hl-titlerow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:7px 0 9px}
+.hl-titlerow h3{margin:0}
 .hl-rbody p{margin:0 0 12px;color:var(--muted);font-size:15.5px;line-height:1.55;text-wrap:pretty}
 .hl-tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px}
 .hl-tag.free{color:var(--green);background:color-mix(in srgb,var(--green) 13%,transparent)}
@@ -432,7 +493,8 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .cmp table{width:100%;border-collapse:collapse}
 .cmp th,.cmp td{padding:15px 18px;text-align:left;border-top:1px solid var(--border);font-size:15px;vertical-align:middle}
 .cmp thead th{border-top:0;background:var(--surface-2);font-family:var(--display);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
-.cmp th.c,.cmp td.c{text-align:center;width:92px}
+.cmp th.c,.cmp td.c{text-align:center;width:92px;background:color-mix(in srgb,var(--ink) 2.5%,transparent)}
+.cmp thead th.c{color:var(--ink);font-weight:800}
 .cmp td.c.s,.cmp th.c.s{background:color-mix(in srgb,var(--ink) 3.5%,transparent);width:100px}
 .cmp thead th.c.s{color:var(--ink)}
 .cmp td.c.p,.cmp th.c.p{background:color-mix(in srgb,var(--ink) 8%,transparent);width:112px}
@@ -442,7 +504,7 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .cmp .nu small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
 .cmp .y{color:var(--green);font-weight:700;font-size:17px}
 .cmp .n{color:color-mix(in srgb,var(--muted) 55%,transparent)}
-@media(max-width:560px){.cmp th,.cmp td{padding:11px 7px;font-size:12.5px}.cmp th.c,.cmp td.c{width:50px}.cmp td.c.s,.cmp th.c.s{width:52px}.cmp td.c.p,.cmp th.c.p{width:56px}.cmp td.c .v{font-size:10px}.cmp .nu small{font-size:11px}}
+@media(max-width:560px){.cmp table{table-layout:fixed;width:100%}.cmp th,.cmp td{padding:10px 5px;font-size:12px}.cmp thead th{font-size:11px;text-transform:none;letter-spacing:0;padding:11px 4px}.cmp thead th:first-child{width:40%;font-size:12px}.cmp th.c,.cmp td.c,.cmp th.c.s,.cmp td.c.s,.cmp th.c.p,.cmp td.c.p{width:20%}.cmp td.c .v{font-size:10.5px;line-height:1.2}.cmp .nu small{font-size:11px}.cmp .y{font-size:15px}}
 
 /* CTA band */
 .band{padding:96px 0}
@@ -516,50 +578,14 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 .bt-post .bt-body h3{font-family:var(--headline);font-weight:700;font-size:15px;letter-spacing:-.02em;line-height:1.22;margin:0;text-wrap:balance;color:var(--ink)}
 .bt-post .bt-body p{color:var(--muted);font-size:13px;margin:0;text-wrap:pretty}
 .bt-foot{margin-top:28px;text-align:center}
-/* ── Live-Probier-Widget (Hero) ───────────────────────────── */
-.trybox{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:26px;box-shadow:var(--shadow);padding:24px 26px 26px;margin:34px 0 6px;overflow:hidden;scroll-margin-top:88px}
-.trybox::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--brand-rainbow)}
-.trybox-top{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;justify-content:space-between;margin-bottom:16px}
-.trybox-eyebrow{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.trybox-langs{display:flex;flex-wrap:wrap;gap:7px}
-.tb-lang{font-family:var(--display);font-weight:700;font-size:13px;padding:7px 13px;border-radius:999px;background:var(--surface-2);color:var(--muted);border:1px solid var(--border);cursor:pointer;transition:transform .12s,border-color .12s}
-.tb-lang:hover{transform:translateY(-1px);border-color:var(--ink)}
-.tb-lang.on{background:var(--selbg);color:var(--selfg);border-color:transparent}
-.trybox-tensewrap{margin:0 0 16px}
-.trybox-tensewrap[hidden]{display:none}
-.tb-tlabel{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
-.tb-tdd{position:relative;max-width:300px}
-.tb-langdd{max-width:none;min-width:150px}
-.tb-langdd .tb-tdd-btn{width:auto;padding:9px 13px;font-size:13.5px}
-.tb-langdd .tb-tdd-menu{left:auto;right:0;min-width:180px}
-.tb-inlabel{display:block;font-family:var(--display);font-weight:700;font-size:13.5px;color:var(--ink);margin:0 0 8px;display:flex;align-items:center;gap:5px}
-.tb-tdd-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;font-family:var(--display);font-weight:700;font-size:14.5px;color:var(--ink);background:var(--surface-2);border:1.5px solid var(--border);border-radius:13px;padding:11px 14px;cursor:pointer;transition:border-color .15s}
-.tb-tdd-btn:hover{border-color:var(--ink)}
-.tb-tdd-caret{width:18px;height:18px;opacity:.6;flex:none;transition:transform .2s}
-.tb-tdd.open .tb-tdd-caret{transform:rotate(180deg)}
-.tb-tdd-menu{position:absolute;top:calc(100% + 6px);left:0;right:0;max-height:280px;overflow:auto;list-style:none;margin:0;padding:6px;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);z-index:40;display:none}
-.tb-tdd.open .tb-tdd-menu{display:block;animation:revealUp .18s cubic-bezier(.2,.7,.2,1)}
-.tb-tdd-menu li{font-family:var(--display);font-weight:600;font-size:14.5px;color:var(--ink);padding:10px 12px;border-radius:9px;cursor:pointer}
-.tb-tdd-menu li:hover{background:var(--surface-2)}
-.tb-tdd-menu li[aria-selected="true"]{background:var(--selbg);color:var(--selfg)}
-.trybox-form{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-.trybox-form input{flex:1 1 240px;min-width:0;font-family:var(--display);font-size:17px;font-weight:600;padding:14px 18px;border-radius:14px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--ink)}
-.trybox-form input:focus{outline:none;border-color:var(--ink);background:var(--surface)}
-.trybox-form .btn{padding:14px 24px;font-size:15px}
-.trybox-out{min-height:38px}
-.tb-result{display:grid;grid-template-columns:1fr 1fr;gap:6px 30px;max-width:560px}
-@media(max-width:560px){.tb-result{grid-template-columns:1fr;gap:4px}}
-.tb-head{grid-column:1/-1;display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px;margin-bottom:6px}
-.tb-verb{font-family:var(--display);font-weight:800;font-size:23px;letter-spacing:-.02em}
-.tb-tense{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
-.tb-row{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid var(--border)}
-.tb-pron{color:var(--muted);font-size:14px}
-.tb-form{font-weight:700;font-size:15px;font-family:var(--display)}
-.tb-form.irr{color:#b45309}
-.tb-cta{grid-column:1/-1;margin-top:16px}
-.tb-cta a{display:inline-block;padding:13px 24px;border-radius:14px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35);font-family:var(--display);font-weight:800;font-size:14.5px;background:var(--brand-rainbow);box-shadow:0 12px 26px -12px rgba(60,40,10,.5);transition:transform .14s}
-.tb-cta a:hover{transform:translateY(-1px)}
-.tb-err{color:var(--muted);font-size:14px;padding:6px 0}
+.bt-marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.bt-track{display:flex;gap:16px;width:max-content;animation:btmarq 36s linear infinite}
+.bt-marquee:hover .bt-track{animation-play-state:paused}
+@keyframes btmarq{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.bt-track{animation:none}}
+.bt-card{flex:0 0 290px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:9px;text-decoration:none;min-height:160px}
+.bt-card h3{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.02em;line-height:1.2;margin:0;color:var(--ink);text-wrap:balance}
+.bt-card .bt-meta{margin-top:auto}
 </style>
 <script>document.documentElement.classList.add('js');
 /* Refresh soll immer oben starten (nicht in der Seitenmitte) + alten #try-Anker entfernen */
@@ -571,7 +597,7 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
 
 <header class="nav">
   <div class="wrap nav-in">
-    <a class="brand" href="#top" aria-label="ConjuExpert"><img class="brand-mark" src="/favicon.svg" alt="ConjuExpert" width="32" height="32" /><span class="brand-name">Conju<b>Expert</b></span></a>
+    <a class="brand" href="#top" aria-label="ConjuExpert"><svg class="brand-mark" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#fffdf6"></rect><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"></rect><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"></rect><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"></rect><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"></rect><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"></rect><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"></rect><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"></rect></svg><span class="brand-name">Conju<b>Expert</b></span></a>
     <nav class="nav-links" aria-label="Navigation">
       <a href="#features" data-i18n="nav.features">Funktionen</a>
       <a href="#preise" data-i18n="nav.prices">Preise</a>
@@ -605,13 +631,9 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow reveal"><span class="dot"></span><span data-i18n="hero.eyebrow">Personalisierbarer Konjugationstrainer für 5 Sprachen</span></span>
         <h1 class="reveal" data-d="1" data-i18n="hero.h1">Verben konjugieren, bis sie <span class="grad-word">im Gespräch sitzen</span>.</h1>
-        <p class="lead reveal" data-d="2" data-i18n="hero.lead">Verben konjugieren und wirklich behalten — mit Sätzen aus deinen Lieblingsthemen, in allen Zeitformen und 5 Sprachen. Jetzt starten und alle Funktionen testen.</p>
-        <div class="hero-cta reveal" data-d="3">
-          <a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l" data-i18n="hero.ctaOpen">App kostenlos öffnen</span></a>
-        </div>
-        <p class="hero-meta reveal" data-d="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="hero.meta">Direkt im Browser · installierbar · ohne Anmeldung testen</span></p>
+        <p class="lead reveal" data-d="2" data-i18n="hero.lead">Mach Grammatik zu deinem Hobby: Dein digitaler Konjugations-Coach verbindet Verbentraining mit deinen persönlichen Interessen. Die wichtigsten Zeitformen, 5 Sprachen, null stumpfes Auswendiglernen.</p>
+        <p class="hero-meta reveal" data-d="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="hero.meta"><span class="rb-mark">Direkt im Browser</span> · installierbar · ohne Anmeldung testen</span></p>
       </div>
       <div class="hero-shot reveal rv-r" data-d="2">
         <div class="phone-wrap">
@@ -628,145 +650,167 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
   </section>
 
   <section class="block pain" id="pain">
-    <div class="wrap pain-split">
-      <figure class="pain-fig reveal rv-l"><img src="lifestyle/lernbereich-zeitformen-verben-lernen-laptop.jpg" alt="Erwachsene Lernende mit Laptop – sie will eine Sprache wirklich sprechen lernen" loading="lazy" decoding="async" width="800" height="1132" /></figure>
-      <div class="pain-content reveal">
+    <div class="wrap">
+      <div class="pain-head reveal">
         <span class="sec-tag" data-i18n="pain.tag">Kennst du das?</span>
         <h2 class="pain-h2" data-i18n="pain.h2">Geht's dir beim Sprachenlernen auch so?</h2>
-        <ul class="pain-checks">
-          <li class="reveal" data-d="1"><span class="pc-x" aria-hidden="true">✕</span><span data-i18n="pain.a">Du paukst Vokabeln und Regeln — aber im echten Gespräch fällt dir die richtige Form einfach nicht ein.</span></li>
-          <li class="reveal" data-d="2"><span class="pc-x" aria-hidden="true">✕</span><span data-i18n="pain.b">Die Zeitformen kennst du in der Theorie. Beim Sprechen rätst du — und verlierst den Faden.</span></li>
-          <li class="reveal" data-d="3"><span class="pc-x" aria-hidden="true">✕</span><span data-i18n="pain.c">Nach Wochen mit der Lern-App verstehst du viel — frei sprechen tust du trotzdem nicht.</span></li>
-        </ul>
-        <div class="pain-personas">
-          <span class="pp-chip reveal pop" data-d="4"><span class="ppd" style="background:#ff3b5c"></span><span data-i18n="per.1h">Im Job</span></span>
-          <span class="pp-chip reveal pop" data-d="5"><span class="ppd" style="background:#ff7a18"></span><span data-i18n="per.2h">Auf Reisen</span></span>
-          <span class="pp-chip reveal pop" data-d="6"><span class="ppd" style="background:#0a84ff"></span><span data-i18n="per.3h">Neues Leben im Ausland</span></span>
-          <span class="pp-chip reveal pop" data-d="7"><span class="ppd" style="background:#34c759"></span><span data-i18n="per.4h">Wieder aktiv werden</span></span>
-        </div>
-        <p class="pain-bridge" data-i18n="pain.bridge">Genau hier setzt <strong>ConjuExpert</strong> an: Du konjugierst aktiv in echten Sätzen aus deinen Themen — bis die richtige Form im Gespräch von allein kommt.</p>
+        <p class="mini-p" style="margin-top:10px" data-i18n="pain.sub">Drei typische Situationen — erkennst du dich wieder?</p>
+      </div>
+      <div class="pain-cards">
+        <figure class="pain-card reveal rv-l" data-d="1"><blockquote data-i18n="pain.a">Ich pauke Vokabeln und Regeln — aber im echten Gespräch fällt mir die richtige Form einfach nicht ein.</blockquote></figure>
+        <figure class="pain-card reveal pop" data-d="2"><blockquote data-i18n="pain.b">Die Zeitformen kenne ich in der Theorie. Beim Sprechen rate ich — und verliere den Faden.</blockquote></figure>
+        <figure class="pain-card reveal rv-r" data-d="3"><blockquote data-i18n="pain.c">Nach Wochen mit der Lern-App verstehe ich viel — frei sprechen kann ich trotzdem nicht.</blockquote></figure>
+      </div>
+      <div class="pain-bridge-band reveal" data-d="2">
+        <svg class="pain-arrow" viewBox="0 0 42 52" fill="none" aria-hidden="true"><defs><linearGradient id="painArrowRb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff3b5c"/><stop offset=".33" stop-color="#ffc400"/><stop offset=".66" stop-color="#34c759"/><stop offset="1" stop-color="#0a84ff"/></linearGradient></defs><path d="M21 4 V40 M9 29 L21 43 L33 29" stroke="url(#painArrowRb)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h2 class="pain-lead-h" data-i18n="pain.lead">Genau hier setzt <strong>ConjuExpert</strong> an.</h2>
+        <p class="pain-bridge" data-i18n="pain.bridge">Mit ConjuExpert trainierst du den Wechsel zwischen Verstehen und Sprechen. Dein Schlüssel zum flüssigen Reden: das gezielte Quizzen von deiner Lieblingssprache in deine Muttersprache.</p>
+        <figure class="pain-photo"><img src="lifestyle/sprachen-lernen-entspannt-frau-strand.jpg" alt="Frau lernt entspannt ihre Lieblingssprache und übt mit ConjuExpert Verben zu konjugieren" loading="lazy" decoding="async" /></figure>
       </div>
     </div>
   </section>
 
   <section class="block" id="features">
     <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="sec-tag" data-i18n="feat.tag">So funktioniert's</span>
-        <h2 data-i18n="feat.h2">Verben konjugieren lernen heißt nicht auswendig lernen — sondern verinnerlichen.</h2>
-        <p data-i18n="feat.p">Wissenschaftlich fundiert: Was du mit Themen verknüpfst, die dich interessieren, bleibt schneller hängen. Genau hier setzen wir an.</p>
-      </div>
       <!-- App-Funktionen: was die App kann -->
       <div class="mini-head reveal">
         <span class="mini-tag" data-i18n="func.tag">Das steckt in der App</span>
-        <h3 class="mini-h" data-i18n="func.h">Vier Bereiche — ein flüssiges Lernsystem.</h3>
+        <h2 class="mini-h" data-i18n="func.h">Vier Bereiche — ein flüssiges Lernsystem.</h2>
+        <p class="mini-p">Konjugieren, Quiz, Lernen und Gemerkt greifen nahtlos ineinander.</p>
       </div>
       <div class="bento-app">
         <div class="func-card reveal ba-konj">
-          <span class="func-ic" aria-hidden="true">▦</span>
-          <h4 data-i18n="func.1h">Konjugieren</h4>
+          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M9 4v16M15 4v16"/></svg></span>
+          <h3 data-i18n="func.1h">Konjugieren</h3>
           <p data-i18n="func.1p">Jedes Verb in allen Zeitformen — unregelmäßige Formen farbig markiert, mit Beispielsätzen.</p>
         </div>
         <div class="func-card reveal ba-lern" data-d="2">
-          <span class="func-ic" aria-hidden="true">✦</span>
-          <h4 data-i18n="func.2h">Lernen</h4>
+          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 5a2 2 0 012-2h12v16H6a2 2 0 00-2 2V5z"/><path d="M8 7h7M8 11h6"/></svg></span>
+          <h3 data-i18n="func.2h">Lernen</h3>
           <p data-i18n="func.2p">Dein Spickzettel: Bildung der Zeitformen, Signalwörter &amp; Eselsbrücken — alles griffbereit.</p>
         </div>
         <div class="func-card reveal ba-quiz" data-d="3">
-          <span class="func-ic" aria-hidden="true">◆</span>
-          <h4 data-i18n="func.3h">Quiz</h4>
+          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M12 4L2 9l10 5 10-5-10-5z"/><path d="M6 11.5V16c0 1.2 2.7 2.6 6 2.6s6-1.4 6-2.6v-4.5"/></svg></span>
+          <h3 data-i18n="func.3h">Quiz</h3>
           <p data-i18n="func.3p">Sechs Modi, die dich aktiv abfragen, bis die Formen wirklich sitzen.</p>
         </div>
         <div class="func-card reveal ba-merk" data-d="4">
-          <span class="func-ic" aria-hidden="true">★</span>
-          <h4 data-i18n="func.4h">Gemerkt</h4>
-          <p data-i18n="func.4p">Knifflige Verben &amp; dein eigener Wortschatz — gespeichert und gezielt wiederholt.</p>
+          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M6 4h12v16l-6-4-6 4z"/></svg></span>
+          <h3 data-i18n="func.4h">Gemerkt</h3>
+          <p data-i18n="func.4p">Knifflige Verben und deine eigenen Wortschatzlisten. Lege fest, mit welchen Verben du dich challengen willst.</p>
         </div>
       </div>
 
-      <!-- Live-Widget: Konjugieren direkt ausprobieren -->
-      <div class="trybox reveal" id="try">
-      <div class="trybox-top">
-        <span class="trybox-eyebrow" data-i18n="trybox.eyebrow">★ Verb hier ausprobieren — ohne Anmeldung</span>
-        <div class="tb-tdd tb-langdd" id="tbLangDd">
-          <button type="button" class="tb-tdd-btn" id="tbLangBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Sprache wählen"><span class="tb-tdd-cur" id="tbLangCur"></span><svg class="tb-tdd-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-          <ul class="tb-tdd-menu" id="tbLangMenu" role="listbox"></ul>
-        </div>
-      </div>
-      <label class="tb-inlabel" for="tbInput" data-i18n="trybox.inlabel">↓ Tippe dein eigenes Verb ein</label>
-      <form class="trybox-form" id="tbForm">
-        <input id="tbInput" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="z. B. hablar — oder dein Verb" data-i18n-ph="trybox.ph" aria-label="Verb eingeben" />
-        <button class="btn btn-primary" type="submit"><span class="g"></span><span class="l" data-i18n="trybox.go">Konjugieren</span></button>
-      </form>
-      <div class="trybox-tensewrap" id="tbTenseWrap" hidden>
-        <span class="tb-tlabel" data-i18n="trybox.tense">Zeitform wählen</span>
-        <div class="tb-tdd" id="tbTdd">
-          <button type="button" class="tb-tdd-btn" id="tbTddBtn" aria-haspopup="listbox" aria-expanded="false"><span class="tb-tdd-cur" id="tbTddCur"></span><svg class="tb-tdd-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-          <ul class="tb-tdd-menu" id="tbTddMenu" role="listbox"></ul>
-        </div>
-      </div>
-      <div id="tbOut" class="trybox-out" aria-live="polite"></div>
-      </div>
-
-      <!-- Quizmodi: genauer -->
+<!-- Quizmodi: genauer -->
       <div class="mini-head reveal qm-sep">
         <span class="mini-tag" data-i18n="qm.tag">Die 6 Quizmodi</span>
-        <h3 class="mini-h" data-i18n="qm.h">Sechs Wege, eine Form zu verankern.</h3>
-        <p class="mini-p" data-i18n="qm.p">Jeder Modus trainiert eine andere Fähigkeit — alle nach lernwissenschaftlichen Prinzipien.</p>
+        <h2 class="mini-h" data-i18n="qm.h">Sechs Wege, eine Form zu verankern.</h2>
+        <p class="mini-p" data-i18n="qm.p">Jeder Modus trainiert eine andere Fähigkeit — alle nach lernwissenschaftlichen Prinzipien. Individualisiere dein Training durch die Wahl von Zeitform, Verben und Themen.</p>
       </div>
       <div class="qm-grid">
         <div class="qm-item reveal" tabindex="0" role="button" aria-label="Wissenschaft dahinter"><div class="qm-flip">
-          <div class="qm-face qm-front"><span class="qm-n">01</span><h4 data-i18n="qm.1h">Karten</h4><p data-i18n="qm.1p">Lücke füllen, umdrehen, Lösung im ganzen Satz sehen.</p><span class="qm-why" data-i18n="qm.why">Warum das wirkt ↻</span></div>
+          <div class="qm-face qm-front"><span class="qm-n">01</span><h3 data-i18n="qm.1h">Karten</h3><p data-i18n="qm.1p">Lösung denken, bei Bedarf Tipp holen, umdrehen — Ergebnis sehen. Wörter per Klick merken oder übersetzen.</p><span class="qm-why" data-i18n="qm.why">Warum das wirkt ↻</span></div>
           <div class="qm-face qm-back"><span class="qm-sci-tag" data-i18n="qm.scitag">Wissenschaft</span><p data-i18n="qm.1sci">Aktives Abrufen statt Wiederlesen: Du bildest die Form erst im Kopf und deckst dann auf. Dieses Self-Testing (Retrieval Practice) verankert sie nachweislich tiefer.</p><span class="qm-why" data-i18n="qm.flipback">↩ Zurück</span></div>
         </div></div>
         <div class="qm-item reveal" data-d="2" tabindex="0" role="button" aria-label="Wissenschaft dahinter"><div class="qm-flip">
-          <div class="qm-face qm-front"><span class="qm-n">02</span><h4 data-i18n="qm.2h">Auswahl</h4><p data-i18n="qm.2p">Aus mehreren Formen die richtige antippen.</p><span class="qm-why" data-i18n="qm.why">Warum das wirkt ↻</span></div>
+          <div class="qm-face qm-front"><span class="qm-n">02</span><h3 data-i18n="qm.2h">Auswahl</h3><p data-i18n="qm.2p">Direkt mit Lösungsvorschlägen — ideal, um kurz nach dem Etablieren einer neu gelernten Zeitform Verben zu üben.</p><span class="qm-why" data-i18n="qm.why">Warum das wirkt ↻</span></div>
           <div class="qm-face qm-back"><span class="qm-sci-tag" data-i18n="qm.scitag">Wissenschaft</span><p data-i18n="qm.2sci">Erkennen mit Sofort-Feedback senkt die Hürde und korrigiert Fehler, bevor sie sich festsetzen — ideal für den Einstieg in eine Zeitform.</p><span class="qm-why" data-i18n="qm.flipback">↩ Zurück</span></div>
         </div></div>
         <div class="qm-item reveal" data-d="2" tabindex="0" role="button" aria-label="Wissenschaft dahinter"><div class="qm-flip">
-          <div class="qm-face qm-front"><span class="qm-n">03</span><h4 data-i18n="qm.3h">Speed</h4><p data-i18n="qm.3p">Gegen die Uhr — so viele Formen wie möglich.</p><span class="qm-why" data-i18n="qm.why">Warum das wirkt ↻</span></div>
+          <div class="qm-face qm-front"><span class="qm-n">03</span><h3 data-i18n="qm.3h">Speed</h3><p data-i18n="qm.3p">Gegen die Uhr — so viele Formen wie möglich.</p><span class="qm-why" data-i18n="qm.why">Warum das wirkt ↻</span></div>
           <div class="qm-face qm-back"><span class="qm-sci-tag" data-i18n="qm.scitag">Wissenschaft</span><p data-i18n="qm.3sci">Unter Zeitdruck trainierst du den automatischen Abruf: Die Form muss kommen, bevor du nachdenkst — genau wie im echten Gespräch (Flüssigkeit).</p><span class="qm-why" data-i18n="qm.flipback">↩ Zurück</span></div>
         </div></div>
         <div class="qm-item reveal" data-d="3" tabindex="0" role="button" aria-label="Wissenschaft dahinter"><div class="qm-flip">
-          <div class="qm-face qm-front"><span class="qm-n">04</span><h4 data-i18n="qm.4h">Tippen</h4><p data-i18n="qm.4p">Form selbst eintippen oder ganze Sätze in beide Richtungen übersetzen.</p><span class="qm-why" data-i18n="qm.why">Warum das wirkt ↻</span></div>
+          <div class="qm-face qm-front"><span class="qm-n">04</span><h3 data-i18n="qm.4h">Tippen</h3><p data-i18n="qm.4p">Form selbst eintippen oder ganze Sätze in beide Richtungen übersetzen.</p><span class="qm-why" data-i18n="qm.why">Warum das wirkt ↻</span></div>
           <div class="qm-face qm-back"><span class="qm-sci-tag" data-i18n="qm.scitag">Wissenschaft</span><p data-i18n="qm.4sci">Selbst produzieren — und in beide Richtungen — ist anspruchsvoller als Erkennen und verankert die Form am stärksten (Generierungseffekt).</p><span class="qm-why" data-i18n="qm.flipback">↩ Zurück</span></div>
         </div></div>
         <div class="qm-item reveal" data-d="3" tabindex="0" role="button" aria-label="Wissenschaft dahinter"><div class="qm-flip">
-          <div class="qm-face qm-front"><span class="qm-n">05</span><h4 data-i18n="qm.5h">Sprechen</h4><p data-i18n="qm.5p">Die Form laut sagen — die Spracherkennung prüft sofort.</p><span class="qm-why" data-i18n="qm.why">Warum das wirkt ↻</span></div>
+          <div class="qm-face qm-front"><span class="qm-n">05</span><h3 data-i18n="qm.5h">Sprechen</h3><p data-i18n="qm.5p">Wähle zwischen dem Wort- oder Satz-Modus und sprich entsprechend geforderte Wörter oder Sätze in der vorgegebenen Zeitform.</p><span class="qm-why" data-i18n="qm.why">Warum das wirkt ↻</span></div>
           <div class="qm-face qm-back"><span class="qm-sci-tag" data-i18n="qm.scitag">Wissenschaft</span><p data-i18n="qm.5sci">Lautes Sprechen koppelt Form, Klang und Sprechmotorik. Abruf im Sprech-Kontext überträgt sich am besten aufs echte Sprechen.</p><span class="qm-why" data-i18n="qm.flipback">↩ Zurück</span></div>
         </div></div>
         <div class="qm-item reveal" data-d="4" tabindex="0" role="button" aria-label="Wissenschaft dahinter"><div class="qm-flip">
-          <div class="qm-face qm-front"><span class="qm-n">06</span><h4 data-i18n="qm.6h">Texte</h4><p data-i18n="qm.6p">KI-Geschichte aus deinen Themen — lesen, Verben einsetzen, Fragen beantworten.</p><span class="qm-why" data-i18n="qm.why">Warum das wirkt ↻</span></div>
+          <div class="qm-face qm-front"><span class="qm-n">06</span><h3 data-i18n="qm.6h">Texte</h3><p data-i18n="qm.6p">KI-Geschichte aus deinen Themen — lesen, Verben einsetzen, Fragen beantworten.</p><span class="qm-why" data-i18n="qm.why">Warum das wirkt ↻</span></div>
           <div class="qm-face qm-back"><span class="qm-sci-tag" data-i18n="qm.scitag">Wissenschaft</span><p data-i18n="qm.6sci">Lernen im Kontext deiner Themen verknüpft Bedeutung und Form mit Signalwörtern — das sorgt für tiefere Verarbeitung und besseres Behalten.</p><span class="qm-why" data-i18n="qm.flipback">↩ Zurück</span></div>
         </div></div>
       </div>
+      <div class="qm-swipe" id="qmSwipe" aria-hidden="true"><span class="qm-swipe-thumb" id="qmThumb"></span></div>
+      <script>
+      (function(){
+        var grid=document.querySelector('.qm-grid'), sw=document.getElementById('qmSwipe'), th=document.getElementById('qmThumb');
+        if(!grid||!sw||!th) return;
+        function upd(){
+          var max=grid.scrollWidth-grid.clientWidth;
+          if(max<=2){ sw.style.display='none'; return; }
+          var ratio=grid.clientWidth/grid.scrollWidth;
+          var w=Math.max(18, ratio*100);
+          th.style.width=w+'%';
+          th.style.left=(grid.scrollLeft/max)*(100-w)+'%';
+        }
+        grid.addEventListener('scroll', upd, {passive:true});
+        window.addEventListener('resize', upd);
+        function seek(clientX){
+          var r=sw.getBoundingClientRect();
+          var p=Math.min(1,Math.max(0,(clientX-r.left)/r.width));
+          grid.scrollLeft=p*(grid.scrollWidth-grid.clientWidth);
+        }
+        var drag=false;
+        sw.addEventListener('pointerdown',function(e){drag=true;sw.setPointerCapture(e.pointerId);seek(e.clientX);});
+        sw.addEventListener('pointermove',function(e){if(drag)seek(e.clientX);});
+        sw.addEventListener('pointerup',function(){drag=false;});
+        setTimeout(upd,60); window.addEventListener('load',upd);
+      })();
+      </script>
       <div class="qm-example reveal">
-        <div class="sc-phones">
-          <div class="sc-phone">
-            <img src="screenshots/scr-karten-luecke.png" alt="ConjuExpert Karten-Quiz: niederländischer Lückensatz mit „kopen" – Verb in der richtigen Zeitform konjugieren" />
-            <span class="sc-cap"><span class="n">1</span><span data-i18n="cap.cloze">Lückensatz</span></span>
+        <a class="qm-livecta" href="https://conjuexpert.app">Teste hier das Kartenquiz live aus der App! <span class="ar">→</span></a>
+        <div class="qm-phone"><div class="qm-screen">
+        <div class="flipdemo">
+          <div class="flipcard" role="button" tabindex="0" aria-label="Karte umdrehen" onclick="this.closest('.flipdemo').classList.toggle('flipped')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.closest('.flipdemo').classList.toggle('flipped')}">
+            <div class="fc-inner">
+              <div class="fc-face fc-front">
+                <div class="qc-asked">Asked: <b>Present tense &middot; we</b></div>
+                <div class="qc-div"></div>
+                <div class="qc-tip">&#128161; Tip &#9662;</div>
+                <div class="qc-verb">buy <span class="qc-arr">&#8599;</span></div>
+                <div class="qc-cloze">
+                  <div class="qc-sent">We <span class="qc-gap">&hellip;</span> a new car!</div>
+                  <div class="qc-clozediv"></div>
+                  <div class="qc-trans">Wir kaufen ein Auto!</div>
+                </div>
+                <div class="qc-flip">&#8635; Tap to flip</div>
+              </div>
+              <div class="fc-face fc-back">
+                <div class="qc-backtop"><span class="qc-small">buy &middot; we</span><span class="qc-spk">&#128266;</span></div>
+                <div class="qc-verb">buy</div>
+                <div class="qc-cloze">
+                  <div class="qc-sent">We <u>buy</u> a new car!</div>
+                  <div class="qc-clozediv"></div>
+                  <div class="qc-trans">Wir kaufen ein Auto!</div>
+                </div>
+                <div class="qc-pair">buy <span class="ar">&#8594;</span> <span class="tg">kaufen</span></div>
+              </div>
+            </div>
           </div>
-          <div class="sc-arrow" aria-hidden="true">→</div>
-          <div class="sc-phone">
-            <img src="screenshots/scr-karten-ergebnis.png" alt="ConjuExpert Karten-Quiz: Ergebnis – voller niederländischer Satz mit deutscher Übersetzung" />
-            <span class="sc-cap a"><span class="n">2</span><span data-i18n="cap.result">Ergebnis</span></span>
+          <button class="qc-cta" type="button" onclick="this.closest('.flipdemo').classList.add('flipped')">Tap to flip</button>
+          <div class="qc-actions">
+            <button class="qc-again" type="button" onclick="this.closest('.flipdemo').classList.remove('flipped')">&#8635; Practice again</button>
+            <button class="qc-got" type="button" onclick="this.closest('.flipdemo').classList.remove('flipped')">&#10003; Got it</button>
           </div>
         </div>
-        <p class="qm-ex-cap" data-i18n="qm.excap">Beispiel <strong>Karten-Modus</strong>: Lücke füllen, umdrehen — Lösung im ganzen Satz, zweisprachig erklärt.</p>
+        </div></div>
+        <p class="qm-ex-cap" data-i18n="qm.excap">Beispiel <strong>Karten-Modus</strong>: L&uuml;cke f&uuml;llen, antippen, umdrehen &mdash; L&ouml;sung im ganzen Satz, zweisprachig.</p>
       </div>
 
       <div class="bento">
 
         <div class="cell free full reveal showcase" data-d="2">
           <div>
-            <span class="tier free" data-i18n="ch.tier">CHALLENGE · DRAN BLEIBEN</span>
-            <h3 data-i18n="ch.h3">Werde zum ConjuExpert — mit deiner eigenen Challenge.</h3>
-            <p data-i18n="ch.p">Such dir deine Challenge-Art aus: Wir schlagen dir eine passende vor, du stellst sie ganz individuell ein — Zeitraum, Zeitformen, Verben &amp; Wörter — oder gibst einfach deine Minuten pro Tag vor. Danach begleitet dich ConjuExpert Tag für Tag mit klarem Fortschritt, bis die Formen wirklich sitzen.</p>
+            <h2 data-i18n="ch.h3">Werde zum ConjuExpert — mit deiner eigenen <span class="ch-mark">Challenge</span>.</h2>
+            <p data-i18n="ch.p">Finde die Challenge, die zu dir passt: Nutze unseren smarten Vorschlag, erstelle dein eigenes Workout (Zeitraum, Zeitformen, Verben &amp; Wörter) oder leg einfach deine tägliche Lernzeit fest. ConjuExpert begleitet dich Schritt für Schritt und zeigt dir deinen Fortschritt – für Grammatik, die endlich felsenfest sitzt.</p>
             <div class="chips"><span class="chip" data-i18n="ch.chip1">Vorschlag für dich</span><span class="chip" data-i18n="ch.chip2">Individuell einstellbar</span><span class="chip" data-i18n="ch.chip3">Täglicher Fortschritt</span></div>
           </div>
           <div class="sc-phones">
             <div class="sc-phone">
-              <img src="screenshots/scr-challenge-waehlen.jpg" alt="ConjuExpert Challenge: Challenge-Art wählen – Vorschlag, individuell oder nach Zeit" />
+              <img src="screenshots/scr-challenge-waehlen.jpg" alt="ConjuExpert Challenge: Challenge-Art wählen – Vorschlag, individuell oder nach Zeit" style="object-position:center" />
               <span class="sc-cap"><span class="n">1</span><span data-i18n="cap.chPick">Challenge wählen</span></span>
             </div>
             <div class="sc-arrow" aria-hidden="true">→</div>
@@ -777,7 +821,7 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
           </div>
         </div>
       </div>
-      <div class="reveal cta-foot" style="text-align:center"><a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l" data-i18n="feat.cta">24h gratis Premiumfunktionen testen</span></a></div>
+      <div class="reveal cta-foot" style="text-align:center"><a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l" data-i18n="feat.cta">Ich will die App testen!</span></a></div>
     </div>
   </section>
 
@@ -788,19 +832,19 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
       <div class="hl-rows">
         <div class="hl-row reveal">
           <figure class="hl-fig"><img src="lifestyle/sprach-switching-mehrsprachig-lernen-mann.jpg" alt="Mann lernt mehrsprachig und wechselt zwischen Mutter- und Fremdsprache mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure>
-          <div class="hl-rbody"><span class="hl-num">01</span><h3 data-i18n="hl1.h3">Sprach-Switching</h3><p data-i18n="hl1.p">Du wechselst ständig zwischen Mutter- und Fremdsprache und verknüpfst Bedeutung mit der richtigen Zeitform — aktiv statt passiv.</p><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div>
+          <div class="hl-rbody"><span class="hl-num">01</span><div class="hl-titlerow"><h3 data-i18n="hl1.h3">Sprach-Switching</h3><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div><p data-i18n="hl1.p">Du wechselst ständig zwischen Mutter- und Fremdsprache und verknüpfst Bedeutung mit der richtigen Zeitform — aktiv statt passiv.</p></div>
         </div>
         <div class="hl-row reveal">
           <figure class="hl-fig"><img src="lifestyle/kontext-signalwoerter-muster-erkennen.jpg" alt="Muster und Signalwörter erkennen – Verben im Kontext lernen mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure>
-          <div class="hl-rbody"><span class="hl-num">02</span><h3 data-i18n="hl2.h3">Kontext &amp; Signalwörter</h3><p data-i18n="hl2.p">Jede Form erscheint im echten Satz mit Signalwörtern. Dein Gehirn erkennt das Muster sofort — ohne Regeln zu pauken.</p><span class="hl-tag free" data-i18n="tag.free">KOSTENLOS</span></div>
+          <div class="hl-rbody"><span class="hl-num">02</span><div class="hl-titlerow"><h3 data-i18n="hl2.h3">Kontext &amp; Signalwörter</h3><span class="hl-tag free" data-i18n="tag.free">KOSTENLOS</span></div><p data-i18n="hl2.p">Du siehst jede Form in einem echten Beispielsatz – samt der Signalwörter, die sie auslösen (z. B. „gestern" → Vergangenheit). So merkst du dir, wann welche Zeitform passt, ohne Grammatikregeln zu pauken.</p></div>
         </div>
         <div class="hl-row reveal">
           <figure class="hl-fig"><img src="lifestyle/adaptiv-niveau-verben-ueben-frau.jpg" alt="Frau übt adaptiv Verben auf ihrem Niveau mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure>
-          <div class="hl-rbody"><span class="hl-num">03</span><h3 data-i18n="hl3.h3">Adaptiv ans Niveau</h3><p data-i18n="hl3.p">Jede Runde passt sich an: du trainierst genau die Fehler aus der letzten Runde. Dein Trainer weiß, welcher Wortschatz unter „gemerkt" gespeichert ist, und ruft ihn immer wieder auf.</p><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div>
+          <div class="hl-rbody"><span class="hl-num">03</span><div class="hl-titlerow"><h3 data-i18n="hl3.h3">Adaptiv ans Niveau</h3><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div><p data-i18n="hl3.p">Jede Runde passt sich an: du trainierst genau die Fehler aus der letzten Runde. Dein Trainer weiß, welcher Wortschatz unter „gemerkt" gespeichert ist, und ruft ihn immer wieder auf.</p></div>
         </div>
         <div class="hl-row reveal">
           <figure class="hl-fig"><img src="lifestyle/merken-vokabeln-favoriten-kopfhoerer.jpg" alt="Knifflige Verben merken und als Favoriten speichern mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure>
-          <div class="hl-rbody"><span class="hl-num">04</span><h3 data-i18n="hl4.h3">Merken</h3><p data-i18n="hl4.p">Speichere knifflige Verben als Favoriten, baue eigene Vokabellisten und lass dir mit „Muss ich noch lernen" gezielt die Lücken abfragen.</p><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div>
+          <div class="hl-rbody"><span class="hl-num">04</span><div class="hl-titlerow"><h3 data-i18n="hl4.h3">Merken</h3><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div><p data-i18n="hl4.p">Speichere knifflige Verben als Favoriten, baue eigene Vokabellisten und lass dir mit „Muss ich noch lernen" gezielt die Lücken abfragen.</p></div>
         </div>
       </div>
     </div>
@@ -810,8 +854,9 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
     <div class="wrap">
       <div class="sec-head reveal">
         <span class="sec-tag" data-i18n="res.tag">Dein Ergebnis</span>
-        <h2 data-i18n="res.h2">Das Ergebnis: Die Formen sitzen — und du sprichst einfach.</h2>
+        <h2 data-i18n="res.h2">Das Ergebnis: Die Formen sitzen — und ein Gespräch fällt dir leicht.</h2>
         <p data-i18n="res.p">Aus „verstehen" wird „können". Genau das erzeugt ConjuExpert.</p>
+        <p class="result-how" data-i18n="res.how"><strong>Warum das funktioniert:</strong> Du erkennst die Formen nicht nur wieder — du rufst sie aktiv ab: konjugieren in echten Sätzen, im Tipp-Quiz in beide Richtungen übersetzen (Mutter- ↔ Lernsprache) und laut sprechen. Und mit deiner eigenen <strong>Challenge</strong> — Tagesziel und feste Verbliste — bleibst du dran und kommst schneller voran, bis die Formen im Gespräch von allein kommen.</p>
       </div>
       <div class="result-grid">
         <div class="result-card reveal">
@@ -827,16 +872,16 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
           <p data-i18n="res.c">Aus passivem Verstehen wird aktives Sprechen — über deine eigenen Themen.</p>
         </div>
       </div>
-      <p class="result-how reveal" data-i18n="res.how"><strong>Warum das funktioniert:</strong> Du erkennst die Formen nicht nur wieder — du rufst sie aktiv ab: konjugieren in echten Sätzen, im Tipp-Quiz in beide Richtungen übersetzen (Mutter- ↔ Lernsprache) und laut sprechen. Und mit deiner eigenen <strong>Challenge</strong> — Tagesziel und feste Verbliste — bleibst du dran und kommst schneller voran, bis die Formen im Gespräch von allein kommen.</p>
       <div class="reveal result-cta" style="text-align:center"><a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l" data-i18n="res.cta">Kostenlos starten — und dranbleiben</span></a></div>
     </div>
   </section>
 
-  <section class="block proof" id="stimmen" hidden>
+  <section class="block proof" id="stimmen">
     <div class="wrap">
       <div class="sec-head reveal">
         <span class="sec-tag" data-i18n="proof.tag">Was Lernende sagen</span>
         <h2 data-i18n="proof.h2">Echtes Feedback aus der App.</h2>
+        <p>Echte Stimmen von Lernenden, die endlich frei sprechen.</p>
         <div class="proof-sum" id="lpSum" hidden><span class="proof-stars" id="lpStars">★★★★★</span><span class="proof-avg" id="lpAvg"></span><span class="proof-cnt" id="lpCnt"></span></div>
       </div>
       <div class="proof-marq notranslate" translate="no"><div class="proof-track" id="lpReviews"></div></div>
@@ -855,7 +900,7 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
       <div class="sec-head reveal"><span class="sec-tag" data-i18n="cmp.tag2">Tarife im Vergleich</span><h2 data-i18n="cmp.h2">Was kostenlos ist — und was der Premium-Tarif freischaltet.</h2><p data-i18n="cmp.p">Der Unterschied unseres Angebots der Verben-Konjugier-App auf einen Blick.</p></div>
       <div class="cmp reveal">
         <table>
-          <thead><tr><th style="font-size:15px" data-i18n="cmp.th0">Das bekommst du</th><th class="c" data-i18n="cmp.thGuest">Gast</th><th class="c s" data-i18n="cmp.thStd">Standard</th><th class="c p" data-i18n="cmp.thPrem">Premium</th></tr></thead>
+          <thead><tr><th data-i18n="cmp.th0">Das bekommst du</th><th class="c" data-i18n="cmp.thGuest">Gast</th><th class="c s" data-i18n="cmp.thStd">Standard</th><th class="c p" data-i18n="cmp.thPrem">Premium</th></tr></thead>
           <tbody>
             <tr><td class="nu"><span data-i18n="cmp.r1">Alle Zeitformen nachschlagen &amp; konjugieren</span><small data-i18n="cmp.r1s">jede Person, unregelmäßige hervorgehoben</small></td><td class="c y">✓</td><td class="c s y">✓</td><td class="c p y">✓</td></tr>
             <tr><td class="nu"><span data-i18n="cmp.r2">Grammatik verstehen</span><small data-i18n="cmp.r2s">Eselsbrücken, Signalwörter, Beispielsätze</small></td><td class="c y">✓</td><td class="c s y">✓</td><td class="c p y">✓</td></tr>
@@ -928,13 +973,13 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
 
   <section class="block" id="faq">
     <div class="wrap">
-      <div class="sec-head reveal"><span class="sec-tag" data-i18n="faq.tag">FAQ</span><h2 data-i18n="faq.h2">Häufige Fragen</h2></div>
+      <div class="sec-head reveal"><span class="sec-tag" data-i18n="faq.tag">FAQ</span><h2 data-i18n="faq.h2">Häufige Fragen</h2><p>Alles Wichtige zu Funktionen, Preisen und Sprachen.</p></div>
       <div class="faq">
         <details open class="qa fly"><summary><span class="q-no">01</span><span class="q-txt" data-i18n="faq.q1">Was ist das Besondere an ConjuExpert?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a1"><p>Du kennst das Verb. Hast es nachgeschlagen – zehnmal vielleicht. Doch im Gespräch ist es plötzlich weg, und du suchst, während die anderen längst weiterreden.</p><p>ConjuExpert ändert das. Hier schlägst du Verben nicht nur nach, du machst sie zu deinen. Im Quiz trainierst du den blitzschnellen Abruf genau der Form, die gerade gefragt ist: Subjuntivo, 3. Person Singular von „tener" – <em>tenga</em>. Du übst in beide Richtungen, bis die Form da ist, bevor du überhaupt nachdenkst.</p><p>Und dann kommt der schönste Moment: Wenn du im Gespräch mit einem Muttersprachler oder einer Muttersprachlerin bist, fällt dir die richtige konjugierte Zeitform ein, wenn du sie brauchst.</p><p>Mit ConjuExpert verinnerlichst du durch spielerisches Anwenden – insbesondere durch das Lernen im Kontext deiner Lieblingsthemen. Das ist der Unterschied.</p></div></details>
         <details class="qa fly"><summary><span class="q-no">02</span><span class="q-txt" data-i18n="faq.q2">Welche Sprachen werden unterstützt?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a2"><p>Du kannst spanische Verben, französische Verben, englische Verben, niederländische Verben und deutsche Verben konjugieren — und jederzeit zwischen den Sprachen wechseln.</p></div></details>
         <details class="qa fly"><summary><span class="q-no">03</span><span class="q-txt" data-i18n="faq.q3">Was kostet der Premium-Tarif?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a3"><p>2,99 € pro Monat oder 29,99 € pro Jahr. Die Premium-Funktionen kannst du vorher 2 Tage gratis testen — jederzeit kündbar.</p></div></details>
         <details class="qa fly"><summary><span class="q-no">04</span><span class="q-txt" data-i18n="faq.q4">Was kann die Premium-Funktion „Merken"?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a4"><p>Die "Merken"-Funktion ist dein Game-Changer! Du kannst Wörter aus den Übungssätzen im Quiz speichern, eigene Vokabellisten bauen und gezielt die Verben wiederholen, die noch nicht sitzen — dein persönlicher Wortschatz wächst und du verinnerlichst diesen spielerisch.</p></div></details>
-        <details class="qa fly"><summary><span class="q-no">05</span><span class="q-txt" data-i18n="faq.q5">Ist ConjuExpert kostenlos?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a5"><p>Ja. Die Funktionen "Konjugieren" und "Lernen" sind dauerhaft kostenlos. "Quiz" und "Merken" sind die Premium-Funktionen — du kannst die App 24 Stunden mit allen Features in Ruhe lieben lernen, bevor du dich für die dauerhafte Nutzung entscheidest.</p></div></details>
+        <details class="qa fly"><summary><span class="q-no">05</span><span class="q-txt" data-i18n="faq.q5">Ist ConjuExpert kostenlos?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a5"><p>Ja. Die Funktionen "Konjugieren" und "Lernen" sind dauerhaft kostenlos. "Quiz" und "Merken" sind die Premium-Funktionen — du kannst die App 2 Tage mit allen Features in Ruhe lieben lernen, bevor du dich für die dauerhafte Nutzung entscheidest.</p></div></details>
         <details class="qa fly"><summary><span class="q-no">06</span><span class="q-txt" data-i18n="faq.q6">Wie funktioniert die Challenge — und was steckt dahinter?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a6"><p>Eine Challenge ist dein persönlicher Lernplan: Du wählst Zeitraum, Zeitformen und wie viele Verben &amp; Wörter du dir vornimmst — oder gibst einfach deine Minuten pro Tag vor. Daraus rechnet ConjuExpert dein Tagesziel aus.</p><p>Jeden Tag übst du vorrangig deine Challenge-Verben im Quiz. Ein Verb gilt als „sitzt", wenn du es an drei verschiedenen Tagen richtig konjugierst — so wird aus kurzem Merken echtes Langzeitwissen.</p><p>Dahinter stecken zwei bewährte Lernprinzipien: <em>Spaced Repetition</em> (verteiltes Wiederholen über mehrere Tage schlägt einmaliges Pauken) und <em>aktives Abrufen</em> (Retrieval Practice — wer die Form aktiv produziert statt sie nur wiederzuerkennen, behält deutlich mehr). Tagesziel und Serie halten dich mit kleinen, machbaren Schritten dran.</p></div></details>
       </div>
     </div>
@@ -947,50 +992,15 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
         <h2>Verben konjugieren, <span class="grad-word">verständlich erklärt</span>.</h2>
         <p>Grammatik ohne Kopfschmerzen und Lerntipps, die wirklich hängen bleiben - für alle, die Spanisch, Französisch, Englisch, Niederländisch oder Deutsch lernen.</p>
       </div>
-      <div class="bt-grid">
-        <a class="bt-feat fly" href="/blog/unsere-geschichte/" style="animation-delay:.05s">
-          <div class="bt-img" style="background:color-mix(in srgb,#b9956e 42%,var(--surface-2))">
-            <picture><source srcset="/blog/img/hero-es.webp" type="image/webp"><img src="/blog/img/hero-es.png" alt="Lernende mit ConjuExpert auf dem Smartphone" width="400" height="711" loading="lazy" decoding="async"  /></picture>
-            <span class="bt-lngtag">ES</span>
-            <div class="bt-ctx">
-              <div class="bt-ctx-t">Beispiel · Español</div>
-              <div class="bt-ctx-s">Espero que tú <span style="border-bottom:2px solid #ff9f0a;padding:0 10px">&nbsp;&nbsp;&nbsp;</span> hambre. <span style="color:#ff9f0a;font-family:var(--mono);font-weight:700;font-size:.88em">→ tengas</span></div>
-            </div>
-          </div>
-          <div class="bt-body">
-            <span class="bt-cat">Story</span>
-            <h3>Wie ConjuExpert entstand — Urlaub, Kinder und Verbkonjugation</h3>
-            <p>Gran Canaria, drei Kinder und ein frustrierter Urlaub — die echte Geschichte hinter der App, die Verben endlich hängen lässt.</p>
-            <span class="bt-meta">Janine, Gründerin · 6 min</span>
-          </div>
-        </a>
-        <a class="bt-post fly" href="/blog/#grammatik" style="animation-delay:.1s">
-          <div class="bt-thumb">
-            <picture><source srcset="/blog/img/gram-es-1.webp" type="image/webp"><img src="/blog/img/gram-es-1.png" alt="Subjuntivo einfach erklärt" width="116" height="207" loading="lazy" decoding="async"  /></picture>
-            <span class="bt-verb">querer → quiera</span>
-          </div>
-          <div class="bt-body">
-            <span class="bt-cat">Grammatik</span>
-            <h3>Subjuntivo bilden - einfach erklärt</h3>
-            <p>Wann er kommt, wie du ihn bildest, welche Signalwörter ihn auslösen.</p>
-            <span class="bt-meta">ES · 7 min</span>
-          </div>
-        </a>
-        <a class="bt-post fly" href="/blog/#lernen" style="animation-delay:.15s">
-          <div class="bt-thumb">
-            <picture><source srcset="/blog/img/learn-1.webp" type="image/webp"><img src="/blog/img/learn-1.png" alt="7 Tipps Konjugationen lernen" width="116" height="207" loading="lazy" decoding="async"  /></picture>
-            <span class="bt-verb">7 Tipps</span>
-          </div>
-          <div class="bt-body">
-            <span class="bt-cat">Lerntipps</span>
-            <h3>7 Tipps, wie Konjugationen endlich hängen bleiben</h3>
-            <p>Vom Kontext-Lernen bis Spaced Repetition - was die Forschung sagt.</p>
-            <span class="bt-meta">Lernen · 6 min</span>
-          </div>
-        </a>
-      </div>
-      <div class="bt-foot fly" style="animation-delay:.2s">
-        <a class="btn btn-ghost" href="/blog/">Alle Artikel lesen →</a>
+      <div class="bt-marquee">
+        <div class="bt-track">
+          <a class="bt-card" href="/blog/unsere-geschichte/"><span class="bt-cat">Story</span><h3>Wie ConjuExpert entstand — Urlaub, Kinder und Verbkonjugation</h3><span class="bt-meta">Janine, Gründerin · 6 min</span></a>
+          <a class="bt-card" href="/blog/"><span class="bt-cat">Grammatik</span><h3>Subjuntivo bilden — einfach erklärt</h3><span class="bt-meta">ES · 7 min</span></a>
+          <a class="bt-card" href="/blog/"><span class="bt-cat">Lerntipps</span><h3>7 Tipps, wie Konjugationen endlich hängen bleiben</h3><span class="bt-meta">Lernen · 6 min</span></a>
+          <a class="bt-card" aria-hidden="true" tabindex="-1" href="/blog/unsere-geschichte/"><span class="bt-cat">Story</span><h3>Wie ConjuExpert entstand — Urlaub, Kinder und Verbkonjugation</h3><span class="bt-meta">Janine, Gründerin · 6 min</span></a>
+          <a class="bt-card" aria-hidden="true" tabindex="-1" href="/blog/"><span class="bt-cat">Grammatik</span><h3>Subjuntivo bilden — einfach erklärt</h3><span class="bt-meta">ES · 7 min</span></a>
+          <a class="bt-card" aria-hidden="true" tabindex="-1" href="/blog/"><span class="bt-cat">Lerntipps</span><h3>7 Tipps, wie Konjugationen endlich hängen bleiben</h3><span class="bt-meta">Lernen · 6 min</span></a>
+        </div>
       </div>
     </div>
   </section>
@@ -1013,7 +1023,7 @@ durch deine Lieblingsthemen.</h2>
   <div class="wrap">
     <div class="foot">
       <div>
-        <a class="brand" href="#top"><img class="brand-mark" src="/favicon.svg" alt="ConjuExpert" width="32" height="32" /><span class="brand-name">Conju<b>Expert</b></span></a>
+        <a class="brand" href="#top"><svg class="brand-mark" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#fffdf6"></rect><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"></rect><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"></rect><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"></rect><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"></rect><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"></rect><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"></rect><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"></rect></svg><span class="brand-name">Conju<b>Expert</b></span></a>
         <p style="color:var(--muted);font-size:14.5px;max-width:30ch;margin:14px 0 0" data-i18n="ft.tagline">Der Konjugationstrainer — Quiz, Merken &amp; Lernen.</p>
       </div>
       <div class="links">
@@ -1058,7 +1068,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   v.addEventListener('click',tryPlay); // Tap aufs Mockup startet/weckt das Video
 })();
 </script>
-<script src="/landing/i18n.js?v=20260628a"></script>
+<script src="/landing/i18n.js?v=20260628d"></script>
 <!-- Konjugations-Engines für das Live-Widget -->
 <script src="https://conjuexpert.app/engine/conj-es.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-fr.js" defer></script>
@@ -1069,7 +1079,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
 <script defer>
 document.addEventListener("DOMContentLoaded", function(){
-  if(!window.supabase) return;
+  if(!window.supabase){ var s0=document.getElementById("stimmen"); if(s0) s0.hidden=true; return; }
   var sec=document.getElementById("stimmen"),
       grid=document.getElementById("lpReviews");
   if(!sec||!grid) return;
@@ -1084,7 +1094,7 @@ document.addEventListener("DOMContentLoaded", function(){
   db.from("reviews").select("name,stars,body,created_at").gte("stars",4).not("body","is",null).order("created_at",{ascending:false}).limit(12).then(function(res){
     var rows=(res&&res.data)||[];
     rows=rows.filter(function(r){return r.body&&String(r.body).trim().length>2;});
-    if(!rows.length) return; // nichts anzeigen, wenn kein echtes Feedback
+    if(!rows.length){ sec.hidden=true; return; } // nichts anzeigen, wenn kein echtes Feedback
     // Aggregat über ALLE Bewertungen separat holen (für Schnitt + Anzahl)
     db.from("reviews").select("stars").gte("stars",1).then(function(ag){
       var all=(ag&&ag.data)||[],sum=0,c=0;
@@ -1117,105 +1127,7 @@ document.addEventListener("DOMContentLoaded", function(){
     }
     grid.style.animationDuration=Math.max(28, seq.length*7)+"s";
     sec.hidden=false;
-  }).catch(function(){ /* offline / blockiert: Sektion bleibt versteckt */ });
-});
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function(){
-  var LANGS=[
-    {code:"es",label:"🇪🇸 Spanisch",verb:"hablar"},
-    {code:"fr",label:"🇫🇷 Französisch",verb:"parler"},
-    {code:"en",label:"🇬🇧 Englisch",verb:"go"},
-    {code:"nl",label:"🇳🇱 Niederländisch",verb:"werken"},
-    {code:"de",label:"🇩🇪 Deutsch",verb:"gehen"}
-  ];
-  var APP="https://conjuexpert.app/";
-  var langDd=document.getElementById("tbLangDd"),
-      langBtn=document.getElementById("tbLangBtn"),
-      langCur=document.getElementById("tbLangCur"),
-      langMenu=document.getElementById("tbLangMenu"),
-      form=document.getElementById("tbForm"),
-      input=document.getElementById("tbInput"),
-      tenseWrap=document.getElementById("tbTenseWrap"),
-      tdd=document.getElementById("tbTdd"),
-      tddBtn=document.getElementById("tbTddBtn"),
-      tddCur=document.getElementById("tbTddCur"),
-      tddMenu=document.getElementById("tbTddMenu"),
-      out=document.getElementById("tbOut");
-  if(!langBtn||!form||!input||!out) return;
-  var cur="es", curTense=null;
-  function defVerb(c){ for(var i=0;i<LANGS.length;i++) if(LANGS[i].code===c) return LANGS[i].verb; return ""; }
-  function esc(s){ return String(s==null?"":s).replace(/[<>&]/g,function(c){return {"<":"&lt;",">":"&gt;","&":"&amp;"}[c];}); }
-  function closeLang(){ if(langDd){ langDd.classList.remove("open"); langBtn.setAttribute("aria-expanded","false"); } }
-  function langDD(){
-    var curL=null,i; for(i=0;i<LANGS.length;i++) if(LANGS[i].code===cur) curL=LANGS[i];
-    langCur.textContent=(curL||LANGS[0]).label;
-    langMenu.innerHTML="";
-    LANGS.forEach(function(L){
-      var li=document.createElement("li");
-      li.setAttribute("role","option");
-      li.setAttribute("aria-selected", L.code===cur?"true":"false");
-      li.textContent=L.label;
-      li.addEventListener("click",function(){ cur=L.code; curTense=null; input.value=defVerb(cur); closeLang(); langDD(); run(); });
-      langMenu.appendChild(li);
-    });
-  }
-  langBtn.addEventListener("click",function(e){ e.stopPropagation(); var open=langDd.classList.toggle("open"); langBtn.setAttribute("aria-expanded",open?"true":"false"); });
-  document.addEventListener("click",function(e){ if(langDd&&!langDd.contains(e.target)) closeLang(); });
-  document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeLang(); });
-  // finite tenses only (skip gerund/participle) so the dropdown shows real conjugations
-  function finite(r){ return r.tenses.filter(function(t){ return !t.nonFinite && t.forms && t.forms.length>1; }); }
-  function pickTense(list){
-    var i;
-    if(curTense){ for(i=0;i<list.length;i++) if(list[i].id===curTense) return list[i]; }
-    for(i=0;i<list.length;i++) if(list[i].id==="present") return list[i];
-    return list[0];
-  }
-  function closeTdd(){ if(tdd){ tdd.classList.remove("open"); if(tddBtn) tddBtn.setAttribute("aria-expanded","false"); } }
-  function tenseDD(list,activeId){
-    if(tenseWrap) tenseWrap.hidden = list.length<2;
-    if(!tdd||!tddMenu||!tddCur) return;
-    var act=null; for(var k=0;k<list.length;k++) if(list[k].id===activeId) act=list[k];
-    tddCur.textContent=(act||list[0]||{}).label||"";
-    tddMenu.innerHTML="";
-    list.forEach(function(t){
-      var li=document.createElement("li");
-      li.setAttribute("role","option");
-      li.setAttribute("aria-selected", t.id===activeId?"true":"false");
-      li.textContent=t.label;
-      li.addEventListener("click",function(){ curTense=t.id; closeTdd(); run(); });
-      tddMenu.appendChild(li);
-    });
-  }
-  if(tddBtn){
-    tddBtn.addEventListener("click",function(e){ e.stopPropagation(); var open=tdd.classList.toggle("open"); tddBtn.setAttribute("aria-expanded",open?"true":"false"); });
-    document.addEventListener("click",function(e){ if(tdd&&!tdd.contains(e.target)) closeTdd(); });
-    document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeTdd(); });
-  }
-  function run(){
-    var v=input.value.trim();
-    var eng=window.CONJ&&window.CONJ[cur];
-    if(tenseWrap) tenseWrap.hidden=true;
-    if(!eng){ out.innerHTML='<div class="tb-err">Engine lädt…</div>'; return; }
-    if(!v){ out.innerHTML=""; return; }
-    var r=eng.conjugate(v);
-    if(!r||r.error){ out.innerHTML='<div class="tb-err">'+esc((r&&r.error)||"Unbekanntes Verb — probier z. B. hablar, parler, go, werken, gehen.")+'</div>'; return; }
-    var list=finite(r), t=pickTense(list), i;
-    tenseDD(list, t.id);
-    var rows="";
-    for(i=0;i<t.forms.length;i++){
-      var f=t.forms[i], irr=t.reg && f!==t.reg[i];
-      rows+='<div class="tb-row"><span class="tb-pron">'+esc(r.pronouns[i])+'</span><span class="tb-form'+(irr?" irr":"")+'">'+esc(f||"—")+'</span></div>';
-    }
-    var dl=APP+"?lang="+cur+"&verb="+encodeURIComponent(r.infinitive)+"&utm_source=landing&utm_medium=trybox&utm_content="+cur+"-"+encodeURIComponent(r.infinitive);
-    out.innerHTML='<div class="tb-result"><div class="tb-head"><span class="tb-verb">'+esc(r.infinitive)+'</span>'+
-      '<span class="tb-tense">'+esc(t.label)+(r.isIrregular?" · unregelmäßig":"")+'</span></div>'+rows+
-      '<div class="tb-cta"><a href="'+dl+'">„'+esc(r.infinitive)+'" in der App üben →</a></div></div>';
-  }
-  form.addEventListener("submit",function(e){ e.preventDefault(); curTense=null; run(); input.blur(); });
-  input.addEventListener("input",function(){ curTense=null; run(); });
-  input.addEventListener("focus",function(){ try{ input.select(); }catch(e){} });
-  langDD(); input.value=defVerb(cur); run();
+  }).catch(function(){ sec.hidden=true; /* offline / blockiert: kein leeres Band */ });
 });
 </script>
 <script>

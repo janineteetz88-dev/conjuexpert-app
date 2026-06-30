@@ -6733,6 +6733,14 @@ function QuizView({
         persist("kunju-quiz-pending-group", null);
         if ((VERB_GROUPS[lang] || []).some(x => x.id === pend)) pickGroup(pend);
       }
+    } else {
+      // Tab verlassen: Vorlesen stoppen, damit das Play/Stop-Feld nicht hängen bleibt.
+      setReading("idle");
+      readIdxRef.current = 0;
+      setReadIdx(0);
+      if (window.speechSynthesis) try {
+        window.speechSynthesis.cancel();
+      } catch (e) {}
     }
   }, [isActive]);
   function toggleTense(id) {
@@ -8528,7 +8536,7 @@ function QuizView({
       setMsg("");
       genSentence(lang);
     }
-  }, tr("spk_next_sentence"))))), mode === "texte" && /*#__PURE__*/React.createElement(React.Fragment, null, reading !== "idle" && story && story.sentences && typeof ReactDOM !== "undefined" && ReactDOM.createPortal(/*#__PURE__*/React.createElement("div", {
+  }, tr("spk_next_sentence"))))), mode === "texte" && /*#__PURE__*/React.createElement(React.Fragment, null, isActive && reading !== "idle" && story && story.sentences && typeof ReactDOM !== "undefined" && ReactDOM.createPortal(/*#__PURE__*/React.createElement("div", {
     style: {
       position: "absolute",
       right: "12px",
@@ -16166,14 +16174,11 @@ function App() {
   // Standard bekommt eine vorgegebene Challenge. Zieltafel bei echter Challenge.
   function openChallenge() {
     if (typeof closeSkHint === "function") closeSkHint();
-    if (!supaUser) { setShowPaywall(true); return; }      // anonym → erst Konto anlegen
-    if (hasRealChallenge()) { setShowStreak(true); return; } // echte Challenge → Zieltafel
-    if (!hasPaidAccess()) {                                // Konto ohne Premium → Standard-Challenge
-      createPresetChallenge();
-      setShowStreak(true);
-      return;
-    }
-    setGoalStep("choose"); setShowGoal(true);              // Premium → frei anlegen
+    if (hasRealChallenge()) { setShowStreak(true); return; }  // echte Challenge → Zieltafel
+    if (hasPaidAccess()) { setGoalStep("choose"); setShowGoal(true); return; } // Premium/Trial → frei anlegen
+    if (!supaUser) { setShowPaywall(true); return; }          // anonym ohne Zugang → erst Konto anlegen
+    createPresetChallenge();                                  // Konto ohne Premium → Standard-Challenge
+    setShowStreak(true);
   }
   const [skHint, setSkHint] = useState(() => !recall("kunju-skhint", false));
   function closeSkHint() {

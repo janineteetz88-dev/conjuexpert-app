@@ -30,8 +30,8 @@
       "headline": "Duolingo, Babbel, Busuu & Co.: Was diese Apps wirklich können — und wo sie schweigen (v2)",
       "description": "Duolingo, Babbel oder Busuu — welche App eignet sich wirklich zum Sprachenlernen, und wo bleibt die Verbkonjugation auf der Strecke? Ein ehrlicher Vergleich…",
       "inLanguage": "de",
-      "datePublished": "2026-06-20",
-      "dateModified": "2026-06-20",
+      "datePublished": "2026-06-28",
+      "dateModified": "2026-06-28",
       "articleSection": "Methodik",
       "image": "https://conjuexpert.app/blog/img/prod-1.png",
       "speakable": {
@@ -78,6 +78,35 @@
           "item": "https://conjuexpert.app/blog/sprachlern-app-vergleich/"
         }
       ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Ist ConjuExpert eine Alternative zu Duolingo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nein, eher eine gezielte Ergänzung. Duolingo baut Vokabular und Sprachkontakt auf — ConjuExpert trainiert das aktive Bilden von Verbformen, das im echten Gespräch gefragt ist. Wer beides nutzt, kombiniert allgemeinen Sprachkontakt mit gezieltem Konjugations-Training."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Welche Sprachen kann ich mit ConjuExpert üben?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aktuell fünf: Deutsch, Spanisch, Französisch, Englisch und Niederländisch — jeweils mit allen wichtigen Zeitformen und Konjugationstabellen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was kostet ConjuExpert?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Der kostenlose Tier gibt dir Zugang zu allen Konjugationstabellen, Grammatik-Erklärungen und der Dekonjugation (Verbform eingeben → App erkennt Zeit und Person). Quiz-Modi und KI-Beispielsätze gibt es ab 2,99 €/Monat — oder du probierst 24 Stunden alles gratis aus, direkt nach der Registrierung."
+          }
+        }
+      ]
     }
   ]
 }</script>
@@ -102,6 +131,18 @@
 .faq2 details[open] summary .pm{transform:rotate(135deg)}
 .faq2 details[open] summary{border-bottom:1px solid var(--border)}
 .faq2 .a{padding:16px 20px 20px;color:var(--muted);font-size:15.5px;line-height:1.6}
+.keytakeaways{position:relative;margin:18px 0 28px;padding:20px 22px 20px 26px;border:1px solid var(--border);border-radius:18px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.keytakeaways::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:4px;border-radius:4px;background:linear-gradient(180deg,var(--pink),var(--violet))}
+.keytakeaways h2{margin:0 0 10px;font-size:18px}
+.keytakeaways p{margin:0;color:var(--ink);line-height:1.6}
+.keytakeaways ul,.keytakeaways ol{margin:0;padding-left:20px}
+.keytakeaways li{margin:6px 0;color:var(--ink);line-height:1.55}
+.toc{margin:0 0 30px;padding:16px 20px;border:1px solid var(--border);border-radius:16px;background:var(--surface-2)}
+.toc-h{margin:0 0 8px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.toc ol{margin:0;padding-left:20px}
+.toc li{margin:4px 0}
+.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+.toc a:hover{border-bottom-color:var(--pink)}
 </style>
 </head>
 <body>
@@ -149,7 +190,7 @@
           <span class="av">J</span>
           <span>Janine Kreiser, Gründerin ConjuExpert</span>
           <span class="dotsep"></span>
-          <span class="mono">20. Juni 2026</span>
+          <span class="mono">28. Juni 2026</span>
           <span class="dotsep"></span>
           <span class="mono">7 min</span>
           <span class="dotsep"></span>
@@ -161,21 +202,31 @@
     <div class="artwrap">
       <div class="prose">
 
-        <div class="pull"><strong>TL;DR:</strong> Duolingo, Babbel und Busuu helfen dir dabei, Vokabular aufzubauen und erste Sätze zu verstehen. Verbkonjugation in der Tiefe trainieren alle drei nicht. Wer bei „hablé/hablaba/hablaría&quot; sicher werden will, braucht ein Tool, das genau das übt.</div>
+        
+                <nav class="toc" aria-label="Inhaltsverzeichnis">
+          <p class="toc-h">Inhalt</p>
+          <ol>
+            <li><a href="#sechs-monate-duolingo-und-was-danach-kommt">Sechs Monate Duolingo — und was danach kommt</a></li>
+            <li><a href="#was-diese-apps-wirklich-gut-konnen">Was diese Apps wirklich gut können</a></li>
+            <li><a href="#der-blinde-fleck-verbkonjugation-in-der-tiefe">Der blinde Fleck: Verbkonjugation in der Tiefe</a></li>
+            <li><a href="#was-das-in-der-praxis-bedeutet">Was das in der Praxis bedeutet</a></li>
+            <li><a href="#das-fehlende-puzzlestuck-und-wie-du-es-einbaust">Das fehlende Puzzlestück — und wie du es einbaust</a></li>
+            <li><a href="#takeaway">Takeaway</a></li>
+          </ol>
+        </nav>
+        <div class="pull"><strong>Kurz gesagt:</strong> Duolingo, Babbel und Busuu helfen dir dabei, Vokabular aufzubauen und erste Sätze zu verstehen. Verbkonjugation in der Tiefe trainieren alle drei nicht. Wer bei „hablé/hablaba/hablaría&quot; sicher werden will, braucht ein Tool, das genau das übt.</div>
 
-<h2>Sechs Monate Duolingo — und dann das</h2>
+<h2 id="sechs-monate-duolingo-und-was-danach-kommt">Sechs Monate Duolingo — und was danach kommt</h2>
 
-<p>Stell dir vor: Du lernst seit einem halben Jahr Spanisch mit Duolingo. Streak am Laufen, Punkte gesammelt, täglich zehn Minuten. Du weißt, was „el perro&quot; heißt, erkennst manche Sätze beim Hören. Aber dann — Urlaub in Sevilla. Jemand fragt dich, ob du gestern gut geschlafen hast. Du weißt: „dormir&quot; ist das Verb. Du weißt sogar: gestern = Vergangenheit. Aber welche Form? War das <em>dormí</em>? <em>Dormía</em>? <em>Durmió</em>?</p>
+<p>Du lernst seit einem halben Jahr Spanisch mit Duolingo. Streaks gehalten, täglich zehn Minuten investiert, Punkte gesammelt. Du erkennst beim Hören immer mehr, hast im Urlaub souverän am Tresen bestellt. Das ist echter Fortschritt — kein Zufall, sondern tägliche Konsequenz.</p>
 
-<p>Kurze Pause. Stille. Lächeln.</p>
+<p>Und dann stößt du an eine Wand. Nicht weil du nachlässig wärst. Sondern weil Duolingo, Babbel und Busuu für einen bestimmten Teil des Sprachenlernens nicht gebaut sind: das aktive Bilden von Verbformen unter Zeitdruck. Welche Form nimmt <em>hablar</em> im Pretérito Indefinido, zweite Person Plural — tippen, ohne nachzuschauen? <em>Hablasteis.</em> Genau das ist die Lücke.</p>
 
-<p>Das Gespräch geht weiter, ohne dich.</p>
-
-<p>Diese Situation kennen viele — nicht weil sie nicht fleißig genug waren, sondern weil sie das falsche Werkzeug für genau diesen Moment hatten. Dieser Artikel schaut ehrlich hin: Was können Duolingo, Babbel, Busuu und ähnliche Apps wirklich? Und was können sie nicht? Wer die Antworten auf diese Fragen kennt, kann seine Lernroutine gezielt aufbauen — anstatt monatelang zu straken, ohne beim Sprechen sicherer zu werden.</p>
+<p>Dieser Artikel schaut ehrlich hin: Was können diese Apps — und was übergehen sie systematisch? Wer das kennt, baut seine Lernroutine gezielt auf, anstatt Monate in eine Richtung zu investieren, die ihn dem flüssigen Sprechen nicht näherbringt.</p>
 
 <p>Wenn du nach der Lektüre weißt, was dir fehlt: Das <a class="inline" href="https://conjuexpert.app/">aktive Üben von Verbformen</a> geht kostenlos los, direkt im Browser.</p>
 
-<h2>Was diese Apps wirklich gut können</h2>
+<h2 id="was-diese-apps-wirklich-gut-konnen">Was diese Apps wirklich gut können</h2>
 
 <p>Eines vorweg: Duolingo, Babbel und Busuu sind gute Apps. Sie haben Millionen Menschen dazu gebracht, überhaupt mit dem Sprachenlernen anzufangen — und das ist nicht nichts.</p>
 
@@ -187,17 +238,13 @@
 
 <p>Kurz gesagt: Für Vokabelaufbau, erste Sprachkontakte und das Entwickeln eines Sprachgefühls sind diese Apps sinnvoll eingesetzt. Wer aber <a class="inline" href="https://conjuexpert.app/blog/verben-konjugieren-lernen/">Verben konjugieren lernen</a> will — also die Formen aktiv bilden, nicht nur wiedererkennen — braucht noch etwas anderes dazu.</p>
 
-<h2>Der blinde Fleck: Verbkonjugation in der Tiefe</h2>
+<h2 id="der-blinde-fleck-verbkonjugation-in-der-tiefe">Der blinde Fleck: Verbkonjugation in der Tiefe</h2>
 
 <p>Hier wird es ehrlich — und das ist der Kern dieses Artikels.</p>
 
 <p>Verbkonjugation ist das technischste Element einer Sprache: Für ein einziges Verb wie das spanische <strong>hablar</strong> (sprechen) gibt es je nach Zeitform, Person und Numerus Dutzende Formen. Schau dir allein drei Zeitformen an:</p>
 
-<div class="pull">Pretérito Indefinido (abgeschlossene Vergangenheit): yo <strong>hablé</strong> · tú <strong>hablaste</strong> · él <strong>habló</strong> · nosotros <strong>hablamos</strong> · vosotros <strong>hablasteis</strong> · ellos <strong>hablaron</strong></div>
-
-<div class="pull">Imperfecto (Hintergrunds-Vergangenheit): yo <strong>hablaba</strong> · tú <strong>hablabas</strong> · él <strong>hablaba</strong> · nosotros <strong>hablábamos</strong> · vosotros <strong>hablabais</strong> · ellos <strong>hablaban</strong></div>
-
-<div class="pull">Condicional (Konditional): yo <strong>hablaría</strong> · tú <strong>hablarías</strong> · él <strong>hablaría</strong> · nosotros <strong>hablaríamos</strong> · vosotros <strong>hablaríais</strong> · ellos <strong>hablarían</strong></div>
+<div class="conjtable-wrap"><table class="conjtable"><thead><tr><td class="pers">Zeitform</td><td class="form">yo</td><td class="form">tú</td><td class="form">él/ella</td><td class="form">nosotros</td><td class="form">vosotros</td><td class="form">ellos/ellas</td></tr></thead><tbody><tr><td class="pers">Pretérito Indefinido</td><td class="form">hablé</td><td class="form">hablaste</td><td class="form">habló</td><td class="form">hablamos</td><td class="form">hablasteis</td><td class="form">hablaron</td></tr><tr><td class="pers">Imperfecto</td><td class="form">hablaba</td><td class="form">hablabas</td><td class="form">hablaba</td><td class="form">hablábamos</td><td class="form">hablabais</td><td class="form">hablaban</td></tr><tr><td class="pers">Condicional</td><td class="form">hablaría</td><td class="form">hablarías</td><td class="form">hablaría</td><td class="form">hablaríamos</td><td class="form">hablaríais</td><td class="form">hablarían</td></tr></tbody></table></div>
 
 <p>Das sind drei Zeitformen — für ein einziges reguläres Verb. Im Spanischen gibt es Hunderte Verben, viele davon unregelmäßig. Im Deutschen kommen Modalverben, <a class="inline" href="https://conjuexpert.app/blog/trennbare-verben-deutsch/">trennbare Verben</a> und starke Verben obendrauf. Im Französischen warten das passé composé mit être und avoir und die berühmten Vandertramp-Verben.</p>
 
@@ -205,7 +252,7 @@
 
 <p>Das Ergebnis ist vorhersehbar: Du erkennst Verbformen, wenn du sie liest oder hörst. Aber im Gespräch, unter Zeitdruck, weiß dein Gehirn nicht sofort, welche Form dran ist. Zwischen Wiedererkennen und aktiv Bilden liegt ein riesiger Unterschied — und genau diesen Unterschied schließt aktives Üben (engl. <em>practice testing</em>), das Lernforschern wie Dunlosky et al. (2013) als eine der effektivsten Lernmethoden gilt.</p>
 
-<h2>Was das in der Praxis bedeutet</h2>
+<h2 id="was-das-in-der-praxis-bedeutet">Was das in der Praxis bedeutet</h2>
 
 <p>Zurück nach Sevilla. Warum ist <em>dormí</em> vs. <em>dormía</em> so schwer, obwohl du seit Monaten Spanisch übst?</p>
 
@@ -217,7 +264,7 @@
 
 <p>Wer also nach Monaten mit Duolingo noch bei <a class="inline" href="https://conjuexpert.app/blog/unregelmaessige-verben-spanisch/">unregelmäßigen Verben auf Spanisch</a> struikelt, macht keinen Fehler mit der App. Der Fehler liegt darin, vom falschen Werkzeug das Falsche zu erwarten.</p>
 
-<h2>Das fehlende Puzzlestück — und wie du es einbaust</h2>
+<h2 id="das-fehlende-puzzlestuck-und-wie-du-es-einbaust">Das fehlende Puzzlestück — und wie du es einbaust</h2>
 
 <p>Hier ist die ehrliche Empfehlung: Du musst dich nicht zwischen diesen Apps entscheiden. Du kannst sie kombinieren.</p>
 
@@ -229,33 +276,29 @@
 
 <div class="pull"><strong>Fünf Sprachen, vier Übungsmodi, deine Themen:</strong> Spanisch, Französisch, Deutsch, Englisch und Niederländisch — teste, welche Verbformen du wirklich beherrschst. <a class="inline" href="https://conjuexpert.app/">Jetzt kostenlos ausprobieren →</a></div>
 
-<h2>Takeaway</h2>
+<h2 id="takeaway">Takeaway</h2>
 
 <p>Duolingo, Babbel und Busuu sind nützliche Tools — für das, was sie können: täglichen Sprachkontakt, Vokabular, erste Grammatikstruktur. Für das gezielte Training der Verbformen, die du im echten Gespräch abrufen willst, braucht es ein Werkzeug, das genau das in den Mittelpunkt stellt. Die Kombination ist stärker als jedes Einzeltool.</p>
 
 <p>Das nächste Mal in Sevilla weißt du: <em>dormí</em> war letzte Nacht (abgeschlossen), <em>dormía</em> war während des Gewitters (Hintergrund). Und das sitzt — weil du's geübt hast, nicht nur gelesen. Was ist dein persönliches Konjugations-Nadelöhr?</p>
 
 <hr>
-
-<p><strong>FAQ</strong></p>
-
-<p><strong>Ist ConjuExpert eine Alternative zu Duolingo?</strong></p>
-
-<p>Nein, eher eine gezielte Ergänzung. Duolingo baut Vokabular und Sprachkontakt auf — ConjuExpert trainiert das aktive Bilden von Verbformen, das im echten Gespräch gefragt ist. Wer beides nutzt, kombiniert allgemeinen Sprachkontakt mit gezieltem Konjugations-Training.</p>
-
-<p><strong>Welche Sprachen kann ich mit ConjuExpert üben?</strong></p>
-
-<p>Aktuell fünf: Deutsch, Spanisch, Französisch, Englisch und Niederländisch — jeweils mit allen wichtigen Zeitformen und Konjugationstabellen.</p>
-
-<p><strong>Was kostet ConjuExpert?</strong></p>
-
-<p>Der kostenlose Tier gibt dir Zugang zu allen Konjugationstabellen, Grammatik-Erklärungen und der Dekonjugation (Verbform eingeben → App erkennt Zeit und Person). Quiz-Modi und KI-Beispielsätze gibt es ab 2,99 €/Monat — oder du probierst 24 Stunden alles gratis aus, direkt nach der Registrierung.</p>
+                <h2 id="faq">Häufige Fragen</h2>
+        <div class="faq2">
+          <details>
+            <summary>Ist ConjuExpert eine Alternative zu Duolingo?<span class="pm"></span></summary>
+            <div class="a"><p>Nein, eher eine gezielte Ergänzung. Duolingo baut Vokabular und Sprachkontakt auf — ConjuExpert trainiert das aktive Bilden von Verbformen, das im echten Gespräch gefragt ist. Wer beides nutzt, kombiniert allgemeinen Sprachkontakt mit gezieltem Konjugations-Training.</p></div>
+          </details>
+          <details>
+            <summary>Welche Sprachen kann ich mit ConjuExpert üben?<span class="pm"></span></summary>
+            <div class="a"><p>Aktuell fünf: Deutsch, Spanisch, Französisch, Englisch und Niederländisch — jeweils mit allen wichtigen Zeitformen und Konjugationstabellen.</p></div>
+          </details>
+          <details>
+            <summary>Was kostet ConjuExpert?<span class="pm"></span></summary>
+            <div class="a"><p>Der kostenlose Tier gibt dir Zugang zu allen Konjugationstabellen, Grammatik-Erklärungen und der Dekonjugation (Verbform eingeben → App erkennt Zeit und Person). Quiz-Modi und KI-Beispielsätze gibt es ab 2,99 €/Monat — oder du probierst 24 Stunden alles gratis aus, direkt nach der Registrierung.</p></div>
+          </details>
+        </div>
         
-        
-        <h2 id="quellen">Quellen</h2>
-        <ol class="sources">
-          <li>Dunlosky, J., Rawson, K. A., Marsh, E. J., Nathan, M. J. &amp; Willingham, D. T. (2013): <i>Improving Students' Learning With Effective Learning Techniques.</i> Psychological Science in the Public Interest, 14(1), 4–58. <a class="inline" href="https://doi.org/10.1177/1529100612453266" target="_blank" rel="noopener">doi.org/10.1177/1529100612453266</a></li>
-        </ol>
 
         <div class="quizcta">
           <span class="qi" style="display:flex;align-items:center;justify-content:center;background:#fff"><img src="/favicon.svg" alt="ConjuExpert" width="60" height="60" /></span>
@@ -280,22 +323,6 @@
     </div>
 
     
-    <!-- CLUSTER:RELATED -->
-    <section class="block related" style="padding:54px 0 0">
-      <div class="wrap">
-        <span class="sec-tag">Weiterlesen</span>
-        <div class="relgrid">
-          <a class="relcard" href="/blog/verben-lernen-tipps/">
-            <span class="reltxt">
-              <span class="relcat">Methodik</span>
-              <span class="reltitle">Verben lernen: 7 Lerntipps, mit denen die Formen endlich sitzen</span>
-            </span>
-            <span class="relgo" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </div>
-    </section>
-    <!-- /CLUSTER:RELATED -->
 
   </article>
 </main>
