@@ -593,7 +593,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .reveal{opacity:1!important;transform:none!important}
 }
-/* #1 Hover-Feedback — taktiles Anheben + Cursor-Glow (nur Zeigergeräte) */
+/* #1 Hover-Feedback — taktiles Anheben (nur Zeigergeräte) */
 .bt-card{position:relative}
 @media(hover:hover){
   .bt-card{transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s}
@@ -604,8 +604,6 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
   .result-card:hover .result-ic{transform:scale(1.18) rotate(-8deg)}
   .qm-item{transition:transform .3s cubic-bezier(.2,.8,.2,1)}
   .qm-item:hover{transform:translateY(-5px)}
-  .cardglow{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;background:radial-gradient(240px circle at var(--gx,50%) var(--gy,50%),color-mix(in srgb,var(--ink) 9%,transparent),transparent 60%)}
-  .glowon>.cardglow{opacity:1}
 }
 /* language switcher */
 .nav-right{display:flex;align-items:center;gap:10px}
@@ -1151,21 +1149,6 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') tryPlay(); });
   ['touchstart','click'].forEach(function(ev){ window.addEventListener(ev,function once(){ tryPlay(); window.removeEventListener(ev,once); },{passive:true}); });
   v.addEventListener('click',tryPlay); // Tap aufs Mockup startet/weckt das Video
-})();
-// #1 Hover-Feedback: Cursor-Glow auf Karten (nur Zeigergeräte)
-(function(){
-  if(!window.matchMedia||!matchMedia('(hover:hover)').matches) return;
-  Array.prototype.forEach.call(document.querySelectorAll('.plan,.cell,.bt-card,.usp-card'),function(c){
-    var g=document.createElement('span'); g.className='cardglow'; c.appendChild(g);
-    var raf=false,mx=50,my=50;
-    c.addEventListener('pointermove',function(e){
-      var r=c.getBoundingClientRect(); if(!r.width) return;
-      mx=(e.clientX-r.left)/r.width*100; my=(e.clientY-r.top)/r.height*100;
-      if(!raf){raf=true;requestAnimationFrame(function(){raf=false;c.style.setProperty('--gx',mx.toFixed(1)+'%');c.style.setProperty('--gy',my.toFixed(1)+'%');});}
-    },{passive:true});
-    c.addEventListener('pointerenter',function(){c.classList.add('glowon');});
-    c.addEventListener('pointerleave',function(){c.classList.remove('glowon');});
-  });
 })();
 // #3 sanftes Scroll-Storytelling: Parallax am Hero-Mockup (Desktop)
 (function(){
