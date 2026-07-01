@@ -236,17 +236,19 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .per-card h4{font-family:var(--display);font-weight:800;font-size:16.5px;margin:0 0 4px;color:var(--ink)}
 .per-card p{margin:0;font-size:13.8px;line-height:1.5;color:var(--muted);text-wrap:pretty}
 /* result / outcome */
-.result-grid{display:flex;flex-direction:column;max-width:600px;margin:0 auto 30px;background:var(--surface);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow-sm);overflow:hidden;position:relative}
+.result-grid{display:flex;flex-direction:column;max-width:600px;margin:0 auto 16px;background:var(--surface);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow-sm);overflow:hidden;position:relative}
 .result-grid::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--brand-rainbow)}
 @media(max-width:760px){.result-grid{max-width:none}}
 .result-card{display:flex;flex-direction:row;align-items:center;text-align:left;gap:16px;padding:20px 22px;border-bottom:1px solid var(--border);background:transparent;border-radius:0;box-shadow:none}
 .result-card:last-child{border-bottom:0}
-.result-ic{flex:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--green) 15%,transparent);color:#1a9b46}
+.result-ic{flex:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--pink) 12%,transparent);color:var(--pink)}
 .result-ic svg{width:21px;height:21px}
 .result-card p{margin:0;font-size:16px;line-height:1.5;color:var(--ink);font-weight:600;text-wrap:pretty}
-.result-how{max-width:600px;margin:0 auto 28px;text-align:left;font-size:15.5px;line-height:1.62;color:var(--muted);text-wrap:pretty;background:var(--surface-2);border:1px solid var(--border);border-left:4px solid var(--pink);border-radius:14px;padding:18px 20px}
+.result-how{max-width:600px;margin:0 auto 20px;text-align:left;font-size:15.5px;line-height:1.62;color:var(--muted);text-wrap:pretty;background:var(--surface-2);border:1px solid var(--border);border-left:4px solid var(--pink);border-radius:14px;padding:18px 20px}
 .result-how strong{color:var(--ink);font-weight:800}
-.result-cta{margin-top:2px}
+.result-cta{margin-top:8px}
+.result .sec-head{margin-bottom:26px}
+#ergebnis{padding-top:72px;padding-bottom:60px}
 /* social proof */
 .proof[hidden]{display:none}
 .proof-sum{display:inline-flex;align-items:center;gap:9px;margin-top:14px;flex-wrap:wrap;justify-content:center}
