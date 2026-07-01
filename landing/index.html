@@ -276,13 +276,13 @@ section.block{padding:76px 0;scroll-margin-top:84px}
 .mini-h{font-family:var(--display);font-weight:700;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;line-height:1.1;margin:8px 0 0;text-wrap:balance}
 .mini-p{font-size:16px;color:var(--muted);margin:10px 0 0;text-wrap:pretty}
 /* Bento-Grid „Das steckt in der App" */
-.bento-app{display:grid;grid-template-columns:repeat(4,1fr);gap:30px 22px;margin-bottom:8px}
+.bento-app{display:grid;grid-template-columns:repeat(3,1fr);gap:30px 26px;margin-bottom:8px;max-width:920px;margin-left:auto;margin-right:auto}
 .bento-app .func-card{margin:0;background:transparent;border:0;box-shadow:none;padding:0;text-align:center}
 .func-ic{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--surface);color:var(--ink);border:1px solid var(--border);box-shadow:var(--shadow-sm);margin:0 auto 14px;font-size:21px;line-height:1}
 .func-ic svg{width:24px;height:24px}
 .func-card h3{font-family:var(--display);font-weight:800;font-size:17px;margin:0 0 6px;color:var(--ink)}
 .func-card p{margin:0 auto;max-width:25ch;font-size:13.5px;line-height:1.5;color:var(--muted);text-wrap:pretty}
-@media(max-width:680px){.bento-app{grid-template-columns:repeat(2,1fr);gap:26px 16px}.func-card p{font-size:13px}}
+@media(max-width:680px){.bento-app{grid-template-columns:1fr;gap:24px;max-width:420px}.func-card p{font-size:13.5px}}
 @media(max-width:380px){.bento-app{grid-template-columns:1fr;gap:22px}}
 .qm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
 .qm-wrap{position:relative;margin-top:22px}
@@ -673,32 +673,26 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
 
   <section class="block" id="features">
     <div class="wrap">
-      <!-- App-Funktionen: was die App kann -->
+      <!-- USP: Was uns einzigartig macht -->
       <div class="mini-head reveal">
-        <span class="mini-tag" data-i18n="func.tag">Das steckt in der App</span>
-        <h2 class="mini-h" data-i18n="func.h">Vier Bereiche — ein flüssiges Lernsystem.</h2>
-        <p class="mini-p">Konjugieren, Quiz, Lernen und Gemerkt greifen nahtlos ineinander.</p>
+        <span class="mini-tag" data-i18n="func.tag">Warum ConjuExpert</span>
+        <h2 class="mini-h" data-i18n="func.h">Was uns einzigartig macht.</h2>
       </div>
-      <div class="bento-app">
-        <div class="func-card reveal ba-konj">
-          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M9 4v16M15 4v16"/></svg></span>
-          <h3 data-i18n="func.1h">Konjugieren</h3>
-          <p data-i18n="func.1p">Jedes Verb in allen Zeitformen — unregelmäßige Formen farbig markiert, mit Beispielsätzen.</p>
+      <div class="bento-app usp-3">
+        <div class="func-card reveal">
+          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 0 1-11.5 7.2L4 20l1.3-4.5A8 8 0 1 1 21 11.5z"/><path d="M8.5 11h7M8.5 14h4.5"/></svg></span>
+          <h3 data-i18n="func.1h">Community first</h3>
+          <p data-i18n="func.1p">Wir hören, was die Sprachenlerner-Community sagt — und setzen es direkt um.</p>
         </div>
-        <div class="func-card reveal ba-lern" data-d="2">
-          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 5a2 2 0 012-2h12v16H6a2 2 0 00-2 2V5z"/><path d="M8 7h7M8 11h6"/></svg></span>
-          <h3 data-i18n="func.2h">Lernen</h3>
-          <p data-i18n="func.2p">Dein Spickzettel: Bildung der Zeitformen, Signalwörter &amp; Eselsbrücken — alles griffbereit.</p>
+        <div class="func-card reveal" data-d="2">
+          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.1"/></svg></span>
+          <h3 data-i18n="func.2h">An der Wurzel gepackt</h3>
+          <p data-i18n="func.2p">Das „Ich kann nicht gut sprechen"-Problem lösen wir an der Wurzel: aktives Abrufen über verschiedene Schwierigkeitsstufen.</p>
         </div>
-        <div class="func-card reveal ba-quiz" data-d="3">
-          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M12 4L2 9l10 5 10-5-10-5z"/><path d="M6 11.5V16c0 1.2 2.7 2.6 6 2.6s6-1.4 6-2.6v-4.5"/></svg></span>
-          <h3 data-i18n="func.3h">Quiz</h3>
-          <p data-i18n="func.3p">Sechs Modi, die dich aktiv abfragen, bis die Formen wirklich sitzen.</p>
-        </div>
-        <div class="func-card reveal ba-merk" data-d="4">
-          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M6 4h12v16l-6-4-6 4z"/></svg></span>
-          <h3 data-i18n="func.4h">Gemerkt</h3>
-          <p data-i18n="func.4p">Knifflige Verben und deine eigenen Wortschatzlisten. Lege fest, mit welchen Verben du dich challengen willst.</p>
+        <div class="func-card reveal" data-d="3">
+          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2.4"/><circle cx="9" cy="16" r="2.4"/></svg></span>
+          <h3 data-i18n="func.3h">Auf dich zugeschnitten</h3>
+          <p data-i18n="func.3p">Die Quizze passen sich deinen Wünschen an — lerne mit deinen Lieblingsthemen.</p>
         </div>
       </div>
 
@@ -1069,7 +1063,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   v.addEventListener('click',tryPlay); // Tap aufs Mockup startet/weckt das Video
 })();
 </script>
-<script src="/landing/i18n.js?v=20260628f"></script>
+<script src="/landing/i18n.js?v=20260628g"></script>
 <!-- Konjugations-Engines für das Live-Widget -->
 <script src="https://conjuexpert.app/engine/conj-es.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-fr.js" defer></script>
