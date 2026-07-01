@@ -19,7 +19,7 @@ import sharp from "sharp";
 
 const HTML = "blog/index.html";
 const OUT_DIR = "blog/img/auto";
-const MODEL = process.env.GEN_MODEL || "gpt-image-1"; // Fallback-tauglich: "dall-e-3"
+const MODEL = process.env.GEN_MODEL || "gpt-image-1"; // images/edits braucht gpt-image-1
 const KEY = process.env.OPENAI_API_KEY || "";
 const FORCE = process.argv.includes("--force");
 const WIRE_ONLY = process.argv.includes("--wire-only");
@@ -50,7 +50,7 @@ const MOODS = [
   "gentle overcast light",
 ];
 const STYLE =
-  "Warm editorial 35mm film-style lifestyle photograph. Natural light, muted analog color grade, subtle film grain, shallow depth of field, calm and candid. No text, no watermark, no logos, no visible faces. Vertical composition.";
+  "Use the attached reference images as the exact style guide: warm editorial 35mm film-style lifestyle photography, muted analog color grade, subtle film grain, natural soft light, calm candid documentary mood. Create a NEW photograph in that identical look. IMPORTANT: if any people appear, show them ONLY from behind or from the side — never their face, no portraits. No text, no watermark, no logos. Vertical composition.";
 
 function promptFor(index) {
   const scene = SCENES[index % SCENES.length];
@@ -58,21 +58,38 @@ function promptFor(index) {
   return `${STYLE} Scene: ${scene}, ${mood}.`;
 }
 
-/* ─── OpenAI-Bild-Aufruf (gpt-image-1 / dall-e-3) → PNG-Buffer ────────────── */
+/* ─── Referenz-Fotos (bestehende Bilder als Stil-Vorlage) ─────────────────── */
+const REF_FILES = ["gram-es-1.png", "gram-es-2.png", "learn-1.png", "prod-1.png", "pexels-scottwebb-137615.jpg"];
+let REF_CACHE = null;
+async function refImages() {
+  if (REF_CACHE) return REF_CACHE;
+  REF_CACHE = [];
+  for (const f of REF_FILES) {
+    const p = `blog/img/${f}`;
+    if (!existsSync(p)) continue;
+    const buf = await sharp(p).resize(512, 512, { fit: "inside" }).jpeg({ quality: 80 }).toBuffer();
+    REF_CACHE.push({ buf, name: f.replace(/\.\w+$/, ".jpg") });
+  }
+  return REF_CACHE;
+}
+
+/* ─── OpenAI-Bild-Aufruf mit Stil-Referenzen (gpt-image-1 edits) → PNG-Buffer ─ */
 async function generate(prompt) {
-  const url = "https://api.openai.com/v1/images/generations";
-  // gpt-image-1: 1024x1536 (Portrait). dall-e-3: 1024x1792 + response_format.
-  const body =
-    MODEL === "dall-e-3"
-      ? { model: MODEL, prompt, size: "1024x1792", response_format: "b64_json", n: 1 }
-      : { model: MODEL, prompt, size: "1024x1536", n: 1 };
+  const url = "https://api.openai.com/v1/images/edits";
+  const refs = await refImages();
   let lastErr;
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
+      const form = new FormData();
+      form.append("model", MODEL);
+      for (const r of refs) form.append("image[]", new Blob([r.buf], { type: "image/jpeg" }), r.name);
+      form.append("prompt", prompt);
+      form.append("size", "1024x1536");
+      form.append("n", "1");
       const res = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${KEY}` },
-        body: JSON.stringify(body),
+        headers: { Authorization: `Bearer ${KEY}` },
+        body: form,
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
       const json = await res.json();
