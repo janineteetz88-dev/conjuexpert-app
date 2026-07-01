@@ -183,6 +183,7 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,5.8vw,64px);l
   .hero-shot{flex-direction:column;align-items:center}
 }
 @media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:34px}.hero{padding:44px 0 24px}.hero p.lead{max-width:48ch}.hero-grid #try{order:2}.hero-shot{order:3}}
+@media(min-width:861px){.hero{min-height:calc(100dvh - 72px);display:flex;flex-direction:column;justify-content:center;padding:20px 0 14px}.phone,.phone-wrap{width:clamp(200px,36vh,264px)}}
 
 /* marquee */
 .marquee{margin:42px 0 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
