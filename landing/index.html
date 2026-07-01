@@ -268,6 +268,12 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .rev-say{font-family:var(--display);font-weight:700;font-size:15px;line-height:1.25;color:var(--ink);text-align:left;max-width:210px}
 .rev-say .rd-n{background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:800}
 @media(max-width:520px){.rev-doodle{margin-top:20px}.rev-doodle .rev-arrow{width:48px}.rev-say{font-size:14px;max-width:180px}}
+/* Gründerin-Notiz am Pain-Bereich (gleicher Sticker wie beim Danke-Doodle) */
+.pain-note{display:flex;align-items:center;justify-content:center;gap:2px;margin:22px auto 0}
+.pain-note .pain-note-arrow{width:70px;height:auto;flex:none;align-self:flex-end;margin-bottom:6px}
+.pain-note .rd-n{background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:800;white-space:nowrap}
+@media(min-width:981px){.pain .wrap{position:relative}.pain-note{position:absolute;top:2px;right:0;margin:0;max-width:270px}}
+@media(max-width:980px){.pain-note .pain-note-arrow{display:none}}
 .proof-marq{overflow:hidden;margin-bottom:26px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .proof-track{display:flex;gap:18px;width:max-content;animation:revscroll 64s linear infinite}
 .proof-marq:hover .proof-track{animation-play-state:paused}
@@ -361,7 +367,7 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .qm-ex-cap{text-align:center;font-size:14px;color:var(--muted);margin:16px auto 0;max-width:440px;text-wrap:pretty}
 .qm-livecta{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:max-content;max-width:100%;margin:0 auto 22px;padding:16px 26px;border-radius:16px;color:var(--selfg);background:linear-gradient(var(--selbg),var(--selbg)) padding-box,var(--brand-rainbow) border-box;border:1.5px solid transparent;font-size:16px;font-weight:700;letter-spacing:-.01em;box-shadow:0 14px 30px -12px rgba(30,22,8,.6);text-align:center;text-wrap:balance;cursor:pointer}
 .qm-livecta .ar{flex:none;transition:transform .25s}
-.qm-example .qm-livecta{background:var(--brand-rainbow);border:0;color:#fff;font-weight:800;text-shadow:0 1px 3px rgba(0,0,0,.5);box-shadow:0 16px 36px -12px rgba(0,0,0,.55);margin:24px auto 0}
+.qm-example .qm-livecta{display:flex;background:var(--brand-rainbow);border:0;color:#fff;font-weight:800;text-shadow:0 1px 3px rgba(0,0,0,.5);box-shadow:0 16px 36px -12px rgba(0,0,0,.55);margin:24px auto 0}
 .qm-livecta:hover .ar{transform:translateX(4px)}
 .qm-ex-cap strong{color:var(--ink);font-weight:700}
 .qd-langs{display:flex;gap:5px;margin:2px 0 10px}.qd-lang{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;padding:6px 2px;border-radius:12px;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:transform .15s,background .2s,border-color .2s}.qd-lang b{font-family:var(--display);font-weight:800;font-size:13px;color:var(--ink);line-height:1.1}.qd-lang span{font-size:8px;color:var(--muted);letter-spacing:.01em}.qd-lang.on{background:var(--ink);border-color:var(--ink)}.qd-lang.on b,.qd-lang.on span{color:#fff}@media(hover:hover){.qd-lang:hover{transform:translateY(-1px)}}.qd-set{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}.qd-chip{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:5px 9px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);color:var(--muted)}.qd-chip-a{background:color-mix(in srgb,var(--lc) 14%,transparent);border-color:color-mix(in srgb,var(--lc) 40%,transparent);color:var(--lcd)}.qd-note{text-align:center;font-size:11px;color:var(--muted);margin:0 0 12px;line-height:1.4}
@@ -698,6 +704,13 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
         <span class="sec-tag" data-i18n="pain.tag">Kennst du das?</span>
         <h2 class="pain-h2" data-i18n="pain.h2">Geht's dir beim Sprachenlernen auch so?</h2>
         <p class="mini-p" style="margin-top:10px" data-i18n="pain.sub">Wenn einer dieser drei Sätze von dir sein könnte, bist du hier richtig.</p>
+      </div>
+      <div class="pain-note reveal pop" data-d="3">
+        <svg class="pain-note-arrow" viewBox="0 0 96 60" fill="none" aria-hidden="true"><path d="M8 44 C 30 52, 62 50, 88 20" stroke="#ff3b5c" stroke-width="3" stroke-linecap="round"/><path d="M78 12 L90 17 L84 29" stroke="#ff3b5c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="rev-bubble">
+          <picture><source srcset="lifestyle/gruenderin-janine-avatar.webp" type="image/webp"><img class="rev-ava" src="lifestyle/gruenderin-janine-avatar.jpg" alt="" width="44" height="44" loading="lazy" decoding="async"></picture>
+          <span class="rev-say" data-i18n="doodle.founder">Das war exakt mein Grund, die App zu entwickeln! <b class="rd-n">100%!</b></span>
+        </div>
       </div>
       <div class="pain-cards">
         <figure class="pain-card reveal rv-l" data-d="1"><blockquote data-i18n="pain.a">Ich pauke Vokabeln und Regeln — aber im echten Gespräch fällt mir die richtige Form einfach nicht ein.</blockquote></figure>
@@ -1112,7 +1125,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   v.addEventListener('click',tryPlay); // Tap aufs Mockup startet/weckt das Video
 })();
 </script>
-<script src="/landing/i18n.js?v=20260701d"></script>
+<script src="/landing/i18n.js?v=20260701e"></script>
 <!-- Konjugations-Engines für das Live-Widget -->
 <script src="https://conjuexpert.app/engine/conj-es.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-fr.js" defer></script>
@@ -1217,53 +1230,56 @@ document.addEventListener("DOMContentLoaded", function(){
 var demo=document.getElementById('flipDemo'); if(!demo) return;
 var DATA={
  en:[
-  {v:"arise",subj:"it",t:"Past simple",pre:"A problem ",suf:" during the meeting.",a:"arose",tr:"Ein Problem entstand während des Meetings.",de:"entstehen"},
-  {v:"seek",subj:"they",t:"Past simple",pre:"They ",suf:" shelter from the storm.",a:"sought",tr:"Sie suchten Schutz vor dem Sturm.",de:"suchen"},
-  {v:"undertake",subj:"she",t:"Present perfect",pre:"She has ",suf:" a huge project.",a:"undertaken",tr:"Sie hat ein riesiges Projekt übernommen.",de:"übernehmen"},
-  {v:"withhold",subj:"he",t:"Past simple",pre:"He ",suf:" the truth from us.",a:"withheld",tr:"Er verschwieg uns die Wahrheit.",de:"verschweigen"},
-  {v:"foresee",subj:"nobody",t:"Past simple",pre:"Nobody ",suf:" the outcome.",a:"foresaw",tr:"Niemand sah das Ergebnis voraus.",de:"voraussehen"},
-  {v:"strive",subj:"we",t:"Present perfect",pre:"We have ",suf:" for perfection.",a:"striven",tr:"Wir haben nach Perfektion gestrebt.",de:"streben"},
-  {v:"overcome",subj:"she",t:"Past simple",pre:"She ",suf:" her fear of speaking.",a:"overcame",tr:"Sie überwand ihre Angst zu sprechen.",de:"überwinden"},
-  {v:"forbid",subj:"they",t:"Past simple",pre:"They ",suf:" him to leave.",a:"forbade",tr:"Sie verboten ihm zu gehen.",de:"verbieten"},
-  {v:"bind",subj:"it",t:"Past simple",pre:"The contract ",suf:" both parties.",a:"bound",tr:"Der Vertrag band beide Parteien.",de:"binden"},
-  {v:"flee",subj:"it",t:"Past simple",pre:"The crowd ",suf:" in panic.",a:"fled",tr:"Die Menge floh in Panik.",de:"fliehen"}
+  {v:"arise",subj:"it",t:"Past simple",pre:"A problem ",suf:" during the meeting.",a:"arose",tr:{de:"Ein Problem entstand während des Meetings.",en:"A problem arose during the meeting.",es:"Surgió un problema durante la reunión.",fr:"Un problème est survenu pendant la réunion.",nl:"Er ontstond een probleem tijdens de vergadering."},g:{de:"entstehen",en:"to arise",es:"surgir",fr:"survenir",nl:"ontstaan"}},
+  {v:"seek",subj:"they",t:"Past simple",pre:"They ",suf:" shelter from the storm.",a:"sought",tr:{de:"Sie suchten Schutz vor dem Sturm.",en:"They sought shelter from the storm.",es:"Buscaron refugio de la tormenta.",fr:"Ils ont cherché un abri contre la tempête.",nl:"Ze zochten beschutting tegen de storm."},g:{de:"suchen",en:"to seek",es:"buscar",fr:"chercher",nl:"zoeken"}},
+  {v:"undertake",subj:"she",t:"Present perfect",pre:"She has ",suf:" a huge project.",a:"undertaken",tr:{de:"Sie hat ein riesiges Projekt übernommen.",en:"She has undertaken a huge project.",es:"Ha emprendido un proyecto enorme.",fr:"Elle a entrepris un énorme projet.",nl:"Ze heeft een enorm project ondernomen."},g:{de:"übernehmen",en:"to undertake",es:"emprender",fr:"entreprendre",nl:"ondernemen"}},
+  {v:"withhold",subj:"he",t:"Past simple",pre:"He ",suf:" the truth from us.",a:"withheld",tr:{de:"Er verschwieg uns die Wahrheit.",en:"He withheld the truth from us.",es:"Nos ocultó la verdad.",fr:"Il nous a caché la vérité.",nl:"Hij verzweeg ons de waarheid."},g:{de:"verschweigen",en:"to withhold",es:"ocultar",fr:"cacher",nl:"verzwijgen"}},
+  {v:"foresee",subj:"nobody",t:"Past simple",pre:"Nobody ",suf:" the outcome.",a:"foresaw",tr:{de:"Niemand sah das Ergebnis voraus.",en:"Nobody foresaw the outcome.",es:"Nadie previó el resultado.",fr:"Personne n'a prévu le résultat.",nl:"Niemand voorzag de uitkomst."},g:{de:"voraussehen",en:"to foresee",es:"prever",fr:"prévoir",nl:"voorzien"}},
+  {v:"strive",subj:"we",t:"Present perfect",pre:"We have ",suf:" for perfection.",a:"striven",tr:{de:"Wir haben nach Perfektion gestrebt.",en:"We have striven for perfection.",es:"Hemos luchado por la perfección.",fr:"Nous avons lutté pour la perfection.",nl:"We hebben naar perfectie gestreefd."},g:{de:"streben",en:"to strive",es:"esforzarse",fr:"lutter",nl:"streven"}},
+  {v:"overcome",subj:"she",t:"Past simple",pre:"She ",suf:" her fear of speaking.",a:"overcame",tr:{de:"Sie überwand ihre Angst zu sprechen.",en:"She overcame her fear of speaking.",es:"Superó su miedo a hablar.",fr:"Elle a surmonté sa peur de parler.",nl:"Ze overwon haar spreekangst."},g:{de:"überwinden",en:"to overcome",es:"superar",fr:"surmonter",nl:"overwinnen"}},
+  {v:"forbid",subj:"they",t:"Past simple",pre:"They ",suf:" him to leave.",a:"forbade",tr:{de:"Sie verboten ihm zu gehen.",en:"They forbade him to leave.",es:"Le prohibieron marcharse.",fr:"Ils lui ont interdit de partir.",nl:"Ze verboden hem te vertrekken."},g:{de:"verbieten",en:"to forbid",es:"prohibir",fr:"interdire",nl:"verbieden"}},
+  {v:"bind",subj:"it",t:"Past simple",pre:"The contract ",suf:" both parties.",a:"bound",tr:{de:"Der Vertrag band beide Parteien.",en:"The contract bound both parties.",es:"El contrato vinculó a ambas partes.",fr:"Le contrat liait les deux parties.",nl:"Het contract bond beide partijen."},g:{de:"binden",en:"to bind",es:"vincular",fr:"lier",nl:"binden"}},
+  {v:"flee",subj:"it",t:"Past simple",pre:"The crowd ",suf:" in panic.",a:"fled",tr:{de:"Die Menge floh in Panik.",en:"The crowd fled in panic.",es:"La multitud huyó presa del pánico.",fr:"La foule a fui dans la panique.",nl:"De menigte vluchtte in paniek."},g:{de:"fliehen",en:"to flee",es:"huir",fr:"fuir",nl:"vluchten"}}
  ],
  es:[
-  {v:"hablar",subj:"nosotros",t:"Presente",pre:"Nosotros ",suf:" español en casa.",a:"hablamos",tr:"Wir sprechen zu Hause Spanisch.",de:"sprechen"},
-  {v:"tener",subj:"él",t:"Indefinido",pre:"Él ",suf:" mucha suerte.",a:"tuvo",tr:"Er hatte viel Glück.",de:"haben"},
-  {v:"ir",subj:"ellos",t:"Indefinido",pre:"Ellos ",suf:" al cine ayer.",a:"fueron",tr:"Sie gingen gestern ins Kino.",de:"gehen"},
-  {v:"poder",subj:"yo",t:"Presente",pre:"Yo no ",suf:" venir mañana.",a:"puedo",tr:"Ich kann morgen nicht kommen.",de:"können"},
-  {v:"hacer",subj:"ella",t:"Perfecto",pre:"Ella ha ",suf:" la tarea.",a:"hecho",tr:"Sie hat die Aufgabe gemacht.",de:"machen"}
+  {v:"hablar",subj:"nosotros",t:"Presente",pre:"Nosotros ",suf:" español en casa.",a:"hablamos",tr:{de:"Wir sprechen zu Hause Spanisch.",en:"We speak Spanish at home.",es:"Hablamos español en casa.",fr:"Nous parlons espagnol à la maison.",nl:"Wij spreken thuis Spaans."},g:{de:"sprechen",en:"to speak",es:"hablar",fr:"parler",nl:"spreken"}},
+  {v:"tener",subj:"él",t:"Indefinido",pre:"Él ",suf:" mucha suerte.",a:"tuvo",tr:{de:"Er hatte viel Glück.",en:"He had a lot of luck.",es:"Tuvo mucha suerte.",fr:"Il a eu beaucoup de chance.",nl:"Hij had veel geluk."},g:{de:"haben",en:"to have",es:"tener",fr:"avoir",nl:"hebben"}},
+  {v:"ir",subj:"ellos",t:"Indefinido",pre:"Ellos ",suf:" al cine ayer.",a:"fueron",tr:{de:"Sie gingen gestern ins Kino.",en:"They went to the cinema yesterday.",es:"Fueron al cine ayer.",fr:"Ils sont allés au cinéma hier.",nl:"Ze gingen gisteren naar de bioscoop."},g:{de:"gehen",en:"to go",es:"ir",fr:"aller",nl:"gaan"}},
+  {v:"poder",subj:"yo",t:"Presente",pre:"Yo no ",suf:" venir mañana.",a:"puedo",tr:{de:"Ich kann morgen nicht kommen.",en:"I can't come tomorrow.",es:"No puedo venir mañana.",fr:"Je ne peux pas venir demain.",nl:"Ik kan morgen niet komen."},g:{de:"können",en:"can",es:"poder",fr:"pouvoir",nl:"kunnen"}},
+  {v:"hacer",subj:"ella",t:"Perfecto",pre:"Ella ha ",suf:" la tarea.",a:"hecho",tr:{de:"Sie hat die Aufgabe gemacht.",en:"She has done the homework.",es:"Ha hecho la tarea.",fr:"Elle a fait le devoir.",nl:"Ze heeft de opdracht gemaakt."},g:{de:"machen",en:"to do",es:"hacer",fr:"faire",nl:"doen"}}
  ],
  de:[
-  {v:"machen",subj:"du",t:"Präsens",pre:"Du ",suf:" das wirklich toll.",a:"machst",tr:"You do that really well.",de:"to do"},
-  {v:"sprechen",subj:"er",t:"Präsens",pre:"Er ",suf:" drei Sprachen.",a:"spricht",tr:"He speaks three languages.",de:"to speak"},
-  {v:"gehen",subj:"wir",t:"Präteritum",pre:"Wir ",suf:" ins Kino.",a:"gingen",tr:"We went to the cinema.",de:"to go"},
-  {v:"sein",subj:"ich",t:"Perfekt",pre:"Ich ",suf:" noch nie dort gewesen.",a:"bin",tr:"I have never been there.",de:"to be"}
+  {v:"machen",subj:"du",t:"Präsens",pre:"Du ",suf:" das wirklich toll.",a:"machst",tr:{de:"Du machst das wirklich toll.",en:"You do that really well.",es:"Lo haces realmente genial.",fr:"Tu fais ça vraiment bien.",nl:"Je doet dat echt geweldig."},g:{de:"machen",en:"to do",es:"hacer",fr:"faire",nl:"doen"}},
+  {v:"sprechen",subj:"er",t:"Präsens",pre:"Er ",suf:" drei Sprachen.",a:"spricht",tr:{de:"Er spricht drei Sprachen.",en:"He speaks three languages.",es:"Habla tres idiomas.",fr:"Il parle trois langues.",nl:"Hij spreekt drie talen."},g:{de:"sprechen",en:"to speak",es:"hablar",fr:"parler",nl:"spreken"}},
+  {v:"gehen",subj:"wir",t:"Präteritum",pre:"Wir ",suf:" ins Kino.",a:"gingen",tr:{de:"Wir gingen ins Kino.",en:"We went to the cinema.",es:"Fuimos al cine.",fr:"Nous sommes allés au cinéma.",nl:"We gingen naar de bioscoop."},g:{de:"gehen",en:"to go",es:"ir",fr:"aller",nl:"gaan"}},
+  {v:"sein",subj:"ich",t:"Perfekt",pre:"Ich ",suf:" noch nie dort gewesen.",a:"bin",tr:{de:"Ich bin noch nie dort gewesen.",en:"I have never been there.",es:"Nunca he estado allí.",fr:"Je n'y suis jamais allé.",nl:"Ik ben er nog nooit geweest."},g:{de:"sein",en:"to be",es:"estar",fr:"être",nl:"zijn"}}
  ],
  nl:[
-  {v:"hebben",subj:"wij",t:"Tegenw. tijd",pre:"Wij ",suf:" een goed idee.",a:"hebben",tr:"Wir haben eine gute Idee.",de:"haben"},
-  {v:"zijn",subj:"jij",t:"Tegenw. tijd",pre:"Jij ",suf:" te laat.",a:"bent",tr:"Du bist zu spät.",de:"sein"},
-  {v:"gaan",subj:"ik",t:"Verl. tijd",pre:"Ik ",suf:" naar huis.",a:"ging",tr:"Ich ging nach Hause.",de:"gehen"},
-  {v:"kunnen",subj:"hij",t:"Tegenw. tijd",pre:"Hij ",suf:" goed zwemmen.",a:"kan",tr:"Er kann gut schwimmen.",de:"können"}
+  {v:"hebben",subj:"wij",t:"Tegenw. tijd",pre:"Wij ",suf:" een goed idee.",a:"hebben",tr:{de:"Wir haben eine gute Idee.",en:"We have a good idea.",es:"Tenemos una buena idea.",fr:"Nous avons une bonne idée.",nl:"Wij hebben een goed idee."},g:{de:"haben",en:"to have",es:"tener",fr:"avoir",nl:"hebben"}},
+  {v:"zijn",subj:"jij",t:"Tegenw. tijd",pre:"Jij ",suf:" te laat.",a:"bent",tr:{de:"Du bist zu spät.",en:"You are too late.",es:"Llegas demasiado tarde.",fr:"Tu es en retard.",nl:"Jij bent te laat."},g:{de:"sein",en:"to be",es:"estar",fr:"être",nl:"zijn"}},
+  {v:"gaan",subj:"ik",t:"Verl. tijd",pre:"Ik ",suf:" naar huis.",a:"ging",tr:{de:"Ich ging nach Hause.",en:"I went home.",es:"Fui a casa.",fr:"Je suis rentré à la maison.",nl:"Ik ging naar huis."},g:{de:"gehen",en:"to go",es:"ir",fr:"aller",nl:"gaan"}},
+  {v:"kunnen",subj:"hij",t:"Tegenw. tijd",pre:"Hij ",suf:" goed zwemmen.",a:"kan",tr:{de:"Er kann gut schwimmen.",en:"He can swim well.",es:"Él sabe nadar bien.",fr:"Il sait bien nager.",nl:"Hij kan goed zwemmen."},g:{de:"können",en:"can",es:"poder",fr:"pouvoir",nl:"kunnen"}}
  ],
  fr:[
-  {v:"être",subj:"nous",t:"Présent",pre:"Nous ",suf:" prêts.",a:"sommes",tr:"Wir sind bereit.",de:"sein"},
-  {v:"avoir",subj:"elle",t:"Présent",pre:"Elle ",suf:" raison.",a:"a",tr:"Sie hat recht.",de:"haben"},
-  {v:"aller",subj:"je",t:"Présent",pre:"Je ",suf:" au marché.",a:"vais",tr:"Ich gehe zum Markt.",de:"gehen"},
-  {v:"faire",subj:"ils",t:"Passé composé",pre:"Ils ont ",suf:" du sport.",a:"fait",tr:"Sie haben Sport gemacht.",de:"machen"}
+  {v:"être",subj:"nous",t:"Présent",pre:"Nous ",suf:" prêts.",a:"sommes",tr:{de:"Wir sind bereit.",en:"We are ready.",es:"Estamos listos.",fr:"Nous sommes prêts.",nl:"Wij zijn klaar."},g:{de:"sein",en:"to be",es:"estar",fr:"être",nl:"zijn"}},
+  {v:"avoir",subj:"elle",t:"Présent",pre:"Elle ",suf:" raison.",a:"a",tr:{de:"Sie hat recht.",en:"She is right.",es:"Ella tiene razón.",fr:"Elle a raison.",nl:"Zij heeft gelijk."},g:{de:"haben",en:"to have",es:"tener",fr:"avoir",nl:"hebben"}},
+  {v:"aller",subj:"je",t:"Présent",pre:"Je ",suf:" au marché.",a:"vais",tr:{de:"Ich gehe zum Markt.",en:"I'm going to the market.",es:"Voy al mercado.",fr:"Je vais au marché.",nl:"Ik ga naar de markt."},g:{de:"gehen",en:"to go",es:"ir",fr:"aller",nl:"gaan"}},
+  {v:"faire",subj:"ils",t:"Passé composé",pre:"Ils ont ",suf:" du sport.",a:"fait",tr:{de:"Sie haben Sport gemacht.",en:"They did some sport.",es:"Hicieron deporte.",fr:"Ils ont fait du sport.",nl:"Ze hebben gesport."},g:{de:"machen",en:"to do",es:"hacer",fr:"faire",nl:"doen"}}
  ]
 };
+var TRLANGS={de:1,en:1,es:1,fr:1,nl:1};
+function baseLang(){var l=(document.documentElement.lang||'de').slice(0,2);return TRLANGS[l]?l:'de';}
 var LC={es:['#ff3b5c','#d81f52'],de:['#a557ff','#7e35d6'],en:['#0a84ff','#0a6fd6'],nl:['#1a9b46','#127a37'],fr:['#ff7a18','#e0620a']};
 var scr=demo.closest('.qm-screen');
 var lang='en', cur=0;
 function set(id,t){var e=document.getElementById(id); if(e) e.textContent=t;}
-function render(){var d=DATA[lang][cur];
+function render(){var d=DATA[lang][cur];var b=baseLang();
+ var tr=(d.tr&&(d.tr[b]||d.tr.de))||''; var gl=(d.g&&(d.g[b]||d.g.de))||'';
  set('qdTenseChip',d.t); set('qdAsk',d.t+' · '+d.subj);
- set('qdVerbF',d.v); set('qdPreF',d.pre); set('qdSufF',d.suf); set('qdTrF',d.tr);
+ set('qdVerbF',d.v); set('qdPreF',d.pre); set('qdSufF',d.suf); set('qdTrF',tr);
  set('qdBackTop',d.v+' · '+d.subj); set('qdVerbB',d.v);
- set('qdPreB',d.pre); set('qdAnsB',d.a); set('qdSufB',d.suf); set('qdTrB',d.tr);
- set('qdPairV',d.v); set('qdPairDe',d.de); demo.classList.remove('flipped');}
+ set('qdPreB',d.pre); set('qdAnsB',d.a); set('qdSufB',d.suf); set('qdTrB',tr);
+ set('qdPairV',d.v); set('qdPairDe',gl); demo.classList.remove('flipped');}
 var card=demo.querySelector('.flipcard');
 if(card){card.addEventListener('click',function(){demo.classList.toggle('flipped');});
  card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();demo.classList.toggle('flipped');}});}
@@ -1276,6 +1292,9 @@ Array.prototype.forEach.call(langs,function(b){b.addEventListener('click',functi
  Array.prototype.forEach.call(langs,function(x){x.classList.remove('on');}); b.classList.add('on');
  lang=l; cur=0; var c=LC[l]; if(scr){scr.style.setProperty('--lc',c[0]);scr.style.setProperty('--lcd',c[1]);}
  render();});});
+// Übersetzung im Widget an den Sprachschalter oben koppeln (Basissprache)
+var prevAfterW=window.__ceAfterLang;
+window.__ceAfterLang=function(l){ if(typeof prevAfterW==='function'){try{prevAfterW(l);}catch(e){}} render(); };
 render();
 })();</script>
 </body>
