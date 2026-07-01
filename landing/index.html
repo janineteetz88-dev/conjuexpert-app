@@ -319,6 +319,7 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .qm-screen{background:var(--bg);border-radius:30px;padding:16px 13px;overflow:hidden}
 .pain-photo{margin:24px auto 0;max-width:400px;border-radius:20px;overflow:hidden;aspect-ratio:4/5;background:var(--img-tile);box-shadow:var(--shadow-sm);border:1px solid var(--border)}
 .pain-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;mix-blend-mode:luminosity;filter:var(--img-filter)}
+.pain-photo picture,.hl-fig picture,.ci-pic picture{display:contents}
 .qm-ex-cap{text-align:center;font-size:14px;color:var(--muted);margin:16px auto 0;max-width:440px;text-wrap:pretty}
 .qm-livecta{display:flex;align-items:center;justify-content:center;gap:10px;width:max-content;max-width:100%;margin:0 auto 22px;padding:15px 26px;border-radius:16px;color:var(--selfg);background:linear-gradient(var(--selbg),var(--selbg)) padding-box,var(--brand-rainbow) border-box;border:2px solid transparent;font-size:clamp(15px,4vw,17px);font-weight:700;letter-spacing:-.01em;box-shadow:0 14px 30px -12px rgba(30,22,8,.6);text-align:center;text-wrap:balance;cursor:pointer}
 .qm-livecta .ar{flex:none;transition:transform .25s}
@@ -665,7 +666,7 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
         <svg class="pain-arrow" viewBox="0 0 42 52" fill="none" aria-hidden="true"><defs><linearGradient id="painArrowRb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff3b5c"/><stop offset=".33" stop-color="#ffc400"/><stop offset=".66" stop-color="#34c759"/><stop offset="1" stop-color="#0a84ff"/></linearGradient></defs><path d="M21 4 V40 M9 29 L21 43 L33 29" stroke="url(#painArrowRb)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h2 class="pain-lead-h" data-i18n="pain.lead">Genau hier setzt <strong>ConjuExpert</strong> an.</h2>
         <p class="pain-bridge" data-i18n="pain.bridge">Mit ConjuExpert trainierst du den Wechsel zwischen Verstehen und Sprechen. Dein Schlüssel zum flüssigen Reden: das gezielte Quizzen von deiner Lieblingssprache in deine Muttersprache.</p>
-        <figure class="pain-photo"><img src="lifestyle/sprachen-lernen-lesen-kaffee.jpg" alt="Entspannt lesen und lernen – mit ConjuExpert die Lieblingssprache üben" loading="lazy" decoding="async" /></figure>
+        <figure class="pain-photo"><picture><source srcset="lifestyle/sprachen-lernen-lesen-kaffee.webp" type="image/webp"><img src="lifestyle/sprachen-lernen-lesen-kaffee.jpg" alt="Entspannt lesen und lernen – mit ConjuExpert die Lieblingssprache üben" loading="lazy" decoding="async" width="820" height="1230" /></picture></figure>
       </div>
     </div>
   </section>
@@ -810,12 +811,12 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
           </div>
           <div class="sc-phones">
             <div class="sc-phone">
-              <img src="screenshots/scr-challenge-waehlen.jpg" alt="ConjuExpert Challenge: Challenge-Art wählen – Vorschlag, individuell oder nach Zeit" style="object-position:center" />
+              <picture><source srcset="screenshots/scr-challenge-waehlen.webp" type="image/webp"><img src="screenshots/scr-challenge-waehlen.jpg" alt="ConjuExpert Challenge: Challenge-Art wählen – Vorschlag, individuell oder nach Zeit" style="object-position:center" loading="lazy" decoding="async" width="540" height="924" /></picture>
               <span class="sc-cap"><span class="n">1</span><span data-i18n="cap.chPick">Challenge wählen</span></span>
             </div>
             <div class="sc-arrow" aria-hidden="true">→</div>
             <div class="sc-phone">
-              <img src="screenshots/scr-challenge-einstellen.jpg" alt="ConjuExpert Challenge: individuell einstellen – Zeitraum, Zeitformen, Anzahl Verben und Wortschatz" />
+              <picture><source srcset="screenshots/scr-challenge-einstellen.webp" type="image/webp"><img src="screenshots/scr-challenge-einstellen.jpg" alt="ConjuExpert Challenge: individuell einstellen – Zeitraum, Zeitformen, Anzahl Verben und Wortschatz" loading="lazy" decoding="async" width="540" height="924" /></picture>
               <span class="sc-cap a"><span class="n">2</span><span data-i18n="cap.chSet">Einstellen</span></span>
             </div>
           </div>
@@ -831,19 +832,19 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
 <p data-i18n="hl.p">Vier Bausteine, die das Üben von Zeitformen und unregelmäßigen Verben zum Selbstläufer machen.</p></div>
       <div class="hl-rows">
         <div class="hl-row reveal">
-          <figure class="hl-fig"><img src="lifestyle/sprach-switching-mehrsprachig-lernen-mann.jpg" alt="Mann lernt mehrsprachig und wechselt zwischen Mutter- und Fremdsprache mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure>
+          <figure class="hl-fig"><picture><source srcset="lifestyle/sprach-switching-mehrsprachig-lernen-mann.webp" type="image/webp"><img src="lifestyle/sprach-switching-mehrsprachig-lernen-mann.jpg" alt="Mann lernt mehrsprachig und wechselt zwischen Mutter- und Fremdsprache mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></picture></figure>
           <div class="hl-rbody"><span class="hl-num">01</span><div class="hl-titlerow"><h3 data-i18n="hl1.h3">Sprach-Switching</h3><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div><p data-i18n="hl1.p">Du wechselst ständig zwischen Mutter- und Fremdsprache und verknüpfst Bedeutung mit der richtigen Zeitform — aktiv statt passiv.</p></div>
         </div>
         <div class="hl-row reveal">
-          <figure class="hl-fig"><img src="lifestyle/kontext-signalwoerter-muster-erkennen.jpg" alt="Muster und Signalwörter erkennen – Verben im Kontext lernen mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure>
+          <figure class="hl-fig"><picture><source srcset="lifestyle/kontext-signalwoerter-muster-erkennen.webp" type="image/webp"><img src="lifestyle/kontext-signalwoerter-muster-erkennen.jpg" alt="Muster und Signalwörter erkennen – Verben im Kontext lernen mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></picture></figure>
           <div class="hl-rbody"><span class="hl-num">02</span><div class="hl-titlerow"><h3 data-i18n="hl2.h3">Kontext &amp; Signalwörter</h3><span class="hl-tag free" data-i18n="tag.free">KOSTENLOS</span></div><p data-i18n="hl2.p">Du siehst jede Form in einem echten Beispielsatz – samt der Signalwörter, die sie auslösen (z. B. „gestern" → Vergangenheit). So merkst du dir, wann welche Zeitform passt, ohne Grammatikregeln zu pauken.</p></div>
         </div>
         <div class="hl-row reveal">
-          <figure class="hl-fig"><img src="lifestyle/gemeinsam-lernen-austausch.jpg" alt="Gemeinsam Sprachen lernen und sich austauschen – Verben üben mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure>
+          <figure class="hl-fig"><picture><source srcset="lifestyle/gemeinsam-lernen-austausch.webp" type="image/webp"><img src="lifestyle/gemeinsam-lernen-austausch.jpg" alt="Gemeinsam Sprachen lernen und sich austauschen – Verben üben mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></picture></figure>
           <div class="hl-rbody"><span class="hl-num">03</span><div class="hl-titlerow"><h3 data-i18n="hl3.h3">Adaptiv ans Niveau</h3><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div><p data-i18n="hl3.p">Jede Runde passt sich an: du trainierst genau die Fehler aus der letzten Runde. Dein Trainer weiß, welcher Wortschatz unter „gemerkt" gespeichert ist, und ruft ihn immer wieder auf.</p></div>
         </div>
         <div class="hl-row reveal">
-          <figure class="hl-fig"><img src="lifestyle/merken-vokabeln-favoriten-kopfhoerer.jpg" alt="Knifflige Verben merken und als Favoriten speichern mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></figure>
+          <figure class="hl-fig"><picture><source srcset="lifestyle/merken-vokabeln-favoriten-kopfhoerer.webp" type="image/webp"><img src="lifestyle/merken-vokabeln-favoriten-kopfhoerer.jpg" alt="Knifflige Verben merken und als Favoriten speichern mit ConjuExpert" loading="lazy" decoding="async" width="760" height="570" /></picture></figure>
           <div class="hl-rbody"><span class="hl-num">04</span><div class="hl-titlerow"><h3 data-i18n="hl4.h3">Merken</h3><span class="hl-tag prem" data-i18n="tag.prem">Premiumtarif</span></div><p data-i18n="hl4.p">Speichere knifflige Verben als Favoriten, baue eigene Vokabellisten und lass dir mit „Muss ich noch lernen" gezielt die Lücken abfragen.</p></div>
         </div>
       </div>
@@ -891,7 +892,7 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
 
   <div class="wrap band-solo reveal">
     <div class="feat-band">
-      <figure class="ci-pic"><img src="lifestyle/sprachen-lernen-strand-sonnenuntergang.jpg" alt="Sprachen lernen unterwegs am Strand – mit ConjuExpert Verben konjugieren, wo du gerade bist" loading="lazy" decoding="async" width="1600" height="800" /><span class="band-cap">Lernen, wo du gerade bist.</span></figure>
+      <figure class="ci-pic"><picture><source srcset="lifestyle/sprachen-lernen-strand-sonnenuntergang.webp" type="image/webp"><img src="lifestyle/sprachen-lernen-strand-sonnenuntergang.jpg" alt="Sprachen lernen unterwegs am Strand – mit ConjuExpert Verben konjugieren, wo du gerade bist" loading="lazy" decoding="async" width="1600" height="800" /></picture><span class="band-cap">Lernen, wo du gerade bist.</span></figure>
     </div>
   </div>
 
