@@ -788,7 +788,7 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
           <button class="qd-lang" type="button" data-l="fr" style="--c:#ff7a18"><b>FR</b><span>Français</span></button>
         </div>
         <div class="qd-set"><span class="qd-chip qd-chip-a">Karten-Quiz</span><span class="qd-chip">Fortgeschritten</span><span class="qd-chip" id="qdTenseChip">Past simple</span></div>
-        <p class="qd-note" id="qdNote">Live-Vorschau auf Englisch — alle 5 Sprachen &amp; Stufen in der App.</p>
+        <p class="qd-note" id="qdNote">Karten-Quiz zum Ausprobieren — Sprache &amp; Zeitform frei wählbar.</p>
         <div class="flipdemo" id="flipDemo">
           <div class="flipcard" role="button" tabindex="0" aria-label="Karte umdrehen">
             <div class="fc-inner">
@@ -1179,23 +1179,50 @@ document.addEventListener("DOMContentLoaded", function(){
 <script>(function(){var stack=document.getElementById("uspStack");if(stack){var cards=[].slice.call(stack.querySelectorAll(".usp-card"));var tabs=[].slice.call(document.querySelectorAll(".usp-tab"));var act=0;function render(){cards.forEach(function(c,i){var pos=(i-act+cards.length)%cards.length;c.classList.remove("on","behind1","behind2");c.classList.add(pos===0?"on":pos===1?"behind1":"behind2");});tabs.forEach(function(t,i){t.classList.toggle("on",i===act);});}tabs.forEach(function(t,i){t.addEventListener("click",function(e){e.stopPropagation();act=i;render();});});stack.addEventListener("click",function(){act=(act+1)%cards.length;render();});render();}var band=document.querySelector(".qm-example");if(band){var rain=document.createElement("div");rain.className="qm-rain";band.insertBefore(rain,band.firstChild);for(var i=0;i<46;i++){var im=document.createElement("img");im.src="/favicon.svg";im.alt="";im.setAttribute("aria-hidden","true");var sz=11+((i*7)%14);im.style.width=sz+"px";im.style.height=sz+"px";im.style.left=((i*37)%100)+"%";im.style.opacity=(0.07+((i%5)*0.02)).toFixed(2);im.style.animationDuration=(7+((i*13)%10))+"s";im.style.animationDelay=(-((i*11)%18))+"s";rain.appendChild(im);}}})();</script>
 <script>(function(){
 var demo=document.getElementById('flipDemo'); if(!demo) return;
-var DATA=[
- {v:"arise",subj:"it",t:"Past simple",pre:"A problem ",suf:" during the meeting.",a:"arose",tr:"Ein Problem entstand während des Meetings.",de:"entstehen"},
- {v:"seek",subj:"they",t:"Past simple",pre:"They ",suf:" shelter from the storm.",a:"sought",tr:"Sie suchten Schutz vor dem Sturm.",de:"suchen"},
- {v:"undertake",subj:"she",t:"Present perfect",pre:"She has ",suf:" a huge project.",a:"undertaken",tr:"Sie hat ein riesiges Projekt übernommen.",de:"übernehmen"},
- {v:"withhold",subj:"he",t:"Past simple",pre:"He ",suf:" the truth from us.",a:"withheld",tr:"Er verschwieg uns die Wahrheit.",de:"verschweigen"},
- {v:"foresee",subj:"nobody",t:"Past simple",pre:"Nobody ",suf:" the outcome.",a:"foresaw",tr:"Niemand sah das Ergebnis voraus.",de:"voraussehen"},
- {v:"strive",subj:"we",t:"Present perfect",pre:"We have ",suf:" for perfection.",a:"striven",tr:"Wir haben nach Perfektion gestrebt.",de:"streben"},
- {v:"overcome",subj:"she",t:"Past simple",pre:"She ",suf:" her fear of speaking.",a:"overcame",tr:"Sie überwand ihre Angst zu sprechen.",de:"überwinden"},
- {v:"forbid",subj:"they",t:"Past simple",pre:"They ",suf:" him to leave.",a:"forbade",tr:"Sie verboten ihm zu gehen.",de:"verbieten"},
- {v:"bind",subj:"it",t:"Past simple",pre:"The contract ",suf:" both parties.",a:"bound",tr:"Der Vertrag band beide Parteien.",de:"binden"},
- {v:"flee",subj:"it",t:"Past simple",pre:"The crowd ",suf:" in panic.",a:"fled",tr:"Die Menge floh in Panik.",de:"fliehen"}
-];
-var scr=demo.closest('.qm-screen');
+var DATA={
+ en:[
+  {v:"arise",subj:"it",t:"Past simple",pre:"A problem ",suf:" during the meeting.",a:"arose",tr:"Ein Problem entstand während des Meetings.",de:"entstehen"},
+  {v:"seek",subj:"they",t:"Past simple",pre:"They ",suf:" shelter from the storm.",a:"sought",tr:"Sie suchten Schutz vor dem Sturm.",de:"suchen"},
+  {v:"undertake",subj:"she",t:"Present perfect",pre:"She has ",suf:" a huge project.",a:"undertaken",tr:"Sie hat ein riesiges Projekt übernommen.",de:"übernehmen"},
+  {v:"withhold",subj:"he",t:"Past simple",pre:"He ",suf:" the truth from us.",a:"withheld",tr:"Er verschwieg uns die Wahrheit.",de:"verschweigen"},
+  {v:"foresee",subj:"nobody",t:"Past simple",pre:"Nobody ",suf:" the outcome.",a:"foresaw",tr:"Niemand sah das Ergebnis voraus.",de:"voraussehen"},
+  {v:"strive",subj:"we",t:"Present perfect",pre:"We have ",suf:" for perfection.",a:"striven",tr:"Wir haben nach Perfektion gestrebt.",de:"streben"},
+  {v:"overcome",subj:"she",t:"Past simple",pre:"She ",suf:" her fear of speaking.",a:"overcame",tr:"Sie überwand ihre Angst zu sprechen.",de:"überwinden"},
+  {v:"forbid",subj:"they",t:"Past simple",pre:"They ",suf:" him to leave.",a:"forbade",tr:"Sie verboten ihm zu gehen.",de:"verbieten"},
+  {v:"bind",subj:"it",t:"Past simple",pre:"The contract ",suf:" both parties.",a:"bound",tr:"Der Vertrag band beide Parteien.",de:"binden"},
+  {v:"flee",subj:"it",t:"Past simple",pre:"The crowd ",suf:" in panic.",a:"fled",tr:"Die Menge floh in Panik.",de:"fliehen"}
+ ],
+ es:[
+  {v:"hablar",subj:"nosotros",t:"Presente",pre:"Nosotros ",suf:" español en casa.",a:"hablamos",tr:"Wir sprechen zu Hause Spanisch.",de:"sprechen"},
+  {v:"tener",subj:"él",t:"Indefinido",pre:"Él ",suf:" mucha suerte.",a:"tuvo",tr:"Er hatte viel Glück.",de:"haben"},
+  {v:"ir",subj:"ellos",t:"Indefinido",pre:"Ellos ",suf:" al cine ayer.",a:"fueron",tr:"Sie gingen gestern ins Kino.",de:"gehen"},
+  {v:"poder",subj:"yo",t:"Presente",pre:"Yo no ",suf:" venir mañana.",a:"puedo",tr:"Ich kann morgen nicht kommen.",de:"können"},
+  {v:"hacer",subj:"ella",t:"Perfecto",pre:"Ella ha ",suf:" la tarea.",a:"hecho",tr:"Sie hat die Aufgabe gemacht.",de:"machen"}
+ ],
+ de:[
+  {v:"machen",subj:"du",t:"Präsens",pre:"Du ",suf:" das wirklich toll.",a:"machst",tr:"You do that really well.",de:"to do"},
+  {v:"sprechen",subj:"er",t:"Präsens",pre:"Er ",suf:" drei Sprachen.",a:"spricht",tr:"He speaks three languages.",de:"to speak"},
+  {v:"gehen",subj:"wir",t:"Präteritum",pre:"Wir ",suf:" ins Kino.",a:"gingen",tr:"We went to the cinema.",de:"to go"},
+  {v:"sein",subj:"ich",t:"Perfekt",pre:"Ich ",suf:" noch nie dort gewesen.",a:"bin",tr:"I have never been there.",de:"to be"}
+ ],
+ nl:[
+  {v:"hebben",subj:"wij",t:"Tegenw. tijd",pre:"Wij ",suf:" een goed idee.",a:"hebben",tr:"Wir haben eine gute Idee.",de:"haben"},
+  {v:"zijn",subj:"jij",t:"Tegenw. tijd",pre:"Jij ",suf:" te laat.",a:"bent",tr:"Du bist zu spät.",de:"sein"},
+  {v:"gaan",subj:"ik",t:"Verl. tijd",pre:"Ik ",suf:" naar huis.",a:"ging",tr:"Ich ging nach Hause.",de:"gehen"},
+  {v:"kunnen",subj:"hij",t:"Tegenw. tijd",pre:"Hij ",suf:" goed zwemmen.",a:"kan",tr:"Er kann gut schwimmen.",de:"können"}
+ ],
+ fr:[
+  {v:"être",subj:"nous",t:"Présent",pre:"Nous ",suf:" prêts.",a:"sommes",tr:"Wir sind bereit.",de:"sein"},
+  {v:"avoir",subj:"elle",t:"Présent",pre:"Elle ",suf:" raison.",a:"a",tr:"Sie hat recht.",de:"haben"},
+  {v:"aller",subj:"je",t:"Présent",pre:"Je ",suf:" au marché.",a:"vais",tr:"Ich gehe zum Markt.",de:"gehen"},
+  {v:"faire",subj:"ils",t:"Passé composé",pre:"Ils ont ",suf:" du sport.",a:"fait",tr:"Sie haben Sport gemacht.",de:"machen"}
+ ]
+};
 var LC={es:['#ff3b5c','#d81f52'],de:['#a557ff','#7e35d6'],en:['#0a84ff','#0a6fd6'],nl:['#1a9b46','#127a37'],fr:['#ff7a18','#e0620a']};
-var cur=0;
+var scr=demo.closest('.qm-screen');
+var lang='en', cur=0;
 function set(id,t){var e=document.getElementById(id); if(e) e.textContent=t;}
-function render(){var d=DATA[cur];
+function render(){var d=DATA[lang][cur];
  set('qdTenseChip',d.t); set('qdAsk',d.t+' · '+d.subj);
  set('qdVerbF',d.v); set('qdPreF',d.pre); set('qdSufF',d.suf); set('qdTrF',d.tr);
  set('qdBackTop',d.v+' · '+d.subj); set('qdVerbB',d.v);
@@ -1206,11 +1233,13 @@ if(card){card.addEventListener('click',function(){demo.classList.toggle('flipped
  card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();demo.classList.toggle('flipped');}});}
 var fb=document.getElementById('qdFlipBtn'); if(fb) fb.addEventListener('click',function(e){e.stopPropagation();demo.classList.add('flipped');});
 var ag=document.getElementById('qdAgain'); if(ag) ag.addEventListener('click',function(e){e.stopPropagation();demo.classList.remove('flipped');});
-var nx=document.getElementById('qdNext'); if(nx) nx.addEventListener('click',function(e){e.stopPropagation();cur=(cur+1)%DATA.length;render();});
+var nx=document.getElementById('qdNext'); if(nx) nx.addEventListener('click',function(e){e.stopPropagation();cur=(cur+1)%DATA[lang].length;render();});
 var langs=document.querySelectorAll('#qdLangs .qd-lang');
 Array.prototype.forEach.call(langs,function(b){b.addEventListener('click',function(){
+ var l=b.getAttribute('data-l'); if(!DATA[l]) return;
  Array.prototype.forEach.call(langs,function(x){x.classList.remove('on');}); b.classList.add('on');
- var c=LC[b.getAttribute('data-l')]||LC.en; if(scr){scr.style.setProperty('--lc',c[0]);scr.style.setProperty('--lcd',c[1]);}});});
+ lang=l; cur=0; var c=LC[l]; if(scr){scr.style.setProperty('--lc',c[0]);scr.style.setProperty('--lcd',c[1]);}
+ render();});});
 render();
 })();</script>
 </body>
