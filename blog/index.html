@@ -910,6 +910,9 @@
 .morerow{margin:16px 0 0;text-align:left}
 .moretoggle{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--blue);background:none;border:0;cursor:pointer;padding:8px 0}
 .moretoggle:hover{text-decoration:underline}
+/* Grauer Rubrik-Zähler oben rechts ("+X weitere") — ersetzt den Button unten */
+.topic-h .all.morecount{cursor:pointer;border:1px solid var(--border);border-radius:999px;padding:3px 11px;background:var(--surface-2);color:var(--muted);transition:color .15s,border-color .15s}
+.topic-h .all.morecount:hover{color:var(--ink);border-color:var(--muted)}
 </style>
 <script>
 document.documentElement.classList.add('js');
@@ -979,11 +982,15 @@ if (langsel) {
   });
 }
 
-// Startseite: pro Sektion nur 2 Artikel zeigen, Rest über "(mehr)".
+// Startseite: pro Sektion nur wenige Artikel zeigen; EIN grauer Zähler
+// ("+X weitere") oben rechts in der Rubrik-Ecke klappt den Rest auf.
 var POST_LIMIT = 2;
 function limitSections() {
   document.querySelectorAll('.topic:not(.fdw)').forEach(function(t) {
     if (t.style.display === 'none') return;
+    // Alt-Button unten entfernen, falls noch vorhanden (nur ein Zähler).
+    var oldRow = t.querySelector('.morerow');
+    if (oldRow && oldRow.parentNode) oldRow.parentNode.removeChild(oldRow);
     var posts = Array.prototype.filter.call(t.querySelectorAll('.post'), function(p) {
       return p.style.display !== 'none';
     });
@@ -992,27 +999,24 @@ function limitSections() {
       posts.forEach(function(p, i) { if (i >= POST_LIMIT) p.style.display = 'none'; });
     }
     var hidden = posts.length - POST_LIMIT;
-    var btn = t.querySelector('.moretoggle');
+    var toggle = t.querySelector('.topic-h .all');
+    if (!toggle) return;
     if (hidden > 0) {
-      if (!btn) {
-        var row = document.createElement('div');
-        row.className = 'morerow';
-        btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'moretoggle';
-        btn.addEventListener('click', function() {
+      toggle.classList.add('morecount');
+      if (!t.dataset.tglBound) {
+        toggle.addEventListener('click', function(e) {
+          e.preventDefault();
           t.dataset.expanded = t.dataset.expanded === '1' ? '0' : '1';
           applyFilter();
         });
-        row.appendChild(btn);
-        t.appendChild(row);
+        t.dataset.tglBound = '1';
       }
-      btn.parentNode.style.display = '';
-      btn.innerHTML = expanded
-        ? '<span data-l="de">weniger anzeigen ▲</span><span data-l="en">show less ▲</span>'
-        : '<span data-l="de">mehr anzeigen (' + hidden + ') ▾</span><span data-l="en">show more (' + hidden + ') ▾</span>';
-    } else if (btn) {
-      btn.parentNode.style.display = 'none';
+      toggle.innerHTML = expanded
+        ? '<span data-l="de">weniger ▲</span><span data-l="en">less ▲</span>'
+        : '<span data-l="de">+' + hidden + ' weitere ▾</span><span data-l="en">+' + hidden + ' more ▾</span>';
+    } else {
+      toggle.classList.remove('morecount');
+      toggle.innerHTML = '<span data-l="de">Alle ansehen →</span><span data-l="en">View all →</span>';
     }
   });
 }
