@@ -129,7 +129,7 @@ header.nav::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height
 }
 
 /* hero */
-.hero{position:relative;padding:84px 0 30px}
+.hero{position:relative;padding:52px 0 22px}
 .hero::before{content:"";position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:1100px;height:560px;background:var(--vivid);filter:blur(120px);opacity:.16;z-index:-1;border-radius:50%}
 .hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:34px 50px;align-items:center}
 .hero-grid #try{grid-column:1/-1;margin:0}
@@ -147,10 +147,10 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,5.8vw,64px);l
 .hero-shot{display:flex;justify-content:center;position:relative;animation:float 6.5s ease-in-out infinite}
 .hero-shot::before{content:"";position:absolute;inset:6% 12%;background:var(--vivid);filter:blur(60px);opacity:.3;border-radius:50%;z-index:0}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
-.phone{position:relative;z-index:1;width:300px;border-radius:42px;background:#0c0e16;box-shadow:var(--shadow),0 0 0 9px #0c0e16,0 0 0 11px rgba(255,255,255,.06);overflow:hidden}
+.phone{position:relative;z-index:1;width:250px;border-radius:38px;background:#0c0e16;box-shadow:var(--shadow),0 0 0 9px #0c0e16,0 0 0 11px rgba(255,255,255,.06);overflow:hidden}
 .phone img,.phone video{display:block;width:100%}
 /* hero annotation tags */
-.phone-wrap{position:relative;width:300px}
+.phone-wrap{position:relative;width:250px}
 .aring{position:absolute;border:2.5px dashed var(--ink);border-radius:48% / 54%;z-index:6;pointer-events:none;opacity:0;transform:scale(.7);transition:opacity .55s cubic-bezier(.2,.7,.2,1),transform .55s cubic-bezier(.2,.7,.2,1)}
 .anno-go .aring{opacity:1;transform:scale(1);animation:ringPulse 2.8s ease-in-out 1.3s infinite}
 .anno-legend li{opacity:0;transform:translateY(9px);transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
