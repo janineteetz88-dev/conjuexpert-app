@@ -3,8 +3,8 @@ name: Blog-Fotos generieren
 # Erzeugt pro Blog-Artikel ein eindeutiges Lifestyle-Foto (Google Imagen) und
 # committet sie in den ausgewählten Branch. Manuell startbar.
 #
-# Voraussetzung: Repository-Secret GOOGLE_API_KEY (Settings → Secrets and
-# variables → Actions → New repository secret).
+# Voraussetzung: Repository-Secret OPENAI_API_KEY (Settings → Secrets and
+# variables → Actions → New repository secret) — derselbe OpenAI-Key wie im Worker.
 
 on:
   workflow_dispatch:
@@ -34,7 +34,7 @@ jobs:
 
       - name: Fotos generieren + verdrahten
         env:
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node scripts/gen-article-photos.mjs ${{ inputs.force && '--force' || '' }}
 
       - name: Committen

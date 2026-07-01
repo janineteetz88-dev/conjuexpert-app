@@ -6,10 +6,10 @@
  * es als Karten-Thumbnail auf der Blog-Startseite ein. Kein Foto je doppelt.
  *
  * Läuft dort, wo Netz + Key vorhanden sind (GitHub Action / lokal), NICHT in der
- * Claude-Sandbox. Key: Umgebungsvariable GOOGLE_API_KEY.
+ * Claude-Sandbox. Key: Umgebungsvariable OPENAI_API_KEY (dieselbe wie im Worker).
  *
- *   GOOGLE_API_KEY=… node scripts/gen-article-photos.mjs           # fehlende erzeugen
- *   GOOGLE_API_KEY=… node scripts/gen-article-photos.mjs --force   # alle neu
+ *   OPENAI_API_KEY=… node scripts/gen-article-photos.mjs           # fehlende erzeugen
+ *   OPENAI_API_KEY=… node scripts/gen-article-photos.mjs --force   # alle neu
  *   node scripts/gen-article-photos.mjs --wire-only                # nur HTML verdrahten
  *
  * Idempotent: vorhandene blog/img/auto/<slug>.jpg werden übersprungen (außer --force).
@@ -19,8 +19,8 @@ import sharp from "sharp";
 
 const HTML = "blog/index.html";
 const OUT_DIR = "blog/img/auto";
-const MODEL = process.env.GEN_MODEL || "imagen-3.0-generate-002";
-const KEY = process.env.GOOGLE_API_KEY || "";
+const MODEL = process.env.GEN_MODEL || "gpt-image-1"; // Fallback-tauglich: "dall-e-3"
+const KEY = process.env.OPENAI_API_KEY || "";
 const FORCE = process.argv.includes("--force");
 const WIRE_ONLY = process.argv.includes("--wire-only");
 
@@ -58,24 +58,25 @@ function promptFor(index) {
   return `${STYLE} Scene: ${scene}, ${mood}.`;
 }
 
-/* ─── Google-Imagen-Aufruf → JPEG-Buffer ─────────────────────────────────── */
+/* ─── OpenAI-Bild-Aufruf (gpt-image-1 / dall-e-3) → PNG-Buffer ────────────── */
 async function generate(prompt) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:predict`;
-  const body = {
-    instances: [{ prompt }],
-    parameters: { sampleCount: 1, aspectRatio: "9:16", personGeneration: "allow_adult" },
-  };
+  const url = "https://api.openai.com/v1/images/generations";
+  // gpt-image-1: 1024x1536 (Portrait). dall-e-3: 1024x1792 + response_format.
+  const body =
+    MODEL === "dall-e-3"
+      ? { model: MODEL, prompt, size: "1024x1792", response_format: "b64_json", n: 1 }
+      : { model: MODEL, prompt, size: "1024x1536", n: 1 };
   let lastErr;
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
       const res = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-goog-api-key": KEY },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${KEY}` },
         body: JSON.stringify(body),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
       const json = await res.json();
-      const b64 = json?.predictions?.[0]?.bytesBase64Encoded;
+      const b64 = json?.data?.[0]?.b64_json;
       if (!b64) throw new Error(`keine Bilddaten: ${JSON.stringify(json).slice(0, 300)}`);
       return Buffer.from(b64, "base64");
     } catch (e) {
@@ -127,7 +128,7 @@ mkdirSync(OUT_DIR, { recursive: true });
 
 if (!WIRE_ONLY) {
   if (!KEY) {
-    console.error("FEHLER: GOOGLE_API_KEY nicht gesetzt. Nur --wire-only ist ohne Key möglich.");
+    console.error("FEHLER: OPENAI_API_KEY nicht gesetzt. Nur --wire-only ist ohne Key möglich.");
     process.exit(1);
   }
   let made = 0, skipped = 0;
