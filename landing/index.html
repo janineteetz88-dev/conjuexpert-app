@@ -444,9 +444,11 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .cell.showcase .chip::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brand-rainbow);margin-right:8px;vertical-align:middle}
 .ch-mark{background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;white-space:nowrap}
 .ch-mark::after{content:none}
-.sc-phones{display:flex;align-items:center;gap:18px;background:transparent;border:0;border-radius:0;padding:0}
-.sc-phone{display:flex;flex-direction:column;align-items:center;gap:11px}
-.sc-phone img{width:188px;height:322px;object-fit:cover;object-position:center;border-radius:30px;background:#0c0e16;box-shadow:var(--shadow),0 0 0 7px #0c0e16,0 0 0 9px rgba(255,255,255,.06);display:block}
+.sc-phones{display:flex;align-items:center;gap:18px;background:transparent;border:0;border-radius:0;padding:0;perspective:1100px}
+.sc-phone{display:flex;flex-direction:column;align-items:center;gap:11px;transform-style:preserve-3d}
+.sc-phone img{width:188px;height:322px;object-fit:cover;object-position:center;border-radius:30px;background:#0c0e16;box-shadow:var(--shadow),0 0 0 7px #0c0e16,0 0 0 9px rgba(255,255,255,.06);display:block;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s;transform-origin:center;backface-visibility:hidden;will-change:transform}
+@media(hover:hover){.sc-phone img{cursor:pointer}.sc-phone.tilt3d img{box-shadow:0 46px 84px -26px rgba(20,22,33,.6),0 0 0 7px #0c0e16,0 0 0 9px rgba(255,255,255,.1)}}
+@media(prefers-reduced-motion:reduce){.sc-phone img{transform:none!important;transition:none}}
 .sc-cap{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--muted)}
 .sc-cap .n{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;background:var(--surface-2);border:1px solid var(--border)}
 .sc-cap.a{color:var(--ink)}
@@ -1177,6 +1179,23 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   }
   function onScroll(){ if(!ticking){ticking=true;requestAnimationFrame(upd);} }
   window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); upd();
+})();
+// Challenge-Mockups: 3D-Tilt + Zoom beim Darüberfahren (kommen dem Nutzer entgegen)
+(function(){
+  if(!window.matchMedia||!matchMedia('(hover:hover)').matches) return;
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  Array.prototype.forEach.call(document.querySelectorAll('.sc-phone'),function(p){
+    var img=p.querySelector('img'); if(!img) return;
+    var raf=false,rx=0,ry=0;
+    p.addEventListener('pointermove',function(e){
+      var r=p.getBoundingClientRect(); if(!r.width) return;
+      var px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5;
+      ry=px*9; rx=-py*9;
+      if(!raf){raf=true;requestAnimationFrame(function(){raf=false;img.style.transform='perspective(1100px) rotateX('+rx.toFixed(2)+'deg) rotateY('+ry.toFixed(2)+'deg) scale(1.07)';});}
+    },{passive:true});
+    p.addEventListener('pointerenter',function(){p.classList.add('tilt3d');});
+    p.addEventListener('pointerleave',function(){p.classList.remove('tilt3d');img.style.transform='';});
+  });
 })();
 </script>
 <script src="/landing/i18n.js?v=20260701e"></script>
