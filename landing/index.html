@@ -269,11 +269,17 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .rev-say .rd-n{background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:800}
 @media(max-width:520px){.rev-doodle{margin-top:20px}.rev-doodle .rev-arrow{width:48px}.rev-say{font-size:14px;max-width:180px}}
 /* Gründerin-Notiz am Pain-Bereich (gleicher Sticker wie beim Danke-Doodle) */
-.pain-note{display:flex;align-items:center;justify-content:center;gap:2px;margin:22px auto 0}
-.pain-note .pain-note-arrow{width:70px;height:auto;flex:none;align-self:flex-end;margin-bottom:6px}
+.pain-note{display:flex;align-items:center;justify-content:center;margin:24px auto 0}
+.pain-note .rev-bubble{max-width:280px}
+.pain-note .rev-say{max-width:200px}
+.pain-note .pain-note-arrow{display:none}
 .pain-note .rd-n{background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:800;white-space:nowrap}
-@media(min-width:981px){.pain .wrap{position:relative}.pain-note{position:absolute;top:2px;right:0;margin:0;max-width:270px}}
-@media(max-width:980px){.pain-note .pain-note-arrow{display:none}}
+/* ab Tablet/Desktop: Sticker sitzt über der rechten Karte, Pfeil geht von der Karte aus */
+@media(min-width:981px){
+  .pain-cards{position:relative}
+  .pain-note{position:absolute;top:-92px;right:4px;margin:0;display:block;z-index:4}
+  .pain-note .pain-note-arrow{display:block;position:absolute;bottom:-60px;right:96px;width:46px;height:auto}
+}
 .proof-marq{overflow:hidden;margin-bottom:26px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .proof-track{display:flex;gap:18px;width:max-content;animation:revscroll 64s linear infinite}
 .proof-marq:hover .proof-track{animation-play-state:paused}
@@ -579,6 +585,20 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .reveal{opacity:1!important;transform:none!important}
 }
+/* #1 Hover-Feedback — taktiles Anheben + Cursor-Glow (nur Zeigergeräte) */
+.bt-card{position:relative}
+@media(hover:hover){
+  .bt-card{transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s}
+  .bt-card:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--ink) 22%,var(--border))}
+  .result-ic{transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+  .result-card{transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+  .result-card:hover{transform:translateX(6px)}
+  .result-card:hover .result-ic{transform:scale(1.18) rotate(-8deg)}
+  .qm-item{transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+  .qm-item:hover{transform:translateY(-5px)}
+  .cardglow{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;background:radial-gradient(240px circle at var(--gx,50%) var(--gy,50%),color-mix(in srgb,var(--ink) 9%,transparent),transparent 60%)}
+  .glowon>.cardglow{opacity:1}
+}
 /* language switcher */
 .nav-right{display:flex;align-items:center;gap:10px}
 .langsel{position:relative}
@@ -705,17 +725,17 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
         <h2 class="pain-h2" data-i18n="pain.h2">Geht's dir beim Sprachenlernen auch so?</h2>
         <p class="mini-p" style="margin-top:10px" data-i18n="pain.sub">Wenn einer dieser drei Sätze von dir sein könnte, bist du hier richtig.</p>
       </div>
-      <div class="pain-note reveal pop" data-d="3">
-        <svg class="pain-note-arrow" viewBox="0 0 96 60" fill="none" aria-hidden="true"><path d="M8 44 C 30 52, 62 50, 88 20" stroke="#ff3b5c" stroke-width="3" stroke-linecap="round"/><path d="M78 12 L90 17 L84 29" stroke="#ff3b5c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="rev-bubble">
-          <picture><source srcset="lifestyle/gruenderin-janine-avatar.webp" type="image/webp"><img class="rev-ava" src="lifestyle/gruenderin-janine-avatar.jpg" alt="" width="44" height="44" loading="lazy" decoding="async"></picture>
-          <span class="rev-say" data-i18n="doodle.founder">Das war exakt mein Grund, die App zu entwickeln! <b class="rd-n">100%!</b></span>
-        </div>
-      </div>
       <div class="pain-cards">
         <figure class="pain-card reveal rv-l" data-d="1"><blockquote data-i18n="pain.a">Ich pauke Vokabeln und Regeln — aber im echten Gespräch fällt mir die richtige Form einfach nicht ein.</blockquote></figure>
         <figure class="pain-card reveal pop" data-d="2"><blockquote data-i18n="pain.b">Die Zeitformen kenne ich in der Theorie. Beim Sprechen rate ich — und verliere den Faden.</blockquote></figure>
         <figure class="pain-card reveal rv-r" data-d="3"><blockquote data-i18n="pain.c">Nach Wochen mit der Lern-App verstehe ich viel — frei sprechen kann ich trotzdem nicht.</blockquote></figure>
+        <div class="pain-note reveal pop" data-d="3">
+          <div class="rev-bubble">
+            <picture><source srcset="lifestyle/gruenderin-janine-avatar.webp" type="image/webp"><img class="rev-ava" src="lifestyle/gruenderin-janine-avatar.jpg" alt="" width="46" height="46" loading="lazy" decoding="async"></picture>
+            <span class="rev-say" data-i18n="doodle.founder">Das war exakt mein Grund, die App zu entwickeln! <b class="rd-n">100%!</b></span>
+          </div>
+          <svg class="pain-note-arrow" viewBox="0 0 60 76" fill="none" aria-hidden="true"><path d="M30 70 C 12 54, 20 26, 36 12" stroke="#ff3b5c" stroke-width="3.2" stroke-linecap="round"/><path d="M26 14 L38 8 L43 22" stroke="#ff3b5c" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
       </div>
       <div class="pain-bridge-band reveal" data-d="2">
         <svg class="pain-arrow" viewBox="0 0 42 52" fill="none" aria-hidden="true"><defs><linearGradient id="painArrowRb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff3b5c"/><stop offset=".17" stop-color="#ff7a18"/><stop offset=".33" stop-color="#ffc400"/><stop offset=".5" stop-color="#34c759"/><stop offset=".67" stop-color="#00bcd4"/><stop offset=".83" stop-color="#0a84ff"/><stop offset="1" stop-color="#a557ff"/></linearGradient></defs><path d="M21 4 V40 M9 29 L21 43 L33 29" stroke="url(#painArrowRb)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1123,6 +1143,36 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') tryPlay(); });
   ['touchstart','click'].forEach(function(ev){ window.addEventListener(ev,function once(){ tryPlay(); window.removeEventListener(ev,once); },{passive:true}); });
   v.addEventListener('click',tryPlay); // Tap aufs Mockup startet/weckt das Video
+})();
+// #1 Hover-Feedback: Cursor-Glow auf Karten (nur Zeigergeräte)
+(function(){
+  if(!window.matchMedia||!matchMedia('(hover:hover)').matches) return;
+  Array.prototype.forEach.call(document.querySelectorAll('.plan,.cell,.bt-card,.usp-card'),function(c){
+    var g=document.createElement('span'); g.className='cardglow'; c.appendChild(g);
+    var raf=false,mx=50,my=50;
+    c.addEventListener('pointermove',function(e){
+      var r=c.getBoundingClientRect(); if(!r.width) return;
+      mx=(e.clientX-r.left)/r.width*100; my=(e.clientY-r.top)/r.height*100;
+      if(!raf){raf=true;requestAnimationFrame(function(){raf=false;c.style.setProperty('--gx',mx.toFixed(1)+'%');c.style.setProperty('--gy',my.toFixed(1)+'%');});}
+    },{passive:true});
+    c.addEventListener('pointerenter',function(){c.classList.add('glowon');});
+    c.addEventListener('pointerleave',function(){c.classList.remove('glowon');});
+  });
+})();
+// #3 sanftes Scroll-Storytelling: Parallax am Hero-Mockup (Desktop)
+(function(){
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  var hero=document.querySelector('.hero'), pw=document.querySelector('.hero .phone-wrap'); if(!hero||!pw) return;
+  var ticking=false;
+  function upd(){ ticking=false;
+    if((window.innerWidth||1000)<861){ pw.style.transform=''; return; }
+    var r=hero.getBoundingClientRect(), vh=window.innerHeight||800;
+    if(r.bottom<-60||r.top>vh) return;
+    var y=Math.max(-46,Math.min(46, r.top*-0.075));
+    pw.style.transform='translateY('+y.toFixed(1)+'px)';
+  }
+  function onScroll(){ if(!ticking){ticking=true;requestAnimationFrame(upd);} }
+  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); upd();
 })();
 </script>
 <script src="/landing/i18n.js?v=20260701e"></script>
