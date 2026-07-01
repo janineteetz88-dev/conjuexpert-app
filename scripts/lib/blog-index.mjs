@@ -19,6 +19,8 @@
  *     lang, langTag, colorVar, thumb, readMin }
  */
 
+import { existsSync } from "node:fs";
+
 /* ─── Kategorie → Sektion / Label-Mapping ────────────────────────────────── */
 
 const CAT_SECTION = {
@@ -270,21 +272,18 @@ function hashSlug(slug) {
 }
 
 /**
- * Bild-Zuordnung (nur echte Assets aus blog/img/):
- *   learn → learn-1.png (NL → learn-nl.png)
- *   gram  → ES: gram-es-1.png; sonst alternierend gram-es-1/gram-es-2
- *   prod  → prod-1.png (ES → prod-es.png)
+ * Bild-Zuordnung. Vorrang: das pro Artikel generierte, EINDEUTIGE Lifestyle-Foto
+ * (blog/img/auto/<slug>.jpg — erzeugt von scripts/gen-article-photos.mjs). Fehlt
+ * es noch (neuer Artikel, Generator noch nicht gelaufen), greift der alte
+ * Fallback, damit nie ein Bild fehlt.
  */
 export function thumbForCard(cat, langCode, slug) {
-  if (cat === "learn") {
-    return langCode === "nl" ? "learn-nl.png" : "learn-1.png";
-  }
-  if (cat === "prod") {
-    return langCode === "es" ? "prod-es.png" : "prod-1.png";
-  }
-  // gram
+  const auto = `auto/${slug}.jpg`;
+  if (existsSync(`blog/img/${auto}`)) return auto;
+  // Fallback bis der Foto-Generator gelaufen ist
+  if (cat === "learn") return langCode === "nl" ? "learn-nl.png" : "learn-1.png";
+  if (cat === "prod") return langCode === "es" ? "prod-es.png" : "prod-1.png";
   if (langCode === "es") return "gram-es-1.png";
-  // deterministisch alternieren für nicht-ES-Artikel
   return hashSlug(slug) % 2 === 0 ? "gram-es-1.png" : "gram-es-2.png";
 }
 
