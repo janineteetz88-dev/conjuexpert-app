@@ -525,6 +525,8 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .js .fly.in{animation:flyUp .75s cubic-bezier(.2,.7,.2,1)}
 
 /* faq */
+#faq{position:relative}
+#faq::before{content:"";position:absolute;top:30px;left:50%;transform:translateX(-50%);width:1000px;height:560px;max-width:140vw;background:var(--vivid);filter:blur(130px);opacity:.13;z-index:-1;border-radius:50%;pointer-events:none}
 .faq{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 .faq .qa{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:0 26px;box-shadow:var(--shadow-sm);overflow:hidden;transition:box-shadow .3s,border-color .3s,background .3s}
 .faq .qa::before{content:"";position:absolute;left:0;top:20px;bottom:20px;width:4px;border-radius:0 4px 4px 0;background:var(--vivid);opacity:0;transition:opacity .3s}
@@ -1056,7 +1058,7 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
 
   <section class="block" id="faq">
     <div class="wrap">
-      <div class="sec-head reveal"><span class="sec-tag" data-i18n="faq.tag">FAQ</span><h2 data-i18n="faq.h2">Häufige Fragen</h2><p>Alles Wichtige zu Funktionen, Preisen und Sprachen.</p></div>
+      <div class="sec-head reveal"><span class="sec-tag" data-i18n="faq.tag">FAQ</span><h2 data-i18n="faq.h2">Häufige Fragen</h2><p data-i18n="faq.sub">Alles Wichtige zu Funktionen, Preisen und Sprachen.</p></div>
       <div class="faq">
         <details open class="qa fly"><summary><span class="q-no">01</span><span class="q-txt" data-i18n="faq.q1">Was ist das Besondere an ConjuExpert?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a1"><p>Du kennst das Verb. Hast es nachgeschlagen – zehnmal vielleicht. Doch im Gespräch ist es plötzlich weg, und du suchst, während die anderen längst weiterreden.</p><p>ConjuExpert ändert das. Hier schlägst du Verben nicht nur nach, du machst sie zu deinen. Im Quiz trainierst du den blitzschnellen Abruf genau der Form, die gerade gefragt ist: Subjuntivo, 3. Person Singular von „tener" – <em>tenga</em>. Du übst in beide Richtungen, bis die Form da ist, bevor du überhaupt nachdenkst.</p><p>Und dann kommt der schönste Moment: Wenn du im Gespräch mit einem Muttersprachler oder einer Muttersprachlerin bist, fällt dir die richtige konjugierte Zeitform ein, wenn du sie brauchst.</p><p>Mit ConjuExpert verinnerlichst du durch spielerisches Anwenden – insbesondere durch das Lernen im Kontext deiner Lieblingsthemen. Das ist der Unterschied.</p></div></details>
         <details class="qa fly"><summary><span class="q-no">02</span><span class="q-txt" data-i18n="faq.q2">Welche Sprachen werden unterstützt?</span><span class="pm" aria-hidden="true"></span></summary><div class="qa-body" data-i18n="faq.a2"><p>Du kannst spanische Verben, französische Verben, englische Verben, niederländische Verben und deutsche Verben konjugieren — und jederzeit zwischen den Sprachen wechseln.</p></div></details>
@@ -1198,7 +1200,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   });
 })();
 </script>
-<script src="/landing/i18n.js?v=20260701f"></script>
+<script src="/landing/i18n.js?v=20260701g"></script>
 <!-- Konjugations-Engines für das Live-Widget -->
 <script src="https://conjuexpert.app/engine/conj-es.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-fr.js" defer></script>
