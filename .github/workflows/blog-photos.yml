@@ -1,0 +1,50 @@
+name: Blog-Fotos generieren
+
+# Erzeugt pro Blog-Artikel ein eindeutiges Lifestyle-Foto (Google Imagen) und
+# committet sie in den ausgewählten Branch. Manuell startbar.
+#
+# Voraussetzung: Repository-Secret GOOGLE_API_KEY (Settings → Secrets and
+# variables → Actions → New repository secret).
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Alle Fotos neu erzeugen (statt nur fehlende)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Dependencies
+        run: npm ci || npm install sharp
+
+      - name: Fotos generieren + verdrahten
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: node scripts/gen-article-photos.mjs ${{ inputs.force && '--force' || '' }}
+
+      - name: Committen
+        run: |
+          git config user.name "conjuexpert-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add blog/img/auto blog/index.html
+          if git diff --cached --quiet; then
+            echo "Keine Änderungen."
+          else
+            git commit -m "Blog-Fotos: eindeutige Lifestyle-Bilder pro Artikel (auto-generiert)"
+            git push origin ${{ github.ref_name }}
+          fi
