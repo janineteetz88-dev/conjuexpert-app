@@ -340,7 +340,7 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .qm-example{position:relative;overflow:hidden;margin:48px calc(50% - 50vw) 0;width:100vw;background:#141621;border:0;border-radius:0;padding:46px 20px 34px}
 .qm-example>.qm-livecta,.qm-example>.qm-phone{position:relative;z-index:1}
 .qm-phone{max-width:300px;margin:0 auto;background:#0c0e16;border-radius:34px;box-shadow:var(--shadow),0 0 0 7px #0c0e16,0 0 0 9px rgba(255,255,255,.06)}
-.qm-screen{background:var(--bg);border-radius:30px;padding:16px 13px;overflow:hidden}
+.qm-screen{background:var(--bg);border-radius:30px;padding:16px 13px;overflow:hidden;--lc:#0a84ff;--lcd:#0a6fd6}
 .pain-photo{margin:24px auto 0;max-width:400px;border-radius:20px;overflow:hidden;aspect-ratio:4/5;background:var(--img-tile);box-shadow:var(--shadow-sm);border:1px solid var(--border)}
 .pain-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;mix-blend-mode:luminosity;filter:var(--img-filter)}
 .pain-photo picture,.hl-fig picture,.ci-pic picture{display:contents}
@@ -350,7 +350,8 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .qm-example .qm-livecta{background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--brand-rainbow) border-box;color:var(--ink);box-shadow:0 14px 34px -12px rgba(0,0,0,.6)}
 .qm-livecta:hover .ar{transform:translateX(4px)}
 .qm-ex-cap strong{color:var(--ink);font-weight:700}
-.flipdemo{max-width:440px;margin:0 auto;--lc:#0a84ff;--lcd:#0a6fd6}
+.qd-langs{display:flex;gap:5px;margin:2px 0 10px}.qd-lang{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;padding:6px 2px;border-radius:12px;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:transform .15s,background .2s,border-color .2s}.qd-lang b{font-family:var(--display);font-weight:800;font-size:13px;color:var(--ink);line-height:1.1}.qd-lang span{font-size:8px;color:var(--muted);letter-spacing:.01em}.qd-lang.on{background:var(--ink);border-color:var(--ink)}.qd-lang.on b,.qd-lang.on span{color:#fff}@media(hover:hover){.qd-lang:hover{transform:translateY(-1px)}}.qd-set{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}.qd-chip{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:5px 9px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);color:var(--muted)}.qd-chip-a{background:color-mix(in srgb,var(--lc) 14%,transparent);border-color:color-mix(in srgb,var(--lc) 40%,transparent);color:var(--lcd)}.qd-note{text-align:center;font-size:11px;color:var(--muted);margin:0 0 12px;line-height:1.4}
+.flipdemo{max-width:440px;margin:0 auto}
 .flipcard{perspective:1300px;cursor:pointer;outline:none}
 .fc-inner{position:relative;min-height:372px;transition:transform .6s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
 .flipdemo.flipped .fc-inner{transform:rotateY(180deg)}
@@ -780,37 +781,46 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
       <div class="qm-example reveal">
         <a class="qm-livecta" href="https://conjuexpert.app">Teste hier das Kartenquiz live aus der App! <span class="ar">→</span></a>
         <div class="qm-phone"><div class="qm-screen">
-        <div class="flipdemo">
-          <div class="flipcard" role="button" tabindex="0" aria-label="Karte umdrehen" onclick="this.closest('.flipdemo').classList.toggle('flipped')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.closest('.flipdemo').classList.toggle('flipped')}">
+        <div class="qd-langs" id="qdLangs" role="tablist" aria-label="Sprache">
+          <button class="qd-lang" type="button" data-l="es" style="--c:#ff3b5c"><b>ES</b><span>Español</span></button>
+          <button class="qd-lang" type="button" data-l="de" style="--c:#a557ff"><b>DE</b><span>Deutsch</span></button>
+          <button class="qd-lang on" type="button" data-l="en" style="--c:#0a84ff"><b>EN</b><span>English</span></button>
+          <button class="qd-lang" type="button" data-l="nl" style="--c:#1a9b46"><b>NL</b><span>Nederlands</span></button>
+          <button class="qd-lang" type="button" data-l="fr" style="--c:#ff7a18"><b>FR</b><span>Français</span></button>
+        </div>
+        <div class="qd-set"><span class="qd-chip qd-chip-a">Karten-Quiz</span><span class="qd-chip">Fortgeschritten</span><span class="qd-chip" id="qdTenseChip">Past simple</span></div>
+        <p class="qd-note" id="qdNote">Live-Vorschau auf Englisch — alle 5 Sprachen &amp; Stufen in der App.</p>
+        <div class="flipdemo" id="flipDemo">
+          <div class="flipcard" role="button" tabindex="0" aria-label="Karte umdrehen">
             <div class="fc-inner">
               <div class="fc-face fc-front">
-                <div class="qc-asked">Asked: <b>Present tense &middot; we</b></div>
+                <div class="qc-asked">Gesucht: <b id="qdAsk">Past simple &middot; it</b></div>
                 <div class="qc-div"></div>
-                <div class="qc-tip">&#128161; Tip &#9662;</div>
-                <div class="qc-verb">buy <span class="qc-arr">&#8599;</span></div>
+                <div class="qc-tip">&#128161; Tipp &#9662;</div>
+                <div class="qc-verb"><span id="qdVerbF">arise</span> <span class="qc-arr">&#8599;</span></div>
                 <div class="qc-cloze">
-                  <div class="qc-sent">We <span class="qc-gap">&hellip;</span> a new car!</div>
+                  <div class="qc-sent"><span id="qdPreF"></span><span class="qc-gap">&hellip;</span><span id="qdSufF"></span></div>
                   <div class="qc-clozediv"></div>
-                  <div class="qc-trans">Wir kaufen ein Auto!</div>
+                  <div class="qc-trans" id="qdTrF"></div>
                 </div>
-                <div class="qc-flip">&#8635; Tap to flip</div>
+                <div class="qc-flip">&#8635; Antippen zum Umdrehen</div>
               </div>
               <div class="fc-face fc-back">
-                <div class="qc-backtop"><span class="qc-small">buy &middot; we</span><span class="qc-spk">&#128266;</span></div>
-                <div class="qc-verb">buy</div>
+                <div class="qc-backtop"><span class="qc-small" id="qdBackTop"></span><span class="qc-spk">&#128266;</span></div>
+                <div class="qc-verb" id="qdVerbB"></div>
                 <div class="qc-cloze">
-                  <div class="qc-sent">We <u>buy</u> a new car!</div>
+                  <div class="qc-sent"><span id="qdPreB"></span><u id="qdAnsB"></u><span id="qdSufB"></span></div>
                   <div class="qc-clozediv"></div>
-                  <div class="qc-trans">Wir kaufen ein Auto!</div>
+                  <div class="qc-trans" id="qdTrB"></div>
                 </div>
-                <div class="qc-pair">buy <span class="ar">&#8594;</span> <span class="tg">kaufen</span></div>
+                <div class="qc-pair"><span id="qdPairV"></span> <span class="ar">&#8594;</span> <span class="tg" id="qdPairDe"></span></div>
               </div>
             </div>
           </div>
-          <button class="qc-cta" type="button" onclick="this.closest('.flipdemo').classList.add('flipped')">Tap to flip</button>
+          <button class="qc-cta" type="button" id="qdFlipBtn">Antippen zum Umdrehen</button>
           <div class="qc-actions">
-            <button class="qc-again" type="button" onclick="this.closest('.flipdemo').classList.remove('flipped')">&#8635; Practice again</button>
-            <button class="qc-got" type="button" onclick="this.closest('.flipdemo').classList.remove('flipped')">&#10003; Got it</button>
+            <button class="qc-again" type="button" id="qdAgain">&#8635; Nochmal</button>
+            <button class="qc-got" type="button" id="qdNext">Weiter &#8594;</button>
           </div>
         </div>
         </div></div>
@@ -1167,5 +1177,41 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 </script>
 <script>(function(){var stack=document.getElementById("uspStack");if(stack){var cards=[].slice.call(stack.querySelectorAll(".usp-card"));var tabs=[].slice.call(document.querySelectorAll(".usp-tab"));var act=0;function render(){cards.forEach(function(c,i){var pos=(i-act+cards.length)%cards.length;c.classList.remove("on","behind1","behind2");c.classList.add(pos===0?"on":pos===1?"behind1":"behind2");});tabs.forEach(function(t,i){t.classList.toggle("on",i===act);});}tabs.forEach(function(t,i){t.addEventListener("click",function(e){e.stopPropagation();act=i;render();});});stack.addEventListener("click",function(){act=(act+1)%cards.length;render();});render();}var band=document.querySelector(".qm-example");if(band){var rain=document.createElement("div");rain.className="qm-rain";band.insertBefore(rain,band.firstChild);for(var i=0;i<46;i++){var im=document.createElement("img");im.src="/favicon.svg";im.alt="";im.setAttribute("aria-hidden","true");var sz=11+((i*7)%14);im.style.width=sz+"px";im.style.height=sz+"px";im.style.left=((i*37)%100)+"%";im.style.opacity=(0.07+((i%5)*0.02)).toFixed(2);im.style.animationDuration=(7+((i*13)%10))+"s";im.style.animationDelay=(-((i*11)%18))+"s";rain.appendChild(im);}}})();</script>
+<script>(function(){
+var demo=document.getElementById('flipDemo'); if(!demo) return;
+var DATA=[
+ {v:"arise",subj:"it",t:"Past simple",pre:"A problem ",suf:" during the meeting.",a:"arose",tr:"Ein Problem entstand während des Meetings.",de:"entstehen"},
+ {v:"seek",subj:"they",t:"Past simple",pre:"They ",suf:" shelter from the storm.",a:"sought",tr:"Sie suchten Schutz vor dem Sturm.",de:"suchen"},
+ {v:"undertake",subj:"she",t:"Present perfect",pre:"She has ",suf:" a huge project.",a:"undertaken",tr:"Sie hat ein riesiges Projekt übernommen.",de:"übernehmen"},
+ {v:"withhold",subj:"he",t:"Past simple",pre:"He ",suf:" the truth from us.",a:"withheld",tr:"Er verschwieg uns die Wahrheit.",de:"verschweigen"},
+ {v:"foresee",subj:"nobody",t:"Past simple",pre:"Nobody ",suf:" the outcome.",a:"foresaw",tr:"Niemand sah das Ergebnis voraus.",de:"voraussehen"},
+ {v:"strive",subj:"we",t:"Present perfect",pre:"We have ",suf:" for perfection.",a:"striven",tr:"Wir haben nach Perfektion gestrebt.",de:"streben"},
+ {v:"overcome",subj:"she",t:"Past simple",pre:"She ",suf:" her fear of speaking.",a:"overcame",tr:"Sie überwand ihre Angst zu sprechen.",de:"überwinden"},
+ {v:"forbid",subj:"they",t:"Past simple",pre:"They ",suf:" him to leave.",a:"forbade",tr:"Sie verboten ihm zu gehen.",de:"verbieten"},
+ {v:"bind",subj:"it",t:"Past simple",pre:"The contract ",suf:" both parties.",a:"bound",tr:"Der Vertrag band beide Parteien.",de:"binden"},
+ {v:"flee",subj:"it",t:"Past simple",pre:"The crowd ",suf:" in panic.",a:"fled",tr:"Die Menge floh in Panik.",de:"fliehen"}
+];
+var scr=demo.closest('.qm-screen');
+var LC={es:['#ff3b5c','#d81f52'],de:['#a557ff','#7e35d6'],en:['#0a84ff','#0a6fd6'],nl:['#1a9b46','#127a37'],fr:['#ff7a18','#e0620a']};
+var cur=0;
+function set(id,t){var e=document.getElementById(id); if(e) e.textContent=t;}
+function render(){var d=DATA[cur];
+ set('qdTenseChip',d.t); set('qdAsk',d.t+' · '+d.subj);
+ set('qdVerbF',d.v); set('qdPreF',d.pre); set('qdSufF',d.suf); set('qdTrF',d.tr);
+ set('qdBackTop',d.v+' · '+d.subj); set('qdVerbB',d.v);
+ set('qdPreB',d.pre); set('qdAnsB',d.a); set('qdSufB',d.suf); set('qdTrB',d.tr);
+ set('qdPairV',d.v); set('qdPairDe',d.de); demo.classList.remove('flipped');}
+var card=demo.querySelector('.flipcard');
+if(card){card.addEventListener('click',function(){demo.classList.toggle('flipped');});
+ card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();demo.classList.toggle('flipped');}});}
+var fb=document.getElementById('qdFlipBtn'); if(fb) fb.addEventListener('click',function(e){e.stopPropagation();demo.classList.add('flipped');});
+var ag=document.getElementById('qdAgain'); if(ag) ag.addEventListener('click',function(e){e.stopPropagation();demo.classList.remove('flipped');});
+var nx=document.getElementById('qdNext'); if(nx) nx.addEventListener('click',function(e){e.stopPropagation();cur=(cur+1)%DATA.length;render();});
+var langs=document.querySelectorAll('#qdLangs .qd-lang');
+Array.prototype.forEach.call(langs,function(b){b.addEventListener('click',function(){
+ Array.prototype.forEach.call(langs,function(x){x.classList.remove('on');}); b.classList.add('on');
+ var c=LC[b.getAttribute('data-l')]||LC.en; if(scr){scr.style.setProperty('--lc',c[0]);scr.style.setProperty('--lcd',c[1]);}});});
+render();
+})();</script>
 </body>
 </html>
