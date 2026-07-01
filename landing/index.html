@@ -490,6 +490,8 @@ section.block{padding:76px 0;scroll-margin-top:84px}
 .faq .qa-body em{font-style:normal;font-weight:700;color:var(--ink);font-family:var(--mono);font-size:.94em}
 
 /* compare table */
+#vergleich{position:relative;isolation:isolate}
+#vergleich::before{content:"";position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;z-index:-1;background:linear-gradient(color-mix(in srgb,var(--bg) 58%,transparent),color-mix(in srgb,var(--bg) 74%,transparent)),url(lifestyle/sprachen-lernen-strand-sonnenuntergang.jpg) center/cover no-repeat}
 .cmp{max-width:860px;margin:0 auto;border:1px solid var(--border);border-radius:24px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow-sm)}
 .cmp table{width:100%;border-collapse:collapse}
 .cmp th,.cmp td{padding:15px 18px;text-align:left;border-top:1px solid var(--border);font-size:15px;vertical-align:middle}
@@ -882,12 +884,6 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
       <div class="reveal proof-foot" style="text-align:center"><a class="btn btn-ghost" href="/bewertungen/" data-i18n="proof.all">Alle Bewertungen ansehen →</a></div>
     </div>
   </section>
-
-  <div class="wrap band-solo reveal">
-    <div class="feat-band">
-      <figure class="ci-pic"><picture><source srcset="lifestyle/sprachen-lernen-strand-sonnenuntergang.webp" type="image/webp"><img src="lifestyle/sprachen-lernen-strand-sonnenuntergang.jpg" alt="Sprachen lernen unterwegs am Strand – mit ConjuExpert Verben konjugieren, wo du gerade bist" loading="lazy" decoding="async" width="1600" height="800" /></picture><span class="band-cap">Lernen, wo du gerade bist.</span></figure>
-    </div>
-  </div>
 
   <section class="block" id="vergleich">
     <div class="wrap">
