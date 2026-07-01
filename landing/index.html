@@ -103,7 +103,10 @@ a{color:inherit;text-decoration:none}
 .js .reveal.rv-l.in,.js .reveal.rv-r.in{transform:none}
 
 /* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--display);font-weight:700;font-size:16px;padding:16px 26px;border-radius:16px;border:0;cursor:pointer;white-space:nowrap;transition:transform .18s,box-shadow .18s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--display);font-weight:700;font-size:16px;padding:16px 26px;border-radius:16px;border:1.5px solid transparent;cursor:pointer;white-space:nowrap;transition:transform .18s,box-shadow .18s}
+/* Einheitliche Breite für die zentrierten Sektions-CTAs → alle gleich groß */
+.cta-foot .btn,.result-cta .btn,.proof-foot .btn{min-width:340px;max-width:100%}
+@media(max-width:520px){.cta-foot .btn,.result-cta .btn,.proof-foot .btn{min-width:0;width:100%}}
 .btn:active{transform:translateY(1px) scale(.99)}
 .btn-primary{position:relative;color:var(--selfg);overflow:hidden;border:1.5px solid transparent;background:linear-gradient(var(--selbg),var(--selbg)) padding-box,var(--brand-rainbow) border-box;box-shadow:0 14px 30px -14px rgba(30,22,8,.55)}
 .btn-primary .g{display:none}
@@ -290,6 +293,16 @@ section.block{padding:60px 0;scroll-margin-top:84px}
   .pain-cards{position:relative}
   .pain-note{position:absolute;top:-92px;right:4px;margin:0;display:block;z-index:4}
   .pain-note .pain-note-arrow{display:block;position:absolute;bottom:-26px;right:104px;width:42px;height:auto}
+}
+/* Dritte Gründerin-Notiz an der Premium-Karte */
+.plan-note{display:flex;align-items:center;justify-content:center;margin:22px auto 0}
+.plan-note .rev-bubble{max-width:280px}
+.plan-note .rev-say{max-width:210px}
+.plan-note .plan-note-arrow{display:none}
+.plan-note .rd-n{background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:800}
+@media(min-width:861px){
+  .plan.best .plan-note{position:absolute;top:-96px;right:-6px;margin:0;display:block;z-index:5;width:256px}
+  .plan.best .plan-note .plan-note-arrow{display:block;position:absolute;bottom:-22px;left:44px;width:40px;height:auto}
 }
 .proof-foot{margin-top:8px}
 .proof-marq{overflow:hidden;margin-bottom:26px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
@@ -1059,6 +1072,13 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi3">Vokabellisten &amp; eigene Challenges</span></li>
           </ul>
           <a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l" data-i18n="pr.premBtn">Premium-Tarif holen</span></a>
+          <div class="plan-note reveal pop" data-d="3">
+            <div class="rev-bubble">
+              <picture><source srcset="lifestyle/gruenderin-janine-avatar.webp" type="image/webp"><img class="rev-ava" src="lifestyle/gruenderin-janine-avatar.jpg" alt="" width="46" height="46" loading="lazy" decoding="async"></picture>
+              <span class="rev-say" data-i18n="doodle.year">Wähle das jährliche Abo und erhalte <b class="rd-n">zwei Monate geschenkt</b>!</span>
+            </div>
+            <svg class="plan-note-arrow" viewBox="0 0 60 76" fill="none" aria-hidden="true"><path d="M30 70 C 12 54, 20 26, 36 12" stroke="#ff3b5c" stroke-width="3.2" stroke-linecap="round"/><path d="M26 14 L38 8 L43 22" stroke="#ff3b5c" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
         </div>
       </div>
       <p style="text-align:center;color:var(--muted);font-size:13.5px;margin:26px 0 0" data-i18n="pr.note">Lieber flexibel? Monatlich 2,99 €. Premium vorher 2 Tage gratis testen — jederzeit kündbar, sichere Zahlung über Stripe.</p>
@@ -1194,7 +1214,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   });
 })();
 </script>
-<script src="/landing/i18n.js?v=20260701g"></script>
+<script src="/landing/i18n.js?v=20260701h"></script>
 <!-- Konjugations-Engines für das Live-Widget -->
 <script src="https://conjuexpert.app/engine/conj-es.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-fr.js" defer></script>
