@@ -443,7 +443,7 @@ section.block{padding:96px 0;scroll-margin-top:84px}
 .save{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--green);background:color-mix(in srgb,var(--green) 13%,transparent);padding:3px 9px;border-radius:6px;margin-top:10px}
 .plan ul{list-style:none;padding:0;margin:20px 0 24px;display:flex;flex-direction:column;gap:11px}
 .plan li{display:flex;align-items:center;gap:10px;font-size:15px}
-.plan li svg{width:18px;height:18px;color:var(--green);flex:none}
+.plan li svg{width:18px;height:18px;color:var(--pink);flex:none}
 .plan .btn{width:100%}
 
 /* highlights */
@@ -956,14 +956,14 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
         <div class="plan best reveal" data-d="2">
           <span class="plan-badge" data-i18n="pr.badge">★ Beliebteste Wahl</span>
           <h3 data-i18n="pr.premName">Premium-Tarif</h3>
-          <p class="ptag" data-i18n="pr.premTag">Alles unbegrenzt — Quiz, Merken &amp; eigene Challenges.</p>
+          <p class="ptag" data-i18n="pr.premTag">Alles unbegrenzt — Quiz, Vokabellisten &amp; eigene Challenges.</p>
           <div class="welcome" data-i18n="pr.welcome">★ 2 Monate geschenkt</div>
           <div class="price"><span class="amt">29,99 €</span><span class="per" data-i18n="pr.perYear">/ Jahr</span></div>
           <div class="calc" data-i18n="pr.premCalc">≈ 2,50 €/Monat · 12 Monate zum Preis von 10</div>
           <ul>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi1">Alles aus dem Standard-Tarif &amp;</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi2">Alle 6 Quizmodi · unbegrenzt</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi3">Merken, Wortschatz &amp; eigene Challenges</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="pr.premLi3">Vokabellisten &amp; eigene Challenges</span></li>
           </ul>
           <a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l" data-i18n="pr.premBtn">Premium-Tarif holen</span></a>
         </div>
@@ -1069,7 +1069,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   v.addEventListener('click',tryPlay); // Tap aufs Mockup startet/weckt das Video
 })();
 </script>
-<script src="/landing/i18n.js?v=20260628e"></script>
+<script src="/landing/i18n.js?v=20260628f"></script>
 <!-- Konjugations-Engines für das Live-Widget -->
 <script src="https://conjuexpert.app/engine/conj-es.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-fr.js" defer></script>
