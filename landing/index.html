@@ -278,6 +278,28 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .mini-h{font-family:var(--display);font-weight:700;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;line-height:1.1;margin:8px 0 0;text-wrap:balance}
 .mini-p{font-size:16px;color:var(--muted);margin:10px 0 0;text-wrap:pretty}
 /* Bento-Grid „Das steckt in der App" */
+.usp-split{display:grid;grid-template-columns:.82fr 1.18fr;gap:44px;align-items:center;max-width:980px;margin:0 auto}
+@media(max-width:820px){.usp-split{grid-template-columns:1fr;gap:24px;max-width:520px}}
+.usp-photo{margin:0;border-radius:22px;overflow:hidden;aspect-ratio:4/5;box-shadow:var(--shadow-sm);border:1px solid var(--border);background:var(--img-tile)}
+.usp-photo img{width:100%;height:100%;object-fit:cover;display:block;mix-blend-mode:luminosity;filter:var(--img-filter)}
+.usp-photo picture{display:contents}
+.usp-side .mini-tag{color:var(--pink)}
+.usp-h{margin:10px 0 0;text-align:left}
+.usp-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 18px}
+.usp-tab{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:8px 15px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:transform .2s,background .2s,color .2s}
+.usp-tab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+@media(hover:hover){.usp-tab:hover{transform:translateY(-1px)}}
+.usp-stack{position:relative;min-height:210px;cursor:pointer}
+.usp-card{position:absolute;inset:0;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:26px 26px 28px;box-shadow:var(--shadow-sm);overflow:hidden;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .45s}
+.usp-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--brand-rainbow)}
+.usp-card h3{font-family:var(--display);font-weight:800;font-size:20px;margin:8px 0 8px;color:var(--ink)}
+.usp-card p{margin:0;font-size:15.5px;line-height:1.55;color:var(--muted);text-wrap:pretty}
+.usp-card.on{transform:none;opacity:1;z-index:3}
+.usp-card.behind1{transform:translateY(15px) scale(.965);opacity:.5;z-index:2}
+.usp-card.behind2{transform:translateY(30px) scale(.93);opacity:.3;z-index:1}
+.qm-rain{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.qm-rain img{position:absolute;top:-8%;animation:fall linear infinite;will-change:transform}
+@keyframes fall{from{transform:translateY(-40px)}to{transform:translateY(760px)}}
 .bento-app{display:grid;grid-template-columns:repeat(3,1fr);gap:30px 26px;margin-bottom:8px;max-width:920px;margin-left:auto;margin-right:auto}
 .bento-app .func-card{margin:0;background:transparent;border:0;box-shadow:none;padding:0;text-align:center}
 .func-ic{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--surface);color:var(--ink);border:1px solid var(--border);box-shadow:var(--shadow-sm);margin:0 auto 14px;font-size:21px;line-height:1}
@@ -315,7 +337,8 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .qm-why{margin-top:auto;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--pink);padding-top:10px}
 .qm-sci-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pink)}
 .qm-back p{margin:5px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink);text-wrap:pretty}
-.qm-example{margin:56px calc(50% - 50vw) 0;width:100vw;background:#141621;border:0;border-radius:0;padding:56px 20px 60px}
+.qm-example{position:relative;overflow:hidden;margin:56px calc(50% - 50vw) 0;width:100vw;background:#141621;border:0;border-radius:0;padding:56px 20px 60px}
+.qm-example>.qm-livecta,.qm-example>.qm-phone{position:relative;z-index:1}
 .qm-phone{max-width:300px;margin:0 auto;background:#0c0e16;border-radius:34px;box-shadow:var(--shadow),0 0 0 7px #0c0e16,0 0 0 9px rgba(255,255,255,.06)}
 .qm-screen{background:var(--bg);border-radius:30px;padding:16px 13px;overflow:hidden}
 .pain-photo{margin:24px auto 0;max-width:400px;border-radius:20px;overflow:hidden;aspect-ratio:4/5;background:var(--img-tile);box-shadow:var(--shadow-sm);border:1px solid var(--border)}
@@ -678,32 +701,28 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
   <section class="block" id="features">
     <div class="wrap">
       <!-- USP: Was uns einzigartig macht -->
-      <div class="mini-head reveal">
-        <span class="mini-tag" data-i18n="func.tag">Warum ConjuExpert</span>
-        <h2 class="mini-h" data-i18n="func.h">Was uns einzigartig macht.</h2>
-      </div>
-      <div class="bento-app usp-3">
-        <div class="func-card reveal">
-          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 0 1-11.5 7.2L4 20l1.3-4.5A8 8 0 1 1 21 11.5z"/><path d="M8.5 11h7M8.5 14h4.5"/></svg></span>
-          <h3 data-i18n="func.1h">Community first</h3>
-          <p data-i18n="func.1p">Wir hören, was die Sprachenlerner-Community sagt — und setzen es direkt um.</p>
-        </div>
-        <div class="func-card reveal" data-d="2">
-          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.1"/></svg></span>
-          <h3 data-i18n="func.2h">An der Wurzel gepackt</h3>
-          <p data-i18n="func.2p">Das „Ich kann nicht gut sprechen"-Problem lösen wir an der Wurzel: aktives Abrufen über verschiedene Schwierigkeitsstufen.</p>
-        </div>
-        <div class="func-card reveal" data-d="3">
-          <span class="func-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2.4"/><circle cx="9" cy="16" r="2.4"/></svg></span>
-          <h3 data-i18n="func.3h">Auf dich zugeschnitten</h3>
-          <p data-i18n="func.3p">Die Quizze passen sich deinen Wünschen an — lerne mit deinen Lieblingsthemen.</p>
+      <div class="usp-split">
+        <figure class="usp-photo reveal rv-l"><picture><source srcset="lifestyle/sprachen-lernen-lesen-kaffee.webp" type="image/webp"><img src="lifestyle/sprachen-lernen-lesen-kaffee.jpg" alt="Entspannt lesen und lernen mit ConjuExpert" loading="lazy" decoding="async" width="820" height="1230" /></picture></figure>
+        <div class="usp-side reveal">
+          <span class="mini-tag" data-i18n="func.tag">Warum ConjuExpert</span>
+          <h2 class="mini-h usp-h" data-i18n="func.h">Was uns einzigartig macht.</h2>
+          <div class="usp-tabs" role="tablist">
+            <button class="usp-tab on" type="button" data-i18n="func.1w">Community</button>
+            <button class="usp-tab" type="button" data-i18n="func.2w">An der Wurzel</button>
+            <button class="usp-tab" type="button" data-i18n="func.3w">Für dich</button>
+          </div>
+          <div class="usp-stack" id="uspStack">
+            <article class="usp-card on"><h3 data-i18n="func.1h">Community first</h3><p data-i18n="func.1p">Wir hören, was die Sprachenlerner-Community sagt — und setzen es direkt um.</p></article>
+            <article class="usp-card behind1"><h3 data-i18n="func.2h">An der Wurzel gepackt</h3><p data-i18n="func.2p">Das „Ich kann nicht gut sprechen"-Problem lösen wir an der Wurzel: aktives Abrufen über verschiedene Schwierigkeitsstufen.</p></article>
+            <article class="usp-card behind2"><h3 data-i18n="func.3h">Auf dich zugeschnitten</h3><p data-i18n="func.3p">Die Quizze passen sich deinen Wünschen an — lerne mit deinen Lieblingsthemen.</p></article>
+          </div>
         </div>
       </div>
 
 <!-- Quizmodi: genauer -->
       <div class="mini-head reveal qm-sep">
         <span class="mini-tag" data-i18n="qm.tag">Die 6 Quizmodi</span>
-        <h2 class="mini-h" data-i18n="qm.h">Sechs Wege, eine Form zu verankern.</h2>
+        <h2 class="mini-h" data-i18n="qm.h">Deine Lösung für flüssiges Sprechen: die 6 Quiz-Modi.</h2>
         <p class="mini-p" data-i18n="qm.p">Jeder Modus trainiert eine andere Fähigkeit — alle nach lernwissenschaftlichen Prinzipien. Individualisiere dein Training durch die Wahl von Zeitform, Verben und Themen.</p>
       </div>
       <div class="qm-grid">
@@ -1060,7 +1079,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   v.addEventListener('click',tryPlay); // Tap aufs Mockup startet/weckt das Video
 })();
 </script>
-<script src="/landing/i18n.js?v=20260628g"></script>
+<script src="/landing/i18n.js?v=20260628h"></script>
 <!-- Konjugations-Engines für das Live-Widget -->
 <script src="https://conjuexpert.app/engine/conj-es.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-fr.js" defer></script>
@@ -1148,5 +1167,6 @@ document.addEventListener("DOMContentLoaded", function(){
   start();
 });
 </script>
+<script>(function(){var stack=document.getElementById("uspStack");if(stack){var cards=[].slice.call(stack.querySelectorAll(".usp-card"));var tabs=[].slice.call(document.querySelectorAll(".usp-tab"));var act=0;function render(){cards.forEach(function(c,i){var pos=(i-act+cards.length)%cards.length;c.classList.remove("on","behind1","behind2");c.classList.add(pos===0?"on":pos===1?"behind1":"behind2");});tabs.forEach(function(t,i){t.classList.toggle("on",i===act);});}tabs.forEach(function(t,i){t.addEventListener("click",function(e){e.stopPropagation();act=i;render();});});stack.addEventListener("click",function(){act=(act+1)%cards.length;render();});render();}var band=document.querySelector(".qm-example");if(band){var rain=document.createElement("div");rain.className="qm-rain";band.insertBefore(rain,band.firstChild);for(var i=0;i<46;i++){var im=document.createElement("img");im.src="/favicon.svg";im.alt="";im.setAttribute("aria-hidden","true");var sz=11+((i*7)%14);im.style.width=sz+"px";im.style.height=sz+"px";im.style.left=((i*37)%100)+"%";im.style.opacity=(0.07+((i%5)*0.02)).toFixed(2);im.style.animationDuration=(7+((i*13)%10))+"s";im.style.animationDelay=(-((i*11)%18))+"s";rain.appendChild(im);}}})();</script>
 </body>
 </html>
