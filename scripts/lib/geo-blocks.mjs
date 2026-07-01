@@ -129,7 +129,16 @@ export function addHeadingIdsAndToc(html, { minToc = 3 } = {}) {
     /<h2(\s[^>]*)?>([\s\S]*?)<\/h2>/g,
     (_m, attrs, inner) => {
       attrs = attrs || "";
-      const text = inner.replace(/<[^>]+>/g, "").trim();
+      // Tags entfernen + HTML-Entities dekodieren (sonst doppelt-escapt der TOC:
+      // z. B. „sein&quot; → „sein&amp;quot;). escText/slugify kodieren danach sauber neu.
+      const text = inner
+        .replace(/<[^>]+>/g, "")
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&amp;/g, "&")
+        .trim();
       let id;
       const idm = attrs.match(/\bid="([^"]+)"/);
       if (idm) {
