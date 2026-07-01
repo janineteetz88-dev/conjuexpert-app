@@ -9,6 +9,7 @@
 
 import { renderSourcesSection } from "./lib/sources.mjs";
 import { extractKeyTakeaways, addHeadingIdsAndToc } from "./lib/geo-blocks.mjs";
+import { wrapContentCards } from "./lib/artcards.mjs";
 import { firstHeadIntro } from "./lib/notion-adapt.mjs";
 
 const NOTION_VERSION = "2022-06-28";
@@ -316,6 +317,12 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
   const { html: contentHtml, tocHtml } = addHeadingIdsAndToc(contentHtmlIn, { minToc: 3 });
   const url = `${BASE_URL}${slug}/`;
   const langCode = langInfo.code;
+  // Abschnitts-Karten (vom Hintergrund abgehoben) + Flip-Widget bei Sprach-Artikeln.
+  // Nur der Sprachcode (≠ „de") entscheidet über das Widget — deckt exakt die
+  // Konjugations-Artikel (es/fr/en/nl) ab, deutsche Artikel bekommen nur Karten.
+  const cardedContentHtml = wrapContentCards(contentHtml, {
+    langCode: langCode !== "de" ? langCode : undefined,
+  });
   const color = langInfo.color;
   const grad = langInfo.grad;
   const langUC = langCode.toUpperCase();
@@ -366,7 +373,7 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
 <meta name="twitter:image" content="${BASE_URL}/blog/img/prod-1.png" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="/fonts/blog.css" />
-<link rel="stylesheet" href="/blog/blog.css?v=10" />
+<link rel="stylesheet" href="/blog/blog.css?v=11" />
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
@@ -493,7 +500,7 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
 
         ${takeawaysHtml}
         ${tocHtml}
-        ${contentHtml}
+        ${cardedContentHtml}
         ${faqHtml}
         ${sourcesHtml}
 
