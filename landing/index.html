@@ -289,7 +289,7 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .usp-tab{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:8px 15px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:transform .2s,background .2s,color .2s}
 .usp-tab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 @media(hover:hover){.usp-tab:hover{transform:translateY(-1px)}}
-.usp-stack{position:relative;min-height:210px;cursor:pointer}
+.usp-stack{position:relative;min-height:238px;cursor:pointer}
 .usp-card{position:absolute;inset:0;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:26px 26px 28px;box-shadow:var(--shadow-sm);overflow:hidden;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .45s}
 .usp-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--brand-rainbow)}
 .usp-card h3{font-family:var(--display);font-weight:800;font-size:20px;margin:8px 0 8px;color:var(--ink)}
@@ -693,7 +693,6 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
         <svg class="pain-arrow" viewBox="0 0 42 52" fill="none" aria-hidden="true"><defs><linearGradient id="painArrowRb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff3b5c"/><stop offset=".17" stop-color="#ff7a18"/><stop offset=".33" stop-color="#ffc400"/><stop offset=".5" stop-color="#34c759"/><stop offset=".67" stop-color="#00bcd4"/><stop offset=".83" stop-color="#0a84ff"/><stop offset="1" stop-color="#a557ff"/></linearGradient></defs><path d="M21 4 V40 M9 29 L21 43 L33 29" stroke="url(#painArrowRb)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h2 class="pain-lead-h" data-i18n="pain.lead">Genau hier setzt <strong>ConjuExpert</strong> an.</h2>
         <p class="pain-bridge" data-i18n="pain.bridge">Mit ConjuExpert trainierst du den Wechsel zwischen Verstehen und Sprechen. Dein Schlüssel zum flüssigen Reden: das gezielte Quizzen von deiner Lieblingssprache in deine Muttersprache.</p>
-        <figure class="pain-photo"><picture><source srcset="lifestyle/sprachen-lernen-lesen-kaffee.webp" type="image/webp"><img src="lifestyle/sprachen-lernen-lesen-kaffee.jpg" alt="Entspannt lesen und lernen – mit ConjuExpert die Lieblingssprache üben" loading="lazy" decoding="async" width="820" height="1230" /></picture></figure>
       </div>
     </div>
   </section>
@@ -712,9 +711,9 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
             <button class="usp-tab" type="button" data-i18n="func.3w">Für dich</button>
           </div>
           <div class="usp-stack" id="uspStack">
-            <article class="usp-card on"><h3 data-i18n="func.1h">Community first</h3><p data-i18n="func.1p">Wir hören, was die Sprachenlerner-Community sagt — und setzen es direkt um.</p></article>
-            <article class="usp-card behind1"><h3 data-i18n="func.2h">An der Wurzel gepackt</h3><p data-i18n="func.2p">Das „Ich kann nicht gut sprechen"-Problem lösen wir an der Wurzel: aktives Abrufen über verschiedene Schwierigkeitsstufen.</p></article>
-            <article class="usp-card behind2"><h3 data-i18n="func.3h">Auf dich zugeschnitten</h3><p data-i18n="func.3p">Die Quizze passen sich deinen Wünschen an — lerne mit deinen Lieblingsthemen.</p></article>
+            <article class="usp-card on"><h3 data-i18n="func.1h">Community first</h3><p data-i18n="func.1p">Wir hören genau hin, was sich die Sprachenlerner-Community wünscht — und setzen dein Feedback schnell und direkt in der App um. Du gestaltest ConjuExpert aktiv mit.</p></article>
+            <article class="usp-card behind1"><h3 data-i18n="func.2h">An der Wurzel gepackt</h3><p data-i18n="func.2p">Das „Ich kann nicht so gut sprechen"-Problem packen wir an der Wurzel: aktives Abrufen in echten Sätzen, über mehrere Schwierigkeitsstufen — bis die richtige Form von allein kommt.</p></article>
+            <article class="usp-card behind2"><h3 data-i18n="func.3h">Auf dich zugeschnitten</h3><p data-i18n="func.3p">Die Quizze passen sich dir an: Zeitformen, Verben und deine Lieblingsthemen bestimmst du selbst — so lernst du mit genau dem, was dich wirklich interessiert.</p></article>
           </div>
         </div>
       </div>
@@ -1079,7 +1078,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   v.addEventListener('click',tryPlay); // Tap aufs Mockup startet/weckt das Video
 })();
 </script>
-<script src="/landing/i18n.js?v=20260628h"></script>
+<script src="/landing/i18n.js?v=20260628i"></script>
 <!-- Konjugations-Engines für das Live-Widget -->
 <script src="https://conjuexpert.app/engine/conj-es.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-fr.js" defer></script>

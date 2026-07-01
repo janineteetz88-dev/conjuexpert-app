@@ -12268,7 +12268,7 @@ function ReportSheet({ ctx, onClose }) {
               ? h("div", { style: { position: "relative", display: "inline-block", marginTop: "8px" } },
                   h("img", { src: shot, alt: "", style: { maxWidth: "128px", maxHeight: "128px", borderRadius: "10px", border: "1px solid var(--border)", display: "block" } }),
                   h("button", { "aria-label": "remove", onClick: () => setShot(null), style: { position: "absolute", top: "-8px", right: "-8px", width: "24px", height: "24px", borderRadius: "50%", border: "none", background: "var(--text)", color: "var(--bg)", fontSize: "15px", lineHeight: "24px", cursor: "pointer" } }, "×"))
-              : h("label", { style: { display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "8px", padding: "9px 13px", borderRadius: "11px", border: "1px dashed var(--border)", background: "var(--surface-2)", color: "var(--text)", fontSize: "13.5px", fontWeight: 600, cursor: "pointer" } },
+              : h("label", { style: { display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "8px", padding: "10px 15px", borderRadius: "12px", border: "2px solid transparent", background: "linear-gradient(var(--surface-2),var(--surface-2)) padding-box, linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff) border-box", color: "var(--text)", fontSize: "13.5px", fontWeight: 700, cursor: "pointer" } },
                   h("span", { style: { display: "inline-flex" }, dangerouslySetInnerHTML: { __html: MENU_SVG["✉"].replace("width='20' height='20'", "width='17' height='17'") } }),
                   tr("report_attach"),
                   h("input", { type: "file", accept: "image/*", onChange: pickShot, style: { display: "none" } })),
