@@ -254,6 +254,20 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .proof-stars{color:var(--gold,#f5a623);font-size:18px;letter-spacing:1px}
 .proof-avg{font-family:var(--display);font-weight:800;font-size:18px;color:var(--ink)}
 .proof-cnt{font-size:14px;color:var(--muted)}
+/* Hand-gezeichnetes Danke-Doodle neben der Bewertungssumme */
+.rev-doodle{display:inline-flex;align-items:center;gap:2px;margin-top:14px;position:relative}
+.rev-doodle .rev-arrow{width:64px;height:auto;color:#ff3b5c;flex:none;transform:rotate(4deg);margin-bottom:12px}
+.rev-doodle .rd-line,.rev-doodle .rd-head{stroke-dasharray:220;stroke-dashoffset:220}
+.rev-doodle.on .rd-line{animation:rdDraw .7s ease forwards}
+.rev-doodle.on .rd-head{animation:rdDraw .35s ease .6s forwards}
+@keyframes rdDraw{to{stroke-dashoffset:0}}
+.rev-bubble{display:inline-flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--ink);border-radius:22px 22px 22px 6px;padding:9px 15px 9px 9px;box-shadow:3px 4px 0 rgba(20,22,33,.16);transform:rotate(-1.4deg)}
+.rev-doodle.on .rev-bubble{animation:rdPop .45s cubic-bezier(.34,1.56,.64,1) .5s both}
+@keyframes rdPop{0%{opacity:0;transform:rotate(-1.4deg) scale(.6)}100%{opacity:1;transform:rotate(-1.4deg) scale(1)}}
+.rev-ava{width:44px;height:44px;border-radius:50%;object-fit:cover;display:block;border:2px solid var(--ink)}
+.rev-say{font-family:var(--display);font-weight:700;font-size:15px;line-height:1.25;color:var(--ink);text-align:left;max-width:210px}
+.rev-say .rd-n{background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:800}
+@media(max-width:520px){.rev-doodle{margin-top:20px}.rev-doodle .rev-arrow{width:48px}.rev-say{font-size:14px;max-width:180px}}
 .proof-marq{overflow:hidden;margin-bottom:26px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .proof-track{display:flex;gap:18px;width:max-content;animation:revscroll 64s linear infinite}
 .proof-marq:hover .proof-track{animation-play-state:paused}
@@ -345,7 +359,7 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .pain-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;mix-blend-mode:luminosity;filter:var(--img-filter)}
 .pain-photo picture,.hl-fig picture,.ci-pic picture{display:contents}
 .qm-ex-cap{text-align:center;font-size:14px;color:var(--muted);margin:16px auto 0;max-width:440px;text-wrap:pretty}
-.qm-livecta{display:flex;align-items:center;justify-content:center;gap:10px;width:max-content;max-width:100%;margin:0 auto 22px;padding:15px 26px;border-radius:16px;color:var(--selfg);background:linear-gradient(var(--selbg),var(--selbg)) padding-box,var(--brand-rainbow) border-box;border:2px solid transparent;font-size:clamp(15px,4vw,17px);font-weight:700;letter-spacing:-.01em;box-shadow:0 14px 30px -12px rgba(30,22,8,.6);text-align:center;text-wrap:balance;cursor:pointer}
+.qm-livecta{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:max-content;max-width:100%;margin:0 auto 22px;padding:16px 26px;border-radius:16px;color:var(--selfg);background:linear-gradient(var(--selbg),var(--selbg)) padding-box,var(--brand-rainbow) border-box;border:1.5px solid transparent;font-size:16px;font-weight:700;letter-spacing:-.01em;box-shadow:0 14px 30px -12px rgba(30,22,8,.6);text-align:center;text-wrap:balance;cursor:pointer}
 .qm-livecta .ar{flex:none;transition:transform .25s}
 .qm-example .qm-livecta{background:var(--brand-rainbow);border:0;color:#fff;font-weight:800;text-shadow:0 1px 3px rgba(0,0,0,.5);box-shadow:0 16px 36px -12px rgba(0,0,0,.55);margin:24px auto 0}
 .qm-livecta:hover .ar{transform:translateX(4px)}
@@ -412,8 +426,8 @@ section.block{padding:60px 0;scroll-margin-top:84px}
 .cell.showcase .chips{gap:9px;margin-top:18px}
 .cell.showcase .chip{font-size:12.5px;font-weight:700;color:var(--ink);background:var(--surface);padding:9px 14px 9px 11px;box-shadow:var(--shadow-sm)}
 .cell.showcase .chip::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brand-rainbow);margin-right:8px;vertical-align:middle}
-.ch-mark{position:relative;white-space:nowrap}
-.ch-mark::after{content:"";position:absolute;left:-2px;right:-2px;bottom:4px;height:12px;background:var(--brand-rainbow);opacity:1;border-radius:6px;z-index:-1}
+.ch-mark{background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;white-space:nowrap}
+.ch-mark::after{content:none}
 .sc-phones{display:flex;align-items:center;gap:18px;background:transparent;border:0;border-radius:0;padding:0}
 .sc-phone{display:flex;flex-direction:column;align-items:center;gap:11px}
 .sc-phone img{width:188px;height:322px;object-fit:cover;object-position:center;border-radius:30px;background:#0c0e16;box-shadow:var(--shadow),0 0 0 7px #0c0e16,0 0 0 9px rgba(255,255,255,.06);display:block}
@@ -885,15 +899,15 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
         <p data-i18n="res.p">Aus „verstehen" wird „können". Genau das erzeugt ConjuExpert.</p>
       </div>
       <div class="result-grid">
-        <div class="result-card reveal">
+        <div class="result-card reveal" data-d="1">
           <span class="result-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
           <p data-i18n="res.a">Die richtige Verbform kommt im Gespräch von allein — du musst nicht mehr überlegen.</p>
         </div>
-        <div class="result-card reveal" data-d="2">
+        <div class="result-card reveal" data-d="3">
           <span class="result-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
           <p data-i18n="res.b">Du sprichst flüssig und sicher, statt zu raten und den Faden zu verlieren.</p>
         </div>
-        <div class="result-card reveal" data-d="3">
+        <div class="result-card reveal" data-d="5">
           <span class="result-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
           <p data-i18n="res.c">Aus passivem Verstehen wird aktives Sprechen — über deine eigenen Themen.</p>
         </div>
@@ -909,6 +923,16 @@ window.addEventListener('load',function(){ if(!location.hash) window.scrollTo(0,
         <h2 data-i18n="proof.h2">Echtes Feedback aus der App.</h2>
         <p>Echte Stimmen von Lernenden, die endlich frei sprechen.</p>
         <div class="proof-sum" id="lpSum" hidden><span class="proof-stars" id="lpStars">★★★★★</span><span class="proof-avg" id="lpAvg"></span><span class="proof-cnt" id="lpCnt"></span></div>
+        <div class="rev-doodle" id="revDoodle" hidden>
+          <svg class="rev-arrow" viewBox="0 0 130 96" fill="none" aria-hidden="true">
+            <path class="rd-line" d="M120 16 C 78 4, 26 14, 16 66" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            <path class="rd-head" d="M6 44 L16 68 L38 58" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="rev-bubble">
+            <picture><source srcset="lifestyle/gruenderin-janine-avatar.webp" type="image/webp"><img class="rev-ava" src="lifestyle/gruenderin-janine-avatar.jpg" alt="" width="44" height="44" loading="lazy" decoding="async"></picture>
+            <span class="rev-say" data-i18n="doodle.rev">WOW – schon <b class="rd-n">13</b> Feedbacks! Lieben Dank! 💛</span>
+          </div>
+        </div>
       </div>
       <div class="proof-marq notranslate" translate="no"><div class="proof-track" id="lpReviews"></div></div>
       <div class="reveal proof-foot" style="text-align:center"><a class="btn btn-ghost" href="/bewertungen/" data-i18n="proof.all">Alle Bewertungen ansehen →</a></div>
@@ -1088,7 +1112,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
   v.addEventListener('click',tryPlay); // Tap aufs Mockup startet/weckt das Video
 })();
 </script>
-<script src="/landing/i18n.js?v=20260628j"></script>
+<script src="/landing/i18n.js?v=20260701a"></script>
 <!-- Konjugations-Engines für das Live-Widget -->
 <script src="https://conjuexpert.app/engine/conj-es.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-fr.js" defer></script>
@@ -1126,6 +1150,18 @@ document.addEventListener("DOMContentLoaded", function(){
         document.getElementById("lpAvg").textContent=avg.toFixed(1).replace(".",",");
         document.getElementById("lpCnt").textContent="· "+c+" "+(CNT[lang()]||CNT.de);
         if(sumBox) sumBox.hidden=false;
+        // Danke-Doodle: Zahl dynamisch, auch nach Sprachwechsel (via __ceAfterLang)
+        window.__revCnt=c;
+        function paintRevCnt(){var ns=document.querySelectorAll("#revDoodle .rd-n");for(var k=0;k<ns.length;k++)ns[k].textContent=window.__revCnt;}
+        paintRevCnt();
+        var prevAfter=window.__ceAfterLang;
+        window.__ceAfterLang=function(l){ if(typeof prevAfter==="function"){try{prevAfter(l);}catch(e){}} paintRevCnt(); };
+        var dood=document.getElementById("revDoodle");
+        if(dood){ dood.hidden=false;
+          var go=function(){ dood.classList.add("on"); };
+          if("IntersectionObserver" in window){ var io=new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ go(); io.disconnect(); } }); },{threshold:.4}); io.observe(dood); }
+          else go();
+        }
       }
     });
     function card(r,i){
