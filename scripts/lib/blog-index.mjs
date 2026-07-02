@@ -354,10 +354,13 @@ function bareSlug(slug) {
 }
 
 // Prüft, ob die Startseite bereits irgendwo eine Karte mit href="/blog/<slug>/" hat.
+// Zählt sowohl generierte ".post"-Karten als auch von Hand gepflegte
+// ".featured"-Kacheln (z. B. die Gründerstory) — sonst hält die Reconciliation
+// eine bereits vorhandene Featured-Kachel für "fehlend" und dupliziert sie.
 export function hasCardForHref(indexHtml, slug) {
   const href = slugToHref(slug);
   const re = new RegExp(
-    `<a\\b[^>]*\\bclass="post"[^>]*\\bhref="${escapeRegExp(href)}"`,
+    `<a\\b[^>]*\\bclass="(?:post|featured)(?:\\s[^"]*)?"[^>]*\\bhref="${escapeRegExp(href)}"`,
     "i"
   );
   return re.test(String(indexHtml || ""));
