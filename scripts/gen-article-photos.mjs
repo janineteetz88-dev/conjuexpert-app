@@ -16,6 +16,7 @@
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import sharp from "sharp";
+import { filterBuffer } from "./filter-blog-photos.mjs";
 
 const HTML = "blog/index.html";
 const OUT_DIR = "blog/img/auto";
@@ -155,7 +156,8 @@ if (!WIRE_ONLY) {
     if (existsSync(dest) && !FORCE) { skipped++; continue; }
     process.stdout.write(`  [${i + 1}/${cards.length}] ${slug} … `);
     const png = await generate(promptFor(i));
-    await sharp(png).resize(640, 1138, { fit: "cover" }).jpeg({ quality: 74, mozjpeg: true }).toFile(dest);
+    // Einheitlicher Film-Grade (gleicher Look für alle Karten).
+    writeFileSync(dest, await filterBuffer(png));
     made++;
     console.log("ok");
   }
