@@ -16444,6 +16444,20 @@ function App() {
     ["verb", "lang", "tense", "pron"].forEach(k => url.searchParams.delete(k));
     window.history.replaceState({}, "", url.pathname + url.search + url.hash);
   }, []);
+  // Deep-Link von der Landingpage: ?checkout=annual|monthly → direkt die
+  // Tarif-Auswahl öffnen (identisch zum „Premium holen"-Button in der App).
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const co = (params.get("checkout") || "").trim().toLowerCase();
+    if (co !== "annual" && co !== "monthly") return;
+    setSelPlan(co === "monthly" ? "monthly" : "annual");
+    setShowOnboard(false);
+    setShowTour(false);
+    openPlanSelect();
+    const url = new URL(window.location.href);
+    url.searchParams.delete("checkout");
+    window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+  }, []);
   function toggleFav(lg, vb) {
     const exists = favs.some(x => x.lang === lg && x.verb === vb);
     const nx = exists ? favs.filter(x => !(x.lang === lg && x.verb === vb)) : [{
