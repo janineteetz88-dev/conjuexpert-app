@@ -11,6 +11,12 @@
  *      Vergibt eindeutige IDs an alle <h2> des Fließtexts und baut daraus ein
  *      automatisches Inhaltsverzeichnis (ab `minToc` Überschriften).
  *
+ *   3. convertStrayAsterisks(text) → text
+ *      Notion-Rich-Text liefert manchmal einzelne "*"-Zeichen als literalen
+ *      plain_text statt als bold/italic-Annotation (z. B. aus eingefügtem
+ *      Markdown-Text). Wandelt gepaarte *Wörter* in <em>, entfernt unpaare
+ *      Sternchen-Reste.
+ *
  * Bewusst ohne Import aus notion-to-html.mjs (kein Zyklus): `blocksToHtml` wird
  * als Funktion übergeben. Reine String-/Block-Operationen, voll unit-testbar.
  */
@@ -21,6 +27,15 @@ function escText(s) {
   return String(s || "").replace(/[<>&"]/g, (c) =>
     ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" })[c]
   );
+}
+
+/* ─── Sternchen-Reste aus Notion-Rich-Text bereinigen ────────────────────── */
+
+// Läuft auf bereits HTML-escaptem Text (nach esc()), operiert also nur auf "*".
+export function convertStrayAsterisks(text) {
+  const s = String(text || "");
+  if (!s.includes("*")) return s;
+  return s.replace(/\*([^*]+)\*/g, "<em>$1</em>").replace(/\*/g, "");
 }
 
 /* ─── Überschrift → ID-Slug ──────────────────────────────────────────────── */
