@@ -74,6 +74,27 @@ Deno.serve(async (req) => {
     });
   }
 
+  // Nutzungszähler atomar per RPC prüfen UND erhöhen (schließt die Read-then-
+  // Write-Race der vorherigen SELECT-dann-UPDATE-Logik). Kein Datensatz
+  // zurück => Limit wurde inzwischen erreicht (z. B. durch eine parallele
+  // Anfrage kurz vor max_uses).
+  const { data: usageRows, error: usageError } = await supaAdmin.rpc(
+    "increment_promo_code_usage",
+    { p_code: promo.code }
+  );
+
+  if (usageError) {
+    return new Response(JSON.stringify({ error: usageError.message }), {
+      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  if (!usageRows || usageRows.length === 0) {
+    return new Response(JSON.stringify({ error: "Ungültiger Code" }), {
+      status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   const premiumUntil = promo.months
     ? new Date(Date.now() + promo.months * 30 * 24 * 60 * 60 * 1000).toISOString()
     : "2099-12-31T00:00:00.000Z";
@@ -95,20 +116,6 @@ Deno.serve(async (req) => {
   await supaAdmin
     .from("user_promo_redemptions")
     .insert({ user_id: user.id, promo_code: promo.code });
-
-  // Nutzungszähler erhöhen und nur deaktivieren, wenn das Limit erreicht ist.
-  // max_uses === null => unbegrenzt nutzbar (z. B. öffentlicher Aktionscode),
-  // bleibt also dauerhaft aktiv.
-  const newUses = (promo.current_uses ?? 0) + 1;
-  const reachedLimit = promo.max_uses !== null && newUses >= promo.max_uses;
-  const { error: usageError } = await supaAdmin
-    .from("promo_codes")
-    .update({ current_uses: newUses, active: reachedLimit ? false : true })
-    .eq("code", promo.code);
-
-  if (usageError) {
-    console.error("promo_codes usage update failed:", usageError.message);
-  }
 
   return new Response(JSON.stringify({ success: true, premium_until: premiumUntil }), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
