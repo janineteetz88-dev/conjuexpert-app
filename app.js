@@ -3911,6 +3911,13 @@ function buildChallengeLists(data, lang) {
 }
 /* Mastery: ein Eintrag „sitzt" nach 3 richtigen Antworten an 3 VERSCHIEDENEN Tagen. */
 const CH_DONE = 3;
+/* Challenge pro Sprache: der Slot kunju-goal-data-<lang> ist die Quelle der
+   Wahrheit; kunju-goal-data bleibt ein Spiegel der AKTIVEN Sprache, damit alle
+   bestehenden recall("kunju-goal-data")-Leser automatisch das Richtige sehen. */
+function persistGoal(lang, g) {
+  persist("kunju-goal-data-" + lang, g);
+  persist("kunju-goal-data", g);
+}
 function creditChallengeVerb(lang, verb) {
   const g = recall("kunju-goal-data", null);
   if (!g || !Array.isArray(g.verbList)) return;
@@ -3927,7 +3934,7 @@ function creditChallengeVerb(lang, verb) {
       if (it.done >= CH_DONE) mastered = true;
     }
   });
-  if (changed) persist("kunju-goal-data", g);
+  if (changed) persistGoal(lang, g);
   return mastered ? base : null; // base = verb that just "sitzt"
 }
 function creditChallengeWord(lang, term) {
@@ -3944,7 +3951,7 @@ function creditChallengeWord(lang, term) {
       changed = true;
     }
   });
-  if (changed) persist("kunju-goal-data", g);
+  if (changed) persistGoal(lang, g);
 }
 /* Is the raw input a known dictionary (infinitive) verb? We check pool
    membership rather than "does it conjugate", because German/Dutch accept any
@@ -11204,7 +11211,7 @@ function ChallengeView({ lang, onNew, onPractice, onWords, canEdit = true }) {
       h("p", { className: "ch-empty-tx" }, tr("ch_empty")),
       h("button", { className: "quizbtn check ch-cta", onClick: onNew }, tr("ch_create")));
   }
-  function save(fn) { const gg = recall("kunju-goal-data", null); if (!gg) return; fn(gg); persist("kunju-goal-data", gg); force(); }
+  function save(fn) { const gg = recall("kunju-goal-data", null); if (!gg) return; fn(gg); persistGoal(lang, gg); force(); }
   function setItem(kind, i, done) { save(gg => { const a = kind === "v" ? gg.verbList : gg.wordList; if (a && a[i]) { a[i].done = done; a[i].lastDay = done >= CH_DONE ? new Date().toDateString() : ""; } }); }
   function removeItem(kind, i) { save(gg => { const a = kind === "v" ? gg.verbList : gg.wordList; if (a) a.splice(i, 1); }); }
   function removeName(kind, t) { save(gg => { const a = kind === "v" ? gg.verbList : gg.wordList; if (!a) return; const i = a.findIndex(x => String(kind === "v" ? x.v : x.w).toLowerCase() === String(t).toLowerCase()); if (i >= 0) a.splice(i, 1); }); }
@@ -15652,6 +15659,35 @@ function App() {
     setSkill(s);
     persist("kunju-skill", s);
   }, [lang]);
+  // Challenge pro Sprache: beim Sprachwechsel/Start die Challenge der aktiven
+  // Sprache laden und in den globalen Spiegel schreiben. Migration: eine
+  // bestehende (globale) Challenge einmalig der aktuellen Sprache zuordnen.
+  useEffect(() => {
+    // Einmalige Migration: bestehende (globale) Challenge der Sprache zuordnen,
+    // aus der ihre Verben stammen (per Konjugations-Engine erkannt).
+    if (!recall("kunju-goal-migrated", false)) {
+      const old = recall("kunju-goal-data", null);
+      if (old && Array.isArray(old.verbList) && old.verbList.length) {
+        // Sprache anhand der Verb-Pools erkennen (die Challenge-Verben stammen daraus).
+        const sample = old.verbList.slice(0, 3).map(x => String(x.v || "").replace(/^to /, "").trim().toLowerCase()).filter(Boolean);
+        let best = lang, bestN = 0;
+        for (const l of ["de", "es", "en", "nl", "fr"]) {
+          let pool = [];
+          try { pool = (quizPool(l, "advanced") || []).map(p => String(p).replace(/^to /, "").toLowerCase()); } catch (e) {}
+          const setp = new Set(pool);
+          const n = sample.filter(v => setp.has(v)).length;
+          if (n > bestN) { bestN = n; best = l; }
+        }
+        if (!recall("kunju-goal-data-" + best, null)) persist("kunju-goal-data-" + best, old);
+      }
+      persist("kunju-goal-migrated", true);
+    }
+    const g = recall("kunju-goal-data-" + lang, null);
+    persist("kunju-goal-data", g);
+    setGoal(g);
+    setGoalSet(!!(g && Array.isArray(g.verbList)));
+    setDaily(readDaily());
+  }, [lang]);
   function commitName(n) {
     setName(n);
     persist("kunju-name", n);
@@ -16217,7 +16253,7 @@ function App() {
       ...buildChallengeLists(data, lang)
     };
     persist("kunju-goal", true);
-    persist("kunju-goal-data", saved);
+    persistGoal(lang, saved);
     setGoalSet(true);
     setGoal(saved);
     setDaily(readDaily());
@@ -16931,7 +16967,7 @@ function App() {
         startDate: new Date().toDateString(),
         ...buildChallengeLists(data, lang)
       } : null;
-      if (saved) persist("kunju-goal-data", saved);
+      if (saved) persistGoal(lang, saved);
       setGoalSet(true);
       setGoal(saved);
       setDaily(readDaily());
