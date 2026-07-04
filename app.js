@@ -16067,6 +16067,16 @@ function App() {
     return () => { clearInterval(id); document.removeEventListener("mouseout", onLeave); };
   }, [supaUser, trialExpiry]);
 
+  // Loggt sich jemand ein, während gerade ein Conversion-Nudge offen liegt
+  // (z. B. über den Header-Login statt über den Nudge-Button), diesen Nudge
+  // sofort schließen — „Hol dir ein Konto" ergibt für Eingeloggte keinen Sinn.
+  // Hilfe- und Kachel-Tipp bleiben stehen (gelten auch für Konto-Nutzer).
+  useEffect(() => {
+    if (supaUser && journey && ["p1", "p2", "p3", "tend", "p8"].indexOf(journey) >= 0) {
+      setJourney(null);
+    }
+  }, [supaUser, journey]);
+
   // Submit P5 feedback: write to the reviews table + flag the profile so the
   // €5 discount (annual_bonus, server-verified) becomes available. Returns ok.
   async function submitFeedback(stars, body) {
