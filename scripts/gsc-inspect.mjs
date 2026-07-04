@@ -61,16 +61,27 @@ async function getAccessToken(sa) {
   return data.access_token;
 }
 
+async function liveStatus(url) {
+  try {
+    const r = await fetch(url, { method: 'GET', redirect: 'follow' });
+    return String(r.status);
+  } catch (e) {
+    return 'ERR';
+  }
+}
+
 async function inspect(token, url) {
+  const live = await liveStatus(url); // echter aktueller HTTP-Status (CI hat Netz)
   const res = await fetch(INSPECT, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ inspectionUrl: url, siteUrl: SITE_URL }),
   });
-  if (!res.ok) return { url, error: `HTTP ${res.status}: ${(await res.text()).slice(0, 160)}` };
+  if (!res.ok) return { url, live, error: `HTTP ${res.status}: ${(await res.text()).slice(0, 160)}` };
   const r = (await res.json()).inspectionResult?.indexStatusResult || {};
   return {
     url,
+    live,
     verdict: r.verdict || '—',
     coverage: r.coverageState || '—',
     robots: r.robotsTxtState || '—',
@@ -98,8 +109,8 @@ const rows = [];
 for (const u of list) {
   const r = await inspect(token, u);
   rows.push(r);
-  if (r.error) console.log(`✗ ${u}\n    ${r.error}`);
-  else console.log(`${r.verdict === 'PASS' ? '✅' : r.verdict === 'FAIL' ? '❌' : '🟡'} ${u}\n    ${r.coverage} · robots:${r.robots} · fetch:${r.fetch} · lastCrawl:${r.lastCrawl}`);
+  if (r.error) console.log(`✗ ${u}  (live:${r.live})\n    ${r.error}`);
+  else console.log(`${r.verdict === 'PASS' ? '✅' : r.verdict === 'FAIL' ? '❌' : '🟡'} ${u}\n    live:${r.live} · GSC: ${r.coverage} · robots:${r.robots} · fetch:${r.fetch} · lastCrawl:${r.lastCrawl}`);
 }
 
 // GitHub-Job-Summary (Markdown-Tabelle)
@@ -107,10 +118,10 @@ const summary = process.env.GITHUB_STEP_SUMMARY;
 if (summary) {
   const { writeFileSync } = await import('node:fs');
   const esc = (s) => String(s).replace(/\|/g, '\\|');
-  const head = '## Search Console — Index-Status\n\n| Status | URL | Coverage | robots | fetch | letzter Crawl |\n|---|---|---|---|---|---|\n';
+  const head = '## Search Console — Index-Status\n\n| Status | URL | live | GSC-Coverage | robots | letzter Crawl |\n|---|---|---|---|---|---|\n';
   const body = rows.map((r) => r.error
-    ? `| ⚠️ | ${esc(r.url)} | ${esc(r.error)} | — | — | — |`
-    : `| ${r.verdict === 'PASS' ? '✅' : r.verdict === 'FAIL' ? '❌' : '🟡'} | ${esc(r.url)} | ${esc(r.coverage)} | ${esc(r.robots)} | ${esc(r.fetch)} | ${r.lastCrawl} |`
+    ? `| ⚠️ | ${esc(r.url)} | ${esc(r.live)} | ${esc(r.error)} | — | — |`
+    : `| ${r.verdict === 'PASS' ? '✅' : r.verdict === 'FAIL' ? '❌' : '🟡'} | ${esc(r.url)} | ${esc(r.live)} | ${esc(r.coverage)} | ${esc(r.robots)} | ${r.lastCrawl} |`
   ).join('\n');
   const indexed = rows.filter((r) => r.verdict === 'PASS').length;
   writeFileSync(summary, `${head}${body}\n\n**${indexed}/${rows.length} indexiert.**\n`, { flag: 'a' });
