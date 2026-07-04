@@ -560,6 +560,27 @@ function updateSitemap(newUrls) {
   fs.writeFileSync(sitemapPath, xml);
 }
 
+// ── Reflexive (ES) + gezielte Einzel-Verben ─────────────────────────────────
+const REFL_PRON = ['me', 'te', 'se', 'nos', 'os', 'se'];
+function isReflexiveEs(lang, verb) { return lang === 'es' && /(a|e|i)rse$/.test(verb); }
+// Reflexiv: Basisverb konjugieren, Proklitik-Pronomen vor JEDE Form (auch
+// zusammengesetzte: „me he levantado", „me estoy levantando"). Imperativ raus —
+// der hängt enklitisch an („¡levántate!"), Sonderfall; lieber weglassen als falsch.
+function conjugateVerb(eng, lang, verb) {
+  if (!isReflexiveEs(lang, verb)) return eng.conjugate(verb);
+  const c = eng.conjugate(verb.slice(0, -2));
+  if (!c || c.error) return c;
+  const pre = (arr) => (arr ? arr.map((f, i) => (f ? `${REFL_PRON[i]} ${f}` : f)) : arr);
+  const tenses = (c.tenses || [])
+    .filter((t) => t.id !== 'imperative')
+    .map((t) => ({ ...t, forms: pre(t.forms), reg: pre(t.reg) }));
+  return { ...c, tenses };
+}
+// Gezielte Generierung: ONLY_VERBS="es:levantarse,es:llamarse" ignoriert die Queue.
+const ONLY_VERBS = (process.env.ONLY_VERBS || '')
+  .split(',').map((s) => s.trim()).filter(Boolean)
+  .map((s) => { const [lang, verb] = s.split(':'); return { lang, verb }; });
+
 // ── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -570,13 +591,13 @@ async function main() {
   const trans = loadTrans();
 
   const queue = loadQueue(engines);
-  if (queue.length === 0) {
+  if (queue.length === 0 && !ONLY_VERBS.length) {
     console.log('✅ Queue empty — all pages already generated.');
     return;
   }
 
-  const batch = queue.splice(0, PER_RUN);
-  console.log(`Generating ${batch.length} pages (${queue.length} remaining after this run)…\n`);
+  const batch = ONLY_VERBS.length ? ONLY_VERBS : queue.splice(0, PER_RUN);
+  console.log(`Generating ${batch.length} pages${ONLY_VERBS.length ? ' (ONLY_VERBS)' : ` (${queue.length} remaining after this run)`}…\n`);
 
   const newUrls = [];
   const failed = [];
@@ -585,7 +606,7 @@ async function main() {
     console.log(`▶ ${lang}/${verb}`);
     try {
       const eng = engines[lang];
-      const conjugated = eng.conjugate(verb);
+      const conjugated = conjugateVerb(eng, lang, verb);
       if (!conjugated || conjugated.error) {
         console.log(`  ✗ Conjugation failed: ${conjugated?.error || 'unknown'}`);
         failed.push({ lang, verb });
@@ -618,9 +639,11 @@ async function main() {
     }
   }
 
-  // Put failed ones back at end of queue
-  queue.push(...failed);
-  fs.writeFileSync(QUEUE_FILE, JSON.stringify(queue, null, 2));
+  // Put failed ones back at end of queue (nicht im gezielten ONLY_VERBS-Modus).
+  if (!ONLY_VERBS.length) {
+    queue.push(...failed);
+    fs.writeFileSync(QUEUE_FILE, JSON.stringify(queue, null, 2));
+  }
 
   if (newUrls.length > 0) {
     updateSitemap(newUrls);

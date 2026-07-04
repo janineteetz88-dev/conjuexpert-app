@@ -6,6 +6,9 @@ on:
       pages_per_run:
         description: 'Pages to generate (0 = alle)'
         default: '0'
+      only_verbs:
+        description: 'Nur diese Verben, z. B. es:levantarse,es:llamarse (überschreibt Queue)'
+        default: ''
 
 jobs:
   generate:
@@ -23,6 +26,10 @@ jobs:
       - name: Generate verb pages
         env:
           PAGES_PER_RUN: ${{ github.event.inputs.pages_per_run || '0' }}
+          ONLY_VERBS: ${{ github.event.inputs.only_verbs || '' }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: node scripts/generate-verb-pages.mjs
 
       - name: Commit new pages
