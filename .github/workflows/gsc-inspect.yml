@@ -1,0 +1,27 @@
+name: GSC Index-Status prüfen
+
+# Fragt den echten Index-Status wichtiger URLs aus der Google Search Console ab
+# (URL-Inspection-API) und zeigt das Ergebnis in der Job-Summary. Nur Report,
+# committet nichts. Braucht das Secret GSC_SA_KEY (wie submit-sitemap).
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: 'Optional: eigene URLs (Komma/Zeile getrennt). Leer = Standardliste.'
+        default: ''
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: URL-Inspection
+        env:
+          GSC_SA_KEY: ${{ secrets.GSC_SA_KEY }}
+          SITE_URL: 'sc-domain:conjuexpert.app'
+          URLS: ${{ github.event.inputs.urls }}
+        run: node scripts/gsc-inspect.mjs
