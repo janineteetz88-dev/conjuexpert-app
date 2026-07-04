@@ -45,7 +45,7 @@
   "@context": "https://schema.org",
   "@graph": [
     { "@type": "WebSite", "@id": "https://conjuexpert.app/#website", "url": "https://conjuexpert.app/", "name": "ConjuExpert", "description": "Verben konjugieren in 5 Sprachen – mit Quiz, Lernen und Merken.", "inLanguage": "de" },
-    { "@type": "SoftwareApplication", "name": "ConjuExpert", "applicationCategory": "EducationalApplication", "operatingSystem": "Web, iOS, Android (PWA)", "description": "Verben konjugieren in Spanisch, Französisch, Englisch, Niederländisch und Deutsch – alle Zeitformen, Quiz aus deinen Lieblingsthemen, Merken.", "url": "https://conjuexpert.app/", "inLanguage": ["de","es","en","nl","fr"], "offers": [ { "@type": "Offer", "name": "Kostenlos", "price": "0", "priceCurrency": "EUR" }, { "@type": "Offer", "name": "Premium-Tarif (monatlich)", "price": "2.99", "priceCurrency": "EUR" }, { "@type": "Offer", "name": "Premium-Tarif (jährlich)", "price": "29.99", "priceCurrency": "EUR" } ] },
+    { "@type": "SoftwareApplication", "@id": "https://conjuexpert.app/#app", "name": "ConjuExpert", "applicationCategory": "EducationalApplication", "operatingSystem": "Web, iOS, Android (PWA)", "description": "Verben konjugieren in Spanisch, Französisch, Englisch, Niederländisch und Deutsch – alle Zeitformen, Quiz aus deinen Lieblingsthemen, Merken.", "url": "https://conjuexpert.app/", "inLanguage": ["de","es","en","nl","fr"], "offers": [ { "@type": "Offer", "name": "Kostenlos", "price": "0", "priceCurrency": "EUR" }, { "@type": "Offer", "name": "Premium-Tarif (monatlich)", "price": "2.99", "priceCurrency": "EUR" }, { "@type": "Offer", "name": "Premium-Tarif (jährlich)", "price": "29.99", "priceCurrency": "EUR" } ] },
     { "@type": "FAQPage", "mainEntity": [
       { "@type": "Question", "name": "Was ist das Besondere an ConjuExpert?", "acceptedAnswer": { "@type": "Answer", "text": "Du kennst das Verb, hast es zehnmal nachgeschlagen – doch im Gespräch ist es plötzlich weg. ConjuExpert ändert das: Im Quiz trainierst du den blitzschnellen Abruf genau der Form, die gerade gefragt ist (z. B. Subjuntivo, 3. Person von tener – tenga), und übst in beide Richtungen, bis die Form sitzt, bevor du nachdenkst. So fällt dir die richtige konjugierte Zeitform ein, wenn du sie brauchst – durch spielerisches Anwenden und Lernen im Kontext deiner Lieblingsthemen." } },
       { "@type": "Question", "name": "Welche Sprachen werden unterstützt?", "acceptedAnswer": { "@type": "Answer", "text": "Du kannst spanische Verben, französische Verben, englische Verben, niederländische Verben und deutsche Verben konjugieren — und jederzeit zwischen den Sprachen wechseln." } },
@@ -1253,6 +1253,13 @@ document.addEventListener("DOMContentLoaded", function(){
         document.getElementById("lpAvg").textContent=avg.toFixed(1).replace(".",",");
         document.getElementById("lpCnt").textContent="· "+c+" "+(CNT[lang()]||CNT.de);
         if(sumBox) sumBox.hidden=false;
+        // Sterne-Rich-Results: aggregateRating aus den echten (sichtbaren) Bewertungen
+        // in die SoftwareApplication einspeisen (Google führt per @id zusammen).
+        try{
+          var ld=document.createElement("script"); ld.type="application/ld+json";
+          ld.textContent=JSON.stringify({"@context":"https://schema.org","@type":"SoftwareApplication","@id":"https://conjuexpert.app/#app","name":"ConjuExpert","aggregateRating":{"@type":"AggregateRating","ratingValue":avg.toFixed(1),"reviewCount":c,"bestRating":5,"worstRating":1}});
+          document.head.appendChild(ld);
+        }catch(e){}
         // Danke-Doodle: Zahl dynamisch, auch nach Sprachwechsel (via __ceAfterLang)
         window.__revCnt=c;
         function paintRevCnt(){var ns=document.querySelectorAll("#revDoodle .rd-n");for(var k=0;k<ns.length;k++)ns[k].textContent=window.__revCnt;}
