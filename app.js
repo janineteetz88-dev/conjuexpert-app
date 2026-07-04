@@ -9042,12 +9042,21 @@ function QuizView({
     className: "flashtense"
   }, q.tenseLabel)), /*#__PURE__*/React.createElement("div", {
     className: "flashbody"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tiprow"
   }, /*#__PURE__*/React.createElement(QuizTip, {
     formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer),
     irregular: q.isIrregular,
     vtrans: thisDir === "native" ? null : transl,
     strans: skill !== "beginner" && cloze ? cloze.native : null
-  }), thisDir === "native" ? transl && transl !== "…" ? /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "starbtn qm-star qm-star-tip" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
+    title: "Save verb",
+    onClick: e => {
+      e.stopPropagation();
+      toggleFav(lang, q.verb);
+    }
+  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), thisDir === "native" ? transl && transl !== "…" ? /*#__PURE__*/React.createElement("span", {
     className: "flashnative"
   }, transl) : /*#__PURE__*/React.createElement("span", {
     className: "flashnative",
@@ -9063,14 +9072,7 @@ function QuizView({
     }
   }, q.verb.replace(/^to /, ""), " ", /*#__PURE__*/React.createElement("span", {
     className: "qm-study-ic"
-  }, "\u2197")), /*#__PURE__*/React.createElement("button", {
-    className: "starbtn qm-star qm-star-inline" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
-    title: "Save verb",
-    onClick: e => {
-      e.stopPropagation();
-      toggleFav(lang, q.verb);
-    }
-  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "\u2605" : "\u2606"), /*#__PURE__*/React.createElement("span", {
+  }, "\u2197")), /*#__PURE__*/React.createElement("span", {
     className: "flashpron"
   }, q.pronoun), cloze && !cloze.loading && /*#__PURE__*/React.createElement("div", {
     className: "flashcloze clozebox",
