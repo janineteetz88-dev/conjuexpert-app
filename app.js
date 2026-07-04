@@ -16918,7 +16918,16 @@ function App() {
       setGoal(saved);
       setDaily(readDaily());
       setShowGoal(false);
-      setShowGoalSuccess(true);
+      // Beim ALLERERSTEN Anlegen (egal über welchen Weg) direkt in die
+      // Übungsverben-Auswahl springen – der Fokus soll zuerst darauf liegen.
+      if (saved && !recall("kunju-challenge-first-done", false)) {
+        persist("kunju-challenge-first-done", true);
+        persist("kunju-saved-sub", "challenge");
+        persist("kunju-challenge-pending-edit", true);
+        handleTabSwitch("saved");
+      } else {
+        setShowGoalSuccess(true);
+      }
     }
   })), toastMsg && /*#__PURE__*/React.createElement(Toast, {
     msg: toastMsg,
