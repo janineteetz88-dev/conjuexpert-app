@@ -9088,11 +9088,7 @@ function QuizView({
     saveDir: "fromTarget"
   }), cloze.native && skill === "beginner" && /*#__PURE__*/React.createElement("div", {
     className: "clozenative"
-  }, cloze.native))), reportBtn(), /*#__PURE__*/React.createElement("div", {
-    className: "flashfoot"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "flashflip"
-  }, "\u21BB ", tr("flip")))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, cloze.native))), reportBtn()) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "flashtop"
   }, /*#__PURE__*/React.createElement("span", {
     className: "flashctx"
