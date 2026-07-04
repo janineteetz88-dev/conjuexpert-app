@@ -66,7 +66,7 @@ Deno.serve(async (req) => {
     "line_items[0][quantity]": "1",
     "metadata[userId]": userId,
     allow_promotion_codes: "true",
-    success_url: "https://conjuexpert.app/?payment=success",
+    success_url: `https://conjuexpert.app/?payment=success&plan=${effectivePlan === "monthly" ? "monthly" : "annual"}`,
     cancel_url: "https://conjuexpert.app/?payment=cancel",
     locale: "de",
   });
