@@ -11285,7 +11285,7 @@ function ChallengeView({ lang, onNew, onPractice, onWords, canEdit = true }) {
   };
   return h("div", { className: "ch-wrap" },
     h("div", { className: "ch-head" },
-      h("b", null, "Challenge"),
+      h("b", null, "Challenge · ", h("span", { style: { color: LANG_META[lang].color } }, window.CONJ[lang].name)),
       canEdit ? h("button", { className: "ch-editbtn" + (edit ? " on" : ""), onClick: () => setEdit(e => !e) }, edit ? tr("ch_editdone") : tr("ch_edit")) : null),
     allDone
       ? h("div", { className: "ch-master" }, h("b", null, tr("ch_mastered")), h("span", null, tr("ch_mastered_sub")))
@@ -15180,7 +15180,11 @@ function Zieltafel({
     className: "zt-eye"
   }, /*#__PURE__*/React.createElement("span", {
     className: "zt-k"
-  }, tr("zt_eyebrow"), goal ? /*#__PURE__*/React.createElement(React.Fragment, null, " \xB7 ", /*#__PURE__*/React.createElement("b", {
+  }, tr("zt_eyebrow"), " \xB7 ", /*#__PURE__*/React.createElement("b", {
+    style: {
+      color: LANG_META[lang].color
+    }
+  }, window.CONJ[lang].name), goal ? /*#__PURE__*/React.createElement(React.Fragment, null, " \xB7 ", /*#__PURE__*/React.createElement("b", {
     style: {
       color: "var(--text)"
     }
