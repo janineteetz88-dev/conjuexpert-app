@@ -8,7 +8,7 @@
  */
 
 import { renderSourcesSection } from "./lib/sources.mjs";
-import { extractKeyTakeaways, addHeadingIdsAndToc } from "./lib/geo-blocks.mjs";
+import { extractKeyTakeaways, addHeadingIdsAndToc, convertStrayAsterisks } from "./lib/geo-blocks.mjs";
 import { wrapContentCards } from "./lib/artcards.mjs";
 import { firstHeadIntro } from "./lib/notion-adapt.mjs";
 
@@ -124,6 +124,7 @@ function rtToHtml(richText) {
       let text = esc(t.plain_text);
       if (!text) return "";
       const a = t.annotations || {};
+      if (!a.code) text = convertStrayAsterisks(text);
       if (a.code)          text = `<code>${text}</code>`;
       if (a.bold)          text = `<strong>${text}</strong>`;
       if (a.italic)        text = `<em>${text}</em>`;
