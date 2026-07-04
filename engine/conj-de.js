@@ -194,7 +194,10 @@
     const { data, isIrr } = conjugateBase(base);
     // movement/change separable verbs take "sein"; otherwise inherit base aux
     const SEIN_BASES = ["stehen","kommen","gehen","fahren","reisen","fallen","laufen","fliegen","steigen","ziehen","springen","wachsen","treten","schwimmen"];
-    const auxOverride = (SEIN_BASES.indexOf(base) >= 0 && ["auf","an","ab","ein","aus","mit","zurück","vor","um","weg","los","her","hin","empor","hoch","weiter","heim"].indexOf(prefix) >= 0) ? "sein" : data.aux;
+    // Individual separable verbs whose aux differs from what the base-verb heuristic above would give
+    // (e.g. "einschlafen" takes sein even though "schlafen" itself, and "ausschlafen", take haben).
+    const SEP_AUX_OVERRIDE = { einschlafen: "sein" };
+    const auxOverride = SEP_AUX_OVERRIDE[verb] || ((SEIN_BASES.indexOf(base) >= 0 && ["auf","an","ab","ein","aus","mit","zurück","vor","um","weg","los","her","hin","empor","hoch","weiter","heim"].indexOf(prefix) >= 0) ? "sein" : data.aux);
     const suffix = (arr) => arr.map((f) => f === "—" ? "—" : `${f} … ${prefix}`); // finite verb + prefix at clause end
     const present = suffix(data.present);
     const praeteritum = suffix(data.praeteritum);

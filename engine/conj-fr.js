@@ -183,6 +183,9 @@
     ];
   }
 
+  // Otherwise-regular verbs of movement/state that take être (not avoir) in compound tenses.
+  const FR_ETRE_ONLY = ["monter", "descendre", "rester", "arriver", "entrer"];
+
   function conjugate(input) {
     const verb = clean(input);
     if (!verb) return null;
@@ -191,6 +194,7 @@
     const irr = IRR[verb];
     let data = reg, isIrr = false;
     if (irr) { isIrr = true; data = Object.assign({}, irr); }
+    else if (FR_ETRE_ONLY.includes(verb)) { isIrr = true; data = Object.assign({}, reg, { aux: "être" }); }
     const tenses = build(verb, data);
     if (isIrr) { const regT = build(verb, reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
     return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
