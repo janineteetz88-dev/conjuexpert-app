@@ -139,7 +139,10 @@
   // Separable prefixes (scheidbare werkwoorden): conjugate the base, then move the prefix to the end.
   const NL_SEP = ["aan","af","bij","in","mee","na","om","onder","op","over","toe","uit","voor","weg","terug","door","samen","neer","tegen","vast","los","klaar","thuis","open","dicht","achteruit","vooruit","binnen","buiten","mis"];
   const NL_SEIN_BASE = ["staan","komen","gaan","lopen","vallen","stijgen","springen","rijden","vliegen","groeien"];
+  // Not separable, even though they start with a string that's also a NL_SEP prefix (e.g. "mis" in "missen").
+  const NL_NOT_SEPARABLE = ["missen"];
   function nlSplit(verb) {
+    if (NL_NOT_SEPARABLE.includes(verb)) return null;
     for (const p of NL_SEP) {
       if (verb.length > p.length + 2 && verb.startsWith(p)) {
         const base = verb.slice(p.length);
@@ -188,24 +191,29 @@
     } else if (/[^aeiou][aeiou][^aeiou]$/.test(stem)) {
       const v = stem[stem.length - 2]; stem = stem.slice(0, -1) + v + stem.slice(-1);
     }
+    // Final-obstruent devoicing (v/z -> f/s) is a spelling convention for the infinitive
+    // stem, but the underlying consonant is still voiced — needed for the 't kofschip check below.
+    const devoiced = /[vz]$/.test(stem);
     stem = stem.replace(/v$/, "f").replace(/z$/, "s");
-    return stem;
+    return { stem, devoiced };
   }
 
   function regularData(verb) {
-    const stem = stemOf(verb);
+    const { stem, devoiced } = stemOf(verb);
     const lastSound = /ch$/.test(stem) ? "ch" : stem.slice(-1);
-    const voiceless = KOFSCHIP.includes(lastSound);
+    const voiceless = !devoiced && KOFSCHIP.includes(lastSound);
     const t = voiceless ? "t" : "d";
     const pastSing = stem + t + "e";
     const pastPlur = stem + t + "en";
     const stT = stem.endsWith("t") ? stem : stem + "t";
+    // Don't double the final consonant if the stem already ends in the suffix letter (zet+t -> zet, not zett).
+    const participle = stem.endsWith(t) ? "ge" + stem : "ge" + stem + t;
     return {
       present: [stem, stT, stT, verb, verb, verb],
       past: [pastSing, pastSing, pastSing, pastPlur, pastPlur, pastPlur],
       subjunctive: [stem + "e", stem + "e", stem + "e", verb, verb, verb],
       imperative: ["—", stem, stem, "laten we " + verb, stT, stT + " u"],
-      participle: "ge" + stem + t,
+      participle,
       aux: "hebben"
     };
   }

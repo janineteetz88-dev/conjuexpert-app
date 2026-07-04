@@ -92,7 +92,8 @@
     light: { past: "lit", pp: "lit" },
     sink: { past: "sank", pp: "sunk" },
     sweep: { past: "swept", pp: "swept" },
-    feed: { past: "fed", pp: "fed" }
+    feed: { past: "fed", pp: "fed" },
+    ring: { past: "rang", pp: "rung" }
   };
 
   function clean(v) { v = (v || "").trim().toLowerCase(); if (v.startsWith("to ")) v = v.slice(3); return v; }
