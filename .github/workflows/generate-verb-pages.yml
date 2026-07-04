@@ -37,5 +37,11 @@ jobs:
           git config user.name "conjuexpert-bot"
           git config user.email "bot@conjuexpert.app"
           git add konjugation/ sitemap.xml scripts/verb-queue.json
-          git diff --cached --quiet || git commit -m "chore: generate verb pages [skip ci]"
-          git push
+          if git diff --cached --quiet; then echo "Keine Änderungen."; exit 0; fi
+          git commit -m "chore: generate verb pages [skip ci]"
+          # Robust gegen parallele Pushes auf denselben Branch: rebasen + retry.
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin "${{ github.ref_name }}" && git push origin "HEAD:${{ github.ref_name }}" && exit 0
+            echo "Push-Retry $i…"; sleep 4
+          done
+          echo "Push nach mehreren Versuchen fehlgeschlagen"; exit 1
