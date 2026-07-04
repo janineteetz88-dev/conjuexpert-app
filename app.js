@@ -6467,6 +6467,7 @@ function QuizView({
   toggleFav,
   sound,
   skill,
+  onSkill,
   onStudy,
   onActivity,
   isActive,
@@ -8157,6 +8158,15 @@ function QuizView({
     return /*#__PURE__*/React.createElement("div", {
       className: "quiztenses"
     }, /*#__PURE__*/React.createElement("div", {
+      className: "qfilter-block"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "recent-title qfilter-lbl"
+    }, tr("skill_q")), /*#__PURE__*/React.createElement(OneDropdown, {
+      lang: lang,
+      options: [{ id: "beginner", label: tr("skill_beginner") }, { id: "intermediate", label: tr("skill_intermediate") }, { id: "advanced", label: tr("skill_advanced") }],
+      valueId: skill,
+      onPick: id => onSkill && onSkill(id)
+    })), /*#__PURE__*/React.createElement("div", {
       className: "qfilter-block"
     }, /*#__PURE__*/React.createElement("div", {
       className: "recent-title qfilter-lbl"
@@ -15633,8 +15643,17 @@ function App() {
   }
   function setSkl(s) {
     setSkill(s);
-    persist("kunju-skill", s);
+    persist("kunju-skill", s);            // Spiegel: aktive Sprache
+    persist("kunju-skill-" + lang, s);    // Niveau pro Sprache
   }
+  // Niveau ist pro Sprache: beim Sprachwechsel das gespeicherte Niveau der
+  // aktiven Sprache laden und den globalen Schlüssel spiegeln (damit alle
+  // bestehenden recall("kunju-skill")-Leser automatisch das Richtige bekommen).
+  useEffect(() => {
+    const s = recall("kunju-skill-" + lang, null) || recall("kunju-skill", "beginner");
+    setSkill(s);
+    persist("kunju-skill", s);
+  }, [lang]);
   function commitName(n) {
     setName(n);
     persist("kunju-name", n);
@@ -16680,6 +16699,7 @@ function App() {
     toggleFav: toggleFav,
     sound: t.sound,
     skill: skill,
+    onSkill: setSkl,
     onStudy: pickVerb,
     onActivity: onActivity,
     isActive: tab === "quiz",
