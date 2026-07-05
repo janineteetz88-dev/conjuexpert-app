@@ -1709,6 +1709,17 @@ body {
 .zt-chbtn .zt-chbtn-ic { display: inline-flex; align-items: center; color: var(--muted); }
 .zt-chbtn .zt-chbtn-ic svg { display: block; }
 .zt-chbtn .zt-chbtn-arr { margin-left: auto; color: var(--muted); font-weight: 700; }
+.zt-others { display: flex; flex-direction: column; gap: 8px; }
+.zt-others-h { font-family: var(--font-mono, var(--font-display)); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.zt-olang { display: flex; align-items: center; gap: 10px; width: 100%; border: 1.5px solid var(--border); background: var(--surface); border-radius: 13px; padding: 10px 13px; font-family: var(--font-display); cursor: pointer; transition: border-color .15s, background .15s, transform .1s; text-align: left; }
+.zt-olang:active { transform: scale(0.985); }
+.zt-olang:hover { border-color: color-mix(in srgb, var(--lc) 45%, var(--border)); background: color-mix(in srgb, var(--lc) 6%, var(--surface)); }
+.zt-ol-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--lc); flex: none; }
+.zt-ol-nm { font-weight: 800; font-size: 14px; color: var(--text); flex: none; min-width: 66px; }
+.zt-ol-bar { flex: 1; height: 6px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+.zt-ol-bar i { display: block; height: 100%; border-radius: 4px; background: var(--lc); transition: width .3s ease; }
+.zt-ol-ct { font-size: 12px; font-weight: 700; color: var(--muted); flex: none; font-variant-numeric: tabular-nums; }
+.zt-ol-arr { color: var(--muted); font-weight: 700; flex: none; }
 .zt-acts { display: flex; gap: 10px; }
 .zt-act { flex: 1; border: 1px solid var(--border); background: var(--surface); border-radius: 13px; padding: 13px; font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: border-color 0.15s, background 0.15s; }
 .zt-act:hover { border-color: color-mix(in srgb, var(--ink) 32%, var(--border)); }
@@ -2857,7 +2868,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-72"></script>
+<script defer src="/app.js?v=c-sand-73"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
