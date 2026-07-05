@@ -1364,8 +1364,11 @@ body {
 .savedsubbtn.on { border-color: var(--lang-color, #a557ff); background: color-mix(in srgb, var(--lang-color, #a557ff) 11%, var(--surface)); color: var(--text); }
 .savedsub .savedsubbtn { font-size: 13px; padding: 9px 5px; }
 /* Challenge-Listenansicht (3. Reiter) */
-.ch-empty { text-align: center; padding: 26px 8px; }
-.ch-empty-tx { color: var(--muted); font-size: 14.5px; line-height: 1.5; margin: 0 0 16px; }
+.ch-empty { text-align: center; padding: 30px 10px 26px; }
+.ch-empty-pill { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 800; letter-spacing: .01em; color: var(--lc, #7a5cff); background: color-mix(in srgb, var(--lc, #7a5cff) 12%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--lc, #7a5cff) 40%, var(--border)); padding: 5px 13px 5px 11px; border-radius: 999px; margin-bottom: 14px; }
+.ch-empty-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lc, #7a5cff); flex: none; }
+.ch-empty-head { font-family: var(--font-display); font-size: 18px; font-weight: 800; letter-spacing: -.01em; color: var(--text); margin: 0 0 6px; text-wrap: balance; }
+.ch-empty-tx { color: var(--muted); font-size: 14.5px; line-height: 1.5; margin: 0 auto 18px; max-width: 30ch; }
 .ch-cta { width: 100%; }
 .ch-wrap { display: flex; flex-direction: column; gap: 14px; }
 .ch-head { display: flex; align-items: baseline; justify-content: space-between; }
@@ -2854,7 +2857,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-71"></script>
+<script defer src="/app.js?v=c-sand-72"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
