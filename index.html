@@ -1369,15 +1369,23 @@ body {
 .gm-hint-ic { color: var(--lang-color, #ff9f0a); flex: none; display: inline-flex; margin-top: 1px; }
 .gm-hint-tx { flex: 1; font-size: 12.5px; color: var(--text); line-height: 1.45; }
 .gm-hint-x { flex: none; background: none; border: none; color: var(--muted); cursor: pointer; display: inline-flex; padding: 2px; }
-.gm-hero { width: 100%; text-align: left; border: none; cursor: pointer; background: var(--text); color: var(--surface); border-radius: 18px; padding: 15px 16px; margin-bottom: 12px; position: relative; overflow: hidden; display: block; }
+.gm-hero { width: 100%; text-align: left; cursor: pointer; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 18px; padding: 15px 16px; margin-bottom: 12px; position: relative; overflow: hidden; display: block; }
 .gm-hero-rb { position: absolute; left: 0; right: 0; top: 0; height: 3px; background: linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff); }
 .gm-hero-top { display: flex; align-items: center; gap: 11px; margin-bottom: 13px; }
-.gm-hero-ic { width: 34px; height: 34px; border-radius: 10px; background: color-mix(in srgb, var(--surface) 16%, transparent); display: flex; align-items: center; justify-content: center; flex: none; color: var(--surface); }
-.gm-hero-lbl { display: block; font-size: 12px; color: color-mix(in srgb, var(--surface) 70%, transparent); font-weight: 600; }
-.gm-hero-num { display: block; font-size: 26px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
-.gm-hero-num small { font-size: 13px; font-weight: 600; color: color-mix(in srgb, var(--surface) 65%, transparent); margin-left: 5px; }
-.gm-hero-cta { display: inline-flex; align-items: center; gap: 7px; background: var(--surface); color: var(--text); border-radius: 12px; padding: 10px 15px; font-weight: 800; font-size: 14px; }
+.gm-hero-ic { width: 34px; height: 34px; border-radius: 10px; background: var(--surface-2); display: flex; align-items: center; justify-content: center; flex: none; color: var(--text); }
+.gm-hero-lbl { display: block; font-size: 12px; color: var(--muted); font-weight: 600; }
+.gm-hero-num { display: block; font-size: 26px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; color: var(--text); }
+.gm-hero-num small { font-size: 13px; font-weight: 600; color: var(--muted); margin-left: 5px; }
+.gm-hero-cta { display: inline-flex; align-items: center; gap: 7px; background: var(--text); color: var(--surface); border-radius: 12px; padding: 10px 15px; font-weight: 800; font-size: 14px; }
 .gm-hero-play { display: inline-flex; }
+/* Challenge-CTA (wenn noch keine Challenge existiert) — im Sprachakzent, nicht schwarz */
+.gm-chcta { width: 100%; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 12px; background: color-mix(in srgb, var(--lc, #ff9f0a) 9%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--lc, #ff9f0a) 38%, var(--border)); border-radius: 16px; padding: 14px; margin-bottom: 12px; font-family: var(--font-display); transition: transform .1s; }
+.gm-chcta:active { transform: scale(.99); }
+.gm-chcta-ic { width: 40px; height: 40px; border-radius: 11px; background: color-mix(in srgb, var(--lc, #ff9f0a) 16%, var(--surface)); color: var(--lc, #ff9f0a); display: flex; align-items: center; justify-content: center; flex: none; }
+.gm-chcta-mid { flex: 1; min-width: 0; }
+.gm-chcta-h { display: block; font-weight: 800; font-size: 15px; color: var(--text); }
+.gm-chcta-s { display: block; font-size: 12.5px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+.gm-chcta-chev { color: var(--lc, #ff9f0a); flex: none; display: inline-flex; }
 .gm-row { width: 100%; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 11px 13px; margin-bottom: 8px; font-family: var(--font-display); transition: transform .1s; }
 .gm-row:active { transform: scale(.99); }
 .gm-ch { border-left: 3px solid var(--lang-color, #ff9f0a); }
@@ -2915,7 +2923,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-78"></script>
+<script defer src="/app.js?v=c-sand-79"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
