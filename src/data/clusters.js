@@ -242,7 +242,7 @@ export const clusters = [
     hub: null,
     spokes: [
       { slug: "/blog/sprachlern-app-vergleich", title: "Duolingo, Babbel, Busuu & Co.: Was diese Apps wirklich können — und wo sie schweigen (v2)", live: true },
-      { slug: "/blog/mit-der-sprache-umgeben", title: "Sich mit der Sprache umgeben: 10 Challenges (v2)", live: true },
+      { slug: "/blog/mit-der-sprache-umgeben", title: "Sich mit der Sprache umgeben: 10 Tipps für zuhause", live: true },
     ],
   },
   {
