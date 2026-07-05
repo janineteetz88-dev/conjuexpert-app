@@ -10006,6 +10006,65 @@ function getVocab() {
 }
 function saveVocab(list) {
   persist(vocabKey(), list);
+  schedulePushVocab();
+}
+/* ---- Wortschatz-Sync ans Konto (analog favorites) ----------------------------
+   Sicher & additiv: beim Login Cloud→lokal vereinen (nie löschen), bei Änderung
+   Upsert, beim Entfernen gezielt die eine Zeile löschen. Kein „alles ersetzen",
+   damit ein frisch geladener/leerer Browser die Cloud nicht leerräumt. */
+let __vocabUser = null;    // Konto-ID, sobald eingeloggt
+let __vocabReady = false;  // true nach dem ersten Cloud→lokal-Merge (erst dann pushen)
+let __vocabPushT = null;
+function vocabRows(list, uid) {
+  return (list || []).filter(x => x && x.lang && x.term).map(x => ({
+    user_id: uid, lang: x.lang, term: String(x.term),
+    trans: x.trans || null, cat: x.cat || null, kind: x.kind || null,
+    created: typeof x.created === "number" ? x.created : null, nat: x.nat || null
+  }));
+}
+function pushVocabCloud() {
+  if (!__vocabUser || !__vocabReady || !window.__supa) return;
+  const rows = vocabRows(getVocab(), __vocabUser);
+  if (!rows.length) return;
+  try { window.__supa.from("vocab").upsert(rows, { onConflict: "user_id,lang,term" }).then(function () {}, function () {}); } catch (e) {}
+}
+function schedulePushVocab() {
+  if (!__vocabUser || !__vocabReady) return;
+  if (__vocabPushT) clearTimeout(__vocabPushT);
+  __vocabPushT = setTimeout(pushVocabCloud, 1200);
+}
+function deleteVocabCloud(lang, term) {
+  if (!__vocabUser || !window.__supa || !lang || !term) return;
+  try { window.__supa.from("vocab").delete().match({ user_id: __vocabUser, lang: lang, term: String(term) }).then(function () {}, function () {}); } catch (e) {}
+}
+function resetVocabSync() { __vocabUser = null; __vocabReady = false; }
+async function mergeVocabFromCloud(uid) {
+  if (!uid || !window.__supa) { __vocabReady = true; return; }
+  __vocabUser = uid;
+  try {
+    const res = await window.__supa.from("vocab").select("lang,term,trans,cat,kind,created,nat").eq("user_id", uid);
+    const data = res && res.data;
+    if (data && data.length) {
+      const local = getVocab();
+      const seen = new Set(local.map(function (x) { return x.lang + "|" + norm(x.term); }));
+      let added = false;
+      data.forEach(function (r) {
+        const k = r.lang + "|" + norm(r.term);
+        if (seen.has(k)) return;
+        seen.add(k); added = true;
+        local.unshift({
+          id: "c-" + r.lang + "-" + norm(r.term) + "-" + (r.created || 0),
+          lang: r.lang, term: r.term, trans: r.trans || "",
+          cat: r.cat || generalCat(),
+          kind: r.kind || (String(r.term).indexOf(" ") >= 0 ? "phrase" : "word"),
+          created: r.created || Date.now(), nat: r.nat || recall("kunju-native", "German")
+        });
+      });
+      if (added) { persist(vocabKey(), local); window.dispatchEvent(new Event("kunju-vocab-synced")); }
+    }
+  } catch (e) {}
+  __vocabReady = true;
+  pushVocabCloud(); // lokal-only Wörter in die Cloud nachziehen
 }
 /* Words the user dismissed ("weggeklickt") count as KNOWN — keep them out of
    future AI suggestions so they never reappear. Stored per learning language. */
@@ -10379,6 +10438,12 @@ function VocabView({
   lang
 }) {
   const [items, setItems] = useState(() => getVocab());
+  // Kommt beim Login frischer Wortschatz aus dem Konto, sofort anzeigen.
+  useEffect(() => {
+    function onSync() { setItems(getVocab()); }
+    window.addEventListener("kunju-vocab-synced", onSync);
+    return () => window.removeEventListener("kunju-vocab-synced", onSync);
+  }, []);
   const [cat, setCat] = useState(() => recall("kunju-vocab-cat", "all"));
   const [catsOpen, setCatsOpen] = useState(false); // Themen-Block auf-/zugeklappt
   const [dir, setDir] = useState("native"); // native = type mother tongue → translate to target
@@ -10706,7 +10771,7 @@ function VocabView({
   }
   function remove(id) {
     const it = items.find(x => x.id === id);
-    if (it) addVocabKnown(lang, it.term);
+    if (it) { addVocabKnown(lang, it.term); deleteVocabCloud(it.lang || lang, it.term); }
     persistItems(items.filter(x => x.id !== id));
   }
   function addCustomCat() {
@@ -16162,6 +16227,7 @@ function App() {
       setSupaUser(user);
       if (!user) {
         // Logged out or no session — premium requires an account, reset stale state
+        resetVocabSync(); // keine weiteren Cloud-Schreibvorgänge ohne Konto
         if (recall("kunju-premium", false)) {
           persist("kunju-premium", false);
           persist("kunju-premium-until", null);
@@ -16193,6 +16259,8 @@ function App() {
         setToastMsg(tr("acct_created"));
       }
       if (user && window.__supa) {
+        // Wortschatz aus dem Konto laden & vereinen (Listen überleben Gerätewechsel)
+        mergeVocabFromCloud(user.id);
         // Load cloud favorites + premium status on login
         window.__supa.from("favorites").select("lang,verb").eq("user_id", user.id).then(({
           data
