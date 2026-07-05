@@ -6305,18 +6305,9 @@ function WordSentence({
   function saveWord() {
     if (!saveLang || !openW) return;
     const c = openW.w;
-    // Ist das getippte Wort eine Verbform? → Infinitiv nach „Gemerkte Verben"
-    // (nicht in die Wortliste). Verben und Wörter bleiben getrennt.
-    try {
-      const dq = deconjugate(saveLang, c);
-      if (dq && dq.infinitives && dq.infinitives.length && dq.infinitives[0].base) {
-        const inf = dq.infinitives[0].base;
-        if (window.__addVerbFav) window.__addVerbFav(saveLang, inf);
-        setSaved(s => ({ ...s, [c]: true }));
-        if (window.__toast) window.__toast(tr("gm_saved_verb_toast", { w: inf }));
-        return;
-      }
-    } catch (e) {}
+    // Aus dem Text gemerkte Wörter landen immer in „Gemerkte Wörter". Verben
+    // verschiebt man bei Bedarf selbst (Listen-Kürzel → „Gemerkte Verben") —
+    // automatische Verb-Erkennung war zu fehleranfällig (z. B. „Hand" → „han").
     function afterTrans(tvRaw) {
       const tv = !tvRaw || tvRaw === "…" || tvRaw === "—" ? "" : tvRaw;
       const term = saveDir === "fromTarget" ? c : tv || c;
@@ -10453,6 +10444,8 @@ function VocabView({
   const [newCatVal, setNewCatVal] = useState("");
   const [showImport, setShowImport] = useState(false);
   const [impText, setImpText] = useState("");
+  const [impChecking, setImpChecking] = useState(false);
+  const [impReview, setImpReview] = useState(null); // [{term,trans,newTerm,newTrans,st,use}]
   const [moveId, setMoveId] = useState(null); // Wort verschieben: offene Auswahl
   const [showCross, setShowCross] = useState(false); // „Aus anderer Sprache"-Fenster
   const [crossSrc, setCrossSrc] = useState(null);    // gewählte Quellsprache
@@ -10850,6 +10843,49 @@ function VocabView({
       out.push({ term: term, trans: trans });
     });
     return out;
+  }
+  // Import mit KI-Prüfung: erst prüfen (Schreibweise + Übersetzung), dann entscheidet
+  // der Nutzer pro Wort. Ohne KI / sehr lange Liste → direkt einfügen (runImport).
+  async function startImport() {
+    const parsed = parseImport(impText);
+    if (!parsed.length) { setShowImport(false); setImpText(""); return; }
+    if (!window.__hasAI() || parsed.length > 40) { runImport(); return; }
+    setImpChecking(true);
+    const src = targetName();
+    const rev = [];
+    for (const p of parsed.slice(0, 40)) {
+      let newTerm = p.term, newTrans = p.trans, st = "ok";
+      try {
+        const r = await window.aiComplete(`A learner typed this ${src} vocabulary entry. Correct the spelling and accents of the ${src} word and give its ${nativeName} translation. Word: "${p.term}"${p.trans ? `. Learner translation: "${p.trans}"` : ""}. Reply on ONE line exactly as: corrected ${src} word | ${nativeName} translation`);
+        const parts = String(r || "").split("|");
+        const ct = (parts[0] || "").trim().replace(/^["'«».]+|["'«».]+$/g, "").split("\n")[0].trim();
+        const tt = (parts[1] || "").trim().replace(/^["'«».]+|["'«».]+$/g, "").split("\n")[0].trim();
+        if (ct) newTerm = ct;
+        if (tt) newTrans = tt;
+        if (norm(newTerm) !== norm(p.term)) st = "sugg";
+        else if (p.trans && norm(newTrans) !== norm(p.trans)) st = "sugg";
+        else if (!p.trans && newTrans) st = "added";
+      } catch (e) {}
+      rev.push({ term: p.term, trans: p.trans, newTerm: newTerm, newTrans: newTrans, st: st, use: st === "sugg" || st === "added" });
+    }
+    setImpChecking(false);
+    setImpReview(rev);
+  }
+  function addReviewed() {
+    const useCat = cat === "all" ? generalCat() : cat;
+    const now = Date.now();
+    const seen = new Set(getVocab().filter(x => x.lang === lang).map(x => norm(x.term)));
+    const additions = [];
+    (impReview || []).forEach((r, i) => {
+      const term = r.use ? r.newTerm : r.term;
+      const trans = r.use ? r.newTrans : r.trans;
+      if (!term || seen.has(norm(term))) return;
+      seen.add(norm(term));
+      additions.push({ id: now + "-imp" + i, lang: lang, term: term, trans: trans, cat: useCat, kind: term.indexOf(" ") >= 0 ? "phrase" : "word", created: now + i, nat: nativeName });
+    });
+    if (additions.length) persistItems([...additions, ...getVocab()]);
+    setImpReview(null); setShowImport(false); setImpText("");
+    if (window.__toast) window.__toast(tr("cross_done", { n: additions.length }));
   }
   async function runImport() {
     const useCat = cat === "all" ? generalCat() : cat;
