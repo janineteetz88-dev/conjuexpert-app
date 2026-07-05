@@ -1363,6 +1363,38 @@ body {
 .savedsubbtn { flex: 1; border: 1.5px solid var(--border); background: var(--surface); color: var(--muted); border-radius: 12px; padding: 10px; font-family: var(--font-display); font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.15s; }
 .savedsubbtn.on { border-color: var(--lang-color, #a557ff); background: color-mix(in srgb, var(--lang-color, #a557ff) 11%, var(--surface)); color: var(--text); }
 .savedsub .savedsubbtn { font-size: 13px; padding: 9px 5px; }
+/* Gemerkt-Übersicht (Bibliothek) */
+.gm-hint { position: relative; display: flex; gap: 10px; align-items: flex-start; background: var(--surface-2); border: 1px solid var(--border); border-radius: 13px; padding: 12px 12px 11px; margin-bottom: 13px; }
+.gm-hint-tag { position: absolute; top: -8px; left: 12px; font-family: var(--font-mono, var(--font-display)); font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--surface); padding: 1px 7px; border-radius: 999px; border: 1px solid var(--border); }
+.gm-hint-ic { color: var(--lang-color, #ff9f0a); flex: none; display: inline-flex; margin-top: 1px; }
+.gm-hint-tx { flex: 1; font-size: 12.5px; color: var(--text); line-height: 1.45; }
+.gm-hint-x { flex: none; background: none; border: none; color: var(--muted); cursor: pointer; display: inline-flex; padding: 2px; }
+.gm-hero { width: 100%; text-align: left; border: none; cursor: pointer; background: var(--text); color: var(--surface); border-radius: 18px; padding: 15px 16px; margin-bottom: 12px; position: relative; overflow: hidden; display: block; }
+.gm-hero-rb { position: absolute; left: 0; right: 0; top: 0; height: 3px; background: linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff); }
+.gm-hero-top { display: flex; align-items: center; gap: 11px; margin-bottom: 13px; }
+.gm-hero-ic { width: 34px; height: 34px; border-radius: 10px; background: color-mix(in srgb, var(--surface) 16%, transparent); display: flex; align-items: center; justify-content: center; flex: none; color: var(--surface); }
+.gm-hero-lbl { display: block; font-size: 12px; color: color-mix(in srgb, var(--surface) 70%, transparent); font-weight: 600; }
+.gm-hero-num { display: block; font-size: 26px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+.gm-hero-num small { font-size: 13px; font-weight: 600; color: color-mix(in srgb, var(--surface) 65%, transparent); margin-left: 5px; }
+.gm-hero-cta { display: inline-flex; align-items: center; gap: 7px; background: var(--surface); color: var(--text); border-radius: 12px; padding: 10px 15px; font-weight: 800; font-size: 14px; }
+.gm-hero-play { display: inline-flex; }
+.gm-row { width: 100%; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 11px 13px; margin-bottom: 8px; font-family: var(--font-display); transition: transform .1s; }
+.gm-row:active { transform: scale(.99); }
+.gm-ch { border-left: 3px solid var(--lang-color, #ff9f0a); }
+.gm-ic { width: 36px; height: 36px; border-radius: 10px; background: var(--surface-2); display: flex; align-items: center; justify-content: center; color: var(--text); flex: none; }
+.gm-mid { flex: 1; min-width: 0; }
+.gm-nm { font-weight: 800; font-size: 14px; color: var(--text); display: block; }
+.gm-nm b { color: var(--lang-color, #ff9f0a); }
+.gm-meta { font-size: 11.5px; color: var(--muted); font-weight: 600; margin-top: 4px; display: flex; align-items: center; gap: 8px; }
+.gm-bar { width: 66px; height: 5px; border-radius: 3px; background: var(--surface-2); overflow: hidden; display: inline-block; }
+.gm-bar i { display: block; height: 100%; background: var(--muted); border-radius: 3px; }
+.gm-badge { flex: none; font-size: 10.5px; font-weight: 800; padding: 3px 9px; border-radius: 999px; background: color-mix(in srgb, var(--lc, #ff9f0a) 14%, var(--surface)); color: var(--lc, #ff9f0a); }
+.gm-chev { color: var(--muted); flex: none; display: inline-flex; }
+.gm-seclbl { font-family: var(--font-mono, var(--font-display)); font-size: 10px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; color: var(--muted); margin: 15px 4px 9px; }
+.gm-addliste { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px; border-radius: 12px; border: 1.5px solid var(--text); background: var(--surface); color: var(--text); font-weight: 800; font-size: 14.5px; font-family: var(--font-display); cursor: pointer; margin-top: 4px; }
+.gm-ic-plus { display: inline-flex; }
+.gm-backbar { margin-bottom: 12px; }
+.gm-back { display: inline-flex; align-items: center; gap: 5px; background: none; border: none; color: var(--muted); font-family: var(--font-display); font-weight: 700; font-size: 14px; cursor: pointer; padding: 4px 2px; }
 /* Challenge-Listenansicht (3. Reiter) */
 .ch-empty { text-align: center; padding: 30px 10px 26px; }
 .ch-empty-pill { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 800; letter-spacing: .01em; color: var(--lc, #7a5cff); background: color-mix(in srgb, var(--lc, #7a5cff) 12%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--lc, #7a5cff) 40%, var(--border)); padding: 5px 13px 5px 11px; border-radius: 999px; margin-bottom: 14px; }
@@ -2868,7 +2900,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-74"></script>
+<script defer src="/app.js?v=c-sand-75"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
