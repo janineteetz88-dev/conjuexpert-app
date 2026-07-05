@@ -1,0 +1,176 @@
+/**
+ * standard-lint.mjs
+ *
+ * Maschinelle Prüfung eines Blog-Artikels gegen den redaktionellen Gold-Standard
+ * ("Anforderungen Blogartikel (CI & Stil)" / `.agents/blog-style.md`).
+ *
+ * Ergänzt die bestehenden Leitplanken:
+ *   - validateMeta()      (Pflichtfelder im Meta-Block)               — meta-block.mjs
+ *   - auditRenderedHtml() (Chrome/Struktur des gerenderten HTML)      — render-guard.mjs
+ * um die CI-/Stil-Regeln, die bislang NUR als Text existierten und deshalb nie
+ * automatisch erzwungen wurden (Kürze-Box, kein TL;DR/Emoji, FAQ als Toggle,
+ * interne Link-Mindestmenge, verirrte Entwurfs-/Redaktionshinweise …).
+ *
+ * Design: eine reine Kern-Funktion `lintSignals(signals)` + zwei Adapter
+ *   - `lintArticleText(markdown, { meta })`  — für den Publish-/Entwurfs-Pfad (Quelle)
+ *   - `lintRenderedHtml(html, { meta })`     — für Bestands-/Live-Artikel (HTML)
+ * Beide reichen dieselben `signals` in denselben Kern → identische Regeln.
+ *
+ * Rückgabe: Array von { code, level: "error"|"warn", msg }.
+ *   level "error" = darf NICHT live (analog Render-Guard: überspringen).
+ *   level "warn"  = melden, blockt aber nicht.
+ */
+
+// Grobe Emoji-Erkennung (Symbole/Piktogramme/Dingbats/Pfeile + Variation Selector).
+const EMOJI_RE =
+  /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}\u{20E3}]/u;
+
+const has = (re, s) => re.test(String(s || ""));
+
+/* ─── Kern: prüft normalisierte Signale ──────────────────────────────────── */
+
+/**
+ * @param {object} sig
+ * @param {string} sig.text        Sichtbarer Artikeltext (ohne Chrome).
+ * @param {number} sig.faqCount    Anzahl FAQ-Einheiten (Toggles).
+ * @param {number} sig.upLinks     In-Text-Links hoch (/blog/…).
+ * @param {number} sig.downLinks   In-Text-Links runter (/konjugation/…).
+ * @param {number} sig.badAnchors  Anzahl nichtssagender Anker ("hier"/"mehr").
+ * @param {object|null} sig.meta   Geparste Meta (optional).
+ */
+export function lintSignals(sig = {}) {
+  const out = [];
+  const err = (code, msg) => out.push({ code, level: "error", msg });
+  const warn = (code, msg) => out.push({ code, level: "warn", msg });
+
+  const text = String(sig.text || "");
+  const meta = sig.meta || null;
+
+  // ── HART: Entwurfs-/Redaktions-Artefakte dürfen nie live ───────────────────
+  if (has(/✍️|\[Entwurf\]|\[Draft\]|\[WIP\]/, text))
+    err("DRAFT_MARKER", 'Entwurfs-Marker (✍️/[Entwurf]/[Draft]) im Text');
+  if (has(/wartet auf (deine |die )?Freigabe|Geht nicht live ohne Freigabe|Status:\s*Entwurf/i, text))
+    err("EDITORIAL_NOTE", "Interner Redaktionshinweis im Text (…wartet auf Freigabe / Status: Entwurf …)");
+
+  // ── HART: verbotenes Box-Label / verbotener Einstieg ───────────────────────
+  if (has(/TL;DR/i, text) || has(/(^|\n)\s*>?\s*\*{0,2}\s*Kurz gesagt\s*[:*]/i, text))
+    err("TLDR_LABEL", 'Verbotenes Box-Label „TL;DR"/„Kurz gesagt" — muss „Das Wichtigste in Kürze" sein');
+  if (has(/Kennst du das\?/i, text))
+    err("BANNED_INTRO", 'Verbotener Einstieg „Kennst du das?"');
+
+  // ── WARN: „Das Wichtigste in Kürze"-Box vorhanden & sauber ─────────────────
+  const kuerzeLine = text.split(/\n/).find((l) => /Das Wichtigste in Kürze/i.test(l));
+  if (!kuerzeLine) warn("KUERZE_BOX_MISSING", 'Box „Das Wichtigste in Kürze" nicht gefunden');
+  else if (EMOJI_RE.test(kuerzeLine))
+    warn("KUERZE_BOX_EMOJI", 'Deko-Emoji in der „Das Wichtigste in Kürze"-Box (soll ohne Emoji sein)');
+
+  // ── WARN: weitere verbrannte Muster / KI-Floskeln ──────────────────────────
+  if (has(/Tabelle ist weg|(im Gespräch|im Kopf)[^.\n]{0,50}(alles (ist )?weg|plötzlich weg)/i, text))
+    warn("BURNED_SCENE", 'Mögliche verbrannte „alles-ist-weg/Gespräch-scheitern"-Szene');
+  if (has(/Der wichtigste Hebel zuerst|Genau dieses Prinzip/i, text))
+    warn("KI_FLOSKEL", 'KI-Floskel („Der wichtigste Hebel zuerst"/„Genau dieses Prinzip")');
+
+  // ── WARN: http statt https ─────────────────────────────────────────────────
+  if (has(/http:\/\/conjuexpert\.app/i, text))
+    warn("HTTP_LINK", "http:// statt https:// auf conjuexpert.app");
+
+  // ── WARN: FAQ 2–3 Einheiten ────────────────────────────────────────────────
+  if (typeof sig.faqCount === "number") {
+    if (sig.faqCount < 2) warn("FAQ_COUNT", `FAQ hat ${sig.faqCount} Einträge (Soll 2–3)`);
+    else if (sig.faqCount > 3) warn("FAQ_COUNT", `FAQ hat ${sig.faqCount} Einträge (Soll 2–3)`);
+  }
+
+  // ── WARN: interne Verlinkung 3–10, mit Hoch + Runter ───────────────────────
+  const up = sig.upLinks || 0;
+  const down = sig.downLinks || 0;
+  const total = up + down;
+  if (total < 3) warn("LINKS_FEW", `Nur ${total} kontextuelle In-Text-Links (Soll 3–10)`);
+  else if (total > 10) warn("LINKS_MANY", `${total} In-Text-Links (Soll 3–10)`);
+  if (up === 0) warn("LINKS_NO_UP", "Kein Hoch-Link (/blog/… zu Hub/Pillar) im Fließtext");
+  if (down === 0) warn("LINKS_NO_DOWN", "Kein Runter-Link (/konjugation/[sprache]/[verb]) im Fließtext");
+  if (sig.badAnchors) warn("LINKS_BAD_ANCHOR", `${sig.badAnchors} nichtssagende Anker ("hier"/"mehr")`);
+
+  // ── WARN: Meta-Feinheiten (nur wenn Meta übergeben) ────────────────────────
+  if (meta) {
+    if (meta.metaDescription && meta.metaDescription.length > 160)
+      warn("META_DESC_LEN", `Meta-Description ${meta.metaDescription.length} Zeichen (Soll ≤ 160)`);
+    if (meta.keyword && meta.metaDescription &&
+        !meta.metaDescription.toLowerCase().includes(String(meta.keyword).toLowerCase()))
+      warn("META_DESC_KEYWORD", "Keyword fehlt in der Meta-Description");
+    if (!meta.hub) warn("KOPF_HUB", 'Kopfblock ohne Feld „Hub" (v2-Pflichtfeld)');
+    if (!meta.relatedVerbs || meta.relatedVerbs.length === 0)
+      warn("KOPF_RELATEDVERBS", 'Kopfblock ohne „relatedVerbs"');
+  }
+
+  return out;
+}
+
+/* ─── Adapter 1: Artikel-Quelle (Markdown/Entwurfstext) ──────────────────── */
+
+export function lintArticleText(markdown, opts = {}) {
+  const md = String(markdown || "");
+
+  // FAQ-Toggles: öffnende "+++ <Inhalt>"-Zeilen zählen (schließendes "+++" ist leer).
+  const faqCount = (md.match(/^\+\+\+[^\n]*\S/gm) || []).length;
+
+  // Kontextuelle In-Text-Links: Markdown-Links [text](…/blog|konjugation/…).
+  const linkRe = /\]\((?:https?:\/\/conjuexpert\.app)?(\/(?:blog|konjugation)\/[^)]+)\)/g;
+  let m, upLinks = 0, downLinks = 0;
+  while ((m = linkRe.exec(md))) {
+    if (m[1].startsWith("/konjugation/")) downLinks++;
+    else upLinks++;
+  }
+  const badAnchors = (md.match(/\[(hier(?: klicken)?|mehr)\]\(/gi) || []).length;
+
+  return lintSignals({ text: md, faqCount, upLinks, downLinks, badAnchors, meta: opts.meta || null });
+}
+
+/* ─── Adapter 2: gerenderter/Live-HTML ───────────────────────────────────── */
+
+export function htmlToText(html) {
+  return String(html || "")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ").replace(/&#39;|&rsquo;/g, "'").replace(/&quot;/g, '"')
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n\s*\n\s*\n+/g, "\n\n");
+}
+
+export function lintRenderedHtml(html, opts = {}) {
+  const s = String(html || "");
+
+  // Nur den Artikelkörper betrachten (Chrome/Nav/Footer ausblenden), damit
+  // Nav-Links & Footer nicht als In-Text-Links zählen.
+  const body =
+    (s.match(/<article[\s\S]*?<\/article>/i) || [])[0] ||
+    (s.match(/<main[\s\S]*?<\/main>/i) || [])[0] ||
+    s;
+
+  const text = htmlToText(body);
+
+  // FAQ-Einheiten: <details>/.faq-Toggles oder ▸-Muster.
+  const faqCount =
+    (body.match(/<details\b/gi) || []).length ||
+    (body.match(/class="[^"]*\bfaq(?:2)?-q\b[^"]*"/gi) || []).length;
+
+  // In-Text-Links aus <a href> im Artikelkörper.
+  const hrefs = [...body.matchAll(/<a\b[^>]*\bhref="([^"]+)"[^>]*>(.*?)<\/a>/gis)];
+  let upLinks = 0, downLinks = 0, badAnchors = 0;
+  for (const h of hrefs) {
+    const href = h[1];
+    const anchor = htmlToText(h[2]).trim().toLowerCase();
+    if (/\/konjugation\//.test(href)) downLinks++;
+    else if (/(^|conjuexpert\.app)?\/blog\//.test(href) || /\/blog\//.test(href)) upLinks++;
+    if (/^(hier|hier klicken|mehr)$/.test(anchor)) badAnchors++;
+  }
+
+  return lintSignals({ text, faqCount, upLinks, downLinks, badAnchors, meta: opts.meta || null });
+}
+
+/* ─── Bequemlichkeit: nur harte Fehler (Gate-Entscheidung) ───────────────── */
+
+export function hardErrors(findings) {
+  return (findings || []).filter((f) => f.level === "error");
+}

@@ -3,7 +3,9 @@
   "scripts": {
     "build:app": "node scripts/build-index.mjs",
     "check:quiz": "node scripts/check-quiz.mjs",
-    "test": "node --test scripts/lib/*.test.mjs"
+    "test": "node --test scripts/lib/*.test.mjs",
+    "lint:blog": "node scripts/lint-blog-standard.mjs",
+    "lint:blog:warn": "node scripts/lint-blog-standard.mjs --warn"
   },
   "devDependencies": {
     "@babel/standalone": "^7.29.0",
