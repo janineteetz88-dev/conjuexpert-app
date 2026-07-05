@@ -1523,6 +1523,9 @@ body {
 .vocsr i { width: 14px; height: 4px; border-radius: 2px; background: var(--border); transition: background 0.2s; }
 .vocsr.lvl1 i:nth-child(-n+1), .vocsr.lvl2 i:nth-child(-n+2), .vocsr.lvl3 i:nth-child(-n+3), .vocsr.lvl4 i:nth-child(-n+4), .vocsr.lvl5 i:nth-child(-n+5), .vocsr.lvl6 i { background: var(--lc); }
 .vocsr.lvl6 i { background: #1a9b46; }
+/* Regenbogen-Fortschritt pro Wort: füllt sich mit dem CI-Verlauf, je fester das Wort sitzt */
+.vocmeter { position: relative; display: inline-block; width: 60px; height: 6px; border-radius: 4px; background: var(--surface-2); overflow: hidden; margin-top: 6px; }
+.vocmeter .rb { position: absolute; inset: 0; border-radius: 4px; background: linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff); }
 #approot[data-accent="mono"] .vocstart { background: var(--text); }
 /* Highlights = nur Regenbogen-RAND auf den Haupt-Aktionen (ruhiger Body) */
 .ch-go, .gsec.gsec-primary, .vocstart:not(.vocdue) {
@@ -2900,7 +2903,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-75"></script>
+<script defer src="/app.js?v=c-sand-76"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->

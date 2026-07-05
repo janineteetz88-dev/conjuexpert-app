@@ -11241,9 +11241,12 @@ function VocabView({
   }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), /*#__PURE__*/React.createElement("span", {
     className: "voctrans"
   }, it.trans), it.term && /*#__PURE__*/React.createElement("span", {
-    className: "vocsr lvl" + Math.min(srInfo(it.term).lvl, 6),
+    className: "vocmeter",
     title: tr("vocab_strength")
-  }, /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null))), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "rb",
+    style: { clipPath: "inset(0 " + (100 - (Math.min(srInfo(it.term).lvl, 6) <= 0 ? 10 : Math.round(Math.min(srInfo(it.term).lvl, 6) / 6 * 100))) + "% 0 0)" }
+  }))), /*#__PURE__*/React.createElement("span", {
     className: "voccatchip"
   }, it.cat), /*#__PURE__*/React.createElement("button", {
     className: "vocx",
