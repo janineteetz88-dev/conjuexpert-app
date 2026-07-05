@@ -134,13 +134,19 @@
   });
 
   const KOFSCHIP = ["t", "k", "f", "s", "ch", "p"];
+  // Verbs with an unstressed prefix don't take "ge-" in the past participle
+  // (vertellen -> verteld, geloven -> geloofd, verhuizen -> verhuisd — not geverteld/gegeloofd/geverhuisd).
+  const NL_UNSTRESSED_PREFIXES = ["ge", "be", "ver", "ont", "her"];
+  function hasUnstressedPrefix(verb) {
+    return NL_UNSTRESSED_PREFIXES.some((p) => verb.startsWith(p) && verb.length > p.length + 2);
+  }
   function clean(v) { return (v || "").trim().toLowerCase(); }
 
   // Separable prefixes (scheidbare werkwoorden): conjugate the base, then move the prefix to the end.
   const NL_SEP = ["aan","af","bij","in","mee","na","om","onder","op","over","toe","uit","voor","weg","terug","door","samen","neer","tegen","vast","los","klaar","thuis","open","dicht","achteruit","vooruit","binnen","buiten","mis"];
   const NL_SEIN_BASE = ["staan","komen","gaan","lopen","vallen","stijgen","springen","rijden","vliegen","groeien"];
   // Not separable, even though they start with a string that's also a NL_SEP prefix (e.g. "mis" in "missen").
-  const NL_NOT_SEPARABLE = ["missen"];
+  const NL_NOT_SEPARABLE = ["missen", "openen"];
   function nlSplit(verb) {
     if (NL_NOT_SEPARABLE.includes(verb)) return null;
     for (const p of NL_SEP) {
@@ -184,11 +190,16 @@
     return tenses;
   }
 
+  // Open-syllable vowel lengthening (praten -> praat) assumes the matched consonant-vowel-consonant
+  // tail is the stressed syllable. That's wrong for verbs whose final syllable is unstressed
+  // (openen -> stem "open", not "opeen"; herinneren -> "herinner", not "herinneer") — the simple
+  // regex below can't detect stress, so those known false positives are excluded explicitly.
+  const NL_NO_VOWEL_LENGTHENING = ["openen", "herinneren"];
   function stemOf(verb) {
     let stem = verb.endsWith("en") ? verb.slice(0, -2) : verb.replace(/n$/, "");
     if (/([bcdfghklmnprst])\1$/.test(stem)) {
       stem = stem.slice(0, -1); // double consonant => short vowel, do NOT lengthen
-    } else if (/[^aeiou][aeiou][^aeiou]$/.test(stem)) {
+    } else if (!NL_NO_VOWEL_LENGTHENING.includes(verb) && /[^aeiou][aeiou][^aeiou]$/.test(stem)) {
       const v = stem[stem.length - 2]; stem = stem.slice(0, -1) + v + stem.slice(-1);
     }
     // Final-obstruent devoicing (v/z -> f/s) is a spelling convention for the infinitive
@@ -207,7 +218,8 @@
     const pastPlur = stem + t + "en";
     const stT = stem.endsWith("t") ? stem : stem + "t";
     // Don't double the final consonant if the stem already ends in the suffix letter (zet+t -> zet, not zett).
-    const participle = stem.endsWith(t) ? "ge" + stem : "ge" + stem + t;
+    const gePrefix = hasUnstressedPrefix(verb) ? "" : "ge";
+    const participle = stem.endsWith(t) ? gePrefix + stem : gePrefix + stem + t;
     return {
       present: [stem, stT, stT, verb, verb, verb],
       past: [pastSing, pastSing, pastSing, pastPlur, pastPlur, pastPlur],

@@ -108,7 +108,9 @@
     fuir: { present: ["fuis","fuis","fuit","fuyons","fuyez","fuient"], futStem: "fuir", pp: "fui", aux: "avoir", pprStem: "fuy" },
     conclure: { present: ["conclus","conclus","conclut","concluons","concluez","concluent"], futStem: "conclur", pp: "conclu", aux: "avoir" },
     accueillir: { present: ["accueille","accueilles","accueille","accueillons","accueillez","accueillent"], futStem: "accueiller", pp: "accueilli", aux: "avoir", pprStem: "accueill", erType: true },
-    cueillir: { present: ["cueille","cueilles","cueille","cueillons","cueillez","cueillent"], futStem: "cueiller", pp: "cueilli", aux: "avoir", pprStem: "cueill", erType: true }
+    cueillir: { present: ["cueille","cueilles","cueille","cueillons","cueillez","cueillent"], futStem: "cueiller", pp: "cueilli", aux: "avoir", pprStem: "cueill", erType: true },
+    // Impersonal verb: only exists in the "il / elle" person. onlyIndices masks every other pronoun to "—".
+    falloir: { present: ["faut","faut","faut","faut","faut","faut"], imparfait: ["fallait","fallait","fallait","fallait","fallait","fallait"], futStem: "faudr", pp: "fallu", aux: "avoir", subj: ["faille","faille","faille","faille","faille","faille"], imp: ["—","—","—","—","—","—"], ppr: "—", onlyIndices: [2] }
   });
 
   function clean(v) { v = (v || "").trim().toLowerCase(); if (v.startsWith("se ")) v = v.slice(3); if (v.startsWith("s'")) v = v.slice(2); return v; }
@@ -169,7 +171,7 @@
     const ppr = data.ppr || (impStem + "ant");
     let imp = data.imp;
     if (!imp) { let tu = present[1]; if (data.erType) tu = tu.replace(/s$/, ""); imp = ["—", tu, "—", present[3], present[4], "—"]; }
-    return [
+    const tenses = [
       { id: "present", label: "Présent", forms: present },
       { id: "past", label: "Imparfait", forms: imparfait },
       { id: "perfect", label: "Passé composé", forms: pc },
@@ -181,10 +183,16 @@
       { id: "imperative", label: "Impératif", forms: imp },
       { id: "gerund", label: "Participe présent", forms: PRON.map(() => ppr) }
     ];
+    // Impersonal verbs (e.g. falloir) only conjugate for "il / elle" — blank out every other pronoun.
+    if (data.onlyIndices) {
+      const allowed = new Set(data.onlyIndices);
+      tenses.forEach((t) => { t.forms = t.forms.map((f, i) => allowed.has(i) ? f : "—"); });
+    }
+    return tenses;
   }
 
   // Otherwise-regular verbs of movement/state that take être (not avoir) in compound tenses.
-  const FR_ETRE_ONLY = ["monter", "descendre", "rester", "arriver", "entrer"];
+  const FR_ETRE_ONLY = ["monter", "descendre", "rester", "arriver", "entrer", "rentrer", "tomber"];
 
   function conjugate(input) {
     const verb = clean(input);

@@ -195,7 +195,10 @@
     const { data, isIrr } = conjugateBase(base);
     // movement/change separable verbs take "sein"; otherwise inherit base aux
     const SEIN_BASES = ["stehen","kommen","gehen","fahren","reisen","fallen","laufen","fliegen","steigen","ziehen","springen","wachsen","treten","schwimmen"];
-    const auxOverride = (SEIN_BASES.indexOf(base) >= 0 && ["auf","an","ab","ein","aus","mit","zurück","vor","um","weg","los","her","hin","empor","hoch","weiter","heim"].indexOf(prefix) >= 0) ? "sein" : data.aux;
+    // Individual separable verbs whose aux differs from what the base-verb heuristic above would give
+    // (e.g. "einschlafen" takes sein even though "schlafen" itself, and "ausschlafen", take haben).
+    const SEP_AUX_OVERRIDE = { einschlafen: "sein" };
+    const auxOverride = SEP_AUX_OVERRIDE[verb] || ((SEIN_BASES.indexOf(base) >= 0 && ["auf","an","ab","ein","aus","mit","zurück","vor","um","weg","los","her","hin","empor","hoch","weiter","heim"].indexOf(prefix) >= 0) ? "sein" : data.aux);
     const suffix = (arr) => arr.map((f) => f === "—" ? "—" : `${f} … ${prefix}`); // finite verb + prefix at clause end
     const present = suffix(data.present);
     const praeteritum = suffix(data.praeteritum);
@@ -417,7 +420,8 @@
     light: { past: "lit", pp: "lit" },
     sink: { past: "sank", pp: "sunk" },
     sweep: { past: "swept", pp: "swept" },
-    feed: { past: "fed", pp: "fed" }
+    feed: { past: "fed", pp: "fed" },
+    ring: { past: "rang", pp: "rung" }
   };
 
   function clean(v) { v = (v || "").trim().toLowerCase(); if (v.startsWith("to ")) v = v.slice(3); return v; }
@@ -793,7 +797,10 @@
     andar: { preterite: ["anduve","anduviste","anduvo","anduvimos","anduvisteis","anduvieron"] },
     caber: { present: ["quepo","cabes","cabe","cabemos","cabéis","caben"], preterite: ["cupe","cupiste","cupo","cupimos","cupisteis","cupieron"], subjunctive: ["quepa","quepas","quepa","quepamos","quepáis","quepan"], future: ["cabré","cabrás","cabrá","cabremos","cabréis","cabrán"], conditional: ["cabría","cabrías","cabría","cabríamos","cabríais","cabrían"], imperative: ["—","cabe","quepa","quepamos","cabed","quepan"] },
     valer: { present: ["valgo","vales","vale","valemos","valéis","valen"], subjunctive: ["valga","valgas","valga","valgamos","valgáis","valgan"], future: ["valdré","valdrás","valdrá","valdremos","valdréis","valdrán"], conditional: ["valdría","valdrías","valdría","valdríamos","valdríais","valdrían"], imperative: ["—","vale","valga","valgamos","valed","valgan"] },
-    reír: { present: ["río","ríes","ríe","reímos","reís","ríen"], preterite: ["reí","reíste","rió","reímos","reísteis","rieron"], subjunctive: ["ría","rías","ría","riamos","riáis","rían"], imperative: ["—","ríe","ría","riamos","reíd","rían"], participle: "reído", gerund: "riendo" }
+    reír: { present: ["río","ríes","ríe","reímos","reís","ríen"], preterite: ["reí","reíste","rió","reímos","reísteis","rieron"], subjunctive: ["ría","rías","ría","riamos","riáis","rían"], imperative: ["—","ríe","ría","riamos","reíd","rían"], participle: "reído", gerund: "riendo" },
+    vestir: { present: ["visto","vistes","viste","vestimos","vestís","visten"], preterite: ["vestí","vestiste","vistió","vestimos","vestisteis","vistieron"], subjunctive: ["vista","vistas","vista","vistamos","vistáis","vistan"], imperative: ["—","viste","vista","vistamos","vestid","vistan"], gerund: "vistiendo" },
+    medir: { present: ["mido","mides","mide","medimos","medís","miden"], preterite: ["medí","mediste","midió","medimos","medisteis","midieron"], subjunctive: ["mida","midas","mida","midamos","midáis","midan"], imperative: ["—","mide","mida","midamos","medid","midan"], gerund: "midiendo" },
+    aparecer: { present: ["aparezco","apareces","aparece","aparecemos","aparecéis","aparecen"], subjunctive: ["aparezca","aparezcas","aparezca","aparezcamos","aparezcáis","aparezcan"], imperative: ["—","aparece","aparezca","aparezcamos","apareced","aparezcan"] }
   };
   // accent alias
   IRR["oír"] = IRR.oir;
@@ -1038,12 +1045,21 @@
   });
 
   const KOFSCHIP = ["t", "k", "f", "s", "ch", "p"];
+  // Verbs with an unstressed prefix don't take "ge-" in the past participle
+  // (vertellen -> verteld, geloven -> geloofd, verhuizen -> verhuisd — not geverteld/gegeloofd/geverhuisd).
+  const NL_UNSTRESSED_PREFIXES = ["ge", "be", "ver", "ont", "her"];
+  function hasUnstressedPrefix(verb) {
+    return NL_UNSTRESSED_PREFIXES.some((p) => verb.startsWith(p) && verb.length > p.length + 2);
+  }
   function clean(v) { return (v || "").trim().toLowerCase(); }
 
   // Separable prefixes (scheidbare werkwoorden): conjugate the base, then move the prefix to the end.
   const NL_SEP = ["aan","af","bij","in","mee","na","om","onder","op","over","toe","uit","voor","weg","terug","door","samen","neer","tegen","vast","los","klaar","thuis","open","dicht","achteruit","vooruit","binnen","buiten","mis"];
   const NL_SEIN_BASE = ["staan","komen","gaan","lopen","vallen","stijgen","springen","rijden","vliegen","groeien"];
+  // Not separable, even though they start with a string that's also a NL_SEP prefix (e.g. "mis" in "missen").
+  const NL_NOT_SEPARABLE = ["missen", "openen"];
   function nlSplit(verb) {
+    if (NL_NOT_SEPARABLE.includes(verb)) return null;
     for (const p of NL_SEP) {
       if (verb.length > p.length + 2 && verb.startsWith(p)) {
         const base = verb.slice(p.length);
@@ -1085,31 +1101,42 @@
     return tenses;
   }
 
+  // Open-syllable vowel lengthening (praten -> praat) assumes the matched consonant-vowel-consonant
+  // tail is the stressed syllable. That's wrong for verbs whose final syllable is unstressed
+  // (openen -> stem "open", not "opeen"; herinneren -> "herinner", not "herinneer") — the simple
+  // regex below can't detect stress, so those known false positives are excluded explicitly.
+  const NL_NO_VOWEL_LENGTHENING = ["openen", "herinneren"];
   function stemOf(verb) {
     let stem = verb.endsWith("en") ? verb.slice(0, -2) : verb.replace(/n$/, "");
     if (/([bcdfghklmnprst])\1$/.test(stem)) {
       stem = stem.slice(0, -1); // double consonant => short vowel, do NOT lengthen
-    } else if (/[^aeiou][aeiou][^aeiou]$/.test(stem)) {
+    } else if (!NL_NO_VOWEL_LENGTHENING.includes(verb) && /[^aeiou][aeiou][^aeiou]$/.test(stem)) {
       const v = stem[stem.length - 2]; stem = stem.slice(0, -1) + v + stem.slice(-1);
     }
+    // Final-obstruent devoicing (v/z -> f/s) is a spelling convention for the infinitive
+    // stem, but the underlying consonant is still voiced — needed for the 't kofschip check below.
+    const devoiced = /[vz]$/.test(stem);
     stem = stem.replace(/v$/, "f").replace(/z$/, "s");
-    return stem;
+    return { stem, devoiced };
   }
 
   function regularData(verb) {
-    const stem = stemOf(verb);
+    const { stem, devoiced } = stemOf(verb);
     const lastSound = /ch$/.test(stem) ? "ch" : stem.slice(-1);
-    const voiceless = KOFSCHIP.includes(lastSound);
+    const voiceless = !devoiced && KOFSCHIP.includes(lastSound);
     const t = voiceless ? "t" : "d";
     const pastSing = stem + t + "e";
     const pastPlur = stem + t + "en";
     const stT = stem.endsWith("t") ? stem : stem + "t";
+    // Don't double the final consonant if the stem already ends in the suffix letter (zet+t -> zet, not zett).
+    const gePrefix = hasUnstressedPrefix(verb) ? "" : "ge";
+    const participle = stem.endsWith(t) ? gePrefix + stem : gePrefix + stem + t;
     return {
       present: [stem, stT, stT, verb, verb, verb],
       past: [pastSing, pastSing, pastSing, pastPlur, pastPlur, pastPlur],
       subjunctive: [stem + "e", stem + "e", stem + "e", verb, verb, verb],
       imperative: ["—", stem, stem, "laten we " + verb, stT, stT + " u"],
-      participle: "ge" + stem + t,
+      participle,
       aux: "hebben"
     };
   }
@@ -1291,7 +1318,9 @@
     fuir: { present: ["fuis","fuis","fuit","fuyons","fuyez","fuient"], futStem: "fuir", pp: "fui", aux: "avoir", pprStem: "fuy" },
     conclure: { present: ["conclus","conclus","conclut","concluons","concluez","concluent"], futStem: "conclur", pp: "conclu", aux: "avoir" },
     accueillir: { present: ["accueille","accueilles","accueille","accueillons","accueillez","accueillent"], futStem: "accueiller", pp: "accueilli", aux: "avoir", pprStem: "accueill", erType: true },
-    cueillir: { present: ["cueille","cueilles","cueille","cueillons","cueillez","cueillent"], futStem: "cueiller", pp: "cueilli", aux: "avoir", pprStem: "cueill", erType: true }
+    cueillir: { present: ["cueille","cueilles","cueille","cueillons","cueillez","cueillent"], futStem: "cueiller", pp: "cueilli", aux: "avoir", pprStem: "cueill", erType: true },
+    // Impersonal verb: only exists in the "il / elle" person. onlyIndices masks every other pronoun to "—".
+    falloir: { present: ["faut","faut","faut","faut","faut","faut"], imparfait: ["fallait","fallait","fallait","fallait","fallait","fallait"], futStem: "faudr", pp: "fallu", aux: "avoir", subj: ["faille","faille","faille","faille","faille","faille"], imp: ["—","—","—","—","—","—"], ppr: "—", onlyIndices: [2] }
   });
 
   function clean(v) { v = (v || "").trim().toLowerCase(); if (v.startsWith("se ")) v = v.slice(3); if (v.startsWith("s'")) v = v.slice(2); return v; }
@@ -1352,7 +1381,7 @@
     const ppr = data.ppr || (impStem + "ant");
     let imp = data.imp;
     if (!imp) { let tu = present[1]; if (data.erType) tu = tu.replace(/s$/, ""); imp = ["—", tu, "—", present[3], present[4], "—"]; }
-    return [
+    const tenses = [
       { id: "present", label: "Présent", forms: present },
       { id: "past", label: "Imparfait", forms: imparfait },
       { id: "perfect", label: "Passé composé", forms: pc },
@@ -1364,7 +1393,16 @@
       { id: "imperative", label: "Impératif", forms: imp },
       { id: "gerund", label: "Participe présent", forms: PRON.map(() => ppr), nonFinite: true }
     ];
+    // Impersonal verbs (e.g. falloir) only conjugate for "il / elle" — blank out every other pronoun.
+    if (data.onlyIndices) {
+      const allowed = new Set(data.onlyIndices);
+      tenses.forEach((t) => { t.forms = t.forms.map((f, i) => allowed.has(i) ? f : "—"); });
+    }
+    return tenses;
   }
+
+  // Otherwise-regular verbs of movement/state that take être (not avoir) in compound tenses.
+  const FR_ETRE_ONLY = ["monter", "descendre", "rester", "arriver", "entrer", "rentrer", "tomber"];
 
   function conjugate(input) {
     const verb = clean(input);
@@ -1374,6 +1412,7 @@
     const irr = IRR[verb];
     let data = reg, isIrr = false;
     if (irr) { isIrr = true; data = Object.assign({}, irr); }
+    else if (FR_ETRE_ONLY.includes(verb)) { isIrr = true; data = Object.assign({}, reg, { aux: "être" }); }
     const tenses = build(verb, data);
     if (isIrr) { const regT = build(verb, reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
     return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
