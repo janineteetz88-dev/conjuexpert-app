@@ -1543,6 +1543,18 @@ body {
   color: var(--text) !important;
 }
 .vocsuggest .txtico { color: #ff7a18; }
+/* „Ganze Liste einfügen" — neutraler Knopf + Fenster */
+.vocimport { background: var(--surface) !important; border: 1.5px solid color-mix(in srgb, var(--text) 26%, var(--border)) !important; color: var(--text) !important; }
+.vocimport .txtico { color: var(--muted); }
+.vimp-bg { position: fixed; inset: 0; z-index: 600; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade .18s ease; }
+.vimp-card { background: var(--surface); border-radius: 22px; width: min(420px,100%); box-shadow: 0 24px 60px rgba(0,0,0,.35); padding: 20px 18px 18px; animation: fade .2s ease; }
+.vimp-h { font-weight: 800; font-size: 18px; color: var(--text); margin-bottom: 4px; }
+.vimp-sub { color: var(--muted); font-size: 13px; line-height: 1.45; margin-bottom: 13px; }
+.vimp-ta { width: 100%; height: 180px; background: var(--surface-2); border: 1.5px solid var(--text); border-radius: 14px; padding: 12px; font-size: 14px; line-height: 1.6; color: var(--text); font-family: var(--font-mono, ui-monospace, monospace); resize: vertical; box-sizing: border-box; }
+.vimp-into { margin: 12px 0; font-size: 13.5px; font-weight: 700; color: var(--text); }
+.vimp-into b { color: var(--lang-color, #ff9f0a); }
+.vimp-cta { width: 100%; background: var(--text); color: var(--surface); border: none; border-radius: 14px; padding: 14px; font-weight: 800; font-size: 15px; font-family: var(--font-display); cursor: pointer; }
+.vimp-cta:disabled { opacity: .5; cursor: default; }
 .voclist { display: flex; flex-direction: column; gap: 8px; }
 .vocitem { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lc); border-radius: 12px; padding: 11px 13px; box-shadow: var(--shadow-sm); }
 .vocitem-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
@@ -2903,7 +2915,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-76"></script>
+<script defer src="/app.js?v=c-sand-77"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
