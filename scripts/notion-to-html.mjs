@@ -465,7 +465,7 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
 </header>
 
 <main id="top">
-  <article style="position:relative">
+  <article style="position:relative;overflow:hidden">
     <div class="art-glow"></div>
 
     <div class="artwrap">
