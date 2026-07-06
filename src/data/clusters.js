@@ -208,6 +208,7 @@ export const clusters = [
     hub: null,
     spokes: [
       { slug: "/blog/trennbare-verben-deutsch", title: "Trennbare Verben Deutsch: das Trenn-System", live: true },
+      { slug: "/blog/perfekt-haben-oder-sein", title: "Perfekt mit haben oder sein? Die Regel, die wirklich hilft", live: true },
     ],
   },
   {
@@ -256,6 +257,16 @@ export const clusters = [
       live: true,
     },
     spokes: [
+    ],
+  },
+  {
+    id: "franzsisch-verben-konjugieren",
+    lang: "de",
+    label: "Methodik",
+    color: "#34c759",
+    hub: null,
+    spokes: [
+      { slug: "/blog/franzoesische-verbgruppen", title: "Die drei französischen Verbgruppen: -er, -ir, -re konjugieren", live: true },
     ],
   },
 ];
