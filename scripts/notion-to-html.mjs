@@ -101,21 +101,28 @@ function autoInsertCtAs(html, slug) {
   });
 }
 
-/* ─── TL;DR → Kurz gesagt Normalisierung (nur Callout-Label) ────────────── */
+/* ─── Kurz-Box-Label auf den Gold-Standard normalisieren (nur Callout) ───── */
 
-// Ersetzt das Label „TL;DR" (inkl. Varianten mit Doppelpunkt / Gedankenstrich)
-// am Anfang des gerenderten Callout-Textes durch „Kurz gesagt".
-// Wirkt NUR auf Callout-Blöcke (wird ausschließlich dort aufgerufen).
+// Der Standard verlangt exakt „Das Wichtigste in Kürze" — verboten sind „TL;DR"
+// UND das frühere Ausweich-Label „Kurz gesagt". Diese Funktion zieht beide am
+// Anfang des gerenderten Callout-Textes auf das Standard-Label. Wirkt NUR auf
+// Callout-Blöcke (wird ausschließlich dort aufgerufen).
 export function normalizeTldrLabel(html) {
   return html
-    // Bold: <strong>TL;DR[separator]</strong> → <strong>Kurz gesagt[separator]</strong>
+    // Bold: <strong>TL;DR[sep]</strong> → <strong>Das Wichtigste in Kürze[sep]</strong>
     // Capture die Leerzeichen um den Separator mit, damit sie erhalten bleiben.
     .replace(
       /^(<(?:strong|b)>)TL;?DR(\s*[:–—-]\s*)?(<\/(?:strong|b)>)/i,
-      (_, open, sep, close) => `${open}Kurz gesagt${sep || ""}${close}`
+      (_, open, sep, close) => `${open}Das Wichtigste in Kürze${sep || ""}${close}`
     )
-    // Plain: TL;DR[: | – | — | -] am Anfang
-    .replace(/^TL;?DR(\s*[:–—-]\s*)/i, "Kurz gesagt$1");
+    // Bold: altes/abweichendes „Kurz gesagt …"-Label komplett auf den Standard ziehen
+    // (auch Varianten wie „Kurz gesagt – das Wichtigste in drei Punkten:").
+    .replace(
+      /^(<(?:strong|b)>)Kurz gesagt[^<]*(<\/(?:strong|b)>)/i,
+      (_, open, close) => `${open}Das Wichtigste in Kürze:${close}`
+    )
+    // Plain: TL;DR / Kurz gesagt [: | – | — | -] am Anfang
+    .replace(/^(?:TL;?DR|Kurz gesagt)(\s*[:–—-]\s*)/i, "Das Wichtigste in Kürze$1");
 }
 
 function rtToHtml(richText) {
