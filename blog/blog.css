@@ -95,7 +95,7 @@ section.block{padding:80px 0;scroll-margin-top:84px}
 .dotsep{width:4px;height:4px;border-radius:50%;background:var(--border);flex-shrink:0}
 
 /* ===== blog hero ===== */
-.bloghero{position:relative;padding:70px 0 26px}
+.bloghero{position:relative;padding:70px 0 26px;overflow:hidden}
 .bloghero::before{content:"";position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:1100px;height:520px;background:var(--vivid);filter:blur(120px);opacity:.14;z-index:-1;border-radius:50%}
 .bloghero h1{font-family:var(--headline);font-weight:700;font-size:clamp(32px,4.4vw,50px);line-height:1.02;letter-spacing:-.035em;margin:18px 0 14px;text-wrap:balance}
 .grad-word{background:var(--vivid);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hue 6s linear infinite}
