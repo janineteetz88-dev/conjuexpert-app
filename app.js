@@ -16323,11 +16323,18 @@ function App() {
     setTrialExpiry(exp);
     setShowOffer(false);
   }
+  const savedDeepLinkRef = useRef(false);
   function handleTabSwitch(id) {
     // Merken (saved) stays Premium-only.
     if (id === "saved" && !hasPaidAccess()) {
       setShowPaywall(true);
       return;
+    }
+    // „Gemerkt" öffnet immer die Bibliotheks-Übersicht — außer ein Deep-Link
+    // (z. B. direkt nach dem Challenge-Anlegen) will gezielt einen Unterbereich zeigen.
+    if (id === "saved") {
+      if (savedDeepLinkRef.current) savedDeepLinkRef.current = false;
+      else persist("kunju-saved-sub", "home");
     }
     // Quiz: anonymous → create-account prompt; free account → 20/day cap.
     if (id === "quiz") {
@@ -17349,6 +17356,7 @@ function App() {
     },
     onCurate: () => {
       setShowGoalSuccess(false);
+      savedDeepLinkRef.current = true;
       persist("kunju-saved-sub", "challenge");
       persist("kunju-challenge-pending-edit", true);
       handleTabSwitch("saved");
@@ -17387,6 +17395,7 @@ function App() {
     onSwitchLang: (l) => switchLang(l),
     onChallenge: () => {
       setShowStreak(false);
+      savedDeepLinkRef.current = true;
       persist("kunju-saved-sub", "challenge");
       handleTabSwitch("saved");
     }
@@ -17412,6 +17421,7 @@ function App() {
       // Übungsverben-Auswahl springen – der Fokus soll zuerst darauf liegen.
       if (saved && !recall("kunju-challenge-first-done", false)) {
         persist("kunju-challenge-first-done", true);
+        savedDeepLinkRef.current = true;
         persist("kunju-saved-sub", "challenge");
         persist("kunju-challenge-pending-edit", true);
         handleTabSwitch("saved");
