@@ -10443,6 +10443,14 @@ function VocabView({
   const [hiddenCats, setHiddenCats] = useState(() => recall("kunju-vocab-cathidden", []));
   const [addingCat, setAddingCat] = useState(false);
   const [newCatVal, setNewCatVal] = useState("");
+  // Über „＋ Liste" aus der Übersicht direkt das Neue-Liste-Fenster öffnen.
+  useEffect(() => {
+    if (recall("kunju-vocab-open-newlist", false)) {
+      persist("kunju-vocab-open-newlist", false);
+      setNewCatVal("");
+      setAddingCat(true);
+    }
+  }, []);
   const [showImport, setShowImport] = useState(false);
   const [impText, setImpText] = useState("");
   const [impChecking, setImpChecking] = useState(false);
@@ -11707,7 +11715,7 @@ function SavedTab({
       onOpenList: openList,
       onVerbs: () => pick("verbs"),
       onChallenge: () => pick("challenge"),
-      onNewList: () => openList("all"),
+      onNewList: () => { persist("kunju-vocab-open-newlist", true); openList("all"); },
       onNewChallenge: onOpenGoal
     });
   }
@@ -16328,6 +16336,13 @@ function App() {
     setShowOffer(false);
   }
   const savedDeepLinkRef = useRef(false);
+  // Frisches Laden startet „Gemerkt" immer auf der Bibliotheks-Übersicht — nicht
+  // im zuletzt geöffneten Detail (z. B. Challenge-Editor), das sonst klebenbleibt.
+  const didResetSavedRef = useRef(false);
+  if (!didResetSavedRef.current) {
+    didResetSavedRef.current = true;
+    try { if (recall("kunju-saved-sub", "home") !== "home") persist("kunju-saved-sub", "home"); } catch (e) {}
+  }
   function handleTabSwitch(id) {
     // Merken (saved) stays Premium-only.
     if (id === "saved" && !hasPaidAccess()) {
