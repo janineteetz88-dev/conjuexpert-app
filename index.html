@@ -1588,6 +1588,9 @@ body {
 .imprev-term small { font-weight: 600; color: var(--muted); font-size: 13px; }
 .imprev-note { display: block; font-size: 11.5px; color: var(--muted); margin-top: 3px; }
 .voclist { display: flex; flex-direction: column; gap: 8px; }
+/* Fokussierte Einzelliste (aus der Gemerkt-Übersicht geöffnet) — Titel statt Chips */
+.voc-title { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -.01em; color: var(--text); margin: 0 2px 12px; text-wrap: balance; }
+.voc-title small { color: var(--muted); font-weight: 600; font-size: 13.5px; }
 .vocitem { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lc); border-radius: 12px; padding: 11px 13px; box-shadow: var(--shadow-sm); }
 .vocitem-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .vocterm { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--text); display: flex; align-items: center; gap: 8px; }
@@ -2960,7 +2963,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-85"></script>
+<script defer src="/app.js?v=c-sand-86"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->

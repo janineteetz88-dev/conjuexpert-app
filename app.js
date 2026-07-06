@@ -10420,7 +10420,8 @@ function isGeneralCat(c) {
 }
 const SR_DAYS = [1, 3, 7, 21, 60, 60];
 function VocabView({
-  lang
+  lang,
+  focus
 }) {
   const [items, setItems] = useState(() => getVocab());
   // Kommt beim Login frischer Wortschatz aus dem Konto, sofort anzeigen.
@@ -11173,7 +11174,9 @@ function VocabView({
     style: {
       "--lc": "var(--ink)"
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, focus && /*#__PURE__*/React.createElement("div", {
+    className: "voc-title"
+  }, cat === "all" ? tr("vocab_all") : isGeneralCat(cat) ? tr("gm_words") : cat, /*#__PURE__*/React.createElement("small", null, " · ", shown.length)), /*#__PURE__*/React.createElement("div", {
     className: "vocadd",
     style: {
       "--lc": "var(--ink)"
@@ -11204,7 +11207,7 @@ function VocabView({
     className: "vocaddbtn",
     onClick: addEntry,
     disabled: busy || !text.trim()
-  }, "+")), /*#__PURE__*/React.createElement("div", {
+  }, "+")), !focus && /*#__PURE__*/React.createElement("div", {
     className: "voccats" + (catsOpen ? " open" : "")
   }, /*#__PURE__*/React.createElement("button", {
     className: "voccat" + (cat === "all" ? " on" : ""),
@@ -11237,7 +11240,7 @@ function VocabView({
       fontWeight: 700,
       opacity: 0.7
     }
-  }, "×")))), /*#__PURE__*/React.createElement("div", {
+  }, "×")))), !focus && /*#__PURE__*/React.createElement("div", {
     className: "voccats-actions"
   }, allCats.length > 5 ? /*#__PURE__*/React.createElement("button", {
     className: "voccat-toggle",
@@ -11715,7 +11718,8 @@ function SavedTab({
     pickVerb: pickVerb,
     onActivity: onActivity
   }) : sub === "vocab" ? h(VocabView, {
-    lang: lang
+    lang: lang,
+    focus: true
   }) : h(ChallengeView, {
     lang: lang,
     canEdit: challengeEditable !== false,
