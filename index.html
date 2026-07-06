@@ -1575,6 +1575,18 @@ body {
 .cross-cat.on { border-color: var(--lang-color, #ff9f0a); background: color-mix(in srgb, var(--lang-color, #ff9f0a) 8%, var(--surface)); }
 .cross-cb { width: 19px; height: 19px; border-radius: 6px; border: 1.5px solid var(--line, var(--border)); flex: none; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #fff; }
 .cross-cat.on .cross-cb { background: var(--lang-color, #ff9f0a); border-color: var(--lang-color, #ff9f0a); }
+/* KI-Prüfung beim Import — Review-Zeilen */
+.imprev-list { display: flex; flex-direction: column; gap: 7px; max-height: 46vh; overflow-y: auto; margin-bottom: 4px; }
+.imprev-row { display: flex; align-items: flex-start; gap: 11px; width: 100%; text-align: left; border: 1.5px solid var(--border); background: var(--surface); border-radius: 12px; padding: 10px 12px; font-family: var(--font-display); cursor: default; }
+.imprev-row.flag { cursor: pointer; }
+.imprev-row.flag.use { border-color: color-mix(in srgb, var(--lang-color, #ff9f0a) 40%, var(--border)); background: color-mix(in srgb, var(--lang-color, #ff9f0a) 7%, var(--surface)); }
+.imprev-ck { width: 20px; height: 20px; border-radius: 6px; flex: none; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: var(--muted); background: var(--surface-2); margin-top: 1px; }
+.imprev-row.use .imprev-ck { background: var(--lang-color, #ff9f0a); color: #fff; }
+.imprev-row:not(.flag) .imprev-ck { background: transparent; color: var(--text); }
+.imprev-mid { flex: 1; min-width: 0; }
+.imprev-term { font-weight: 800; font-size: 14px; color: var(--text); }
+.imprev-term small { font-weight: 600; color: var(--muted); font-size: 13px; }
+.imprev-note { display: block; font-size: 11.5px; color: var(--muted); margin-top: 3px; }
 .voclist { display: flex; flex-direction: column; gap: 8px; }
 .vocitem { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lc); border-radius: 12px; padding: 11px 13px; box-shadow: var(--shadow-sm); }
 .vocitem-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
@@ -2948,7 +2960,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-83"></script>
+<script defer src="/app.js?v=c-sand-84"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
