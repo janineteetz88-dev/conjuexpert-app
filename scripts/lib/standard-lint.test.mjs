@@ -58,6 +58,13 @@ test("zu wenige interne Links → Warnung + fehlender Runter-Link", () => {
   assert.ok(c.includes("LINKS_NO_DOWN"));
 });
 
+test('Fließtext-„kurz gesagt" ist ok, aber Box-Label „Kurz gesagt" nicht', () => {
+  const prose = goodMd + "\nKurz gesagt: das war der Punkt.";
+  assert.equal(hardErrors(lintArticleText(prose)).filter((e) => e.code === "TLDR_LABEL").length, 0);
+  const box = goodMd.replace("**Das Wichtigste in Kürze:**", "**Kurz gesagt:**");
+  assert.ok(hardErrors(lintArticleText(box)).some((e) => e.code === "TLDR_LABEL"));
+});
+
 test('„Kennst du das?" → harter Fehler', () => {
   assert.ok(hardErrors(lintArticleText("Kennst du das? " + goodMd)).some((e) => e.code === "BANNED_INTRO"));
 });

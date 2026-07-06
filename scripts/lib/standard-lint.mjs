@@ -53,8 +53,12 @@ export function lintSignals(sig = {}) {
     err("EDITORIAL_NOTE", "Interner Redaktionshinweis im Text (…wartet auf Freigabe / Status: Entwurf …)");
 
   // ── HART: verbotenes Box-Label / verbotener Einstieg ───────────────────────
-  if (has(/TL;DR/i, text) || has(/(^|\n)\s*>?\s*\*{0,2}\s*Kurz gesagt\s*[:*]/i, text))
-    err("TLDR_LABEL", 'Verbotenes Box-Label „TL;DR"/„Kurz gesagt" — muss „Das Wichtigste in Kürze" sein');
+  // „TL;DR" ist nie zulässig; „Kurz gesagt" nur als BOX-LABEL verboten (nicht als
+  // Fließtext-Übergang „kurz gesagt, …") — die Adapter liefern boxLabelKurzGesagt.
+  if (has(/TL;?DR/i, text))
+    err("TLDR_LABEL", 'Verbotenes „TL;DR" — die Kurz-Box muss „Das Wichtigste in Kürze" heißen');
+  if (sig.boxLabelKurzGesagt)
+    err("TLDR_LABEL", 'Box-Label „Kurz gesagt" — muss „Das Wichtigste in Kürze" sein');
   if (has(/Kennst du das\?/i, text))
     err("BANNED_INTRO", 'Verbotener Einstieg „Kennst du das?"');
 
@@ -121,8 +125,10 @@ export function lintArticleText(markdown, opts = {}) {
     else upLinks++;
   }
   const badAnchors = (md.match(/\[(hier(?: klicken)?|mehr)\]\(/gi) || []).length;
+  // Box-Label „Kurz gesagt" = fett bzw. am Callout-Anfang (nicht Fließtext).
+  const boxLabelKurzGesagt = /(?:^|\n)\s*(?:>\s*)?\*\*\s*Kurz gesagt/i.test(md);
 
-  return lintSignals({ text: md, faqCount, upLinks, downLinks, badAnchors, meta: opts.meta || null });
+  return lintSignals({ text: md, faqCount, upLinks, downLinks, badAnchors, boxLabelKurzGesagt, meta: opts.meta || null });
 }
 
 /* ─── Adapter 2: gerenderter/Live-HTML ───────────────────────────────────── */
@@ -166,7 +172,9 @@ export function lintRenderedHtml(html, opts = {}) {
     if (/^(hier|hier klicken|mehr)$/.test(anchor)) badAnchors++;
   }
 
-  return lintSignals({ text, faqCount, upLinks, downLinks, badAnchors, meta: opts.meta || null });
+  const boxLabelKurzGesagt = /<(?:strong|b)>\s*Kurz gesagt/i.test(body);
+
+  return lintSignals({ text, faqCount, upLinks, downLinks, badAnchors, boxLabelKurzGesagt, meta: opts.meta || null });
 }
 
 /* ─── Bequemlichkeit: nur harte Fehler (Gate-Entscheidung) ───────────────── */
