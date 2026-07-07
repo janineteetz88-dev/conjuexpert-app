@@ -76,7 +76,8 @@
     brechen: { du: "brichst", er: "bricht", praet: "brach", konj: "bräch", partizip: "gebrochen", aux: "haben", impDu: "brich" },
     schneiden:{ praet: "schnitt", konj: "schnitt", partizip: "geschnitten", aux: "haben" },
     greifen: { praet: "griff", konj: "griff", partizip: "gegriffen", aux: "haben" },
-    riechen: { praet: "roch", konj: "röch", partizip: "gerochen", aux: "haben" }
+    riechen: { praet: "roch", konj: "röch", partizip: "gerochen", aux: "haben" },
+    schmelzen: { du: "schmilzt", er: "schmilzt", praet: "schmolz", konj: "schmölz", partizip: "geschmolzen", aux: "sein" }
   };
 
   /* ---- C1 expansion ---- */
@@ -195,7 +196,10 @@
     const { data, isIrr } = conjugateBase(base);
     // movement/change separable verbs take "sein"; otherwise inherit base aux
     const SEIN_BASES = ["stehen","kommen","gehen","fahren","reisen","fallen","laufen","fliegen","steigen","ziehen","springen","wachsen","treten","schwimmen"];
-    const auxOverride = (SEIN_BASES.indexOf(base) >= 0 && ["auf","an","ab","ein","aus","mit","zurück","vor","um","weg","los","her","hin","empor","hoch","weiter","heim"].indexOf(prefix) >= 0) ? "sein" : data.aux;
+    // Exceptions where the separable verb takes "sein" even though its base (here: alone) takes "haben"
+    // (e.g. "einschlafen" takes sein even though "schlafen" itself, and "ausschlafen", take haben).
+    const SEP_AUX_OVERRIDE = { einschlafen: "sein", aufwachen: "sein" };
+    const auxOverride = SEP_AUX_OVERRIDE[verb] || ((SEIN_BASES.indexOf(base) >= 0 && ["auf","an","ab","ein","aus","mit","zurück","vor","um","weg","los","her","hin","empor","hoch","weiter","heim"].indexOf(prefix) >= 0) ? "sein" : data.aux);
     const suffix = (arr) => arr.map((f) => f === "—" ? "—" : `${f} … ${prefix}`); // finite verb + prefix at clause end
     const present = suffix(data.present);
     const praeteritum = suffix(data.praeteritum);
