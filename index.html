@@ -1603,8 +1603,14 @@ body {
 .lch-tpl-chip:active { transform: scale(.97); }
 .voclist { display: flex; flex-direction: column; gap: 8px; }
 /* Fokussierte Einzelliste (aus der Gemerkt-Übersicht geöffnet) — Titel statt Chips */
-.voc-title { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -.01em; color: var(--text); margin: 0 2px 12px; text-wrap: balance; }
+.voc-title { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -.01em; color: var(--text); margin: 0 2px 12px; }
+.voc-title-tx { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .voc-title small { color: var(--muted); font-weight: 600; font-size: 13.5px; }
+.voc-del { margin-left: auto; flex: none; display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-family: var(--font-display); font-weight: 700; font-size: 12.5px; cursor: pointer; }
+.voc-del:hover { color: #ff3b5c; border-color: color-mix(in srgb, #ff3b5c 40%, var(--border)); }
+.voc-del-ic { display: inline-flex; }
+.voc-del-keep { flex: 1; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 13px; padding: 12px; font-family: var(--font-display); font-weight: 800; font-size: 14px; cursor: pointer; }
+.voc-del-go { flex: 1; border: 0; background: #ff3b5c; color: #fff; border-radius: 13px; padding: 12px; font-family: var(--font-display); font-weight: 800; font-size: 14px; cursor: pointer; }
 .vocitem { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lc); border-radius: 12px; padding: 11px 13px; box-shadow: var(--shadow-sm); }
 .vocitem-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .vocterm { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--text); display: flex; align-items: center; gap: 8px; }
@@ -1666,6 +1672,12 @@ body {
 .vtword span:first-child { white-space: nowrap; }
 .vtspk { font-size: 12px; opacity: 0.45; flex: none; }
 .vtword:hover .vtspk { opacity: 0.9; color: #a557ff; }
+/* Lautsprecher am Lernwort (Ziel-Sprache); Übersetzungsspalte ohne Ton */
+.vtspkbtn { border: 0; background: transparent; padding: 3px; margin: 0; flex: none; display: inline-flex; align-items: center; color: var(--muted); opacity: 0.5; cursor: pointer; font-size: 15px; }
+.vtspkbtn:hover { opacity: 1; color: var(--lc); }
+.vtspkbtn:active { transform: scale(0.92); }
+.vtword.vtplain { cursor: default; justify-content: flex-start; }
+.vtword.vtplain:hover { background: transparent; }
 
 /* ===== Daily streak pill ===== */
 .streakpill { display: flex; align-items: center; gap: 8px; flex: none; border: 1px solid var(--border); background: var(--surface); border-radius: 999px; padding: 4px 13px 4px 10px; cursor: pointer; box-shadow: var(--shadow-sm); transition: border-color 0.18s, box-shadow 0.18s, transform 0.12s; }
@@ -2713,6 +2725,9 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .explaincard.open .explaincard-car{ transform:rotate(180deg) !important; }
   .explaincard-body{ padding:0 14px 14px !important; font-size:13px !important; line-height:1.5 !important; color:var(--muted) !important; }
   .explaincard:not(.open) .explaincard-body{ display:none !important; }
+  /* Legende auf der Gemerkt-Übersicht: klarer Abstand zur Challenge-Karte darunter */
+  .gm-legend{ margin-bottom:20px !important; }
+  .gm-legend .explaincard{ margin-top:0 !important; }
   /* Gemerkt-Legende: 3 Zeilen im ExplainCard-Body */
   .gmxpl-row{ display:flex !important; align-items:flex-start !important; gap:11px !important; padding:10px 0 !important; border-top:1px solid var(--border) !important; }
   .gmxpl-row:first-child{ border-top:0 !important; padding-top:2px !important; }
@@ -2985,7 +3000,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-91"></script>
+<script defer src="/app.js?v=c-sand-92"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
