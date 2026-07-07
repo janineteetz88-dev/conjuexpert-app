@@ -5,11 +5,13 @@
  * aus einem gemeinsamen, email-sicheren Layout (Tabellen + Inline-Styles) in
  * der echten ConjuExpert-CI. Ausgabe: emails/<lang>/<datei>.html
  *
- * Zwei getrennte Uhren im Produkt:
+ * Zwei Bausteine im Produkt:
  *   1) 24-h-Premium-Trial  → gratis testen (kein Preisbezug)
- *   2) 7-Tage-Willkommensfenster → Jahresabo 24,99 € statt 29,99 €
+ *   2) 5-€-Feedback-Code   → Jahresabo 24,99 € statt 29,99 €
+ *      (Der 5-€-Code entsteht NUR durch App-Feedback; einen Willkommensrabatt
+ *       gibt es nicht mehr.)
  *
- * Merge-Felder in den Vorlagen: {{name}}, {{days}}
+ * Merge-Feld in den Vorlagen: {{name}}
  *
  *   node emails/build-emails.mjs
  */
@@ -39,20 +41,20 @@ const PRICE = {
 
 /* ─── Gemeinsame Bausteine je Sprache ────────────────────────────────────── */
 const COMMON = {
-  de: { perYear: "/ Jahr", capNow: "Jahresabo · Willkommenspreis", capToday: "Jahresabo · nur noch heute",
-        priceSub: "Danach 29,99 €/Jahr · monatlich 2,99 € (= 35,88 €/Jahr).",
+  de: { perYear: "/ Jahr", capNow: "Jahresabo · mit 5-€-Feedback-Code",
+        priceSub: "Regulär 29,99 €/Jahr · monatlich 2,99 € (= 35,88 €/Jahr).",
         unsub: "Abmelden", privacy: "Datenschutz", terms: "AGB" },
-  en: { perYear: "/ year", capNow: "Annual plan · welcome price", capToday: "Annual plan · today only",
-        priceSub: "After that €29.99/year · monthly €2.99 (= €35.88/year).",
+  en: { perYear: "/ year", capNow: "Annual plan · with €5 feedback code",
+        priceSub: "Regular price €29.99/year · monthly €2.99 (= €35.88/year).",
         unsub: "Unsubscribe", privacy: "Privacy", terms: "Terms" },
-  es: { perYear: "/ año", capNow: "Plan anual · precio de bienvenida", capToday: "Plan anual · solo hoy",
-        priceSub: "Después 29,99 €/año · mensual 2,99 € (= 35,88 €/año).",
+  es: { perYear: "/ año", capNow: "Plan anual · con código de 5 € por tu opinión",
+        priceSub: "Precio normal 29,99 €/año · mensual 2,99 € (= 35,88 €/año).",
         unsub: "Darse de baja", privacy: "Privacidad", terms: "Términos" },
-  nl: { perYear: "/ jaar", capNow: "Jaarabonnement · welkomstprijs", capToday: "Jaarabonnement · alleen vandaag",
-        priceSub: "Daarna € 29,99/jaar · maandelijks € 2,99 (= € 35,88/jaar).",
+  nl: { perYear: "/ jaar", capNow: "Jaarabonnement · met €5-feedbackcode",
+        priceSub: "Normale prijs € 29,99/jaar · maandelijks € 2,99 (= € 35,88/jaar).",
         unsub: "Afmelden", privacy: "Privacy", terms: "Voorwaarden" },
-  fr: { perYear: "/ an", capNow: "Abonnement annuel · prix de bienvenue", capToday: "Abonnement annuel · aujourd'hui seulement",
-        priceSub: "Ensuite 29,99 €/an · mensuel 2,99 € (= 35,88 €/an).",
+  fr: { perYear: "/ an", capNow: "Abonnement annuel · avec code −5 € pour ton avis",
+        priceSub: "Prix normal 29,99 €/an · mensuel 2,99 € (= 35,88 €/an).",
         unsub: "Se désabonner", privacy: "Confidentialité", terms: "CGU" },
 };
 
@@ -88,72 +90,72 @@ const MAILS = [
   },
   {
     file: "email-2-trial-ending.html", utm: "trial-ending", accent: "#f97316", price: true, cap: "capNow", banner: false,
-    de: { subject: "Dein Gratis-Tag endet bald", pre: "Dein Gratis-Tag endet bald – so behältst du Premium günstiger.",
+    de: { subject: "Dein Gratis-Tag endet bald", pre: "Dein Gratis-Tag endet bald – mit Feedback behältst du Premium für 5 € weniger.",
       eyebrow: "Dein Gratis-Tag endet bald", h1: "Premium behalten?",
-      paras: ["Hallo {{name}}, dein kostenloser Premium-Tag läuft gleich aus. Wenn dir Quiz & Merken gefallen haben, kannst du sie dauerhaft behalten.", "Als Willkommen bekommst du das Jahresabo gerade günstiger – noch {{days}} Tage:"],
-      cta: "Premium sichern →" },
-    en: { subject: "Your free day is ending soon", pre: "Your free day is ending soon – here's how to keep Premium for less.",
+      paras: ["Hallo {{name}}, dein kostenloser Premium-Tag läuft gleich aus. Wenn dir Quiz & Merken gefallen haben, kannst du sie dauerhaft behalten.", "Gib uns kurz dein Feedback zur App – dafür bekommst du einen 5-€-Code und zahlst fürs Jahresabo nur 24,99 € statt 29,99 €."],
+      cta: "Feedback geben & 5 € sichern →" },
+    en: { subject: "Your free day is ending soon", pre: "Your free day is ending soon – give feedback and keep Premium for €5 less.",
       eyebrow: "Your free day is ending", h1: "Keep Premium?",
-      paras: ["Hi {{name}}, your free Premium day is almost over. If you enjoyed Quiz & Saved, you can keep them for good.", "As a welcome, the annual plan is cheaper right now – for {{days}} more days:"],
-      cta: "Get Premium →" },
-    es: { subject: "Tu día gratis está por terminar", pre: "Tu día gratis está por terminar: así mantienes Premium más barato.",
+      paras: ["Hi {{name}}, your free Premium day is almost over. If you enjoyed Quiz & Saved, you can keep them for good.", "Give us your quick feedback on the app – you'll get a €5 code and pay just €24.99 instead of €29.99 for the annual plan."],
+      cta: "Give feedback & save €5 →" },
+    es: { subject: "Tu día gratis está por terminar", pre: "Tu día gratis está por terminar: con tu opinión mantienes Premium por 5 € menos.",
       eyebrow: "Tu día gratis termina pronto", h1: "¿Mantienes Premium?",
-      paras: ["Hola {{name}}, tu día Premium gratis está por terminar. Si te gustaron el Quiz y Guardado, puedes mantenerlos para siempre.", "Como bienvenida, el plan anual está más barato ahora mismo – durante {{days}} días más:"],
-      cta: "Conseguir Premium →" },
-    nl: { subject: "Je gratis dag loopt bijna af", pre: "Je gratis dag loopt bijna af – zo houd je Premium goedkoper.",
+      paras: ["Hola {{name}}, tu día Premium gratis está por terminar. Si te gustaron el Quiz y Guardado, puedes mantenerlos para siempre.", "Cuéntanos brevemente tu opinión sobre la app: recibirás un código de 5 € y pagarás solo 24,99 € en vez de 29,99 € por el plan anual."],
+      cta: "Dar opinión y ahorrar 5 € →" },
+    nl: { subject: "Je gratis dag loopt bijna af", pre: "Je gratis dag loopt bijna af – met feedback houd je Premium voor € 5 minder.",
       eyebrow: "Je gratis dag loopt bijna af", h1: "Premium behouden?",
-      paras: ["Hoi {{name}}, je gratis Premium-dag loopt bijna af. Vond je Quiz & Opgeslagen fijn? Dan kun je ze blijven gebruiken.", "Als welkom is het jaarabonnement nu goedkoper – nog {{days}} dagen:"],
-      cta: "Premium nemen →" },
-    fr: { subject: "Ta journée gratuite se termine bientôt", pre: "Ta journée gratuite se termine bientôt – garde Premium à prix réduit.",
+      paras: ["Hoi {{name}}, je gratis Premium-dag loopt bijna af. Vond je Quiz & Opgeslagen fijn? Dan kun je ze blijven gebruiken.", "Geef ons kort je feedback over de app – je krijgt een code van € 5 en betaalt maar € 24,99 in plaats van € 29,99 voor het jaarabonnement."],
+      cta: "Feedback geven & € 5 besparen →" },
+    fr: { subject: "Ta journée gratuite se termine bientôt", pre: "Ta journée gratuite se termine bientôt – donne ton avis et garde Premium pour 5 € de moins.",
       eyebrow: "Ta journée gratuite se termine", h1: "Garder Premium ?",
-      paras: ["Bonjour {{name}}, ta journée Premium gratuite touche à sa fin. Si tu as aimé le Quiz et les Enregistrés, tu peux les garder pour de bon.", "En cadeau de bienvenue, l'abonnement annuel est moins cher en ce moment – encore {{days}} jours :"],
-      cta: "Obtenir Premium →" },
+      paras: ["Bonjour {{name}}, ta journée Premium gratuite touche à sa fin. Si tu as aimé le Quiz et les Enregistrés, tu peux les garder pour de bon.", "Donne-nous vite ton avis sur l'appli – tu recevras un code de 5 € et ne paieras que 24,99 € au lieu de 29,99 € pour l'abonnement annuel."],
+      cta: "Donner mon avis & économiser 5 € →" },
   },
   {
     file: "email-3-reminder.html", utm: "reminder", accent: "#ea580c", price: true, cap: "capNow", banner: false,
-    de: { subject: "Noch {{days}} Tage: 24,99 € statt 29,99 €", pre: "Noch {{days}} Tage: Jahresabo für 24,99 € statt 29,99 €.",
-      eyebrow: "Dein Willkommenspreis", h1: "24,99 € statt 29,99 €.",
-      paras: ["Hallo {{name}}, dein Willkommenspreis gilt nur noch {{days}} Tage. Danach kostet das Jahresabo regulär 29,99 €.", "Sichere dir jetzt ein ganzes Jahr Quiz, Merken & Lernziele zum besten Preis."],
-      cta: "24,99 €/Jahr sichern →" },
-    en: { subject: "{{days}} days left: €24.99 instead of €29.99", pre: "{{days}} days left: annual plan for €24.99 instead of €29.99.",
-      eyebrow: "Your welcome price", h1: "€24.99 instead of €29.99.",
-      paras: ["Hi {{name}}, your welcome price is valid for {{days}} more days. After that, the annual plan is €29.99 as usual.", "Grab a full year of Quiz, Saved & Goals at the best price now."],
-      cta: "Get €24.99/year →" },
-    es: { subject: "Quedan {{days}} días: 24,99 € en vez de 29,99 €", pre: "Quedan {{days}} días: plan anual por 24,99 € en vez de 29,99 €.",
-      eyebrow: "Tu precio de bienvenida", h1: "24,99 € en vez de 29,99 €.",
-      paras: ["Hola {{name}}, tu precio de bienvenida solo dura {{days}} días más. Después, el plan anual cuesta 29,99 € de forma habitual.", "Consigue ahora un año entero de Quiz, Guardado y Objetivos al mejor precio."],
-      cta: "Conseguir 24,99 €/año →" },
-    nl: { subject: "Nog {{days}} dagen: € 24,99 i.p.v. € 29,99", pre: "Nog {{days}} dagen: jaarabonnement voor € 24,99 i.p.v. € 29,99.",
-      eyebrow: "Je welkomstprijs", h1: "€ 24,99 i.p.v. € 29,99.",
-      paras: ["Hoi {{name}}, je welkomstprijs geldt nog maar {{days}} dagen. Daarna kost het jaarabonnement gewoon € 29,99.", "Pak nu een heel jaar Quiz, Opgeslagen & Doelen voor de beste prijs."],
-      cta: "€ 24,99/jaar nemen →" },
-    fr: { subject: "Encore {{days}} jours : 24,99 € au lieu de 29,99 €", pre: "Encore {{days}} jours : abonnement annuel à 24,99 € au lieu de 29,99 €.",
-      eyebrow: "Ton prix de bienvenue", h1: "24,99 € au lieu de 29,99 €.",
-      paras: ["Bonjour {{name}}, ton prix de bienvenue n'est valable que {{days}} jours de plus. Ensuite, l'abonnement annuel revient à 29,99 €.", "Profite maintenant d'une année entière de Quiz, Enregistrés et Objectifs au meilleur prix."],
-      cta: "Profiter à 24,99 €/an →" },
+    de: { subject: "5 € Rabatt fürs Feedback: 24,99 € statt 29,99 €", pre: "Dein Feedback zur App bringt dir 5 € Rabatt: Jahresabo für 24,99 € statt 29,99 €.",
+      eyebrow: "5 € für dein Feedback", h1: "24,99 € statt 29,99 €.",
+      paras: ["Hallo {{name}}, hast du schon Premium? Für ein kurzes Feedback zur App bekommst du einen 5-€-Code – damit kostet das Jahresabo 24,99 € statt 29,99 €.", "So sicherst du dir ein ganzes Jahr Quiz, Merken & Lernziele zum besten Preis."],
+      cta: "Feedback geben & 5 € sichern →" },
+    en: { subject: "€5 off for your feedback: €24.99 instead of €29.99", pre: "Your feedback earns you €5 off: annual plan for €24.99 instead of €29.99.",
+      eyebrow: "€5 for your feedback", h1: "€24.99 instead of €29.99.",
+      paras: ["Hi {{name}}, not on Premium yet? For a short piece of feedback on the app you'll get a €5 code – that makes the annual plan €24.99 instead of €29.99.", "That's a whole year of Quiz, Saved & Goals at the best price."],
+      cta: "Give feedback & save €5 →" },
+    es: { subject: "5 € de descuento por tu opinión: 24,99 € en vez de 29,99 €", pre: "Tu opinión te da 5 € de descuento: plan anual por 24,99 € en vez de 29,99 €.",
+      eyebrow: "5 € por tu opinión", h1: "24,99 € en vez de 29,99 €.",
+      paras: ["Hola {{name}}, ¿aún no tienes Premium? Por una breve opinión sobre la app recibes un código de 5 €: así el plan anual cuesta 24,99 € en vez de 29,99 €.", "Así consigues un año entero de Quiz, Guardado y Objetivos al mejor precio."],
+      cta: "Dar opinión y ahorrar 5 € →" },
+    nl: { subject: "€ 5 korting voor je feedback: € 24,99 i.p.v. € 29,99", pre: "Je feedback levert je € 5 korting op: jaarabonnement voor € 24,99 i.p.v. € 29,99.",
+      eyebrow: "€ 5 voor je feedback", h1: "€ 24,99 i.p.v. € 29,99.",
+      paras: ["Hoi {{name}}, nog geen Premium? Voor korte feedback over de app krijg je een code van € 5 – daarmee kost het jaarabonnement € 24,99 i.p.v. € 29,99.", "Zo pak je een heel jaar Quiz, Opgeslagen & Doelen voor de beste prijs."],
+      cta: "Feedback geven & € 5 besparen →" },
+    fr: { subject: "5 € de réduction pour ton avis : 24,99 € au lieu de 29,99 €", pre: "Ton avis te rapporte 5 € de réduction : abonnement annuel à 24,99 € au lieu de 29,99 €.",
+      eyebrow: "5 € pour ton avis", h1: "24,99 € au lieu de 29,99 €.",
+      paras: ["Bonjour {{name}}, pas encore Premium ? Pour un court avis sur l'appli, tu reçois un code de 5 € – l'abonnement annuel passe ainsi à 24,99 € au lieu de 29,99 €.", "C'est une année entière de Quiz, Enregistrés et Objectifs au meilleur prix."],
+      cta: "Donner mon avis & économiser 5 € →" },
   },
   {
-    file: "email-4-last-chance.html", utm: "last-chance", accent: "#ef4444", price: true, cap: "capToday", banner: true,
-    de: { subject: "Letzter Tag für 24,99 €", pre: "Letzter Tag: 24,99 € statt 29,99 € – danach vorbei.", bannerTxt: "⏰ Heute läuft dein Willkommenspreis aus",
-      eyebrow: "Letzter Tag", h1: "Heute endet dein Willkommenspreis.",
-      paras: ["Hallo {{name}}, das ist deine letzte Gelegenheit: Heute bekommst du das Jahresabo noch für 24,99 € statt 29,99 €.", "Ab morgen gilt wieder der reguläre Preis."],
-      cta: "Jetzt noch sichern →" },
-    en: { subject: "Last day for €24.99", pre: "Last day: €24.99 instead of €29.99 – then it's gone.", bannerTxt: "⏰ Your welcome price ends today",
-      eyebrow: "Last day", h1: "Your welcome price ends today.",
-      paras: ["Hi {{name}}, this is your last chance: today you can still get the annual plan for €24.99 instead of €29.99.", "From tomorrow, the regular price applies again."],
-      cta: "Get it now →" },
-    es: { subject: "Último día por 24,99 €", pre: "Último día: 24,99 € en vez de 29,99 € – después se acaba.", bannerTxt: "⏰ Hoy termina tu precio de bienvenida",
-      eyebrow: "Último día", h1: "Hoy termina tu precio de bienvenida.",
-      paras: ["Hola {{name}}, esta es tu última oportunidad: hoy todavía consigues el plan anual por 24,99 € en vez de 29,99 €.", "A partir de mañana vuelve el precio habitual."],
-      cta: "Conseguirlo ahora →" },
-    nl: { subject: "Laatste dag voor € 24,99", pre: "Laatste dag: € 24,99 i.p.v. € 29,99 – daarna voorbij.", bannerTxt: "⏰ Vandaag eindigt je welkomstprijs",
-      eyebrow: "Laatste dag", h1: "Vandaag eindigt je welkomstprijs.",
-      paras: ["Hoi {{name}}, dit is je laatste kans: vandaag krijg je het jaarabonnement nog voor € 24,99 i.p.v. € 29,99.", "Vanaf morgen geldt weer de gewone prijs."],
-      cta: "Nu nog nemen →" },
-    fr: { subject: "Dernier jour à 24,99 €", pre: "Dernier jour : 24,99 € au lieu de 29,99 € – ensuite c'est fini.", bannerTxt: "⏰ Aujourd'hui, ton prix de bienvenue se termine",
-      eyebrow: "Dernier jour", h1: "Aujourd'hui, ton prix de bienvenue se termine.",
-      paras: ["Bonjour {{name}}, c'est ta dernière chance : aujourd'hui, l'abonnement annuel est encore à 24,99 € au lieu de 29,99 €.", "Dès demain, le prix habituel s'applique de nouveau."],
-      cta: "En profiter maintenant →" },
+    file: "email-4-last-chance.html", utm: "last-chance", accent: "#ef4444", price: true, cap: "capNow", banner: false,
+    de: { subject: "Deine 5 € fürs Feedback warten noch", pre: "Noch kein Feedback abgegeben? Dein 5-€-Code fürs Jahresabo wartet.",
+      eyebrow: "5 € für dein Feedback", h1: "5 € sparen – für dein Feedback.",
+      paras: ["Hallo {{name}}, du hast Quiz, Merken & Lernziele ausprobiert? Erzähl uns kurz, wie es war.", "Für dein Feedback bekommst du einen 5-€-Code – damit kostet das Jahresabo 24,99 € statt 29,99 €."],
+      cta: "Feedback geben & 5 € sichern →" },
+    en: { subject: "Your €5 for feedback is still waiting", pre: "Haven't left feedback yet? Your €5 code for the annual plan is waiting.",
+      eyebrow: "€5 for your feedback", h1: "Save €5 – for your feedback.",
+      paras: ["Hi {{name}}, tried Quiz, Saved & Goals? Tell us briefly how it went.", "For your feedback you'll get a €5 code – that makes the annual plan €24.99 instead of €29.99."],
+      cta: "Give feedback & save €5 →" },
+    es: { subject: "Tus 5 € por opinar siguen esperando", pre: "¿Aún no has dejado tu opinión? Tu código de 5 € para el plan anual te espera.",
+      eyebrow: "5 € por tu opinión", h1: "Ahorra 5 € – por tu opinión.",
+      paras: ["Hola {{name}}, ¿probaste Quiz, Guardado y Objetivos? Cuéntanos brevemente qué tal.", "Por tu opinión recibes un código de 5 €: así el plan anual cuesta 24,99 € en vez de 29,99 €."],
+      cta: "Dar opinión y ahorrar 5 € →" },
+    nl: { subject: "Je € 5 voor feedback wacht nog", pre: "Nog geen feedback gegeven? Je code van € 5 voor het jaarabonnement wacht.",
+      eyebrow: "€ 5 voor je feedback", h1: "Bespaar € 5 – voor je feedback.",
+      paras: ["Hoi {{name}}, Quiz, Opgeslagen & Doelen geprobeerd? Vertel ons kort hoe het ging.", "Voor je feedback krijg je een code van € 5 – daarmee kost het jaarabonnement € 24,99 i.p.v. € 29,99."],
+      cta: "Feedback geven & € 5 besparen →" },
+    fr: { subject: "Tes 5 € pour ton avis t'attendent encore", pre: "Pas encore donné ton avis ? Ton code de 5 € pour l'abonnement annuel t'attend.",
+      eyebrow: "5 € pour ton avis", h1: "Économise 5 € – pour ton avis.",
+      paras: ["Bonjour {{name}}, tu as essayé Quiz, Enregistrés et Objectifs ? Dis-nous vite ce que tu en as pensé.", "Pour ton avis, tu reçois un code de 5 € – l'abonnement annuel passe ainsi à 24,99 € au lieu de 29,99 €."],
+      cta: "Donner mon avis & économiser 5 € →" },
   },
 ];
 
@@ -205,7 +207,7 @@ ${m.features.map((f) => `          <tr><td style="padding:7px 0;font-size:15px;c
 <title>${m.subject}</title>
 <!-- Subject: ${m.subject} -->
 <!-- Preheader: ${m.pre} -->
-<!-- Merge-Felder: {{name}}, {{days}} -->
+<!-- Merge-Feld: {{name}} -->
 </head>
 <body style="margin:0;padding:0;background-color:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
 
