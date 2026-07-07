@@ -10849,6 +10849,9 @@ function VocabView({
       else if (s.indexOf(",") >= 0) { const c = s.split(","); term = c[0].trim(); trans = c.slice(1).join(",").trim(); }
       term = term.replace(/^[-–—•*•\d.\)\s]+/, "").trim();
       if (!term) return;
+      // Schutz gegen Fließtext-Absätze: kein einzelnes Riesen-„Wort" anlegen.
+      if (term.length > 64) return;
+      if (!trans && term.split(/\s+/).length > 6) return;
       const k = norm(term);
       if (seen.has(k)) return;
       seen.add(k);
