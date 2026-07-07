@@ -2713,6 +2713,14 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .explaincard.open .explaincard-car{ transform:rotate(180deg) !important; }
   .explaincard-body{ padding:0 14px 14px !important; font-size:13px !important; line-height:1.5 !important; color:var(--muted) !important; }
   .explaincard:not(.open) .explaincard-body{ display:none !important; }
+  /* Gemerkt-Legende: 3 Zeilen im ExplainCard-Body */
+  .gmxpl-row{ display:flex !important; align-items:flex-start !important; gap:11px !important; padding:10px 0 !important; border-top:1px solid var(--border) !important; }
+  .gmxpl-row:first-child{ border-top:0 !important; padding-top:2px !important; }
+  .gmxpl-ic{ width:30px !important; height:30px !important; border-radius:9px !important; background:var(--surface-2) !important; color:var(--text) !important; display:inline-flex !important; align-items:center !important; justify-content:center !important; flex:none !important; }
+  .gmxpl-ic svg{ width:17px !important; height:17px !important; }
+  .gmxpl-tx{ min-width:0 !important; }
+  .gmxpl-t{ display:block !important; color:var(--text) !important; font-size:13.5px !important; font-weight:800 !important; }
+  .gmxpl-p{ display:block !important; color:var(--muted) !important; font-size:12.5px !important; line-height:1.45 !important; margin-top:1px !important; }
   /* Einstell-Karte mit Regenbogen-Haarlinien */
   .quiztenses{ background:var(--surface) !important; border:1px solid var(--border) !important; border-radius:18px !important; padding:2px 14px 8px !important; box-shadow:var(--raise) !important; margin:12px 0 0 !important; }
   .qfilter-block{ position:relative !important; display:flex !important; flex-direction:row !important; align-items:center !important; justify-content:space-between !important; gap:12px !important; padding:12px 2px !important; background:none !important; border:0 !important; box-shadow:none !important; margin:0 !important; }
@@ -2977,7 +2985,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-89"></script>
+<script defer src="/app.js?v=c-sand-90"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
