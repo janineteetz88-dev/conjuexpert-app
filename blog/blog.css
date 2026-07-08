@@ -317,7 +317,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border);margin-top:30px}
 @media(prefers-reduced-motion:reduce){.js .reveal{animation:none}.btn-primary .g,.btn-primary::after,.band,.grad-word{animation:none}}
 
 /* ===== Bildsprache — duotone image system ===== */
-:root{--img-tint:#b9956e;--img-filter:grayscale(1) contrast(1.03) brightness(1.05)}
+:root{--img-tint:#b9956e;--img-filter:grayscale(1) contrast(1.02) brightness(1.16)}
 .shot.duo,.thumb.duo,.quizcta .qi.duo{background:color-mix(in srgb,var(--img-tint) 42%,var(--surface-2))}
 .shot.duo img.duoimg,.thumb.duo img.duoimg,.quizcta .qi.duo img.duoimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:var(--img-filter)}
 .thumb.duo .verb{color:var(--ink);text-shadow:none;opacity:.75}
