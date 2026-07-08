@@ -16270,10 +16270,17 @@ function App() {
   const [journey, setJourney] = useState(null);
   const [showFbThanks, setShowFbThanks] = useState(false);
 
-  // After ~30 min of total active use, ask once for a rating (gentle snooze on "later")
+  // Nach ~30 min AKTIVER Nutzung HEUTE einmal um eine Bewertung bitten.
+  // Der Zähler wird pro Tag zurückgesetzt — sonst summiert er über alle Tage
+  // und die „heute schon 30 Minuten"-Meldung käme viel zu früh.
   useEffect(() => {
     if (recall("kunju-review-done", false)) return;
-    const TARGET = 1800; // 30 minutes
+    const TARGET = 1800; // 30 Minuten
+    const today = new Date().toISOString().slice(0, 10);
+    if (recall("kunju-active-day", "") !== today) {
+      persist("kunju-active-day", today);
+      persist("kunju-active-secs", 0);
+    }
     let secs = recall("kunju-active-secs", 0);
     const id = setInterval(() => {
       if (document.visibilityState && document.visibilityState !== "visible") return;
