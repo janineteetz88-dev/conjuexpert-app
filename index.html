@@ -1523,6 +1523,15 @@ body {
 .vocsuggest:active { transform: scale(0.98); }
 .vocsuggest:disabled { opacity: 0.6; cursor: default; }
 .vocmist { margin-bottom: 12px; }
+/* Wörter-Aktionen in EINER Zeile: Vorschlagen · Einfügen · Andere Sprache */
+.vocactions { display: flex; gap: 8px; margin-bottom: 12px; }
+.vocactions .vocsuggest { width: auto; flex: 1 1 0; min-width: 0; margin-bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 12px 6px; font-size: 12px; line-height: 1.15; text-align: center; }
+.vocact-ic { display: inline-flex; }
+.vocact-ic svg { width: 18px; height: 18px; display: block; }
+.vocact-lb { display: block; }
+.vocactions .vocsuggest .vocact-ic { color: #ff7a18; }
+.vocactions .vocimport .vocact-ic { color: var(--muted); }
+.vocactions .voccross .vocact-ic { color: var(--lang-color, #ff9f0a); }
 .vocdue { background: linear-gradient(100deg, #ff7a18, #ff3b5c); box-shadow: 0 8px 20px -12px #ff3b5c; }
 .due-ic { display: inline-flex; align-items: center; vertical-align: -3px; margin-right: 7px; }
 .due-ic svg { display: block; }
@@ -3003,7 +3012,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-93"></script>
+<script defer src="/app.js?v=c-sand-94"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
