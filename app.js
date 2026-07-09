@@ -7542,13 +7542,15 @@ function QuizView({
   function libInsert(lg, topic, level, tenses, sentences, questions) {
     if (!window.__supa) return;
     try {
-      window.__supa.from("texte_stories").insert({
-        lang: lg,
-        topic,
-        level,
-        tenses,
-        sentences,
-        questions: questions || null
+      window.__supa.functions.invoke("submit-story", {
+        body: {
+          lang: lg,
+          topic,
+          level,
+          tenses,
+          sentences,
+          questions: questions || null
+        }
       }).then(() => {}, () => {});
     } catch (e) {}
   }
