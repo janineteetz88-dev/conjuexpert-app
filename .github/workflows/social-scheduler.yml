@@ -1,0 +1,52 @@
+name: Social Scheduler (Blotato)
+
+# Plant fällige Social-Posts automatisch über die Blotato-API ein.
+# Läuft zeitgesteuert und unabhängig von Claude/MCP-Connector.
+# Geplante (cron) Läufe funktionieren nur vom Default-Branch (main).
+
+on:
+  schedule:
+    - cron: '17 4 * * *'   # täglich 04:17 UTC (~06:17 Europe/Berlin)
+  workflow_dispatch:        # manuell auslösbar (Actions-Tab -> Run workflow)
+    inputs:
+      dry_run:
+        description: 'Nur anzeigen, nichts senden (1 = ja)'
+        required: false
+        default: '0'
+
+permissions:
+  contents: write           # zum Zurückschreiben des Ledgers (scheduled.json)
+
+concurrency:
+  group: social-scheduler
+  cancel-in-progress: false
+
+jobs:
+  schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fällige Posts in Blotato einplanen
+        env:
+          BLOTATO_API_KEY: ${{ secrets.BLOTATO_API_KEY }}
+          LOOKAHEAD_DAYS: '3'
+          DRY_RUN: ${{ github.event.inputs.dry_run == '1' && '1' || '0' }}
+        run: node scripts/social/blotato-schedule.mjs
+
+      - name: Ledger-Änderungen committen
+        if: ${{ github.event.inputs.dry_run != '1' }}
+        run: |
+          if ! git diff --quiet -- social-content/scheduled.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add social-content/scheduled.json
+            git commit -m "chore(social): eingeplante Posts protokollieren [skip ci]"
+            git push
+          else
+            echo "Keine Ledger-Änderungen."
+          fi

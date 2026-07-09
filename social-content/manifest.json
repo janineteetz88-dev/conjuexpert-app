@@ -1,0 +1,21 @@
+{
+  "_comment": "Content-Kalender für die automatische Blotato-Einplanung. Neue Posts hier als Objekt in 'posts' ergänzen. Der GitHub-Action-Runner plant jeden Post, dessen scheduledTime in den nächsten LOOKAHEAD_DAYS liegt und der noch nicht in social-content/scheduled.json steht, über die Blotato-API ein. Bilder werden aus dem öffentlichen Repo per raw.githubusercontent-URL geladen.",
+  "timezone": "Europe/Berlin",
+  "accounts": {
+    "instagram": "57778",
+    "tiktok": "50129",
+    "youtube": "42799"
+  },
+  "posts": [
+    {
+      "id": "gruenderstory-carousel-2026-07-10",
+      "platform": "instagram",
+      "accountId": "57778",
+      "scheduledTime": "2026-07-10T07:55:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/social-assets/gruenderstory",
+      "media": ["s1.png", "s2.png", "s3.png", "s4.png", "s5.png", "s6.png", "s7.png", "s8.png"],
+      "caption": "Ich wollte im Urlaub einfach Spanisch üben. Am Ende hab ich eine App gebaut. 🌈\n\nBeim Sprechen fiel uns nie die richtige Verbform ein — und die passende Zeitform erst recht nicht. Wir klickten uns durch die App-Stores: nur Nachschlagen, keine Tiefe bei Verben, kein aktives Üben mit den eigenen Themen.\n\nAlso hab ich ConjuExpert gebaut. Verben aktiv üben statt nur nachschlagen. 5 Sprachen. Mit deinen Themen — Reisen, Kochen, die Kinder, was dich wirklich interessiert.\n\nAuf den Kanaren hat's funktioniert: Ich hab Gespräche angefangen, Basti hat bestellt, ohne auf die Karte zu zeigen. Was für uns zwei begann, ist jetzt für alle da.\n\n👉 Probier's kostenlos aus: conjuexpert.app\n🎁 Beta-Code FEEDBACK100 = 30 Tage Premium gratis (nur die ersten 100)\n\nKein App-Store. Sofort loslegen.\n\n#Spanischlernen #Verben #Konjugation #Sprachapp #ConjuExpert",
+      "_note": "Dieser Post wurde am 09.07. bereits manuell über Blotato eingeplant (submissionId c30c31c8-487e-4a3b-8935-76e22a5b7caf) und ist in scheduled.json vorgemerkt — der Runner überspringt ihn, damit er sich nicht doppelt einplant. Dient hier als vollständiges Beispiel für das Post-Schema."
+    }
+  ]
+}
