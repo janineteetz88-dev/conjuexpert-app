@@ -1563,7 +1563,9 @@ body {
 /* „Ganze Liste einfügen" — neutraler Knopf + Fenster */
 .vocimport { background: var(--surface) !important; border: 1.5px solid color-mix(in srgb, var(--text) 26%, var(--border)) !important; color: var(--text) !important; }
 .vocimport .txtico { color: var(--muted); }
-.vimp-bg { position: fixed; inset: 0; z-index: 600; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade .18s ease; }
+/* Oben verankert: das Namensfeld/Eingabe steht im CI gleich oben und wird
+   von der Tastatur nicht nach unten geschoben. Scrollt bei hohem Inhalt. */
+.vimp-bg { position: fixed; inset: 0; z-index: 600; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); display: flex; align-items: flex-start; justify-content: center; padding: 52px 20px 20px; overflow-y: auto; animation: fade .18s ease; }
 .vimp-card { background: var(--surface); border-radius: 22px; width: min(420px,100%); box-shadow: 0 24px 60px rgba(0,0,0,.35); padding: 20px 18px 18px; animation: fade .2s ease; }
 .vimp-h { font-weight: 800; font-size: 18px; color: var(--text); margin-bottom: 4px; }
 .vimp-sub { color: var(--muted); font-size: 13px; line-height: 1.45; margin-bottom: 13px; }
@@ -3012,7 +3014,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-98"></script>
+<script defer src="/app.js?v=c-sand-99"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
