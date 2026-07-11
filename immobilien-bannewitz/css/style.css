@@ -27,7 +27,7 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth; overflow-x:hidden}
 body{
   margin:0; background:var(--cream); color:var(--ink);
   font-family:var(--ff); -webkit-font-smoothing:antialiased;
@@ -399,6 +399,9 @@ button{font-family:var(--ff); cursor:pointer}
 .kf-slot.time{border-radius:999px; padding:12px 22px; font-weight:500; font-size:14px}
 .kf-booking [data-kf-submit]{width:auto}
 .kf-booking [data-kf-submit][disabled]{opacity:.4; cursor:not-allowed; pointer-events:none}
+.kf-booking [data-kf-submit].loading{opacity:.7; cursor:wait}
+.kf-honeypot{position:absolute !important; width:1px !important; height:1px !important; padding:0 !important; margin:-1px !important; overflow:hidden !important; clip:rect(0,0,0,0) !important; white-space:nowrap !important; border:0 !important}
+.kf-submit-error{font-weight:400; font-size:14px; line-height:1.5; color:#b3143c; margin:0 0 16px}
 
 .kf-booked{text-align:center; padding:12px 0}
 .kf-booked-check{width:60px; height:60px; border-radius:50%; background:var(--pink); display:flex; align-items:center; justify-content:center; margin:0 auto 22px}
@@ -491,3 +494,21 @@ button{font-family:var(--ff); cursor:pointer}
 .footer-links a{color:rgba(237,229,215,.6)}
 .footer-links a:hover{color:var(--pink-bright)}
 .footer-bottom{margin:40px auto 0; padding-top:24px; border-top:1px solid rgba(237,229,215,.1); font-size:12px; letter-spacing:1px; color:rgba(237,229,215,.4)}
+
+/* ===== Rechtstexte (Impressum/Datenschutz/AGB/Widerruf) ===== */
+.legal-page{padding:clamp(140px,20vh,190px) clamp(24px,5vw,80px) clamp(80px,12vh,150px); background:var(--cream); min-height:70vh}
+.legal-wrap{max-width:800px; margin:0 auto}
+.legal-wrap h1{font-size:clamp(32px,4.6vw,52px); line-height:1.05; letter-spacing:-.5px; margin:0 0 40px}
+.legal-wrap h2{font-size:clamp(20px,2.2vw,26px); font-weight:500; margin:48px 0 16px; letter-spacing:-.2px}
+.legal-wrap h2:first-of-type{margin-top:0}
+.legal-wrap h3{font-size:16px; font-weight:600; margin:26px 0 10px}
+.legal-wrap p{font-weight:300; font-size:16px; line-height:1.75; color:var(--muted); margin:0 0 16px}
+.legal-wrap ul{font-weight:300; font-size:16px; line-height:1.75; color:var(--muted); margin:0 0 16px; padding-left:22px}
+.legal-wrap li{margin-bottom:6px}
+.legal-wrap a{text-decoration:underline}
+.legal-back{display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted-2); margin-bottom:34px}
+.legal-back:hover{color:var(--pink-deep)}
+.legal-todo{background:rgba(233,32,124,.08); border:1.5px dashed var(--pink-deep); border-radius:var(--radius); padding:16px 20px; margin:0 0 16px}
+.legal-todo p{margin:0; color:var(--ink); font-weight:400}
+.legal-todo strong{color:var(--pink-deep)}
+.legal-note{font-size:13px; color:var(--muted-3); margin:0 0 40px; padding-bottom:24px; border-bottom:1px solid var(--line-soft)}

@@ -18,7 +18,7 @@
   "@context": "https://schema.org",
   "@type": "RealEstateAgent",
   "name": "Janine Kreiser – immobilien-bannewitz.de",
-  "image": "https://www.immobilien-bannewitz.de/assets/images/janine-portrait.jpg",
+  "image": "https://static.wixstatic.com/media/8a08cc_50fb7e7ed959454c9e7bc08c0ba8da7f~mv2.jpeg",
   "telephone": "+491733719224",
   "email": "info@immobilien-bannewitz.de",
   "url": "https://www.immobilien-bannewitz.de/",
@@ -32,7 +32,6 @@
   }
 }
 </script>
-<!-- TODO (Janine): Adresse oben bitte gegenprüfen – aus Footer der Design-Vorlage übernommen (finaconsil-Anschrift) -->
 </head>
 <body>
 
@@ -424,10 +423,12 @@
           <input type="text" class="kf-text-input" data-kf-name placeholder="Vor- und Nachname" autocomplete="name">
           <div class="kf-field-label">Telefon oder E-Mail</div>
           <input type="text" class="kf-text-input" data-kf-contact placeholder="Wie erreiche ich Sie am besten?" autocomplete="tel">
+          <input type="text" name="website" class="kf-honeypot" data-kf-honeypot tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="kf-field-label">Wochentag</div>
           <div class="kf-slot-row" data-kf-day-list></div>
           <div class="kf-field-label">Uhrzeit</div>
           <div class="kf-slot-row" data-kf-time-list></div>
+          <p class="kf-submit-error" data-kf-error hidden>Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder rufen Sie direkt an.</p>
           <button type="button" class="btn" data-kf-submit disabled>Termin anfragen</button>
         </div>
         <div class="kf-booked" data-kf-booked hidden>
@@ -657,10 +658,12 @@
           <input type="text" class="kf-text-input" data-kf-name placeholder="Vor- und Nachname" autocomplete="name">
           <div class="kf-field-label">Telefon oder E-Mail</div>
           <input type="text" class="kf-text-input" data-kf-contact placeholder="Wie erreiche ich Sie am besten?" autocomplete="tel">
+          <input type="text" name="website" class="kf-honeypot" data-kf-honeypot tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="kf-field-label">Wochentag</div>
           <div class="kf-slot-row" data-kf-day-list></div>
           <div class="kf-field-label">Uhrzeit</div>
           <div class="kf-slot-row" data-kf-time-list></div>
+          <p class="kf-submit-error" data-kf-error hidden>Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder rufen Sie direkt an.</p>
           <button type="button" class="btn" data-kf-submit disabled>Termin anfragen</button>
         </div>
         <div class="kf-booked" data-kf-booked hidden>
@@ -694,12 +697,12 @@
       <a href="#kontakt-2">Tippgeber werden</a>
       <a href="#blog">Blog</a>
       <a href="#kontakt-2">Kontakt</a>
-      <!-- TODO (Janine): echte Links zu Datenschutz/Impressum/AGB/Widerrufsbelehrung einsetzen -->
-      <a href="#hero">Datenschutz</a>
-      <a href="#hero">Impressum</a>
-      <a href="#hero">AGB</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="agb.html">AGB</a>
+      <!-- TODO (Janine): eigene Barrierefreiheits-Erklärung ergänzen, falls gewünscht (aktuell keine eigene Unterseite) -->
       <a href="#hero">Barrierefreiheit</a>
-      <a href="#hero">Widerrufsbelehrung</a>
+      <a href="widerruf.html">Widerrufsbelehrung</a>
     </div>
   </div>
   <div class="wrap footer-bottom" style="max-width:1240px; padding:0 clamp(24px,5vw,80px);">© 2026 immobilien-bannewitz.de</div>

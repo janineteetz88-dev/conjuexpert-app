@@ -489,6 +489,9 @@
     var timeListEl = root.querySelector('[data-kf-time-list]');
     var submitBtn = root.querySelector('[data-kf-submit]');
     var resetBtn = root.querySelector('[data-kf-reset]');
+    var honeypot = root.querySelector('[data-kf-honeypot]');
+    var errorEl = root.querySelector('[data-kf-error]');
+    var sourceLabel = root.dataset.kf === '2' ? 'Kontakt-2' : 'Kontakt-1';
 
     var state = { step: 0, answers: {}, day: '', time: '' };
 
@@ -574,10 +577,51 @@
       state = { step: 0, answers: {}, day: '', time: '' };
       nameInput.value = '';
       contactInput.value = '';
+      if(errorEl) errorEl.hidden = true;
       bookedEl.hidden = true;
       bookingEl.hidden = true;
       askingEl.hidden = false;
       renderQuestion();
+    }
+
+    function submitBooking(){
+      if(!(state.day && state.time)) return;
+      if(errorEl) errorEl.hidden = true;
+      submitBtn.disabled = true;
+      submitBtn.classList.add('loading');
+
+      var payload = {
+        art: state.answers.art || '',
+        ort: state.answers.ort || '',
+        flaeche: state.answers.flaeche || '',
+        zustand: state.answers.zustand || '',
+        nutzung: state.answers.nutzung || '',
+        zeit: state.answers.zeit || '',
+        day: state.day,
+        time: state.time,
+        name: nameInput.value.trim(),
+        contact: contactInput.value.trim(),
+        source: sourceLabel,
+        website: honeypot ? honeypot.value : ''
+      };
+
+      fetch('php/send-booking.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function(res){
+        if(!res.ok) throw new Error('request_failed');
+        return res.json();
+      }).then(function(data){
+        if(!data || !data.ok) throw new Error('response_not_ok');
+        bookingEl.hidden = true;
+        bookedEl.hidden = false;
+      }).catch(function(){
+        if(errorEl) errorEl.hidden = false;
+        submitBtn.disabled = false;
+      }).finally(function(){
+        submitBtn.classList.remove('loading');
+      });
     }
 
     backBtn.addEventListener('click', back);
@@ -590,12 +634,7 @@
     });
     nameInput.addEventListener('input', validate);
     contactInput.addEventListener('input', validate);
-    submitBtn.addEventListener('click', function(){
-      if(state.day && state.time){
-        bookingEl.hidden = true;
-        bookedEl.hidden = false;
-      }
-    });
+    submitBtn.addEventListener('click', submitBooking);
     resetBtn.addEventListener('click', reset);
 
     renderQuestion();
