@@ -195,6 +195,7 @@ button{font-family:var(--ff); cursor:pointer}
 
 /* ===== Suchprofile ===== */
 .suche-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px}
+@media (min-width:640px){ .suche-h2-nowrap{white-space:nowrap} }
 .suche-card{background:var(--cream-3); border:1px solid var(--line-soft); border-radius:var(--radius); padding:30px 28px; display:flex; flex-direction:column; gap:14px}
 .suche-card-head{display:flex; align-items:baseline; justify-content:space-between; gap:12px}
 .suche-card-head span:first-child{font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--pink-deep)}
@@ -203,11 +204,18 @@ button{font-family:var(--ff); cursor:pointer}
 .suche-card p{font-weight:300; font-size:15px; line-height:1.65; color:var(--muted); margin:0}
 
 /* ===== Über mich / Tabs ===== */
-.ueber-grid{display:grid; grid-template-columns:1.1fr .95fr; gap:clamp(40px,6vw,96px); align-items:center}
-.ueber-media{position:relative; order:2}
+.ueber-grid{
+  display:grid; grid-template-columns:1.1fr .95fr;
+  grid-template-areas:"head media" "tabs media" "stats media";
+  gap:clamp(40px,6vw,96px); align-items:start;
+}
+.ueber-head-block{grid-area:head}
+.ueber-tabs-block{grid-area:tabs}
+.ueber-stats{grid-area:stats}
+.ueber-media{grid-area:media; position:relative; align-self:stretch; min-height:280px}
 .ueber-frame{position:absolute; inset:20px -20px -20px 20px; border:1px solid #C8956B; opacity:.5}
 .ueber-photo{
-  display:block; position:relative; width:100%; aspect-ratio:4/5;
+  display:block; position:relative; width:100%; height:100%; aspect-ratio:4/5;
   object-fit:cover; object-position:center 30%;
 }
 
