@@ -436,4 +436,170 @@
     var p = hv.play();
     if(p && p.catch){ p.catch(function(){}); }
   }
+
+  /* ---------- Netzwerk-Akkordeon ---------- */
+  document.querySelectorAll('.netzwerk-head[aria-expanded]').forEach(function(head){
+    var detail = document.getElementById(head.getAttribute('aria-controls'));
+    head.addEventListener('click', function(){
+      var open = head.getAttribute('aria-expanded') === 'true';
+      head.setAttribute('aria-expanded', open ? 'false' : 'true');
+      if(detail) detail.hidden = open;
+    });
+  });
+
+  /* ---------- Kontakt-Formular (Terminbuchung), generisch für Kontakt-1 & Kontakt-2 ---------- */
+  var kfQuestions = [
+    { key: 'art', q: 'Um welche Immobilie geht es?', opts: ['Einfamilienhaus', 'Eigentumswohnung', 'Mehrfamilienhaus', 'Grundstück'] },
+    { key: 'ort', q: 'Wo liegt Ihre Immobilie?', opts: ['Bannewitz', 'Freital', 'Dresden', 'Kreischa'], free: true, placeholder: 'Anderer Ort – hier eingeben' },
+    { key: 'flaeche', q: 'Wie groß ist die Wohn-/Grundfläche?', opts: [], free: true, placeholder: 'Fläche in m² eingeben' },
+    { key: 'zustand', q: 'In welchem Zustand ist sie?', opts: ['Neuwertig', 'Gepflegt', 'Renovierungsbedürftig'] },
+    { key: 'nutzung', q: 'Wie wird sie aktuell genutzt?', opts: ['Selbst genutzt', 'Vermietet', 'Steht leer'] },
+    { key: 'zeit', q: 'Wann möchten Sie verkaufen?', opts: ['So bald wie möglich', 'In 3–6 Monaten', 'Erst mal nur Orientierung'] }
+  ];
+  var kfTimes = ['12:00', '12:15', '12:30', '12:45', '13:00'];
+  var kfDayNames = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+
+  function buildKfDayList(){
+    var out = [], d = new Date(), n = 0;
+    while(out.length < 5 && n < 14){
+      d.setDate(d.getDate() + 1); n++;
+      var wd = d.getDay();
+      if(wd >= 1 && wd <= 5){
+        out.push({ label: kfDayNames[wd], date: d.getDate() + '.' + (d.getMonth() + 1) + '.', key: kfDayNames[wd] + ' ' + d.getDate() + '.' + (d.getMonth() + 1) + '.' });
+      }
+    }
+    return out;
+  }
+
+  function initKontaktForm(root){
+    var askingEl = root.querySelector('[data-kf-asking]');
+    var bookingEl = root.querySelector('[data-kf-booking]');
+    var bookedEl = root.querySelector('[data-kf-booked]');
+    var progLabel = root.querySelector('[data-kf-progress-label]');
+    var progFill = root.querySelector('[data-kf-progress-fill]');
+    var backBtn = root.querySelector('[data-kf-back]');
+    var questionEl = root.querySelector('[data-kf-question]');
+    var optsEl = root.querySelector('[data-kf-opts]');
+    var freeRow = root.querySelector('[data-kf-free-row]');
+    var freeInput = root.querySelector('[data-kf-free-input]');
+    var freeSubmit = root.querySelector('[data-kf-free-submit]');
+    var nameInput = root.querySelector('[data-kf-name]');
+    var contactInput = root.querySelector('[data-kf-contact]');
+    var dayListEl = root.querySelector('[data-kf-day-list]');
+    var timeListEl = root.querySelector('[data-kf-time-list]');
+    var submitBtn = root.querySelector('[data-kf-submit]');
+    var resetBtn = root.querySelector('[data-kf-reset]');
+
+    var state = { step: 0, answers: {}, day: '', time: '' };
+
+    function renderQuestion(){
+      var q = kfQuestions[state.step];
+      progLabel.textContent = 'Frage ' + (state.step + 1) + ' / ' + kfQuestions.length;
+      progFill.style.width = (state.step / kfQuestions.length * 100) + '%';
+      questionEl.textContent = q.q;
+      backBtn.hidden = state.step === 0;
+
+      optsEl.innerHTML = '';
+      q.opts.forEach(function(opt){
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'kf-opt';
+        btn.textContent = opt;
+        btn.addEventListener('click', function(){ pick(q.key, opt); });
+        optsEl.appendChild(btn);
+      });
+
+      if(q.free){
+        freeRow.hidden = false;
+        freeInput.value = '';
+        freeInput.placeholder = q.placeholder || 'Eigene Angabe';
+      } else {
+        freeRow.hidden = true;
+      }
+    }
+
+    function pick(key, val){
+      state.answers[key] = val;
+      state.step++;
+      if(state.step >= kfQuestions.length){
+        showBooking();
+      } else {
+        renderQuestion();
+      }
+    }
+
+    function back(){
+      if(state.step === 0) return;
+      state.step--;
+      renderQuestion();
+    }
+
+    function showBooking(){
+      askingEl.hidden = true;
+      bookingEl.hidden = false;
+      bookedEl.hidden = true;
+      renderDayList();
+      renderTimeList();
+      validate();
+    }
+
+    function renderDayList(){
+      dayListEl.innerHTML = '';
+      buildKfDayList().forEach(function(d){
+        var el = document.createElement('div');
+        el.className = 'kf-slot' + (d.key === state.day ? ' active' : '');
+        el.innerHTML = '<div class="d">' + d.label + '</div><div class="s">' + d.date + '</div>';
+        el.addEventListener('click', function(){ state.day = d.key; renderDayList(); validate(); });
+        dayListEl.appendChild(el);
+      });
+    }
+
+    function renderTimeList(){
+      timeListEl.innerHTML = '';
+      kfTimes.forEach(function(t){
+        var el = document.createElement('div');
+        el.className = 'kf-slot time' + (t === state.time ? ' active' : '');
+        el.textContent = t;
+        el.addEventListener('click', function(){ state.time = t; renderTimeList(); validate(); });
+        timeListEl.appendChild(el);
+      });
+    }
+
+    function validate(){
+      var ok = !!(state.day && state.time && nameInput.value.trim() && contactInput.value.trim());
+      submitBtn.disabled = !ok;
+    }
+
+    function reset(){
+      state = { step: 0, answers: {}, day: '', time: '' };
+      nameInput.value = '';
+      contactInput.value = '';
+      bookedEl.hidden = true;
+      bookingEl.hidden = true;
+      askingEl.hidden = false;
+      renderQuestion();
+    }
+
+    backBtn.addEventListener('click', back);
+    freeSubmit.addEventListener('click', function(){
+      var v = freeInput.value.trim();
+      if(v) pick(kfQuestions[state.step].key, v);
+    });
+    freeInput.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){ e.preventDefault(); freeSubmit.click(); }
+    });
+    nameInput.addEventListener('input', validate);
+    contactInput.addEventListener('input', validate);
+    submitBtn.addEventListener('click', function(){
+      if(state.day && state.time){
+        bookingEl.hidden = true;
+        bookedEl.hidden = false;
+      }
+    });
+    resetBtn.addEventListener('click', reset);
+
+    renderQuestion();
+  }
+
+  document.querySelectorAll('[data-kf]').forEach(function(root){ initKontaktForm(root); });
 })();
