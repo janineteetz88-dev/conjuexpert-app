@@ -56,7 +56,8 @@
       <li><a href="#quiz">Selbsttest</a></li>
       <li><a href="#objekte">Objekte</a></li>
       <li><a href="#netzwerk">Netzwerk</a></li>
-      <li><a href="#vita">Über mich</a></li>
+      <li><a href="#vita-intro">Über mich</a></li>
+      <li><a href="#blog">Blog</a></li>
       <li><a href="#kontakt-1" class="nav-cta">Bewertung</a></li>
     </ul>
   </nav>
@@ -67,7 +68,7 @@
   <!-- ============ HERO ============ -->
   <section class="hero" id="hero" aria-label="Einleitung">
     <div class="hero-media" id="heroMedia">
-      <video autoplay muted loop playsinline aria-hidden="true">
+      <video autoplay muted loop playsinline preload="auto" poster="assets/video/hero-poster.jpg" aria-hidden="true">
         <source src="assets/video/hero.mp4" type="video/mp4">
       </video>
     </div>
@@ -146,7 +147,8 @@
           <button class="ueber-tab" role="tab" aria-selected="false" data-tab="eigennutzer" id="tab-eigennutzer" aria-controls="tabpanel-ueber" tabindex="-1">Eigennutzer</button>
           <button class="ueber-tab" role="tab" aria-selected="false" data-tab="investoren" id="tab-investoren" aria-controls="tabpanel-ueber" tabindex="-1">Investoren</button>
         </div>
-        <p class="rv" id="tabpanel-ueber" role="tabpanel" style="font-weight:300; font-size:clamp(16px,1.3vw,19px); line-height:1.75; margin:0; color:var(--muted); min-height:120px;">Ich bin Janine Kreiser. Bannewitzerin sowie Immobilien- und Finanzmaklerin, mit einem feinen Gespür für Menschen und ihre Lebenssituationen. Was mich auszeichnet? Leidenschaft, Fokus und echte Aufmerksamkeit. Ich höre genau hin, stelle die richtigen Fragen und entwickle für Ihre Immobilie eine individuelle Vermarktungsstrategie – statt Fließbandabfertigung.</p>
+        <p class="rv" id="tabpanel-ueber" role="tabpanel" style="font-weight:300; font-size:clamp(16px,1.3vw,19px); line-height:1.75; margin:0 0 18px; color:var(--muted); min-height:120px;">Ich bin Janine Kreiser. Bannewitzerin sowie Immobilien- und Finanzmaklerin, mit einem feinen Gespür für Menschen und ihre Lebenssituationen. Was mich auszeichnet? Leidenschaft, Fokus und echte Aufmerksamkeit. Ich höre genau hin, stelle die richtigen Fragen und entwickle für Ihre Immobilie eine individuelle Vermarktungsstrategie – statt Fließbandabfertigung.</p>
+        <a href="ueber-mich.html" class="rv ohne-makler-link">Mehr über meinen Werdegang →</a>
       </div>
       <div class="rv ueber-stats">
         <div><div class="stat-num" data-to="18" data-suffix="">0</div><div class="stat-label">Jahre Erfahrung</div></div>
@@ -455,18 +457,18 @@
         <p class="rv" style="max-width:46ch; font-weight:300; font-size:17px; line-height:1.7; color:var(--muted); margin:0;">Ob Kapitalanleger mit Blick auf die Rendite oder Familie auf der Suche nach einem Zuhause – ich spreche die richtige Zielgruppe an und entwickle eine passgenaue Verkaufsstrategie.</p>
       </div>
       <div class="objekte-grid">
-        <div class="rv media objekt-card">
+        <a href="#kontakt-1" class="rv media objekt-card">
           <div class="objekt-media"><img class="z" src="https://static.wixstatic.com/media/8a08cc_c2c3948abfb044dab3bd6e7caaef4c73~mv2.png" alt="Einfamilienhaus"><div class="objekt-scrim"></div><span class="objekt-tag">Zuhause</span><h3 class="objekt-title">Einfamilienhäuser</h3></div>
           <div class="objekt-body"><p>Ein Einfamilienhaus ist mehr als eine Immobilie – ein Zuhause voller Erinnerungen. Ich begleite Sie mit Feingefühl und sorge dafür, dass Ihr Haus den passenden Käufer findet.</p></div>
-        </div>
-        <div class="rv media objekt-card">
+        </a>
+        <a href="#kontakt-1" class="rv media objekt-card">
           <div class="objekt-media"><img class="z" src="https://static.wixstatic.com/media/8a08cc_2cdd4c15e0f540e098983a6a39fc7bc0~mv2.png" alt="Eigentumswohnung"><div class="objekt-scrim"></div><span class="objekt-tag">Kapitalanlage</span><h3 class="objekt-title">Eigentumswohnungen</h3></div>
           <div class="objekt-body"><p>Ob selbst genutzt oder vermietet – hier zählen klare Strukturen, transparente Unterlagen und ein gutes Gespür für die Zielgruppe. Ich kümmere mich um eine marktgerechte Einwertung und einen zügigen Verkauf.</p></div>
-        </div>
-        <div class="rv media objekt-card">
+        </a>
+        <a href="#kontakt-1" class="rv media objekt-card">
           <div class="objekt-media"><img class="z" src="https://static.wixstatic.com/media/8a08cc_95499c78d2d748c09c000cabcd274ff2~mv2.png" alt="Mehrfamilienhaus"><div class="objekt-scrim"></div><span class="objekt-tag">Investment</span><h3 class="objekt-title">Mehrfamilienhäuser</h3></div>
           <div class="objekt-body"><p>Manche Immobilien erfordern besondere Zurückhaltung. Diskret verkaufen liegt mir: Ich spreche gezielt geprüfte Investoren aus meinem Netzwerk an – professionell, vertraulich und zuverlässig.</p></div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
@@ -479,67 +481,21 @@
       <blockquote class="statement-quote">„Ihr Zuhause verdient den besten Käufer — und den finde ich."</blockquote>
     </div>
   </section>
-  <!-- ============ NETZWERK ============ -->
+  <!-- ============ NETZWERK (Teaser) ============ -->
   <section id="netzwerk" aria-labelledby="netzwerk-h2" style="padding:clamp(80px,12vh,150px) clamp(24px,5vw,80px) clamp(40px,6vh,72px); background:var(--cream);">
     <div class="wrap" style="max-width:1240px; padding:0;">
-      <div style="margin-bottom:clamp(40px,6vh,64px);">
+      <div style="margin-bottom:clamp(32px,5vh,48px);">
         <p class="rv eyebrow"><span class="dot"></span>Mein Netzwerk</p>
         <h2 id="netzwerk-h2" class="rv" style="font-size:clamp(30px,4.6vw,60px); line-height:1.02; letter-spacing:-.5px; margin:0 0 18px;">Ein eingespieltes Team für Ihren Verkaufserfolg.</h2>
-        <p class="rv" style="max-width:48ch; font-weight:300; font-size:17px; line-height:1.7; color:var(--muted); margin:0;">Wertermittlung, Handwerk, rechtliche Fragen, Finanzierung – in Kooperation mit der Leßmann &amp; Wagner Immobilienmakler GmbH sorgt gebündeltes Fachwissen dafür, dass jedes Detail sitzt. Für Sie bedeutet das Sicherheit, Zeitersparnis und ein bestmögliches Ergebnis.</p>
+        <p class="rv" style="max-width:48ch; font-weight:300; font-size:17px; line-height:1.7; color:var(--muted); margin:0;">Wertermittlung, Handwerk, rechtliche Fragen, Finanzierung – in Kooperation mit der Leßmann &amp; Wagner Immobilienmakler GmbH sorgt gebündeltes Fachwissen dafür, dass jedes Detail sitzt.</p>
       </div>
-      <div class="netzwerk-list" id="netzwerkList">
-        <div class="rv netzwerk-item">
-          <button type="button" class="netzwerk-head" aria-expanded="false" aria-controls="netzwerk-detail-0">
-            <span class="netzwerk-num">01</span>
-            <span class="netzwerk-main">
-              <span class="netzwerk-name">Charlott Leßmann</span>
-              <span class="netzwerk-role">Immobilienmaklerin</span>
-              <span class="netzwerk-cta">Partnerschaft ansehen
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-              </span>
-            </span>
-            <span class="netzwerk-org">Leßmann &amp; Wagner Immobilienmakler GmbH</span>
-          </button>
-          <div class="netzwerk-detail" id="netzwerk-detail-0" hidden>
-            <div class="netzwerk-detail-title">Unser Partnerunternehmen Leßmann &amp; Wagner Immobilienmakler</div>
-            <p>Die Zusammenarbeit zwischen Leßmann &amp; Wagner Immobilienmakler GmbH und immobilien-bannewitz.de basiert nicht nur auf einer klaren Aufgabenteilung und gegenseitiger Ergänzung – sie ist auch das Ergebnis einer langjährigen Unternehmerinnen-Freundschaft.</p>
-            <p>Uns verbindet weit mehr als nur der Beruf: Vertrauen, gemeinsame Werte und ein offener Austausch prägen unsere Beziehung – sowohl privat als auch beruflich. Wir ergänzen uns ideal in unseren Stärken, fördern uns fachlich und sind stets offen für neue Perspektiven.</p>
-            <p>Charlott Leßmann bringt als Spezialistin für das Eigennutzer-Segment viel Einfühlungsvermögen und Erfahrung mit – sei es bei der Begleitung von Menschen auf dem Weg in ihr eigenes Zuhause oder beim sensiblen Verkaufsprozess liebgewonnener Immobilien.</p>
-            <p>Wir von immobilien-bannewitz.de stehen unserem Partnerunternehmen, insbesondere im Bereich Investment zur Seite – mit fundierter Marktkenntnis, individueller Beratung zur Kapitalanlage für Erstkäufer und einem geschulten Blick für rentable Vermarktungsstrategien in der Zielgruppe privater Investoren.</p>
-            <p>Diese Verbindung aus persönlichem Miteinander und fachlicher Kompetenz schafft Vertrauen und Mehrwert – für den größtmöglichen Erfolg unserer Kunden.</p>
-          </div>
-        </div>
-        <div class="rv netzwerk-item">
-          <div class="netzwerk-head netzwerk-head-static">
-            <span class="netzwerk-num">02</span>
-            <span class="netzwerk-main">
-              <span class="netzwerk-name">Alexander Geweiler</span>
-              <span class="netzwerk-role">Immobilien-Sachverständiger</span>
-            </span>
-            <span class="netzwerk-org">Geweiler Immobilienbewertung</span>
-          </div>
-        </div>
-        <div class="rv netzwerk-item">
-          <div class="netzwerk-head netzwerk-head-static">
-            <span class="netzwerk-num">03</span>
-            <span class="netzwerk-main">
-              <span class="netzwerk-name">Thomas Hartmann</span>
-              <span class="netzwerk-role">Bau &amp; Handwerk</span>
-            </span>
-            <span class="netzwerk-org">ASW Bau GmbH</span>
-          </div>
-        </div>
-        <div class="rv netzwerk-item">
-          <div class="netzwerk-head netzwerk-head-static">
-            <span class="netzwerk-num">04</span>
-            <span class="netzwerk-main">
-              <span class="netzwerk-name">Eric Kretschmer</span>
-              <span class="netzwerk-role">Finanzierungsspezialist</span>
-            </span>
-            <span class="netzwerk-org">Finanzierung &amp; Kapitalanlage</span>
-          </div>
-        </div>
+      <div class="rv netzwerk-teaser-row">
+        <span class="netzwerk-teaser-name">Charlott Leßmann</span>
+        <span class="netzwerk-teaser-name">Alexander Geweiler</span>
+        <span class="netzwerk-teaser-name">Thomas Hartmann</span>
+        <span class="netzwerk-teaser-name">Eric Kretschmer</span>
       </div>
+      <a href="netzwerk.html" class="rv ohne-makler-link" style="margin-top:24px; display:inline-block;">Mein Netzwerk im Detail ansehen →</a>
     </div>
   </section>
 
@@ -582,104 +538,6 @@
     </div>
   </section>
 
-  <!-- ============ VITA ============ -->
-  <section id="vita" aria-labelledby="vita-h2" style="padding:clamp(40px,6vh,72px) clamp(24px,5vw,80px); background:var(--cream);">
-    <div class="wrap vita-grid" style="max-width:1240px; padding:0;">
-      <div class="rv vita-sticky">
-        <p class="eyebrow"><span class="dot"></span>Janine Kreiser</p>
-        <h2 id="vita-h2" style="font-size:clamp(28px,3.6vw,48px); line-height:1.05; letter-spacing:-.5px; margin:0 0 24px;">Vom Studium der Immobilienwirtschaft zur Maklerin mit Haltung.</h2>
-        <div class="vita-badges">
-          <span>B.A. Immobilienwirtschaft</span>
-          <span>Finanzanlagenfachfrau (IHK)</span>
-          <span>Versicherungsfachfrau (IHK)</span>
-          <span>Zertifizierte Edelmetallberaterin</span>
-        </div>
-        <blockquote class="vita-quote">
-          <span class="vita-quotemark" aria-hidden="true">&ldquo;</span>
-          <span class="vita-quote-text">Wenn jemand nach der Zusammenarbeit mit mir mehr Klarheit und weniger Sorgen hat – dann habe ich meinen Job gut gemacht.</span>
-          <span class="vita-quote-name">Janine Kreiser</span>
-        </blockquote>
-      </div>
-      <div class="rv vita-timeline">
-        <div class="vita-row"><div class="vita-year">2008</div><div class="vita-text">Studium: interdisziplinäres Vermögensmanagement mit Vertiefung Immobilienwirtschaft</div></div>
-        <div class="vita-row"><div class="vita-year">2012–2023</div><div class="vita-text">Versicherungs- und Finanzmaklerin für Ärztinnen und Ärzte – Vermögenskonzepte für Berufsstände, insbesondere Mediziner</div></div>
-        <div class="vita-row"><div class="vita-year">2015</div><div class="vita-text">Ausbau des eigenen Immobilienbestandes: Zwei-Raum-Wohnungen in und um Dresden, Baujahr der 90er, vermietet, mit Balkon</div></div>
-        <div class="vita-row"><div class="vita-year">2020</div><div class="vita-text">Zertifizierte Edelmetallberaterin (Gold, Silber, Tech-Metalle) – Ausbau des Kapitalanlage-Portfolios im Bereich Sachwerte</div></div>
-        <div class="vita-row"><div class="vita-year">2021</div><div class="vita-text">Gründung von doc-bu.de – Entwicklung technischer Affinität für Marketing und Websites</div></div>
-        <div class="vita-row"><div class="vita-year">seit 2024</div><div class="vita-text">Kooperation mit Freundin und Geschäftspartnerin Charlott Leßmann, Leßmann &amp; Wagner Immobilienmakler</div></div>
-        <div class="vita-row"><div class="vita-year">2026</div><div class="vita-text">Verkauf des Versicherungsbestands und der Firma DOC-BU</div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ OHNE MAKLER ============ -->
-  <section aria-labelledby="ohnemakler-h2" style="padding:clamp(40px,6vh,72px) clamp(24px,5vw,80px) clamp(80px,12vh,150px); background:var(--cream);">
-    <div class="rv wrap ohne-makler-grid" style="max-width:1240px; padding:0;">
-      <div>
-        <p class="eyebrow"><span class="dot"></span>Service</p>
-        <h2 id="ohnemakler-h2" style="font-size:clamp(28px,3.8vw,52px); line-height:1.05; letter-spacing:-.5px; margin:0 0 22px;">„Ohne Makler" geht auch mit mir.</h2>
-        <p style="font-weight:300; font-size:17px; line-height:1.75; color:var(--muted); margin:0 0 18px;">Sie möchten selbst verkaufen und die Käuferkommunikation übernehmen – aber nicht auf professionelle Grundlagen verzichten? Von der Preisermittlung über die Verkaufsunterlagen bis zum aussagekräftigen Exposé und rechtssicheren Vorlagen sorge ich im Hintergrund für Struktur, Klarheit und Qualität.</p>
-        <p style="font-weight:400; font-size:16px; line-height:1.6; color:var(--ink); margin:0 0 30px;">Sie behalten die Kontrolle – zum Festpreis.</p>
-        <a href="#kontakt-2" class="ohne-makler-link">Mehr erfahren &amp; Kontakt →</a>
-      </div>
-      <div class="media ohne-makler-media">
-        <img class="z" src="https://static.wixstatic.com/media/11062b_6306136c687645af808dad2692b32514~mv2.jpeg" alt="">
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ KONTAKT 2 ============ -->
-  <section id="kontakt-2" aria-labelledby="kontakt2-h2" class="kontakt-section">
-    <div class="kb kontakt-bg" aria-hidden="true"></div>
-    <div class="kontakt-scrim" aria-hidden="true"></div>
-    <div class="wrap kontakt-inner">
-      <p class="rv eyebrow on-dark"><span class="dot"></span>Kostenlose Ersteinschätzung in 24 h</p>
-      <h2 id="kontakt2-h2" class="rv kontakt-h2">Wie viel ist Ihre Immobilie wert?</h2>
-      <p class="rv kontakt-lede">Ein paar Fragen genügen für den ersten Überblick. Reden wir über Ihre Immobilie in Bannewitz, Freital, Dresden und Umgebung.</p>
-      <div class="rv kontakt-card" data-kf="2">
-        <div class="kf-asking" data-kf-asking>
-          <div class="kf-progress-row"><span class="kf-progress-label" data-kf-progress-label>Frage 1 / 6</span><button type="button" class="kf-back" data-kf-back hidden>← zurück</button></div>
-          <div class="kf-progress-bar"><div class="kf-progress-fill" data-kf-progress-fill style="width:0%"></div></div>
-          <h3 class="kf-question" data-kf-question>–</h3>
-          <div class="kf-opts" data-kf-opts></div>
-          <div class="kf-free-row" data-kf-free-row hidden>
-            <input type="text" class="kf-free-input" data-kf-free-input placeholder="Eigene Angabe">
-            <button type="button" class="kf-free-submit" data-kf-free-submit aria-label="Bestätigen">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="kf-booking" data-kf-booking hidden>
-          <div class="kf-mini-label">Fast geschafft</div>
-          <h3 class="kf-question" style="margin-bottom:8px;">Wann passt Ihnen ein kurzes Gespräch?</h3>
-          <p class="kf-booking-sub">Kostenfrei und unverbindlich – ich rufe Sie zum Wunschtermin an und bespreche Ihre Angaben persönlich. Verfügbar Mo–Fr, 12–13 Uhr.</p>
-          <div class="kf-field-label">Ihr Name</div>
-          <input type="text" class="kf-text-input" data-kf-name placeholder="Vor- und Nachname" autocomplete="name">
-          <div class="kf-field-label">Telefon oder E-Mail</div>
-          <input type="text" class="kf-text-input" data-kf-contact placeholder="Wie erreiche ich Sie am besten?" autocomplete="tel">
-          <input type="text" name="website" class="kf-honeypot" data-kf-honeypot tabindex="-1" autocomplete="off" aria-hidden="true">
-          <div class="kf-field-label">Wochentag</div>
-          <div class="kf-slot-row" data-kf-day-list></div>
-          <div class="kf-field-label">Uhrzeit</div>
-          <div class="kf-slot-row" data-kf-time-list></div>
-          <p class="kf-submit-error" data-kf-error hidden>Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder rufen Sie direkt an.</p>
-          <button type="button" class="btn" data-kf-submit disabled>Termin anfragen</button>
-        </div>
-        <div class="kf-booked" data-kf-booked hidden>
-          <div class="kf-booked-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-          </div>
-          <h3 class="kf-question" style="text-align:center;">Ihr Wunschtermin steht.</h3>
-          <p class="kf-booked-sub">Danke! Ich melde mich zur Bestätigung bei Ihnen – mit einer ersten, ehrlichen Einordnung zu Ihrer Immobilie. Ganz ohne Verpflichtung.</p>
-          <div style="text-align:center;"><button type="button" class="kf-reset-link" data-kf-reset>Neu starten</button></div>
-        </div>
-      </div>
-      <div class="rv kontakt-actions">
-        <a href="tel:+491733719224" class="btn kontakt-phone-btn">+49 173 3719224</a>
-        <a href="mailto:info@immobilien-bannewitz.de" class="btn btn-outline-light">info@immobilien-bannewitz.de</a>
-      </div>
-    </div>
-  </section>
 
 </main>
 
@@ -693,9 +551,12 @@
     </div>
     <div class="footer-links">
       <a href="#hero">Start</a>
+      <a href="netzwerk.html">Netzwerk</a>
+      <a href="ueber-mich.html">Über mich</a>
+      <a href="ohne-makler.html">Ohne Makler</a>
       <a href="tippgeber.html">Tippgeber werden</a>
       <a href="#blog">Blog</a>
-      <a href="#kontakt-2">Kontakt</a>
+      <a href="#kontakt-1">Kontakt</a>
       <a href="datenschutz.html">Datenschutz</a>
       <a href="impressum.html">Impressum</a>
       <a href="agb.html">AGB</a>

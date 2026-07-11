@@ -12,7 +12,7 @@
   --ink-2:#0C0B0A;
   --muted:#4a433a;
   --muted-2:#6B6155;
-  --muted-3:#9a8d7a;
+  --muted-3:#6C6355;
   --pink:#E9207C;
   --pink-deep:#C8286F;
   --pink-bright:#D8347F;
@@ -420,7 +420,8 @@ button{font-family:var(--ff); cursor:pointer}
 
 /* ===== Objektarten ===== */
 .objekte-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px}
-.objekt-card{border-radius:var(--radius); overflow:hidden; background:var(--cream)}
+.objekt-card{border-radius:var(--radius); overflow:hidden; background:var(--cream); display:block; color:inherit}
+.objekt-card:hover{color:inherit}
 .objekt-media{position:relative; height:300px}
 .objekt-media img.z{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
 .objekt-scrim{position:absolute; inset:0; background:linear-gradient(180deg, transparent 45%, rgba(12,11,10,.6))}
@@ -433,7 +434,7 @@ button{font-family:var(--ff); cursor:pointer}
 .statement-section{position:relative; height:clamp(440px,74vh,640px); overflow:hidden; display:flex; align-items:center; justify-content:center; text-align:center; background:var(--ink-2)}
 .statement-img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.46) saturate(.94) sepia(.2)}
 .statement-scrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(12,11,10,.5), rgba(12,11,10,.25) 45%, rgba(12,11,10,.6))}
-.statement-inner{position:relative; z-index:2; padding:0 clamp(24px,7vw,140px); color:var(--cream); max-width:44ch}
+.statement-inner{position:relative; z-index:2; padding:0 clamp(24px,7vw,140px); color:var(--cream); max-width:900px; margin:0 auto}
 .statement-quote{font-weight:300; font-style:italic; font-size:clamp(28px,4.4vw,58px); line-height:1.18; letter-spacing:-.5px; margin:0}
 
 /* ===== Netzwerk ===== */
@@ -454,6 +455,9 @@ button{font-family:var(--ff); cursor:pointer}
   .netzwerk-head{grid-template-columns:36px 1fr; row-gap:8px}
   .netzwerk-org{grid-column:1 / -1; text-align:left; align-self:start}
 }
+.netzwerk-teaser-row{display:flex; flex-wrap:wrap; gap:12px 32px; padding-top:22px; border-top:1px solid rgba(23,20,15,.16)}
+.netzwerk-teaser-name{font-weight:400; font-size:18px; color:var(--ink)}
+.netzwerk-teaser-name::before{content:"—"; color:var(--pink-deep); margin-right:10px}
 
 /* ===== Blog ===== */
 .blog-top{display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:20px; margin-bottom:clamp(40px,6vh,60px)}
