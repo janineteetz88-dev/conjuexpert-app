@@ -267,7 +267,7 @@ button{font-family:var(--ff); cursor:pointer}
 .quiz-card{
   background:var(--cream-3); border:1px solid var(--line-soft); border-radius:4px;
   box-shadow:0 40px 80px -50px rgba(60,42,24,.55); padding:clamp(28px,4vw,48px);
-  text-align:left; min-height:340px; max-width:760px;
+  text-align:left; min-height:340px; max-width:760px; margin-left:auto; margin-right:auto;
 }
 .quiz-progress-label{font-weight:700; font-size:15px; letter-spacing:2px; text-transform:uppercase; color:var(--pink-deep)}
 .quiz-progress-bar{height:3px; background:rgba(23,20,15,.1); border-radius:3px; overflow:hidden; margin-bottom:30px}
