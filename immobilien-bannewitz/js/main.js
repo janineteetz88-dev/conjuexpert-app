@@ -150,6 +150,248 @@
     });
   }
 
+  /* ---------- Quiz / Selbsttest ---------- */
+  var quizData = [
+    { q: 'Ein Interessent will bar aus dem Kofferraum zahlen. Sie…', opts: [
+      { t: '…prüfen Bonität und Herkunft – Geldwäsche lässt grüßen.', p: 0 },
+      { t: '…googeln erst mal „ist das eigentlich erlaubt?".', p: 1 },
+      { t: '…nehmen das Geld, Weihnachten ist gerettet.', p: 2 } ] },
+    { q: 'Was ist Ihre Immobilie wert?', opts: [
+      { t: 'Kommt auf Lage, Zustand, Mietvertrag & 20 andere Dinge an.', p: 0 },
+      { t: 'So viel wie das Nachbarhaus. Ungefähr. Glaube ich.', p: 1 },
+      { t: 'Genau das, was mir das Online-Portal versprochen hat.', p: 2 } ] },
+    { q: 'Der Energieausweis liegt bei Ihnen…', opts: [
+      { t: '…griffbereit, aktuell und im richtigen Typ.', p: 0 },
+      { t: '…irgendwo. Vermutlich. In einem Ordner. Glaube ich.', p: 1 },
+      { t: 'Ein… was? Klingt nach Stromrechnung.', p: 2 } ] },
+    { q: 'Ihre Inserats-Fotos entstehen…', opts: [
+      { t: '…aufgeräumt, bei Tageslicht, mit gutem Blick fürs Motiv.', p: 0 },
+      { t: '…schnell mit dem Handy, Wäscheständer inklusive.', p: 1 },
+      { t: '…im Hochformat, Finger halb auf der Linse, Katze im Bild.', p: 2 } ] },
+    { q: 'Zeit für Anrufe, Besichtigungen und Nachfassen haben Sie…', opts: [
+      { t: 'Wochenweise frei und Nerven aus Stahl.', p: 0 },
+      { t: 'Zwischen Job, Familie, Hobby und Schlafen… weniger.', p: 1 },
+      { t: 'Ich gehe schon jetzt nicht mehr ans Telefon.', p: 2 } ] },
+    { q: 'Am Telefon fragt jemand nach dem Baujahr. Sie…', opts: [
+      { t: '…nennen es aus dem Kopf, samt Sanierungsjahren.', p: 0 },
+      { t: '…rufen kurz „Schaaatz, wann war das nochmal?" durchs Haus.', p: 1 },
+      { t: '…sagen „so ungefähr alt halt" und hoffen auf das Beste.', p: 2 } ] },
+    { q: 'Ein „Interessent" will unbedingt allein durchs leere Haus. Sie…', opts: [
+      { t: '…begleiten grundsätzlich und prüfen vorab, wer da kommt.', p: 0 },
+      { t: '…finden das etwas komisch, sagen aber trotzdem ja.', p: 1 },
+      { t: '…drücken ihm den Schlüssel in die Hand. Wird schon passen.', p: 2 } ] },
+    { q: 'Verhandeln ist für Sie…', opts: [
+      { t: '…Handwerk: Argumente, Ruhe, klare Schmerzgrenze.', p: 0 },
+      { t: '…okay, solange niemand böse guckt.', p: 1 },
+      { t: '…Horror. Beim ersten „zu teuer" knicke ich ein.', p: 2 } ] },
+    { q: 'Nach dem Verkauf zeigt sich Feuchtigkeit im Keller. Sie…', opts: [
+      { t: '…haben alles dokumentiert und offen aufgeklärt – entspannt.', p: 0 },
+      { t: '…hoffen, dass „hab ich nicht gewusst" reicht.', p: 1 },
+      { t: 'Haftung? Nach dem Verkauf ist das doch dessen Problem, oder?', p: 2 } ] },
+    { q: 'Beim Notartermin sind Sie…', opts: [
+      { t: '…bestens vorbereitet, alle Unterlagen komplett.', p: 0 },
+      { t: '…ist da nicht der Makler dabei? Also… oh.', p: 1 },
+      { t: 'Notar? Reicht nicht ein Handschlag unter Ehrenleuten?', p: 2 } ] }
+  ];
+
+  var pannenList = [
+    'Der Preis wird nach Bauchgefühl festgelegt – 20 % zu hoch.',
+    'Der Preis wird aus Angst zu niedrig angesetzt – Geld verschenkt.',
+    'Die Portal-Sofortbewertung wird für bare Münze genommen.',
+    'Das Nachbarhaus als Maßstab – ganz andere Lage, ganz anderer Zustand.',
+    'Monatelang kein Verkauf, weil der Preis nie hinterfragt wurde.',
+    'Der Preis wird gesenkt, sobald der Erste „zu teuer" sagt.',
+    'Verhandlungsspielraum vergessen einzupreisen.',
+    'Emotionaler Wert wird mit Marktwert verwechselt.',
+    'Sanierungsstau wird schöngerechnet statt eingepreist.',
+    'Die Grundsteuer-/Bodenrichtwert-Logik wird komplett übersehen.',
+    'Das Exposé besteht aus drei Sätzen und einer Handynummer.',
+    'Die Überschrift lautet „Haus zu verkaufen" – und sonst nichts.',
+    'Fotos im Hochformat, dunkel, mit Finger auf der Linse.',
+    'Der Wäscheständer steht auf jedem zweiten Bild.',
+    'Die Katze sitzt formatfüllend im besten Motiv.',
+    'Unaufgeräumt fotografiert – Chaos schreckt Käufer ab.',
+    'Nur Innenräume, kein einziges Foto von außen.',
+    'Grundriss fehlt – Interessenten können sich nichts vorstellen.',
+    'Quadratmeter aus dem Gedächtnis angegeben – falsch.',
+    'Wohn- und Nutzfläche werden munter verwechselt.',
+    'Das Baujahr wird „so ungefähr" geschätzt.',
+    'Der Energieausweis fehlt – Bußgeld bis 10.000 €.',
+    'Falscher Typ Energieausweis (Bedarf statt Verbrauch) besorgt.',
+    'Pflichtangaben im Inserat vergessen – Abmahnung droht.',
+    'Das Inserat läuft nur auf einer einzigen Plattform.',
+    'Keine Reichweite, weil das Netzwerk fehlt.',
+    'Der beste Verkaufszeitpunkt wird verpasst.',
+    'Rechtschreibfehler im Exposé wirken unseriös.',
+    'Highlights der Immobilie werden gar nicht erwähnt.',
+    'Die Zielgruppe ist unklar – Ansprache trifft niemanden.',
+    'Das Telefon klingelt zur Unzeit – im Meeting, beim Abendessen.',
+    'Anfragen bleiben tagelang liegen – Interessent ist längst weg.',
+    'Jede Besichtigung frisst einen halben Urlaubstag.',
+    'Fünf Termine an einem Samstag – und keiner erscheint.',
+    'Besichtigungstourismus: Nachbarn wollen nur mal gucken.',
+    'Keine Vorqualifizierung – Zeit mit Nicht-Käufern verbrannt.',
+    'Bonität wird nie geprüft – der „Käufer" kann gar nicht zahlen.',
+    'Ein Fremder geht allein durchs leere Haus.',
+    'Wertgegenstände liegen während der Besichtigung offen herum.',
+    'Die eigene Adresse steht ungeschützt im Netz.',
+    'Trickbetrüger nutzen die Besichtigung zum Auskundschaften.',
+    'Der „Investor" zahlt bar aus dem Kofferraum – Geldwäsche-Alarm.',
+    'Ein Reservierungs-„Anzahlungs"-Trick zieht Geld aus der Tasche.',
+    'Gefälschte Finanzierungsbestätigung wird nicht erkannt.',
+    'Verhandlung eskaliert emotional – die Fronten verhärten.',
+    'Beim ersten Gegenangebot wird sofort eingeknickt.',
+    'Es gibt keine klare Schmerzgrenze – am Ende zu billig verkauft.',
+    'Mehrere Interessenten, aber kein sauberes Bieterverfahren.',
+    'Mündliche Zusagen ohne jede Absicherung.',
+    'Der Käufer springt kurz vor Notar ab – von vorn.',
+    'Grundbuchauszug wurde nie besorgt.',
+    'Altlasten oder Baulasten sind unbekannt.',
+    'Wegerechte und Dienstbarkeiten werden übersehen.',
+    'Teilungserklärung bei der Eigentumswohnung fehlt.',
+    'Protokolle der Eigentümerversammlung: Fehlanzeige.',
+    'Hausgeldabrechnungen der letzten Jahre nicht auffindbar.',
+    'Instandhaltungsrücklage wird falsch dargestellt.',
+    'Denkmalschutz-Auflagen sind gar nicht bekannt.',
+    'Erschließungsbeiträge tauchen plötzlich als Kostenfalle auf.',
+    'Offene Baugenehmigungen oder Schwarzbauten fliegen auf.',
+    'Mängel werden verschwiegen – arglistige Täuschung, Haftung.',
+    'Feuchter Keller wird „übersehen" – der Käufer klagt.',
+    'Zusicherungen im Gespräch werden später zur Haftungsfalle.',
+    'Der Kaufvertrag wird nicht vorab geprüft.',
+    'Fristen und Zahlungsmodalitäten sind unklar geregelt.',
+    'Auflassungsvormerkung? Nie gehört.',
+    'Die Fälligkeit des Kaufpreises ist schlecht abgesichert.',
+    'Verkauft wird an den, der zuerst „ja" sagt – nicht an den Besten.',
+    'Spekulationssteuer wird zu spät bedacht – teuer.',
+    'Die Zehn-Jahres-Frist wird um wenige Wochen verpasst.',
+    'Vorfälligkeitsentschädigung der Bank überrascht eiskalt.',
+    'Steuerliche Folgen bei geerbten Immobilien ignoriert.',
+    'Erbengemeinschaft ist sich uneins – Verkauf blockiert.',
+    'Vollmachten fehlen, wenn mehrere Eigentümer verkaufen.',
+    'Ein Miteigentümer wird schlicht vergessen einzubinden.',
+    'Der laufende Mietvertrag wird beim Preis nicht berücksichtigt.',
+    'Mieter werden vor vollendete Tatsachen gestellt – Ärger.',
+    'Vorkaufsrecht des Mieters übersehen.',
+    'Kündigung wegen Eigenbedarfs falsch aufgesetzt.',
+    'Betriebskostenabrechnung gegenüber Mietern läuft schief.',
+    'Kaution und deren Übergang werden nicht geregelt.',
+    'Die Übergabe erfolgt vor der Kaufpreiszahlung – riskant.',
+    'Zählerstände werden bei der Übergabe nicht abgelesen.',
+    'Es gibt kein Übergabeprotokoll – Streit ist programmiert.',
+    'Schlüssel werden zu früh oder unvollständig übergeben.',
+    'Die Hausverwaltung wird nie über den Eigentümerwechsel informiert.',
+    'Versicherungen laufen ungewollt weiter oder fallen weg.',
+    'Restmüll, Sperrmüll, Öltank – niemand fühlt sich zuständig.',
+    'Der emotionale Abschied lähmt jede Entscheidung.',
+    'Kritik am eigenen Zuhause wird persönlich genommen.',
+    'Familienstreit über Preis und Zeitpunkt eskaliert.',
+    'Aus Bequemlichkeit wird unter Wert an Bekannte verkauft.',
+    'Ein einziger Interessent – und dadurch jede Verhandlungsmacht verloren.',
+    'Zu langes Zögern: Der Markt dreht, die Zinsen steigen.',
+    'Doppelte Belastung, weil das neue Objekt schon gekauft ist.',
+    'Der Verkauf zieht sich über ein Jahr – Nerven am Ende.',
+    'Widerrufs- und Formvorschriften werden missachtet.',
+    'Datenschutz bei Interessentendaten wird ignoriert.',
+    'Am Ende landet die Immobilie doch beim Makler – nur ein Jahr später und billiger.',
+    'Und der Klassiker: Man unterschätzt, wie viel Nerven das alles wirklich kostet.'
+  ];
+
+  var quizState = { index: 0, answers: [] };
+  var quizActiveEl = document.getElementById('quizActive');
+  var quizResultEl = document.getElementById('quizResult');
+  if(quizActiveEl && quizResultEl){
+    var qProgLabel = document.getElementById('quizProgressLabel');
+    var qProgFill = document.getElementById('quizProgressFill');
+    var qQuestion = document.getElementById('quizQuestion');
+    var qOpts = document.getElementById('quizOpts');
+
+    function renderQuizQuestion(){
+      var q = quizData[quizState.index];
+      qProgLabel.textContent = 'Frage ' + (quizState.index + 1) + ' / ' + quizData.length;
+      qProgFill.style.width = (quizState.index / quizData.length * 100) + '%';
+      qQuestion.textContent = q.q;
+      qOpts.innerHTML = '';
+      q.opts.forEach(function(o){
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'q-opt';
+        btn.textContent = o.t;
+        btn.addEventListener('click', function(){ pickQuizAnswer(o.p); });
+        qOpts.appendChild(btn);
+      });
+    }
+
+    function pickQuizAnswer(points){
+      quizState.answers.push(points);
+      quizState.index++;
+      if(quizState.index >= quizData.length){
+        showQuizResult();
+      } else {
+        renderQuizQuestion();
+      }
+    }
+
+    function showQuizResult(){
+      quizActiveEl.hidden = true;
+      quizResultEl.hidden = false;
+      var score = quizState.answers.reduce(function(a,b){ return a+b; }, 0);
+      var max = quizData.length * 2;
+      document.getElementById('quizScoreText').textContent = score + ' / ' + max;
+
+      var label, sub, verdict;
+      if(score >= 14){
+        label = 'Zeit, dass wir reden.';
+        sub = 'Am besten, bevor der Kofferraum-Käufer klingelt.';
+        verdict = 'Okay, das war jetzt streckenweise mutig. Bevor der nächste „Käufer" mit dem Kofferraum vorfährt: Lassen Sie uns lieber vorher sprechen, als hinterher aufräumen. Versprochen: kein Vortrag, nur ein ehrliches, kostenfreies Gespräch.';
+      } else if(score >= 7){
+        label = 'Ein paar Lücken – gut zu wissen.';
+        sub = 'Gemeinsam wird der Verkauf entspannt und sicher.';
+        verdict = 'Ganz ehrlich? Sie sind auf einem guten Weg, aber ein paar Stolpersteine hätten Sie sich lieber erspart. Genau dafür bin ich da – damit aus „hätte, wäre, wenn" ein entspannter, sicherer Verkauf wird. Lassen Sie uns kurz über Ihre Situation sprechen.';
+      } else {
+        label = 'Sie sind erstaunlich fit.';
+        sub = 'Trotzdem: den Rücken freihalten lassen schadet nie.';
+        verdict = 'Respekt – Sie kennen sich richtig gut aus, das sieht man. Trotzdem lassen selbst die Fittesten sich beim Verkauf gern den Rücken freihalten, gerade bei Verhandlung und den Feinheiten im Kaufvertrag. Melden Sie sich gern für eine zweite Meinung – ganz unverbindlich.';
+      }
+      document.getElementById('quizScoreLabel').textContent = label;
+      document.getElementById('quizScoreSub').textContent = sub;
+      document.getElementById('quizVerdict').textContent = verdict;
+    }
+
+    var quizResetBtn = document.getElementById('quizResetBtn');
+    if(quizResetBtn){
+      quizResetBtn.addEventListener('click', function(){
+        quizState = { index: 0, answers: [] };
+        quizResultEl.hidden = true;
+        quizActiveEl.hidden = false;
+        renderQuizQuestion();
+      });
+    }
+    renderQuizQuestion();
+  }
+
+  /* ---------- Pannen-Liste (toggle + Inhalte) ---------- */
+  var pannenToggle = document.getElementById('pannenToggle');
+  var pannenPanel = document.getElementById('pannenPanel');
+  var pannenListEl = document.getElementById('pannenList');
+  if(pannenToggle && pannenPanel && pannenListEl){
+    var pannenTitle = document.getElementById('pannenTitle');
+    if(pannenTitle){ pannenTitle.textContent = pannenList.length + ' ' + pannenTitle.textContent; }
+    pannenList.forEach(function(text, i){
+      var item = document.createElement('div');
+      item.className = 'pannen-item';
+      var n = document.createElement('span'); n.className = 'n'; n.textContent = (i+1);
+      var t = document.createElement('span'); t.className = 't'; t.textContent = text;
+      item.appendChild(n); item.appendChild(t);
+      pannenListEl.appendChild(item);
+    });
+    pannenToggle.addEventListener('click', function(){
+      var open = pannenPanel.hidden;
+      pannenPanel.hidden = !open;
+      pannenToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
   /* ---------- Hero video: force muted (Autoplay-Policy) ---------- */
   var hv = document.querySelector('.hero-media video');
   if(hv){

@@ -130,7 +130,7 @@
   </section>
 
   <!-- ============ ÜBER MICH / TABS ============ -->
-  <section id="vita-intro" aria-labelledby="ueber-h2" style="padding:clamp(80px,12vh,150px) clamp(24px,5vw,80px); background:var(--cream);">
+  <section id="vita-intro" aria-labelledby="ueber-h2" style="padding:clamp(80px,12vh,150px) clamp(24px,5vw,80px) clamp(40px,6vh,72px); background:var(--cream);">
     <div class="wrap ueber-grid" style="max-width:1240px; padding:0;">
       <div class="ueber-head-block">
         <p class="rv eyebrow"><span class="dot"></span>Über mich</p>
@@ -160,7 +160,7 @@
   </section>
 
   <!-- ============ FRAGEN ============ -->
-  <section id="fragen" aria-labelledby="fragen-h2" style="padding:clamp(80px,12vh,150px) clamp(24px,5vw,80px); background:var(--cream);">
+  <section id="fragen" aria-labelledby="fragen-h2" style="padding:clamp(40px,6vh,72px) clamp(24px,5vw,80px) clamp(80px,12vh,150px); background:var(--cream);">
     <div class="wrap" style="max-width:1240px; padding:0;">
       <div style="max-width:40ch; margin-bottom:clamp(40px,6vh,64px);">
         <p class="rv eyebrow"><span class="dot"></span>Was Eigentümer wirklich fragen</p>
@@ -231,7 +231,57 @@
     </div>
   </section>
 
-  <!-- ============ QUIZ (folgt) ============ -->
+  <!-- ============ QUIZ / SELBSTTEST ============ -->
+  <section id="quiz" aria-labelledby="quiz-h2" style="padding:clamp(40px,6vh,72px) clamp(24px,5vw,80px) clamp(80px,12vh,150px); background:var(--cream);">
+    <div class="wrap" style="max-width:1240px; padding:0; text-align:left;">
+      <p class="rv eyebrow"><span class="dot"></span>Kleiner Selbsttest</p>
+      <h2 id="quiz-h2" class="rv" style="font-size:clamp(30px,4.6vw,58px); line-height:1.03; letter-spacing:-.5px; margin:0 0 16px;">Brauchen Sie mich als Maklerin überhaupt?</h2>
+      <p class="rv" style="font-weight:300; font-size:17px; line-height:1.7; color:var(--muted); margin:0 0 28px; max-width:52ch;">Zehn nicht ganz ernst gemeinte Fragen. Am Ende bekommen Sie eine ehrliche – und hoffentlich charmante – Einschätzung, ob Sie eine Maklerin wirklich brauchen.</p>
+      <a href="#quizCard" class="rv btn" style="margin-bottom:40px;">Jetzt den Test machen · 10 Fragen
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+      </a>
+
+      <div class="rv quiz-card" id="quizCard">
+        <div id="quizActive">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <span class="quiz-progress-label" id="quizProgressLabel">Frage 1 / 10</span>
+          </div>
+          <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill" style="width:0%"></div></div>
+          <h3 id="quizQuestion" class="quiz-question">–</h3>
+          <div id="quizOpts" style="display:flex; flex-direction:column; gap:12px;"></div>
+        </div>
+        <div id="quizResult" hidden>
+          <div style="text-align:center;">
+            <div class="quiz-result-eyebrow">Ihr Ergebnis · <span id="quizScoreText"></span> Punkte</div>
+            <h3 id="quizScoreLabel" class="quiz-result-label">–</h3>
+            <p id="quizScoreSub" class="quiz-result-sub">–</p>
+            <blockquote id="quizVerdict" class="quiz-verdict">–</blockquote>
+            <div style="display:flex; flex-wrap:wrap; gap:14px; justify-content:center;">
+              <a href="#kontakt-1" class="btn">Kostenfrei bewerten lassen</a>
+              <button type="button" id="quizResetBtn" class="q-opt quiz-reset-btn">Nochmal testen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv" style="margin-top:clamp(64px,9vh,110px); padding-top:clamp(40px,6vh,60px); border-top:1px solid rgba(23,20,15,.14); text-align:center;">
+        <div style="font-weight:300; font-size:15px; color:var(--muted-2); margin-bottom:18px;">Sie überlegen, es selbst zu machen?</div>
+        <button type="button" id="pannenToggle" class="q-opt pannen-toggle" aria-expanded="false" aria-controls="pannenPanel">
+          Was kann schon schiefgehen, wenn ich Janine nicht beauftrage?
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div id="pannenPanel" class="pannen-panel" hidden>
+          <div class="pannen-title" id="pannenTitle">Dinge, die schiefgehen, wenn Sie allein verkaufen</div>
+          <p class="pannen-sub">Alles schon passiert. Nichts davon muss – dafür bin ich da.</p>
+          <div class="pannen-cols" id="pannenList"></div>
+          <div style="margin-top:26px; text-align:center;">
+            <a href="#kontakt-1" class="btn">Lieber doch zusammenarbeiten?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ STORY FREITAL (folgt) ============ -->
   <!-- ============ ABLAUF (folgt) ============ -->
   <!-- ============ DISKRETION + MIETER (folgt) ============ -->

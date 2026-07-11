@@ -253,3 +253,54 @@ button{font-family:var(--ff); cursor:pointer}
 .frage-body{overflow:hidden; max-height:0; opacity:0; transition:max-height .6s cubic-bezier(.16,1,.3,1), opacity .5s ease; padding:0 clamp(26px,2.6vw,34px)}
 .frage-body p{font-weight:300; font-size:16px; line-height:1.7; color:var(--muted); margin:20px 0 clamp(26px,2.6vw,34px)}
 .frage-card.open .frage-body{max-height:520px; opacity:1}
+
+/* ===== Quiz / Selbsttest ===== */
+.quiz-card{
+  background:var(--cream-3); border:1px solid var(--line-soft); border-radius:4px;
+  box-shadow:0 40px 80px -50px rgba(60,42,24,.55); padding:clamp(28px,4vw,48px);
+  text-align:left; min-height:340px; max-width:760px;
+}
+.quiz-progress-label{font-weight:700; font-size:15px; letter-spacing:2px; text-transform:uppercase; color:var(--pink-deep)}
+.quiz-progress-bar{height:3px; background:rgba(23,20,15,.1); border-radius:3px; overflow:hidden; margin-bottom:30px}
+.quiz-progress-fill{height:100%; background:var(--pink-deep); border-radius:3px; transition:width .4s cubic-bezier(.16,1,.3,1)}
+.quiz-question{font-weight:400; font-size:clamp(22px,3vw,32px); line-height:1.2; margin:0 0 28px; color:var(--ink)}
+.q-opt{
+  border:1px solid rgba(23,20,15,.18); background:var(--cream-2); border-radius:3px;
+  padding:17px 20px; font-family:var(--ff); font-weight:400; font-size:16px; line-height:1.45;
+  color:var(--ink); text-align:left; cursor:pointer; transition:all .2s ease; width:100%;
+}
+.q-opt:hover{border-color:var(--pink-deep); background:#fff; transform:translateX(4px)}
+.quiz-result-eyebrow{font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--pink-deep); margin-bottom:14px}
+.quiz-result-label{font-weight:400; font-size:clamp(26px,3.4vw,40px); line-height:1.1; margin:0 0 10px; color:var(--ink)}
+.quiz-result-sub{font-weight:300; font-size:16px; color:var(--muted-2); margin:0 0 26px}
+.quiz-verdict{
+  font-family:var(--ff); font-style:italic; font-weight:400; font-size:clamp(19px,2.2vw,25px); line-height:1.4;
+  color:var(--ink); margin:0 auto 30px; max-width:46ch; padding:26px 28px; background:var(--cream-2);
+  border-radius:4px; border:1px solid rgba(200,40,111,.2);
+}
+.quiz-reset-btn{
+  all:unset; box-sizing:border-box; cursor:pointer; font-family:var(--ff); font-weight:500; font-size:14px;
+  letter-spacing:2px; text-transform:uppercase; color:var(--ink); border:1px solid rgba(23,20,15,.25);
+  padding:15px 30px; border-radius:2px; text-align:center; background:transparent; width:auto;
+}
+.quiz-reset-btn:hover{background:var(--ink); color:var(--cream); transform:none; border-color:var(--ink)}
+
+.pannen-toggle{
+  all:unset; box-sizing:border-box; display:inline-flex; align-items:center; gap:10px; cursor:pointer;
+  font-family:var(--ff); font-weight:600; font-size:13px; letter-spacing:1.5px; text-transform:uppercase;
+  color:var(--pink-deep); border:2px solid var(--pink-deep); background:rgba(233,32,124,.08);
+  border-radius:999px; padding:18px 34px; transition:all .25s ease; box-shadow:0 10px 30px -16px rgba(233,32,124,.6);
+  width:auto;
+}
+.pannen-toggle:hover{color:#fff; background:var(--pink); transform:translateY(-3px); box-shadow:0 18px 40px -14px rgba(233,32,124,.8)}
+.pannen-panel{
+  margin-top:22px; text-align:left; background:var(--ink); color:var(--cream); border-radius:4px;
+  padding:clamp(24px,3vw,40px);
+}
+.pannen-title{font-weight:400; font-size:clamp(21px,2.6vw,30px); line-height:1.15; margin:0 0 6px}
+.pannen-sub{font-weight:300; font-size:14px; color:rgba(237,229,215,.6); margin:0 0 24px}
+.pannen-cols{column-count:2; column-gap:34px; max-height:480px; overflow:auto}
+@media (max-width:620px){ .pannen-cols{column-count:1} }
+.pannen-item{break-inside:avoid; display:flex; gap:12px; padding:9px 0; border-bottom:1px solid rgba(237,229,215,.09)}
+.pannen-item .n{font-size:15px; color:var(--pink); min-width:28px; flex:none}
+.pannen-item .t{font-weight:300; font-size:14px; line-height:1.45; color:rgba(237,229,215,.9)}
