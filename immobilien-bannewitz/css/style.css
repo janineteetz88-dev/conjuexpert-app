@@ -161,7 +161,7 @@ button{font-family:var(--ff); cursor:pointer}
 .hero-content .eyebrow{color:rgba(255,255,255,.82); gap:10px}
 .hero-content .eyebrow .dot{background:var(--pink-bright); width:6px; height:6px}
 .hero-title{
-  font-weight:400; font-size:clamp(38px,6.2vw,94px); line-height:.99;
+  font-weight:400; font-size:clamp(32px,min(6.2vw,8.2vh),84px); line-height:1.03;
   letter-spacing:-1px; margin:0; max-width:19ch; text-shadow:0 2px 44px rgba(0,0,0,.42);
 }
 .hero-title span{display:block; opacity:0; animation:fadeup 1s cubic-bezier(.16,1,.3,1) both}
@@ -194,7 +194,8 @@ button{font-family:var(--ff); cursor:pointer}
 }
 
 /* ===== Suchprofile ===== */
-.suche-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px}
+.suche-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; max-width:840px; margin:0 auto}
+@media (max-width:640px){ .suche-grid{grid-template-columns:1fr} }
 @media (min-width:640px){ .suche-h2-nowrap{white-space:nowrap} }
 .suche-card{background:var(--cream-3); border:1px solid var(--line-soft); border-radius:var(--radius); padding:30px 28px; display:flex; flex-direction:column; gap:14px}
 .suche-card-head{display:flex; align-items:baseline; justify-content:space-between; gap:12px}
@@ -207,7 +208,7 @@ button{font-family:var(--ff); cursor:pointer}
 .ueber-grid{
   display:grid; grid-template-columns:1.1fr .95fr;
   grid-template-areas:"head media" "tabs media" "stats media";
-  gap:clamp(40px,6vw,96px); align-items:start;
+  row-gap:22px; column-gap:clamp(40px,6vw,96px); align-items:start;
 }
 .ueber-head-block{grid-area:head}
 .ueber-tabs-block{grid-area:tabs}
@@ -229,7 +230,7 @@ button{font-family:var(--ff); cursor:pointer}
 .ueber-tab[aria-selected="true"]{background:var(--pink-deep); color:#fff; border-color:var(--pink-deep)}
 .ueber-tab[aria-selected="true"]:hover{color:#fff; background:var(--pink)}
 
-.ueber-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:24px; padding-top:30px; border-top:1px solid rgba(23,20,15,.14)}
+.ueber-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:24px; padding-top:20px; border-top:1px solid rgba(23,20,15,.14)}
 .stat-num{font-size:46px; line-height:1}
 .stat-num .stat-unit{font-size:.4em; font-weight:500; vertical-align:bottom; margin-left:3px; color:var(--pink-deep)}
 .stat-label{font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted-2); margin-top:10px}
