@@ -392,6 +392,43 @@
     });
   }
 
+  /* ---------- Ablauf: Drag-Scroll + Pfeile + Fortschrittsbalken ---------- */
+  var track = document.getElementById('stepsTrack');
+  if(track){
+    var down = false, sx = 0, sl = 0, moved = false;
+    function abStart(x){ down = true; moved = false; sx = x; sl = track.scrollLeft; track.classList.add('drag'); }
+    function abMove(x){ if(!down) return; var d = x - sx; if(Math.abs(d) > 4) moved = true; track.scrollLeft = sl - d; }
+    function abEnd(){ down = false; track.classList.remove('drag'); }
+    track.addEventListener('pointerdown', function(e){ abStart(e.clientX); });
+    track.addEventListener('pointermove', function(e){ abMove(e.clientX); });
+    track.addEventListener('pointerup', abEnd);
+    track.addEventListener('pointerleave', abEnd);
+    track.addEventListener('click', function(e){ if(moved){ e.preventDefault(); e.stopPropagation(); } }, true);
+
+    var abThumb = document.getElementById('abThumb');
+    function updThumb(){
+      if(!abThumb) return;
+      var sw = track.scrollWidth, cw = track.clientWidth;
+      var vis = Math.max(0.12, cw / sw);
+      abThumb.style.width = (vis * 100) + '%';
+      var maxScroll = sw - cw;
+      var p = maxScroll > 0 ? track.scrollLeft / maxScroll : 0;
+      abThumb.style.left = (p * (100 - vis * 100)) + '%';
+    }
+    track.addEventListener('scroll', updThumb, {passive:true});
+    updThumb();
+
+    function scrollAb(dir){
+      var card = track.querySelector('.step');
+      var step = card ? card.getBoundingClientRect().width + 22 : 340;
+      track.scrollBy({ left: dir * step, behavior: 'smooth' });
+    }
+    var abPrev = document.getElementById('abPrev');
+    var abNext = document.getElementById('abNext');
+    if(abPrev) abPrev.addEventListener('click', function(){ scrollAb(-1); });
+    if(abNext) abNext.addEventListener('click', function(){ scrollAb(1); });
+  }
+
   /* ---------- Hero video: force muted (Autoplay-Policy) ---------- */
   var hv = document.querySelector('.hero-media video');
   if(hv){
