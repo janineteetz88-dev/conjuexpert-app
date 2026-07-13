@@ -6888,11 +6888,23 @@ function QuizView({
     const lvl = skill === "advanced" ? "C1-level" : skill === "intermediate" ? "B1-level" : "very simple A1–A2";
     const advConn = skill === "advanced" ? ` Make it a more complex sentence that naturally uses a subordinating connector (e.g. German: obwohl/trotzdem/damit/während/sodass; Spanish: aunque/a pesar de que/para que; French: bien que/quoique/afin que/pourtant; Dutch: hoewel/zodat/terwijl), like "Trotz der Umstände hielten sie durch."` : "";
     const theme = allThemes.find(t => t.id === curTopic);
-    const topicTxt = theme && theme.topic ? ` The sentence should relate to: ${theme.topic}.` : "";
-    // Optionally weave one of the learner's saved words into the example sentence.
-    const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
-    const myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
-    const myWordTxt = myWord ? ` If it fits naturally, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence.` : "";
+    // Eigene Liste als Thema (id "cat:<Name>") → NICHT „über <Name>" schreiben,
+    // sondern die gespeicherten Wörter DIESER Liste im Satz üben.
+    const catName = (typeof curTopic === "string" && curTopic.indexOf("cat:") === 0) ? curTopic.slice(4) : null;
+    let catWords = [];
+    if (catName) {
+      try { catWords = (getVocab() || []).filter(v => v && v.lang === lang && (v.cat || generalCat()) === catName && v.term).map(v => String(v.term).trim()).filter(Boolean); } catch (e) {}
+    }
+    const topicTxt = catName ? "" : (theme && theme.topic ? ` The sentence should relate to: ${theme.topic}.` : "");
+    let myWord = "", myWordTxt = "";
+    if (catWords.length) {
+      myWord = catWords[Math.floor(Math.random() * catWords.length)];
+      myWordTxt = ` The sentence MUST naturally include the learner's saved ${targetName} word "${myWord}".`;
+    } else {
+      const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
+      myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
+      myWordTxt = myWord ? ` If it fits naturally, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence.` : "";
+    }
     const key = `kunju-cloze7-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {
@@ -7444,10 +7456,22 @@ function QuizView({
     const targetName = window.CONJ[tc].name;
     const tid = topicOverride || (topicsSel.length ? topicsSel[Math.floor(Math.random() * topicsSel.length)] : "random");
     const theme = allThemes.find(t => t.id === tid);
-    const topic = theme && theme.topic ? theme.topic : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)];
-    const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
-    const myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
-    const myWordTxt = myWord ? ` Its ${targetName} translation should, if it fits naturally, include the saved word "${myWord}".` : "";
+    // Eigene Liste als Thema → deren gespeicherte Wörter üben (statt „über <Name>").
+    const catName = (typeof tid === "string" && tid.indexOf("cat:") === 0) ? tid.slice(4) : null;
+    let catWords = [];
+    if (catName) {
+      try { catWords = (getVocab() || []).filter(v => v && v.lang === lang && (v.cat || generalCat()) === catName && v.term).map(v => String(v.term).trim()).filter(Boolean); } catch (e) {}
+    }
+    const topic = catName ? "an everyday situation" : (theme && theme.topic ? theme.topic : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)]);
+    let myWord = "", myWordTxt = "";
+    if (catWords.length) {
+      myWord = catWords[Math.floor(Math.random() * catWords.length)];
+      myWordTxt = ` Its ${targetName} translation MUST naturally include the saved word "${myWord}".`;
+    } else {
+      const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
+      myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
+      myWordTxt = myWord ? ` Its ${targetName} translation should, if it fits naturally, include the saved word "${myWord}".` : "";
+    }
     const pool = tenseSel.length ? tenseSel : tenseOpts.map(t => t.id);
     const chosenId = pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
     const chosen = chosenId ? tenseOpts.find(t => t.id === chosenId) || {} : {};
