@@ -1388,6 +1388,13 @@ body {
 .gm-chcta-chev { color: var(--lc, #ff9f0a); flex: none; display: inline-flex; }
 .gm-row { width: 100%; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 11px 13px; margin-bottom: 8px; font-family: var(--font-display); transition: transform .1s; }
 .gm-row:active { transform: scale(.99); }
+/* Themenliste + Löschen-Knopf nebeneinander */
+.gm-rowwrap { display: flex; align-items: stretch; gap: 8px; margin-bottom: 8px; }
+.gm-rowwrap .gm-row { flex: 1; min-width: 0; margin-bottom: 0; }
+.gm-row-del { flex: none; width: 48px; border: 1px solid var(--border); background: var(--surface); border-radius: 14px; color: var(--muted); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: color .15s, border-color .15s; }
+.gm-row-del:hover, .gm-row-del:active { color: #ff3b5c; border-color: color-mix(in srgb, #ff3b5c 40%, var(--border)); }
+.gm-row-del-ic { display: inline-flex; }
+.gm-row-del-ic svg { width: 17px; height: 17px; }
 .gm-ch { border-left: 3px solid var(--lang-color, #ff9f0a); }
 .gm-ic { width: 36px; height: 36px; border-radius: 10px; background: var(--surface-2); display: flex; align-items: center; justify-content: center; color: var(--text); flex: none; }
 .gm-mid { flex: 1; min-width: 0; }
@@ -3014,7 +3021,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-99"></script>
+<script defer src="/app.js?v=c-sand-100"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->

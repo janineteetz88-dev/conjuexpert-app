@@ -11722,6 +11722,19 @@ function vocabLists(lang) {
     return { cat: c, count: arr.length, due: due, pct: arr.length ? mastered / arr.length : 0, general: isGeneralCat(c) };
   }).sort((a, b) => (b.general - a.general) || (b.count - a.count));
 }
+/* Liste löschen (auch aus der Übersicht): Wörter zurück nach „Gemerkte Wörter",
+   Thema ausblenden. Nichts geht verloren. Cloud-Sync via saveVocab. */
+function removeVocabList(lang, cat) {
+  if (!cat || isGeneralCat(cat)) return;
+  const gen = generalCat();
+  const moved = getVocab().map(it => (it && it.lang === lang && it.cat === cat) ? Object.assign({}, it, { cat: gen }) : it);
+  saveVocab(moved);
+  const names = recall("kunju-vocab-catnames", []);
+  if (names.indexOf(cat) >= 0) persist("kunju-vocab-catnames", names.filter(x => x !== cat));
+  const hidden = recall("kunju-vocab-cathidden", []);
+  if (hidden.indexOf(cat) < 0) persist("kunju-vocab-cathidden", [...hidden, cat]);
+  try { window.dispatchEvent(new Event("kunju-vocab-synced")); } catch (e) {}
+}
 /* Aufklappbare Erklärung wie bei den Quiz-Modi (ExplainCard) — 3 Zeilen als HTML */
 function gemerktExplainHtml() {
   const rows = [
@@ -11737,6 +11750,8 @@ function gemerktExplainHtml() {
 }
 function GemerktOverview({ lang, favs, onOpenList, onVerbs, onChallenge, onNewList, onNewChallenge }) {
   const h = React.createElement;
+  const [delCat, setDelCat] = useState(null);   // Liste löschen: Bestätigung
+  const [, forceTick] = useState(0);             // Re-Render nach dem Löschen
   const lists = vocabLists(lang);
   const dueTotal = vocabDueCount(lang);
   const favCount = (favs || []).filter(f => f.lang === lang && f.verb).length;
@@ -11785,12 +11800,23 @@ function GemerktOverview({ lang, favs, onOpenList, onVerbs, onChallenge, onNewLi
         g ? dueBadge(g.due) : null,
         chev);
     })(),
-    lists.filter(l => !l.general).map(l => h("button", { className: "gm-row", key: l.cat, onClick: () => onOpenList(l.cat) },
-      ico(IC_LIST),
-      h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, l.cat), metaEl(l)),
-      dueBadge(l.due),
-      chev)),
-    h("button", { className: "gm-addliste", onClick: onNewList }, h("span", { className: "gm-ic-plus", dangerouslySetInnerHTML: { __html: IC_PLUS2 } }), " ", tr("gm_new_list")));
+    lists.filter(l => !l.general).map(l => h("div", { className: "gm-rowwrap", key: l.cat },
+      h("button", { className: "gm-row", onClick: () => onOpenList(l.cat) },
+        ico(IC_LIST),
+        h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, l.cat), metaEl(l)),
+        dueBadge(l.due),
+        chev),
+      h("button", { className: "gm-row-del", "aria-label": tr("gm_del_list"), onClick: () => setDelCat(l.cat) },
+        h("span", { className: "gm-row-del-ic", dangerouslySetInnerHTML: { __html: IC_TRASH } })))),
+    h("button", { className: "gm-addliste", onClick: onNewList }, h("span", { className: "gm-ic-plus", dangerouslySetInnerHTML: { __html: IC_PLUS2 } }), " ", tr("gm_new_list")),
+    delCat ? h("div", { className: "chpick-bg", onClick: () => setDelCat(null) },
+      h("div", { className: "chpick", onClick: e => e.stopPropagation() },
+        h("div", { className: "chpick-hd" }, h("b", null, tr("gm_del_t")), h("button", { className: "chpick-x", "aria-label": "close", onClick: () => setDelCat(null) }, "×")),
+        h("p", { style: { fontSize: "13.5px", lineHeight: 1.5, color: "var(--muted)", margin: "0 0 16px" } },
+          tr("gm_del_b", { n: getVocab().filter(it => it && it.lang === lang && it.cat === delCat).length })),
+        h("div", { style: { display: "flex", gap: "9px" } },
+          h("button", { className: "voc-del-keep", onClick: () => setDelCat(null) }, tr("gm_del_no")),
+          h("button", { className: "voc-del-go", onClick: () => { const c = delCat; setDelCat(null); removeVocabList(lang, c); forceTick(t => t + 1); } }, tr("gm_del_yes"))))) : null);
 }
 function SavedTab({
   lang,
