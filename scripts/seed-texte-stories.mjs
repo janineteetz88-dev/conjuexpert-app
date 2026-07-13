@@ -23,7 +23,8 @@
  *   SEED_NATIVE   string       default: German         (language of translations + questions)
  *   SEED_TARGET   number       default: 3              (variants to ensure per combo)
  *   SEED_LIMIT    number       default: 0 (= no limit) (max combos to touch this run)
- *   WORKER_URL, SUPA_URL, SUPA_KEY  (defaults match the app)
+ *   WORKER_URL    required     Cloudflare Worker AI proxy URL (no default — ask Hans/Janine)
+ *   SUPA_URL, SUPA_KEY              (defaults match the app)
  *
  * NOTE ON COST: every story = a few AI calls through your Cloudflare Worker
  *   (→ OpenAI). This is a ONE-TIME cost. Estimate before a big run:
@@ -35,9 +36,11 @@
  *   language.
  */
 
-const WORKER   = process.env.WORKER_URL || 'https://bitter-bird-3204.janine-teetz88.workers.dev';
+const WORKER   = process.env.WORKER_URL;
 const SUPA_URL = process.env.SUPA_URL   || 'https://lrhmyboevoxtlvoxnrny.supabase.co';
 const SUPA_KEY = process.env.SUPA_KEY   || 'sb_publishable_HJMTA3em7L69hzbQrwgwOA_WsYgyN3P';
+
+if (!WORKER) { console.error('WORKER_URL env var is required (Cloudflare Worker AI proxy URL).'); process.exit(1); }
 
 const LANGS  = (process.env.SEED_LANGS  || 'es,de,en,nl,fr').split(',').map(s => s.trim()).filter(Boolean);
 const LEVELS = (process.env.SEED_LEVELS || 'beginner,intermediate,advanced').split(',').map(s => s.trim()).filter(Boolean);
