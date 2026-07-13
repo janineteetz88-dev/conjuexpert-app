@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.immobilien-bannewitz.de/sitemap.xml
