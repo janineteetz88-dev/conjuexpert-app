@@ -1,5 +1,5 @@
-/* ConjuExpert service worker — basic offline app shell */
-const CACHE = "conjuexpert-v122";
+/* ConjuExpert service worker — app shell, cache-first (stale-while-revalidate) */
+const CACHE = "conjuexpert-v123";
 const ASSETS = [
   "./index.html", "./app.js", "./manifest.webmanifest",
   "./icon-192.png", "./icon-512.png", "./icon-maskable.png",
@@ -19,27 +19,39 @@ self.addEventListener("install", (e) => {
 self.addEventListener("activate", (e) => {
   e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
 });
+/* Cache-first mit Hintergrund-Aktualisierung (stale-while-revalidate):
+   Der Homescreen-Start wird SOFORT aus dem Cache bedient — kein Warten aufs
+   Netz mehr (das war die schwarze Lücke beim Kaltstart). Im Hintergrund wird
+   die Datei neu geladen und für den nächsten Start aktualisiert. */
 self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET") return;
-  const sameOrigin = req.url.startsWith(self.location.origin);
-  // Network-first; für eigene Dateien den HTTP-Cache umgehen, damit Edits sofort greifen.
-  e.respondWith(
-    fetch(sameOrigin ? new Request(req, { cache: "reload" }) : req).then((res) => {
-      if (res && res.ok && sameOrigin) {
-        const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy));
-      }
-      return res;
-    }).catch(() =>
-      // Netzwerk fehlgeschlagen: aus dem Cache bedienen. ignoreSearch, damit
-      // z. B. app.js?v=xyz auf das gecachte ./app.js trifft (verhindert, dass
-      // ein Skript-Request fälschlich index.html bekommt → HTML als JS = Blank).
-      caches.match(req, { ignoreSearch: true }).then((hit) => {
-        if (hit) return hit;
-        // Nur echte Seitenaufrufe fallen auf die App-Shell zurück, keine Skripte.
-        if (req.mode === "navigate") return caches.match("./index.html");
-        return Response.error();
+  // Fremde Hosts (Supabase, KI, Fonts …) normal ans Netz — nicht abfangen.
+  if (!req.url.startsWith(self.location.origin)) return;
+
+  // Seitenaufrufe: App-Shell (index.html) sofort aus dem Cache, im Hintergrund frisch holen.
+  if (req.mode === "navigate") {
+    e.respondWith(
+      caches.match("./index.html").then((cached) => {
+        const net = fetch(req).then((res) => {
+          if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put("./index.html", copy)); }
+          return res;
+        }).catch(() => null);
+        return cached || net.then((r) => r || caches.match("./index.html"));
       })
-    )
+    );
+    return;
+  }
+
+  // Übrige eigene GETs (app.js, engine/*, Icons …): stale-while-revalidate.
+  // ignoreSearch, damit app.js?v=xyz auf das gecachte ./app.js trifft.
+  e.respondWith(
+    caches.match(req, { ignoreSearch: true }).then((cached) => {
+      const net = fetch(req).then((res) => {
+        if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
+        return res;
+      }).catch(() => null);
+      return cached || net.then((r) => r || Response.error());
+    })
   );
 });
