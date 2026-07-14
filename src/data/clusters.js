@@ -223,6 +223,7 @@ export const clusters = [
     },
     spokes: [
       { slug: "/blog/irregular-verbs-englisch", title: "Unregelmäßige Verben Englisch: 4 Gruppen, die das Chaos beenden", live: true },
+      { slug: "/blog/present-continuous-simple-present", title: "Present continuous vs. simple present: -ing oder nicht?", live: true },
     ],
   },
   {
