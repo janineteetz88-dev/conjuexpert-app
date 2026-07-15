@@ -3660,6 +3660,16 @@ function deClozeBadFrame(full, answer) {
     return DE_PERF_AUX.some(a => { const ai = s.indexOf(" " + a + " "); return ai >= 0 && ai < fi; });
   } catch (e) { return false; }
 }
+/* Unpersönliche Verben (Subjekt = Ereignis/Sache, NIE eine Person). Für diese
+   bauen wir den Beispielsatz FEST aus der 3.-Person-Konjugation — keine KI, damit
+   kein Unsinn wie „Ich fand die Feier statt" entstehen kann. Nur eindeutige Verben. */
+const IMPERSONAL_SUBJ = {
+  de: { stattfinden: "Die Feier", geschehen: "Ein Wunder", gelingen: "Der Kuchen", misslingen: "Der Versuch", vorkommen: "So etwas", auffallen: "Der Fehler" },
+  nl: { plaatsvinden: "Het concert", gebeuren: "Het", lukken: "Het plan", mislukken: "De proef" },
+  en: { happen: "Something", occur: "A problem" },
+  es: { ocurrir: "Algo", suceder: "Algo", acontecer: "Algo" },
+  fr: { survenir: "Un problème" }
+};
 // Deterministische, immer grammatikalisch korrekte Beispiel-Vorlage (Fallback).
 function deClozeTemplate(qq) {
   try {
@@ -5062,6 +5072,31 @@ function TenseCard({
         open: true,
         s: cached.s,
         n: cached.n
+      });
+      return;
+    }
+    // Unpersönliche Verben: Satz FEST aus der 3.-Person-Form bauen (keine KI → kein Unsinn).
+    const impSubj = (IMPERSONAL_SUBJ[langCode] || {})[verb];
+    if (impSubj) {
+      const f3 = (tense.forms[2] && tense.forms[2] !== "—") ? tense.forms[2] : form;
+      const sTarget = `${impSubj} **${f3}**.`;
+      const sameLangI = native === engineName;
+      if (sameLangI || !window.__hasAI()) {
+        const out = { s: sTarget, n: sameLangI ? stripMark(sTarget) : "" };
+        persist(key, out);
+        setTenseEx({ open: true, s: out.s, n: out.n });
+        return;
+      }
+      // Nur die (unkritische) Übersetzung des korrekten Satzes via KI holen.
+      window.aiComplete(`Translate this ${engineName} sentence into ${native} in natural everyday register. Reply with ONLY the translation, no quotes, no extra text: ${stripMark(sTarget)}`).then(t => {
+        const n = String(t || "").trim().replace(/^["'«»]+|["'«».]+$/g, "").split("\n")[0].trim();
+        const out = { s: sTarget, n: n || "" };
+        persist(key, out);
+        setTenseEx({ open: true, s: out.s, n: out.n });
+      }).catch(() => {
+        const out = { s: sTarget, n: "" };
+        persist(key, out);
+        setTenseEx({ open: true, s: out.s, n: out.n });
       });
       return;
     }
