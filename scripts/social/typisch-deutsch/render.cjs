@@ -23,7 +23,7 @@ catch { ({ chromium } = require('/opt/node22/lib/node_modules/playwright')); }
 
 const DIR = __dirname;
 const FPS = 30;
-const SECONDS = 11;          // muss zur --dur-Timeline in template.html passen
+const SECONDS = 14;          // muss zur --dur-Timeline in template.html passen
 const N = FPS * SECONDS;
 
 (async () => {

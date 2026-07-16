@@ -44,6 +44,9 @@ h1 .r{color:var(--red)}
 .form .hl{background:#ffe9ee;color:var(--red);padding:2px 14px;border-radius:12px}
 .tip{font-family:'SB';font-size:30px;color:#6a7080;margin-top:26px}
 .check{font-family:'SG';font-weight:700;font-size:40px;color:var(--red);margin-top:28px}
+.betabox{margin-top:44px;font-family:'JB';font-weight:700;font-size:40px;color:var(--ink);line-height:1.4}
+.betabox .code{background:var(--red);color:#fff;padding:8px 20px;border-radius:12px}
+.appline{margin-top:30px;font-family:'JB';font-weight:700;font-size:30px;letter-spacing:.02em;color:#8890a0}
 </style></head>
 <body><div id="stage"></div>
 <script>
@@ -54,7 +57,13 @@ const CFG = (window.__QUIZ || {
     {verb:'gehen', tense:'Perfekt', person:'ich', hint:'which auxiliary?', form:'bin gegangen', hlpart:'bin', tip:'Movement verbs take „sein", not „haben".'},
     {verb:'sein', tense:'Präteritum', person:'ich', hint:'fully irregular', form:'war', hlpart:'war', tip:'The most irregular verb — just memorise it.'},
   ],
-  cta:{title:'How many did<br>you get? 👇', sub:'Practice every German verb — free'}
+  cta:{title:'How many did<br>you get? 👇', sub:'Practice every German verb — free'},
+  beta:{
+    title:'We need<br>your <span class="r">feedback</span> 🙏',
+    sub:"ConjuExpert is in beta — help us make it better.",
+    code:'Code <span class="code">FEEDBACK100</span> → test 1 month free',
+    app:'conjuexpert.app · no download needed'
+  }
 });
 const LOGO='<svg class="mark" viewBox="1 4 30 24"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg><span class="w">Conju<b>Expert</b></span>';
 const LANGS=[{c:'ES',w:'Buscamos'},{c:'EN',w:'We’re looking for'},{c:'FR',w:'Nous cherchons'},{c:'NL',w:'Wij zoeken'}];
@@ -73,6 +82,7 @@ CFG.words.forEach((w,i)=>{
     ${sign}</div>`);
 });
 slides.push(`<div class="slide">${chrome('★')}<div class="eyebrow">Your score</div><h1>${CFG.cta.title}</h1><div class="sub">${CFG.cta.sub}</div>${sign}</div>`);
+slides.push(`<div class="slide">${chrome('BETA')}<div class="eyebrow">We're in beta 🚀</div><h1>${CFG.beta.title}</h1><div class="sub">${CFG.beta.sub}</div><div class="betabox">${CFG.beta.code}</div><div class="appline">${CFG.beta.app}</div>${sign}</div>`);
 document.getElementById('stage').innerHTML=slides.join('');
 window.__count=slides.length;
 window.__ready=document.fonts.ready;
