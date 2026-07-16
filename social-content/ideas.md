@@ -1,5 +1,18 @@
 # Content-Ideen / Backlog (Social)
 
+## 🏷️ Slogan / Marken-Sprache (NUR diese verwenden — nichts erfinden!)
+**Janines Merk-/CTA-Zeile (Videos):** „**Learn German verbs faster — with ConjuExpert.app!**"
+  (Janines Wortlaut: „Verben in German schneller mit ConjuExpert.app!" — Deutsch-Englisch-Mix ist ok/on-brand)
+**Echte App-Zeilen (aus dem Code):**
+- „Der Konjugationstrainer" / „The conjugation trainer"
+- Tagline: „konjugieren · quiz · lernen" / „conjugate · quiz · learn"
+- Pitch: „5 Sprachen. KI-Support. Ein Klick." / „5 languages. AI support. One click."
+- Merkmale: „Sofort. Kostenlos. Kein Download nötig." / „Instant. Free. No download needed."
+- App-Hero DE: „Sprich Deutsch souverän."
+**CTA/Code (FEEDBACK100) gehört in die CAPTION, nicht ins Video.**
+
+
+
 ## 🧩 Karussell: „You already know 1000s of German words" (Endungs-Muster)
 **Pillar:** German-Pain / Vokabel-Hack · **Format:** Karussell (Frage→Beispiele)
 **Inspiration:** viraler Reel @german_with_rahi (206 Tsd. Likes) — NICHT kopieren, eigenes CI.
