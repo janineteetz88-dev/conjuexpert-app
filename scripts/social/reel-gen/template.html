@@ -38,6 +38,7 @@ body.go .prog{animation:prog 11s linear forwards}
 .hook{font-family:'SG';font-weight:700;font-size:104px;line-height:1.02;letter-spacing:-.02em;color:var(--ink)}
 .hook .split{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hook .gap{display:inline-block;width:44px}
+.hook .emoji{-webkit-text-fill-color:initial;background:none;-webkit-background-clip:border-box;background-clip:border-box}
 body.go .sA{animation:sA 11s ease both}
 @keyframes sA{0%{opacity:0;transform:translateY(40px) scale(.96)}3%{opacity:1;transform:none}15%{opacity:1;transform:none}19%{opacity:0;transform:translateY(-30px)}100%{opacity:0}}
 
@@ -120,7 +121,8 @@ body.go .sD .pill{animation:pop 11s ease both}
 const DEFAULT = {
   eyebrow: "Verb des Tages",
   hookTop: "German verbs that",
-  hookSplit: "split&nbsp;in&nbsp;half 🤯",
+  hookSplit: "split&nbsp;in&nbsp;half",
+  hookEmoji: "🤯",
   bLabel: 'Meet: <span class="t">aufstehen</span>',
   bSub: "(to get up) — a separable verb",
   bImg: "assets/aufstehen-forms.png",
@@ -137,7 +139,7 @@ const DEFAULT = {
 const R = Object.assign({}, DEFAULT, (window.__REEL || {}));
 const set = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
 set('a-eye', R.eyebrow);
-set('a-hook', R.hookTop + '<br><span class="split">' + R.hookSplit + '</span>');
+set('a-hook', R.hookTop + '<br><span class="split">' + R.hookSplit + '</span>' + (R.hookEmoji ? ' <span class="emoji">' + R.hookEmoji + '</span>' : ''));
 set('b-label', R.bLabel); set('b-sub', R.bSub); set('b-callout', R.bCallout);
 document.getElementById('b-img').src = R.bImg;
 set('c-big', R.cBig); set('c-lead', R.cLead); set('c-ex', R.cEx); set('c-trans', R.cTrans);
