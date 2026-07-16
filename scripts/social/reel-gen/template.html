@@ -3,7 +3,7 @@
 @font-face{font-family:'SB';src:url('assets/schib.woff2') format('woff2');font-weight:400 700;font-display:block}
 @font-face{font-family:'JB';src:url('assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--ink:#14151a;--cream:#f3f4f8;--red:#ff3b5c;--rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff)}
+:root{--ink:#14151a;--cream:#f3f4f8;--red:#ff3b5c;--rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);--dur:30s}
 #reel{position:relative;width:1080px;height:1920px;overflow:hidden;background:#eef0f6;font-family:'SB',sans-serif}
 
 /* ===== MOVING BACKGROUND (aurora blobs, always in motion) ===== */
@@ -15,7 +15,7 @@
 .b4{width:720px;height:720px;background:#a557ff;right:-4%;bottom:2%}
 .b5{width:640px;height:640px;background:#ffc400;left:34%;top:36%}
 body.go .b1{animation:d1 9s ease-in-out infinite alternate}
-body.go .b2{animation:d2 11s ease-in-out infinite alternate}
+body.go .b2{animation:d2 var(--dur) ease-in-out infinite alternate}
 body.go .b3{animation:d3 10s ease-in-out infinite alternate}
 body.go .b4{animation:d4 12s ease-in-out infinite alternate}
 body.go .b5{animation:d5 8s ease-in-out infinite alternate}
@@ -41,7 +41,7 @@ body.go .b5{animation:d5 8s ease-in-out infinite alternate}
 @keyframes flow{0%{background-position:0% 50%}100%{background-position:300% 50%}}
 @keyframes glowpulse{from{filter:drop-shadow(0 0 10px rgba(255,122,24,.55)) drop-shadow(0 0 22px rgba(10,132,255,.4))}to{filter:drop-shadow(0 0 22px rgba(255,59,92,.7)) drop-shadow(0 0 46px rgba(165,87,255,.55))}}
 .prog{position:absolute;left:30px;bottom:30px;height:8px;border-radius:999px;background:var(--rainbow);width:0;z-index:12}
-body.go .prog{animation:prog 11s linear forwards}
+body.go .prog{animation:prog var(--dur) linear forwards}
 @keyframes prog{from{width:0}to{width:1020px}}
 
 /* kinetic word helper */
@@ -54,8 +54,8 @@ body.go .kw{animation:kin .6s cubic-bezier(.2,.8,.2,1) both}
 .hook{font-family:'SG';font-weight:700;font-size:104px;line-height:1.02;letter-spacing:-.02em;color:var(--ink)}
 .hook .split{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hook .emoji{-webkit-text-fill-color:initial;background:none}
-body.go .sA{animation:sA 11s ease both}
-@keyframes sA{0%{opacity:1}17%{opacity:1}20%{opacity:0;transform:translateY(-30px)}100%{opacity:0}}
+body.go .sA{animation:sA var(--dur) ease both}
+@keyframes sA{0%{opacity:1}8%{opacity:1}11%{opacity:0;transform:translateY(-30px)}100%{opacity:0}}
 body.go .sA .eyebrow{animation-delay:.05s}
 body.go .sA .kw:nth-child(1){animation-delay:.25s}
 body.go .sA .kw:nth-child(2){animation-delay:.38s}
@@ -67,19 +67,19 @@ body.go .sA .kw:nth-child(5){animation-delay:.9s}
 .split-stage{position:relative;height:150px;display:flex;align-items:center;justify-content:center;margin-bottom:24px}
 .sv{font-family:'SG';font-weight:700;font-size:96px;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
 .sv .pfx{display:inline-block;color:var(--red)}
-body.go .sB{animation:sB 11s ease both}
-@keyframes sB{0%{opacity:0}20%{opacity:0}23%{opacity:1;transform:none}66%{opacity:1}69%{opacity:0;transform:translateY(-24px)}100%{opacity:0}}
+body.go .sB{animation:sB var(--dur) ease both}
+@keyframes sB{0%{opacity:0}11%{opacity:0}14%{opacity:1;transform:none}79%{opacity:1}82%{opacity:0;transform:translateY(-24px)}100%{opacity:0}}
 /* prefix flies to the end */
-body.go .sB .pfx{animation:fly 11s ease both}
+body.go .sB .pfx{animation:fly var(--dur) ease both}
 @keyframes fly{0%{transform:translateX(0)}30%{transform:translateX(0)}37%{transform:translateX(360px) translateY(-4px)}44%{transform:translateX(340px)}100%{transform:translateX(340px)}}
 .blabel{font-family:'SG';font-weight:700;font-size:44px;color:var(--ink)}
 .blabel .t{color:var(--red)}
 .appwin{position:relative;width:720px;height:1040px;border-radius:36px;overflow:hidden;background:#fff;box-shadow:0 34px 80px -22px rgba(20,22,30,.5),0 0 0 8px #fff,0 0 0 10px rgba(20,22,30,.06);margin-top:22px}
 .strip{position:absolute;top:0;left:0;width:720px;display:block}
-body.go .sB .appwin{animation:winIn 11s ease both}
-@keyframes winIn{0%{opacity:0;transform:translateY(60px)}22%{opacity:0;transform:translateY(60px)}27%{opacity:1;transform:none}100%{opacity:1;transform:none}}
-body.go .sB .strip{animation:scroll 11s cubic-bezier(.4,0,.25,1) both}
-@keyframes scroll{0%{transform:translateY(0)}28%{transform:translateY(0)}64%{transform:translateY(-8975px)}100%{transform:translateY(-8975px)}}
+body.go .sB .appwin{animation:winIn var(--dur) ease both}
+@keyframes winIn{0%{opacity:0;transform:translateY(60px)}11%{opacity:0;transform:translateY(60px)}15%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+body.go .sB .strip{animation:scroll var(--dur) cubic-bezier(.4,0,.25,1) both}
+@keyframes scroll{0%{transform:translateY(0)}16%{transform:translateY(0)}78%{transform:translateY(-8975px)}100%{transform:translateY(-8975px)}}
 
 /* SCENE C — example */
 .cbig{font-family:'SG';font-weight:700;font-size:70px;line-height:1.08;letter-spacing:-.02em;color:var(--ink);margin-bottom:36px}
@@ -87,10 +87,10 @@ body.go .sB .strip{animation:scroll 11s cubic-bezier(.4,0,.25,1) both}
 .ex{font-family:'JB';font-weight:700;font-size:50px;color:var(--ink);background:#fff;border-radius:28px;padding:40px 44px;box-shadow:0 24px 60px -24px rgba(20,22,30,.45)}
 .ex .a{color:var(--red)}
 .extrans{font-family:'SB';font-weight:400;font-size:30px;color:#6a7080;margin-top:24px}
-body.go .sC{animation:sC 11s ease both}
-@keyframes sC{0%{opacity:0}70%{opacity:0}73%{opacity:1;transform:none}82%{opacity:1}85%{opacity:0;transform:translateY(-22px)}100%{opacity:0}}
-body.go .sC .ex{animation:exPop 11s ease both}
-@keyframes exPop{0%{transform:scale(.92)}70%{transform:scale(.92)}74%{transform:scale(1)}100%{transform:scale(1)}}
+body.go .sC{animation:sC var(--dur) ease both}
+@keyframes sC{0%{opacity:0}82%{opacity:0}84%{opacity:1;transform:none}90%{opacity:1}92%{opacity:0;transform:translateY(-22px)}100%{opacity:0}}
+body.go .sC .ex{animation:exPop var(--dur) ease both}
+@keyframes exPop{0%{transform:scale(.92)}82%{transform:scale(.92)}85%{transform:scale(1)}100%{transform:scale(1)}}
 
 /* SCENE D — CTA */
 .dbig{font-family:'SG';font-weight:700;font-size:76px;line-height:1.05;letter-spacing:-.02em;color:var(--ink);margin-bottom:40px}
@@ -98,10 +98,10 @@ body.go .sC .ex{animation:exPop 11s ease both}
 .beta{margin-top:40px;font-family:'JB';font-weight:700;font-size:32px;color:var(--ink)}
 .beta .code{background:var(--red);color:#fff;padding:6px 16px;border-radius:10px}
 .beta2{font-family:'JB';font-weight:700;font-size:24px;letter-spacing:.06em;color:#6a7080;margin-top:16px;text-transform:uppercase}
-body.go .sD{animation:sD 11s ease both}
-@keyframes sD{0%{opacity:0}86%{opacity:0}88%{opacity:1;transform:none}100%{opacity:1}}
-body.go .sD .pill{animation:pop 11s ease both}
-@keyframes pop{0%{transform:scale(.9)}86%{transform:scale(.9)}91%{transform:scale(1.04)}96%{transform:scale(1)}100%{transform:scale(1)}}
+body.go .sD{animation:sD var(--dur) ease both}
+@keyframes sD{0%{opacity:0}92%{opacity:0}94%{opacity:1;transform:none}100%{opacity:1}}
+body.go .sD .pill{animation:pop var(--dur) ease both}
+@keyframes pop{0%{transform:scale(.9)}92%{transform:scale(.9)}95%{transform:scale(1.04)}98%{transform:scale(1)}100%{transform:scale(1)}}
 </style></head>
 <body>
 <div id="reel">

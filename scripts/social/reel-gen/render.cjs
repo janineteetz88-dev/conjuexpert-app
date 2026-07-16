@@ -22,8 +22,8 @@ try { ({ chromium } = require('playwright')); }
 catch { ({ chromium } = require('/opt/node22/lib/node_modules/playwright')); }
 
 const DIR = __dirname;
-const FPS = 30;
-const SECONDS = 11;          // muss zur 11s-Timeline in template.html passen
+const FPS = 24;
+const SECONDS = 30;          // muss zur --dur-Timeline in template.html passen
 const N = FPS * SECONDS;
 
 (async () => {

@@ -1,0 +1,72 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face{font-family:'SG';src:url('assets/space.woff2') format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'SB';src:url('assets/schib.woff2') format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'JB';src:url('assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#14151a;--red:#ff3b5c;--rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+  --rainbow-full:linear-gradient(120deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff,#ff3b5c)}
+body{background:#e9eaf0;font-family:'SB',sans-serif}
+#stage{display:flex;flex-wrap:wrap;gap:20px;padding:20px}
+.slide{position:relative;width:1080px;height:1350px;overflow:hidden;background:
+  radial-gradient(120% 80% at 50% 8%,#fff 0%,#f3f4f8 55%,#ecedf3 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 96px}
+.rframe{position:absolute;inset:0;z-index:20;pointer-events:none;padding:18px;background:var(--rainbow-full);background-size:100% 100%;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+  filter:drop-shadow(0 0 12px rgba(255,122,24,.5)) drop-shadow(0 0 24px rgba(10,132,255,.4))}
+.logo{position:absolute;top:48px;left:56px;display:flex;align-items:center;gap:13px;z-index:8}
+.logo .mark{width:48px;height:38px}
+.logo .w{font-family:'SG';font-weight:600;font-size:33px;letter-spacing:-.02em;color:var(--ink)}
+.logo .w b{font-weight:700;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pg{position:absolute;top:56px;right:60px;z-index:8;font-family:'JB';font-weight:700;font-size:24px;letter-spacing:.1em;color:#aeb4c2}
+.eyebrow{font-family:'JB';font-weight:700;font-size:26px;letter-spacing:.28em;text-transform:uppercase;color:var(--red);margin-bottom:28px}
+.signoff{position:absolute;left:0;right:0;bottom:74px;z-index:8;text-align:center;font-family:'JB';font-weight:700;font-size:29px;color:var(--ink)}
+.signoff .app{background:var(--ink);color:#fff;padding:9px 20px;border-radius:999px}
+.swipe{position:absolute;right:64px;bottom:150px;z-index:8;font-family:'JB';font-weight:700;font-size:26px;color:var(--red)}
+/* intro */
+h1{font-family:'SG';font-weight:700;font-size:96px;line-height:1.03;letter-spacing:-.02em;color:var(--ink)}
+h1 .r{color:var(--red)}
+.sub{font-family:'SB';font-size:34px;color:#6a7080;margin-top:30px}
+/* quiz card (mirrors the app) */
+.qcard{width:820px;background:#fff;border-radius:34px;padding:56px 48px;box-shadow:0 34px 80px -26px rgba(20,22,30,.45);border-top:10px solid var(--red)}
+.asked{font-family:'SB';font-size:34px;color:#8890a0}
+.asked b{color:var(--red);font-weight:700}
+.verb{font-family:'SG';font-weight:700;font-size:104px;letter-spacing:-.02em;color:var(--ink);margin:30px 0 18px}
+.hint{font-family:'JB';font-weight:700;font-size:26px;color:#aeb4c2}
+.think{font-family:'SG';font-weight:700;font-size:46px;color:var(--red);margin-top:40px}
+/* answer */
+.acard{width:820px;background:#fff;border-radius:34px;padding:56px 48px;box-shadow:0 34px 80px -26px rgba(20,22,30,.45);border-top:10px solid var(--red)}
+.small{font-family:'SB';font-size:32px;color:#8890a0}
+.form{font-family:'JB';font-weight:700;font-size:84px;color:var(--ink);margin:26px 0 6px}
+.form .hl{background:#ffe9ee;color:var(--red);padding:2px 14px;border-radius:12px}
+.tip{font-family:'SB';font-size:30px;color:#6a7080;margin-top:26px}
+.check{font-family:'SG';font-weight:700;font-size:40px;color:var(--red);margin-top:28px}
+</style></head>
+<body><div id="stage"></div>
+<script>
+const CFG = (window.__QUIZ || {
+  intro:{title:'Do you know<br>these <span class="r">3 forms?</span> 🤔', sub:'German verbs — swipe & test yourself'},
+  words:[
+    {verb:'nehmen', tense:'Präsens', person:'er / sie / es', hint:'stem change e → i', form:'nimmt', hlpart:'nimmt', tip:'Not „nehmt" — the stem vowel flips.'},
+    {verb:'gehen', tense:'Perfekt', person:'ich', hint:'which auxiliary?', form:'bin gegangen', hlpart:'bin', tip:'Movement verbs take „sein", not „haben".'},
+    {verb:'sein', tense:'Präteritum', person:'ich', hint:'fully irregular', form:'war', hlpart:'war', tip:'The most irregular verb — just memorise it.'},
+  ],
+  cta:{title:'How many did<br>you get? 👇', sub:'Practice every German verb — free'}
+});
+const LOGO='<svg class="mark" viewBox="1 4 30 24"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg><span class="w">Conju<b>Expert</b></span>';
+const chrome=(pg)=>`<div class="logo">${LOGO}</div><div class="pg">${pg}</div><div class="rframe"></div>`;
+const sign='<div class="signoff"><span class="app">conjuexpert.app</span> · FEEDBACK100</div>';
+const slides=[];
+slides.push(`<div class="slide">${chrome('QUIZ')}<div class="eyebrow">Daily Quiz</div><h1>${CFG.intro.title}</h1><div class="sub">${CFG.intro.sub}</div><div class="swipe">swipe →</div></div>`);
+CFG.words.forEach((w,i)=>{
+  slides.push(`<div class="slide">${chrome(`${i+1} / 3`)}<div class="eyebrow">Your turn</div>
+    <div class="qcard"><div class="asked">Gesucht: <b>${w.tense}</b> · ${w.person}</div><div class="verb">${w.verb}</div><div class="hint">💡 ${w.hint}</div><div class="think">…?</div></div>
+    <div class="swipe">answer →</div></div>`);
+  slides.push(`<div class="slide">${chrome(`${i+1} / 3`)}<div class="eyebrow">Answer</div>
+    <div class="acard"><div class="small">${w.verb} · ${w.tense} · ${w.person}</div><div class="form">${w.form.replace(w.hlpart,`<span class="hl">${w.hlpart}</span>`)}</div><div class="tip">${w.tip}</div><div class="check">✓ got it?</div></div>
+    ${sign}</div>`);
+});
+slides.push(`<div class="slide">${chrome('★')}<div class="eyebrow">Your score</div><h1>${CFG.cta.title}</h1><div class="sub">${CFG.cta.sub}</div>${sign}</div>`);
+document.getElementById('stage').innerHTML=slides.join('');
+window.__count=slides.length;
+window.__ready=document.fonts.ready;
+</script>
+</body></html>
