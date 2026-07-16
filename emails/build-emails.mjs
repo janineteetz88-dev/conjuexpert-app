@@ -6,7 +6,7 @@
  * der echten ConjuExpert-CI. Ausgabe: emails/<lang>/<datei>.html
  *
  * Zwei Bausteine im Produkt:
- *   1) 24-h-Premium-Trial  → gratis testen (kein Preisbezug)
+ *   1) 48-h-Premium-Trial  → mit Konto gratis testen (kein Preisbezug)
  *   2) 5-€-Feedback-Code   → Jahresabo 24,99 € statt 29,99 €
  *      (Der 5-€-Code entsteht NUR durch App-Feedback; einen Willkommensrabatt
  *       gibt es nicht mehr.)
@@ -23,7 +23,7 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 const LANGS = ["de", "en", "es", "nl", "fr"];
 
 const BASE = "https://conjuexpert.app";
-const LOGO = `${BASE}/logo-stripe-full.png`;
+const LOGO = `${BASE}/logo-wordmark.png`;
 const RAINBOW = "linear-gradient(to right,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff)";
 const CTA_BG = "#e71583"; // Button: solides CI-Pink
 const CTA_FALLBACK = "#e71583"; // solide Button-Farbe (Gmail u.a. ohne Verlauf)
@@ -62,53 +62,53 @@ const COMMON = {
 const MAILS = [
   {
     file: "email-1-welcome.html", utm: "welcome", accent: "#a557ff", price: false, cap: null, banner: false,
-    de: { subject: "Willkommen – 24 h Premium geschenkt 🎁", pre: "Dein Konto ist da – 24 Stunden Premium sind schon freigeschaltet.",
-      eyebrow: "Willkommen bei ConjuExpert", h1: "24 Stunden Premium – geschenkt.",
-      paras: ["Hallo {{name}}, schön, dass du da bist! Ab jetzt sind 24 Stunden lang alle Premium-Funktionen für dich freigeschaltet – ganz ohne Bezahlung.", "Das kannst du sofort ausprobieren:", "Die Konjugationstabellen bleiben übrigens für immer kostenlos."],
+    de: { subject: "Willkommen – 48 h Premium geschenkt 🎁", pre: "Dein Konto ist da – 48 Stunden Premium sind schon freigeschaltet.",
+      eyebrow: "Willkommen bei ConjuExpert", h1: "48 Stunden Premium – geschenkt.",
+      paras: ["Super, du hast dir ein Konto angelegt! Dafür kannst du jetzt 48 Stunden lang alle Premium-Funktionen nutzen – ganz ohne Bezahlung. Und das Kartendreh-Quiz mit 20 Karten pro Tag bleibt für dich sogar für immer gratis.", "Das kannst du sofort ausprobieren:", "Die Konjugationstabellen bleiben übrigens ebenfalls für immer kostenlos."],
       features: ["🎯 Quiz – aktiv üben, bis die Formen sitzen", "📌 Merken – genau den Wortschatz speichern, der dir wichtig ist", "📈 Lernziele – deinen Fortschritt im Blick behalten"],
       cta: "Premium jetzt ausprobieren →" },
-    en: { subject: "Welcome – 24h of Premium on us 🎁", pre: "Your account is ready – 24 hours of Premium are already unlocked.",
-      eyebrow: "Welcome to ConjuExpert", h1: "24 hours of Premium – on us.",
-      paras: ["Hi {{name}}, great to have you here! For the next 24 hours, every Premium feature is unlocked for you – completely free.", "Here's what to try right away:", "And don't worry – the conjugation tables stay free forever."],
+    en: { subject: "Welcome – 48h of Premium on us 🎁", pre: "Your account is ready – 48 hours of Premium are already unlocked.",
+      eyebrow: "Welcome to ConjuExpert", h1: "48 hours of Premium – on us.",
+      paras: ["Great, you've created an account! That gets you 48 hours with every Premium feature unlocked – completely free. And the flip-card quiz with 20 cards a day stays free for you forever.", "Here's what to try right away:", "And don't worry – the conjugation tables stay free forever too."],
       features: ["🎯 Quiz – practise actively until the forms stick", "📌 Saved – keep exactly the vocabulary that matters to you", "📈 Goals – keep an eye on your progress"],
       cta: "Try Premium now →" },
-    es: { subject: "Bienvenido/a – 24 h de Premium de regalo 🎁", pre: "Tu cuenta está lista: 24 horas de Premium ya están activadas.",
-      eyebrow: "Bienvenido/a a ConjuExpert", h1: "24 horas de Premium – de regalo.",
-      paras: ["Hola {{name}}, ¡qué bien tenerte aquí! Durante las próximas 24 horas tienes desbloqueadas todas las funciones Premium, totalmente gratis.", "Esto puedes probarlo ya mismo:", "Por cierto, las tablas de conjugación son gratis para siempre."],
+    es: { subject: "Bienvenido/a – 48 h de Premium de regalo 🎁", pre: "Tu cuenta está lista: 48 horas de Premium ya están activadas.",
+      eyebrow: "Bienvenido/a a ConjuExpert", h1: "48 horas de Premium – de regalo.",
+      paras: ["¡Genial, te has creado una cuenta! Por eso ahora tienes 48 horas con todas las funciones Premium desbloqueadas, totalmente gratis. Y el quiz de girar cartas con 20 cartas al día se queda gratis para ti para siempre.", "Esto puedes probarlo ya mismo:", "Por cierto, las tablas de conjugación también son gratis para siempre."],
       features: ["🎯 Quiz – practica activamente hasta dominar las formas", "📌 Guardado – guarda justo el vocabulario que te importa", "📈 Objetivos – sigue tu progreso de un vistazo"],
       cta: "Probar Premium ahora →" },
-    nl: { subject: "Welkom – 24 uur Premium cadeau 🎁", pre: "Je account is klaar – 24 uur Premium staat al voor je klaar.",
-      eyebrow: "Welkom bij ConjuExpert", h1: "24 uur Premium – cadeau.",
-      paras: ["Hoi {{name}}, leuk dat je er bent! De komende 24 uur zijn alle Premium-functies voor je vrijgeschakeld – helemaal gratis.", "Dit kun je meteen uitproberen:", "De vervoegingstabellen blijven trouwens voor altijd gratis."],
+    nl: { subject: "Welkom – 48 uur Premium cadeau 🎁", pre: "Je account is klaar – 48 uur Premium staat al voor je klaar.",
+      eyebrow: "Welkom bij ConjuExpert", h1: "48 uur Premium – cadeau.",
+      paras: ["Super, je hebt een account aangemaakt! Daarmee kun je nu 48 uur lang alle Premium-functies gebruiken – helemaal gratis. En de kaartdraai-quiz met 20 kaarten per dag blijft voor jou zelfs voor altijd gratis.", "Dit kun je meteen uitproberen:", "De vervoegingstabellen blijven trouwens ook voor altijd gratis."],
       features: ["🎯 Quiz – actief oefenen tot de vormen blijven zitten", "📌 Opgeslagen – bewaar precies de woorden die voor jou belangrijk zijn", "📈 Doelen – houd je voortgang in de gaten"],
       cta: "Premium nu uitproberen →" },
-    fr: { subject: "Bienvenue – 24 h de Premium offertes 🎁", pre: "Ton compte est prêt – 24 heures de Premium sont déjà débloquées.",
-      eyebrow: "Bienvenue chez ConjuExpert", h1: "24 heures de Premium – offertes.",
-      paras: ["Bonjour {{name}}, ravi de t'accueillir ! Pendant les prochaines 24 heures, toutes les fonctions Premium sont débloquées pour toi – entièrement gratuites.", "À tester tout de suite :", "Et rassure-toi : les tableaux de conjugaison restent gratuits pour toujours."],
+    fr: { subject: "Bienvenue – 48 h de Premium offertes 🎁", pre: "Ton compte est prêt – 48 heures de Premium sont déjà débloquées.",
+      eyebrow: "Bienvenue chez ConjuExpert", h1: "48 heures de Premium – offertes.",
+      paras: ["Super, tu t'es créé un compte ! Tu profites donc maintenant de 48 heures avec toutes les fonctions Premium débloquées – entièrement gratuit. Et le quiz cartes à retourner avec 20 cartes par jour reste gratuit pour toi, pour toujours.", "À tester tout de suite :", "Et rassure-toi : les tableaux de conjugaison restent eux aussi gratuits pour toujours."],
       features: ["🎯 Quiz – t'entraîner activement jusqu'à maîtriser les formes", "📌 Enregistrés – garder exactement le vocabulaire qui compte pour toi", "📈 Objectifs – suivre ta progression d'un coup d'œil"],
       cta: "Essayer Premium maintenant →" },
   },
   {
     file: "email-2-trial-ending.html", utm: "trial-ending", accent: "#f97316", price: true, cap: "capNow", banner: false,
-    de: { subject: "Dein Gratis-Tag endet bald", pre: "Dein Gratis-Tag endet bald – mit Feedback behältst du Premium für 5 € weniger.",
-      eyebrow: "Dein Gratis-Tag endet bald", h1: "Premium behalten?",
-      paras: ["Hallo {{name}}, dein kostenloser Premium-Tag läuft gleich aus. Wenn dir Quiz & Merken gefallen haben, kannst du sie dauerhaft behalten.", "Gib uns kurz dein Feedback zur App – dafür bekommst du einen 5-€-Code und zahlst fürs Jahresabo nur 24,99 € statt 29,99 €."],
+    de: { subject: "Deine Gratis-Testzeit endet bald", pre: "Deine Gratis-Testzeit endet bald – mit Feedback behältst du Premium für 5 € weniger.",
+      eyebrow: "Deine Gratis-Testzeit endet bald", h1: "Premium behalten?",
+      paras: ["Hallo {{name}}, deine kostenlose Premium-Testzeit läuft gleich aus. Wenn dir Quiz & Merken gefallen haben, kannst du sie dauerhaft behalten.", "Gib uns kurz dein Feedback zur App – dafür bekommst du einen 5-€-Code und zahlst fürs Jahresabo nur 24,99 € statt 29,99 €."],
       cta: "Feedback geben & 5 € sichern →" },
-    en: { subject: "Your free day is ending soon", pre: "Your free day is ending soon – give feedback and keep Premium for €5 less.",
-      eyebrow: "Your free day is ending", h1: "Keep Premium?",
-      paras: ["Hi {{name}}, your free Premium day is almost over. If you enjoyed Quiz & Saved, you can keep them for good.", "Give us your quick feedback on the app – you'll get a €5 code and pay just €24.99 instead of €29.99 for the annual plan."],
+    en: { subject: "Your free trial is ending soon", pre: "Your free trial is ending soon – give feedback and keep Premium for €5 less.",
+      eyebrow: "Your free trial is ending", h1: "Keep Premium?",
+      paras: ["Hi {{name}}, your free Premium trial is almost over. If you enjoyed Quiz & Saved, you can keep them for good.", "Give us your quick feedback on the app – you'll get a €5 code and pay just €24.99 instead of €29.99 for the annual plan."],
       cta: "Give feedback & save €5 →" },
-    es: { subject: "Tu día gratis está por terminar", pre: "Tu día gratis está por terminar: con tu opinión mantienes Premium por 5 € menos.",
-      eyebrow: "Tu día gratis termina pronto", h1: "¿Mantienes Premium?",
-      paras: ["Hola {{name}}, tu día Premium gratis está por terminar. Si te gustaron el Quiz y Guardado, puedes mantenerlos para siempre.", "Cuéntanos brevemente tu opinión sobre la app: recibirás un código de 5 € y pagarás solo 24,99 € en vez de 29,99 € por el plan anual."],
+    es: { subject: "Tu prueba gratis está por terminar", pre: "Tu prueba gratis está por terminar: con tu opinión mantienes Premium por 5 € menos.",
+      eyebrow: "Tu prueba gratis termina pronto", h1: "¿Mantienes Premium?",
+      paras: ["Hola {{name}}, tu prueba Premium gratis está por terminar. Si te gustaron el Quiz y Guardado, puedes mantenerlos para siempre.", "Cuéntanos brevemente tu opinión sobre la app: recibirás un código de 5 € y pagarás solo 24,99 € en vez de 29,99 € por el plan anual."],
       cta: "Dar opinión y ahorrar 5 € →" },
-    nl: { subject: "Je gratis dag loopt bijna af", pre: "Je gratis dag loopt bijna af – met feedback houd je Premium voor € 5 minder.",
-      eyebrow: "Je gratis dag loopt bijna af", h1: "Premium behouden?",
-      paras: ["Hoi {{name}}, je gratis Premium-dag loopt bijna af. Vond je Quiz & Opgeslagen fijn? Dan kun je ze blijven gebruiken.", "Geef ons kort je feedback over de app – je krijgt een code van € 5 en betaalt maar € 24,99 in plaats van € 29,99 voor het jaarabonnement."],
+    nl: { subject: "Je gratis proefperiode loopt bijna af", pre: "Je gratis proefperiode loopt bijna af – met feedback houd je Premium voor € 5 minder.",
+      eyebrow: "Je gratis proefperiode loopt bijna af", h1: "Premium behouden?",
+      paras: ["Hoi {{name}}, je gratis Premium-proefperiode loopt bijna af. Vond je Quiz & Opgeslagen fijn? Dan kun je ze blijven gebruiken.", "Geef ons kort je feedback over de app – je krijgt een code van € 5 en betaalt maar € 24,99 in plaats van € 29,99 voor het jaarabonnement."],
       cta: "Feedback geven & € 5 besparen →" },
-    fr: { subject: "Ta journée gratuite se termine bientôt", pre: "Ta journée gratuite se termine bientôt – donne ton avis et garde Premium pour 5 € de moins.",
-      eyebrow: "Ta journée gratuite se termine", h1: "Garder Premium ?",
-      paras: ["Bonjour {{name}}, ta journée Premium gratuite touche à sa fin. Si tu as aimé le Quiz et les Enregistrés, tu peux les garder pour de bon.", "Donne-nous vite ton avis sur l'appli – tu recevras un code de 5 € et ne paieras que 24,99 € au lieu de 29,99 € pour l'abonnement annuel."],
+    fr: { subject: "Ton essai gratuit se termine bientôt", pre: "Ton essai gratuit se termine bientôt – donne ton avis et garde Premium pour 5 € de moins.",
+      eyebrow: "Ton essai gratuit se termine", h1: "Garder Premium ?",
+      paras: ["Bonjour {{name}}, ton essai Premium gratuit touche à sa fin. Si tu as aimé le Quiz et les Enregistrés, tu peux les garder pour de bon.", "Donne-nous vite ton avis sur l'appli – tu recevras un code de 5 € et ne paieras que 24,99 € au lieu de 29,99 € pour l'abonnement annuel."],
       cta: "Donner mon avis & économiser 5 € →" },
   },
   {
@@ -228,7 +228,7 @@ ${banner}    <tr>
       <td align="center" style="padding:32px 40px 28px;">
 
         <!-- Logo -->
-        <img src="${LOGO}" alt="ConjuExpert" width="170" style="display:block;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;margin:0 auto 24px;" />
+        <img src="${LOGO}" alt="ConjuExpert" width="200" style="display:block;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;margin:0 auto 24px;" />
 
         <!-- Eyebrow -->
         <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:1px;">${m.eyebrow}</p>

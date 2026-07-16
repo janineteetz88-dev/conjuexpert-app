@@ -60,11 +60,11 @@ type Copy = { subject: string; pre: string; eyebrow: string; h1: string; paras: 
 const C: Record<Key, { accent: string } & Record<Lang, Copy>> = {
   confirm: {
     accent: "#a557ff",
-    de: { subject: "Bestätige deine E-Mail – ConjuExpert", pre: "Noch ein Klick – dann ist dein Konto aktiv (inkl. 24 h Premium).", eyebrow: "Willkommen bei ConjuExpert", h1: "Nur noch ein Klick.", paras: ["Hallo, bitte bestätige deine E-Mail-Adresse, um dein Konto zu aktivieren – und 24 Stunden Premium gratis freizuschalten."], cta: "E-Mail bestätigen →" },
-    en: { subject: "Confirm your email – ConjuExpert", pre: "One more click – then your account is active (incl. 24h Premium).", eyebrow: "Welcome to ConjuExpert", h1: "Just one more click.", paras: ["Hi, please confirm your email address to activate your account – and unlock 24 hours of Premium for free."], cta: "Confirm email →" },
-    es: { subject: "Confirma tu correo – ConjuExpert", pre: "Un clic más y tu cuenta estará activa (con 24 h de Premium).", eyebrow: "Bienvenido/a a ConjuExpert", h1: "Solo un clic más.", paras: ["Hola: confirma tu dirección de correo para activar tu cuenta y desbloquear 24 horas de Premium gratis."], cta: "Confirmar correo →" },
-    nl: { subject: "Bevestig je e-mail – ConjuExpert", pre: "Nog één klik – dan is je account actief (incl. 24 uur Premium).", eyebrow: "Welkom bij ConjuExpert", h1: "Nog één klik.", paras: ["Hoi, bevestig je e-mailadres om je account te activeren – en 24 uur Premium gratis vrij te schakelen."], cta: "E-mail bevestigen →" },
-    fr: { subject: "Confirme ton e-mail – ConjuExpert", pre: "Encore un clic – et ton compte est actif (avec 24 h de Premium).", eyebrow: "Bienvenue chez ConjuExpert", h1: "Encore un clic.", paras: ["Bonjour, confirme ton adresse e-mail pour activer ton compte – et débloquer 24 heures de Premium gratuites."], cta: "Confirmer l'e-mail →" },
+    de: { subject: "Bestätige deine E-Mail – ConjuExpert", pre: "Noch ein Klick – dann ist dein Konto aktiv (inkl. 48 h Premium).", eyebrow: "Willkommen bei ConjuExpert", h1: "Nur noch ein Klick.", paras: ["Hallo, bitte bestätige deine E-Mail-Adresse, um dein Konto zu aktivieren – und 48 Stunden Premium gratis freizuschalten."], cta: "E-Mail bestätigen →" },
+    en: { subject: "Confirm your email – ConjuExpert", pre: "One more click – then your account is active (incl. 48h Premium).", eyebrow: "Welcome to ConjuExpert", h1: "Just one more click.", paras: ["Hi, please confirm your email address to activate your account – and unlock 48 hours of Premium for free."], cta: "Confirm email →" },
+    es: { subject: "Confirma tu correo – ConjuExpert", pre: "Un clic más y tu cuenta estará activa (con 48 h de Premium).", eyebrow: "Bienvenido/a a ConjuExpert", h1: "Solo un clic más.", paras: ["Hola: confirma tu dirección de correo para activar tu cuenta y desbloquear 48 horas de Premium gratis."], cta: "Confirmar correo →" },
+    nl: { subject: "Bevestig je e-mail – ConjuExpert", pre: "Nog één klik – dan is je account actief (incl. 48 uur Premium).", eyebrow: "Welkom bij ConjuExpert", h1: "Nog één klik.", paras: ["Hoi, bevestig je e-mailadres om je account te activeren – en 48 uur Premium gratis vrij te schakelen."], cta: "E-mail bevestigen →" },
+    fr: { subject: "Confirme ton e-mail – ConjuExpert", pre: "Encore un clic – et ton compte est actif (avec 48 h de Premium).", eyebrow: "Bienvenue chez ConjuExpert", h1: "Encore un clic.", paras: ["Bonjour, confirme ton adresse e-mail pour activer ton compte – et débloquer 48 heures de Premium gratuites."], cta: "Confirmer l'e-mail →" },
   },
   magic: {
     accent: "#a557ff",
@@ -114,30 +114,7 @@ function renderHtml(lang: Lang, key: Key, url: string, firstName: string): strin
     <tr><td height="4" style="background:${RAINBOW};font-size:0;line-height:0;">&nbsp;</td></tr>
     <tr>
       <td align="center" style="padding:32px 40px 28px;">
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 24px;">
-          <tr>
-            <td style="padding-right:11px;vertical-align:middle;">
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:11px;box-shadow:0 12px 34px -18px rgba(30,35,60,0.32);">
-                <tr><td style="padding:7px 6px;font-size:0;line-height:0;">
-                  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-                    <td width="5" height="24" style="width:5px;height:24px;background:#ff3b5c;border-radius:3px;font-size:0;line-height:0;">&nbsp;</td>
-                    <td width="3" style="width:3px;font-size:0;line-height:0;">&nbsp;</td>
-                    <td width="5" height="24" style="width:5px;height:24px;background:#ff7a18;border-radius:3px;font-size:0;line-height:0;">&nbsp;</td>
-                    <td width="3" style="width:3px;font-size:0;line-height:0;">&nbsp;</td>
-                    <td width="5" height="24" style="width:5px;height:24px;background:#ffc400;border-radius:3px;font-size:0;line-height:0;">&nbsp;</td>
-                    <td width="3" style="width:3px;font-size:0;line-height:0;">&nbsp;</td>
-                    <td width="5" height="24" style="width:5px;height:24px;background:#34c759;border-radius:3px;font-size:0;line-height:0;">&nbsp;</td>
-                    <td width="3" style="width:3px;font-size:0;line-height:0;">&nbsp;</td>
-                    <td width="5" height="24" style="width:5px;height:24px;background:#0a84ff;border-radius:3px;font-size:0;line-height:0;">&nbsp;</td>
-                  </tr></table>
-                </td></tr>
-              </table>
-            </td>
-            <td style="vertical-align:middle;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:27px;font-weight:800;letter-spacing:-0.5px;white-space:nowrap;">
-              <span style="color:#e71583;">Conju</span><span style="color:#a557ff;">Expert</span>
-            </td>
-          </tr>
-        </table>
+        <img src="${BASE}/logo-wordmark.png" alt="ConjuExpert" width="200" style="display:block;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;margin:0 auto 24px;" />
         <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:1px;">${eyebrow}</p>
         <h1 style="margin:0 0 18px;font-size:32px;font-weight:900;color:#111827;letter-spacing:-1px;line-height:1.1;">${m.h1}</h1>
         <div style="text-align:left;">
