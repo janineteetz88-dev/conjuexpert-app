@@ -21,7 +21,7 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 const LANGS = ["de", "en", "es", "nl", "fr"];
 
 const BASE = "https://conjuexpert.app";
-const LOGO = `${BASE}/logo-stripe-full.png`;
+const LOGO = `${BASE}/logo-wordmark.png`;
 const RAINBOW = "linear-gradient(to right,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff)";
 const CTA_BG = "#e71583"; // Button: solides CI-Pink
 const CTA_FALLBACK = "#e71583"; // solide Button-Farbe (Gmail u.a. ohne Verlauf)
@@ -41,11 +41,11 @@ const FOOT = {
 const TEMPLATES = [
   {
     file: "confirm-signup.html", key: "confirm", accent: "#a557ff", dashboard: "Confirm signup",
-    de: { subject: "Bestätige deine E-Mail – ConjuExpert", pre: "Noch ein Klick – dann ist dein Konto aktiv (inkl. 24 h Premium).", eyebrow: "Willkommen bei ConjuExpert", h1: "Nur noch ein Klick.", paras: ["Hallo, bitte bestätige deine E-Mail-Adresse, um dein Konto zu aktivieren – und 24 Stunden Premium gratis freizuschalten."], cta: "E-Mail bestätigen →" },
-    en: { subject: "Confirm your email – ConjuExpert", pre: "One more click – then your account is active (incl. 24h Premium).", eyebrow: "Welcome to ConjuExpert", h1: "Just one more click.", paras: ["Hi, please confirm your email address to activate your account – and unlock 24 hours of Premium for free."], cta: "Confirm email →" },
-    es: { subject: "Confirma tu correo – ConjuExpert", pre: "Un clic más y tu cuenta estará activa (con 24 h de Premium).", eyebrow: "Bienvenido/a a ConjuExpert", h1: "Solo un clic más.", paras: ["Hola: confirma tu dirección de correo para activar tu cuenta y desbloquear 24 horas de Premium gratis."], cta: "Confirmar correo →" },
-    nl: { subject: "Bevestig je e-mail – ConjuExpert", pre: "Nog één klik – dan is je account actief (incl. 24 uur Premium).", eyebrow: "Welkom bij ConjuExpert", h1: "Nog één klik.", paras: ["Hoi, bevestig je e-mailadres om je account te activeren – en 24 uur Premium gratis vrij te schakelen."], cta: "E-mail bevestigen →" },
-    fr: { subject: "Confirme ton e-mail – ConjuExpert", pre: "Encore un clic – et ton compte est actif (avec 24 h de Premium).", eyebrow: "Bienvenue chez ConjuExpert", h1: "Encore un clic.", paras: ["Bonjour, confirme ton adresse e-mail pour activer ton compte – et débloquer 24 heures de Premium gratuites."], cta: "Confirmer l'e-mail →" },
+    de: { subject: "Bestätige deine E-Mail – ConjuExpert", pre: "Noch ein Klick – dann ist dein Konto aktiv (inkl. 48 h Premium).", eyebrow: "Willkommen bei ConjuExpert", h1: "Nur noch ein Klick.", paras: ["Hallo, bitte bestätige deine E-Mail-Adresse, um dein Konto zu aktivieren – und 48 Stunden Premium gratis freizuschalten."], cta: "E-Mail bestätigen →" },
+    en: { subject: "Confirm your email – ConjuExpert", pre: "One more click – then your account is active (incl. 48h Premium).", eyebrow: "Welcome to ConjuExpert", h1: "Just one more click.", paras: ["Hi, please confirm your email address to activate your account – and unlock 48 hours of Premium for free."], cta: "Confirm email →" },
+    es: { subject: "Confirma tu correo – ConjuExpert", pre: "Un clic más y tu cuenta estará activa (con 48 h de Premium).", eyebrow: "Bienvenido/a a ConjuExpert", h1: "Solo un clic más.", paras: ["Hola: confirma tu dirección de correo para activar tu cuenta y desbloquear 48 horas de Premium gratis."], cta: "Confirmar correo →" },
+    nl: { subject: "Bevestig je e-mail – ConjuExpert", pre: "Nog één klik – dan is je account actief (incl. 48 uur Premium).", eyebrow: "Welkom bij ConjuExpert", h1: "Nog één klik.", paras: ["Hoi, bevestig je e-mailadres om je account te activeren – en 48 uur Premium gratis vrij te schakelen."], cta: "E-mail bevestigen →" },
+    fr: { subject: "Confirme ton e-mail – ConjuExpert", pre: "Encore un clic – et ton compte est actif (avec 48 h de Premium).", eyebrow: "Bienvenue chez ConjuExpert", h1: "Encore un clic.", paras: ["Bonjour, confirme ton adresse e-mail pour activer ton compte – et débloquer 48 heures de Premium gratuites."], cta: "Confirmer l'e-mail →" },
   },
   {
     file: "magic-link.html", key: "magic", accent: "#a557ff", dashboard: "Magic Link",
@@ -105,7 +105,7 @@ function render(lang, tpl) {
       <td align="center" style="padding:32px 40px 28px;">
 
         <!-- Logo -->
-        <img src="${LOGO}" alt="ConjuExpert" width="170" style="display:block;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;margin:0 auto 24px;" />
+        <img src="${LOGO}" alt="ConjuExpert" width="200" style="display:block;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;margin:0 auto 24px;" />
 
         <!-- Eyebrow + Headline -->
         <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:1px;">${m.eyebrow}</p>
