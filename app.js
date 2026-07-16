@@ -16514,6 +16514,16 @@ function App() {
   const [showPlanSelect, setShowPlanSelect] = useState(false);
   const [planPrefillCode, setPlanPrefillCode] = useState("");
   function openPlanSelectWithCode(c) { setPlanPrefillCode(c || ""); setShowPlanSelect(true); }
+  // Deep-Link aus der Gutschein-Mail: #abo=WILLKOMMEN → Checkout mit vorbelegtem Coupon.
+  useEffect(() => {
+    try {
+      const m = /[#&]abo=([A-Za-z0-9_-]+)/.exec(window.location.hash || "");
+      if (m) {
+        openPlanSelectWithCode(m[1].toUpperCase());
+        window.history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
+    } catch (e) {}
+  }, []);
   const [showPricing, setShowPricing] = useState(false);
   const [pendingCoupon, setPendingCoupon] = useState(false);
   const [pendingPayment, setPendingPayment] = useState(false);
@@ -16763,6 +16773,8 @@ function App() {
       persist("kunju-review-done", true);
       setShowReviewPrompt(false);
       setShowFbThanks(true);
+      // Tag-0-Mail „Hier ist dein Code" verschicken (fire-and-forget).
+      try { window.__supa.functions.invoke("send-code-mail", { body: {} }); } catch (e) {}
       return true;
     } catch (e) {
       return false;
