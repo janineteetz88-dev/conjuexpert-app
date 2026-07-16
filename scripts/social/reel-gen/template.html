@@ -68,16 +68,18 @@ body.go .sA .kw:nth-child(5){animation-delay:.9s}
 .sv{font-family:'SG';font-weight:700;font-size:96px;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
 .sv .pfx{display:inline-block;color:var(--red)}
 body.go .sB{animation:sB 11s ease both}
-@keyframes sB{0%{opacity:0}20%{opacity:0}23%{opacity:1;transform:none}52%{opacity:1}56%{opacity:0;transform:translateY(-24px)}100%{opacity:0}}
+@keyframes sB{0%{opacity:0}20%{opacity:0}23%{opacity:1;transform:none}66%{opacity:1}69%{opacity:0;transform:translateY(-24px)}100%{opacity:0}}
 /* prefix flies to the end */
 body.go .sB .pfx{animation:fly 11s ease both}
 @keyframes fly{0%{transform:translateX(0)}30%{transform:translateX(0)}37%{transform:translateX(360px) translateY(-4px)}44%{transform:translateX(340px)}100%{transform:translateX(340px)}}
 .blabel{font-family:'SG';font-weight:700;font-size:44px;color:var(--ink)}
 .blabel .t{color:var(--red)}
-.card{width:760px;border-radius:36px;overflow:hidden;box-shadow:0 34px 80px -22px rgba(20,22,30,.5),0 0 0 8px #fff,0 0 0 10px rgba(20,22,30,.06);margin-top:26px}
-.card img{width:100%;display:block}
-body.go .sB .card{animation:cardUp 11s ease both}
-@keyframes cardUp{0%{transform:translateY(70px);opacity:0}30%{transform:translateY(70px);opacity:0}36%{transform:translateY(0);opacity:1}100%{transform:translateY(0);opacity:1}}
+.appwin{position:relative;width:720px;height:1040px;border-radius:36px;overflow:hidden;background:#fff;box-shadow:0 34px 80px -22px rgba(20,22,30,.5),0 0 0 8px #fff,0 0 0 10px rgba(20,22,30,.06);margin-top:22px}
+.strip{position:absolute;top:0;left:0;width:720px;display:block}
+body.go .sB .appwin{animation:winIn 11s ease both}
+@keyframes winIn{0%{opacity:0;transform:translateY(60px)}22%{opacity:0;transform:translateY(60px)}27%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+body.go .sB .strip{animation:scroll 11s cubic-bezier(.4,0,.25,1) both}
+@keyframes scroll{0%{transform:translateY(0)}28%{transform:translateY(0)}64%{transform:translateY(-8975px)}100%{transform:translateY(-8975px)}}
 
 /* SCENE C — example */
 .cbig{font-family:'SG';font-weight:700;font-size:70px;line-height:1.08;letter-spacing:-.02em;color:var(--ink);margin-bottom:36px}
@@ -86,9 +88,9 @@ body.go .sB .card{animation:cardUp 11s ease both}
 .ex .a{color:var(--red)}
 .extrans{font-family:'SB';font-weight:400;font-size:30px;color:#6a7080;margin-top:24px}
 body.go .sC{animation:sC 11s ease both}
-@keyframes sC{0%{opacity:0}56%{opacity:0}60%{opacity:1;transform:none}78%{opacity:1}81%{opacity:0;transform:translateY(-22px)}100%{opacity:0}}
+@keyframes sC{0%{opacity:0}70%{opacity:0}73%{opacity:1;transform:none}82%{opacity:1}85%{opacity:0;transform:translateY(-22px)}100%{opacity:0}}
 body.go .sC .ex{animation:exPop 11s ease both}
-@keyframes exPop{0%{transform:scale(.92)}60%{transform:scale(.92)}64%{transform:scale(1)}100%{transform:scale(1)}}
+@keyframes exPop{0%{transform:scale(.92)}70%{transform:scale(.92)}74%{transform:scale(1)}100%{transform:scale(1)}}
 
 /* SCENE D — CTA */
 .dbig{font-family:'SG';font-weight:700;font-size:76px;line-height:1.05;letter-spacing:-.02em;color:var(--ink);margin-bottom:40px}
@@ -97,9 +99,9 @@ body.go .sC .ex{animation:exPop 11s ease both}
 .beta .code{background:var(--red);color:#fff;padding:6px 16px;border-radius:10px}
 .beta2{font-family:'JB';font-weight:700;font-size:24px;letter-spacing:.06em;color:#6a7080;margin-top:16px;text-transform:uppercase}
 body.go .sD{animation:sD 11s ease both}
-@keyframes sD{0%{opacity:0}81%{opacity:0}84%{opacity:1;transform:none}100%{opacity:1}}
+@keyframes sD{0%{opacity:0}86%{opacity:0}88%{opacity:1;transform:none}100%{opacity:1}}
 body.go .sD .pill{animation:pop 11s ease both}
-@keyframes pop{0%{transform:scale(.9)}84%{transform:scale(.9)}89%{transform:scale(1.04)}94%{transform:scale(1)}100%{transform:scale(1)}}
+@keyframes pop{0%{transform:scale(.9)}86%{transform:scale(.9)}91%{transform:scale(1.04)}96%{transform:scale(1)}100%{transform:scale(1)}}
 </style></head>
 <body>
 <div id="reel">
@@ -117,7 +119,7 @@ body.go .sD .pill{animation:pop 11s ease both}
 
   <div class="scene sB">
     <div class="blabel" id="b-label"></div>
-    <div class="card"><img id="b-img" src="" alt=""></div>
+    <div class="appwin"><img class="strip" id="b-img" src="" alt=""></div>
   </div>
 
   <div class="scene sC">
@@ -143,12 +145,12 @@ const DEFAULT = {
   hookTop: "German verbs that",
   hookSplit: "split&nbsp;in&nbsp;half",
   hookEmoji: "🤯",
-  bLabel: 'Meet: <span class="t">aufstehen</span> — it splits ↓',
-  bImg: "assets/aufstehen-forms.png",
+  bLabel: 'Meet: <span class="t">aufstehen</span> — every tense ↓',
+  bImg: "assets/aufstehen-scroll.png",
   cBig: 'It&rsquo;s a <span class="red">separable</span> verb.',
   cEx: 'Ich <span class="a">stehe</span> um 7 Uhr <span class="a">auf</span>.',
   cTrans: "= I get up at 7.",
-  dBig: "Master every German verb — free.",
+  dBig: "German verbs, finally easy.",
   dPill: "conjuexpert.app",
   dBeta: 'Code <span class="code">FEEDBACK100</span>',
   dBeta2: "30 days Premium · first 100 only",
