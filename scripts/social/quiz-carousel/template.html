@@ -32,7 +32,7 @@ h1 .r{color:var(--red)}
 .verb{font-family:'SG';font-weight:700;font-size:104px;letter-spacing:-.02em;color:var(--ink);margin:30px 0 18px}
 .hint{font-family:'JB';font-weight:700;font-size:26px;color:#aeb4c2}
 .think{font-family:'SG';font-weight:700;font-size:46px;color:var(--red);margin-top:34px}
-.langs{margin-top:34px;border-top:2px solid #f0f1f5;padding-top:24px;display:flex;flex-direction:column;gap:13px;text-align:left}
+.langs{margin:22px 0 8px;border-bottom:2px solid #f0f1f5;padding-bottom:26px;display:flex;flex-direction:column;gap:13px;text-align:left}
 .langs .cap{font-family:'JB';font-weight:700;font-size:20px;letter-spacing:.14em;text-transform:uppercase;color:#aeb4c2;margin-bottom:4px}
 .langs .lrow{font-family:'SB';font-size:27px;color:#8890a0;display:flex;align-items:center;gap:14px}
 .langs .chip{font-family:'JB';font-weight:700;font-size:20px;color:var(--ink);background:#f3f4f8;border-radius:8px;padding:5px 11px;min-width:52px;text-align:center}
@@ -66,7 +66,7 @@ const slides=[];
 slides.push(`<div class="slide">${chrome('QUIZ')}<div class="eyebrow">Daily Quiz</div><h1>${CFG.intro.title}</h1><div class="sub">${CFG.intro.sub}</div><div class="swipe">swipe →</div></div>`);
 CFG.words.forEach((w,i)=>{
   slides.push(`<div class="slide">${chrome(`${i+1} / 3`)}<div class="eyebrow">Your turn</div>
-    <div class="qcard"><div class="asked">Gesucht: <b>${w.tense}</b> · ${w.person}</div><div class="verb">${w.verb}</div><div class="hint">💡 ${w.hint}</div><div class="think">…?</div>${langsBand(w.tense)}</div>
+    <div class="qcard"><div class="asked">Gesucht: <b>${w.tense}</b> · ${w.person}</div>${langsBand(w.tense)}<div class="verb">${w.verb}</div><div class="hint">💡 ${w.hint}</div><div class="think">…?</div></div>
     <div class="swipe">answer →</div></div>`);
   slides.push(`<div class="slide">${chrome(`${i+1} / 3`)}<div class="eyebrow">Answer</div>
     <div class="acard"><div class="small">${w.verb} · ${w.tense} · ${w.person}</div><div class="form">${w.form.replace(w.hlpart,`<span class="hl">${w.hlpart}</span>`)}</div><div class="tip">${w.tip}</div><div class="check">✓ got it?</div></div>
