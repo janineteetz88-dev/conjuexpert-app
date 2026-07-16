@@ -48,7 +48,7 @@ body.go .kw{animation:kin .5s cubic-bezier(.2,.8,.2,1) both}
 .apps{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:44px}
 .app{font-family:'SG';font-weight:700;font-size:38px;color:var(--ink);background:#fff;border-radius:999px;padding:18px 34px;box-shadow:0 14px 34px -18px rgba(20,22,30,.4)}
 body.go .sA{animation:sA var(--dur) ease both}
-@keyframes sA{0%{opacity:1}26%{opacity:1}30%{opacity:0;transform:translateY(-30px)}100%{opacity:0}}
+@keyframes sA{0%{opacity:1}34%{opacity:1}39%{opacity:0;transform:translateY(-30px)}100%{opacity:0}}
 body.go .sA .eyebrow{animation-delay:.05s}
 body.go .sA .kw:nth-child(1){animation-delay:.2s}body.go .sA .kw:nth-child(2){animation-delay:.32s}body.go .sA .kw:nth-child(3){animation-delay:.44s}body.go .sA .kw:nth-child(4){animation-delay:.56s}body.go .sA .kw:nth-child(5){animation-delay:.68s}
 body.go .sA .app{animation:pop2 .45s ease both}
@@ -59,20 +59,11 @@ body.go .sA .app:nth-child(1){animation-delay:.9s}body.go .sA .app:nth-child(2){
 .piece{font-family:'SG';font-weight:700;font-size:96px;line-height:1.04;letter-spacing:-.02em;color:var(--ink)}
 .psub{font-family:'SB';font-weight:400;font-size:38px;color:#5b6373;margin-top:30px;max-width:840px}
 body.go .sB{animation:sB var(--dur) ease both}
-@keyframes sB{0%{opacity:0}30%{opacity:0}34%{opacity:1;transform:none}60%{opacity:1}64%{opacity:0;transform:translateY(-24px)}100%{opacity:0}}
-body.go .sB .piece{animation:rise .55s cubic-bezier(.2,.8,.2,1) 3.3s both}
+@keyframes sB{0%{opacity:0}39%{opacity:0}44%{opacity:1;transform:none}100%{opacity:1}}
+body.go .sB .piece{animation:rise .55s cubic-bezier(.2,.8,.2,1) 4.4s both}
 @keyframes rise{from{opacity:0;transform:translateY(40px) scale(.96)}to{opacity:1;transform:none}}
 
-/* C — CTA */
-.dpill{font-family:'SG';font-weight:700;font-size:50px;color:#fff;background:var(--ink);border-radius:999px;padding:28px 58px;box-shadow:0 20px 44px -16px rgba(20,22,30,.5)}
-.offer{margin-top:40px;font-family:'JB';font-weight:700;font-size:34px;color:var(--ink)}
-.offer .code{background:var(--ink);color:#fff;padding:6px 16px;border-radius:10px}
-.tags{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
-.tag{font-family:'JB';font-weight:700;font-size:24px;letter-spacing:.04em;color:var(--ink);background:#fff;border-radius:999px;padding:12px 24px;box-shadow:0 10px 26px -16px rgba(20,22,30,.35)}
-body.go .sC{animation:sC var(--dur) ease both}
-@keyframes sC{0%{opacity:0}64%{opacity:0}68%{opacity:1;transform:none}100%{opacity:1}}
-body.go .sC .dpill{animation:pop var(--dur) ease both}
-@keyframes pop{0%{transform:scale(.9)}68%{transform:scale(.9)}74%{transform:scale(1.04)}80%{transform:scale(1)}100%{transform:scale(1)}}
+/* (CTA end-card removed — CTA lives in the caption, not burned into the video) */
 </style></head>
 <body>
 <div id="reel">
@@ -92,11 +83,6 @@ body.go .sC .dpill{animation:pop var(--dur) ease both}
     <div class="piece" id="b-piece"></div>
     <div class="psub" id="b-sub"></div>
   </div>
-  <div class="scene sC">
-    <div class="dpill" id="c-pill"></div>
-    <div class="offer" id="c-offer"></div>
-    <div class="tags" id="c-tags"></div>
-  </div>
   <div class="prog"></div>
   <div class="rframe"></div>
 </div>
@@ -107,9 +93,6 @@ const DEFAULT={
   apps:["Duolingo","Busuu","Babbel"],
   piece:'ConjuExpert is<br>the <span class="grad">missing piece.</span> 🧩',
   pieceSub:"Master every verb form — 5 languages.",
-  pill:"conjuexpert.app",
-  offer:'Code <span class="code">FEEDBACK100</span> → 1 month Premium, free',
-  tags:["⚡ Beta","no download needed","5 languages"],
 };
 const R=Object.assign({},DEFAULT,(window.__REEL||{}));
 const set=(id,h)=>{const el=document.getElementById(id);if(el)el.innerHTML=h;};
@@ -117,8 +100,6 @@ document.getElementById('a-eye').textContent=R.eyebrow;
 set('a-q', R.qWords.split(' ').map(w=>`<span class="kw">${w}</span>`).join(' '));
 set('a-apps', R.apps.map(a=>`<span class="app">${a}</span>`).join(''));
 set('b-piece', R.piece); set('b-sub', R.pieceSub);
-set('c-pill', R.pill); set('c-offer', R.offer);
-set('c-tags', R.tags.map(t=>`<span class="tag">${t}</span>`).join(''));
 window.__ready=document.fonts.ready;
 </script>
 </body></html>
