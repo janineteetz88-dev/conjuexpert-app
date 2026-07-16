@@ -265,12 +265,16 @@ export function extractFaqAndContent(blocks) {
   const contentBlocks = work.slice(0, faqStart); // FAQ-Heading selbst verwerfen
   const after = work.slice(faqStart + 1);
 
-  // 3) Aus dem Bereich nach der FAQ-Heading die FAQ-Item-Blöcke sammeln.
-  //    Alles bis zur nächsten Heading (oder Ende) wird betrachtet.
+  // 3) Den KOMPLETTEN FAQ-Bereich nach der Heading sammeln — bis zur nächsten
+  //    Sektions-Heading (H1/H2) oder Ende. heading_3 ist KEINE Grenze, da einige
+  //    Artikel ihre Fragen als H3 schreiben. Der Normalisierer (normalizeFaq)
+  //    erkennt die Frage-/Antwort-Formate im Bereich selbst (Toggle, „▸ **…**"-
+  //    Bullet, fette Frage-Absätze/-Zitate, „### Frage"; Marker wie <toggle>/+++
+  //    werden übersprungen).
   const faqBlocks = [];
   for (const b of after) {
-    if (b.type === "heading_1" || b.type === "heading_2" || b.type === "heading_3") break;
-    if (isFaqItemBlock(b)) faqBlocks.push(b);
+    if (b.type === "heading_1" || b.type === "heading_2") break;
+    faqBlocks.push(b);
   }
 
   return { contentBlocks, faqBlocks };
