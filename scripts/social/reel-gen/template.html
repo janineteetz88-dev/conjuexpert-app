@@ -172,6 +172,16 @@ window.__ready = (async () => {
   await document.fonts.ready;
   const img = document.getElementById('b-img');
   if (!img.complete) await new Promise(r => { img.onload = r; img.onerror = r; });
+  // Dynamic scroll distance: the strip is displayed at width:720px, so its shown
+  // height scales with the source image. Scroll exactly from top to bottom of the
+  // app screen (dispHeight − appwin height) so ANY verb strip lands cleanly — no
+  // hard-coded pixel value. Later same-name @keyframes overrides the fallback.
+  const APPWIN = 1040;
+  const dispH = img.getBoundingClientRect().height || (img.naturalHeight * 720 / (img.naturalWidth || 720));
+  const end = Math.max(0, Math.round(dispH - APPWIN));
+  const st = document.createElement('style');
+  st.textContent = `@keyframes scroll{0%{transform:translateY(0)}16%{transform:translateY(0)}78%{transform:translateY(-${end}px)}100%{transform:translateY(-${end}px)}}`;
+  document.head.appendChild(st);
 })();
 </script>
 </body></html>
