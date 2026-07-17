@@ -6711,7 +6711,20 @@ function QuizView({
   // Custom topics are shared app-wide via kunju-vocab-catnames (same store the
   // Saved/vocab area uses), so adding one here makes it show up everywhere.
   const [customCatNames, setCustomCatNames] = useState(() => recall("kunju-vocab-catnames", []));
-  const allThemes = customCatNames.length ? [...SPK_THEMES, ...customCatNames.map(n => ({
+  // Themen-Auswahl = Standard-Themen + ALLE echten Vokabellisten der aktuellen
+  // Sprache (nicht nur explizit angelegte „+ Liste"-Themen). So ist jede Liste
+  // wählbar und ihre Wörter fließen in die KI-Beispielsätze ein.
+  const listCatNames = (() => {
+    const seen = {}, out = [];
+    try {
+      (getVocab() || []).forEach(v => {
+        if (v && v.lang === lang && v.cat && !isGeneralCat(v.cat) && !seen[v.cat]) { seen[v.cat] = 1; out.push(v.cat); }
+      });
+    } catch (e) {}
+    return out;
+  })();
+  const themeCatNames = Array.from(new Set([...customCatNames, ...listCatNames]));
+  const allThemes = themeCatNames.length ? [...SPK_THEMES, ...themeCatNames.map(n => ({
     id: "cat:" + n,
     topic: n
   }))] : SPK_THEMES;
