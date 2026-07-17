@@ -10522,6 +10522,12 @@ function VocabView({
   const [hiddenCats, setHiddenCats] = useState(() => recall("kunju-vocab-cathidden", []));
   const [addingCat, setAddingCat] = useState(false);
   const [newCatVal, setNewCatVal] = useState("");
+  // Beim Öffnen/Wechseln einer Liste (auch neu angelegter) immer oben starten.
+  useEffect(() => {
+    try { window.scrollTo(0, 0); } catch (e) {}
+    const se = document.scrollingElement; if (se) se.scrollTop = 0;
+    const ph = document.querySelector(".phone"); if (ph) ph.scrollTop = 0;
+  }, [cat, focus]);
   // Über „＋ Liste" aus der Übersicht den Chooser öffnen (leer · Vorlage · einfügen · Sprache).
   useEffect(() => {
     if (recall("kunju-vocab-open-newlist", false)) {

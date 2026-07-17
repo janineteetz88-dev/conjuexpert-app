@@ -1,5 +1,5 @@
 /* ConjuExpert service worker — app shell, cache-first (stale-while-revalidate) */
-const CACHE = "conjuexpert-v133";
+const CACHE = "conjuexpert-v134";
 const ASSETS = [
   "./index.html", "./app.js", "./manifest.webmanifest",
   "./icon-192.png", "./icon-512.png", "./icon-maskable.png",
