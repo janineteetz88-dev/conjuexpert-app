@@ -1,0 +1,21 @@
+{
+  "id": "reel-wissen",
+  "pillar": "Verb des Tages",
+  "reel": {
+    "eyebrow": "Verb des Tages",
+    "hookTop": "Learners always",
+    "hookSplit": "get this wrong",
+    "hookEmoji": "😅",
+    "bLabel": "Meet: <span class=\"t\">wissen</span> — every tense ↓",
+    "bImg": "assets/wissen-scroll.png",
+    "cBig": "In the singular it&rsquo;s <span class=\"red\">weiß</span> — not &ldquo;wisse&rdquo;.",
+    "cEx": "Ich <span class=\"a\">wei&szlig;</span> es nicht.",
+    "cTrans": "= I don't know. (ich weiß · du weißt · er weiß)",
+    "dBig": "Learn German verbs<br>faster 🎯",
+    "dPill": "conjuexpert.app",
+    "dBeta": "Code <span class=\"code\">FEEDBACK100</span>",
+    "dBeta2": "30 days Premium · first 100 only"
+  },
+  "caption": "The verb everyone gets wrong 😅\n'wissen' (to know) is irregular in the singular:\nich weiß · du weißt · er/sie/es weiß — NOT 'wisse'!\nIch weiß es nicht. = I don't know.\n\nPractice every German verb form — free 👉 conjuexpert.app\n🎁 Beta code FEEDBACK100 = 30 days Premium (first 100 only)",
+  "hashtags": ["#learngerman", "#germanverbs", "#deutschlernen", "#germangrammar", "#conjuexpert"]
+}
