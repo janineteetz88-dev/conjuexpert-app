@@ -1,5 +1,5 @@
 /* ConjuExpert service worker — app shell, cache-first (stale-while-revalidate) */
-const CACHE = "conjuexpert-v133";
+const CACHE = "conjuexpert-v134";
 const ASSETS = [
   "./index.html", "./app.js", "./manifest.webmanifest",
   "./icon-192.png", "./icon-512.png", "./icon-maskable.png",
@@ -31,6 +31,13 @@ self.addEventListener("fetch", (e) => {
 
   // Seitenaufrufe: App-Shell (index.html) sofort aus dem Cache, im Hintergrund frisch holen.
   if (req.mode === "navigate") {
+    // WICHTIG: Der SW hat Scope "/" und sieht damit ALLE Navigationen der Domain.
+    // App-Shell cache-first NUR für die App selbst (Root). Andere Seiten – /landing,
+    // /blog/*, Rechtstexte – dürfen NICHT die gecachte index.html bekommen, sonst
+    // erscheint dort die App statt der echten Seite. Diese normal vom Netz laden.
+    const path = new URL(req.url).pathname;
+    const isAppShell = path === "/" || path === "/index.html";
+    if (!isAppShell) return; // SW nicht einmischen → Browser lädt die Seite direkt
     e.respondWith(
       caches.match("./index.html").then((cached) => {
         const net = fetch(req).then((res) => {
