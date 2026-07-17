@@ -6277,6 +6277,16 @@ function WordSentence({
   const [openW, setOpenW] = useState(null);
   const [trans, setTrans] = useState({});
   const [saved, setSaved] = useState({});
+  // Ziel-Liste fürs Wort-Merken: zuletzt gewählte Liste (pro Sprache) merken.
+  const [targetCat, setTargetCat] = useState(() => recall("kunju-lastsave-cat-" + (saveLang || ""), null) || generalCat());
+  function catLabelWS(cat) { return isGeneralCat(cat) ? tr("gm_words") : cat; }
+  function listCatsForWS() {
+    const seen = {}, out = [];
+    try { (getVocab() || []).forEach(v => { if (v && v.lang === saveLang && v.cat && !isGeneralCat(v.cat) && !seen[v.cat]) { seen[v.cat] = 1; out.push(v.cat); } }); } catch (e) {}
+    recall("kunju-vocab-catnames", []).forEach(n => { if (n && !isGeneralCat(n) && !seen[n]) { seen[n] = 1; out.push(n); } });
+    if (targetCat && !isGeneralCat(targetCat) && !seen[targetCat]) out.push(targetCat);
+    return out;
+  }
   const [hintVisible, setHintVisible] = useState(() => showHint && !recall("kunju-word-hint-seen", false));
   useEffect(() => {
     if (!hintVisible) return;
@@ -6342,33 +6352,34 @@ function WordSentence({
       [c]: "—"
     })));
   }
-  function saveWord() {
+  function saveWord(toCat) {
     if (!saveLang || !openW) return;
     const c = openW.w;
-    // Aus dem Text gemerkte Wörter landen immer in „Gemerkte Wörter". Verben
-    // verschiebt man bei Bedarf selbst (Listen-Kürzel → „Gemerkte Verben") —
-    // automatische Verb-Erkennung war zu fehleranfällig (z. B. „Hand" → „han").
+    const cat = toCat || targetCat || generalCat();
+    // Ziel-Liste ist wählbar (Dropdown am Chip). Ist das Wort schon gemerkt,
+    // wird es in die gewählte Liste verschoben; sonst neu dort angelegt.
     function afterTrans(tvRaw) {
       const tv = !tvRaw || tvRaw === "…" || tvRaw === "—" ? "" : tvRaw;
       const term = saveDir === "fromTarget" ? c : tv || c;
       const native = saveDir === "fromTarget" ? tv : c;
-      // Aus dem Text gemerkte Wörter landen im Sammelplatz „Gemerkte Wörter"
-      // (generalCat). Keine automatische KI-Themenzuordnung mehr — man sortiert
-      // selbst in eigene Listen. Kurzer Hinweis zeigt, wohin es ging.
-      const entry = {
-        id: Date.now() + "",
-        lang: saveLang,
-        term,
-        trans: native,
-        cat: generalCat(),
-        kind: "word",
-        created: Date.now(),
-        nat: recall("kunju-native", "German")
-      };
       const list = getVocab();
-      if (!list.some(x => x.lang === entry.lang && norm(x.term) === norm(entry.term))) saveVocab([entry, ...list]);
+      const ex = list.find(x => x.lang === saveLang && norm(x.term) === norm(term));
+      if (ex) { ex.cat = cat; saveVocab(list.slice()); }
+      else {
+        const entry = {
+          id: Date.now() + "",
+          lang: saveLang,
+          term,
+          trans: native,
+          cat,
+          kind: "word",
+          created: Date.now(),
+          nat: recall("kunju-native", "German")
+        };
+        saveVocab([entry, ...list]);
+      }
       setSaved(s => ({ ...s, [c]: true }));
-      if (window.__toast) window.__toast(tr("gm_saved_toast", { w: c }));
+      if (window.__toast) window.__toast("„" + c + "“ → " + catLabelWS(cat));
     }
     setSaved(s => ({
       ...s,
@@ -6406,6 +6417,35 @@ function WordSentence({
       afterTrans(out);
     }).catch(() => afterTrans(""));
   }
+  function pickList(e) {
+    const v = e.target.value;
+    if (v === "__new__") {
+      const name = (window.prompt(tr("vocab_new_cat_q")) || "").trim();
+      if (!name) return;
+      const names = recall("kunju-vocab-catnames", []);
+      if (names.indexOf(name) < 0) persist("kunju-vocab-catnames", [...names, name]);
+      setTargetCat(name); persist("kunju-lastsave-cat-" + (saveLang || ""), name);
+      saveWord(name);
+      return;
+    }
+    const cat = v === "__gen__" ? generalCat() : v;
+    setTargetCat(cat); persist("kunju-lastsave-cat-" + (saveLang || ""), cat);
+    saveWord(cat);
+  }
+  function listDropdown() {
+    if (!saveLang) return null;
+    return /*#__PURE__*/React.createElement("select", {
+      className: "wsave-list",
+      value: isGeneralCat(targetCat) ? "__gen__" : targetCat,
+      onClick: e => e.stopPropagation(),
+      onChange: pickList,
+      title: tr("mv_title")
+    }, [
+      /*#__PURE__*/React.createElement("option", { key: "__gen__", value: "__gen__" }, tr("gm_words")),
+      ...listCatsForWS().map(n => /*#__PURE__*/React.createElement("option", { key: n, value: n }, n)),
+      /*#__PURE__*/React.createElement("option", { key: "__new__", value: "__new__" }, "＋ " + tr("gm_new_list"))
+    ]);
+  }
   function chipInner() {
     const c = openW.w;
     const isSaved = !!(savedSet && savedSet.has(deburr(norm(c))));
@@ -6418,8 +6458,8 @@ function WordSentence({
       className: "wsave saved"
     }, "\u2713 ", tr("vocab_saved")) : /*#__PURE__*/React.createElement("button", {
       className: "wsave",
-      onClick: saveWord
-    }, "+ ", tr("vocab_save"))));
+      onClick: () => saveWord()
+    }, "+ ", tr("vocab_save"))), listDropdown());
   }
   if (inline) return /*#__PURE__*/React.createElement("span", {
     className: "wsent" + (big ? " big" : "") + (accent ? " accent" : ""),
@@ -6451,7 +6491,10 @@ function WordSentence({
         border: "1px solid color-mix(in srgb, var(--lc, #a557ff) 32%, var(--border))",
         fontSize: "13px",
         fontWeight: 600,
-        whiteSpace: "nowrap"
+        whiteSpace: "normal",
+        flexWrap: "wrap",
+        rowGap: "4px",
+        maxWidth: "min(340px, 90vw)"
       }
     }, chipInner()));
   }));
@@ -6486,7 +6529,10 @@ function WordSentence({
         border: "1px solid color-mix(in srgb, var(--lc, #a557ff) 32%, var(--border))",
         fontSize: "13px",
         fontWeight: 600,
-        whiteSpace: "nowrap"
+        whiteSpace: "normal",
+        flexWrap: "wrap",
+        rowGap: "4px",
+        maxWidth: "min(340px, 90vw)"
       }
     }, chipInner()));
   })), !wordChip && openW && /*#__PURE__*/React.createElement("div", {

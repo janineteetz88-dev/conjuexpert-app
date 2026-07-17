@@ -2001,6 +2001,8 @@ body {
 .wtrans { display: inline-flex; align-items: baseline; gap: 7px; font-size: 13.5px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 5px 13px; box-shadow: var(--shadow-sm); animation: fade 0.2s ease both; }
 .wtrans b { font-family: var(--font-display); font-weight: 700; color: var(--lc, var(--text)); font-size: 13.5px; }
 .wsave { border: 0; background: var(--lc, #a557ff); color: #fff; border-radius: 999px; padding: 3px 10px; font-family: var(--font-display); font-weight: 700; font-size: 11.5px; cursor: pointer; margin-left: 4px; transition: transform 0.12s; }
+/* Ziel-Listen-Dropdown direkt am Wort-Chip */
+.wsave-list { margin-left: 5px; max-width: 128px; font-family: var(--font-display); font-weight: 700; font-size: 11px; color: var(--text); background: var(--surface); border: 1px solid color-mix(in srgb, var(--lc, #a557ff) 34%, var(--border)); border-radius: 999px; padding: 3px 6px; cursor: pointer; -webkit-appearance: menulist; appearance: menulist; }
 .word-tap-hint { display: flex; align-items: center; gap: 7px; background: var(--text); color: var(--surface); font-size: 12.5px; font-weight: 600; padding: 7px 13px; border-radius: 12px; margin-bottom: 4px; animation: word-hint-in .35s ease both, word-hint-out .4s ease 3.2s both; pointer-events: none; align-self: flex-start; }
 @keyframes word-hint-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes word-hint-out { from { opacity: 1; } to { opacity: 0; } }
@@ -3056,7 +3058,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-113"></script>
+<script defer src="/app.js?v=c-sand-114"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
