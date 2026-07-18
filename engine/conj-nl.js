@@ -137,7 +137,8 @@
   function clean(v) { return (v || "").trim().toLowerCase(); }
 
   // Separable prefixes (scheidbare werkwoorden): conjugate the base, then move the prefix to the end.
-  const NL_SEP = ["aan","af","bij","in","mee","na","om","onder","op","over","toe","uit","voor","weg","terug","door","samen","neer","tegen","vast","los","klaar","thuis","open","dicht","achteruit","vooruit","binnen","buiten","mis"];
+  // Längster-zuerst, damit z. B. "vooruit" vor "voor" greift (verhindert Fehl-Zerlegung).
+  const NL_SEP = ["aan","af","bij","in","mee","na","om","onder","op","over","toe","uit","voor","weg","terug","door","samen","neer","tegen","vast","los","klaar","thuis","open","dicht","achteruit","vooruit","binnen","buiten","mis"].sort((a, b) => b.length - a.length);
   const NL_SEIN_BASE = ["staan","komen","gaan","lopen","vallen","stijgen","springen","rijden","vliegen","groeien"];
   // Not separable, even though they start with a string that's also a NL_SEP prefix (e.g. "mis" in "missen").
   const NL_NOT_SEPARABLE = ["missen"];

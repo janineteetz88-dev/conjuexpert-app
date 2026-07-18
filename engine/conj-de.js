@@ -158,7 +158,9 @@
   function clean(v) { return (v || "").trim().toLowerCase(); }
 
   // Separable prefixes (trennbare Verben): conjugate the base, then move the prefix.
-  const SEP_PREFIXES = ["ab","an","auf","aus","bei","ein","mit","nach","vor","zu","zurück","zusammen","weg","los","her","hin","empor","fort","heim","hoch","weiter","wieder","durch","über","um","unter","entgegen","gegenüber","voran","voraus","vorbei","herein","heraus","hinaus","hinein","herunter","hinunter","herauf","hinauf","herüber","davon","dazu","fest","frei","statt","teil","fern","nieder"];
+  // WICHTIG: längster-zuerst sortiert, damit z. B. "zurück" vor "zu" und "herein"
+  // vor "her" greift (sonst wird "zurückkommen" fälschlich als "zu"+"rückkommen" zerlegt).
+  const SEP_PREFIXES = ["ab","an","auf","aus","bei","ein","mit","nach","vor","zu","zurück","zusammen","weg","los","her","hin","empor","fort","heim","hoch","weiter","wieder","durch","über","um","unter","entgegen","gegenüber","voran","voraus","vorbei","herein","heraus","hinaus","hinein","herunter","hinunter","herauf","hinauf","herüber","davon","dazu","fest","frei","statt","teil","fern","nieder","zurecht","entlang","hervor","hinweg","vorüber","empor","entzwei"].sort((a, b) => b.length - a.length);
   // Weak/regular inseparable verbs that collide with a separable prefix; see splitSeparable.
   const INSEPARABLE = new Set([
     "antworten", "hindern", "beinhalten", "einigen",
