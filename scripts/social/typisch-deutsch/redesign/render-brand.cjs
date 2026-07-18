@@ -12,6 +12,9 @@ const SECONDS = 15;            // must match --dur in the html
 const N = FPS * SECONDS;
 const htmlArg = process.argv[2] || 'brand-reel.html';
 const outName = process.argv[3] || 'brand-meckern.mp4';
+const cfgArg = process.argv[4];
+let cfg = null;
+if (cfgArg && fs.existsSync(cfgArg)) cfg = JSON.parse(fs.readFileSync(cfgArg, 'utf8'));
 (async () => {
   const framesDir = path.join(DIR, '.frames');
   fs.rmSync(framesDir, { recursive: true, force: true });
@@ -19,6 +22,7 @@ const outName = process.argv[3] || 'brand-meckern.mp4';
   const browser = await chromium.launch({ headless: true });
   const ctx = await browser.newContext({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
   const page = await ctx.newPage();
+  if (cfg && cfg.reel) await page.addInitScript((c) => { window.__REEL = c; }, cfg.reel);
   await page.goto('file://' + path.join(DIR, htmlArg), { waitUntil: 'load' });
   await page.evaluate(async () => { if (window.__ready) await window.__ready; });
   await page.evaluate(() => {

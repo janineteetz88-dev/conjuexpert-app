@@ -32,10 +32,13 @@ body.go .card{animation:cardin var(--dur) cubic-bezier(.2,.9,.25,1) both}
 .sub{margin-top:54px;font-family:'SB';font-weight:600;font-size:46px;color:var(--muted);letter-spacing:-.01em}
 .sub .g{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
 .sub .q{color:var(--ink);font-weight:700}
-/* strike draws (beat 3) */
-.strike{position:absolute;left:-6px;right:-6px;top:52%;height:13px;border-radius:8px;background:var(--red);transform:scaleX(0);transform-origin:left}
-body.go .strike{animation:draw var(--dur) cubic-bezier(.3,.7,.3,1) both}
-@keyframes draw{0%{transform:scaleX(0)}17%{transform:scaleX(0)}22%{transform:scaleX(1)}100%{transform:scaleX(1)}}
+/* strike draws (beat 3) — multi-line capable: one red bar per text line, on top */
+#s-notsay{position:relative}
+#s-notsay::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(to bottom,transparent calc(50% - 8px),var(--red) calc(50% - 8px),var(--red) calc(50% + 8px),transparent calc(50% + 8px));
+  background-repeat:repeat-y;background-position:left top;background-size:0% 1.06em}
+body.go #s-notsay::after{animation:draw var(--dur) cubic-bezier(.3,.7,.3,1) both}
+@keyframes draw{0%{background-size:0% 1.06em}17%{background-size:0% 1.06em}22%{background-size:100% 1.06em}100%{background-size:100% 1.06em}}
 /* gold highlighter sweep (payoff) */
 .hl{position:relative;display:inline-block}
 .hl::before{content:"";position:absolute;left:-8px;right:-8px;top:60%;bottom:8%;background:var(--gold);z-index:-1;border-radius:3px;transform:scaleX(0);transform-origin:left}
@@ -95,12 +98,12 @@ body.go .foot::before{animation:prog var(--dur) linear both}
     </div>
     <div class="card">
       <div class="state sA">
-        <span class="big">&ldquo;well&nbsp;done&rdquo;<span class="strike"></span></span>
+        <span class="big" id="s-notsay"></span>
         <div class="sub">…here's what we <span class="g">actually</span> say ↓</div>
       </div>
       <div class="state sB">
-        <span class="big">&bdquo;da kann<br><span class="hl">man&nbsp;nicht<br>meckern</span>&ldquo;</span>
-        <div class="sub">= you literally <span class="q">&ldquo;can't complain&rdquo;</span></div>
+        <span class="big" id="s-saying"></span>
+        <div class="sub" id="s-meaning"></div>
       </div>
       <div class="state sC">
         <span class="big">Duolingo.<br>Busuu. Babbel.</span>
@@ -121,5 +124,18 @@ body.go .foot::before{animation:prog var(--dur) linear both}
     <div class="url">conjuexpert.app</div>
   </div>
 </div>
-<script>window.__ready=document.fonts?document.fonts.ready:Promise.resolve();</script>
+<script>
+const DEFAULT={
+  notSay:'&ldquo;well&nbsp;done&rdquo;',
+  saying:'&bdquo;da kann<br><span class="hl">man&nbsp;nicht<br>meckern</span>&ldquo;',
+  meaning:'= you literally <span class="q">&ldquo;can&rsquo;t complain&rdquo;</span>'
+};
+const R=Object.assign({},DEFAULT,(window.__REEL||{}));
+const notsay=document.getElementById('s-notsay');
+notsay.innerHTML=R.notSay;
+if(R.notSaySize) notsay.style.fontSize=R.notSaySize;
+document.getElementById('s-saying').innerHTML=R.saying;
+document.getElementById('s-meaning').innerHTML=R.meaning;
+window.__ready=document.fonts?document.fonts.ready:Promise.resolve();
+</script>
 </body></html>

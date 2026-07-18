@@ -17,7 +17,9 @@
 .card{position:relative;margin-top:44px;width:100%;background:var(--surface);border:1px solid var(--border);border-radius:44px;box-shadow:var(--shadow);padding:120px 60px 110px;text-align:center;overflow:hidden}
 .card::before{content:"";position:absolute;top:0;left:0;right:0;height:14px;background:var(--rainbow)}
 .big{position:relative;display:inline-block;font-family:'SB';font-weight:800;font-size:150px;line-height:1;letter-spacing:-.03em;color:var(--ink)}
-.big .strike{position:absolute;left:-8px;right:-8px;top:52%;height:16px;border-radius:8px;background:var(--red)}
+#c-big.struck::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(to bottom,transparent calc(50% - 9px),var(--red) calc(50% - 9px),var(--red) calc(50% + 9px),transparent calc(50% + 9px));
+  background-repeat:repeat-y;background-position:left top;background-size:100% 1em}
 .hint{margin-top:52px;font-family:'SB';font-weight:700;font-size:50px;color:var(--muted)}
 .hint .g{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
 .logo{position:absolute;left:0;right:0;bottom:150px;z-index:2;display:flex;align-items:center;justify-content:center;gap:16px}
@@ -45,12 +47,14 @@
 const DEFAULT={
   eyebrow:"Typisch Deutsch 🇩🇪",
   lead:'In Germany, <span class="r">nobody</span> says',
-  big:'&ldquo;well&nbsp;done&rdquo;<span class="strike"></span>',
+  big:'&ldquo;well&nbsp;done&rdquo;',
+  strike:true,
   hint:'…here’s what we <span class="g">really</span> say 👇'
 };
 const C=Object.assign({},DEFAULT,(window.__COVER||{}));
 const set=(id,h)=>{const el=document.getElementById(id);if(el)el.innerHTML=h;};
 set('c-eye',C.eyebrow); set('c-lead',C.lead); set('c-big',C.big); set('c-hint',C.hint);
+if(C.strike) document.getElementById('c-big').classList.add('struck');
 window.__ready=Promise.resolve();
 </script>
 </body></html>

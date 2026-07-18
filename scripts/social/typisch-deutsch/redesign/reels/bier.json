@@ -1,0 +1,13 @@
+{
+  "id": "td-bier",
+  "reel": {
+    "notSay": "&ldquo;not my problem&rdquo;",
+    "saying": "&bdquo;das ist<br><span class=\"hl\">nicht mein<br>Bier 🍺</span>&ldquo;",
+    "meaning": "= it&rsquo;s literally <span class=\"q\">&ldquo;not my beer&rdquo;</span>"
+  },
+  "cover": {
+    "big": "&ldquo;not my<br>problem&rdquo;",
+    "strike": true
+  },
+  "caption": "In Germany, we don't say \"that's not my problem\" — we say „das ist nicht mein Bier\" (that's literally „not my beer\" 🍺). Because here, beer is serious business. 😌\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, your own topics, right in the browser. No app store, no download.\n\nWe're in open beta and would love your feedback 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanphrases #deutschlernen #germanculture #conjuexpert"
+}
