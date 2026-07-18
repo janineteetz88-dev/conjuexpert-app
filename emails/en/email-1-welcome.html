@@ -19,9 +19,9 @@
 
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#fffdf6;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(33,29,21,0.10);">
 
-    <!-- Akzentleiste (Sand & Ink: Grün) -->
+    <!-- Akzentleiste: ConjuExpert-Regenbogen (Fallback = Tinte) -->
     <tr>
-      <td height="4" style="background:#1a9b46;font-size:0;line-height:0;">&nbsp;</td>
+      <td height="4" bgcolor="#211d15" style="background:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff);font-size:0;line-height:0;">&nbsp;</td>
     </tr>
 
     <tr>
@@ -31,7 +31,7 @@
         <img src="https://conjuexpert.app/logo-wordmark.png" alt="ConjuExpert" width="200" style="display:block;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;margin:0 auto 24px;" />
 
         <!-- Eyebrow -->
-        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#1a9b46;text-transform:uppercase;letter-spacing:1px;">Welcome to ConjuExpert</p>
+        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#211d15;text-transform:uppercase;letter-spacing:1px;">Welcome to ConjuExpert</p>
         <!-- Headline -->
         <h1 style="margin:0 0 18px;font-size:34px;font-weight:900;color:#211d15;letter-spacing:-1px;line-height:1.1;">48 hours of Premium – on us.</h1>
 
@@ -47,11 +47,17 @@
         </table>
         </div>
 
-        <!-- CTA -->
+        <!-- CTA: Tinte-Button mit Regenbogen-Rand (wie .btn-primary; Fallback = reine Tinte) -->
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td align="center" bgcolor="#211d15" style="border-radius:14px;background-color:#211d15;background:#211d15;">
-              <a href="https://conjuexpert.app/?utm_source=email&amp;utm_medium=lifecycle&amp;utm_campaign=welcome&amp;lang=en" style="display:block;padding:16px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;">Try Premium now →</a>
+            <td bgcolor="#211d15" style="background:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff);border-radius:16px;padding:2px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" bgcolor="#211d15" style="background:#211d15;border-radius:14px;">
+                    <a href="https://conjuexpert.app/?utm_source=email&amp;utm_medium=lifecycle&amp;utm_campaign=welcome&amp;lang=en" style="display:block;padding:15px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;">Try Premium now →</a>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>

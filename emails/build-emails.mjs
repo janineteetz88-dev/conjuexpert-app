@@ -24,23 +24,25 @@ const LANGS = ["de", "en", "es", "nl", "fr"];
 
 const BASE = "https://conjuexpert.app";
 const LOGO = `${BASE}/logo-wordmark.png`;
-/* ─── ConjuExpert-CI „Sand & Ink" ────────────────────────────────────────────
- * Warmes Sand als Fläche, dunkle Tinte als Text/Button, Grün als einziger
- * Akzent. (Abgeleitet aus der Live-Landing/App: --bg #f4eede, --ink #211d15,
- * --green #1a9b46.) Kein Pink, kein Regenbogen, keine bunten Wechsel-Akzente. */
+/* ─── ConjuExpert-CI „Sand & Ink" + Regenbogen-Highlight ─────────────────────
+ * Warmes Sand als Fläche, dunkle Tinte als Text/Button — und der ConjuExpert-
+ * Regenbogen als Marken-Highlight (Akzentleiste oben, Button-Rand, Preisrahmen),
+ * genau wie Landing/App: --brand-rainbow und .btn-primary (Tinte-Füllung mit
+ * Regenbogen-Rand). Kein Pink, kein Grün als Akzent. */
 const SAND_BG      = "#f4eede"; // Seiten-Hintergrund (Sand)
 const CARD         = "#fffdf6"; // Karten-Fläche (warmes Weiß)
 const INK          = "#211d15"; // Überschriften / Tinte
 const BODY_TXT     = "#574f3b"; // Fließtext (warm)
 const MUTED        = "#8b8068"; // gedämpft (Footer, Kleingedrucktes)
 const HAIRLINE     = "#e7dcc6"; // feine Trennlinie auf Sand
-const ACCENT       = "#1a9b46"; // Grün – einziger Marken-Akzent (Eyebrow, Preisrahmen)
-const TOPBAR       = "#1a9b46"; // schmale Akzentleiste oben (ersetzt Regenbogen)
-const CTA_BG       = "#211d15"; // Button: solide Tinte (Sand-&-Ink-CTA, kein Pink)
-const CTA_FALLBACK = "#211d15"; // identische Fallback-Farbe (kein Verlauf nötig)
+// Marken-Highlight: der ConjuExpert-Regenbogen (= --brand-rainbow aus Landing/App).
+const RAINBOW      = "linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff)";
+const RAINBOW_FB   = "#211d15"; // solider Fallback (Clients ohne Verläufe → Tinte, wirkt als klarer Rahmen/Bar)
+const EYEBROW      = "#211d15"; // Eyebrow in Tinte (Gradient-Text ist in Mails unzuverlässig/oft unsichtbar)
+const CTA_BG       = "#211d15"; // Button-Füllung: Tinte (mit Regenbogen-Rand, wie .btn-primary)
 const PRICE_BG     = "#faf6ec"; // Preisbox-Fläche (helles Sand)
-const BADGE_BG     = "#e8f4ea"; // Rabatt-Badge Fläche (zartes Grün)
-const BADGE_TXT    = "#136b31"; // Rabatt-Badge Text (dunkelgrün)
+const BADGE_BG     = "#fef3c7"; // Rabatt-Badge Fläche (warmes Amber – Highlight)
+const BADGE_TXT    = "#92400e"; // Rabatt-Badge Text
 const LEGAL = "Janine Kreiser · Blasewitzer Straße 41 · 01307 Dresden";
 
 /* ─── Preise je Sprache (EU-Komma, EN-Punkt) ─────────────────────────────── */
@@ -177,12 +179,11 @@ function renderEmail(lang, mail) {
   const c = COMMON[lang];
   const p = PRICE[lang];
   const m = mail[lang];
-  const accent = ACCENT; // Sand & Ink: durchgehend Grün statt bunter Wechsel-Akzente
   const href = `${BASE}/?utm_source=email&amp;utm_medium=lifecycle&amp;utm_campaign=${mail.utm}&amp;lang=${lang}`;
 
   const banner = mail.banner
     ? `    <tr>
-      <td align="center" style="background:${ACCENT};padding:10px 24px;">
+      <td align="center" bgcolor="${RAINBOW_FB}" style="background:${RAINBOW};padding:10px 24px;">
         <p style="margin:0;font-size:12px;font-weight:700;color:#ffffff;letter-spacing:.5px;text-transform:uppercase;">${m.bannerTxt}</p>
       </td>
     </tr>\n`
@@ -201,11 +202,18 @@ ${m.features.map((f) => `          <tr><td style="padding:7px 0;font-size:15px;c
   const price = mail.price
     ? `        <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:4px auto 24px;">
           <tr>
-            <td align="center" style="background:${PRICE_BG};border:2px solid ${accent};border-radius:16px;padding:18px 32px;">
-              <p style="margin:0 0 2px;font-size:13px;color:${MUTED};">${c[mail.cap]}</p>
-              <p style="margin:0;font-size:34px;font-weight:900;color:${INK};letter-spacing:-1px;">${p.now} <span style="font-size:15px;font-weight:600;color:${MUTED};">${c.perYear}</span> <span style="font-size:15px;font-weight:600;color:${MUTED};text-decoration:line-through;">${p.was}</span></p>
-              <p style="margin:6px 0 0;display:inline-block;background:${BADGE_BG};color:${BADGE_TXT};font-size:12px;font-weight:700;padding:3px 10px;border-radius:8px;">${p.badge}</p>
-              <p style="margin:10px 0 0;font-size:12px;color:${MUTED};line-height:1.4;">${c.priceSub}</p>
+            <!-- Regenbogen-Rand: Verlaufs-Zelle mit 2px Innenabstand, Fallback = Tinte -->
+            <td bgcolor="${RAINBOW_FB}" style="background:${RAINBOW};border-radius:16px;padding:2px;">
+              <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td align="center" bgcolor="${PRICE_BG}" style="background:${PRICE_BG};border-radius:14px;padding:18px 32px;">
+                    <p style="margin:0 0 2px;font-size:13px;color:${MUTED};">${c[mail.cap]}</p>
+                    <p style="margin:0;font-size:34px;font-weight:900;color:${INK};letter-spacing:-1px;">${p.now} <span style="font-size:15px;font-weight:600;color:${MUTED};">${c.perYear}</span> <span style="font-size:15px;font-weight:600;color:${MUTED};text-decoration:line-through;">${p.was}</span></p>
+                    <p style="margin:6px 0 0;display:inline-block;background:${BADGE_BG};color:${BADGE_TXT};font-size:12px;font-weight:700;padding:3px 10px;border-radius:8px;">${p.badge}</p>
+                    <p style="margin:10px 0 0;font-size:12px;color:${MUTED};line-height:1.4;">${c.priceSub}</p>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>\n`
@@ -232,9 +240,9 @@ ${m.features.map((f) => `          <tr><td style="padding:7px 0;font-size:15px;c
 
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:${CARD};border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(33,29,21,0.10);">
 
-    <!-- Akzentleiste (Sand & Ink: Grün) -->
+    <!-- Akzentleiste: ConjuExpert-Regenbogen (Fallback = Tinte) -->
     <tr>
-      <td height="4" style="background:${TOPBAR};font-size:0;line-height:0;">&nbsp;</td>
+      <td height="4" bgcolor="${RAINBOW_FB}" style="background:${RAINBOW};font-size:0;line-height:0;">&nbsp;</td>
     </tr>
 
 ${banner}    <tr>
@@ -244,7 +252,7 @@ ${banner}    <tr>
         <img src="${LOGO}" alt="ConjuExpert" width="200" style="display:block;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;margin:0 auto 24px;" />
 
         <!-- Eyebrow -->
-        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:1px;">${m.eyebrow}</p>
+        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${EYEBROW};text-transform:uppercase;letter-spacing:1px;">${m.eyebrow}</p>
         <!-- Headline -->
         <h1 style="margin:0 0 18px;font-size:34px;font-weight:900;color:${INK};letter-spacing:-1px;line-height:1.1;">${m.h1}</h1>
 
@@ -253,11 +261,17 @@ ${banner}    <tr>
 ${paras}
 ${features}        </div>
 
-${price}        <!-- CTA -->
+${price}        <!-- CTA: Tinte-Button mit Regenbogen-Rand (wie .btn-primary; Fallback = reine Tinte) -->
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td align="center" bgcolor="${CTA_FALLBACK}" style="border-radius:14px;background-color:${CTA_FALLBACK};background:${CTA_BG};">
-              <a href="${href}" style="display:block;padding:16px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;">${m.cta}</a>
+            <td bgcolor="${RAINBOW_FB}" style="background:${RAINBOW};border-radius:16px;padding:2px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" bgcolor="${CTA_BG}" style="background:${CTA_BG};border-radius:14px;">
+                    <a href="${href}" style="display:block;padding:15px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;">${m.cta}</a>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>
