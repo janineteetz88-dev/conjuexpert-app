@@ -6,28 +6,20 @@
   --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
   --shadow:0 30px 60px -30px rgba(70,55,25,.42);--shadow-sm:0 8px 22px -12px rgba(70,55,25,.3)}
 *{margin:0;padding:0;box-sizing:border-box}
+/* ===== SHARED TYPISCH-CARD SPEC (identical in hook + payoff) ===== */
 #reel{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--bg);font-family:'SB',sans-serif}
-/* one subtle warm brand glow (premium, not aurora blobs) */
-.glow{position:absolute;top:-220px;left:50%;transform:translateX(-50%);width:1200px;height:620px;
-  background:var(--rainbow);filter:blur(150px);opacity:.10;border-radius:50%;z-index:0}
-.wrap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;padding:150px 96px 0}
-/* signature eyebrow pill */
-.eyebrow{display:inline-flex;align-items:center;gap:14px;font-family:'JB';font-weight:700;font-size:30px;
-  letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:var(--surface);
-  border:1px solid var(--border);padding:16px 30px;border-radius:999px;box-shadow:var(--shadow-sm)}
+.glow{position:absolute;top:-220px;left:50%;transform:translateX(-50%);width:1200px;height:620px;background:var(--rainbow);filter:blur(150px);opacity:.10;border-radius:50%;z-index:0}
+.wrap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;padding:172px 96px 0}
+.eyebrow{display:inline-flex;align-items:center;gap:14px;font-family:'JB';font-weight:700;font-size:30px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:var(--surface);border:1px solid var(--border);padding:16px 30px;border-radius:999px;box-shadow:var(--shadow-sm)}
 .eyebrow .dot{width:16px;height:16px;border-radius:50%;background:var(--rainbow)}
-.lead{margin-top:96px;font-family:'SB';font-weight:500;font-size:60px;color:var(--muted);text-align:center;letter-spacing:-.01em}
-.lead b{color:var(--ink);font-weight:700}
-/* premium sand card echoing the app's result card (rainbow top edge) */
-.card{position:relative;margin-top:44px;width:100%;background:var(--surface);border:1px solid var(--border);
-  border-radius:40px;box-shadow:var(--shadow);padding:92px 70px 84px;text-align:center;overflow:hidden}
+.lead{margin-top:78px;font-family:'SB';font-weight:700;font-size:70px;color:var(--ink);text-align:center;letter-spacing:-.02em;line-height:1.1;height:96px}
+.lead b{color:var(--red);font-weight:800}
+.card{position:relative;margin-top:46px;width:100%;height:860px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:40px;box-shadow:var(--shadow);padding:0 66px;overflow:hidden}
 .card::before{content:"";position:absolute;top:0;left:0;right:0;height:12px;background:var(--rainbow)}
-.phrase{position:relative;display:inline-block;font-family:'SB';font-weight:800;font-size:126px;line-height:1;
-  letter-spacing:-.03em;color:var(--ink)}
-.phrase .strike{position:absolute;left:-6px;right:-6px;top:52%;height:13px;border-radius:8px;background:var(--red)}
-.sub{margin-top:56px;font-family:'JB';font-weight:700;font-size:34px;letter-spacing:.02em;color:var(--muted)}
-.sub .g{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
-/* bottom brand bar */
+.big{position:relative;display:inline-block;font-family:'SB';font-weight:800;font-size:120px;line-height:1.06;letter-spacing:-.03em;color:var(--ink)}
+.sub{margin-top:54px;font-family:'SB';font-weight:600;font-size:46px;color:var(--muted);text-align:center;letter-spacing:-.01em}
+.sub .g{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.sub .q{color:var(--ink);font-weight:700}
 .foot{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:52px 96px 60px;display:flex;align-items:center;justify-content:space-between}
 .foot::before{content:"";position:absolute;top:0;left:96px;right:96px;height:4px;background:var(--rainbow);border-radius:999px;opacity:.9}
 .logo{display:flex;align-items:center;gap:16px}
@@ -35,6 +27,8 @@
 .logo .w{font-family:'SB';font-weight:700;font-size:44px;color:var(--ink)}
 .logo .w b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
 .url{font-family:'JB';font-weight:700;font-size:34px;color:var(--muted)}
+/* hook-specific: strike */
+.big .strike{position:absolute;left:-6px;right:-6px;top:52%;height:13px;border-radius:8px;background:var(--red)}
 </style></head>
 <body>
 <div id="reel">
@@ -43,7 +37,7 @@
     <div class="eyebrow"><span class="dot"></span>Typisch Deutsch 🇩🇪</div>
     <div class="lead">In Germany, <b>nobody</b> says</div>
     <div class="card">
-      <span class="phrase">&ldquo;well&nbsp;done&rdquo;<span class="strike"></span></span>
+      <span class="big">&ldquo;well&nbsp;done&rdquo;<span class="strike"></span></span>
       <div class="sub">…here's what we <span class="g">actually</span> say ↓</div>
     </div>
   </div>
