@@ -34,7 +34,7 @@ jobs:
       - name: Fällige Posts in Blotato einplanen
         env:
           BLOTATO_API_KEY: ${{ secrets.BLOTATO_API_KEY }}
-          LOOKAHEAD_DAYS: '3'
+          LOOKAHEAD_DAYS: '8'
           DRY_RUN: ${{ github.event.inputs.dry_run == '1' && '1' || '0' }}
         run: node scripts/social/blotato-schedule.mjs
 
