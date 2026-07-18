@@ -29,11 +29,11 @@
 <div id="reel">
   <div class="glow"></div>
   <div class="wrap">
-    <div class="eyebrow"><span class="dot"></span>Typisch Deutsch 🇩🇪</div>
-    <div class="lead">In Germany, <span class="r">nobody</span> says</div>
+    <div class="eyebrow"><span class="dot"></span><span id="c-eye"></span></div>
+    <div class="lead" id="c-lead"></div>
     <div class="card">
-      <span class="big">&ldquo;well&nbsp;done&rdquo;<span class="strike"></span></span>
-      <div class="hint">…here's what we <span class="g">really</span> say 👇</div>
+      <span class="big" id="c-big"></span>
+      <div class="hint" id="c-hint"></div>
     </div>
   </div>
   <div class="logo">
@@ -41,5 +41,16 @@
     <span class="w">Conju<b>Expert</b></span>
   </div>
 </div>
-<script>window.__ready=Promise.resolve();</script>
+<script>
+const DEFAULT={
+  eyebrow:"Typisch Deutsch 🇩🇪",
+  lead:'In Germany, <span class="r">nobody</span> says',
+  big:'&ldquo;well&nbsp;done&rdquo;<span class="strike"></span>',
+  hint:'…here’s what we <span class="g">really</span> say 👇'
+};
+const C=Object.assign({},DEFAULT,(window.__COVER||{}));
+const set=(id,h)=>{const el=document.getElementById(id);if(el)el.innerHTML=h;};
+set('c-eye',C.eyebrow); set('c-lead',C.lead); set('c-big',C.big); set('c-hint',C.hint);
+window.__ready=Promise.resolve();
+</script>
 </body></html>
