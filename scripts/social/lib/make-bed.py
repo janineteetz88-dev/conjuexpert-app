@@ -1,89 +1,159 @@
 #!/usr/bin/env python3
-"""make-bed.py <out.wav> [seconds]
-Erzeugt einen eigenen, ruhigen Lo-Fi-Musik-Bed (warme Rhodes-artige Akkorde +
-weicher Kick + dezenter Shaker). Komplett selbst synthetisiert -> gehoert uns,
-also lizenzfrei. Nur Python-Standardlib.
+"""make-bed.py <out.wav> [seconds] [style]
+Erzeugt einen eigenen, lizenzfreien Musik-Bed — komplett selbst synthetisiert
+(reine Mathematik, keine Samples). Styles: summer (Summer-House/Chill, Default),
+calm (Lo-Fi), bright (Pop), pulse (minimal). Nur Python-Standardlib.
 """
 import sys, math, wave, struct, random
 
 SR = 44100
 out = sys.argv[1] if len(sys.argv) > 1 else 'bed.wav'
 DUR = float(sys.argv[2]) if len(sys.argv) > 2 else 15.0
-STYLE = sys.argv[3] if len(sys.argv) > 3 else 'calm'
+STYLE = sys.argv[3] if len(sys.argv) > 3 else 'summer'
 N = int(SR * DUR)
 random.seed(7)
 
-# --- style presets ---
-PROG = {
-    'calm':  [[261.63,329.63,392.00,493.88],[220.00,261.63,329.63,392.00],[174.61,220.00,261.63,329.63],[196.00,246.94,293.66,349.23]],  # Cmaj7 Am7 Fmaj7 G7
-    'bright':[[261.63,329.63,392.00],[196.00,246.94,392.00],[220.00,261.63,329.63],[174.61,220.00,349.23]],  # C G Am F (pop)
-    'pulse': [[220.00,329.63,440.00],[246.94,349.23,493.88]],  # Am / Bm vamp, airy
-}
-STY = {
-    'calm':  dict(bpm=78,  harm2=0.28, lpa=0.22, kick=0.55, padgain=0.50),
-    'bright':dict(bpm=98,  harm2=0.5,  lpa=0.34, kick=0.60, padgain=0.42),
-    'pulse': dict(bpm=104, harm2=0.18, lpa=0.30, kick=0.68, padgain=0.34),
-}[STYLE if STYLE in ('calm','bright','pulse') else 'calm']
-CHORDS = PROG[STYLE if STYLE in PROG else 'calm']
-CHORD_LEN = DUR / 8.0                    # 8 chord slots over the clip
-buf = [0.0] * N
+def env_ar(i, seg, atk, rel):
+    if i < atk: return i / atk
+    if i > seg - rel: return max(0.0, (seg - i) / rel)
+    return 1.0
 
-# pad: fundamental + soft 2nd harmonic, gentle attack/release per chord
-for slot in range(8):
-    chord = CHORDS[slot % len(CHORDS)]
-    start = int(slot * CHORD_LEN * SR)
-    end = min(N, int((slot + 1) * CHORD_LEN * SR))
-    seg = end - start
-    atk = int(0.18 * SR); rel = int(0.5 * SR)
-    for i in range(seg):
-        t = i / SR
-        # envelope
-        if i < atk: env = i / atk
-        elif i > seg - rel: env = max(0.0, (seg - i) / rel)
-        else: env = 1.0
-        env *= 0.9
-        s = 0.0
-        for f in chord:
-            ph = 2 * math.pi * f * t
-            s += math.sin(ph) + STY['harm2'] * math.sin(2 * ph)
-        buf[start + i] += (s / (len(chord) * (1+STY['harm2']))) * STY['padgain'] * env
+# ---- SUMMER HOUSE / CHILL ----
+if STYLE == 'summer':
+    BPM = 116.0
+    beat = 60.0 / BPM
+    bar = 4 * beat
+    # warm turnaround: Fmaj7 · Am7 · Dm7 · G7  (chord tones, bass root)
+    CH = [
+        ([174.61, 220.00, 261.63, 329.63], 87.31),   # Fmaj7 / F2
+        ([220.00, 261.63, 329.63, 392.00], 110.00),  # Am7 / A2
+        ([146.83, 220.00, 261.63, 349.23], 73.42),   # Dm7 / D2
+        ([196.00, 246.94, 293.66, 349.23], 98.00),   # G7 / G2
+    ]
+    pad = [0.0] * N; bass = [0.0] * N; perc = [0.0] * N
+    def chord_at(t):
+        return CH[int(t // bar) % len(CH)]
 
-# soft kick every beat (~78 BPM) and a quiet shaker on the offbeat
-beat = 60.0 / STY['bpm']
-tk = 0.0
-while tk < DUR:
-    k0 = int(tk * SR)
-    klen = int(0.16 * SR)
-    for i in range(klen):
-        if k0 + i >= N: break
-        e = math.exp(-i / (0.045 * SR))
-        f = 95 * math.exp(-i / (0.03 * SR)) + 45   # pitch drop
-        buf[k0 + i] += STY['kick'] * e * math.sin(2 * math.pi * f * (i / SR))
-    # offbeat shaker (filtered noise)
-    s0 = int((tk + beat / 2) * SR)
-    slen = int(0.06 * SR)
-    prev = 0.0
-    for i in range(slen):
-        if s0 + i >= N: break
-        e = math.exp(-i / (0.02 * SR))
-        n = random.uniform(-1, 1)
-        prev = prev + 0.5 * (n - prev)             # soften
-        buf[s0 + i] += 0.06 * e * prev
-    tk += beat
+    # warm sustained pad
+    nb = int(DUR / bar) + 1
+    for b in range(nb):
+        chord, _ = CH[b % len(CH)]
+        s = int(b * bar * SR); e = min(N, int((b + 1) * bar * SR)); seg = e - s
+        atk = int(0.25 * SR); rel = int(0.4 * SR)
+        for i in range(seg):
+            t = i / SR
+            ev = env_ar(i, seg, atk, rel) * 0.34
+            acc = 0.0
+            for f in chord:
+                ph = 2 * math.pi * f * t
+                acc += math.sin(ph) + 0.22 * math.sin(2 * ph)
+            pad[s + i] += acc / (len(chord) * 1.22) * ev
 
-# one-pole low-pass to warm it up, then fade in/out + normalize
-a = STY['lpa']
+    # off-beat bass (house bounce) + sparkly pluck arpeggio
+    nbeat = int(DUR / beat) + 1
+    for k in range(nbeat):
+        t0 = k * beat
+        _, root = chord_at(t0)
+        b0 = int((t0 + beat / 2) * SR); blen = int(beat * 0.5 * SR)
+        for i in range(blen):
+            if b0 + i >= N: break
+            e = math.exp(-i / (0.12 * SR))
+            ph = 2 * math.pi * root * (i / SR)
+            bass[b0 + i] += 0.5 * e * (math.sin(ph) + 0.25 * math.sin(2 * ph))
+        chord, _ = chord_at(t0)
+        note = chord[(k * 2) % len(chord)] * 2
+        p0 = int((t0 + beat / 2) * SR); plen = int(0.22 * SR)
+        for i in range(plen):
+            if p0 + i >= N: break
+            e = math.exp(-i / (0.05 * SR))
+            perc[p0 + i] += 0.10 * e * math.sin(2 * math.pi * note * (i / SR))
+
+    # 4-on-the-floor kick + crisp off-beat hats
+    tk = 0.0
+    while tk < DUR:
+        k0 = int(tk * SR); klen = int(0.18 * SR)
+        for i in range(klen):
+            if k0 + i >= N: break
+            e = math.exp(-i / (0.05 * SR))
+            f = 110 * math.exp(-i / (0.025 * SR)) + 48
+            perc[k0 + i] += 0.7 * e * math.sin(2 * math.pi * f * (i / SR))
+        h0 = int((tk + beat / 2) * SR); hlen = int(0.05 * SR); prev = 0.0
+        for i in range(hlen):
+            if h0 + i >= N: break
+            e = math.exp(-i / (0.014 * SR))
+            n = random.uniform(-1, 1)
+            prev = n - 0.6 * prev
+            perc[h0 + i] += 0.09 * e * prev
+        tk += beat
+
+    # sidechain "pump": duck pad+bass after every kick
+    duck = [1.0] * N
+    tk = 0.0
+    while tk < DUR:
+        k0 = int(tk * SR); dlen = int(beat * SR)
+        for i in range(dlen):
+            if k0 + i >= N: break
+            duck[k0 + i] = min(duck[k0 + i], 0.55 + 0.45 * (i / dlen))
+        tk += beat
+
+    buf = [0.0] * N
+    for i in range(N):
+        buf[i] = (pad[i] + bass[i]) * duck[i] + perc[i]
+    LPA = 0.42
+
+else:
+    # ---- other styles (lo-fi / pop / minimal) ----
+    PROG = {
+        'calm':  [[261.63,329.63,392.00,493.88],[220.00,261.63,329.63,392.00],[174.61,220.00,261.63,329.63],[196.00,246.94,293.66,349.23]],
+        'bright':[[261.63,329.63,392.00],[196.00,246.94,392.00],[220.00,261.63,329.63],[174.61,220.00,349.23]],
+        'pulse': [[220.00,329.63,440.00],[246.94,349.23,493.88]],
+    }
+    STY = {
+        'calm':  dict(bpm=78,  harm2=0.28, lpa=0.22, kick=0.55, padgain=0.50),
+        'bright':dict(bpm=98,  harm2=0.5,  lpa=0.34, kick=0.60, padgain=0.42),
+        'pulse': dict(bpm=104, harm2=0.18, lpa=0.30, kick=0.68, padgain=0.34),
+    }.get(STYLE, dict(bpm=78, harm2=0.28, lpa=0.22, kick=0.55, padgain=0.50))
+    CHORDS = PROG.get(STYLE, PROG['calm'])
+    buf = [0.0] * N
+    CHORD_LEN = DUR / 8.0
+    for slot in range(8):
+        chord = CHORDS[slot % len(CHORDS)]
+        s = int(slot * CHORD_LEN * SR); e = min(N, int((slot + 1) * CHORD_LEN * SR)); seg = e - s
+        atk = int(0.18 * SR); rel = int(0.5 * SR)
+        for i in range(seg):
+            t = i / SR
+            ev = env_ar(i, seg, atk, rel) * 0.9
+            acc = 0.0
+            for f in chord:
+                ph = 2 * math.pi * f * t
+                acc += math.sin(ph) + STY['harm2'] * math.sin(2 * ph)
+            buf[s + i] += acc / (len(chord) * (1 + STY['harm2'])) * STY['padgain'] * ev
+    beat = 60.0 / STY['bpm']; tk = 0.0
+    while tk < DUR:
+        k0 = int(tk * SR); klen = int(0.16 * SR)
+        for i in range(klen):
+            if k0 + i >= N: break
+            e = math.exp(-i / (0.045 * SR)); f = 95 * math.exp(-i / (0.03 * SR)) + 45
+            buf[k0 + i] += STY['kick'] * e * math.sin(2 * math.pi * f * (i / SR))
+        s0 = int((tk + beat / 2) * SR); slen = int(0.06 * SR); prev = 0.0
+        for i in range(slen):
+            if s0 + i >= N: break
+            e = math.exp(-i / (0.02 * SR)); n = random.uniform(-1, 1)
+            prev = prev + 0.5 * (n - prev)
+            buf[s0 + i] += 0.06 * e * prev
+        tk += beat
+    LPA = STY['lpa']
+
+# low-pass warmth, fades, normalize
 y = 0.0
 for i in range(N):
-    y = y + a * (buf[i] - y)
-    buf[i] = y
+    y = y + LPA * (buf[i] - y); buf[i] = y
 fi = int(0.4 * SR); fo = int(0.8 * SR)
 for i in range(N):
     if i < fi: buf[i] *= i / fi
     if i > N - fo: buf[i] *= max(0.0, (N - i) / fo)
-peak = max(1e-6, max(abs(v) for v in buf))
-g = 0.82 / peak
+peak = max(1e-6, max(abs(v) for v in buf)); g = 0.82 / peak
 with wave.open(out, 'w') as w:
     w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
     w.writeframes(b''.join(struct.pack('<h', int(max(-1, min(1, v * g)) * 32767)) for v in buf))
-print('OK', out, f'({DUR}s)')
+print('OK', out, f'({DUR}s · {STYLE})')
