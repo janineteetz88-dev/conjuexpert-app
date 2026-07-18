@@ -20,7 +20,7 @@ def env_ar(i, seg, atk, rel):
 
 # ---- SUMMER HOUSE / CHILL ----
 if STYLE == 'summer':
-    BPM = 116.0
+    BPM = 122.0
     beat = 60.0 / BPM
     bar = 4 * beat
     # warm turnaround: Fmaj7 · Am7 · Dm7 · G7  (chord tones, bass root)
@@ -57,34 +57,41 @@ if STYLE == 'summer':
         b0 = int((t0 + beat / 2) * SR); blen = int(beat * 0.5 * SR)
         for i in range(blen):
             if b0 + i >= N: break
-            e = math.exp(-i / (0.12 * SR))
+            e = math.exp(-i / (0.14 * SR))
             ph = 2 * math.pi * root * (i / SR)
-            bass[b0 + i] += 0.5 * e * (math.sin(ph) + 0.25 * math.sin(2 * ph))
+            bass[b0 + i] += 0.78 * e * (math.sin(ph) + 0.25 * math.sin(2 * ph) + 0.4 * math.sin(ph / 2))
         chord, _ = chord_at(t0)
         note = chord[(k * 2) % len(chord)] * 2
         p0 = int((t0 + beat / 2) * SR); plen = int(0.22 * SR)
         for i in range(plen):
             if p0 + i >= N: break
             e = math.exp(-i / (0.05 * SR))
-            perc[p0 + i] += 0.10 * e * math.sin(2 * math.pi * note * (i / SR))
+            perc[p0 + i] += 0.13 * e * math.sin(2 * math.pi * note * (i / SR))
 
-    # 4-on-the-floor kick + crisp off-beat hats
-    tk = 0.0
-    while tk < DUR:
+    # punchy 4-on-the-floor kick + backbeat clap (2 & 4) + crisp off-beat hats
+    kb = 0
+    while kb * beat < DUR:
+        tk = kb * beat
         k0 = int(tk * SR); klen = int(0.18 * SR)
         for i in range(klen):
             if k0 + i >= N: break
-            e = math.exp(-i / (0.05 * SR))
-            f = 110 * math.exp(-i / (0.025 * SR)) + 48
-            perc[k0 + i] += 0.7 * e * math.sin(2 * math.pi * f * (i / SR))
-        h0 = int((tk + beat / 2) * SR); hlen = int(0.05 * SR); prev = 0.0
+            e = math.exp(-i / (0.045 * SR))
+            f = 118 * math.exp(-i / (0.022 * SR)) + 50
+            perc[k0 + i] += 0.88 * e * math.sin(2 * math.pi * f * (i / SR))
+        if kb % 4 in (1, 3):                    # clap on 2 & 4
+            clen = int(0.10 * SR); prev = 0.0
+            for i in range(clen):
+                if k0 + i >= N: break
+                e = math.exp(-i / (0.032 * SR))
+                n = random.uniform(-1, 1); prev = n - 0.3 * prev
+                perc[k0 + i] += 0.17 * e * prev
+        h0 = int((tk + beat / 2) * SR); hlen = int(0.055 * SR); prev = 0.0
         for i in range(hlen):
             if h0 + i >= N: break
-            e = math.exp(-i / (0.014 * SR))
-            n = random.uniform(-1, 1)
-            prev = n - 0.6 * prev
-            perc[h0 + i] += 0.09 * e * prev
-        tk += beat
+            e = math.exp(-i / (0.016 * SR))
+            n = random.uniform(-1, 1); prev = n - 0.6 * prev
+            perc[h0 + i] += 0.12 * e * prev
+        kb += 1
 
     # sidechain "pump": duck pad+bass after every kick
     duck = [1.0] * N
@@ -93,13 +100,13 @@ if STYLE == 'summer':
         k0 = int(tk * SR); dlen = int(beat * SR)
         for i in range(dlen):
             if k0 + i >= N: break
-            duck[k0 + i] = min(duck[k0 + i], 0.55 + 0.45 * (i / dlen))
+            duck[k0 + i] = min(duck[k0 + i], 0.6 + 0.4 * (i / dlen))
         tk += beat
 
     buf = [0.0] * N
     for i in range(N):
         buf[i] = (pad[i] + bass[i]) * duck[i] + perc[i]
-    LPA = 0.42
+    LPA = 0.52
 
 else:
     # ---- other styles (lo-fi / pop / minimal) ----
