@@ -1,0 +1,104 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face{font-family:'SB';src:url('../assets/schib.woff2') format('woff2');font-weight:400 800;font-display:block}
+@font-face{font-family:'JB';src:url('../assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
+:root{--ink:#211d15;--muted:#8b8068;--surface:#fffdf6;--surface-2:#ece3d0;--bg:#f4eede;
+  --border:rgba(60,48,24,.14);--red:#ff3b5c;--gold:#ffd23f;
+  --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+  --shadow:0 30px 60px -30px rgba(70,55,25,.42);--shadow-sm:0 8px 22px -12px rgba(70,55,25,.3);--dur:13s}
+*{margin:0;padding:0;box-sizing:border-box}
+#reel{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--bg);font-family:'SB',sans-serif}
+.glow{position:absolute;top:-220px;left:50%;transform:translateX(-50%);width:1200px;height:620px;background:var(--rainbow);filter:blur(150px);opacity:.10;border-radius:50%;z-index:0}
+body.go .glow{animation:drift var(--dur) ease-in-out infinite alternate}
+@keyframes drift{to{transform:translateX(-50%) translateY(40px) scale(1.08)}}
+.wrap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;padding:172px 96px 0}
+/* eyebrow — persists */
+.eyebrow{display:inline-flex;align-items:center;gap:14px;font-family:'JB';font-weight:700;font-size:30px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:var(--surface);border:1px solid var(--border);padding:16px 30px;border-radius:999px;box-shadow:var(--shadow-sm);opacity:0}
+body.go .eyebrow{animation:pop .5s cubic-bezier(.2,.9,.25,1) .05s both}
+.eyebrow .dot{width:16px;height:16px;border-radius:50%;background:var(--rainbow)}
+/* lead slot holds 3 crossfading lines */
+.leadslot{position:relative;margin-top:78px;width:100%;height:96px}
+.lead{position:absolute;left:0;right:0;top:0;font-family:'SB';font-weight:700;font-size:70px;color:var(--ink);text-align:center;letter-spacing:-.02em;line-height:1.1;opacity:0}
+.lead .r{color:var(--red);font-weight:800}
+.lead .k{color:var(--ink);font-weight:800}
+/* card — persists, content swaps */
+.card{position:relative;margin-top:46px;width:100%;height:860px;background:var(--surface);border:1px solid var(--border);border-radius:40px;box-shadow:var(--shadow);overflow:hidden;opacity:0}
+body.go .card{animation:cardin .6s cubic-bezier(.2,.9,.25,1) .18s both}
+@keyframes cardin{from{opacity:0;transform:translateY(46px) scale(.985)}to{opacity:1;transform:none}}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:12px;background:var(--rainbow);z-index:3}
+.state{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 66px;opacity:0}
+.big{position:relative;display:inline-block;font-family:'SB';font-weight:800;font-size:120px;line-height:1.06;letter-spacing:-.03em;color:var(--ink)}
+.sub{margin-top:54px;font-family:'SB';font-weight:600;font-size:46px;color:var(--muted);letter-spacing:-.01em}
+.sub .g{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.sub .q{color:var(--ink);font-weight:700}
+/* strike draws in */
+.strike{position:absolute;left:-6px;right:-6px;top:52%;height:13px;border-radius:8px;background:var(--red);transform:scaleX(0);transform-origin:left}
+body.go .strike{animation:draw var(--dur) cubic-bezier(.3,.7,.3,1) both}
+@keyframes draw{0%{transform:scaleX(0)}7%{transform:scaleX(0)}12%{transform:scaleX(1)}100%{transform:scaleX(1)}}
+/* gold highlighter sweeps behind the phrase */
+.hl{position:relative;display:inline-block}
+.hl::before{content:"";position:absolute;left:-8px;right:-8px;top:60%;bottom:8%;background:var(--gold);z-index:-1;border-radius:3px;transform:scaleX(0);transform-origin:left}
+body.go .hl::before{animation:sweep var(--dur) cubic-bezier(.3,.7,.3,1) both}
+@keyframes sweep{0%{transform:scaleX(0)}40%{transform:scaleX(0)}46%{transform:scaleX(1)}100%{transform:scaleX(1)}}
+/* CTA bits */
+.dbig{font-family:'SB';font-weight:800;font-size:96px;line-height:1.06;letter-spacing:-.03em;color:var(--ink)}
+.pill{margin-top:44px;font-family:'SB';font-weight:800;font-size:52px;color:var(--surface);background:var(--ink);border-radius:999px;padding:26px 52px;box-shadow:var(--shadow-sm)}
+.code{margin-top:34px;font-family:'JB';font-weight:700;font-size:36px;color:var(--muted)}
+.code b{background:var(--red);color:#fff;padding:6px 16px;border-radius:10px;font-weight:700}
+/* state timing */
+body.go .sA{animation:showA var(--dur) ease both}
+body.go .sB{animation:showB var(--dur) ease both}
+body.go .sC{animation:showC var(--dur) ease both}
+@keyframes showA{0%{opacity:1}30%{opacity:1}33%{opacity:0}100%{opacity:0}}
+@keyframes showB{0%{opacity:0}34%{opacity:0}37%{opacity:1}62%{opacity:1}65%{opacity:0}100%{opacity:0}}
+@keyframes showC{0%{opacity:0}66%{opacity:0}69%{opacity:1}100%{opacity:1}}
+body.go .laA{animation:showA var(--dur) ease both}
+body.go .laB{animation:showB var(--dur) ease both}
+body.go .laC{animation:showC var(--dur) ease both}
+/* foot + progress */
+.foot{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:52px 96px 60px;display:flex;align-items:center;justify-content:space-between}
+.foot::before{content:"";position:absolute;top:0;left:96px;right:96px;height:4px;background:var(--rainbow);border-radius:999px;transform:scaleX(0);transform-origin:left}
+body.go .foot::before{animation:prog var(--dur) linear both}
+@keyframes prog{to{transform:scaleX(1)}}
+.logo{display:flex;align-items:center;gap:16px}
+.logo svg{width:58px;height:46px}
+.logo .w{font-family:'SB';font-weight:700;font-size:44px;color:var(--ink)}
+.logo .w b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.url{font-family:'JB';font-weight:700;font-size:34px;color:var(--muted)}
+@keyframes pop{from{opacity:0;transform:translateY(-14px) scale(.96)}to{opacity:1;transform:none}}
+</style></head>
+<body>
+<div id="reel">
+  <div class="glow"></div>
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>Typisch Deutsch 🇩🇪</div>
+    <div class="leadslot">
+      <div class="lead laA">In Germany, <span class="r">nobody</span> says</div>
+      <div class="lead laB">We Germans just <span class="k">say</span></div>
+      <div class="lead laC">Sound like a <span class="k">local</span> 🎯</div>
+    </div>
+    <div class="card">
+      <div class="state sA">
+        <span class="big">&ldquo;well&nbsp;done&rdquo;<span class="strike"></span></span>
+        <div class="sub">…here's what we <span class="g">actually</span> say ↓</div>
+      </div>
+      <div class="state sB">
+        <span class="big">&bdquo;da kann<br><span class="hl">man&nbsp;nicht<br>meckern</span>&ldquo;</span>
+        <div class="sub">= you literally <span class="q">&ldquo;can't complain&rdquo;</span></div>
+      </div>
+      <div class="state sC">
+        <div class="dbig">Learn German<br>verbs faster 🎯</div>
+        <div class="pill">conjuexpert.app</div>
+        <div class="code">Code <b>FEEDBACK100</b> · 30 days free</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot">
+    <div class="logo">
+      <svg viewBox="1 4 30 24" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg>
+      <span class="w">Conju<b>Expert</b></span>
+    </div>
+    <div class="url">conjuexpert.app</div>
+  </div>
+</div>
+<script>window.__ready=document.fonts?document.fonts.ready:Promise.resolve();</script>
+</body></html>
