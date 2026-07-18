@@ -7,10 +7,10 @@
 |-----|-------|------|-------|------|-----------|
 | Sa | 18.07. | 🟡 Typisch „nicht meckern" | `brand-meckern` ✅ live | neu ✅ | IG + TikTok |
 | Mo | 20.07. | 🟡 Typisch „nicht mein Bier" 🍺 | `brand-bier` | neu ✅ | IG + TikTok |
-| Di | 21.07. | 🔴 Quiz „Basics" (nehmen·gehen·sein) | `quiz-basics` | rot (Bestand) | IG Carousel |
+| Di | 21.07. | 🔴 Quiz „Basics" (nehmen·gehen·sein) | `quiz-basics` | neu ✅ (sand) | IG Carousel |
 | Mi | 22.07. | 🟡 Typisch „auf den Keks" 🍪 | `brand-keks` | neu ✅ | IG + TikTok |
-| Do | 23.07. | 🔴 Quiz „Irregular" (fahren·essen·haben) | `quiz-irregular` | rot (Bestand) | IG Carousel |
-| Fr | 24.07. | 🔴 Quiz „Modals" (können·anrufen·werden) | `quiz-modals` | rot (Bestand) | IG Carousel |
+| Do | 23.07. | 🔴 Quiz „Irregular" (fahren·essen·haben) | `quiz-irregular` | neu ✅ (sand) | IG Carousel |
+| Fr | 24.07. | 🔴 Quiz „Modals" (können·anrufen·werden) | `quiz-modals` | neu ✅ (sand) | IG Carousel |
 
 **Alle Reels:** eigenes designtes Cover (Startbild) + lizenzfreier Musik-Bed.
 **Alle Posts:** Caption mit ConjuExpert-Erklärung + Beta-Hinweis + Code FEEDBACK100.

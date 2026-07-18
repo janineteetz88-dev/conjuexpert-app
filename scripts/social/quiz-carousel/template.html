@@ -3,50 +3,52 @@
 @font-face{font-family:'SB';src:url('assets/schib.woff2') format('woff2');font-weight:400 700;font-display:block}
 @font-face{font-family:'JB';src:url('assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--ink:#14151a;--red:#ff3b5c;--rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+:root{--ink:#211d15;--muted:#8b8068;--muted2:#b4a888;--surface:#fffdf6;--surface-2:#ece3d0;--bg:#f4eede;--border:rgba(60,48,24,.14);
+  --red:#ff3b5c;--rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
   --rainbow-full:linear-gradient(120deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff,#ff3b5c)}
-body{background:#e9eaf0;font-family:'SB',sans-serif}
+body{background:var(--bg);font-family:'SB',sans-serif}
 #stage{display:flex;flex-wrap:wrap;gap:20px;padding:20px}
 .slide{position:relative;width:1080px;height:1350px;overflow:hidden;background:
-  radial-gradient(120% 80% at 50% 8%,#fff 0%,#f3f4f8 55%,#ecedf3 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 96px}
+  radial-gradient(120% 80% at 50% 8%,#fffdf6 0%,#f4eede 55%,#efe7d4 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 96px}
 .rframe{position:absolute;inset:0;z-index:20;pointer-events:none;padding:18px;background:var(--rainbow-full);background-size:100% 100%;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
   filter:drop-shadow(0 0 12px rgba(255,122,24,.5)) drop-shadow(0 0 24px rgba(10,132,255,.4))}
 .logo{position:absolute;top:48px;left:56px;display:flex;align-items:center;gap:13px;z-index:8}
 .logo .mark{width:48px;height:38px}
-.logo .w{font-family:'SG';font-weight:600;font-size:33px;letter-spacing:-.02em;color:var(--ink)}
-.logo .w b{font-weight:700;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
-.pg{position:absolute;top:56px;right:60px;z-index:8;font-family:'JB';font-weight:700;font-size:24px;letter-spacing:.1em;color:#aeb4c2}
+.logo .w{font-family:'SB';font-weight:700;font-size:33px;letter-spacing:-.02em;color:var(--ink)}
+.logo .w b{font-weight:800;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pg{position:absolute;top:56px;right:60px;z-index:8;font-family:'JB';font-weight:700;font-size:24px;letter-spacing:.1em;color:var(--muted2)}
 .eyebrow{font-family:'JB';font-weight:700;font-size:26px;letter-spacing:.28em;text-transform:uppercase;color:var(--red);margin-bottom:28px}
 .signoff{position:absolute;left:0;right:0;bottom:74px;z-index:8;text-align:center;font-family:'JB';font-weight:700;font-size:29px;color:var(--ink)}
-.signoff .app{background:var(--ink);color:#fff;padding:9px 20px;border-radius:999px}
+.signoff .app{background:var(--ink);color:var(--surface);padding:9px 20px;border-radius:999px}
 .swipe{position:absolute;right:64px;bottom:150px;z-index:8;font-family:'JB';font-weight:700;font-size:26px;color:var(--red)}
 /* intro */
-h1{font-family:'SG';font-weight:700;font-size:96px;line-height:1.03;letter-spacing:-.02em;color:var(--ink)}
+h1{font-family:'SB';font-weight:800;font-size:96px;line-height:1.03;letter-spacing:-.02em;color:var(--ink)}
 h1 .r{color:var(--red)}
-.sub{font-family:'SB';font-size:34px;color:#6a7080;margin-top:30px}
-/* quiz card (mirrors the app) */
-.qcard{width:820px;background:#fff;border-radius:34px;padding:56px 48px;box-shadow:0 34px 80px -26px rgba(20,22,30,.45);border-top:10px solid var(--red)}
-.asked{font-family:'SB';font-size:34px;color:#8890a0}
+.sub{font-family:'SB';font-weight:500;font-size:34px;color:var(--muted);margin-top:30px}
+/* quiz card (mirrors the app) — sand surface, rainbow top edge, red accents */
+.qcard{position:relative;width:820px;background:var(--surface);border:1px solid var(--border);border-radius:34px;padding:64px 48px 56px;box-shadow:0 34px 80px -26px rgba(70,55,25,.4);overflow:hidden}
+.qcard::before,.acard::before{content:"";position:absolute;top:0;left:0;right:0;height:10px;background:var(--rainbow)}
+.asked{font-family:'SB';font-weight:500;font-size:34px;color:var(--muted)}
 .asked b{color:var(--red);font-weight:700}
-.verb{font-family:'SG';font-weight:700;font-size:104px;letter-spacing:-.02em;color:var(--ink);margin:30px 0 18px}
-.hint{font-family:'JB';font-weight:700;font-size:26px;color:#aeb4c2}
-.think{font-family:'SG';font-weight:700;font-size:46px;color:var(--red);margin-top:34px}
-.langs{margin:22px 0 8px;border-bottom:2px solid #f0f1f5;padding-bottom:26px;display:flex;flex-direction:column;gap:13px;text-align:left}
-.langs .cap{font-family:'JB';font-weight:700;font-size:20px;letter-spacing:.14em;text-transform:uppercase;color:#aeb4c2;margin-bottom:4px}
-.langs .lrow{font-family:'SB';font-size:27px;color:#8890a0;display:flex;align-items:center;gap:14px}
-.langs .chip{font-family:'JB';font-weight:700;font-size:20px;color:var(--ink);background:#f3f4f8;border-radius:8px;padding:5px 11px;min-width:52px;text-align:center}
+.verb{font-family:'SB';font-weight:800;font-size:104px;letter-spacing:-.02em;color:var(--ink);margin:30px 0 18px}
+.hint{font-family:'JB';font-weight:700;font-size:26px;color:var(--muted2)}
+.think{font-family:'SB';font-weight:800;font-size:46px;color:var(--red);margin-top:34px}
+.langs{margin:22px 0 8px;border-bottom:2px solid var(--border);padding-bottom:26px;display:flex;flex-direction:column;gap:13px;text-align:left}
+.langs .cap{font-family:'JB';font-weight:700;font-size:20px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2);margin-bottom:4px}
+.langs .lrow{font-family:'SB';font-weight:500;font-size:27px;color:var(--muted);display:flex;align-items:center;gap:14px}
+.langs .chip{font-family:'JB';font-weight:700;font-size:20px;color:var(--ink);background:var(--surface-2);border-radius:8px;padding:5px 11px;min-width:52px;text-align:center}
 .langs .lw{color:var(--ink);font-weight:700}
 /* answer */
-.acard{width:820px;background:#fff;border-radius:34px;padding:56px 48px;box-shadow:0 34px 80px -26px rgba(20,22,30,.45);border-top:10px solid var(--red)}
-.small{font-family:'SB';font-size:32px;color:#8890a0}
+.acard{position:relative;width:820px;background:var(--surface);border:1px solid var(--border);border-radius:34px;padding:64px 48px 56px;box-shadow:0 34px 80px -26px rgba(70,55,25,.4);overflow:hidden}
+.small{font-family:'SB';font-weight:500;font-size:32px;color:var(--muted)}
 .form{font-family:'JB';font-weight:700;font-size:84px;color:var(--ink);margin:26px 0 6px}
-.form .hl{background:#ffe9ee;color:var(--red);padding:2px 14px;border-radius:12px}
-.tip{font-family:'SB';font-size:30px;color:#6a7080;margin-top:26px}
-.check{font-family:'SG';font-weight:700;font-size:40px;color:var(--red);margin-top:28px}
+.form .hl{background:#ffe3ea;color:var(--red);padding:2px 14px;border-radius:12px}
+.tip{font-family:'SB';font-weight:500;font-size:30px;color:var(--muted);margin-top:26px}
+.check{font-family:'SB';font-weight:800;font-size:40px;color:var(--red);margin-top:28px}
 .betabox{margin-top:44px;font-family:'JB';font-weight:700;font-size:40px;color:var(--ink);line-height:1.4}
 .betabox .code{background:var(--red);color:#fff;padding:8px 20px;border-radius:12px}
-.appline{margin-top:30px;font-family:'JB';font-weight:700;font-size:30px;letter-spacing:.02em;color:#8890a0}
+.appline{margin-top:30px;font-family:'JB';font-weight:700;font-size:30px;letter-spacing:.02em;color:var(--muted)}
 </style></head>
 <body><div id="stage"></div>
 <script>
