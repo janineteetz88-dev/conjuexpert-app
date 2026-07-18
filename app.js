@@ -1494,7 +1494,7 @@
       cj_tend_head: "Your 24 h Premium trial is over", cj_tend_text: "Conjugate &amp; Learn stay free. Want to keep quizzing? With a free account you practise the “Cards” quiz (20 rounds/day) – plus <b>2 days of Premium</b> for free. And with a short review you get <b>€5 off the yearly plan</b>.", cj_tend_yes: "Create account – Quiz + 2 days", cj_tend_no: "Just look up &amp; learn",
       cj_help_head: "Help us get better", cj_help_text: "Please help us improve — and give you and every other ConjuExpert the best possible experience. We're brand new, and we truly need your help if something ever feels off.", cj_p8_head: "Great to see you back!", cj_p8_text: "Your progress is still here. Secure it with a free account before it's gone.",
       cj_fb_head: "How's it going for you?", cj_fb_text: "Be honest: what do you like best – and what should we do better?", cj_fb_gift: "🎁 Give us your feedback and get a <b>€5 code</b> on the yearly plan.", cj_fb_rate_q: "How do you like ConjuExpert?", cj_fb_ph: "Your feedback…", cj_fb_send: "Give feedback &amp; get €5", cj_fb_sending: "Sending…", cj_fb_err: "Couldn't send – please try again.",
-      cj_fbt_head: "Thanks for your feedback!", cj_fbt_text: "Here's your gift: with code <b>WILLKOMMEN</b> you get Premium for <b>€24.99/year</b> instead of €29.99 – the code is valid for 7 days.", cj_fb_secure: "Secure code &amp; get Premium",
+      cj_fbt_head: "Thanks for your feedback!", cj_fbt_text: "Here's your gift: with code <b>DANKE5</b> you get Premium for <b>€24.99/year</b> instead of €29.99 – the code is valid for 7 days.", cj_fb_secure: "Secure code &amp; get Premium",
       hint_quiz_cards_h: "Cards: memorise verbs, relaxed", hint_quiz_cards_1: "Pick a tense &amp; favourite topic, plus the direction (mother tongue ↔ target language).", hint_quiz_cards_2: "See the verb + tense, work out the form in your head — tap the card to flip it.", hint_quiz_cards_3: "Tap unknown words in the example sentence → translate &amp; save them.", hint_quiz_cards_4: "No pressure, no typing: perfect for getting to know forms and quick review.", hint_quiz_speed_h: "Speed: 60 seconds, full focus", hint_quiz_speed_1: "Pick a tense &amp; topic, then start — you have 60 seconds.", hint_quiz_speed_2: "Tap the correct form as fast as you can — every right answer counts.", hint_quiz_speed_3: "Great for making forms quick to recall, with a little time pressure.",
       hint_quiz_choice_h: "Choice: spot the right form fast", hint_quiz_choice_1: "A perfect way into a new tense.", hint_quiz_choice_2: "Pick a tense &amp; favourite topic.", hint_quiz_choice_3: "Verb + required tense + four options — tap the right one for instant feedback.", hint_quiz_choice_4: "Tap unknown words in the example sentence → translate &amp; save them.",
       hint_quiz_type_h: "Type: write conjugations actively", hint_quiz_type_1: "Writing it yourself anchors the forms most — alongside <b>Speak</b>, the most intensive mode.", hint_quiz_type_2: "Pick tense, topic &amp; direction — and whether to drill single verbs or translate a whole sentence.", hint_quiz_type_3: "Tap unknown words in the example sentence → translate &amp; save them.",
@@ -1539,7 +1539,7 @@
       cj_tend_head: "Deine 24 h Premiumtarif-Test sind vorbei", cj_tend_text: "Konjugieren &amp; Lernen bleiben kostenlos. Willst du weiter quizzen? Mit einem kostenlosen Konto übst du im Quiz „Karte“ (20 Runden/Tag) – und sicherst dir <b>2 Tage Premiumtarif</b> gratis dazu. Und mit kurzem Feedback bekommst du <b>5 € aufs Jahresabo</b>.", cj_tend_yes: "Konto anlegen – Quiz + 2 Tage", cj_tend_no: "Nur nachschlagen &amp; lernen",
       cj_help_head: "Hilf uns, besser zu werden", cj_help_text: "Bitte hilf uns dabei, besser zu werden und dir und den anderen ConjuExperts die bestmöglichen Erlebnisse zu verschaffen. Wir sind ganz frisch am Start und brauchen deine Mithilfe, falls es irgendwo „klemmt“.", cj_p8_head: "Schön, dass du wieder da bist!", cj_p8_text: "Dein Fortschritt ist noch da. Sichere ihn mit einem kostenlosen Konto, bevor er verloren geht.",
       cj_fb_head: "Wie läuft's für dich?", cj_fb_text: "Sag uns ehrlich: Was gefällt dir am besten – und was sollen wir besser machen?", cj_fb_gift: "🎁 Gib uns dein Feedback und erhalte einen <b>5-€-Code</b> auf das Jahres-Abo.", cj_fb_rate_q: "Wie gefällt dir ConjuExpert?", cj_fb_ph: "Dein Feedback…", cj_fb_send: "Feedback geben &amp; 5 € sichern", cj_fb_sending: "Wird gesendet…", cj_fb_err: "Konnte nicht gesendet werden – bitte erneut versuchen.",
-      cj_fbt_head: "Danke fürs Feedback!", cj_fbt_text: "Hier ist dein Geschenk: Mit dem Code <b>WILLKOMMEN</b> bekommst du den Premiumtarif für <b>24,99 €/Jahr</b> statt 29,99 € – der Code ist 7 Tage gültig.", cj_fb_secure: "Code sichern &amp; Premium holen",
+      cj_fbt_head: "Danke fürs Feedback!", cj_fbt_text: "Hier ist dein Geschenk: Mit dem Code <b>DANKE5</b> bekommst du den Premiumtarif für <b>24,99 €/Jahr</b> statt 29,99 € – der Code ist 7 Tage gültig.", cj_fb_secure: "Code sichern &amp; Premium holen",
       hint_quiz_cards_h: "Karten: Verben entspannt einprägen", hint_quiz_cards_1: "Zeitform &amp; Lieblingsthema wählen, dazu die Richtung (Muttersprache ↔ Lernsprache).", hint_quiz_cards_2: "Verb + Zeitform ansehen, Form im Kopf überlegen — tippe die Karte zum Umdrehen.", hint_quiz_cards_3: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.", hint_quiz_cards_4: "Kein Druck, kein Tippen: ideal zum Kennenlernen und schnellen Wiederholen.", hint_quiz_speed_h: "Speed: 60 Sekunden Vollgas", hint_quiz_speed_1: "Zeitform &amp; Thema wählen, dann starten — du hast 60 Sekunden.", hint_quiz_speed_2: "Tippe die richtige Form so schnell wie möglich an — jede richtige zählt.", hint_quiz_speed_3: "Ideal, um Formen schnell abrufbar zu machen — mit etwas Zeitdruck.",
       hint_quiz_choice_h: "Auswahl: die richtige Form schnell erkennen", hint_quiz_choice_1: "Perfekter Einstieg in eine neue Zeitform.", hint_quiz_choice_2: "Zeitform &amp; Lieblingsthema wählen.", hint_quiz_choice_3: "Verb + geforderte Zeitform + vier Varianten — tippe die richtige an, sofortige Rückmeldung.", hint_quiz_choice_4: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.",
       hint_quiz_type_h: "Tippen: Konjugationen aktiv schreiben", hint_quiz_type_1: "Selbst Schreiben verankert die Formen mit am stärksten — neben <b>Sprechen</b> der intensivste Modus.", hint_quiz_type_2: "Zeitform, Lieblingsthema &amp; Richtung wählen — einzelne Verben oder ganzen Satz übersetzen.", hint_quiz_type_3: "Unbekannte Wörter im Beispielsatz antippen → übersetzen &amp; speichern.",
@@ -1584,7 +1584,7 @@
       cj_tend_head: "Tu prueba Premium de 24 h terminó", cj_tend_text: "Conjugar &amp; Aprender siguen gratis. ¿Quieres seguir con el quiz? Con una cuenta gratis practicas el quiz «Tarjetas» (20 rondas/día) – y consigues <b>2 días de Premium</b> gratis. Y con una breve reseña obtienes <b>5 € en el plan anual</b>.", cj_tend_yes: "Crear cuenta – Quiz + 2 días", cj_tend_no: "Solo consultar &amp; aprender",
       cj_help_head: "Ayúdanos a mejorar", cj_help_text: "Ayúdanos a mejorar y a ofrecerte a ti y a los demás ConjuExperts la mejor experiencia posible. Acabamos de empezar y necesitamos tu ayuda si algo no funciona bien.", cj_p8_head: "¡Qué bien tenerte de vuelta!", cj_p8_text: "Tu progreso sigue aquí. Asegúralo con una cuenta gratis antes de que se pierda.",
       cj_fb_head: "¿Qué tal te va?", cj_fb_text: "Sé sincero/a: ¿qué es lo que más te gusta y qué deberíamos mejorar?", cj_fb_gift: "🎁 Danos tu opinión y recibe un <b>código de 5 €</b> para el plan anual.", cj_fb_rate_q: "¿Qué te parece ConjuExpert?", cj_fb_ph: "Tu opinión…", cj_fb_send: "Opinar &amp; lograr 5 €", cj_fb_sending: "Enviando…", cj_fb_err: "No se pudo enviar, inténtalo de nuevo.",
-      cj_fbt_head: "¡Gracias por tu opinión!", cj_fbt_text: "Aquí tienes tu regalo: con el código <b>WILLKOMMEN</b> consigues Premium por <b>24,99 €/año</b> en vez de 29,99 € – el código es válido 7 días.", cj_fb_secure: "Guardar código &amp; obtener Premium",
+      cj_fbt_head: "¡Gracias por tu opinión!", cj_fbt_text: "Aquí tienes tu regalo: con el código <b>DANKE5</b> consigues Premium por <b>24,99 €/año</b> en vez de 29,99 € – el código es válido 7 días.", cj_fb_secure: "Guardar código &amp; obtener Premium",
       hint_quiz_cards_h: "Tarjetas: memoriza verbos sin estrés", hint_quiz_cards_1: "Elige tiempo verbal &amp; tema favorito, además del sentido (lengua materna ↔ idioma que aprendes).", hint_quiz_cards_2: "Mira el verbo + tiempo, piensa la forma en tu cabeza — toca la tarjeta para girarla.", hint_quiz_cards_3: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.", hint_quiz_cards_4: "Sin presión, sin escribir: ideal para conocer las formas y repasar rápido.", hint_quiz_speed_h: "Veloz: 60 segundos a tope", hint_quiz_speed_1: "Elige tiempo &amp; tema y empieza — tienes 60 segundos.", hint_quiz_speed_2: "Toca la forma correcta lo más rápido posible — cada acierto suma.", hint_quiz_speed_3: "Ideal para recuperar las formas con rapidez, con algo de presión.",
       hint_quiz_choice_h: "Opción: reconocer rápido la forma correcta", hint_quiz_choice_1: "Una entrada perfecta a un tiempo verbal nuevo.", hint_quiz_choice_2: "Elige tiempo verbal &amp; tema favorito.", hint_quiz_choice_3: "Verbo + tiempo requerido + cuatro variantes — toca la correcta y recibe respuesta al instante.", hint_quiz_choice_4: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.",
       hint_quiz_type_h: "Escribir: conjuga de forma activa", hint_quiz_type_1: "Escribirlo tú mismo es lo que más fija las formas — junto a <b>Hablar</b>, el modo más intensivo.", hint_quiz_type_2: "Elige tiempo, tema &amp; sentido — y si practicas verbos sueltos o traduces una frase entera.", hint_quiz_type_3: "Toca las palabras desconocidas de la frase de ejemplo → traducir &amp; guardar.",
@@ -1629,7 +1629,7 @@
       cj_tend_head: "Je proefperiode van 24 u Premium is voorbij", cj_tend_text: "Vervoegen &amp; Leren blijven gratis. Wil je verder quizzen? Met een gratis account oefen je de quiz „Kaarten“ (20 rondes/dag) – plus <b>2 dagen Premium</b> gratis. En met korte feedback krijg je <b>€5 op het jaarabonnement</b>.", cj_tend_yes: "Account aanmaken – Quiz + 2 dagen", cj_tend_no: "Alleen opzoeken &amp; leren",
       cj_help_head: "Help ons beter te worden", cj_help_text: "Help ons alsjeblieft beter te worden — en jou en alle andere ConjuExperts de best mogelijke ervaring te geven. We zijn net gestart en hebben je hulp echt nodig als er ergens iets hapert.", cj_p8_head: "Fijn dat je er weer bent!", cj_p8_text: "Je voortgang staat er nog. Bewaar hem met een gratis account voordat hij verdwijnt.",
       cj_fb_head: "Hoe gaat het bij jou?", cj_fb_text: "Wees eerlijk: wat vind je het leukst – en wat kunnen wij beter doen?", cj_fb_gift: "🎁 Geef je feedback en ontvang een <b>code van € 5</b> op het jaarabonnement.", cj_fb_rate_q: "Wat vind je van ConjuExpert?", cj_fb_ph: "Jouw feedback…", cj_fb_send: "Feedback geven &amp; € 5 krijgen", cj_fb_sending: "Versturen…", cj_fb_err: "Kon niet verzonden worden – probeer opnieuw.",
-      cj_fbt_head: "Bedankt voor je feedback!", cj_fbt_text: "Hier is je cadeau: met de code <b>WILLKOMMEN</b> krijg je Premium voor <b>€ 24,99/jaar</b> in plaats van € 29,99 – de code is 7 dagen geldig.", cj_fb_secure: "Code opslaan &amp; Premium halen",
+      cj_fbt_head: "Bedankt voor je feedback!", cj_fbt_text: "Hier is je cadeau: met de code <b>DANKE5</b> krijg je Premium voor <b>€ 24,99/jaar</b> in plaats van € 29,99 – de code is 7 dagen geldig.", cj_fb_secure: "Code opslaan &amp; Premium halen",
       hint_quiz_cards_h: "Kaarten: werkwoorden ontspannen inprenten", hint_quiz_cards_1: "Kies tijd &amp; favoriet thema, plus de richting (moedertaal ↔ doeltaal).", hint_quiz_cards_2: "Bekijk werkwoord + tijd, bedenk de vorm in je hoofd — tik de kaart om te draaien.", hint_quiz_cards_3: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.", hint_quiz_cards_4: "Geen druk, geen typen: ideaal om vormen te leren kennen en snel te herhalen.", hint_quiz_speed_h: "Speed: 60 seconden vol focus", hint_quiz_speed_1: "Kies tijd &amp; thema en start — je hebt 60 seconden.", hint_quiz_speed_2: "Tik de juiste vorm zo snel mogelijk aan — elk goed antwoord telt.", hint_quiz_speed_3: "Ideaal om vormen snel paraat te krijgen, met wat tijdsdruk.",
       hint_quiz_choice_h: "Keuze: de juiste vorm snel herkennen", hint_quiz_choice_1: "Een perfecte start in een nieuwe tijd.", hint_quiz_choice_2: "Kies tijd &amp; favoriet thema.", hint_quiz_choice_3: "Werkwoord + gevraagde tijd + vier varianten — tik de juiste aan voor directe feedback.", hint_quiz_choice_4: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.",
       hint_quiz_type_h: "Typen: vervoegingen actief schrijven", hint_quiz_type_1: "Zelf schrijven verankert de vormen het sterkst — naast <b>Spreken</b> de intensiefste modus.", hint_quiz_type_2: "Kies tijd, thema &amp; richting — en of je losse werkwoorden oefent of een hele zin vertaalt.", hint_quiz_type_3: "Tik onbekende woorden in de voorbeeldzin → vertalen &amp; opslaan.",
@@ -1674,7 +1674,7 @@
       cj_tend_head: "Ton essai Premium de 24 h est terminé", cj_tend_text: "Conjuguer &amp; Apprendre restent gratuits. Envie de continuer le quiz ? Avec un compte gratuit, tu t'entraînes au quiz « Cartes » (20 tours/jour) – plus <b>2 jours de Premium</b> offerts. Et avec un court avis, tu obtiens <b>5 € sur l'abonnement annuel</b>.", cj_tend_yes: "Créer un compte – Quiz + 2 jours", cj_tend_no: "Juste consulter &amp; apprendre",
       cj_help_head: "Aide-nous à progresser", cj_help_text: "Aide-nous à nous améliorer — et à offrir à toi et aux autres ConjuExperts la meilleure expérience possible. On vient tout juste de démarrer et on a vraiment besoin de ton aide si quelque chose coince.", cj_p8_head: "Content de te revoir !", cj_p8_text: "Ta progression est encore là. Sauvegarde-la avec un compte gratuit avant qu'elle ne disparaisse.",
       cj_fb_head: "Comment ça se passe pour toi ?", cj_fb_text: "Sois honnête : qu'est-ce que tu préfères – et que devrions-nous améliorer ?", cj_fb_gift: "🎁 Donne-nous ton avis et reçois un <b>code de 5 €</b> sur l'abonnement annuel.", cj_fb_rate_q: "Comment trouves-tu ConjuExpert ?", cj_fb_ph: "Ton avis…", cj_fb_send: "Donner mon avis &amp; obtenir 5 €", cj_fb_sending: "Envoi…", cj_fb_err: "Échec de l'envoi – réessaie.",
-      cj_fbt_head: "Merci pour ton retour !", cj_fbt_text: "Voici ton cadeau : avec le code <b>WILLKOMMEN</b>, tu obtiens Premium pour <b>24,99 €/an</b> au lieu de 29,99 € – le code est valable 7 jours.", cj_fb_secure: "Garder le code &amp; passer Premium",
+      cj_fbt_head: "Merci pour ton retour !", cj_fbt_text: "Voici ton cadeau : avec le code <b>DANKE5</b>, tu obtiens Premium pour <b>24,99 €/an</b> au lieu de 29,99 € – le code est valable 7 jours.", cj_fb_secure: "Garder le code &amp; passer Premium",
       hint_quiz_cards_h: "Cartes : mémoriser les verbes en douceur", hint_quiz_cards_1: "Choisis un temps &amp; un thème favori, ainsi que le sens (langue maternelle ↔ langue apprise).", hint_quiz_cards_2: "Regarde le verbe + le temps, trouve la forme dans ta tête — touche la carte pour la retourner.", hint_quiz_cards_3: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.", hint_quiz_cards_4: "Sans pression, sans saisie : idéal pour découvrir les formes et réviser vite.", hint_quiz_speed_h: "Rapide : 60 secondes à fond", hint_quiz_speed_1: "Choisis un temps &amp; un thème, puis démarre — tu as 60 secondes.", hint_quiz_speed_2: "Touche la bonne forme le plus vite possible — chaque bonne réponse compte.", hint_quiz_speed_3: "Idéal pour rendre les formes vite accessibles, avec un peu de pression.",
       hint_quiz_choice_h: "Choix : reconnaître vite la bonne forme", hint_quiz_choice_1: "Une entrée parfaite dans un nouveau temps.", hint_quiz_choice_2: "Choisis un temps &amp; un thème favori.", hint_quiz_choice_3: "Verbe + temps demandé + quatre variantes — touche la bonne pour un retour immédiat.", hint_quiz_choice_4: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.",
       hint_quiz_type_h: "Saisie : écrire les conjugaisons activement", hint_quiz_type_1: "Écrire soi-même ancre le plus les formes — avec <b>Parler</b>, le mode le plus intensif.", hint_quiz_type_2: "Choisis le temps, le thème &amp; le sens — et si tu travailles des verbes seuls ou traduis une phrase entière.", hint_quiz_type_3: "Touche les mots inconnus de la phrase d'exemple → traduire &amp; enregistrer.",
@@ -16592,7 +16592,7 @@ function App() {
   const [showPlanSelect, setShowPlanSelect] = useState(false);
   const [planPrefillCode, setPlanPrefillCode] = useState("");
   function openPlanSelectWithCode(c) { setPlanPrefillCode(c || ""); setShowPlanSelect(true); }
-  // Deep-Link aus der Gutschein-Mail: #abo=WILLKOMMEN → Checkout mit vorbelegtem Coupon.
+  // Deep-Link aus der Gutschein-Mail: #abo=DANKE5 → Checkout mit vorbelegtem Coupon.
   useEffect(() => {
     try {
       const m = /[#&]abo=([A-Za-z0-9_-]+)/.exec(window.location.hash || "");
@@ -16839,14 +16839,17 @@ function App() {
         body: body
       });
       if (ins.error) return false;
-      // 5-€-Code (WILLKOMMEN) 7 Tage zum Einlösen gültig.
+      // 5-€-Code (DANKE5) 7 Tage zum Einlösen gültig.
       const codeExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
       await window.__supa.from("profiles").upsert({
         id: supaUser.id,
         feedback_given: true,
-        welcome_code: "WILLKOMMEN",
+        welcome_code: "DANKE5",
         code_expires_at: codeExpiry
       });
+      // Bestätigungs-Mail mit dem 5-€-Code DANKE5 — feuert im Hintergrund,
+      // blockiert die Danke-Ansicht nicht (Fehler egal, Rabatt gilt serverseitig).
+      try { window.__supa.functions.invoke("send-feedback-code", { body: {} }); } catch (_e) {}
       persist("kunju-fb-given", true);
       persist("kunju-review-done", true);
       setShowReviewPrompt(false);
@@ -17291,6 +17294,31 @@ function App() {
     url.searchParams.delete("checkout");
     window.history.replaceState({}, "", url.pathname + url.search + url.hash);
   }, []);
+  // Deep-Link aus den Lifecycle-Mails: ?feedback=1 → Feedback-Formular öffnen.
+  // Merkt nur den Wunsch; der Opener unten wartet auf aufgelöste Auth.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("feedback") !== "1") return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("feedback");
+    window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+    if (!recall("kunju-fb-given", false)) persist("kunju-want-feedback", true);
+  }, []);
+  // Öffnet das Feedback-Formular, sobald Auth aufgelöst ist. Ohne Login zuerst
+  // den Login zeigen — das Flag bleibt, danach öffnet das Formular automatisch.
+  useEffect(() => {
+    if (!authResolved) return;
+    if (!recall("kunju-want-feedback", false)) return;
+    if (recall("kunju-fb-given", false)) { persist("kunju-want-feedback", false); return; }
+    if (supaUser) {
+      persist("kunju-want-feedback", false);
+      setShowOnboard(false);
+      setShowTour(false);
+      setShowReviewPrompt(true);
+    } else {
+      setShowLogin(true);
+    }
+  }, [authResolved, supaUser]);
   function toggleFav(lg, vb) {
     const exists = favs.some(x => x.lang === lg && x.verb === vb);
     const nx = exists ? favs.filter(x => !(x.lang === lg && x.verb === vb)) : [{
@@ -17401,7 +17429,7 @@ function App() {
     onOpen: () => openPlanSelect(),
     onAccount: () => setShowAcctPrompt(true),
     onFeedback: () => setShowReviewPrompt(true),
-    onAbo: () => openPlanSelectWithCode("WILLKOMMEN"),
+    onAbo: () => openPlanSelectWithCode("DANKE5"),
     anon: !supaUser,
     fbGiven: recall("kunju-fb-given", false),
     trialExpiry: trialExpiry,
