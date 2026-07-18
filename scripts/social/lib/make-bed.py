@@ -9,16 +9,22 @@ import sys, math, wave, struct, random
 SR = 44100
 out = sys.argv[1] if len(sys.argv) > 1 else 'bed.wav'
 DUR = float(sys.argv[2]) if len(sys.argv) > 2 else 15.0
+STYLE = sys.argv[3] if len(sys.argv) > 3 else 'calm'
 N = int(SR * DUR)
 random.seed(7)
 
-# --- warm chord progression (Cmaj7 · Am7 · Fmaj7 · G7), looped ---
-CHORDS = [
-    [261.63, 329.63, 392.00, 493.88],   # Cmaj7
-    [220.00, 261.63, 329.63, 392.00],   # Am7
-    [174.61, 220.00, 261.63, 329.63],   # Fmaj7
-    [196.00, 246.94, 293.66, 349.23],   # G7
-]
+# --- style presets ---
+PROG = {
+    'calm':  [[261.63,329.63,392.00,493.88],[220.00,261.63,329.63,392.00],[174.61,220.00,261.63,329.63],[196.00,246.94,293.66,349.23]],  # Cmaj7 Am7 Fmaj7 G7
+    'bright':[[261.63,329.63,392.00],[196.00,246.94,392.00],[220.00,261.63,329.63],[174.61,220.00,349.23]],  # C G Am F (pop)
+    'pulse': [[220.00,329.63,440.00],[246.94,349.23,493.88]],  # Am / Bm vamp, airy
+}
+STY = {
+    'calm':  dict(bpm=78,  harm2=0.28, lpa=0.22, kick=0.55, padgain=0.50),
+    'bright':dict(bpm=98,  harm2=0.5,  lpa=0.34, kick=0.60, padgain=0.42),
+    'pulse': dict(bpm=104, harm2=0.18, lpa=0.30, kick=0.68, padgain=0.34),
+}[STYLE if STYLE in ('calm','bright','pulse') else 'calm']
+CHORDS = PROG[STYLE if STYLE in PROG else 'calm']
 CHORD_LEN = DUR / 8.0                    # 8 chord slots over the clip
 buf = [0.0] * N
 
@@ -39,11 +45,11 @@ for slot in range(8):
         s = 0.0
         for f in chord:
             ph = 2 * math.pi * f * t
-            s += math.sin(ph) + 0.28 * math.sin(2 * ph)
-        buf[start + i] += (s / (len(chord) * 1.28)) * 0.5 * env
+            s += math.sin(ph) + STY['harm2'] * math.sin(2 * ph)
+        buf[start + i] += (s / (len(chord) * (1+STY['harm2']))) * STY['padgain'] * env
 
 # soft kick every beat (~78 BPM) and a quiet shaker on the offbeat
-beat = 60.0 / 78.0
+beat = 60.0 / STY['bpm']
 tk = 0.0
 while tk < DUR:
     k0 = int(tk * SR)
@@ -52,7 +58,7 @@ while tk < DUR:
         if k0 + i >= N: break
         e = math.exp(-i / (0.045 * SR))
         f = 95 * math.exp(-i / (0.03 * SR)) + 45   # pitch drop
-        buf[k0 + i] += 0.55 * e * math.sin(2 * math.pi * f * (i / SR))
+        buf[k0 + i] += STY['kick'] * e * math.sin(2 * math.pi * f * (i / SR))
     # offbeat shaker (filtered noise)
     s0 = int((tk + beat / 2) * SR)
     slen = int(0.06 * SR)
@@ -66,7 +72,7 @@ while tk < DUR:
     tk += beat
 
 # one-pole low-pass to warm it up, then fade in/out + normalize
-a = 0.22
+a = STY['lpa']
 y = 0.0
 for i in range(N):
     y = y + a * (buf[i] - y)
