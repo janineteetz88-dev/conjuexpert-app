@@ -24,10 +24,23 @@ const LANGS = ["de", "en", "es", "nl", "fr"];
 
 const BASE = "https://conjuexpert.app";
 const LOGO = `${BASE}/logo-wordmark.png`;
-const RAINBOW = "linear-gradient(to right,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff)";
-const CTA_BG = "#e71583"; // Button: solides CI-Pink
-const CTA_FALLBACK = "#e71583"; // solide Button-Farbe (Gmail u.a. ohne Verlauf)
-const LINK = "#0b4f9e"; // Verlinkungen: dunkles Blau statt Babyblau
+/* ─── ConjuExpert-CI „Sand & Ink" ────────────────────────────────────────────
+ * Warmes Sand als Fläche, dunkle Tinte als Text/Button, Grün als einziger
+ * Akzent. (Abgeleitet aus der Live-Landing/App: --bg #f4eede, --ink #211d15,
+ * --green #1a9b46.) Kein Pink, kein Regenbogen, keine bunten Wechsel-Akzente. */
+const SAND_BG      = "#f4eede"; // Seiten-Hintergrund (Sand)
+const CARD         = "#fffdf6"; // Karten-Fläche (warmes Weiß)
+const INK          = "#211d15"; // Überschriften / Tinte
+const BODY_TXT     = "#574f3b"; // Fließtext (warm)
+const MUTED        = "#8b8068"; // gedämpft (Footer, Kleingedrucktes)
+const HAIRLINE     = "#e7dcc6"; // feine Trennlinie auf Sand
+const ACCENT       = "#1a9b46"; // Grün – einziger Marken-Akzent (Eyebrow, Preisrahmen)
+const TOPBAR       = "#1a9b46"; // schmale Akzentleiste oben (ersetzt Regenbogen)
+const CTA_BG       = "#211d15"; // Button: solide Tinte (Sand-&-Ink-CTA, kein Pink)
+const CTA_FALLBACK = "#211d15"; // identische Fallback-Farbe (kein Verlauf nötig)
+const PRICE_BG     = "#faf6ec"; // Preisbox-Fläche (helles Sand)
+const BADGE_BG     = "#e8f4ea"; // Rabatt-Badge Fläche (zartes Grün)
+const BADGE_TXT    = "#136b31"; // Rabatt-Badge Text (dunkelgrün)
 const LEGAL = "Janine Kreiser · Blasewitzer Straße 41 · 01307 Dresden";
 
 /* ─── Preise je Sprache (EU-Komma, EN-Punkt) ─────────────────────────────── */
@@ -61,7 +74,7 @@ const COMMON = {
 /* ─── Inhalte je Mail × Sprache ──────────────────────────────────────────── */
 const MAILS = [
   {
-    file: "email-1-welcome.html", utm: "welcome", accent: "#a557ff", price: false, cap: null, banner: false,
+    file: "email-1-welcome.html", utm: "welcome", accent: "#1a9b46", price: false, cap: null, banner: false,
     de: { subject: "Willkommen – 48 h Premium geschenkt 🎁", pre: "Dein Konto ist da – 48 Stunden Premium sind schon freigeschaltet.",
       eyebrow: "Willkommen bei ConjuExpert", h1: "48 Stunden Premium – geschenkt.",
       paras: ["Super, du hast dir ein Konto angelegt! Dafür kannst du jetzt 48 Stunden lang alle Premium-Funktionen nutzen – ganz ohne Bezahlung. Und das Kartendreh-Quiz mit 20 Karten pro Tag bleibt für dich sogar für immer gratis.", "Das kannst du sofort ausprobieren:", "Die Konjugationstabellen bleiben übrigens ebenfalls für immer kostenlos."],
@@ -89,7 +102,7 @@ const MAILS = [
       cta: "Essayer Premium maintenant →" },
   },
   {
-    file: "email-2-trial-ending.html", utm: "trial-ending", accent: "#f97316", price: true, cap: "capNow", banner: false,
+    file: "email-2-trial-ending.html", utm: "trial-ending", accent: "#1a9b46", price: true, cap: "capNow", banner: false,
     de: { subject: "Deine Gratis-Testzeit endet bald", pre: "Deine Gratis-Testzeit endet bald – mit Feedback behältst du Premium für 5 € weniger.",
       eyebrow: "Deine Gratis-Testzeit endet bald", h1: "Premium behalten?",
       paras: ["Hallo {{name}}, deine kostenlose Premium-Testzeit läuft gleich aus. Wenn dir Quiz & Merken gefallen haben, kannst du sie dauerhaft behalten.", "Gib uns kurz dein Feedback zur App – dafür bekommst du einen 5-€-Code und zahlst fürs Jahresabo nur 24,99 € statt 29,99 €."],
@@ -112,7 +125,7 @@ const MAILS = [
       cta: "Donner mon avis & économiser 5 € →" },
   },
   {
-    file: "email-3-reminder.html", utm: "reminder", accent: "#ea580c", price: true, cap: "capNow", banner: false,
+    file: "email-3-reminder.html", utm: "reminder", accent: "#1a9b46", price: true, cap: "capNow", banner: false,
     de: { subject: "5 € Rabatt fürs Feedback: 24,99 € statt 29,99 €", pre: "Dein Feedback zur App bringt dir 5 € Rabatt: Jahresabo für 24,99 € statt 29,99 €.",
       eyebrow: "5 € für dein Feedback", h1: "24,99 € statt 29,99 €.",
       paras: ["Hallo {{name}}, hast du schon Premium? Für ein kurzes Feedback zur App bekommst du einen 5-€-Code – damit kostet das Jahresabo 24,99 € statt 29,99 €.", "So sicherst du dir ein ganzes Jahr Quiz, Merken & Lernziele zum besten Preis."],
@@ -135,7 +148,7 @@ const MAILS = [
       cta: "Donner mon avis & économiser 5 € →" },
   },
   {
-    file: "email-4-last-chance.html", utm: "last-chance", accent: "#ef4444", price: true, cap: "capNow", banner: false,
+    file: "email-4-last-chance.html", utm: "last-chance", accent: "#1a9b46", price: true, cap: "capNow", banner: false,
     de: { subject: "Deine 5 € fürs Feedback warten noch", pre: "Noch kein Feedback abgegeben? Dein 5-€-Code fürs Jahresabo wartet.",
       eyebrow: "5 € für dein Feedback", h1: "5 € sparen – für dein Feedback.",
       paras: ["Hallo {{name}}, du hast Quiz, Merken & Lernziele ausprobiert? Erzähl uns kurz, wie es war.", "Für dein Feedback bekommst du einen 5-€-Code – damit kostet das Jahresabo 24,99 € statt 29,99 €."],
@@ -164,35 +177,35 @@ function renderEmail(lang, mail) {
   const c = COMMON[lang];
   const p = PRICE[lang];
   const m = mail[lang];
-  const accent = mail.accent;
+  const accent = ACCENT; // Sand & Ink: durchgehend Grün statt bunter Wechsel-Akzente
   const href = `${BASE}/?utm_source=email&amp;utm_medium=lifecycle&amp;utm_campaign=${mail.utm}&amp;lang=${lang}`;
 
   const banner = mail.banner
     ? `    <tr>
-      <td align="center" style="background:linear-gradient(to right,#ef4444,#f97316);padding:10px 24px;">
+      <td align="center" style="background:${ACCENT};padding:10px 24px;">
         <p style="margin:0;font-size:12px;font-weight:700;color:#ffffff;letter-spacing:.5px;text-transform:uppercase;">${m.bannerTxt}</p>
       </td>
     </tr>\n`
     : "";
 
   const paras = m.paras
-    .map((t) => `        <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.55;">${t}</p>`)
+    .map((t) => `        <p style="margin:0 0 16px;font-size:15px;color:${BODY_TXT};line-height:1.55;">${t}</p>`)
     .join("\n");
 
   const features = m.features
     ? `        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:4px 0 20px;">
-${m.features.map((f) => `          <tr><td style="padding:7px 0;font-size:15px;color:#111827;line-height:1.45;">${f}</td></tr>`).join("\n")}
+${m.features.map((f) => `          <tr><td style="padding:7px 0;font-size:15px;color:${INK};line-height:1.45;">${f}</td></tr>`).join("\n")}
         </table>\n`
     : "";
 
   const price = mail.price
     ? `        <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:4px auto 24px;">
           <tr>
-            <td align="center" style="background:#faf5ff;border:2px solid ${accent};border-radius:16px;padding:18px 32px;">
-              <p style="margin:0 0 2px;font-size:13px;color:#6b7280;">${c[mail.cap]}</p>
-              <p style="margin:0;font-size:34px;font-weight:900;color:#111827;letter-spacing:-1px;">${p.now} <span style="font-size:15px;font-weight:600;color:#6b7280;">${c.perYear}</span> <span style="font-size:15px;font-weight:600;color:#9ca3af;text-decoration:line-through;">${p.was}</span></p>
-              <p style="margin:6px 0 0;display:inline-block;background:#fef3c7;color:#92400e;font-size:12px;font-weight:700;padding:3px 10px;border-radius:8px;">${p.badge}</p>
-              <p style="margin:10px 0 0;font-size:12px;color:#9ca3af;line-height:1.4;">${c.priceSub}</p>
+            <td align="center" style="background:${PRICE_BG};border:2px solid ${accent};border-radius:16px;padding:18px 32px;">
+              <p style="margin:0 0 2px;font-size:13px;color:${MUTED};">${c[mail.cap]}</p>
+              <p style="margin:0;font-size:34px;font-weight:900;color:${INK};letter-spacing:-1px;">${p.now} <span style="font-size:15px;font-weight:600;color:${MUTED};">${c.perYear}</span> <span style="font-size:15px;font-weight:600;color:${MUTED};text-decoration:line-through;">${p.was}</span></p>
+              <p style="margin:6px 0 0;display:inline-block;background:${BADGE_BG};color:${BADGE_TXT};font-size:12px;font-weight:700;padding:3px 10px;border-radius:8px;">${p.badge}</p>
+              <p style="margin:10px 0 0;font-size:12px;color:${MUTED};line-height:1.4;">${c.priceSub}</p>
             </td>
           </tr>
         </table>\n`
@@ -209,19 +222,19 @@ ${m.features.map((f) => `          <tr><td style="padding:7px 0;font-size:15px;c
 <!-- Preheader: ${m.pre} -->
 <!-- Merge-Feld: {{name}} -->
 </head>
-<body style="margin:0;padding:0;background-color:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
+<body style="margin:0;padding:0;background-color:${SAND_BG};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
 
 <!-- Preheader (im Posteingang sichtbar, in der Mail versteckt) -->
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">${m.pre}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f5f5f7">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${SAND_BG}">
 <tr><td align="center" style="padding:32px 16px;">
 
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.08);">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:${CARD};border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(33,29,21,0.10);">
 
-    <!-- Rainbow bar (CI) -->
+    <!-- Akzentleiste (Sand & Ink: Grün) -->
     <tr>
-      <td height="4" style="background:${RAINBOW};font-size:0;line-height:0;">&nbsp;</td>
+      <td height="4" style="background:${TOPBAR};font-size:0;line-height:0;">&nbsp;</td>
     </tr>
 
 ${banner}    <tr>
@@ -233,7 +246,7 @@ ${banner}    <tr>
         <!-- Eyebrow -->
         <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:1px;">${m.eyebrow}</p>
         <!-- Headline -->
-        <h1 style="margin:0 0 18px;font-size:34px;font-weight:900;color:#111827;letter-spacing:-1px;line-height:1.1;">${m.h1}</h1>
+        <h1 style="margin:0 0 18px;font-size:34px;font-weight:900;color:${INK};letter-spacing:-1px;line-height:1.1;">${m.h1}</h1>
 
         <!-- Body -->
         <div style="text-align:left;">
@@ -254,9 +267,9 @@ ${price}        <!-- CTA -->
 
     <!-- Footer -->
     <tr>
-      <td style="padding:16px 40px;border-top:1px solid #f3f4f6;">
-        <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;line-height:1.6;">
-          <a href="{{unsubscribe_url}}" style="color:#9ca3af;">${c.unsub}</a> · <a href="${BASE}/datenschutz.html" style="color:#9ca3af;">${c.privacy}</a> · <a href="${BASE}/agb.html" style="color:#9ca3af;">${c.terms}</a><br>
+      <td style="padding:16px 40px;border-top:1px solid ${HAIRLINE};">
+        <p style="margin:0;font-size:12px;color:${MUTED};text-align:center;line-height:1.6;">
+          <a href="{{unsubscribe_url}}" style="color:${MUTED};">${c.unsub}</a> · <a href="${BASE}/datenschutz.html" style="color:${MUTED};">${c.privacy}</a> · <a href="${BASE}/agb.html" style="color:${MUTED};">${c.terms}</a><br>
           ${LEGAL}
         </p>
       </td>
