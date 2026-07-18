@@ -7,5 +7,17 @@
       "postSubmissionId": "c30c31c8-487e-4a3b-8935-76e22a5b7caf",
       "message": "Post scheduled for 2026-07-10T07:55:00+02:00."
     }
+  },
+  "typisch-meckern-2026-07-18": {
+    "scheduledAt": "2026-07-18T09:13:57.000Z",
+    "scheduledTime": "immediate (manual-mcp publish)",
+    "platform": "instagram",
+    "accountId": "57778",
+    "source": "manual-mcp",
+    "response": {
+      "postSubmissionId": "6c783a8a-1e40-43c8-8fe2-7379b68fadc7",
+      "publicUrl": "https://www.instagram.com/reel/Da7cQodicM4/",
+      "status": "published"
+    }
   }
 }
