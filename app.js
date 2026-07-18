@@ -17429,7 +17429,7 @@ function App() {
     onOpen: () => openPlanSelect(),
     onAccount: () => setShowAcctPrompt(true),
     onFeedback: () => setShowReviewPrompt(true),
-    onAbo: () => openPlanSelectWithCode("DANKE5"),
+    onAbo: () => { setSelPlan("annual"); openPlanSelect(); },
     anon: !supaUser,
     fbGiven: recall("kunju-fb-given", false),
     trialExpiry: trialExpiry,
