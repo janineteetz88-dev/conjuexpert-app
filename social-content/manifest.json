@@ -30,25 +30,24 @@
       "id": "td-bier-ig-2026-07-20",
       "platform": "instagram",
       "accountId": "57778",
-      "scheduledTime": "2026-07-20T18:00:00+02:00",
+      "scheduledTime": "2026-07-20T11:00:00+02:00",
       "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign",
       "media": [
         "brand-bier-music.mp4"
       ],
-      "caption": "In Germany, we don't say \"that's not my problem\" — we say „das ist nicht mein Bier\" (that's literally „not my beer\" 🍺). Because here, beer is serious business. 😌\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, your own topics, right in the browser. No app store, no download.\n\nWe're in open beta and would love your feedback 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanphrases #deutschlernen #germanculture #conjuexpert",
       "mediaType": "reel",
-      "coverImageUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign/cover-bier.png"
+      "coverImageUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign/cover-bier.png",
+      "caption": "In Germany, we don't say \"that's not my problem\" — we say „das ist nicht mein Bier\" (that's literally „not my beer\" 🍺). Because here, beer is serious business. 😌\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, your own topics, right in the browser. No app store, no download.\n\nWe're in open beta and would love your feedback 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanphrases #deutschlernen #germanculture #conjuexpert"
     },
     {
       "id": "td-bier-tt-2026-07-20",
       "platform": "tiktok",
       "accountId": "50129",
-      "scheduledTime": "2026-07-20T18:05:00+02:00",
+      "scheduledTime": "2026-07-20T11:05:00+02:00",
       "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign",
       "media": [
         "brand-bier-music.mp4"
       ],
-      "caption": "In Germany, we don't say \"that's not my problem\" — we say „das ist nicht mein Bier\" (that's literally „not my beer\" 🍺). Because here, beer is serious business. 😌\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, your own topics, right in the browser. No app store, no download.\n\nWe're in open beta and would love your feedback 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanphrases #deutschlernen #germanculture #conjuexpert",
       "platformOptions": {
         "privacyLevel": "PUBLIC_TO_EVERYONE",
         "disabledComments": false,
@@ -57,13 +56,179 @@
         "isBrandedContent": false,
         "isYourBrand": true,
         "isAiGenerated": false
-      }
+      },
+      "caption": "In Germany, we don't say \"that's not my problem\" — we say „das ist nicht mein Bier\" (that's literally „not my beer\" 🍺). Because here, beer is serious business. 😌\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, your own topics, right in the browser. No app store, no download.\n\nWe're in open beta and would love your feedback 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanphrases #deutschlernen #germanculture #conjuexpert"
     },
     {
-      "id": "quiz-basics-ig-2026-07-21",
+      "id": "td-keks-ig-2026-07-22",
       "platform": "instagram",
       "accountId": "57778",
-      "scheduledTime": "2026-07-21T18:00:00+02:00",
+      "scheduledTime": "2026-07-22T11:00:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign",
+      "media": [
+        "brand-keks-music.mp4"
+      ],
+      "mediaType": "reel",
+      "coverImageUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign/cover-keks.png",
+      "caption": "In Germany, we don't say \"you're getting on my nerves\" — we say „du gehst mir auf den Keks\" (you're literally „walking on my cookie\" 🍪). And yes, we take our cookies personally. 😄\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, your own topics, right in the browser. No app store, no download.\n\nWe're in open beta and would love your feedback 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanphrases #deutschlernen #germanculture #conjuexpert"
+    },
+    {
+      "id": "td-keks-tt-2026-07-22",
+      "platform": "tiktok",
+      "accountId": "50129",
+      "scheduledTime": "2026-07-22T11:05:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign",
+      "media": [
+        "brand-keks-music.mp4"
+      ],
+      "platformOptions": {
+        "privacyLevel": "PUBLIC_TO_EVERYONE",
+        "disabledComments": false,
+        "disabledDuet": false,
+        "disabledStitch": false,
+        "isBrandedContent": false,
+        "isYourBrand": true,
+        "isAiGenerated": false
+      },
+      "caption": "In Germany, we don't say \"you're getting on my nerves\" — we say „du gehst mir auf den Keks\" (you're literally „walking on my cookie\" 🍪). And yes, we take our cookies personally. 😄\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, your own topics, right in the browser. No app store, no download.\n\nWe're in open beta and would love your feedback 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanphrases #deutschlernen #germanculture #conjuexpert"
+    },
+    {
+      "id": "td-wurst-ig-2026-07-24",
+      "platform": "instagram",
+      "accountId": "57778",
+      "scheduledTime": "2026-07-24T11:00:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign",
+      "media": [
+        "brand-wurst-music.mp4"
+      ],
+      "mediaType": "reel",
+      "coverImageUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign/cover-wurst.png",
+      "caption": "In Germany, we don't say \"I don't care\" — we say „das ist mir Wurst\" (it's literally „sausage to me\" 🌭). Priorities. 😌\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, your own topics, right in the browser. No app store, no download.\n\nWe're in open beta and would love your feedback 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanphrases #deutschlernen #germanculture #conjuexpert"
+    },
+    {
+      "id": "td-wurst-tt-2026-07-24",
+      "platform": "tiktok",
+      "accountId": "50129",
+      "scheduledTime": "2026-07-24T11:05:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign",
+      "media": [
+        "brand-wurst-music.mp4"
+      ],
+      "platformOptions": {
+        "privacyLevel": "PUBLIC_TO_EVERYONE",
+        "disabledComments": false,
+        "disabledDuet": false,
+        "disabledStitch": false,
+        "isBrandedContent": false,
+        "isYourBrand": true,
+        "isAiGenerated": false
+      },
+      "caption": "In Germany, we don't say \"I don't care\" — we say „das ist mir Wurst\" (it's literally „sausage to me\" 🌭). Priorities. 😌\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, your own topics, right in the browser. No app store, no download.\n\nWe're in open beta and would love your feedback 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanphrases #deutschlernen #germanculture #conjuexpert"
+    },
+    {
+      "id": "vb-aufstehen-ig-2026-07-21",
+      "platform": "instagram",
+      "accountId": "57778",
+      "scheduledTime": "2026-07-21T11:00:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/reel-gen/redesign",
+      "media": [
+        "verb-aufstehen-music.mp4"
+      ],
+      "mediaType": "reel",
+      "coverImageUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/reel-gen/redesign/cover-verb-aufstehen.png",
+      "caption": "'aufstehen' (to get up) is a separable verb — the prefix flies to the end of the sentence:\nIch stehe um 7 Uhr auf. = I get up at 7.\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, right in the browser. No app store, no download.\n\nWe're in open beta 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanverbs #deutschlernen #germangrammar #conjuexpert"
+    },
+    {
+      "id": "vb-aufstehen-tt-2026-07-21",
+      "platform": "tiktok",
+      "accountId": "50129",
+      "scheduledTime": "2026-07-21T11:05:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/reel-gen/redesign",
+      "media": [
+        "verb-aufstehen-music.mp4"
+      ],
+      "platformOptions": {
+        "privacyLevel": "PUBLIC_TO_EVERYONE",
+        "disabledComments": false,
+        "disabledDuet": false,
+        "disabledStitch": false,
+        "isBrandedContent": false,
+        "isYourBrand": true,
+        "isAiGenerated": false
+      },
+      "caption": "'aufstehen' (to get up) is a separable verb — the prefix flies to the end of the sentence:\nIch stehe um 7 Uhr auf. = I get up at 7.\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, right in the browser. No app store, no download.\n\nWe're in open beta 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanverbs #deutschlernen #germangrammar #conjuexpert"
+    },
+    {
+      "id": "vb-anfangen-ig-2026-07-23",
+      "platform": "instagram",
+      "accountId": "57778",
+      "scheduledTime": "2026-07-23T11:00:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/reel-gen/redesign",
+      "media": [
+        "verb-anfangen-music.mp4"
+      ],
+      "mediaType": "reel",
+      "coverImageUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/reel-gen/redesign/cover-verb-anfangen.png",
+      "caption": "'anfangen' does TWO things at once 🤯 — it's separable AND stem-changing:\nEr fängt um 9 Uhr an. = He starts at 9. (a→ä, and 'an' flies to the end)\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, right in the browser. No app store, no download.\n\nWe're in open beta 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanverbs #deutschlernen #germangrammar #conjuexpert"
+    },
+    {
+      "id": "vb-anfangen-tt-2026-07-23",
+      "platform": "tiktok",
+      "accountId": "50129",
+      "scheduledTime": "2026-07-23T11:05:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/reel-gen/redesign",
+      "media": [
+        "verb-anfangen-music.mp4"
+      ],
+      "platformOptions": {
+        "privacyLevel": "PUBLIC_TO_EVERYONE",
+        "disabledComments": false,
+        "disabledDuet": false,
+        "disabledStitch": false,
+        "isBrandedContent": false,
+        "isYourBrand": true,
+        "isAiGenerated": false
+      },
+      "caption": "'anfangen' does TWO things at once 🤯 — it's separable AND stem-changing:\nEr fängt um 9 Uhr an. = He starts at 9. (a→ä, and 'an' flies to the end)\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, right in the browser. No app store, no download.\n\nWe're in open beta 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanverbs #deutschlernen #germangrammar #conjuexpert"
+    },
+    {
+      "id": "vb-wissen-ig-2026-07-25",
+      "platform": "instagram",
+      "accountId": "57778",
+      "scheduledTime": "2026-07-25T11:00:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/reel-gen/redesign",
+      "media": [
+        "verb-wissen-music.mp4"
+      ],
+      "mediaType": "reel",
+      "coverImageUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/reel-gen/redesign/cover-verb-wissen.png",
+      "caption": "The verb everyone gets wrong 😅 — 'wissen' is irregular in the singular:\nich weiß · du weißt · er/sie/es weiß — NOT 'wisse'!\nIch weiß es nicht. = I don't know.\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, right in the browser. No app store, no download.\n\nWe're in open beta 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanverbs #deutschlernen #germangrammar #conjuexpert"
+    },
+    {
+      "id": "vb-wissen-tt-2026-07-25",
+      "platform": "tiktok",
+      "accountId": "50129",
+      "scheduledTime": "2026-07-25T11:05:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/reel-gen/redesign",
+      "media": [
+        "verb-wissen-music.mp4"
+      ],
+      "platformOptions": {
+        "privacyLevel": "PUBLIC_TO_EVERYONE",
+        "disabledComments": false,
+        "disabledDuet": false,
+        "disabledStitch": false,
+        "isBrandedContent": false,
+        "isYourBrand": true,
+        "isAiGenerated": false
+      },
+      "caption": "The verb everyone gets wrong 😅 — 'wissen' is irregular in the singular:\nich weiß · du weißt · er/sie/es weiß — NOT 'wisse'!\nIch weiß es nicht. = I don't know.\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, right in the browser. No app store, no download.\n\nWe're in open beta 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanverbs #deutschlernen #germangrammar #conjuexpert"
+    },
+    {
+      "id": "quiz-basics-ig-2026-07-20",
+      "platform": "instagram",
+      "accountId": "57778",
+      "scheduledTime": "2026-07-20T18:00:00+02:00",
       "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/quiz-carousel/out/quiz-basics",
       "media": [
         "slide-01.png",
@@ -79,43 +244,10 @@
       "caption": "Do you know these 3 German verb forms? 🤔\nnehmen · gehen · sein — swipe to check yourself!\n\nPractice every German verb — free 👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium (first 100 only)"
     },
     {
-      "id": "td-keks-ig-2026-07-22",
+      "id": "quiz-irregular-ig-2026-07-21",
       "platform": "instagram",
       "accountId": "57778",
-      "scheduledTime": "2026-07-22T18:00:00+02:00",
-      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign",
-      "media": [
-        "brand-keks-music.mp4"
-      ],
-      "caption": "In Germany, we don't say \"you're getting on my nerves\" — we say „du gehst mir auf den Keks\" (you're literally „walking on my cookie\" 🍪). And yes, we take our cookies personally. 😄\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, your own topics, right in the browser. No app store, no download.\n\nWe're in open beta and would love your feedback 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanphrases #deutschlernen #germanculture #conjuexpert",
-      "mediaType": "reel",
-      "coverImageUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign/cover-keks.png"
-    },
-    {
-      "id": "td-keks-tt-2026-07-22",
-      "platform": "tiktok",
-      "accountId": "50129",
-      "scheduledTime": "2026-07-22T18:05:00+02:00",
-      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/typisch-deutsch/redesign",
-      "media": [
-        "brand-keks-music.mp4"
-      ],
-      "caption": "In Germany, we don't say \"you're getting on my nerves\" — we say „du gehst mir auf den Keks\" (you're literally „walking on my cookie\" 🍪). And yes, we take our cookies personally. 😄\n\nConjuExpert is a German verb trainer: actively practice every verb form across all tenses — instead of just looking them up. 5 languages, your own topics, right in the browser. No app store, no download.\n\nWe're in open beta and would love your feedback 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanphrases #deutschlernen #germanculture #conjuexpert",
-      "platformOptions": {
-        "privacyLevel": "PUBLIC_TO_EVERYONE",
-        "disabledComments": false,
-        "disabledDuet": false,
-        "disabledStitch": false,
-        "isBrandedContent": false,
-        "isYourBrand": true,
-        "isAiGenerated": false
-      }
-    },
-    {
-      "id": "quiz-irregular-ig-2026-07-23",
-      "platform": "instagram",
-      "accountId": "57778",
-      "scheduledTime": "2026-07-23T18:00:00+02:00",
+      "scheduledTime": "2026-07-21T18:00:00+02:00",
       "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/quiz-carousel/out/quiz-irregular",
       "media": [
         "slide-01.png",
@@ -131,10 +263,10 @@
       "caption": "Do you know these 3 German verb forms? 🤔\nfahren · essen · haben — swipe to check yourself!\n\nPractice every German verb — free 👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium (first 100 only)"
     },
     {
-      "id": "quiz-modals-ig-2026-07-24",
+      "id": "quiz-modals-ig-2026-07-22",
       "platform": "instagram",
       "accountId": "57778",
-      "scheduledTime": "2026-07-24T18:00:00+02:00",
+      "scheduledTime": "2026-07-22T18:00:00+02:00",
       "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/quiz-carousel/out/quiz-modals",
       "media": [
         "slide-01.png",
@@ -148,6 +280,63 @@
         "slide-09.png"
       ],
       "caption": "Can you nail these 3 German verbs? 💪\nkönnen · anrufen · werden — swipe to check yourself!\n\nPractice every German verb — free 👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium (first 100 only)"
+    },
+    {
+      "id": "quiz-everyday-ig-2026-07-23",
+      "platform": "instagram",
+      "accountId": "57778",
+      "scheduledTime": "2026-07-23T18:00:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/quiz-carousel/out/quiz-everyday",
+      "media": [
+        "slide-01.png",
+        "slide-02.png",
+        "slide-03.png",
+        "slide-04.png",
+        "slide-05.png",
+        "slide-06.png",
+        "slide-07.png",
+        "slide-08.png",
+        "slide-09.png"
+      ],
+      "caption": "Do you know these 3 German verb forms? 🤔\ngeben · trinken · finden — swipe to check yourself!\n\nConjuExpert is a German verb trainer: practice every form across all tenses. 5 languages, no download.\n\nWe're in open beta 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanverbs #deutschlernen #germangrammar #conjuexpert"
+    },
+    {
+      "id": "quiz-strong-ig-2026-07-24",
+      "platform": "instagram",
+      "accountId": "57778",
+      "scheduledTime": "2026-07-24T18:00:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/quiz-carousel/out/quiz-strong",
+      "media": [
+        "slide-01.png",
+        "slide-02.png",
+        "slide-03.png",
+        "slide-04.png",
+        "slide-05.png",
+        "slide-06.png",
+        "slide-07.png",
+        "slide-08.png",
+        "slide-09.png"
+      ],
+      "caption": "Can you nail these 3 German verbs? 💪\nsprechen · schreiben · stehen — swipe to check yourself!\n\nConjuExpert is a German verb trainer: practice every form across all tenses. 5 languages, no download.\n\nWe're in open beta 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanverbs #deutschlernen #germangrammar #conjuexpert"
+    },
+    {
+      "id": "quiz-more-ig-2026-07-25",
+      "platform": "instagram",
+      "accountId": "57778",
+      "scheduledTime": "2026-07-25T18:00:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/main/scripts/social/quiz-carousel/out/quiz-more",
+      "media": [
+        "slide-01.png",
+        "slide-02.png",
+        "slide-03.png",
+        "slide-04.png",
+        "slide-05.png",
+        "slide-06.png",
+        "slide-07.png",
+        "slide-08.png",
+        "slide-09.png"
+      ],
+      "caption": "Do you know these 3 German verb forms? 🤔\nschlafen · bleiben · tun — swipe to check yourself!\n\nConjuExpert is a German verb trainer: practice every form across all tenses. 5 languages, no download.\n\nWe're in open beta 🙏\n👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium free (first 100 only)\n\n#learngerman #germanverbs #deutschlernen #germangrammar #conjuexpert"
     }
   ]
 }
