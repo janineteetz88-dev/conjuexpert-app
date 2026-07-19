@@ -19,7 +19,7 @@
 1. 🌈 **Verb des Tages** — ein Verb, ein Trick, im App-Kontext geübt.
 2. 🟡 **Typisch Deutsch** — Redewendung + der „missing piece"-Abspann.
 3. 🔴 **Daily Quiz** — 3 Verbformen zum Swipen & Selbst-Checken.
-4. 💬 **Comment-Quiz (Engagement, 3×/Woche)** — B1–B2, „A oder B?", Antwort in der Caption (nach Spoiler-Lücke). Kommentar → optional Auto-DM via ManyChat mit Link + FEEDBACK100.
+4. 💬 **Comment-Quiz (Engagement, 3×/Woche)** — B1–B2, „A oder B?", Antwort in der Caption (nach Spoiler-Lücke). Reines Kommentar-Engagement. (Auto-DM via ManyChat vorerst geparkt — zu teuer; später möglich, wenn Volumen da ist.)
 5. *(offen — nächste Runde: German-Pain / Vokabel-Hack oder Motivation)*
 
 **Plattformen:** Reels → IG + TikTok · Quiz-Carousels + Comment-Quiz → IG.
