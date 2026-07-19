@@ -1,11 +1,14 @@
-node_modules/
-.claude/settings.local.json
 
+!.env.example
 # Geheimnisse niemals committen
+.DS_Store
+.claude/settings.local.json
 .env
 .env.*
-!.env.example
-
-.DS_Store
-
+node_modules/
 scripts/_preview/out/
+scripts/social/**/.capframes/
+scripts/social/**/.frames
+scripts/social/**/.frames/
+scripts/social/**/.vframes
+scripts/social/**/.vframes/
