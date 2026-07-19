@@ -19,10 +19,11 @@
 .logo .w b{font-weight:800;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
 .pg{position:absolute;top:56px;right:60px;z-index:8;font-family:'JB';font-weight:700;font-size:24px;letter-spacing:.1em;color:var(--blue)}
 .eyebrow{font-family:'JB';font-weight:700;font-size:27px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);margin-bottom:26px;display:flex;align-items:center;gap:12px;justify-content:center}
-.q{font-family:'SB';font-weight:800;font-size:60px;letter-spacing:-.02em;color:var(--ink);margin-bottom:8px}
-.prompt{font-family:'JB';font-weight:700;font-size:52px;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-top:8px solid var(--blue);border-radius:26px;padding:40px 46px;box-shadow:var(--shadow);margin:14px 0 40px}
+.q{font-family:'SB';font-weight:800;font-size:56px;letter-spacing:-.02em;color:var(--ink);margin-bottom:8px}
+.lvl{font-family:'JB';font-weight:700;font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);border:1.5px solid color-mix(in srgb,var(--green) 45%,var(--border));border-radius:999px;padding:6px 16px;margin-bottom:22px;display:inline-block}
+.prompt{font-family:'JB';font-weight:700;font-size:44px;line-height:1.32;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-top:8px solid var(--blue);border-radius:26px;padding:38px 44px;box-shadow:var(--shadow);margin:6px 0 38px}
 .prompt .blank{color:var(--blue);letter-spacing:.06em}
-.prompt .hint{display:block;margin-top:14px;font-family:'SB';font-weight:600;font-size:30px;color:var(--muted)}
+.prompt .hint{display:block;margin-top:16px;font-family:'SB';font-weight:600;font-size:29px;color:var(--muted)}
 .opts{display:flex;gap:26px;width:100%;justify-content:center;margin-bottom:44px}
 .opt{flex:1;max-width:360px;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:34px 20px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;align-items:center;gap:14px}
 .opt .lbl{width:64px;height:64px;border-radius:50%;background:var(--surface-2);color:var(--ink);font-family:'SB';font-weight:800;font-size:38px;display:flex;align-items:center;justify-content:center}
@@ -43,16 +44,32 @@
   </div>
   <div class="pg">A / B</div>
   <div class="eyebrow">💬 Comment Quiz</div>
-  <div class="q">Which one is right?</div>
-  <div class="prompt">er <span class="blank">___</span> das Buch<span class="hint">nehmen · Präsens</span></div>
+  <div class="lvl" id="cq-lvl"></div>
+  <div class="q" id="cq-q"></div>
+  <div class="prompt" id="cq-prompt"></div>
   <div class="opts">
-    <div class="opt a"><span class="lbl">A</span><span class="val">nimmt</span></div>
-    <div class="opt b"><span class="lbl">B</span><span class="val">nehmt</span></div>
+    <div class="opt a"><span class="lbl">A</span><span class="val" id="cq-a"></span></div>
+    <div class="opt b"><span class="lbl">B</span><span class="val" id="cq-b"></span></div>
   </div>
   <div class="cta">👇 A oder B?<br>Sag's in den Kommentaren!</div>
-  <div class="reveal">Auflösung morgen 🔓</div>
+  <div class="reveal" id="cq-reveal"></div>
   <div class="signoff"><span class="app">conjuexpert.app</span> · FEEDBACK100</div>
   <div class="rframe"></div>
 </div>
-<script>window.__ready=document.fonts?document.fonts.ready:Promise.resolve();</script>
+<script>
+const DEFAULT={
+  level:"B1–B2",
+  q:"Which one fits?",
+  sentence:'Wenn ich Zeit <span class="blank">___</span>,<br>würde ich mehr lesen.',
+  hint:"Konjunktiv II · irreale Bedingung",
+  a:"hätte",
+  b:"hatte",
+  reveal:"Auflösung morgen 🔓"
+};
+const C=Object.assign({},DEFAULT,(window.__CQ||{}));
+const set=(id,h)=>{const el=document.getElementById(id);if(el)el.innerHTML=h;};
+set('cq-lvl',C.level); set('cq-q',C.q); set('cq-prompt',C.sentence+'<span class="hint">'+C.hint+'</span>');
+set('cq-a',C.a); set('cq-b',C.b); set('cq-reveal',C.reveal);
+window.__ready=document.fonts?document.fonts.ready:Promise.resolve();
+</script>
 </body></html>
