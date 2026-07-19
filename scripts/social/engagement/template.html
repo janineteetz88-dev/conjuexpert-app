@@ -1,0 +1,58 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face{font-family:'SB';src:url('../typisch-deutsch/assets/schib.woff2') format('woff2');font-weight:400 800;font-display:block}
+@font-face{font-family:'JB';src:url('../typisch-deutsch/assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
+:root{--ink:#211d15;--muted:#8b8068;--surface:#fffdf6;--surface-2:#ece3d0;--bg:#f4eede;
+  --border:rgba(60,48,24,.14);--blue:#0a84ff;--green:#34c759;--red:#ff3b5c;
+  --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+  --rainbow-full:linear-gradient(120deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff,#ff3b5c);
+  --shadow:0 30px 60px -30px rgba(70,55,25,.42);--shadow-sm:0 8px 22px -12px rgba(70,55,25,.3)}
+*{margin:0;padding:0;box-sizing:border-box}
+#slide{position:relative;width:1080px;height:1350px;overflow:hidden;background:
+  radial-gradient(120% 80% at 50% 8%,#fffdf6 0%,#f4eede 55%,#efe7d4 100%);font-family:'SB',sans-serif;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 96px}
+.rframe{position:absolute;inset:0;z-index:20;pointer-events:none;padding:18px;background:var(--rainbow-full);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+  filter:drop-shadow(0 0 12px rgba(10,132,255,.5)) drop-shadow(0 0 24px rgba(52,199,89,.35))}
+.logo{position:absolute;top:48px;left:56px;display:flex;align-items:center;gap:13px;z-index:8}
+.logo svg{width:48px;height:38px}
+.logo .w{font-family:'SB';font-weight:700;font-size:33px;letter-spacing:-.02em;color:var(--ink)}
+.logo .w b{font-weight:800;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pg{position:absolute;top:56px;right:60px;z-index:8;font-family:'JB';font-weight:700;font-size:24px;letter-spacing:.1em;color:var(--blue)}
+.eyebrow{font-family:'JB';font-weight:700;font-size:27px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);margin-bottom:26px;display:flex;align-items:center;gap:12px;justify-content:center}
+.q{font-family:'SB';font-weight:800;font-size:60px;letter-spacing:-.02em;color:var(--ink);margin-bottom:8px}
+.prompt{font-family:'JB';font-weight:700;font-size:52px;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-top:8px solid var(--blue);border-radius:26px;padding:40px 46px;box-shadow:var(--shadow);margin:14px 0 40px}
+.prompt .blank{color:var(--blue);letter-spacing:.06em}
+.prompt .hint{display:block;margin-top:14px;font-family:'SB';font-weight:600;font-size:30px;color:var(--muted)}
+.opts{display:flex;gap:26px;width:100%;justify-content:center;margin-bottom:44px}
+.opt{flex:1;max-width:360px;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:34px 20px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;align-items:center;gap:14px}
+.opt .lbl{width:64px;height:64px;border-radius:50%;background:var(--surface-2);color:var(--ink);font-family:'SB';font-weight:800;font-size:38px;display:flex;align-items:center;justify-content:center}
+.opt.a .lbl{background:color-mix(in srgb,var(--blue) 16%,var(--surface));color:var(--blue)}
+.opt.b .lbl{background:color-mix(in srgb,var(--green) 18%,var(--surface));color:var(--green)}
+.opt .val{font-family:'JB';font-weight:700;font-size:48px;color:var(--ink)}
+.cta{font-family:'SB';font-weight:800;font-size:46px;color:#fff;background:var(--ink);border-radius:999px;padding:26px 44px;box-shadow:var(--shadow);line-height:1.15}
+.cta .em{font-weight:800}
+.reveal{margin-top:26px;font-family:'JB';font-weight:700;font-size:28px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+.signoff{position:absolute;left:0;right:0;bottom:70px;z-index:8;text-align:center;font-family:'JB';font-weight:700;font-size:28px;color:var(--ink)}
+.signoff .app{background:var(--ink);color:#fff;padding:9px 20px;border-radius:999px}
+</style></head>
+<body>
+<div id="slide">
+  <div class="logo">
+    <svg viewBox="1 4 30 24" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg>
+    <span class="w">Conju<b>Expert</b></span>
+  </div>
+  <div class="pg">A / B</div>
+  <div class="eyebrow">💬 Comment Quiz</div>
+  <div class="q">Which one is right?</div>
+  <div class="prompt">er <span class="blank">___</span> das Buch<span class="hint">nehmen · Präsens</span></div>
+  <div class="opts">
+    <div class="opt a"><span class="lbl">A</span><span class="val">nimmt</span></div>
+    <div class="opt b"><span class="lbl">B</span><span class="val">nehmt</span></div>
+  </div>
+  <div class="cta">👇 A oder B?<br>Sag's in den Kommentaren!</div>
+  <div class="reveal">Auflösung morgen 🔓</div>
+  <div class="signoff"><span class="app">conjuexpert.app</span> · FEEDBACK100</div>
+  <div class="rframe"></div>
+</div>
+<script>window.__ready=document.fonts?document.fonts.ready:Promise.resolve();</script>
+</body></html>
