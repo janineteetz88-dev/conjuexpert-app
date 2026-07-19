@@ -1,0 +1,60 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face{font-family:'SG';src:url('../assets/space.woff2') format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'JB';src:url('../assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
+*{margin:0;padding:0;box-sizing:border-box}
+#reel{position:relative;width:1080px;height:1920px;overflow:hidden;background:#efe7d4;font-family:'SG',sans-serif}
+/* warm printed paper base + big soft duotone shapes (flat, NOT blurred aurora) */
+.paper{position:absolute;inset:0;background:
+  radial-gradient(70% 55% at 78% 12%, #ffd23f 0%, rgba(255,210,63,0) 60%),
+  radial-gradient(60% 50% at 12% 92%, #ff5a3c 0%, rgba(255,90,60,0) 58%),
+  #efe7d4;}
+/* halftone dot field in a corner — classic riso print detail */
+.halftone{position:absolute;right:-40px;top:520px;width:520px;height:520px;opacity:.5;
+  background-image:radial-gradient(#1a1206 22%, transparent 23%);background-size:26px 26px;
+  -webkit-mask:radial-gradient(closest-side, #000 60%, transparent 100%);mask:radial-gradient(closest-side,#000 60%,transparent 100%);
+  transform:rotate(-8deg)}
+/* real grain via SVG turbulence */
+.grain{position:absolute;inset:0;opacity:.16;mix-blend-mode:multiply;pointer-events:none}
+/* torn top edge tape */
+.tape{position:absolute;top:120px;left:82px;transform:rotate(-3.5deg);background:#1a1206;color:#efe7d4;
+  font-family:'JB';font-weight:700;font-size:30px;letter-spacing:.22em;padding:16px 26px;text-transform:uppercase;
+  box-shadow:10px 12px 0 rgba(26,18,6,.18)}
+.stage{position:absolute;left:82px;right:82px;top:640px}
+.pre{font-family:'JB';font-weight:700;font-size:46px;letter-spacing:.02em;color:#5a4a22;text-transform:lowercase}
+.pre b{color:#1a1206}
+.big{position:relative;margin-top:12px;font-weight:700;font-size:210px;line-height:.92;letter-spacing:-.04em;color:#1a1206;text-transform:lowercase}
+.big .q{color:#8a7648}
+/* hand-drawn marker strike (wobbled via displacement) */
+.strike{position:absolute;left:-18px;top:120px;width:118%;height:60px;filter:url(#rough)}
+.strike rect{fill:#e0392b}
+.subnote{margin-top:70px;display:inline-block;transform:rotate(-2deg);background:#1a1206;color:#ffd23f;
+  font-family:'JB';font-weight:700;font-size:38px;padding:14px 24px}
+.arrow{position:absolute;left:640px;top:470px;font-family:'JB';font-weight:700;font-size:40px;color:#e0392b;transform:rotate(9deg)}
+.logo{position:absolute;left:82px;bottom:96px;display:flex;align-items:center;gap:16px}
+.logo svg{width:56px;height:44px}
+.logo .w{font-family:'SG';font-weight:700;font-size:40px;color:#1a1206}
+.logo .w b{background:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.handle{position:absolute;right:82px;bottom:104px;font-family:'JB';font-weight:700;font-size:32px;color:#5a4a22}
+</style></head>
+<body>
+<div id="reel">
+  <div class="paper"></div>
+  <div class="halftone"></div>
+  <div class="tape">Typisch Deutsch №1</div>
+  <div class="arrow">try saying this →</div>
+  <div class="stage">
+    <div class="pre">germans really don't say</div>
+    <div class="big">&ldquo;well<br>done<span class="q">&rdquo;</span>
+      <svg class="strike" viewBox="0 0 1000 60" preserveAspectRatio="none"><rect x="0" y="20" width="1000" height="26" rx="6"/></svg>
+    </div>
+    <div class="subnote">…here's what we say instead 👇</div>
+  </div>
+  <div class="logo">
+    <svg viewBox="1 4 30 24" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg>
+    <span class="w">Conju<b>Expert</b></span>
+  </div>
+  <div class="handle">conjuexpert.app</div>
+  <svg width="0" height="0"><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="3" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="26"/></filter></svg>
+</div>
+<script>window.__ready=Promise.resolve();</script>
+</body></html>

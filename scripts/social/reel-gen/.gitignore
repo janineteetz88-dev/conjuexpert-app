@@ -1,0 +1,3 @@
+# Build artifacts / intermediate render frames — not versioned
+.frames/
+.rec/

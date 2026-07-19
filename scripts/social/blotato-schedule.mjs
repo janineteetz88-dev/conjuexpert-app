@@ -63,6 +63,7 @@ for (const post of manifest.posts || []) {
   };
   // Plattform-spezifische Pflichtfelder (bei Bedarf im Manifest setzen):
   if (post.mediaType) body.post.target.mediaType = post.mediaType;            // instagram: story|reel
+  if (post.coverImageUrl) body.post.content.coverImageUrl = post.coverImageUrl; // eigenes Reel-Cover/Thumbnail
   if (post.platformOptions) Object.assign(body.post.target, post.platformOptions); // tiktok/youtube extras
 
   console.log(`plane ${post.id} -> ${post.platform} @ ${post.scheduledTime} (${mediaUrls.length} Medien)`);

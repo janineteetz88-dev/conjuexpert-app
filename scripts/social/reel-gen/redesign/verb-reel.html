@@ -1,0 +1,122 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face{font-family:'SB';src:url('../assets/schib.woff2') format('woff2');font-weight:400 800;font-display:block}
+@font-face{font-family:'JB';src:url('../assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
+:root{--ink:#211d15;--muted:#8b8068;--surface:#fffdf6;--surface-2:#ece3d0;--bg:#f4eede;
+  --border:rgba(60,48,24,.14);--red:#ff3b5c;--gold:#ffd23f;
+  --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+  --shadow:0 30px 60px -30px rgba(70,55,25,.42);--shadow-sm:0 8px 22px -12px rgba(70,55,25,.3);--dur:28s}
+*{margin:0;padding:0;box-sizing:border-box}
+#reel{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--bg);font-family:'SB',sans-serif}
+.glow{position:absolute;top:-220px;left:50%;transform:translateX(-50%);width:1200px;height:620px;background:var(--rainbow);filter:blur(150px);opacity:.10;border-radius:50%;z-index:0}
+body.go .glow{animation:drift var(--dur) ease-in-out infinite alternate}
+@keyframes drift{to{transform:translateX(-50%) translateY(40px) scale(1.08)}}
+.wrap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;padding:150px 96px 0}
+.eyebrow{display:inline-flex;align-items:center;gap:14px;font-family:'JB';font-weight:700;font-size:30px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:var(--surface);border:1px solid var(--border);padding:16px 30px;border-radius:999px;box-shadow:var(--shadow-sm);opacity:0}
+body.go .eyebrow{animation:pop .5s cubic-bezier(.2,.9,.25,1) .05s both}
+@keyframes pop{from{opacity:0;transform:translateY(-14px) scale(.96)}to{opacity:1;transform:none}}
+.eyebrow .dot{width:16px;height:16px;border-radius:50%;background:var(--rainbow)}
+.leadslot{position:relative;margin-top:60px;width:100%;height:150px}
+.lead{position:absolute;left:0;right:0;top:0;font-family:'SB';font-weight:700;font-size:62px;color:var(--ink);text-align:center;letter-spacing:-.02em;line-height:1.12;opacity:0}
+.lead .r{color:var(--red);font-weight:800}
+.lead .k{color:var(--ink);font-weight:800}
+.lead .g{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.stage{position:relative;margin-top:34px;width:100%;flex:1}
+.state{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;opacity:0}
+/* card (hook / example / abspann) */
+.card{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:40px;box-shadow:var(--shadow);overflow:hidden;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 60px}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:12px;background:var(--rainbow)}
+.verb{font-family:'SB';font-weight:800;font-size:150px;line-height:1;letter-spacing:-.03em;color:var(--ink)}
+.quirk{margin-top:40px;font-family:'SB';font-weight:600;font-size:52px;color:var(--muted)}
+.quirk .hl{background:linear-gradient(180deg,transparent 60%,var(--gold) 60% 94%,transparent 94%);padding:0 8px;color:var(--ink);font-weight:800}
+/* app-scroll phone */
+.phone{position:relative;width:768px;height:1200px;border-radius:52px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow),0 0 0 10px #fffdf6,0 0 0 13px rgba(60,48,24,.10);margin-top:6px}
+.phone::before{content:"";position:absolute;top:0;left:0;right:0;height:10px;background:var(--rainbow);z-index:3}
+.strip{position:absolute;top:0;left:0;width:768px;display:block}
+.applabel{margin-top:36px;font-family:'JB';font-weight:700;font-size:34px;color:var(--muted);letter-spacing:.02em}
+.applabel b{color:var(--red)}
+/* example */
+.exlead{font-family:'SB';font-weight:600;font-size:52px;color:var(--muted);margin-bottom:8px}
+.ex{font-family:'JB';font-weight:700;font-size:60px;color:var(--ink);line-height:1.3}
+.ex .a{color:var(--red)}
+.extrans{margin-top:34px;font-family:'SB';font-weight:500;font-size:40px;color:var(--muted)}
+/* abspann */
+.dbig{font-family:'SB';font-weight:800;font-size:88px;line-height:1.05;letter-spacing:-.03em;color:var(--ink)}
+.grad{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{margin-top:44px;font-family:'SB';font-weight:800;font-size:50px;color:var(--surface);background:var(--ink);border-radius:999px;padding:26px 50px;box-shadow:var(--shadow-sm)}
+.code{margin-top:30px;font-family:'JB';font-weight:700;font-size:34px;color:var(--muted)}
+.code b{background:var(--red);color:#fff;padding:6px 16px;border-radius:10px}
+/* timing: A hook (0-14%), B app-scroll (14-72%), C example (72-86%), D abspann (86-100%) */
+body.go .laA{animation:lA var(--dur) ease both}body.go .laB{animation:lB var(--dur) ease both}body.go .laC{animation:lC var(--dur) ease both}body.go .laD{animation:lD var(--dur) ease both}
+@keyframes lA{0%{opacity:0;transform:translateY(30px)}3%{opacity:0;transform:translateY(30px)}6%{opacity:1;transform:none}12%{opacity:1}14%{opacity:0;transform:translateY(-18px)}100%{opacity:0}}
+@keyframes lB{0%{opacity:0}13%{opacity:0}16%{opacity:1;transform:none}70%{opacity:1}72%{opacity:0}100%{opacity:0}}
+@keyframes lC{0%{opacity:0}71%{opacity:0}74%{opacity:1}84%{opacity:1}86%{opacity:0}100%{opacity:0}}
+@keyframes lD{0%{opacity:0}85%{opacity:0}88%{opacity:1}100%{opacity:1}}
+body.go .sA{animation:sA var(--dur) ease both}body.go .sB{animation:sB var(--dur) ease both}body.go .sC{animation:sC var(--dur) ease both}body.go .sD{animation:sD var(--dur) ease both}
+@keyframes sA{0%{opacity:0}6%{opacity:0}9%{opacity:1}12%{opacity:1}14%{opacity:0}100%{opacity:0}}
+@keyframes sB{0%{opacity:0}14%{opacity:0}17%{opacity:1}70%{opacity:1}72%{opacity:0}100%{opacity:0}}
+@keyframes sC{0%{opacity:0}72%{opacity:0}75%{opacity:1}84%{opacity:1}86%{opacity:0}100%{opacity:0}}
+@keyframes sD{0%{opacity:0}86%{opacity:0}89%{opacity:1}100%{opacity:1}}
+/* slow app scroll during B window */
+body.go .strip{animation:scroll var(--dur) linear both}
+@keyframes scroll{0%{transform:translateY(0)}17%{transform:translateY(0)}70%{transform:translateY(var(--scrollEnd,-9000px))}100%{transform:translateY(var(--scrollEnd,-9000px))}}
+/* foot + progress */
+.foot{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:48px 96px 56px;display:flex;align-items:center;justify-content:space-between}
+.foot::before{content:"";position:absolute;top:0;left:96px;right:96px;height:4px;background:var(--rainbow);border-radius:999px;transform:scaleX(0);transform-origin:left}
+body.go .foot::before{animation:prog var(--dur) linear both}
+@keyframes prog{to{transform:scaleX(1)}}
+.logo{display:flex;align-items:center;gap:16px}.logo svg{width:56px;height:44px}
+.logo .w{font-family:'SB';font-weight:700;font-size:42px;color:var(--ink)}
+.logo .w b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.url{font-family:'JB';font-weight:700;font-size:32px;color:var(--muted)}
+</style></head>
+<body>
+<div id="reel">
+  <div class="glow"></div>
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>Verb des Tages 🇩🇪</div>
+    <div class="leadslot">
+      <div class="lead laA" id="l-a"></div>
+      <div class="lead laB">Watch it change through <span class="g">every tense</span> ↓</div>
+      <div class="lead laC">Use it like a <span class="k">local</span> 🗣️</div>
+      <div class="lead laD">Master <span class="k">every</span> verb form 🎯</div>
+    </div>
+    <div class="stage">
+      <div class="state sA"><div class="card"><div class="verb" id="v-verb"></div><div class="quirk" id="v-quirk"></div></div></div>
+      <div class="state sB"><div class="phone"><img class="strip" id="v-strip" src="" alt=""></div><div class="applabel" id="v-applabel"></div></div>
+      <div class="state sC"><div class="card"><div class="exlead">For example</div><div class="ex" id="v-ex"></div><div class="extrans" id="v-extrans"></div></div></div>
+      <div class="state sD"><div class="card">
+        <div class="dbig">ConjuExpert is the<br><span class="grad">missing piece</span> 🧩</div>
+        <div class="pill">conjuexpert.app</div>
+        <div class="code">Code <b>FEEDBACK100</b> · 30 days free</div>
+      </div></div>
+    </div>
+  </div>
+  <div class="foot">
+    <div class="logo"><svg viewBox="1 4 30 24" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg><span class="w">Conju<b>Expert</b></span></div>
+    <div class="url">conjuexpert.app</div>
+  </div>
+</div>
+<script>
+const DEFAULT={
+  verb:"anfangen",
+  quirkHtml:'<span class="hl">separable</span> + <span class="hl">stem-changing</span> 🤯',
+  strip:"../assets/anfangen-scroll.png",
+  appLabel:'real app · <b>every</b> tense',
+  leadA:'This verb does <span class="r">two</span> things at once',
+  ex:'Er <span class="a">f&auml;ngt</span> um 9 Uhr <span class="a">an</span>.',
+  exTrans:'= He starts at 9. (a→ä · „an" jumps to the end)'
+};
+const R=Object.assign({},DEFAULT,(window.__REEL||{}));
+const set=(id,h)=>{const el=document.getElementById(id);if(el)el.innerHTML=h;};
+set('l-a',R.leadA); set('v-verb',R.verb); set('v-quirk',R.quirkHtml);
+set('v-applabel',R.appLabel); set('v-ex',R.ex); set('v-extrans',R.exTrans);
+const img=document.getElementById('v-strip'); img.src=R.strip;
+window.__ready=(async()=>{
+  if(document.fonts) await document.fonts.ready;
+  if(!img.complete) await new Promise(r=>{img.onload=r;img.onerror=r;});
+  const PH=1200, disp=img.getBoundingClientRect().height || (img.naturalHeight*768/(img.naturalWidth||768));
+  const end=Math.max(0,Math.round(disp-PH));
+  document.documentElement.style.setProperty('--scrollEnd','-'+end+'px');
+})();
+</script>
+</body></html>

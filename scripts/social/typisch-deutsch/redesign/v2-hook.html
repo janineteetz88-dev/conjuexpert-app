@@ -1,0 +1,55 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face{font-family:'SG';src:url('../assets/space.woff2') format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'SB';src:url('../assets/schib.woff2') format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'JB';src:url('../assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
+*{margin:0;padding:0;box-sizing:border-box}
+#reel{position:relative;width:1080px;height:1920px;overflow:hidden;background:#fff;font-family:'SB',sans-serif}
+.statusbar{position:absolute;top:0;left:0;right:0;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 60px;font-family:'SG';font-weight:700;font-size:34px;color:#111;z-index:2}
+.statusbar .r{font-size:30px}
+/* contact header */
+.cbar{position:absolute;top:560px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:14px;z-index:2}
+.ava{width:122px;height:122px;border-radius:50%;background:linear-gradient(135deg,#ffce4a,#ff5a3c);display:flex;align-items:center;justify-content:center;font-size:66px}
+.cname{font-family:'SG';font-weight:700;font-size:42px;color:#111}
+.cname .chev{color:#c4c6cc}
+.line{position:absolute;top:770px;left:0;right:0;height:1px;background:#ececee}
+/* messages */
+.msgs{position:absolute;top:830px;left:48px;right:48px;display:flex;flex-direction:column;gap:26px;z-index:2}
+.rowL{display:flex;justify-content:flex-start}
+.rowR{display:flex;justify-content:flex-end}
+.bub{max-width:780px;font-size:52px;line-height:1.24;padding:32px 42px;border-radius:46px}
+.grey{background:#e9e9eb;color:#111;border-bottom-left-radius:12px}
+.blue{background:#0b93f6;color:#fff;border-bottom-right-radius:12px}
+.tstamp{align-self:center;font-family:'SB';font-size:26px;color:#9a9ca3;margin-bottom:6px}
+.tstamp b{color:#6b6d74;font-weight:700}
+.name{font-family:'JB';font-weight:700;font-size:24px;color:#a7a9af;margin:14px 0 -12px 18px}
+.typing{align-self:flex-start;background:#e9e9eb;border-bottom-left-radius:12px;padding:40px 46px;display:flex;gap:20px;align-items:center;border-radius:46px}
+.typing i{width:24px;height:24px;border-radius:50%;background:#9fa1a8;display:block}
+/* CapCut-style caption in the empty top zone (no overlap with chat) */
+.cap{position:absolute;left:64px;right:64px;top:170px;text-align:center;z-index:5}
+.cap span{font-family:'SG';font-weight:700;font-size:82px;line-height:1.18;color:#fff;
+  background:#111;padding:12px 24px;border-radius:14px;box-decoration-break:clone;-webkit-box-decoration-break:clone;letter-spacing:-.01em}
+.cap .y{color:#ffce33}
+.brandchip{position:absolute;left:0;right:0;bottom:80px;text-align:center;z-index:5}
+.brandchip span{display:inline-flex;align-items:center;gap:14px;background:#111;color:#fff;font-family:'JB';font-weight:700;font-size:34px;padding:18px 32px;border-radius:999px}
+.brandchip svg{width:44px;height:34px}
+.brandchip b{background:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+</style></head>
+<body>
+<div id="reel">
+  <div class="statusbar"><span>9:41</span><span class="r">📶&nbsp;&nbsp;🔋</span></div>
+  <div class="cap"><span>complimenting a German is a <span class="y">whole grammar lesson</span> 😭</span></div>
+  <div class="cbar"><div class="ava">🇩🇪</div><div class="cname">Lena &nbsp;<span class="chev">›</span></div></div>
+  <div class="line"></div>
+  <div class="msgs">
+    <div class="tstamp"><b>Today</b> 18:32</div>
+    <div class="rowR"><div class="bub blue">you smashed that presentation today 👏👏</div></div>
+    <div class="name">Lena is typing…</div>
+    <div class="typing"><i></i><i></i><i></i></div>
+  </div>
+  <div class="brandchip"><span>
+    <svg viewBox="1 4 30 24" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg>
+    Conju<b>Expert</b> · conjuexpert.app
+  </span></div>
+</div>
+<script>window.__ready=Promise.resolve();</script>
+</body></html>
