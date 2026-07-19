@@ -2202,6 +2202,9 @@
   // Same-Origin-Route (Cloudflare-Worker an conjuexpert.app/api/ai* gebunden).
   // Ermoeglicht WAF-Rate-Limiting + entfernt die oeffentliche workers.dev-URL.
   var WORKER = '/api/ai';
+  // Aktive Lernsprache (kunju-lang) an den Proxy mitgeben — der Worker wählt
+  // danach das Modell (nur 'de' → gpt-4.1-mini, sonst günstiger gpt-4o-mini).
+  function aiLang(){ try { return JSON.parse(localStorage.getItem('kunju-lang')) || 'de'; } catch(e){ return 'de'; } }
   var queue = [], busy = false, lastCall = 0, INTERVAL = 300;
   function delay(ms){ return new Promise(function(r){setTimeout(r,ms);}); }
   async function callWorker(prompt, attempt){
@@ -2209,7 +2212,7 @@
     var resp = await fetch(WORKER, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({prompt: prompt})
+      body: JSON.stringify({prompt: prompt, lang: aiLang()})
     });
     var d = await resp.json();
     if(!resp.ok){
@@ -2244,7 +2247,7 @@
   window.aiComplete = enqueue;
   // streaming variant: yields the model's text as it arrives (onText gets the accumulated text)
   async function streamComplete(prompt, onText){
-    var resp = await fetch(WORKER, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt:prompt, stream:true}) });
+    var resp = await fetch(WORKER, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt:prompt, stream:true, lang: aiLang()}) });
     var ct = (resp.headers.get('content-type') || '');
     if (ct.indexOf('application/json') >= 0 || !resp.body || !resp.body.getReader) {
       var d = await resp.json().catch(function(){ return {}; });
