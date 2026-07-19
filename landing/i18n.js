@@ -5,7 +5,7 @@
   var I18N = {
     en: {
       "nav.features": "Features", "nav.prices": "Pricing", "nav.faq": "FAQ", "nav.reviews": "Reviews", "nav.app": "App", "nav.openApp": "Open app",
-      "hero.eyebrow": "Personalised conjugation trainer for 5 languages",
+      "hero.eyebrow": "Learn up to 5 languages in parallel",
       "hero.h1": "Conjugate verbs until they <span class=\"grad-word\">click in conversation</span>.",
       "hero.lead": "Conjugate verbs and truly remember them — with sentences from your favourite topics, across all tenses and 5 languages. Start now and try every feature.",
       "hero.ctaOpen": "Open the app for free", "hero.ctaHow": "How it works", "hero.ctaTry": "Try a verb below ↓",
@@ -114,7 +114,7 @@
     },
     es: {
       "nav.features": "Funciones", "nav.prices": "Precios", "nav.faq": "FAQ", "nav.reviews": "Opiniones", "nav.app": "App", "nav.openApp": "Abrir app",
-      "hero.eyebrow": "Entrenador de conjugación personalizable para 5 idiomas",
+      "hero.eyebrow": "Aprende hasta 5 idiomas en paralelo",
       "hero.h1": "Conjuga verbos hasta que te <span class=\"grad-word\">salgan al hablar</span>.",
       "hero.lead": "Conjuga verbos y recuérdalos de verdad — con frases sobre tus temas favoritos, en todos los tiempos y 5 idiomas. Empieza ahora y prueba todas las funciones.",
       "hero.ctaOpen": "Abrir la app gratis", "hero.ctaHow": "Cómo funciona", "hero.ctaTry": "Prueba un verbo abajo ↓",
@@ -223,7 +223,7 @@
     },
     fr: {
       "nav.features": "Fonctions", "nav.prices": "Tarifs", "nav.faq": "FAQ", "nav.reviews": "Avis", "nav.app": "App", "nav.openApp": "Ouvrir l'app",
-      "hero.eyebrow": "Entraîneur de conjugaison personnalisable pour 5 langues",
+      "hero.eyebrow": "Apprends jusqu'à 5 langues en parallèle",
       "hero.h1": "Conjugue des verbes jusqu'à ce qu'ils <span class=\"grad-word\">viennent en parlant</span>.",
       "hero.lead": "Conjugue des verbes et retiens-les vraiment — avec des phrases tirées de tes sujets préférés, à tous les temps et en 5 langues. Commence maintenant et teste toutes les fonctions.",
       "hero.ctaOpen": "Ouvrir l'app gratuitement", "hero.ctaHow": "Comment ça marche", "hero.ctaTry": "Teste un verbe ci-dessous ↓",
@@ -332,7 +332,7 @@
     },
     nl: {
       "nav.features": "Functies", "nav.prices": "Prijzen", "nav.faq": "FAQ", "nav.reviews": "Beoordelingen", "nav.app": "App", "nav.openApp": "App openen",
-      "hero.eyebrow": "Personaliseerbare vervoegingstrainer voor 5 talen",
+      "hero.eyebrow": "Leer tot 5 talen tegelijk",
       "hero.h1": "Vervoeg werkwoorden tot ze <span class=\"grad-word\">komen als je praat</span>.",
       "hero.lead": "Vervoeg werkwoorden en onthoud ze echt — met zinnen over je favoriete onderwerpen, in alle tijden en 5 talen. Begin nu en test alle functies.",
       "hero.ctaOpen": "App gratis openen", "hero.ctaHow": "Zo werkt het", "hero.ctaTry": "Probeer een werkwoord ↓",

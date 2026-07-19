@@ -65,18 +65,119 @@ function cleanQuestion(s) {
     .trim();
 }
 
+/* ─── Helfer für den generischen Block-Parser ────────────────────────────── */
+
+function richTextOf(b) {
+  switch (b?.type) {
+    case "paragraph":           return b.paragraph?.rich_text || [];
+    case "quote":               return b.quote?.rich_text || [];
+    case "heading_1":           return b.heading_1?.rich_text || [];
+    case "heading_2":           return b.heading_2?.rich_text || [];
+    case "heading_3":           return b.heading_3?.rich_text || [];
+    case "bulleted_list_item":  return b.bulleted_list_item?.rich_text || [];
+    case "numbered_list_item":  return b.numbered_list_item?.rich_text || [];
+    default:                    return [];
+  }
+}
+
+// Reine Struktur-Marker, die versehentlich als Text ankommen (escaped Toggle/
+// Details, +++-Toggle-Syntax) — werden übersprungen, nie als Frage/Antwort.
+function isMarkerOnly(text) {
+  const t = String(text || "").trim();
+  return /^<\/?(?:toggle|details|summary)>$/i.test(t) || /^\+{3,}$/.test(t);
+}
+
+function stripHeadingPrefix(s) {
+  return String(s || "").replace(/^\s*#{1,6}\s+/, "").trim();
+}
+
+// Ganzer Block fett gesetzt → sehr wahrscheinlich eine Frage (nicht eine Antwort,
+// die höchstens mit einem fetten Label beginnt).
+function isFullyBold(rt) {
+  const meaningful = (rt || []).filter((t) => t.plain_text && t.plain_text.trim());
+  return meaningful.length > 0 && meaningful.every((t) => t.annotations && t.annotations.bold);
+}
+
+function bulletIsQuestion(b) {
+  const rt = b.bulleted_list_item?.rich_text || [];
+  const full = plainOf(rt).trim();
+  return /^[▸▶►]\s*/.test(full) || rt.some((t) => t.annotations && t.annotations.bold);
+}
+
+// Absatz / Zitat / heading_3 als Frage erkennen.
+function looksLikeQuestion(b) {
+  if (b.type === "heading_3") return true;
+  if (b.type === "paragraph" || b.type === "quote") {
+    const rt = richTextOf(b);
+    const plain = plainOf(rt).trim();
+    if (!plain || isMarkerOnly(plain)) return false;
+    if (/^\s*#{1,6}\s+/.test(plain)) return true; // „### Frage" (als Absatz/Zitat)
+    if (/^\*\*.+\*\*\s*$/.test(plain)) return true; // literales **Frage**
+    if (isFullyBold(rt)) return true;               // komplett fett gesetzte Frage
+  }
+  return false;
+}
+
+// Bestehende „▸ **Frage**"-Bullet-Logik → { q, a_html, a_text }.
+function bulletToItem(b) {
+  const rt = b.bulleted_list_item?.rich_text || [];
+  const full = plainOf(rt).trim();
+  if (!full) return null;
+
+  let q = "";
+  let aInline = "";
+  const firstBoldEnd = rt.findIndex((t) => t.annotations && t.annotations.bold);
+  if (firstBoldEnd !== -1) {
+    let i = 0;
+    const qParts = [];
+    let started = false;
+    for (; i < rt.length; i++) {
+      const t = rt[i];
+      const isBold = t.annotations && t.annotations.bold;
+      if (isBold) { started = true; qParts.push(t.plain_text); }
+      else if (!started) { continue; }
+      else { break; }
+    }
+    q = cleanQuestion(qParts.join(""));
+    aInline = plainOf(rt.slice(i)).trim();
+  } else {
+    const nl = full.indexOf("\n");
+    if (nl !== -1) { q = cleanQuestion(full.slice(0, nl)); aInline = full.slice(nl + 1).trim(); }
+    else { q = cleanQuestion(full); aInline = ""; }
+  }
+  if (!q) return null;
+
+  let a_html = "";
+  if (b._children && b._children.length) a_html = blocksToHtml(b._children);
+  else if (aInline) a_html = inlineMdToHtml(aInline);
+  return { q, a_html, a_text: htmlToText(a_html) };
+}
+
 /**
- * (a) Notion-Block-FAQ — deckt BEIDE Notion-Formate ab:
+ * (a) Notion-Block-FAQ — robust über die real vorkommenden Autoren-Formate:
  *   1) toggle: Frage in toggle.rich_text, Antwort in _children
- *   2) bulleted_list_item: "▸ **Frage**" + Antwort.
- *      Antwort kann in _children stehen (eingerückte Unter-Blöcke) ODER
- *      — wenn Frage und Antwort in derselben Bullet stehen — hinter der
- *      ersten Zeile/dem fett gesetzten Frage-Teil.
+ *   2) „▸ **Frage**"-Bullet: Frage im ersten fetten Segment, Antwort in
+ *      _children oder inline dahinter
+ *   3) generischer Frage-/Antwort-Strom: komplett fett gesetzte Frage-Absätze/
+ *      -Zitate, „### Frage" (als Absatz/Zitat oder heading_3) — jeweils gefolgt
+ *      von einem oder mehreren Antwort-Blöcken. Literale Marker (<toggle>,
+ *      </toggle>, <details>, +++) werden übersprungen.
  */
 function normalizeFromBlocks(blocks) {
   const items = [];
+  let current = null;
+  const flush = () => {
+    if (current && current.q) {
+      const a_html = current.aParts.join("\n");
+      items.push({ q: current.q, a_html, a_text: htmlToText(a_html) });
+    }
+    current = null;
+  };
+
   for (const b of blocks || []) {
+    // 1) toggle: eigenständige Q/A-Einheit
     if (b.type === "toggle") {
+      flush();
       const q = plainOf(b.toggle?.rich_text).trim();
       if (!q) continue;
       const a_html = b._children ? blocksToHtml(b._children) : "";
@@ -84,63 +185,28 @@ function normalizeFromBlocks(blocks) {
       continue;
     }
 
-    if (b.type === "bulleted_list_item") {
-      const rt = b.bulleted_list_item?.rich_text || [];
-      const full = plainOf(rt).trim();
-      if (!full) continue;
-
-      // Frage = bis zum Ende des ersten fett gesetzten Segments (oder erste Zeile).
-      let q = "";
-      let aInline = "";
-
-      // Bevorzugt strukturell: erstes fettes rich_text-Segment ist die Frage.
-      const firstBoldEnd = rt.findIndex((t) => t.annotations && t.annotations.bold);
-      if (firstBoldEnd !== -1) {
-        // Sammle zusammenhängende fette Segmente am Anfang als Frage.
-        let i = 0;
-        // optionales führendes Marker-Segment "▸ " überspringen
-        const qParts = [];
-        let started = false;
-        for (; i < rt.length; i++) {
-          const t = rt[i];
-          const isBold = t.annotations && t.annotations.bold;
-          if (isBold) {
-            started = true;
-            qParts.push(t.plain_text);
-          } else if (!started) {
-            // führender Nicht-Fett-Text (z. B. "▸ ") überspringen
-            continue;
-          } else {
-            break;
-          }
-        }
-        q = cleanQuestion(qParts.join(""));
-        aInline = plainOf(rt.slice(i)).trim();
-      } else {
-        // Fallback: erste Zeile = Frage, Rest = Antwort
-        const nl = full.indexOf("\n");
-        if (nl !== -1) {
-          q = cleanQuestion(full.slice(0, nl));
-          aInline = full.slice(nl + 1).trim();
-        } else {
-          q = cleanQuestion(full);
-          aInline = "";
-        }
-      }
-
-      if (!q) continue;
-
-      // Antwort: eingerückte Kinder bevorzugt, sonst Inline-Rest.
-      let a_html = "";
-      if (b._children && b._children.length) {
-        a_html = blocksToHtml(b._children);
-      } else if (aInline) {
-        a_html = inlineMdToHtml(aInline);
-      }
-      items.push({ q, a_html, a_text: htmlToText(a_html) });
+    // 2) „▸ **Frage**"-Bullet: eigenständige Q/A-Einheit
+    if (b.type === "bulleted_list_item" && bulletIsQuestion(b)) {
+      flush();
+      const it = bulletToItem(b);
+      if (it) items.push(it);
       continue;
     }
+
+    // 3) generischer Frage-/Antwort-Strom (Absatz / Zitat / heading_3)
+    const rt = richTextOf(b);
+    const plain = plainOf(rt).trim();
+    if (!plain || isMarkerOnly(plain)) continue; // <toggle>/</toggle>/+++ überspringen
+
+    if (looksLikeQuestion(b)) {
+      flush();
+      current = { q: cleanQuestion(stripHeadingPrefix(plain)), aParts: [] };
+    } else if (current) {
+      const html = rtToHtml(rt);
+      if (html) current.aParts.push(`<p>${html}</p>`);
+    }
   }
+  flush();
   return items;
 }
 

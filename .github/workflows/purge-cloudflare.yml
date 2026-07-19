@@ -9,6 +9,11 @@ name: Purge Cloudflare cache
 #   CLOUDFLARE_API_TOKEN  – API-Token mit der Berechtigung "Zone · Cache Purge · Purge"
 
 on:
+  # Robust: nach jedem Push auf main purgen (kurz warten, bis Pages deployt hat).
+  # Der workflow_run-Trigger allein war zwischenzeitlich still ausgefallen — dadurch
+  # lieferte Cloudflare wochenlang die alte index.html / app.js aus.
+  push:
+    branches: [main]
   workflow_run:
     workflows: ["pages build and deployment"]
     types: [completed]
@@ -17,9 +22,14 @@ on:
 jobs:
   purge:
     runs-on: ubuntu-latest
-    # Nur purgen, wenn der Pages-Deploy erfolgreich war (oder manuell gestartet)
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    # Purgen bei push/manuell — bei workflow_run nur, wenn der Deploy erfolgreich war.
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     steps:
+      - name: Auf Pages-Deploy warten (nur bei push)
+        if: github.event_name == 'push'
+        run: |
+          echo "Warte ~120s, bis GitHub Pages diesen Commit ausgeliefert hat, bevor Cloudflare geleert wird…"
+          sleep 120
       - name: Purge everything
         env:
           CF_ZONE: ${{ secrets.CLOUDFLARE_ZONE_ID }}

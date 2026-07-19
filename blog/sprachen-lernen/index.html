@@ -19,8 +19,10 @@
 <meta name="twitter:title" content="Sprachen lernen — der große Überblick: die Methoden, die wirklich wirken" />
 <meta name="twitter:description" content="Sprachen lernen mit Methoden, die wirklich wirken: aktives Abrufen, verteiltes Üben, Interleaving und Feynman — plus die Lernmythen, die nur Zeit kosten. Der…" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<link rel="stylesheet" href="/fonts/blog.css" />
-<link rel="stylesheet" href="/blog/blog.css?v=11" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/blog/blog.css?v=12" />
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
@@ -30,8 +32,8 @@
       "headline": "Sprachen lernen — der große Überblick: die Methoden, die wirklich wirken",
       "description": "Sprachen lernen mit Methoden, die wirklich wirken: aktives Abrufen, verteiltes Üben, Interleaving und Feynman — plus die Lernmythen, die nur Zeit kosten. Der…",
       "inLanguage": "de",
-      "datePublished": "2026-06-21",
-      "dateModified": "2026-06-21",
+      "datePublished": "2026-07-05",
+      "dateModified": "2026-07-05",
       "articleSection": "Methodik",
       "image": "https://conjuexpert.app/blog/img/prod-1.png",
       "speakable": {
@@ -52,7 +54,7 @@
         }
       },
       "publisher": {
-        "@type": "Organization", "@id": "https://conjuexpert.app/#org",
+        "@type": "Organization",
         "name": "ConjuExpert",
         "url": "https://conjuexpert.app/",
         "logo": {
@@ -139,6 +141,18 @@
 .faq2 details[open] summary .pm{transform:rotate(135deg)}
 .faq2 details[open] summary{border-bottom:1px solid var(--border)}
 .faq2 .a{padding:16px 20px 20px;color:var(--muted);font-size:15.5px;line-height:1.6}
+.keytakeaways{position:relative;margin:18px 0 28px;padding:20px 22px 20px 26px;border:1px solid var(--border);border-radius:18px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.keytakeaways::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:4px;border-radius:4px;background:linear-gradient(180deg,var(--pink),var(--violet))}
+.keytakeaways h2{margin:0 0 10px;font-size:18px}
+.keytakeaways p{margin:0;color:var(--ink);line-height:1.6}
+.keytakeaways ul,.keytakeaways ol{margin:0;padding-left:20px}
+.keytakeaways li{margin:6px 0;color:var(--ink);line-height:1.55}
+.toc{margin:0 0 30px;padding:16px 20px;border:1px solid var(--border);border-radius:16px;background:var(--surface-2)}
+.toc-h{margin:0 0 8px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.toc ol{margin:0;padding-left:20px}
+.toc li{margin:4px 0}
+.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+.toc a:hover{border-bottom-color:var(--pink)}
 </style>
 </head>
 <body>
@@ -168,7 +182,7 @@
 </header>
 
 <main id="top">
-  <article style="position:relative">
+  <article style="position:relative;overflow:hidden">
     <div class="art-glow"></div>
 
     <div class="artwrap">
@@ -186,9 +200,9 @@
           <span class="av">J</span>
           <span>Janine Kreiser, Gründerin ConjuExpert</span>
           <span class="dotsep"></span>
-          <span class="mono">21. Juni 2026</span>
+          <span class="mono">5. Juli 2026</span>
           <span class="dotsep"></span>
-          <span class="mono">15 min</span>
+          <span class="mono">14 min</span>
           <span class="dotsep"></span>
           <span class="lngtag" style="position:static">DE</span>
         </div>
@@ -198,11 +212,11 @@
     <div class="artwrap">
       <div class="prose">
 
-        <div class="note"><strong>Das Wichtigste in Kürze:</strong> Beim Sprachen lernen entscheidet nicht, wie viel du in den Kopf hineinträgst, sondern wie oft du etwas wieder herausholst. Vier Methoden sind durch die Lernforschung gut belegt: aktives Abrufen statt Wiederlesen, verteiltes Üben statt Pauken (Dunlosky et al., 2013), in wachsenden Abständen wiederholen und verstehen statt auswendig lernen mit der Feynman-Methode. Genauso wichtig: zwei hartnäckige Mythen loswerden — den Lerntypen-Glauben und den Nutzen von Markieren und Wiederlesen (Dunlosky et al., 2013). Dieser Hub reißt jede Methode kurz an und verlinkt für die Tiefe nach unten.</div>
-
-<p>Die Lernmethoden, die sich am besten anfühlen, bringen am wenigsten. Markieren, Wiederlesen, nebenbei Serien schauen — alles angenehm vertraut, alles kaum wirksam. Die Methoden, die wirklich etwas bewegen, fühlen sich anfangs anstrengend und fast nach Misserfolg an. Diese Seite legt dir die kleine Handvoll belegter Methoden aus — jede an einem Beispiel gezeigt, mit einem eigenen Vertiefungsartikel darunter. Die eine Sache vorweg: Lernen passiert nicht beim Hineinstecken, sondern beim Herausholen.</p>
-
-        <nav class="toc" aria-label="Inhaltsverzeichnis">
+                <div class="keytakeaways">
+          <h2 id="kurz">Das Wichtigste in Kürze</h2>
+          <p>Beim Sprachen lernen entscheidet nicht, wie viel du in den Kopf hineinträgst, sondern wie oft du etwas wieder herausholst. Vier Methoden sind durch die Lernforschung gut belegt: aktives Abrufen statt Wiederlesen, verteiltes Üben statt Pauken (Dunlosky et al., 2013), in wachsenden Abständen wiederholen und verstehen statt auswendig lernen mit der Feynman-Methode. Genauso wichtig: zwei hartnäckige Mythen loswerden — den Lerntypen-Glauben und den Nutzen von Markieren und Wiederlesen (Dunlosky et al., 2013). Dieser Hub reißt jede Methode kurz an und verlinkt für die Tiefe nach unten.</p>
+        </div>
+                <nav class="toc" aria-label="Inhaltsverzeichnis">
           <p class="toc-h">Inhalt</p>
           <ol>
             <li><a href="#warum-sich-falsches-lernen-so-richtig-anfuhlt">Warum sich falsches Lernen so richtig anfühlt</a></li>
@@ -217,6 +231,7 @@
             <li><a href="#das-wichtigste-in-einem-satz">Das Wichtigste in einem Satz</a></li>
           </ol>
         </nav>
+        <p>Ein Erwachsener, der eine Sprache lernt, macht im Schnitt etwas Erstaunliches: Er weiß ziemlich genau, was er tun <em>soll</em> — Wörter wiederholen, mehr sprechen, dranbleiben — und tut trotzdem oft das Gegenteil. Das liegt nicht an mangelnder Disziplin, sondern daran, dass sich die ineffizienten Methoden besser anfühlen als die wirksamen. Markieren, Wiederlesen, stundenlang Serien schauen: All das vermittelt ein angenehmes Gefühl von Vertrautheit, während die Methoden, die tatsächlich etwas bewegen, anstrengend sind und sich anfangs sogar nach Misserfolg anfühlen. Genau dieser Widerspruch ist der rote Faden dieses Überblicks. Ich habe mir angeschaut, was die Lernforschung über wirksames Lernen sagt, und das Bild ist überraschend klar und überraschend einheitlich — egal ob es um Vokabeln, Grammatik oder Verbformen geht. Es gibt eine kleine Handvoll Methoden, die immer wieder oben landen, und eine ebenso kleine Handvoll beliebter Gewohnheiten, die kaum etwas bringen. Dieser Artikel ist das Dach über unserer ganzen Methodik-Spur: Wir gehen jede wirksame Methode einmal durch, zeigen sie an einem konkreten Beispiel, räumen mit zwei zähen Mythen auf — und für jeden Baustein liegt ein eigener, ausführlicher Artikel darunter, in den du tiefer einsteigen kannst. Wenn du nur eine Sache aus diesem Überblick mitnimmst, dann diese: Lernen passiert nicht beim Hineinstecken, sondern beim Herausholen.</p>
 <section class="artcard">
 <h2 id="warum-sich-falsches-lernen-so-richtig-anfuhlt">Warum sich falsches Lernen so richtig anfühlt</h2>
 
@@ -268,12 +283,13 @@
 <section class="artcard">
 <h2 id="kurz-zu-conjuexpert">Kurz zu ConjuExpert</h2>
 
-<p>Alle Methoden auf dieser Seite laufen auf denselben Hebel hinaus — weg vom passiven Anschauen, hin zum aktiven Abrufen. Genau dafür ist <a class="inline" href="https://conjuexpert.app/">ConjuExpert</a> gebaut. Es läuft im Browser und als installierbare App, auch offline, und statt dir Stoff vorzulesen, lässt es dich produzieren — in vier Quizmodi vom Tippen über Multiple-Choice bis zur Sprecherkennung. Du wählst selbst, was du übst, und die Schwierigkeit passt sich an deine Fehler an, statt dich mit Bekanntem zu fluten — das ist Spaced Repetition und Interleaving in einem, ohne dass du selbst Intervalle rechnen musst. Die Konjugationstabellen und Grammatikerklärungen sind kostenlos und ohne Anmeldung da; die aktiven Quizmodi gibt es im Premium. Es ersetzt nicht deinen Input und nicht das echte Gespräch — es ist das Trainingsgerät für genau den Muskel, der den meisten fehlt: das aktive Abrufen.</p>
+<p>Alle Methoden auf dieser Seite laufen auf denselben Hebel hinaus — weg vom passiven Anschauen, hin zum aktiven Abrufen. Genau dafür ist <a class="inline" href="https://conjuexpert.app/">ConjuExpert</a> gebaut. Es läuft im Browser und als installierbare App, auch offline, und statt dir Stoff vorzulesen, lässt es dich produzieren — in vier Quizmodi vom Tippen über Multiple-Choice bis zur Spracherkennung. Du wählst selbst, was du übst, und die Schwierigkeit passt sich an deine Fehler an, statt dich mit Bekanntem zu fluten — das ist Spaced Repetition und Interleaving in einem, ohne dass du selbst Intervalle rechnen musst. Die Konjugationstabellen und Grammatikerklärungen sind kostenlos und ohne Anmeldung da; die aktiven Quizmodi gibt es im Premium. Es ersetzt nicht deinen Input und nicht das echte Gespräch — es ist das Trainingsgerät für genau den Muskel, der den meisten fehlt: das aktive Abrufen.</p>
 </section>
 <section class="artcard">
 <h2 id="das-wichtigste-in-einem-satz">Das Wichtigste in einem Satz</h2>
 
 <p>Sprachen lernt man nicht beim Hineinstecken, sondern beim Herausholen — also ruf aktiv ab, verteile es über die Woche, misch die Typen durcheinander, verstehe vor dem Auswendiglernen, und lass Markieren und den Lerntypen-Mythos einfach weg. Welche der vier Methoden fehlt dir bisher am meisten in deinem Alltag — und welche probierst du als Erstes aus?</p>
+</section>
                 <h2 id="faq">Häufige Fragen</h2>
         <div class="faq2">
           <details>
@@ -293,7 +309,7 @@
             <div class="a"><p>Mit der kleinsten wirksamen Einheit: Lies dein Lernhäppchen einmal, leg es weg und ruf es aus dem Kopf ab — täglich zehn Minuten schlagen den Wochenend-Marathon, weil verteiltes Üben dem geballten Pauken überlegen ist (Dunlosky et al., 2013). Häng die Einheit an eine feste Gewohnheit, dann brauchst du keine Motivation mehr.</p></div>
           </details>
         </div>
-</section>
+        
         <h2 id="quellen">Quellen</h2>
         <ol class="sources">
           <li>Dunlosky, J., Rawson, K. A., Marsh, E. J., Nathan, M. J. &amp; Willingham, D. T. (2013): <i>Improving Students' Learning With Effective Learning Techniques.</i> Psychological Science in the Public Interest, 14(1), 4–58. <a class="inline" href="https://doi.org/10.1177/1529100612453266" target="_blank" rel="noopener">doi.org/10.1177/1529100612453266</a></li>
@@ -322,6 +338,58 @@
     </div>
 
     
+    <!-- CLUSTER:DOWN -->
+    <section class="block related" style="padding:54px 0 0">
+      <div class="wrap">
+        <span class="sec-tag">Weiter in die Tiefe</span>
+        <p style="color:var(--muted);margin:10px 0 0;max-width:60ch">Jede Methode hat einen eigenen, ausführlichen Artikel — hier geht es tiefer:</p>
+        <div class="relgrid">
+          <a class="relcard" href="/blog/active-recall-sprachenlernen/">
+            <span class="reltxt">
+              <span class="relcat">Methodik</span>
+              <span class="reltitle">Active Recall fürs Sprachenlernen — aktiv abrufen statt nur lesen</span>
+            </span>
+            <span class="relgo" aria-hidden="true">→</span>
+          </a>
+          <a class="relcard" href="/blog/spaced-repetition-sprachenlernen/">
+            <span class="reltxt">
+              <span class="relcat">Methodik</span>
+              <span class="reltitle">Spaced Repetition richtig nutzen — der Wiederhol-Rhythmus, der sitzt</span>
+            </span>
+            <span class="relgo" aria-hidden="true">→</span>
+          </a>
+          <a class="relcard" href="/blog/lernmythen-sprachenlernen/">
+            <span class="reltxt">
+              <span class="relcat">Methodik</span>
+              <span class="reltitle">Lernmythen beim Sprachenlernen — Lerntypen, „10.000 Stunden&quot; &amp; Co. entlarvt</span>
+            </span>
+            <span class="relgo" aria-hidden="true">→</span>
+          </a>
+          <a class="relcard" href="/blog/dranbleiben-motivation-sprachenlernen/">
+            <span class="reltxt">
+              <span class="relcat">Methodik</span>
+              <span class="reltitle">Dranbleiben: Motivation halten, wenn die Anfangs-Euphorie weg ist</span>
+            </span>
+            <span class="relgo" aria-hidden="true">→</span>
+          </a>
+          <a class="relcard" href="/blog/verben-lernen-tipps/">
+            <span class="reltxt">
+              <span class="relcat">Methodik</span>
+              <span class="reltitle">Verben lernen: 7 Lerntipps, mit denen die Formen endlich sitzen</span>
+            </span>
+            <span class="relgo" aria-hidden="true">→</span>
+          </a>
+          <a class="relcard" href="/blog/aktiv-lernen-statt-tabellen-auswendig/">
+            <span class="reltxt">
+              <span class="relcat">Methodik</span>
+              <span class="reltitle">Konjugationstabellen auswendig lernen? Warum aktives Üben dreimal mehr bringt</span>
+            </span>
+            <span class="relgo" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- /CLUSTER:DOWN -->
 
   </article>
 </main>

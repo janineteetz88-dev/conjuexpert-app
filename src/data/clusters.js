@@ -196,7 +196,7 @@ export const clusters = [
       { slug: "/blog/futur-simple-futur-proche", title: "Futur simple vs. futur proche: welche Zukunft im Französischen?", live: true },
       { slug: "/blog/subjonctif-franzoesisch", title: "Le subjonctif: wann er kommt und wie du ihn bildest", live: true },
       { slug: "/blog/verneinung-franzoesisch", title: "Die Verneinung im Französischen (ne … pas) und die Verbstellung", live: true },
-      { slug: "/blog/verben-mit-praeposition-franzoesisch", title: "Französische Verben mit Präposition (penser à, parler de)", live: true },
+      { slug: "/blog/verben-mit-praeposition-franzoesisch", title: "Französische Verben mit Präposition: penser à, parler de", live: true },
       { slug: "/blog/angleichung-participe-passe", title: "Die Angleichung des participe passé (accord) verständlich erklärt", live: true },
     ],
   },
@@ -208,6 +208,7 @@ export const clusters = [
     hub: null,
     spokes: [
       { slug: "/blog/trennbare-verben-deutsch", title: "Trennbare Verben Deutsch: das Trenn-System", live: true },
+      { slug: "/blog/perfekt-haben-oder-sein", title: "Perfekt mit haben oder sein? Die Regel, die wirklich hilft", live: true },
     ],
   },
   {
@@ -222,6 +223,7 @@ export const clusters = [
     },
     spokes: [
       { slug: "/blog/irregular-verbs-englisch", title: "Unregelmäßige Verben Englisch: 4 Gruppen, die das Chaos beenden", live: true },
+      { slug: "/blog/present-continuous-simple-present", title: "Present continuous vs. simple present: -ing oder nicht?", live: true },
     ],
   },
   {
@@ -242,7 +244,7 @@ export const clusters = [
     hub: null,
     spokes: [
       { slug: "/blog/sprachlern-app-vergleich", title: "Duolingo, Babbel, Busuu & Co.: Was diese Apps wirklich können — und wo sie schweigen (v2)", live: true },
-      { slug: "/blog/mit-der-sprache-umgeben", title: "Sich mit der Sprache umgeben: 10 Challenges (v2)", live: true },
+      { slug: "/blog/mit-der-sprache-umgeben", title: "Sich mit der Sprache umgeben: 10 Tipps für zuhause", live: true },
     ],
   },
   {
@@ -256,6 +258,16 @@ export const clusters = [
       live: true,
     },
     spokes: [
+    ],
+  },
+  {
+    id: "franzsisch-verben-konjugieren",
+    lang: "de",
+    label: "Methodik",
+    color: "#34c759",
+    hub: null,
+    spokes: [
+      { slug: "/blog/franzoesische-verbgruppen", title: "Die drei französischen Verbgruppen: -er, -ir, -re konjugieren", live: true },
     ],
   },
 ];

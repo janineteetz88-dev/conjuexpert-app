@@ -95,7 +95,7 @@ section.block{padding:80px 0;scroll-margin-top:84px}
 .dotsep{width:4px;height:4px;border-radius:50%;background:var(--border);flex-shrink:0}
 
 /* ===== blog hero ===== */
-.bloghero{position:relative;padding:70px 0 26px}
+.bloghero{position:relative;padding:70px 0 26px;overflow:hidden}
 .bloghero::before{content:"";position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:1100px;height:520px;background:var(--vivid);filter:blur(120px);opacity:.14;z-index:-1;border-radius:50%}
 .bloghero h1{font-family:var(--headline);font-weight:700;font-size:clamp(32px,4.4vw,50px);line-height:1.02;letter-spacing:-.035em;margin:18px 0 14px;text-wrap:balance}
 .grad-word{background:var(--vivid);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hue 6s linear infinite}
@@ -190,7 +190,7 @@ section.block{padding:80px 0;scroll-margin-top:84px}
 .prose li{padding-left:4px}
 .prose strong{font-weight:700;color:var(--ink)}
 .prose em{font-style:italic;font-weight:inherit;color:inherit;font-family:inherit;font-size:inherit}
-.pull{border-left:4px solid;border-image:var(--vivid) 1;padding:6px 0 6px 22px;margin:30px 0;font-family:var(--display);font-weight:700;font-size:clamp(20px,2.4vw,26px);letter-spacing:-.02em;line-height:1.3;color:var(--ink)}
+.pull{border-left:3px solid;border-image:var(--vivid) 1;padding:4px 0 4px 18px;margin:24px 0;font-family:inherit;font-weight:400;font-size:17px;letter-spacing:normal;line-height:1.62;color:var(--ink)}
 .note{background:var(--surface-2);border:1px solid var(--border);border-left:4px solid color-mix(in srgb,var(--violet) 60%,var(--border));border-radius:14px;padding:18px 22px;margin:34px 0;font-size:16px;line-height:1.62;color:var(--muted)}
 .note b{color:var(--ink)}
 .prose blockquote{margin:30px 0;padding:18px 22px;background:var(--surface-2);border:1px solid var(--border);border-left:4px solid color-mix(in srgb,var(--violet) 45%,var(--border));border-radius:14px;font-size:16.5px;line-height:1.7;color:var(--ink)}
@@ -317,7 +317,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border);margin-top:30px}
 @media(prefers-reduced-motion:reduce){.js .reveal{animation:none}.btn-primary .g,.btn-primary::after,.band,.grad-word{animation:none}}
 
 /* ===== Bildsprache — duotone image system ===== */
-:root{--img-tint:#b9956e;--img-filter:grayscale(1) contrast(1.03) brightness(1.05)}
+:root{--img-tint:#b9956e;--img-filter:grayscale(1) contrast(1.02) brightness(1.16)}
 .shot.duo,.thumb.duo,.quizcta .qi.duo{background:color-mix(in srgb,var(--img-tint) 42%,var(--surface-2))}
 .shot.duo img.duoimg,.thumb.duo img.duoimg,.quizcta .qi.duo img.duoimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:var(--img-filter)}
 .thumb.duo .verb{color:var(--ink);text-shadow:none;opacity:.75}

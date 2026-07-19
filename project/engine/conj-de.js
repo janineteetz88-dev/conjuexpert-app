@@ -159,7 +159,18 @@
 
   // Separable prefixes (trennbare Verben): conjugate the base, then move the prefix.
   const SEP_PREFIXES = ["ab","an","auf","aus","bei","ein","mit","nach","vor","zu","zurück","zusammen","weg","los","her","hin","empor","fort","heim","hoch","weiter","wieder","durch","über","um","unter","entgegen","gegenüber","voran","voraus","vorbei","herein","heraus","hinaus","hinein","herunter","hinunter","herauf","hinauf","herüber","davon","dazu","fest","frei","statt","teil","fern","nieder"];
+  // Weak/regular inseparable verbs that collide with a separable prefix
+  // (z. B. „antworten" ≠ an|tworten, „überlegen" ≠ über|legen). Nur SCHWACHE
+  // Verben — die konjugiert die Engine als Ganzes korrekt.
+  const INSEPARABLE = new Set([
+    "antworten", "hindern", "beinhalten", "einigen",
+    "umarmen", "umringen", "umsorgen",
+    "unterrichten", "unterstützen", "untersuchen", "unterdrücken",
+    "überlegen", "überqueren", "überraschen", "übersetzen", "übernachten",
+    "überzeugen", "überprüfen", "wiederholen"
+  ]);
   function splitSeparable(verb) {
+    if (INSEPARABLE.has(verb)) return null;
     for (const p of SEP_PREFIXES) {
       if (verb.length > p.length + 2 && verb.startsWith(p)) {
         const base = verb.slice(p.length);

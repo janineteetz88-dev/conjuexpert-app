@@ -101,21 +101,28 @@ function autoInsertCtAs(html, slug) {
   });
 }
 
-/* ─── TL;DR → Kurz gesagt Normalisierung (nur Callout-Label) ────────────── */
+/* ─── Kurz-Box-Label auf den Gold-Standard normalisieren (nur Callout) ───── */
 
-// Ersetzt das Label „TL;DR" (inkl. Varianten mit Doppelpunkt / Gedankenstrich)
-// am Anfang des gerenderten Callout-Textes durch „Kurz gesagt".
-// Wirkt NUR auf Callout-Blöcke (wird ausschließlich dort aufgerufen).
+// Der Standard verlangt exakt „Das Wichtigste in Kürze" — verboten sind „TL;DR"
+// UND das frühere Ausweich-Label „Kurz gesagt". Diese Funktion zieht beide am
+// Anfang des gerenderten Callout-Textes auf das Standard-Label. Wirkt NUR auf
+// Callout-Blöcke (wird ausschließlich dort aufgerufen).
 export function normalizeTldrLabel(html) {
   return html
-    // Bold: <strong>TL;DR[separator]</strong> → <strong>Kurz gesagt[separator]</strong>
+    // Bold: <strong>TL;DR[sep]</strong> → <strong>Das Wichtigste in Kürze[sep]</strong>
     // Capture die Leerzeichen um den Separator mit, damit sie erhalten bleiben.
     .replace(
       /^(<(?:strong|b)>)TL;?DR(\s*[:–—-]\s*)?(<\/(?:strong|b)>)/i,
-      (_, open, sep, close) => `${open}Kurz gesagt${sep || ""}${close}`
+      (_, open, sep, close) => `${open}Das Wichtigste in Kürze${sep || ""}${close}`
     )
-    // Plain: TL;DR[: | – | — | -] am Anfang
-    .replace(/^TL;?DR(\s*[:–—-]\s*)/i, "Kurz gesagt$1");
+    // Bold: altes/abweichendes „Kurz gesagt …"-Label komplett auf den Standard ziehen
+    // (auch Varianten wie „Kurz gesagt – das Wichtigste in drei Punkten:").
+    .replace(
+      /^(<(?:strong|b)>)Kurz gesagt[^<]*(<\/(?:strong|b)>)/i,
+      (_, open, close) => `${open}Das Wichtigste in Kürze:${close}`
+    )
+    // Plain: TL;DR / Kurz gesagt [: | – | — | -] am Anfang
+    .replace(/^(?:TL;?DR|Kurz gesagt)(\s*[:–—-]\s*)/i, "Das Wichtigste in Kürze$1");
 }
 
 function rtToHtml(richText) {
@@ -129,7 +136,13 @@ function rtToHtml(richText) {
       if (a.bold)          text = `<strong>${text}</strong>`;
       if (a.italic)        text = `<em>${text}</em>`;
       if (a.strikethrough) text = `<s>${text}</s>`;
-      if (t.href)          text = `<a class="inline" href="${esc(t.href.replace(/^http:\/\/conjuexpert\.app/i, "https://conjuexpert.app"))}">${text}</a>`;
+      if (t.href) {
+        const href = t.href
+          // Interne Links versehentlich auf Notion (app.notion.com / notion.so) → auf die Live-Domain ziehen
+          .replace(/^https?:\/\/(?:www\.)?(?:app\.notion\.com|notion\.so)(\/(?:blog|konjugation)\/)/i, "https://conjuexpert.app$1")
+          .replace(/^http:\/\/conjuexpert\.app/i, "https://conjuexpert.app");
+        text = `<a class="inline" href="${esc(href)}">${text}</a>`;
+      }
       return text;
     })
     .join("");
@@ -374,7 +387,7 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
 <meta name="twitter:image" content="${BASE_URL}/blog/img/prod-1.png" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="/fonts/blog.css" />
-<link rel="stylesheet" href="/blog/blog.css?v=11" />
+<link rel="stylesheet" href="/blog/blog.css?v=12" />
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
@@ -465,7 +478,7 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
 </header>
 
 <main id="top">
-  <article style="position:relative">
+  <article style="position:relative;overflow:hidden">
     <div class="art-glow"></div>
 
     <div class="artwrap">

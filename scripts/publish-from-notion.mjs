@@ -39,6 +39,7 @@ import { parseMetaBlock, validateMeta, cleanMetaDescription } from "./lib/meta-b
 import { normalizeFaq } from "./lib/faq.mjs";
 import { renderArticle } from "./lib/render-article.mjs";
 import { auditRenderedHtml } from "./lib/render-guard.mjs";
+import { lintRenderedHtml, hardErrors } from "./lib/standard-lint.mjs";
 import { blocksToMetaText, extractFaqAndContent } from "./lib/notion-adapt.mjs";
 import {
   upsertClusters,
@@ -58,6 +59,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ARGS = process.argv.slice(2);
 const DRY_RUN = ARGS.includes("--dry-run");
 const WRITEBACK = process.env.WRITEBACK === "1";
+// Gold-Standard-Linter: standardmäßig nur melden; =1 blockt harte CI/Stil-Fehler.
+const STANDARD_LINT_STRICT = process.env.STANDARD_LINT_STRICT === "1";
 
 // Handgebaute Artikel: NIEMALS von der Pipeline (über)schreiben. Diese Seiten
 // werden von Hand gepflegt; die Engine lässt sie unangetastet.
@@ -388,6 +391,21 @@ async function main() {
       guardFailures.push(a.meta.slug);
       warn(`Render-Guard FEHLER → NICHT veröffentlicht: ${a.meta.slug}`);
       for (const p of problems) warn(`        • ${p}`);
+      continue;
+    }
+
+    // Gold-Standard-Linter (CI/Stil): meldet redaktionelle Verstöße. Standard
+    // = nur melden (Rollout). Mit STANDARD_LINT_STRICT=1 blocken harte Fehler
+    // die Veröffentlichung (analog Render-Guard) — für den Scharf-Betrieb.
+    const lint = lintRenderedHtml(html, { meta: a.meta });
+    const lintHard = hardErrors(lint);
+    if (lint.length) {
+      warn(`Gold-Standard: ${lintHard.length} Fehler, ${lint.length - lintHard.length} Warnungen — ${a.meta.slug}`);
+      for (const f of lint) warn(`        • [${f.level}] ${f.code}: ${f.msg}`);
+    }
+    if (STANDARD_LINT_STRICT && lintHard.length) {
+      guardFailures.push(a.meta.slug);
+      warn(`Gold-Standard STRICT → NICHT veröffentlicht: ${a.meta.slug}`);
       continue;
     }
 
