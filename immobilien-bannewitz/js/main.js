@@ -1,5 +1,8 @@
 (function(){
   'use strict';
+  // Access Key von web3forms.com (kostenlos, siehe README) — ohne diesen
+  // Key verschickt das Kontaktformular keine E-Mails.
+  var WEB3FORMS_ACCESS_KEY = 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY';
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- Mobile Nav ---------- */
@@ -590,30 +593,41 @@
       submitBtn.disabled = true;
       submitBtn.classList.add('loading');
 
+      // Honeypot: Bots, die das versteckte Feld ausfüllen, bekommen eine
+      // stille Fake-Bestätigung, ohne dass irgendwas verschickt wird.
+      if(honeypot && honeypot.value){
+        bookingEl.hidden = true;
+        bookedEl.hidden = false;
+        submitBtn.classList.remove('loading');
+        return;
+      }
+
       var payload = {
-        art: state.answers.art || '',
-        ort: state.answers.ort || '',
-        flaeche: state.answers.flaeche || '',
-        zustand: state.answers.zustand || '',
-        nutzung: state.answers.nutzung || '',
-        zeit: state.answers.zeit || '',
-        day: state.day,
-        time: state.time,
-        name: nameInput.value.trim(),
-        contact: contactInput.value.trim(),
-        source: sourceLabel,
-        website: honeypot ? honeypot.value : ''
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: 'Neue Terminanfrage über immobilien-bannewitz.de',
+        from_name: 'immobilien-bannewitz.de',
+        Objektart: state.answers.art || '',
+        Ort: state.answers.ort || '',
+        'Wohn-/Grundfläche': state.answers.flaeche || '',
+        Zustand: state.answers.zustand || '',
+        Nutzung: state.answers.nutzung || '',
+        Verkaufszeitpunkt: state.answers.zeit || '',
+        Wunschtag: state.day,
+        Wunschuhrzeit: state.time,
+        Name: nameInput.value.trim(),
+        'Telefon/E-Mail': contactInput.value.trim(),
+        source: sourceLabel
       };
 
-      fetch('php/send-booking.php', {
+      fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
       }).then(function(res){
         if(!res.ok) throw new Error('request_failed');
         return res.json();
       }).then(function(data){
-        if(!data || !data.ok) throw new Error('response_not_ok');
+        if(!data || !data.success) throw new Error('response_not_ok');
         bookingEl.hidden = true;
         bookedEl.hidden = false;
       }).catch(function(){
