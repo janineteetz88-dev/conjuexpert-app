@@ -71,7 +71,7 @@ body.go .prog2{animation:pg var(--dur) linear both}
       <div class="opt b"><span class="lbl">B</span><span class="val" id="cq-b"></span></div>
     </div>
     <div class="timer"><svg width="180" height="180" viewBox="0 0 180 180"><circle class="track" cx="90" cy="90" r="75"/><circle class="prog" cx="90" cy="90" r="75"/></svg><div class="face">🤔</div></div>
-    <div class="cta"><div class="banner">👇 A oder B?<br>Sag's in den Kommentaren!</div><div class="reveal" id="cq-reveal">Auflösung morgen 🔓</div></div>
+    <div class="cta"><div class="banner">👇 A or B?<br>Comment your answer!</div></div>
   </div>
   <div class="prog2"></div>
   <div class="foot">
@@ -83,7 +83,7 @@ body.go .prog2{animation:pg var(--dur) linear both}
 const DEFAULT={level:"B1–B2",q:"Which one fits? 🤔",sentence:'Wenn ich Zeit <span class="blank">___</span>,<br>würde ich mehr lesen.',hint:"Konjunktiv II · irreale Bedingung",a:"hätte",b:"hatte",reveal:"Auflösung morgen 🔓"};
 const C=Object.assign({},DEFAULT,(window.__CQ||{}));
 const set=(id,h)=>{const el=document.getElementById(id);if(el)el.innerHTML=h;};
-set('cq-lvl',C.level);set('cq-q',C.q);set('cq-sentence',C.sentence);set('cq-hint',C.hint);set('cq-a',C.a);set('cq-b',C.b);set('cq-reveal',C.reveal);
+set('cq-lvl',C.level);set('cq-q',C.q);set('cq-sentence',C.sentence);set('cq-hint',C.hint);set('cq-a',C.a);set('cq-b',C.b);
 window.__ready=document.fonts?document.fonts.ready:Promise.resolve();
 </script>
 </body></html>
