@@ -1,5 +1,5 @@
 /* ConjuExpert service worker — app shell, cache-first (stale-while-revalidate) */
-const CACHE = "conjuexpert-v141";
+const CACHE = "conjuexpert-v142";
 const ASSETS = [
   "./index.html", "./app.js", "./manifest.webmanifest",
   "./icon-192.png", "./icon-512.png", "./icon-maskable.png",
@@ -29,17 +29,32 @@ self.addEventListener("fetch", (e) => {
   // Fremde Hosts (Supabase, KI, Fonts …) normal ans Netz — nicht abfangen.
   if (!req.url.startsWith(self.location.origin)) return;
 
-  // Seitenaufrufe: App-Shell (index.html) sofort aus dem Cache, im Hintergrund frisch holen.
+  // Seitenaufrufe. WICHTIG: Nur die App selbst (Root) wird aus dem App-Shell-Cache
+  // bedient (sofortiger Start, kein Schwarzbild). Eigenständige Seiten — /blog,
+  // /landing, /konjugation/… (SEO-Verbseiten!), *.html — kommen FRISCH aus dem Netz;
+  // sonst würde die App-Shell sie überdecken (Blog/Landing/Verbseiten zeigten die App).
   if (req.mode === "navigate") {
-    e.respondWith(
-      caches.match("./index.html").then((cached) => {
-        const net = fetch(req).then((res) => {
-          if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put("./index.html", copy)); }
+    const path = new URL(req.url).pathname;
+    const isAppRoot = path === "/" || path === "/index.html";
+    if (isAppRoot) {
+      e.respondWith(
+        caches.match("./index.html").then((cached) => {
+          const net = fetch(req).then((res) => {
+            if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put("./index.html", copy)); }
+            return res;
+          }).catch(() => null);
+          return cached || net.then((r) => r || caches.match("./index.html"));
+        })
+      );
+    } else {
+      // Netzwerk zuerst; nur offline auf Cache (bzw. App-Shell) zurückfallen.
+      e.respondWith(
+        fetch(req).then((res) => {
+          if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
           return res;
-        }).catch(() => null);
-        return cached || net.then((r) => r || caches.match("./index.html"));
-      })
-    );
+        }).catch(() => caches.match(req).then((c) => c || caches.match("./index.html")))
+      );
+    }
     return;
   }
 

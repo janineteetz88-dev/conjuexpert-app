@@ -17603,7 +17603,7 @@ function App() {
   })), /*#__PURE__*/React.createElement("footer", {
     className: "legal-appfoot"
   }, /*#__PURE__*/React.createElement("a", {
-    href: "/impressum",
+    href: "/impressum.html",
     target: "_blank",
     rel: "noopener"
   }, "Impressum"), " · ", /*#__PURE__*/React.createElement("a", {
