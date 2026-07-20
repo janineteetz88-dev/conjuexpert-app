@@ -7011,7 +7011,9 @@ function QuizView({
     if (catName) {
       try { catWords = (getVocab() || []).filter(v => v && v.lang === lang && (v.cat || generalCat()) === catName && v.term).map(v => String(v.term).trim()).filter(Boolean); } catch (e) {}
     }
-    const topicTxt = catName ? "" : (theme && theme.topic ? ` The sentence should relate to: ${theme.topic}.` : "");
+    // Eigene Liste MIT Wörtern → deren Wörter üben (kein „über <Name>"). Ein Custom-
+    // Thema OHNE Wörter (z. B. „football") → den Namen als Thema nutzen, sonst wird es ignoriert.
+    const topicTxt = (catName && catWords.length) ? "" : (theme && theme.topic ? ` The sentence should relate to: ${theme.topic}.` : "");
     let myWord = "", myWordTxt = "";
     if (catWords.length) {
       myWord = catWords[Math.floor(Math.random() * catWords.length)];
@@ -7578,7 +7580,8 @@ function QuizView({
     if (catName) {
       try { catWords = (getVocab() || []).filter(v => v && v.lang === lang && (v.cat || generalCat()) === catName && v.term).map(v => String(v.term).trim()).filter(Boolean); } catch (e) {}
     }
-    const topic = catName ? "an everyday situation" : (theme && theme.topic ? theme.topic : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)]);
+    // Custom-Thema OHNE Wörter → Name als Thema (nicht generisch), sonst wird es ignoriert.
+    const topic = (catName && catWords.length) ? "an everyday situation" : (theme && theme.topic ? theme.topic : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)]);
     let myWord = "", myWordTxt = "";
     if (catWords.length) {
       myWord = catWords[Math.floor(Math.random() * catWords.length)];
