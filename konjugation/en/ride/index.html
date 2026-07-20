@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „ride\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„ride\" ist ein unregelmäßiges English-Verb und bedeutet „to sit on and control\"."}},{"@type":"Question","name":"Wie wird „ride\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: he / she / it rides."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „ride\"?","acceptedAnswer":{"@type":"Answer","text":"Simple Past: he / she / it rode. Present Perfect: he / she / it has ridden."}},{"@type":"Question","name":"Wo kann ich „ride\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „ride\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„ride" ist ein unregelmäßiges English-Verb (Bedeutung: „to sit on and control"). Präsens: <strong>he / she / it rides</strong>. Simple Past: <strong>he / she / it rode</strong>. Present Perfect: <strong>he / she / it has ridden</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu ride">
@@ -277,6 +296,31 @@
     <div class="story-trans">Als die Sonne hinter dem Horizont verschwand, fuhr Emma mit ihrem Fahrrad den gewundenen Weg entlang, der kühle Wind spielte mit ihrem Haar. Sie erinnerte sich daran, wie ihr Vater ihr beigebracht hatte, als Kind zu fahren, sein Lachen hallte in ihren Ohren wider. Jetzt fuhr sie mit Selbstvertrauen, spürte den Rhythmus der Pedale unter ihren Füßen. Letzte Woche war sie denselben Weg gefahren, aber heute fühlte es sich anders an, lebendig mit den Farben des Herbstes. Sie blickte zu den Bäumen, deren Blätter im schwindenen Licht tanzten, und lächelte, dankbar für die Freiheit, in den Abend zu fahren.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „ride"</h2>
+    <details class="faq-item"><summary>Ist „ride" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„ride" ist ein unregelmäßiges English-Verb und bedeutet „to sit on and control".</p></details>
+    <details class="faq-item"><summary>Wie wird „ride" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: he / she / it rides.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „ride"?</summary><p>Simple Past: he / she / it rode. Present Perfect: he / she / it has ridden.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „ride" üben?</summary><p>Du kannst „ride" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Englisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/steal/"><span class="rc-verb">steal</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/stick/"><span class="rc-verb">stick</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/sweep/"><span class="rc-verb">sweep</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/swim/"><span class="rc-verb">swim</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/take/"><span class="rc-verb">take</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/teach/"><span class="rc-verb">teach</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/tear/"><span class="rc-verb">tear</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/tell/"><span class="rc-verb">tell</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„ride" direkt im Quiz üben</h3>

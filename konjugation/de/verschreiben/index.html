@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „verschreiben\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„verschreiben\" ist ein unregelmäßiges Deutsch-Verb und bedeutet „to prescribe or to miswrite\"."}},{"@type":"Question","name":"Wie wird „verschreiben\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: er / sie / es verschreibt."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „verschreiben\"?","acceptedAnswer":{"@type":"Answer","text":"Präteritum: er / sie / es verschrieb. Perfekt: er / sie / es hat verschrieben."}},{"@type":"Question","name":"Wird „verschreiben\" mit „haben\" oder „sein\" gebildet?","acceptedAnswer":{"@type":"Answer","text":"Das Perfekt von „verschreiben\" wird mit „haben\" gebildet: er / sie / es hat verschrieben."}},{"@type":"Question","name":"Wo kann ich „verschreiben\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „verschreiben\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„verschreiben" ist ein unregelmäßiges Deutsch-Verb (Bedeutung: „to prescribe or to miswrite"). Präsens: <strong>er / sie / es verschreibt</strong>. Präteritum: <strong>er / sie / es verschrieb</strong>. Perfekt: <strong>er / sie / es hat verschrieben</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu verschreiben">
@@ -268,6 +287,32 @@
     <div class="story-trans">The doctor prescribed me a new medication to relieve my headaches. When I entered the pharmacy, I noticed that the prescription had been miswritten: instead of painkillers, the doctor had prescribed antibiotics. I explained the mistake to the pharmacist, and she immediately called the practice. The doctor apologized and quickly prescribed me the correct medication. While I waited for the new prescription, I thought about how important it is to be precise. Finally, I got the right medication and could finally go home.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „verschreiben"</h2>
+    <details class="faq-item"><summary>Ist „verschreiben" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„verschreiben" ist ein unregelmäßiges Deutsch-Verb und bedeutet „to prescribe or to miswrite".</p></details>
+    <details class="faq-item"><summary>Wie wird „verschreiben" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: er / sie / es verschreibt.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „verschreiben"?</summary><p>Präteritum: er / sie / es verschrieb. Perfekt: er / sie / es hat verschrieben.</p></details>
+    <details class="faq-item"><summary>Wird „verschreiben" mit „haben" oder „sein" gebildet?</summary><p>Das Perfekt von „verschreiben" wird mit „haben" gebildet: er / sie / es hat verschrieben.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „verschreiben" üben?</summary><p>Du kannst „verschreiben" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Deutsch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/schreiben/"><span class="rc-verb">schreiben</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/schweigen/"><span class="rc-verb">schweigen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/schwimmen/"><span class="rc-verb">schwimmen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/sehen/"><span class="rc-verb">sehen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/sein/"><span class="rc-verb">sein</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/singen/"><span class="rc-verb">singen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/sinken/"><span class="rc-verb">sinken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/sitzen/"><span class="rc-verb">sitzen</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„verschreiben" direkt im Quiz üben</h3>

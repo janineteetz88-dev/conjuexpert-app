@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „voir\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„voir\" ist ein unregelmäßiges Français-Verb und bedeutet „to see\"."}},{"@type":"Question","name":"Wie wird „voir\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: il / elle voit."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „voir\"?","acceptedAnswer":{"@type":"Answer","text":"Imparfait: il / elle voyait. Passé composé: il / elle a vu."}},{"@type":"Question","name":"Wo kann ich „voir\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „voir\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„voir" ist ein unregelmäßiges Français-Verb (Bedeutung: „to see"). Präsens: <strong>il / elle voit</strong>. Imparfait: <strong>il / elle voyait</strong>. Passé composé: <strong>il / elle a vu</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu voir">
@@ -271,6 +290,31 @@
     <div class="story-trans">In dem kleinen Café um die Ecke sah Marie ihren Freund Paul mit einem großen Lächeln hereinkommen. Sie sah ihn näher kommen, mit einer Tasse Kaffee in der Hand, und fühlte sofort eine riesige Freude. Gestern hatte sie eine Anzeige für eine Kunstausstellung gesehen und wusste, dass sie ihn dort begleiten musste. "Hast du die Werke des Künstlers gesehen?" fragte sie begeistert. Paul nickte mit funkelnden Augen. Sie verbrachten den Nachmittag damit, zu reden und die Welt durch die Augen des anderen zu sehen.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „voir"</h2>
+    <details class="faq-item"><summary>Ist „voir" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„voir" ist ein unregelmäßiges Français-Verb und bedeutet „to see".</p></details>
+    <details class="faq-item"><summary>Wie wird „voir" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: il / elle voit.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „voir"?</summary><p>Imparfait: il / elle voyait. Passé composé: il / elle a vu.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „voir" üben?</summary><p>Du kannst „voir" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Französisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/poursuivre/"><span class="rc-verb">poursuivre</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/pouvoir/"><span class="rc-verb">pouvoir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/prendre/"><span class="rc-verb">prendre</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/prescrire/"><span class="rc-verb">prescrire</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/produire/"><span class="rc-verb">produire</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/promettre/"><span class="rc-verb">promettre</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/préférer/"><span class="rc-verb">préférer</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/prévenir/"><span class="rc-verb">prévenir</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„voir" direkt im Quiz üben</h3>

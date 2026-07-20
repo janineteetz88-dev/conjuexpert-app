@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „dringen\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„dringen\" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to push or urge\"."}},{"@type":"Question","name":"Wie wird „dringen\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: hij / zij dringt."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „dringen\"?","acceptedAnswer":{"@type":"Answer","text":"Verleden tijd: hij / zij drong. Voltooid tegenwoordige tijd: hij / zij heeft gedrongen."}},{"@type":"Question","name":"Wird „dringen\" mit „hebben\" oder „zijn\" gebildet?","acceptedAnswer":{"@type":"Answer","text":"Das Perfekt von „dringen\" wird mit „hebben\" gebildet: hij / zij heeft gedrongen."}},{"@type":"Question","name":"Wo kann ich „dringen\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „dringen\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„dringen" ist ein unregelmäßiges Nederlands-Verb (Bedeutung: „to push or urge"). Präsens: <strong>hij / zij dringt</strong>. Verleden tijd: <strong>hij / zij drong</strong>. Voltooid tegenwoordige tijd: <strong>hij / zij heeft gedrongen</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu dringen">
@@ -265,6 +284,32 @@
     <div class="story-trans">Im belebten Supermarkt drängten sich die Menschen zur Kasse. Während ich mit meinem Einkaufswagen zum Ausgang ging, spürte ich, wie eine Frau hinter mir drängte. "Könntest du bitte warten?" fragte ich, aber sie drängte weiter. Ich erinnerte mich, wie ich einmal in einer langen Schlange gestanden hatte, während andere ebenfalls versuchten, sich vorzudrängen. Schließlich war ich endlich an der Reihe und fühlte die Erleichterung. Manchmal drängen wir so sehr, dass wir vergessen, etwas Geduld zu haben.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „dringen"</h2>
+    <details class="faq-item"><summary>Ist „dringen" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„dringen" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to push or urge".</p></details>
+    <details class="faq-item"><summary>Wie wird „dringen" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: hij / zij dringt.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „dringen"?</summary><p>Verleden tijd: hij / zij drong. Voltooid tegenwoordige tijd: hij / zij heeft gedrongen.</p></details>
+    <details class="faq-item"><summary>Wird „dringen" mit „hebben" oder „zijn" gebildet?</summary><p>Das Perfekt von „dringen" wird mit „hebben" gebildet: hij / zij heeft gedrongen.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „dringen" üben?</summary><p>Du kannst „dringen" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Niederländisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/onderbreken/"><span class="rc-verb">onderbreken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/ontbreken/"><span class="rc-verb">ontbreken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/ontkomen/"><span class="rc-verb">ontkomen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/ontstaan/"><span class="rc-verb">ontstaan</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/prijzen/"><span class="rc-verb">prijzen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/rijden/"><span class="rc-verb">rijden</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/roepen/"><span class="rc-verb">roepen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/ruiken/"><span class="rc-verb">ruiken</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„dringen" direkt im Quiz üben</h3>

@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „werben\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„werben\" ist ein unregelmäßiges Deutsch-Verb und bedeutet „to advertise or to recruit\"."}},{"@type":"Question","name":"Wie wird „werben\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: er / sie / es wirbt."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „werben\"?","acceptedAnswer":{"@type":"Answer","text":"Präteritum: er / sie / es warb. Perfekt: er / sie / es hat geworben."}},{"@type":"Question","name":"Wird „werben\" mit „haben\" oder „sein\" gebildet?","acceptedAnswer":{"@type":"Answer","text":"Das Perfekt von „werben\" wird mit „haben\" gebildet: er / sie / es hat geworben."}},{"@type":"Question","name":"Wo kann ich „werben\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „werben\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„werben" ist ein unregelmäßiges Deutsch-Verb (Bedeutung: „to advertise or to recruit"). Präsens: <strong>er / sie / es wirbt</strong>. Präteritum: <strong>er / sie / es warb</strong>. Perfekt: <strong>er / sie / es hat geworben</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu werben">
@@ -268,6 +287,32 @@
     <div class="story-trans">In the small town, the new café started advertising. The colorful posters hung everywhere, attracting passersby. Lisa, who was on her way to work, noticed the offer and thought about stopping by after work. In the evening, she saw that the café already had many guests who were promoting the opening. Curious, she stepped inside and was greeted by a friendly barista who introduced her to the latest specialties. "We are always advertising fresh ideas," he said with a smile, and Lisa knew she would be back soon.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „werben"</h2>
+    <details class="faq-item"><summary>Ist „werben" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„werben" ist ein unregelmäßiges Deutsch-Verb und bedeutet „to advertise or to recruit".</p></details>
+    <details class="faq-item"><summary>Wie wird „werben" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: er / sie / es wirbt.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „werben"?</summary><p>Präteritum: er / sie / es warb. Perfekt: er / sie / es hat geworben.</p></details>
+    <details class="faq-item"><summary>Wird „werben" mit „haben" oder „sein" gebildet?</summary><p>Das Perfekt von „werben" wird mit „haben" gebildet: er / sie / es hat geworben.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „werben" üben?</summary><p>Du kannst „werben" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Deutsch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/verhalten/"><span class="rc-verb">verhalten</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/verlassen/"><span class="rc-verb">verlassen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/verlieren/"><span class="rc-verb">verlieren</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/vernehmen/"><span class="rc-verb">vernehmen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/verschließen/"><span class="rc-verb">verschließen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/verschreiben/"><span class="rc-verb">verschreiben</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/verschwinden/"><span class="rc-verb">verschwinden</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/versprechen/"><span class="rc-verb">versprechen</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„werben" direkt im Quiz üben</h3>

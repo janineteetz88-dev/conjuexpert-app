@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „drive\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„drive\" ist ein unregelmäßiges English-Verb und bedeutet „to operate a vehicle\"."}},{"@type":"Question","name":"Wie wird „drive\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: he / she / it drives."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „drive\"?","acceptedAnswer":{"@type":"Answer","text":"Simple Past: he / she / it drove. Present Perfect: he / she / it has driven."}},{"@type":"Question","name":"Wo kann ich „drive\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „drive\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„drive" ist ein unregelmäßiges English-Verb (Bedeutung: „to operate a vehicle"). Präsens: <strong>he / she / it drives</strong>. Simple Past: <strong>he / she / it drove</strong>. Present Perfect: <strong>he / she / it has driven</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu drive">
@@ -277,6 +296,31 @@
     <div class="story-trans">Als die Sonne über dem Horizont sank, fuhr Sarah mit ihrer alten Limousine die kurvenreiche Straße entlang, das Radio spielte ihre Lieblingsmelodien. Sie erinnerte sich an das erste Mal, als sie das Fahren lernte, die ermutigende Stimme ihres Vaters, die sie durch jede Kurve leitete. Heute Abend fährt sie mit einem Gefühl der Freiheit, die kühle Brise zerzaust ihr Haar. Plötzlich raste ein Reh auf die Straße, und sie trat auf die Bremsen, ihr Herz raste, dankbar für die Fähigkeiten, die sie im Laufe der Jahre entwickelt hatte. Nach dem Beinahe-Unfall holte sie einen tiefen Atemzug und setzte ihre Fahrt fort, während sie die ruhigen Momente des Abends schätzte. Jede Fahrt erinnerte sie an die Reise, die sie umarmte, sowohl auf der Straße als auch im Leben.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „drive"</h2>
+    <details class="faq-item"><summary>Ist „drive" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„drive" ist ein unregelmäßiges English-Verb und bedeutet „to operate a vehicle".</p></details>
+    <details class="faq-item"><summary>Wie wird „drive" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: he / she / it drives.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „drive"?</summary><p>Simple Past: he / she / it drove. Present Perfect: he / she / it has driven.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „drive" üben?</summary><p>Du kannst „drive" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Englisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/do/"><span class="rc-verb">do</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/draw/"><span class="rc-verb">draw</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/drink/"><span class="rc-verb">drink</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/eat/"><span class="rc-verb">eat</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/fall/"><span class="rc-verb">fall</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/feed/"><span class="rc-verb">feed</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/feel/"><span class="rc-verb">feel</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/fight/"><span class="rc-verb">fight</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„drive" direkt im Quiz üben</h3>

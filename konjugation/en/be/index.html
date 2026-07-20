@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „be\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„be\" ist ein unregelmäßiges English-Verb und bedeutet „to exist or occur\"."}},{"@type":"Question","name":"Wie wird „be\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: he / she / it is."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „be\"?","acceptedAnswer":{"@type":"Answer","text":"Simple Past: he / she / it was. Present Perfect: he / she / it has been."}},{"@type":"Question","name":"Wo kann ich „be\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „be\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„be" ist ein unregelmäßiges English-Verb (Bedeutung: „to exist or occur"). Präsens: <strong>he / she / it is</strong>. Simple Past: <strong>he / she / it was</strong>. Present Perfect: <strong>he / she / it has been</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu be">
@@ -277,6 +296,31 @@
     <div class="story-trans">In der ruhigen Stadt Maplewood gab es ein kleines Café, in dem das Aroma von frischem Kaffee immer zu verweilen schien. Jeden Morgen versammelten sich die Stammgäste, teilten Lachen und Geschichten, die die Stunden wie im Flug vergehen ließen. Gestern kam ein alter Freund vorbei und brachte Erinnerungen mit, die so warm waren wie die Sonne, die durch die Fenster strömte. Es war eine Erinnerung daran, dass Verbindungen vergänglich, aber schön sein können. Als der Tag verblasste, begannen die Lichter des Cafés zu funkeln, und es fühlte sich an, als würde Magie in der Luft existieren. In diesem Moment war es wirklich ein perfektes Stück Leben.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „be"</h2>
+    <details class="faq-item"><summary>Ist „be" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„be" ist ein unregelmäßiges English-Verb und bedeutet „to exist or occur".</p></details>
+    <details class="faq-item"><summary>Wie wird „be" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: he / she / it is.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „be"?</summary><p>Simple Past: he / she / it was. Present Perfect: he / she / it has been.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „be" üben?</summary><p>Du kannst „be" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Englisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/fly/"><span class="rc-verb">fly</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/forget/"><span class="rc-verb">forget</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/freeze/"><span class="rc-verb">freeze</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/get/"><span class="rc-verb">get</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/give/"><span class="rc-verb">give</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/go/"><span class="rc-verb">go</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/grow/"><span class="rc-verb">grow</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/have/"><span class="rc-verb">have</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„be" direkt im Quiz üben</h3>

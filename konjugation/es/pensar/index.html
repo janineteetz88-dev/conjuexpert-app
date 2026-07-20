@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „pensar\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„pensar\" ist ein unregelmäßiges Español-Verb und bedeutet „to think\"."}},{"@type":"Question","name":"Wie wird „pensar\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: él / ella piensa."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „pensar\"?","acceptedAnswer":{"@type":"Answer","text":"Pretérito (indefinido): él / ella pensó. Pretérito perfecto: él / ella ha pensado."}},{"@type":"Question","name":"Wo kann ich „pensar\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „pensar\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„pensar" ist ein unregelmäßiges Español-Verb (Bedeutung: „to think"). Präsens: <strong>él / ella piensa</strong>. Pretérito (indefinido): <strong>él / ella pensó</strong>. Pretérito perfecto: <strong>él / ella ha pensado</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu pensar">
@@ -280,6 +299,31 @@
     <div class="story-trans">In dem Café dachte Clara darüber nach, was sie an diesem Wochenende machen wollte. Während sie ihren Kaffee trank, reiste ihr Geist zu den Bergen, die sie immer besuchen wollte. Ihre Freundin Ana setzte sich gegenüber und fragte, was sie dachte. "Ich denke an einen Ausflug in die Natur", antwortete Clara mit einem Lächeln. Ana, aufgeregt, dachte, dass es eine großartige Idee wäre. Gemeinsam begannen sie, ihr Abenteuer zu planen, voller Träume und Lachen.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „pensar"</h2>
+    <details class="faq-item"><summary>Ist „pensar" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„pensar" ist ein unregelmäßiges Español-Verb und bedeutet „to think".</p></details>
+    <details class="faq-item"><summary>Wie wird „pensar" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: él / ella piensa.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „pensar"?</summary><p>Pretérito (indefinido): él / ella pensó. Pretérito perfecto: él / ella ha pensado.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „pensar" üben?</summary><p>Du kannst „pensar" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Spanisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/sentir/"><span class="rc-verb">sentir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/ser/"><span class="rc-verb">ser</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/servir/"><span class="rc-verb">servir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/soñar/"><span class="rc-verb">soñar</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/tener/"><span class="rc-verb">tener</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/traer/"><span class="rc-verb">traer</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/valer/"><span class="rc-verb">valer</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/venir/"><span class="rc-verb">venir</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„pensar" direkt im Quiz üben</h3>

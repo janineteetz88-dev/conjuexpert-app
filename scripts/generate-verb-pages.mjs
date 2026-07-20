@@ -14,6 +14,11 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { runInNewContext } from 'vm';
+import {
+  extractForms, auxWordFor, verbTypeDe, buildFaq,
+  tldrHtml, faqSectionHtml, faqLd, relatedSectionHtml,
+  pickRelated, geoCss, SPEAKABLE,
+} from './geo-blocks.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -284,7 +289,7 @@ function examplesHTML(examples, tenses, tenseLabels) {
   return blocks;
 }
 
-function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, heroImage }) {
+function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, heroImage, related = [] }) {
   const meta = LANG_META[lang];
   const isIrr = (eng.irregulars || []).includes(verb);
   const pronouns = conjugated.pronouns || meta.pronLabel;
@@ -334,6 +339,7 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
     "url": `${SITE}/konjugation/${lang}/${verb}/`,
     "inLanguage": "de",
     "image": heroImage?.url || null,
+    "speakable": SPEAKABLE,
     "publisher": { "@type": "Organization", "name": "ConjuExpert", "url": SITE }
   });
 
@@ -346,6 +352,15 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
       { "@type": "ListItem", "position": 3, "name": verb, "item": `${SITE}/konjugation/${lang}/${verb}/` }
     ]
   });
+
+  // ── GEO/AI-Citation blocks (deterministisch, keine KI) ──────────────────────
+  const forms = extractForms(conjugated, pronouns);
+  const auxWord = auxWordFor(lang, forms.perfect3);
+  const tldrBlock = tldrHtml({ verb, verbType, native: meta.native, meaning, forms });
+  const faq = buildFaq({ lang, verb, meaning, verbType, native: meta.native, forms, auxWord });
+  const faqLdJson = faqLd(faq);
+  const faqHtml = faqSectionHtml(verb, faq);
+  const relatedHtml = relatedSectionHtml({ lang, verb, langName: meta.name, related, site: SITE });
 
   return `<!DOCTYPE html>
 <html lang="de">
@@ -361,6 +376,7 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
 <meta property="og:site_name" content="ConjuExpert">
 <script type="application/ld+json">${jsonLd}</script>
 <script type="application/ld+json">${breadcrumbLd}</script>
+<script type="application/ld+json">${faqLdJson}</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -464,6 +480,8 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
   .hero-img figcaption { font-size: 11px; color: var(--muted); padding: 6px 12px; background: var(--surface); text-align: right; }
   .hero-img figcaption a { color: var(--muted); }
 
+${geoCss()}
+
   @media (max-width: 480px) {
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
@@ -496,6 +514,8 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
     </p>
   </div>
 
+  ${tldrBlock}
+
   ${heroImgHtml}
 
   <a class="cta-top" href="${ctaUrl}">
@@ -523,6 +543,10 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
   </section>` : ''}
 
   ${storyHtml}
+
+  ${faqHtml}
+
+  ${relatedHtml}
 
   <section class="cta-bottom">
     <h3>„${verb}" direkt im Quiz üben</h3>
@@ -625,7 +649,8 @@ async function main() {
 
       console.log(`  examples: ${Object.keys(examples).length} tenses, story: ${story ? 'yes' : 'none'}`);
 
-      const html = renderPage({ lang, verb, eng, conjugated, examples, story, meaning, heroImage });
+      const related = pickRelated(ROOT, lang, verb);
+      const html = renderPage({ lang, verb, eng, conjugated, examples, story, meaning, heroImage, related });
 
       const outDir = path.join(ROOT, 'konjugation', lang, verb);
       fs.mkdirSync(outDir, { recursive: true });

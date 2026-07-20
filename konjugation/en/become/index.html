@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „become\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„become\" ist ein unregelmäßiges English-Verb und bedeutet „to begin to be\"."}},{"@type":"Question","name":"Wie wird „become\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: he / she / it becomes."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „become\"?","acceptedAnswer":{"@type":"Answer","text":"Simple Past: he / she / it became. Present Perfect: he / she / it has become."}},{"@type":"Question","name":"Wo kann ich „become\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „become\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„become" ist ein unregelmäßiges English-Verb (Bedeutung: „to begin to be"). Präsens: <strong>he / she / it becomes</strong>. Simple Past: <strong>he / she / it became</strong>. Present Perfect: <strong>he / she / it has become</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu become">
@@ -277,6 +296,31 @@
     <div class="story-trans">Als die Sonne aufging, sah Emily zu, wie die Welt außerhalb ihres Fensters lebendig wurde und Farbe annahm. An jedem Tag hoffte sie, dass es ein bisschen einfacher werden würde, sich ihren Verpflichtungen zu stellen. Heute beschloss sie, proaktiver zu werden, nicht nur Zuschauerin ihres Lebens zu sein. Mit ihrem Kaffee in der Hand fühlte sie einen Energieschub, in dem Wissen, dass sie werden konnte, wer immer sie sein wollte. Als sie nach draußen trat, umhüllte die frische Luft sie, und sie lächelte, bereit, den Tag zu begrüßen. Es war Zeit, dachte sie, die Person zu werden, von der sie immer geträumt hatte.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „become"</h2>
+    <details class="faq-item"><summary>Ist „become" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„become" ist ein unregelmäßiges English-Verb und bedeutet „to begin to be".</p></details>
+    <details class="faq-item"><summary>Wie wird „become" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: he / she / it becomes.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „become"?</summary><p>Simple Past: he / she / it became. Present Perfect: he / she / it has become.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „become" üben?</summary><p>Du kannst „become" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Englisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/catch/"><span class="rc-verb">catch</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/choose/"><span class="rc-verb">choose</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/come/"><span class="rc-verb">come</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/cost/"><span class="rc-verb">cost</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/cut/"><span class="rc-verb">cut</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/do/"><span class="rc-verb">do</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/draw/"><span class="rc-verb">draw</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/drink/"><span class="rc-verb">drink</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„become" direkt im Quiz üben</h3>

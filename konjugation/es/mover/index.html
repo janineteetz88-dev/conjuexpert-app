@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „mover\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„mover\" ist ein unregelmäßiges Español-Verb und bedeutet „to move\"."}},{"@type":"Question","name":"Wie wird „mover\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: él / ella mueve."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „mover\"?","acceptedAnswer":{"@type":"Answer","text":"Pretérito (indefinido): él / ella movió. Pretérito perfecto: él / ella ha movido."}},{"@type":"Question","name":"Wo kann ich „mover\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „mover\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„mover" ist ein unregelmäßiges Español-Verb (Bedeutung: „to move"). Präsens: <strong>él / ella mueve</strong>. Pretérito (indefinido): <strong>él / ella movió</strong>. Pretérito perfecto: <strong>él / ella ha movido</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu mover">
@@ -280,6 +299,31 @@
     <div class="story-trans">Jeden Morgen bewegt sich Laura schnell durch ihr Haus, während sie das Frühstück vorbereitet. Gestern bewegte ihr kleiner Sohn seinen Stuhl, um die Kekse auf dem Tisch zu erreichen. Während sie die Milch bewegte, lachte er und sagte, dass er so groß sein wollte wie sein Papa. In diesem Moment erinnerte sich Laura daran, wie ihre Mutter immer die Möbel bewegte, um Platz zu schaffen. Heute Nachmittag plant sie, einige Bücher aus ihrem Regal zu bewegen, um es ordentlicher zu machen. Das Leben ist ein ständiges Bewegen, und manchmal kann eine kleine Veränderung viel Freude bringen.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „mover"</h2>
+    <details class="faq-item"><summary>Ist „mover" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„mover" ist ein unregelmäßiges Español-Verb und bedeutet „to move".</p></details>
+    <details class="faq-item"><summary>Wie wird „mover" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: él / ella mueve.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „mover"?</summary><p>Pretérito (indefinido): él / ella movió. Pretérito perfecto: él / ella ha movido.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „mover" üben?</summary><p>Du kannst „mover" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Spanisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/incluir/"><span class="rc-verb">incluir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/ir/"><span class="rc-verb">ir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/jugar/"><span class="rc-verb">jugar</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/leer/"><span class="rc-verb">leer</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/levantarse/"><span class="rc-verb">levantarse</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/llamarse/"><span class="rc-verb">llamarse</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/mentir/"><span class="rc-verb">mentir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/morir/"><span class="rc-verb">morir</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„mover" direkt im Quiz üben</h3>

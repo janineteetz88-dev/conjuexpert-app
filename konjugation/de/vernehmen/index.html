@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „vernehmen\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„vernehmen\" ist ein unregelmäßiges Deutsch-Verb und bedeutet „to hear to perceive to notice\"."}},{"@type":"Question","name":"Wie wird „vernehmen\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: er / sie / es vernimmt."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „vernehmen\"?","acceptedAnswer":{"@type":"Answer","text":"Präteritum: er / sie / es vernahm. Perfekt: er / sie / es hat vernommen."}},{"@type":"Question","name":"Wird „vernehmen\" mit „haben\" oder „sein\" gebildet?","acceptedAnswer":{"@type":"Answer","text":"Das Perfekt von „vernehmen\" wird mit „haben\" gebildet: er / sie / es hat vernommen."}},{"@type":"Question","name":"Wo kann ich „vernehmen\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „vernehmen\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„vernehmen" ist ein unregelmäßiges Deutsch-Verb (Bedeutung: „to hear to perceive to notice"). Präsens: <strong>er / sie / es vernimmt</strong>. Präteritum: <strong>er / sie / es vernahm</strong>. Perfekt: <strong>er / sie / es hat vernommen</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu vernehmen">
@@ -268,6 +287,32 @@
     <div class="story-trans">In the early morning, Anna heard the gentle chirping of the birds coming through the open window. While she was preparing coffee in the kitchen, she heard a soft knock at the door. It was her neighbor asking for help. "Did you hear that noise?" he asked worriedly. Anna nodded and noticed the honking of a car in the distance. Together they went outside to investigate the sound.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „vernehmen"</h2>
+    <details class="faq-item"><summary>Ist „vernehmen" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„vernehmen" ist ein unregelmäßiges Deutsch-Verb und bedeutet „to hear to perceive to notice".</p></details>
+    <details class="faq-item"><summary>Wie wird „vernehmen" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: er / sie / es vernimmt.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „vernehmen"?</summary><p>Präteritum: er / sie / es vernahm. Perfekt: er / sie / es hat vernommen.</p></details>
+    <details class="faq-item"><summary>Wird „vernehmen" mit „haben" oder „sein" gebildet?</summary><p>Das Perfekt von „vernehmen" wird mit „haben" gebildet: er / sie / es hat vernommen.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „vernehmen" üben?</summary><p>Du kannst „vernehmen" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Deutsch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/unterlassen/"><span class="rc-verb">unterlassen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/unternehmen/"><span class="rc-verb">unternehmen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/unterschreiben/"><span class="rc-verb">unterschreiben</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/verbieten/"><span class="rc-verb">verbieten</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/verbrechen/"><span class="rc-verb">verbrechen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/verbringen/"><span class="rc-verb">verbringen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/verfahren/"><span class="rc-verb">verfahren</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/verfallen/"><span class="rc-verb">verfallen</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„vernehmen" direkt im Quiz üben</h3>

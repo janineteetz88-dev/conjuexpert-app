@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „komen\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„komen\" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to come\"."}},{"@type":"Question","name":"Wie wird „komen\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: hij / zij komt."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „komen\"?","acceptedAnswer":{"@type":"Answer","text":"Verleden tijd: hij / zij kwam. Voltooid tegenwoordige tijd: hij / zij is gekomen."}},{"@type":"Question","name":"Wird „komen\" mit „hebben\" oder „zijn\" gebildet?","acceptedAnswer":{"@type":"Answer","text":"Das Perfekt von „komen\" wird mit „zijn\" gebildet: hij / zij is gekomen."}},{"@type":"Question","name":"Wo kann ich „komen\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „komen\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„komen" ist ein unregelmäßiges Nederlands-Verb (Bedeutung: „to come"). Präsens: <strong>hij / zij komt</strong>. Verleden tijd: <strong>hij / zij kwam</strong>. Voltooid tegenwoordige tijd: <strong>hij / zij is gekomen</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu komen">
@@ -265,6 +284,32 @@
     <div class="story-trans">An einem dunklen Abend kam Anna von der Arbeit nach Hause. Sie hatte einen langen Tag gehabt und konnte es kaum erwarten, sich zu entspannen. Als sie die Tür öffnete, kam ihr der Duft von frisch gebackenem Gebäck entgegen. Ihr Sohn kam fröhlich auf sie zugerannt, froh, dass sie wieder zu Hause war. "Mama, ich habe eine Überraschung für dich!" rief er. Sie lächelte und wusste, dass, egal wie müde sie war, diese Momente immer wie ein Sonnenstrahl in ihrem Leben kamen.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „komen"</h2>
+    <details class="faq-item"><summary>Ist „komen" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„komen" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to come".</p></details>
+    <details class="faq-item"><summary>Wie wird „komen" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: hij / zij komt.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „komen"?</summary><p>Verleden tijd: hij / zij kwam. Voltooid tegenwoordige tijd: hij / zij is gekomen.</p></details>
+    <details class="faq-item"><summary>Wird „komen" mit „hebben" oder „zijn" gebildet?</summary><p>Das Perfekt von „komen" wird mit „zijn" gebildet: hij / zij is gekomen.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „komen" üben?</summary><p>Du kannst „komen" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Niederländisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/trekken/"><span class="rc-verb">trekken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/vallen/"><span class="rc-verb">vallen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/vechten/"><span class="rc-verb">vechten</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/verbergen/"><span class="rc-verb">verbergen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/verbieden/"><span class="rc-verb">verbieden</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/verbinden/"><span class="rc-verb">verbinden</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/verbreken/"><span class="rc-verb">verbreken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/verdwijnen/"><span class="rc-verb">verdwijnen</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„komen" direkt im Quiz üben</h3>

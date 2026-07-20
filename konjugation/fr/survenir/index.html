@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „survenir\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„survenir\" ist ein unregelmäßiges Français-Verb und bedeutet „to occur to happen\"."}},{"@type":"Question","name":"Wie wird „survenir\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: il / elle survient."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „survenir\"?","acceptedAnswer":{"@type":"Answer","text":"Imparfait: il / elle survenait. Passé composé: il / elle est survenu."}},{"@type":"Question","name":"Wo kann ich „survenir\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „survenir\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„survenir" ist ein unregelmäßiges Français-Verb (Bedeutung: „to occur to happen"). Präsens: <strong>il / elle survient</strong>. Imparfait: <strong>il / elle survenait</strong>. Passé composé: <strong>il / elle est survenu</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu survenir">
@@ -271,6 +290,31 @@
     <div class="story-trans">An einem sonnigen Morgen, während sie sich auf ein wichtiges Meeting vorbereitete, trat ein unerwartetes Ereignis ein: Ihre neugierige Katze kippte eine Tasse Kaffee über ihre Unterlagen. Sie geriet in Panik und fragte sich, wie ein solches Desaster gerade vor ihrer Abfahrt passieren konnte. Glücklicherweise kam ihr eine Idee: Sie könnte eine neue Version drucken, bevor sie geht. Sie rannte zum Computer, das Herz klopfte, und erkannte, dass manchmal unvorhergesehene Ereignisse auch eine Chance sein können. Schließlich schaffte sie es mit einem Lächeln ins Meeting und erinnerte sich an den Vorfall, der fast alles ruiniert hätte.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „survenir"</h2>
+    <details class="faq-item"><summary>Ist „survenir" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„survenir" ist ein unregelmäßiges Français-Verb und bedeutet „to occur to happen".</p></details>
+    <details class="faq-item"><summary>Wie wird „survenir" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: il / elle survient.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „survenir"?</summary><p>Imparfait: il / elle survenait. Passé composé: il / elle est survenu.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „survenir" üben?</summary><p>Du kannst „survenir" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Französisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/courir/"><span class="rc-verb">courir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/couvrir/"><span class="rc-verb">couvrir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/craindre/"><span class="rc-verb">craindre</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/croire/"><span class="rc-verb">croire</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/cueillir/"><span class="rc-verb">cueillir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/cuire/"><span class="rc-verb">cuire</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/desservir/"><span class="rc-verb">desservir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/devenir/"><span class="rc-verb">devenir</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„survenir" direkt im Quiz üben</h3>

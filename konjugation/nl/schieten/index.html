@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „schieten\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„schieten\" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to shoot\"."}},{"@type":"Question","name":"Wie wird „schieten\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: hij / zij schiet."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „schieten\"?","acceptedAnswer":{"@type":"Answer","text":"Verleden tijd: hij / zij schoot. Voltooid tegenwoordige tijd: hij / zij heeft geschoten."}},{"@type":"Question","name":"Wird „schieten\" mit „hebben\" oder „zijn\" gebildet?","acceptedAnswer":{"@type":"Answer","text":"Das Perfekt von „schieten\" wird mit „hebben\" gebildet: hij / zij heeft geschoten."}},{"@type":"Question","name":"Wo kann ich „schieten\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „schieten\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„schieten" ist ein unregelmäßiges Nederlands-Verb (Bedeutung: „to shoot"). Präsens: <strong>hij / zij schiet</strong>. Verleden tijd: <strong>hij / zij schoot</strong>. Voltooid tegenwoordige tijd: <strong>hij / zij heeft geschoten</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu schieten">
@@ -265,6 +284,32 @@
     <div class="story-trans">An einem sonnigen Samstagnachmittag stand Lisa mit ihren Freunden im Park. Sie warfen sich eine Frisbee zu, das Lachen hallte zwischen den Bäumen. Plötzlich sah sie einen Hund, der hinter der Frisbee herlief, seine Augen funkelten vor Begeisterung. Lisa rief: "Vorsicht!", aber es war zu spät; die Frisbee schoss gerade über den Kopf des Hundes hinweg. Alle brachen in Lachen aus, als der Hund sich umdrehte und fröhlich mit einem Stock zurückkam. "Nächstes Mal werfen wir nicht so weit!" sagte Lisa mit einem Lächeln.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „schieten"</h2>
+    <details class="faq-item"><summary>Ist „schieten" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„schieten" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to shoot".</p></details>
+    <details class="faq-item"><summary>Wie wird „schieten" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: hij / zij schiet.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „schieten"?</summary><p>Verleden tijd: hij / zij schoot. Voltooid tegenwoordige tijd: hij / zij heeft geschoten.</p></details>
+    <details class="faq-item"><summary>Wird „schieten" mit „hebben" oder „zijn" gebildet?</summary><p>Das Perfekt von „schieten" wird mit „hebben" gebildet: hij / zij heeft geschoten.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „schieten" üben?</summary><p>Du kannst „schieten" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Niederländisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/lezen/"><span class="rc-verb">lezen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/liggen/"><span class="rc-verb">liggen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/lijden/"><span class="rc-verb">lijden</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/lopen/"><span class="rc-verb">lopen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/maken/"><span class="rc-verb">maken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/moeten/"><span class="rc-verb">moeten</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/mogen/"><span class="rc-verb">mogen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/nemen/"><span class="rc-verb">nemen</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„schieten" direkt im Quiz üben</h3>

@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „producir\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„producir\" ist ein unregelmäßiges Español-Verb und bedeutet „to produce\"."}},{"@type":"Question","name":"Wie wird „producir\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: él / ella produce."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „producir\"?","acceptedAnswer":{"@type":"Answer","text":"Pretérito (indefinido): él / ella produjo. Pretérito perfecto: él / ella ha producido."}},{"@type":"Question","name":"Wo kann ich „producir\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „producir\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„producir" ist ein unregelmäßiges Español-Verb (Bedeutung: „to produce"). Präsens: <strong>él / ella produce</strong>. Pretérito (indefinido): <strong>él / ella produjo</strong>. Pretérito perfecto: <strong>él / ella ha producido</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu producir">
@@ -280,6 +299,31 @@
     <div class="story-trans">Jeden Morgen produzierte die Großmutter den besten Kaffee in der Küche. Der Duft, der produziert wurde, erfüllte das Haus und weckte alle mit einem Lächeln. Manchmal halfen mein Bruder und ich ihr, frisch gebackene Kekse zu produzieren. Während die Zutaten gemischt wurden, erzählte sie Geschichten aus ihrer Kindheit, die immer Lacher produzierten. Als der Nachmittag kam, machte der Duft des Abendessens, das sie produzierte, dass wir uns zuhause fühlten. Ich werde niemals vergessen, wie diese Momente Erinnerungen produzierten, die ich für immer schätzen werde.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „producir"</h2>
+    <details class="faq-item"><summary>Ist „producir" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„producir" ist ein unregelmäßiges Español-Verb und bedeutet „to produce".</p></details>
+    <details class="faq-item"><summary>Wie wird „producir" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: él / ella produce.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „producir"?</summary><p>Pretérito (indefinido): él / ella produjo. Pretérito perfecto: él / ella ha producido.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „producir" üben?</summary><p>Du kannst „producir" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Spanisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/decir/"><span class="rc-verb">decir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/dormir/"><span class="rc-verb">dormir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/elegir/"><span class="rc-verb">elegir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/empezar/"><span class="rc-verb">empezar</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/encontrar/"><span class="rc-verb">encontrar</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/entender/"><span class="rc-verb">entender</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/escribir/"><span class="rc-verb">escribir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/estar/"><span class="rc-verb">estar</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„producir" direkt im Quiz üben</h3>

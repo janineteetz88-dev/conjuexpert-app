@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „gehen\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„gehen\" ist ein unregelmäßiges Deutsch-Verb und bedeutet „to go\"."}},{"@type":"Question","name":"Wie wird „gehen\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: er / sie / es geht."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „gehen\"?","acceptedAnswer":{"@type":"Answer","text":"Präteritum: er / sie / es ging. Perfekt: er / sie / es ist gegangen."}},{"@type":"Question","name":"Wird „gehen\" mit „haben\" oder „sein\" gebildet?","acceptedAnswer":{"@type":"Answer","text":"Das Perfekt von „gehen\" wird mit „sein\" gebildet: er / sie / es ist gegangen."}},{"@type":"Question","name":"Wo kann ich „gehen\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „gehen\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„gehen" ist ein unregelmäßiges Deutsch-Verb (Bedeutung: „to go"). Präsens: <strong>er / sie / es geht</strong>. Präteritum: <strong>er / sie / es ging</strong>. Perfekt: <strong>er / sie / es ist gegangen</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu gehen">
@@ -268,6 +287,32 @@
     <div class="story-trans">It was a sunny morning when Anna decided to go to the market. She went quickly because she wanted to buy fresh vegetables. As she was going, she saw an old friend who was also going to the market. "Hey, how are you?" he shouted. "I’m going to the cinema this afternoon!" They laughed and continued walking together as the city came alive around them. Arriving at the market, Anna looked for the best tomatoes and thought about how nice it is to just go and enjoy life.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „gehen"</h2>
+    <details class="faq-item"><summary>Ist „gehen" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„gehen" ist ein unregelmäßiges Deutsch-Verb und bedeutet „to go".</p></details>
+    <details class="faq-item"><summary>Wie wird „gehen" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: er / sie / es geht.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „gehen"?</summary><p>Präteritum: er / sie / es ging. Perfekt: er / sie / es ist gegangen.</p></details>
+    <details class="faq-item"><summary>Wird „gehen" mit „haben" oder „sein" gebildet?</summary><p>Das Perfekt von „gehen" wird mit „sein" gebildet: er / sie / es ist gegangen.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „gehen" üben?</summary><p>Du kannst „gehen" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Deutsch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/betragen/"><span class="rc-verb">betragen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/betreffen/"><span class="rc-verb">betreffen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/beweisen/"><span class="rc-verb">beweisen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/bewerfen/"><span class="rc-verb">bewerfen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/beziehen/"><span class="rc-verb">beziehen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/biegen/"><span class="rc-verb">biegen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/bieten/"><span class="rc-verb">bieten</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/binden/"><span class="rc-verb">binden</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„gehen" direkt im Quiz üben</h3>

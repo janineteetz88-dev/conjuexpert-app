@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „catch\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„catch\" ist ein unregelmäßiges English-Verb und bedeutet „to seize or capture something\"."}},{"@type":"Question","name":"Wie wird „catch\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: he / she / it catches."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „catch\"?","acceptedAnswer":{"@type":"Answer","text":"Simple Past: he / she / it caught. Present Perfect: he / she / it has caught."}},{"@type":"Question","name":"Wo kann ich „catch\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „catch\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„catch" ist ein unregelmäßiges English-Verb (Bedeutung: „to seize or capture something"). Präsens: <strong>he / she / it catches</strong>. Simple Past: <strong>he / she / it caught</strong>. Present Perfect: <strong>he / she / it has caught</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu catch">
@@ -277,6 +296,31 @@
     <div class="story-trans">Als die Sonne hinter dem Horizont versank, versuchte Emma, nach dem aufregenden Lauf wieder zu Atem zu kommen. Sie hatte immer Trost im Rhythmus ihrer Füße auf dem Bürgersteig gefunden, jeder Schritt eine Chance, ihre Gedanken zu fangen. Heute jedoch fühlte sie ein Gewicht in ihrer Brust, eine Sorge, die sie nicht ganz fangen konnte. Gerade als sie um die Ecke bog, entdeckte sie einen streunenden Hund, dessen große Augen um Hilfe baten. Ohne nachzudenken, kniete sie nieder und streckte die Hand aus, in der Hoffnung, sein Vertrauen zu fangen. In diesem Moment erkannte sie, dass man manchmal etwas Schönes fangen muss, um zuerst bereit zu sein, sein Herz zu geben.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „catch"</h2>
+    <details class="faq-item"><summary>Ist „catch" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„catch" ist ein unregelmäßiges English-Verb und bedeutet „to seize or capture something".</p></details>
+    <details class="faq-item"><summary>Wie wird „catch" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: he / she / it catches.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „catch"?</summary><p>Simple Past: he / she / it caught. Present Perfect: he / she / it has caught.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „catch" üben?</summary><p>Du kannst „catch" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Englisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/think/"><span class="rc-verb">think</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/throw/"><span class="rc-verb">throw</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/understand/"><span class="rc-verb">understand</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/wake/"><span class="rc-verb">wake</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/wear/"><span class="rc-verb">wear</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/win/"><span class="rc-verb">win</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/write/"><span class="rc-verb">write</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/be/"><span class="rc-verb">be</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„catch" direkt im Quiz üben</h3>

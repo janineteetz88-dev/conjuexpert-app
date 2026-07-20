@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „schrijven\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„schrijven\" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to write\"."}},{"@type":"Question","name":"Wie wird „schrijven\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: hij / zij schrijft."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „schrijven\"?","acceptedAnswer":{"@type":"Answer","text":"Verleden tijd: hij / zij schreef. Voltooid tegenwoordige tijd: hij / zij heeft geschreven."}},{"@type":"Question","name":"Wird „schrijven\" mit „hebben\" oder „zijn\" gebildet?","acceptedAnswer":{"@type":"Answer","text":"Das Perfekt von „schrijven\" wird mit „hebben\" gebildet: hij / zij heeft geschreven."}},{"@type":"Question","name":"Wo kann ich „schrijven\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „schrijven\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„schrijven" ist ein unregelmäßiges Nederlands-Verb (Bedeutung: „to write"). Präsens: <strong>hij / zij schrijft</strong>. Verleden tijd: <strong>hij / zij schreef</strong>. Voltooid tegenwoordige tijd: <strong>hij / zij heeft geschreven</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu schrijven">
@@ -265,6 +284,32 @@
     <div class="story-trans">An einem regnerischen Morgen saß Anna an ihrem Schreibtisch und schrieb in ihr Tagebuch. Sie hatte schon immer gern geschrieben, aber heute fühlte es sich besonders an. Während sie über ihre Träume und Ängste schrieb, hörte sie die Tropfen gegen das Fenster prasseln. Vor ein paar Monaten hatte sie beschlossen, jeden Tag zu schreiben, und jetzt konnte sie nicht mehr ohne. Ihre Worte tanzten auf dem Papier, und sie wusste, dass sie diese Momente für immer festhalten wollte. Als sie ihren Stift niederlegte, fühlte sie ein Gefühl der Zufriedenheit; sie hatte wieder etwas Schönes geschrieben.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „schrijven"</h2>
+    <details class="faq-item"><summary>Ist „schrijven" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„schrijven" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to write".</p></details>
+    <details class="faq-item"><summary>Wie wird „schrijven" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: hij / zij schrijft.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „schrijven"?</summary><p>Verleden tijd: hij / zij schreef. Voltooid tegenwoordige tijd: hij / zij heeft geschreven.</p></details>
+    <details class="faq-item"><summary>Wird „schrijven" mit „hebben" oder „zijn" gebildet?</summary><p>Das Perfekt von „schrijven" wird mit „hebben" gebildet: hij / zij heeft geschreven.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „schrijven" üben?</summary><p>Du kannst „schrijven" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Niederländisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/mogen/"><span class="rc-verb">mogen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/nemen/"><span class="rc-verb">nemen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/onderbreken/"><span class="rc-verb">onderbreken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/ontbreken/"><span class="rc-verb">ontbreken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/ontkomen/"><span class="rc-verb">ontkomen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/ontstaan/"><span class="rc-verb">ontstaan</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/prijzen/"><span class="rc-verb">prijzen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/rijden/"><span class="rc-verb">rijden</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„schrijven" direkt im Quiz üben</h3>

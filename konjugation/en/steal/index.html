@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „steal\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„steal\" ist ein unregelmäßiges English-Verb und bedeutet „to take without permission\"."}},{"@type":"Question","name":"Wie wird „steal\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: he / she / it steals."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „steal\"?","acceptedAnswer":{"@type":"Answer","text":"Simple Past: he / she / it stole. Present Perfect: he / she / it has stolen."}},{"@type":"Question","name":"Wo kann ich „steal\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „steal\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„steal" ist ein unregelmäßiges English-Verb (Bedeutung: „to take without permission"). Präsens: <strong>he / she / it steals</strong>. Simple Past: <strong>he / she / it stole</strong>. Present Perfect: <strong>he / she / it has stolen</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu steal">
@@ -277,6 +296,31 @@
     <div class="story-trans">Als sie durch den belebten Markt ging, bemerkte Emma einen Jungen, der versuchte, Äpfel vom Stand eines Händlers zu stehlen. Letzte Woche hatte sie gesehen, wie er versuchte, ein Brot zu stehlen, und ihr Herz schmerzte wegen seines Hungers. Sie beschloss, sich ihm zu nähern und ihm zuzuflüstern, dass Stehlen seinen Bauch nicht füllen würde, aber Freundlichkeit vielleicht. Gemeinsam pflückten sie einige reife Früchte, und sie bezahlte dafür, in der Hoffnung, ihm beizubringen, dass man nur mit Erlaubnis nehmen kann. In diesem Moment fühlte sie eine Wärme in ihrem Herzen, weil sie eine verzweifelte Handlung in eine Lektion der Mitgefühl verwandelt hatte. Sie gingen weg, teilten die Äpfel und das Lachen und ließen den Diebstahl hinter sich.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „steal"</h2>
+    <details class="faq-item"><summary>Ist „steal" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„steal" ist ein unregelmäßiges English-Verb und bedeutet „to take without permission".</p></details>
+    <details class="faq-item"><summary>Wie wird „steal" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: he / she / it steals.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „steal"?</summary><p>Simple Past: he / she / it stole. Present Perfect: he / she / it has stolen.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „steal" üben?</summary><p>Du kannst „steal" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Englisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/cut/"><span class="rc-verb">cut</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/do/"><span class="rc-verb">do</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/draw/"><span class="rc-verb">draw</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/drink/"><span class="rc-verb">drink</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/drive/"><span class="rc-verb">drive</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/eat/"><span class="rc-verb">eat</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/fall/"><span class="rc-verb">fall</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/feed/"><span class="rc-verb">feed</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„steal" direkt im Quiz üben</h3>

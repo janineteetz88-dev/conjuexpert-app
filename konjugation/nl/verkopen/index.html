@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „verkopen\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„verkopen\" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to sell\"."}},{"@type":"Question","name":"Wie wird „verkopen\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: hij / zij verkoopt."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „verkopen\"?","acceptedAnswer":{"@type":"Answer","text":"Verleden tijd: hij / zij verkocht. Voltooid tegenwoordige tijd: hij / zij heeft verkocht."}},{"@type":"Question","name":"Wird „verkopen\" mit „hebben\" oder „zijn\" gebildet?","acceptedAnswer":{"@type":"Answer","text":"Das Perfekt von „verkopen\" wird mit „hebben\" gebildet: hij / zij heeft verkocht."}},{"@type":"Question","name":"Wo kann ich „verkopen\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „verkopen\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„verkopen" ist ein unregelmäßiges Nederlands-Verb (Bedeutung: „to sell"). Präsens: <strong>hij / zij verkoopt</strong>. Verleden tijd: <strong>hij / zij verkocht</strong>. Voltooid tegenwoordige tijd: <strong>hij / zij heeft verkocht</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu verkopen">
@@ -265,6 +284,32 @@
     <div class="story-trans">Auf dem Markt stand ein alter Mann, der handgemachtes Holzspielzeug verkaufte. Jeden Samstag verkaufte er liebevoll seine bunten Kreationen, während die Kinder um ihn herum tanzten. Letzte Woche hatte er sogar einen wunderschönen Drachen verkauft, der die Fantasie eines kleinen Mädchens gefangen hatte. Heute hoffte er, dass die Sonne scheinen würde, damit er noch mehr verkaufen konnte. Während die Stunden vergingen, bemerkte er, dass sein Vorrat schwand, und das machte ihn glücklich. Schließlich verkaufte er alles, und mit einem Lächeln im Gesicht ging er zufrieden nach Hause.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „verkopen"</h2>
+    <details class="faq-item"><summary>Ist „verkopen" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„verkopen" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to sell".</p></details>
+    <details class="faq-item"><summary>Wie wird „verkopen" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: hij / zij verkoopt.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „verkopen"?</summary><p>Verleden tijd: hij / zij verkocht. Voltooid tegenwoordige tijd: hij / zij heeft verkocht.</p></details>
+    <details class="faq-item"><summary>Wird „verkopen" mit „hebben" oder „zijn" gebildet?</summary><p>Das Perfekt von „verkopen" wird mit „hebben" gebildet: hij / zij heeft verkocht.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „verkopen" üben?</summary><p>Du kannst „verkopen" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Niederländisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/sluiten/"><span class="rc-verb">sluiten</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/snijden/"><span class="rc-verb">snijden</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/spreken/"><span class="rc-verb">spreken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/springen/"><span class="rc-verb">springen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/spuiten/"><span class="rc-verb">spuiten</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/staan/"><span class="rc-verb">staan</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/steken/"><span class="rc-verb">steken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/sterven/"><span class="rc-verb">sterven</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„verkopen" direkt im Quiz üben</h3>

@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „rufen\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„rufen\" ist ein unregelmäßiges Deutsch-Verb und bedeutet „to call\"."}},{"@type":"Question","name":"Wie wird „rufen\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: er / sie / es ruft."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „rufen\"?","acceptedAnswer":{"@type":"Answer","text":"Präteritum: er / sie / es rief. Perfekt: er / sie / es hat gerufen."}},{"@type":"Question","name":"Wird „rufen\" mit „haben\" oder „sein\" gebildet?","acceptedAnswer":{"@type":"Answer","text":"Das Perfekt von „rufen\" wird mit „haben\" gebildet: er / sie / es hat gerufen."}},{"@type":"Question","name":"Wo kann ich „rufen\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „rufen\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„rufen" ist ein unregelmäßiges Deutsch-Verb (Bedeutung: „to call"). Präsens: <strong>er / sie / es ruft</strong>. Präteritum: <strong>er / sie / es rief</strong>. Perfekt: <strong>er / sie / es hat gerufen</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu rufen">
@@ -268,6 +287,32 @@
     <div class="story-trans">It was a sunny afternoon when Anna called her friend Max. "Where are you?" she called excitedly into the phone. Max had promised to come to the picnic, but he hadn’t arrived yet. While she waited, she called him again, but he didn’t answer. Suddenly, she heard a noise and turned around – there was Max, coming toward her with a wide smile on his face. "I haven't forgotten you!" he called and sat down beside her. Her worries disappeared instantly.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „rufen"</h2>
+    <details class="faq-item"><summary>Ist „rufen" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„rufen" ist ein unregelmäßiges Deutsch-Verb und bedeutet „to call".</p></details>
+    <details class="faq-item"><summary>Wie wird „rufen" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: er / sie / es ruft.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „rufen"?</summary><p>Präteritum: er / sie / es rief. Perfekt: er / sie / es hat gerufen.</p></details>
+    <details class="faq-item"><summary>Wird „rufen" mit „haben" oder „sein" gebildet?</summary><p>Das Perfekt von „rufen" wird mit „haben" gebildet: er / sie / es hat gerufen.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „rufen" üben?</summary><p>Du kannst „rufen" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Deutsch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/entziehen/"><span class="rc-verb">entziehen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/erbringen/"><span class="rc-verb">erbringen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/erfahren/"><span class="rc-verb">erfahren</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/erfinden/"><span class="rc-verb">erfinden</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/ergeben/"><span class="rc-verb">ergeben</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/ergreifen/"><span class="rc-verb">ergreifen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/erhalten/"><span class="rc-verb">erhalten</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/de/ertragen/"><span class="rc-verb">ertragen</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„rufen" direkt im Quiz üben</h3>

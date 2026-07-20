@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „querer\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„querer\" ist ein unregelmäßiges Español-Verb und bedeutet „to want / love\"."}},{"@type":"Question","name":"Wie wird „querer\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: él / ella quiere."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „querer\"?","acceptedAnswer":{"@type":"Answer","text":"Pretérito (indefinido): él / ella quiso. Pretérito perfecto: él / ella ha querido."}},{"@type":"Question","name":"Wo kann ich „querer\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „querer\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„querer" ist ein unregelmäßiges Español-Verb (Bedeutung: „to want / love"). Präsens: <strong>él / ella quiere</strong>. Pretérito (indefinido): <strong>él / ella quiso</strong>. Pretérito perfecto: <strong>él / ella ha querido</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu querer">
@@ -280,6 +299,31 @@
     <div class="story-trans">Maria wollte schon immer einen Garten voller Blumen haben. Von klein auf träumte sie davon, Rosen und Sonnenblumen zu pflanzen. Eines Tages beschloss sie, dass es an der Zeit war, ihren Traum wahr werden zu lassen. Sie kaufte Samen und fühlte sich am Ende des Nachmittags glücklich, als sie ihr kleines Projekt erblühen sah. Jetzt möchte sie jeden Morgen hinausgehen, um die Pflanzen zu gießen und ihre Schönheit zu genießen. Manchmal setzt sie sich auf einen alten Stuhl und fragt sich, ob sie jemals etwas so leidenschaftlich gewollt hat wie ihren Garten.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „querer"</h2>
+    <details class="faq-item"><summary>Ist „querer" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„querer" ist ein unregelmäßiges Español-Verb und bedeutet „to want / love".</p></details>
+    <details class="faq-item"><summary>Wie wird „querer" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: él / ella quiere.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „querer"?</summary><p>Pretérito (indefinido): él / ella quiso. Pretérito perfecto: él / ella ha querido.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „querer" üben?</summary><p>Du kannst „querer" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Spanisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/abrir/"><span class="rc-verb">abrir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/almorzar/"><span class="rc-verb">almorzar</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/andar/"><span class="rc-verb">andar</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/caber/"><span class="rc-verb">caber</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/caer/"><span class="rc-verb">caer</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/cerrar/"><span class="rc-verb">cerrar</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/comenzar/"><span class="rc-verb">comenzar</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/comer/"><span class="rc-verb">comer</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„querer" direkt im Quiz üben</h3>

@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „beginnen\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„beginnen\" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to begin\"."}},{"@type":"Question","name":"Wie wird „beginnen\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: hij / zij begint."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „beginnen\"?","acceptedAnswer":{"@type":"Answer","text":"Verleden tijd: hij / zij begon. Voltooid tegenwoordige tijd: hij / zij is begonnen."}},{"@type":"Question","name":"Wird „beginnen\" mit „hebben\" oder „zijn\" gebildet?","acceptedAnswer":{"@type":"Answer","text":"Das Perfekt von „beginnen\" wird mit „zijn\" gebildet: hij / zij is begonnen."}},{"@type":"Question","name":"Wo kann ich „beginnen\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „beginnen\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„beginnen" ist ein unregelmäßiges Nederlands-Verb (Bedeutung: „to begin"). Präsens: <strong>hij / zij begint</strong>. Verleden tijd: <strong>hij / zij begon</strong>. Voltooid tegenwoordige tijd: <strong>hij / zij is begonnen</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu beginnen">
@@ -265,6 +284,32 @@
     <div class="story-trans">An einem sonnigen Morgen begann Anna ihren Tag mit einer Tasse Kaffee. Während sie nach draußen schaute, begann sie von den Abenteuern zu träumen, die sie erleben könnte. Letztes Jahr war sie noch nie allein gereist, aber jetzt hatte sie beschlossen, dass es Zeit war, neue Orte zu erkunden. Sie packte ihre Tasche und begann zu packen, während sie sich vorstellte, wie es wäre, neue Freunde zu finden. Als sie die Tür öffnete, spürte sie eine aufregende Mischung aus Angst und Aufregung. Dies war der Moment, in dem ihre Reise begann.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „beginnen"</h2>
+    <details class="faq-item"><summary>Ist „beginnen" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„beginnen" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to begin".</p></details>
+    <details class="faq-item"><summary>Wie wird „beginnen" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: hij / zij begint.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „beginnen"?</summary><p>Verleden tijd: hij / zij begon. Voltooid tegenwoordige tijd: hij / zij is begonnen.</p></details>
+    <details class="faq-item"><summary>Wird „beginnen" mit „hebben" oder „zijn" gebildet?</summary><p>Das Perfekt von „beginnen" wird mit „zijn" gebildet: hij / zij is begonnen.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „beginnen" üben?</summary><p>Du kannst „beginnen" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Niederländisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/hebben/"><span class="rc-verb">hebben</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/helpen/"><span class="rc-verb">helpen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/houden/"><span class="rc-verb">houden</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/kiezen/"><span class="rc-verb">kiezen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/kijken/"><span class="rc-verb">kijken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/klinken/"><span class="rc-verb">klinken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/komen/"><span class="rc-verb">komen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/kopen/"><span class="rc-verb">kopen</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„beginnen" direkt im Quiz üben</h3>

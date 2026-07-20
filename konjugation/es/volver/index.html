@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „volver\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„volver\" ist ein unregelmäßiges Español-Verb und bedeutet „to return\"."}},{"@type":"Question","name":"Wie wird „volver\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: él / ella vuelve."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „volver\"?","acceptedAnswer":{"@type":"Answer","text":"Pretérito (indefinido): él / ella volvió. Pretérito perfecto: él / ella ha vuelto."}},{"@type":"Question","name":"Wo kann ich „volver\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „volver\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„volver" ist ein unregelmäßiges Español-Verb (Bedeutung: „to return"). Präsens: <strong>él / ella vuelve</strong>. Pretérito (indefinido): <strong>él / ella volvió</strong>. Pretérito perfecto: <strong>él / ella ha vuelto</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu volver">
@@ -280,6 +299,31 @@
     <div class="story-trans">Jeden Abend kam Ana mit einem Lächeln von der Arbeit zurück. Es gab einen kleinen Park, in dem sie immer anhalten und frische Luft schnappen konnte. Eines Tages, als sie zurückkehrte, sah sie einen verlorenen Welpen, der sie mit traurigen Augen ansah. Ohne zu überlegen, nahm sie ihn mit nach Hause. Am nächsten Tag beschloss sie, in den Park zurückzukehren, um seinen Besitzer zu suchen. Aber der Welpe war bereits Teil ihres Lebens geworden; sie kam nie wieder alleine nach Hause.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „volver"</h2>
+    <details class="faq-item"><summary>Ist „volver" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„volver" ist ein unregelmäßiges Español-Verb und bedeutet „to return".</p></details>
+    <details class="faq-item"><summary>Wie wird „volver" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: él / ella vuelve.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „volver"?</summary><p>Pretérito (indefinido): él / ella volvió. Pretérito perfecto: él / ella ha vuelto.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „volver" üben?</summary><p>Du kannst „volver" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Spanisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/construir/"><span class="rc-verb">construir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/contar/"><span class="rc-verb">contar</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/costar/"><span class="rc-verb">costar</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/dar/"><span class="rc-verb">dar</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/decir/"><span class="rc-verb">decir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/dormir/"><span class="rc-verb">dormir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/elegir/"><span class="rc-verb">elegir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/es/empezar/"><span class="rc-verb">empezar</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„volver" direkt im Quiz üben</h3>

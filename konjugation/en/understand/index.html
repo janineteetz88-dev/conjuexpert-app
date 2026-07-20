@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „understand\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„understand\" ist ein unregelmäßiges English-Verb und bedeutet „to grasp the meaning of\"."}},{"@type":"Question","name":"Wie wird „understand\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: he / she / it understands."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „understand\"?","acceptedAnswer":{"@type":"Answer","text":"Simple Past: he / she / it understood. Present Perfect: he / she / it has understood."}},{"@type":"Question","name":"Wo kann ich „understand\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „understand\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„understand" ist ein unregelmäßiges English-Verb (Bedeutung: „to grasp the meaning of"). Präsens: <strong>he / she / it understands</strong>. Simple Past: <strong>he / she / it understood</strong>. Present Perfect: <strong>he / she / it has understood</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu understand">
@@ -277,6 +296,31 @@
     <div class="story-trans">Als sie im Café saß, versuchte Clara, die chaotische Welt um sie herum zu verstehen. Der Barista, mit seinen tätowierten Armen, lachte, während er die neue Brühmethode erklärte, aber sie verstand es immer noch nicht ganz. Letzte Woche hatte ihre Freundin darauf bestanden, dass sie ein Buch liest, das helfen sollte, die Komplexität des Lebens zu verstehen. Clara hatte gedacht, sie verstehe das Wesen der Freundschaft, doch hier war sie, fühlte sich verloren. Mit jedem Schluck ihres Lattes hoffte sie, sich selbst besser zu verstehen. Vielleicht würde sie es morgen endlich verstehen.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „understand"</h2>
+    <details class="faq-item"><summary>Ist „understand" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„understand" ist ein unregelmäßiges English-Verb und bedeutet „to grasp the meaning of".</p></details>
+    <details class="faq-item"><summary>Wie wird „understand" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: he / she / it understands.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „understand"?</summary><p>Simple Past: he / she / it understood. Present Perfect: he / she / it has understood.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „understand" üben?</summary><p>Du kannst „understand" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Englisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/hit/"><span class="rc-verb">hit</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/hold/"><span class="rc-verb">hold</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/keep/"><span class="rc-verb">keep</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/know/"><span class="rc-verb">know</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/lay/"><span class="rc-verb">lay</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/lead/"><span class="rc-verb">lead</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/leave/"><span class="rc-verb">leave</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/en/lend/"><span class="rc-verb">lend</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„understand" direkt im Quiz üben</h3>

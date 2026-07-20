@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „peindre\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„peindre\" ist ein unregelmäßiges Français-Verb und bedeutet „to paint\"."}},{"@type":"Question","name":"Wie wird „peindre\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: il / elle peint."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „peindre\"?","acceptedAnswer":{"@type":"Answer","text":"Imparfait: il / elle peignait. Passé composé: il / elle a peint."}},{"@type":"Question","name":"Wo kann ich „peindre\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „peindre\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„peindre" ist ein unregelmäßiges Français-Verb (Bedeutung: „to paint"). Präsens: <strong>il / elle peint</strong>. Imparfait: <strong>il / elle peignait</strong>. Passé composé: <strong>il / elle a peint</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu peindre">
@@ -271,6 +290,31 @@
     <div class="story-trans">In einem kleinen Atelier am Ufer der Seine malte Clara farbenfrohe Landschaften. Jeden Morgen mischte sie lebendige Farben auf ihrer Palette und träumte von der bald stattfindenden Ausstellung. Gestern hatte sie einen strahlenden Sonnenuntergang gemalt, und sie hoffte, dass er die Besucher verzaubern würde. Ihr Freund Julien hatte ihr gesagt, dass er immer mit ihr malen wollte. Zusammen beschlossen sie, den Nachmittag im Park zu verbringen und die Schönheit des Herbstes festzuhalten. Clara wusste, dass jeder Pinselstrich ein Stück ihrer Seele offenbarte.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „peindre"</h2>
+    <details class="faq-item"><summary>Ist „peindre" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„peindre" ist ein unregelmäßiges Français-Verb und bedeutet „to paint".</p></details>
+    <details class="faq-item"><summary>Wie wird „peindre" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: il / elle peint.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „peindre"?</summary><p>Imparfait: il / elle peignait. Passé composé: il / elle a peint.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „peindre" üben?</summary><p>Du kannst „peindre" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Französisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/être/"><span class="rc-verb">être</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/abattre/"><span class="rc-verb">abattre</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/accueillir/"><span class="rc-verb">accueillir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/acheter/"><span class="rc-verb">acheter</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/admettre/"><span class="rc-verb">admettre</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/aller/"><span class="rc-verb">aller</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/apercevoir/"><span class="rc-verb">apercevoir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/appartenir/"><span class="rc-verb">appartenir</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„peindre" direkt im Quiz üben</h3>

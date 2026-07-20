@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „pouvoir\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„pouvoir\" ist ein unregelmäßiges Français-Verb und bedeutet „to be able\"."}},{"@type":"Question","name":"Wie wird „pouvoir\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: il / elle peut."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „pouvoir\"?","acceptedAnswer":{"@type":"Answer","text":"Imparfait: il / elle pouvait. Passé composé: il / elle a pu."}},{"@type":"Question","name":"Wo kann ich „pouvoir\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „pouvoir\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„pouvoir" ist ein unregelmäßiges Français-Verb (Bedeutung: „to be able"). Präsens: <strong>il / elle peut</strong>. Imparfait: <strong>il / elle pouvait</strong>. Passé composé: <strong>il / elle a pu</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu pouvoir">
@@ -271,6 +290,31 @@
     <div class="story-trans">In einem kleinen Pariser Café konnte Claire das Aroma von frisch gemahlenem Kaffee riechen. Sie wusste, dass sie stundenlang die Passanten beobachten und dabei ihr Buch lesen konnte. Eines Tages traf sie einen alten Freund, den sie seit Jahren nicht gesehen hatte. Sie unterhielten sich über ihre Träume und fragten sich, was sie noch verwirklichen könnten. Claire verstand, dass es wichtig war, zu glauben, dass man sein Leben immer verändern konnte. Als sie hinausging, beschloss sie, dass sie endlich ihren Traum verwirklichen konnte, um die Welt zu bereisen.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „pouvoir"</h2>
+    <details class="faq-item"><summary>Ist „pouvoir" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„pouvoir" ist ein unregelmäßiges Français-Verb und bedeutet „to be able".</p></details>
+    <details class="faq-item"><summary>Wie wird „pouvoir" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: il / elle peut.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „pouvoir"?</summary><p>Imparfait: il / elle pouvait. Passé composé: il / elle a pu.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „pouvoir" üben?</summary><p>Du kannst „pouvoir" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Französisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/entreprendre/"><span class="rc-verb">entreprendre</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/entretenir/"><span class="rc-verb">entretenir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/envoyer/"><span class="rc-verb">envoyer</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/faire/"><span class="rc-verb">faire</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/finir/"><span class="rc-verb">finir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/fuir/"><span class="rc-verb">fuir</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/inscrire/"><span class="rc-verb">inscrire</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/fr/instruire/"><span class="rc-verb">instruire</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„pouvoir" direkt im Quiz üben</h3>

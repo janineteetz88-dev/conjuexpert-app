@@ -164,7 +164,24 @@
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
   }
+  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
+  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .faq-section h2::before { content: "💬 "; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
+  .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; position: absolute; right: 18px; top: 11px; font-size: 20px; color: var(--muted); font-weight: 400; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item p { padding: 0 18px 16px; font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+  .related-section h2::before { content: "🔗 "; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .related-chip { display: flex; flex-direction: column; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); transition: transform .12s, border-color .12s; }
+  .related-chip:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--lc,var(--accent,#0a84ff)); }
+  .rc-verb { font-weight: 700; font-size: 15px; color: var(--text); font-family: var(--display,inherit); }
+  .rc-hint { font-size: 12px; color: var(--muted); }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ist „steken\" ein regelmäßiges oder unregelmäßiges Verb?","acceptedAnswer":{"@type":"Answer","text":"„steken\" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to sting\"."}},{"@type":"Question","name":"Wie wird „steken\" in der 3. Person Singular konjugiert?","acceptedAnswer":{"@type":"Answer","text":"Im Präsens: hij / zij steekt."}},{"@type":"Question","name":"Wie lautet die Vergangenheitsform von „steken\"?","acceptedAnswer":{"@type":"Answer","text":"Verleden tijd: hij / zij stak. Voltooid tegenwoordige tijd: hij / zij heeft gestoken."}},{"@type":"Question","name":"Wird „steken\" mit „hebben\" oder „zijn\" gebildet?","acceptedAnswer":{"@type":"Answer","text":"Das Perfekt von „steken\" wird mit „hebben\" gebildet: hij / zij heeft gestoken."}},{"@type":"Question","name":"Wo kann ich „steken\" üben?","acceptedAnswer":{"@type":"Answer","text":"Du kannst „steken\" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung."}}]}</script>
 </head>
 <body>
 
@@ -191,6 +208,8 @@
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
+
+  <p class="verb-tldr" id="tldr">„steken" ist ein unregelmäßiges Nederlands-Verb (Bedeutung: „to sting"). Präsens: <strong>hij / zij steekt</strong>. Verleden tijd: <strong>hij / zij stak</strong>. Voltooid tegenwoordige tijd: <strong>hij / zij heeft gestoken</strong>.</p>
 
     <!-- Mini-Quiz-Widget: ein Stück echte App, direkt nutzbar -->
   <section class="qz" id="qz" aria-label="Mini-Quiz zu steken">
@@ -265,6 +284,32 @@
     <div class="story-trans">Die Sonne schien hell auf die Blumen im Garten, aber ich fühlte einen stechenden Schmerz. Eine Biene hatte mich gestochen, während ich die bunten Blüten betrachtete. Ich schrie erschrocken und meine Mutter kam schnell zu mir. "Lass mich das versorgen, es wird schnell aufhören zu stechen," sagte sie, während sie die Salbe auf meine Haut auftrug. Am Ende des Tages hatte ich gelernt, in der Natur vorsichtig zu sein. Das nächste Mal werde ich nicht so nah an die Blümchen gehen, falls sie wieder stechen.</div>
   </div>
 </section>
+
+  
+  <section class="faq-section">
+    <h2>Häufige Fragen zu „steken"</h2>
+    <details class="faq-item"><summary>Ist „steken" ein regelmäßiges oder unregelmäßiges Verb?</summary><p>„steken" ist ein unregelmäßiges Nederlands-Verb und bedeutet „to sting".</p></details>
+    <details class="faq-item"><summary>Wie wird „steken" in der 3. Person Singular konjugiert?</summary><p>Im Präsens: hij / zij steekt.</p></details>
+    <details class="faq-item"><summary>Wie lautet die Vergangenheitsform von „steken"?</summary><p>Verleden tijd: hij / zij stak. Voltooid tegenwoordige tijd: hij / zij heeft gestoken.</p></details>
+    <details class="faq-item"><summary>Wird „steken" mit „hebben" oder „zijn" gebildet?</summary><p>Das Perfekt von „steken" wird mit „hebben" gebildet: hij / zij heeft gestoken.</p></details>
+    <details class="faq-item"><summary>Wo kann ich „steken" üben?</summary><p>Du kannst „steken" kostenlos im ConjuExpert-Quiz üben — mit allen Zeitformen, in fünf Sprachen, ohne Anmeldung.</p></details>
+  </section>
+
+  
+  <section class="related-section">
+    <h2>Verwandte Verben auf Niederländisch</h2>
+    <div class="related-grid">
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/sterven/"><span class="rc-verb">sterven</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/stijgen/"><span class="rc-verb">stijgen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/treffen/"><span class="rc-verb">treffen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/trekken/"><span class="rc-verb">trekken</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/vallen/"><span class="rc-verb">vallen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/vechten/"><span class="rc-verb">vechten</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/verbergen/"><span class="rc-verb">verbergen</span><span class="rc-hint">konjugieren</span></a>
+      <a class="related-chip" href="https://conjuexpert.app/konjugation/nl/verbieden/"><span class="rc-verb">verbieden</span><span class="rc-hint">konjugieren</span></a>
+    </div>
+  </section>
+
 
   <section class="cta-bottom">
     <h3>„steken" direkt im Quiz üben</h3>

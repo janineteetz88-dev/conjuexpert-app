@@ -19,10 +19,26 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import {
+  loadEngine, conjugateVerb, extractForms, auxWordFor, verbTypeDe,
+  buildFaq, tldrHtml, faqSectionHtml, faqLd, relatedSectionHtml,
+  pickRelated, geoCss,
+} from "./geo-blocks.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const KONJ = path.join(ROOT, "konjugation");
+const SITE = "https://conjuexpert.app";
+
+const LANG_NAME = { de: "Deutsch", es: "Spanisch", en: "Englisch", fr: "Französisch", nl: "Niederländisch" };
+const LANG_NATIVE = { de: "Deutsch", es: "Español", en: "English", fr: "Français", nl: "Nederlands" };
+
+// Engines einmalig laden (für die deterministischen GEO-Formen).
+const ENGINES = {};
+function engineFor(lang) {
+  if (!ENGINES[lang]) { try { ENGINES[lang] = loadEngine(ROOT, lang); } catch { ENGINES[lang] = null; } }
+  return ENGINES[lang];
+}
 
 // Sprach-Akzentfarben (--lc) gemäß docs/ci.md §3
 const LANG_ACCENT = { de: "#ff3b5c", es: "#ff9f0a", en: "#0a84ff", nl: "#30c95a", fr: "#1b1813" };
@@ -176,6 +192,8 @@ function css(accent, transFlag) {
   .qz-go-app:hover { text-decoration: none; transform: translateY(-1px); box-shadow: 0 16px 32px -12px rgba(60,40,10,.62); }
   .qz-go-app:active { transform: translateY(0); }
 
+${geoCss()}
+
   @media (max-width: 480px) {
     .tense-grid { grid-template-columns: 1fr; }
     .page-wrap { padding: 20px 16px 48px; }
@@ -284,8 +302,7 @@ function quizScript(verb, lang) {
 
 // ── Transform one page ─────────────────────────────────────────────────────────
 
-function transform(html, lang, verb) {
-  if (html.includes('id="qz"')) return null; // schon umgestellt
+function ciTransform(html, lang, verb) {
   const accent = LANG_ACCENT[lang] || "#ff9f0a";
   const enc = encodeURIComponent(verb);
 
@@ -323,6 +340,63 @@ function transform(html, lang, verb) {
   // 6. Quiz-JS vor </body>
   html = html.replace("</body>", quizScript(verb, lang) + "\n</body>");
 
+  return html;
+}
+
+// ── GEO-Blöcke nachrüsten (TL;DR · FAQ · verwandte Verben · FAQPage) ─────────────
+// Deterministisch aus der Engine; die englische Bedeutung wird aus der Intro geparst.
+function injectGeo(html, lang, verb) {
+  const eng = engineFor(lang);
+  if (!eng) return html;
+  const conjugated = conjugateVerb(eng, lang, verb);
+  if (!conjugated || conjugated.error) return html;
+
+  const isIrr = (eng.irregulars || []).includes(verb);
+  const verbType = verbTypeDe(isIrr);
+  const forms = extractForms(conjugated, conjugated.pronouns);
+  const auxWord = auxWordFor(lang, forms.perfect3);
+  const native = LANG_NATIVE[lang] || lang;
+  const langName = LANG_NAME[lang] || lang;
+  const mm = html.match(/bedeutet\s+„([^"“”]+?)["“”]/);
+  const meaning = mm ? mm[1].trim() : "";
+
+  const tldrBlock = tldrHtml({ verb, verbType, native, meaning, forms });
+  const faq = buildFaq({ lang, verb, meaning, verbType, native, forms, auxWord });
+  const faqHtml = faqSectionHtml(verb, faq);
+  const related = pickRelated(ROOT, lang, verb);
+  const relatedHtml = relatedSectionHtml({ lang, verb, langName, related, site: SITE });
+  const faqLdJson = faqLd(faq);
+
+  // 1. TL;DR direkt nach dem Hero (verb-intro-Absatz + schließendes </div>).
+  html = html.replace(
+    /(<p class="verb-intro">[\s\S]*?<\/p>\s*<\/div>)/,
+    `$1\n\n  ${tldrBlock}`
+  );
+
+  // 2. FAQ + verwandte Verben vor die Abschluss-CTA (bzw. ans Ende von <main>).
+  if (/<section class="cta-bottom"/.test(html)) {
+    html = html.replace(/(\n\s*<section class="cta-bottom")/, `\n\n  ${faqHtml}\n\n  ${relatedHtml}\n$1`);
+  } else {
+    html = html.replace("</main>", `\n  ${faqHtml}\n\n  ${relatedHtml}\n\n</main>`);
+  }
+
+  // 3. FAQPage-Schema in den <head>.
+  html = html.replace("</head>", `<script type="application/ld+json">${faqLdJson}</script>\n</head>`);
+
+  // 4. geoCss sicherstellen, falls das Stylesheet sie noch nicht enthält.
+  if (!html.includes(".verb-tldr {")) {
+    html = html.replace("</style>", geoCss() + "\n</style>");
+  }
+  return html;
+}
+
+// Idempotenter Gesamt-Transform: CI (falls nötig) + GEO (falls nötig).
+function transform(html, lang, verb) {
+  const hasQz = html.includes('id="qz"');
+  const hasGeo = html.includes('class="verb-tldr"');
+  if (hasQz && hasGeo) return null; // schon vollständig — überspringen
+  if (!hasQz) html = ciTransform(html, lang, verb);
+  if (!hasGeo) html = injectGeo(html, lang, verb);
   return html;
 }
 
