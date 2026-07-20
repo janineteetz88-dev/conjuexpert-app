@@ -43,10 +43,16 @@ function engineFor(lang) {
 // Sprach-Akzentfarben (--lc) gemäß docs/ci.md §3
 const LANG_ACCENT = { de: "#ff3b5c", es: "#ff9f0a", en: "#0a84ff", nl: "#30c95a", fr: "#1b1813" };
 
+// Self-hosted Schibsted Grotesk (DSGVO: keine Google-Fonts-CDN, keine IP-Übertragung).
 const FONT_LINKS =
-  '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
-  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
-  '<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">';
+  '<link rel="preload" href="/fonts/Jqz55SSPQuCQF3t8uOwiUL-taUTtap9Gayo.woff2" as="font" type="font/woff2" crossorigin>\n' +
+  '<link rel="stylesheet" href="/fonts/verb.css">';
+
+// Cookielose, anonyme Statistik (Plausible) — keine Cookies, kein Consent nötig.
+// Landet in derselben Plausible-Property wie die App (per-site Script-Token).
+const PLAUSIBLE_SNIPPET =
+  '<!-- Cookielose, anonyme Statistik (Plausible) — keine Cookies -->\n' +
+  "<script>(function(){window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)};plausible.init=plausible.init||function(i){plausible.o=i||{}};var s=document.createElement('script');s.defer=true;s.src='https://plausible.io/js/pa-XgJaIs7-4NdkrrYiNyupz.js';document.head.appendChild(s);try{plausible.init();}catch(e){}})();</script>";
 
 function css(accent, transFlag) {
   return `  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -306,13 +312,7 @@ function ciTransform(html, lang, verb) {
   const accent = LANG_ACCENT[lang] || "#ff9f0a";
   const enc = encodeURIComponent(verb);
 
-  // 1. Font-Links nach dem Icon-Link
-  if (!html.includes("Schibsted+Grotesk")) {
-    html = html.replace(
-      '<link rel="icon" href="/favicon.svg" type="image/svg+xml">',
-      '<link rel="icon" href="/favicon.svg" type="image/svg+xml">\n' + FONT_LINKS
-    );
-  }
+  // (Fonts werden zentral in ensureLocalFonts() gesetzt — hier nicht mehr.)
 
   // 2. Komplettes Stylesheet ersetzen (DE-Seiten: Übersetzung ist englisch → 🇬🇧)
   const transFlag = lang === "de" ? "🇬🇧" : "🇩🇪";
@@ -390,14 +390,36 @@ function injectGeo(html, lang, verb) {
   return html;
 }
 
-// Idempotenter Gesamt-Transform: CI (falls nötig) + GEO (falls nötig).
-function transform(html, lang, verb) {
-  const hasQz = html.includes('id="qz"');
-  const hasGeo = html.includes('class="verb-summary"');
-  if (hasQz && hasGeo) return null; // schon vollständig — überspringen
-  if (!hasQz) html = ciTransform(html, lang, verb);
-  if (!hasGeo) html = injectGeo(html, lang, verb);
+// Google-Fonts-CDN entfernen und self-hosted Schibsted Grotesk sicherstellen.
+// DSGVO: keine IP-Übertragung an Google mehr. Idempotent.
+function ensureLocalFonts(html) {
+  if (html.includes("fonts.googleapis.com") || html.includes("fonts.gstatic.com")) {
+    html = html.replace(/[ \t]*<link[^>]*fonts\.(?:googleapis|gstatic)\.com[^>]*>\n?/g, "");
+  }
+  if (!html.includes("/fonts/verb.css")) {
+    html = html.replace(
+      '<link rel="icon" href="/favicon.svg" type="image/svg+xml">',
+      '<link rel="icon" href="/favicon.svg" type="image/svg+xml">\n' + FONT_LINKS
+    );
+  }
   return html;
+}
+
+// Cookielose Plausible-Statistik einsetzen (falls noch nicht vorhanden). Idempotent.
+function ensurePlausible(html) {
+  if (html.includes("plausible.io")) return html;
+  return html.replace("</head>", PLAUSIBLE_SNIPPET + "\n</head>");
+}
+
+// Idempotenter Gesamt-Transform: CI · GEO · lokale Fonts · Plausible.
+// Jede Facette wird einzeln geprüft; null nur, wenn sich nichts geändert hat.
+function transform(html, lang, verb) {
+  const before = html;
+  if (!html.includes('id="qz"')) html = ciTransform(html, lang, verb);
+  if (!html.includes('class="verb-summary"')) html = injectGeo(html, lang, verb);
+  html = ensureLocalFonts(html);
+  html = ensurePlausible(html);
+  return html === before ? null : html;
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────────
