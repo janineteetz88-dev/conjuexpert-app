@@ -1,0 +1,105 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face{font-family:'SG';src:url('assets/space.woff2') format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'SB';src:url('assets/schib.woff2') format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'JB';src:url('assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#14151a;--rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);--dur:10s}
+#reel{position:relative;width:1080px;height:1920px;overflow:hidden;background:#eef0f6;font-family:'SB',sans-serif}
+.bg{position:absolute;inset:-10%;z-index:0}
+.blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.5}
+.b1{width:820px;height:820px;background:#ff3b5c;left:-6%;top:2%}
+.b2{width:760px;height:760px;background:#0a84ff;right:-8%;top:8%}
+.b3{width:900px;height:900px;background:#34c759;left:8%;bottom:-8%}
+.b4{width:720px;height:720px;background:#a557ff;right:-4%;bottom:2%}
+.b5{width:640px;height:640px;background:#ffc400;left:34%;top:36%}
+body.go .b1{animation:d1 9s ease-in-out infinite alternate}
+body.go .b2{animation:d2 var(--dur) ease-in-out infinite alternate}
+body.go .b3{animation:d3 8s ease-in-out infinite alternate}
+body.go .b4{animation:d4 12s ease-in-out infinite alternate}
+body.go .b5{animation:d5 7s ease-in-out infinite alternate}
+@keyframes d1{to{transform:translate(160px,120px) scale(1.15)}}
+@keyframes d2{to{transform:translate(-150px,170px) scale(1.1)}}
+@keyframes d3{to{transform:translate(140px,-150px) scale(1.18)}}
+@keyframes d4{to{transform:translate(-120px,-130px) scale(1.12)}}
+@keyframes d5{to{transform:translate(-190px,110px) scale(1.25)}}
+.veil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(247,248,252,.82),rgba(247,248,252,.74));backdrop-filter:blur(6px)}
+.logo{position:absolute;top:52px;left:56px;display:flex;align-items:center;gap:14px;z-index:12}
+.logo .mark{width:50px;height:40px}
+.logo .w{font-family:'SG';font-weight:600;font-size:34px;letter-spacing:-.02em;color:var(--ink)}
+.logo .w b{font-weight:700;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 100px;opacity:0;z-index:3}
+.rframe{position:absolute;inset:0;z-index:20;pointer-events:none;padding:20px;
+  background:linear-gradient(120deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff,#ff3b5c,#ff7a18);background-size:300% 300%;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+  animation:flow 5s linear infinite, glowpulse 2.2s ease-in-out infinite alternate}
+@keyframes flow{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+@keyframes glowpulse{from{filter:drop-shadow(0 0 10px rgba(255,122,24,.55)) drop-shadow(0 0 22px rgba(10,132,255,.4))}to{filter:drop-shadow(0 0 22px rgba(255,59,92,.7)) drop-shadow(0 0 46px rgba(165,87,255,.55))}}
+.prog{position:absolute;left:30px;bottom:30px;height:8px;border-radius:999px;background:var(--rainbow);width:0;z-index:12}
+body.go .prog{animation:prog var(--dur) linear forwards}
+@keyframes prog{from{width:0}to{width:1020px}}
+.kw{display:inline-block;opacity:0}
+body.go .kw{animation:kin .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes kin{from{opacity:0;transform:translateY(40px) scale(.9);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
+.grad{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{font-family:'JB';font-weight:700;font-size:25px;letter-spacing:.24em;text-transform:uppercase;color:#8890a0;margin-bottom:30px}
+
+/* A — hook + competitor chips */
+.qbig{font-family:'SG';font-weight:700;font-size:76px;line-height:1.08;letter-spacing:-.02em;color:var(--ink)}
+.apps{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:44px}
+.app{font-family:'SG';font-weight:700;font-size:38px;color:var(--ink);background:#fff;border-radius:999px;padding:18px 34px;box-shadow:0 14px 34px -18px rgba(20,22,30,.4)}
+body.go .sA{animation:sA var(--dur) ease both}
+@keyframes sA{0%{opacity:1}34%{opacity:1}39%{opacity:0;transform:translateY(-30px)}100%{opacity:0}}
+body.go .sA .eyebrow{animation-delay:.05s}
+body.go .sA .kw:nth-child(1){animation-delay:.2s}body.go .sA .kw:nth-child(2){animation-delay:.32s}body.go .sA .kw:nth-child(3){animation-delay:.44s}body.go .sA .kw:nth-child(4){animation-delay:.56s}body.go .sA .kw:nth-child(5){animation-delay:.68s}
+body.go .sA .app{animation:pop2 .45s ease both}
+body.go .sA .app:nth-child(1){animation-delay:.9s}body.go .sA .app:nth-child(2){animation-delay:1.05s}body.go .sA .app:nth-child(3){animation-delay:1.2s}
+@keyframes pop2{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}
+
+/* B — missing piece */
+.piece{font-family:'SG';font-weight:700;font-size:96px;line-height:1.04;letter-spacing:-.02em;color:var(--ink)}
+.psub{font-family:'SB';font-weight:400;font-size:38px;color:#5b6373;margin-top:30px;max-width:840px}
+body.go .sB{animation:sB var(--dur) ease both}
+@keyframes sB{0%{opacity:0}39%{opacity:0}44%{opacity:1;transform:none}100%{opacity:1}}
+body.go .sB .piece{animation:rise .55s cubic-bezier(.2,.8,.2,1) 4.4s both}
+@keyframes rise{from{opacity:0;transform:translateY(40px) scale(.96)}to{opacity:1;transform:none}}
+
+/* (CTA end-card removed — CTA lives in the caption, not burned into the video) */
+</style></head>
+<body>
+<div id="reel">
+  <div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div><div class="blob b5"></div></div>
+  <div class="veil"></div>
+  <div class="logo">
+    <svg class="mark" viewBox="1 4 30 24" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg>
+    <span class="w">Conju<b>Expert</b></span>
+  </div>
+
+  <div class="scene sA">
+    <div class="eyebrow" id="a-eye"></div>
+    <div class="qbig" id="a-q"></div>
+    <div class="apps" id="a-apps"></div>
+  </div>
+  <div class="scene sB">
+    <div class="piece" id="b-piece"></div>
+    <div class="psub" id="b-sub"></div>
+  </div>
+  <div class="prog"></div>
+  <div class="rframe"></div>
+</div>
+<script>
+const DEFAULT={
+  eyebrow:"Psst — one more thing",
+  qWords:"Learning German with one of these?",
+  apps:["Duolingo","Busuu","Babbel"],
+  piece:'ConjuExpert is<br>the <span class="grad">missing piece.</span> 🧩',
+  pieceSub:"Master every verb form — 5 languages.",
+};
+const R=Object.assign({},DEFAULT,(window.__REEL||{}));
+const set=(id,h)=>{const el=document.getElementById(id);if(el)el.innerHTML=h;};
+document.getElementById('a-eye').textContent=R.eyebrow;
+set('a-q', R.qWords.split(' ').map(w=>`<span class="kw">${w}</span>`).join(' '));
+set('a-apps', R.apps.map(a=>`<span class="app">${a}</span>`).join(''));
+set('b-piece', R.piece); set('b-sub', R.pieceSub);
+window.__ready=document.fonts.ready;
+</script>
+</body></html>

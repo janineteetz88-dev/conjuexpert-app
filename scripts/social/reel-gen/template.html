@@ -1,0 +1,187 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face{font-family:'SG';src:url('assets/space.woff2') format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'SB';src:url('assets/schib.woff2') format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'JB';src:url('assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#14151a;--cream:#f3f4f8;--red:#ff3b5c;--rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);--dur:30s}
+#reel{position:relative;width:1080px;height:1920px;overflow:hidden;background:#eef0f6;font-family:'SB',sans-serif}
+
+/* ===== MOVING BACKGROUND (aurora blobs, always in motion) ===== */
+.bg{position:absolute;inset:-10%;z-index:0;filter:saturate(1.15)}
+.blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.55;mix-blend-mode:normal}
+.b1{width:820px;height:820px;background:#ff3b5c;left:-6%;top:2%}
+.b2{width:760px;height:760px;background:#0a84ff;right:-8%;top:8%}
+.b3{width:900px;height:900px;background:#34c759;left:8%;bottom:-8%}
+.b4{width:720px;height:720px;background:#a557ff;right:-4%;bottom:2%}
+.b5{width:640px;height:640px;background:#ffc400;left:34%;top:36%}
+body.go .b1{animation:d1 9s ease-in-out infinite alternate}
+body.go .b2{animation:d2 var(--dur) ease-in-out infinite alternate}
+body.go .b3{animation:d3 10s ease-in-out infinite alternate}
+body.go .b4{animation:d4 12s ease-in-out infinite alternate}
+body.go .b5{animation:d5 8s ease-in-out infinite alternate}
+@keyframes d1{to{transform:translate(180px,120px) scale(1.15)}}
+@keyframes d2{to{transform:translate(-160px,180px) scale(1.1)}}
+@keyframes d3{to{transform:translate(140px,-160px) scale(1.18)}}
+@keyframes d4{to{transform:translate(-120px,-140px) scale(1.12)}}
+@keyframes d5{to{transform:translate(-200px,120px) scale(1.25)}}
+/* frosted veil so text stays readable over the motion */
+.veil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(247,248,252,.82),rgba(247,248,252,.72));backdrop-filter:blur(6px)}
+
+.logo{position:absolute;top:52px;left:56px;display:flex;align-items:center;gap:14px;z-index:12}
+.logo .mark{width:50px;height:40px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.15))}
+.logo .w{font-family:'SG';font-weight:600;font-size:34px;letter-spacing:-.02em;color:var(--ink)}
+.logo .w b{font-weight:700;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 100px;opacity:0;z-index:3}
+
+/* glowing animated rainbow border */
+.rframe{position:absolute;inset:0;z-index:20;pointer-events:none;padding:20px;
+  background:linear-gradient(120deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff,#ff3b5c,#ff7a18);background-size:300% 300%;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+  animation:flow 5s linear infinite, glowpulse 2.2s ease-in-out infinite alternate}
+@keyframes flow{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+@keyframes glowpulse{from{filter:drop-shadow(0 0 10px rgba(255,122,24,.55)) drop-shadow(0 0 22px rgba(10,132,255,.4))}to{filter:drop-shadow(0 0 22px rgba(255,59,92,.7)) drop-shadow(0 0 46px rgba(165,87,255,.55))}}
+.prog{position:absolute;left:30px;bottom:30px;height:8px;border-radius:999px;background:var(--rainbow);width:0;z-index:12}
+body.go .prog{animation:prog var(--dur) linear forwards}
+@keyframes prog{from{width:0}to{width:1020px}}
+
+/* kinetic word helper */
+.kw{display:inline-block;opacity:0}
+body.go .kw{animation:kin .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes kin{from{opacity:0;transform:translateY(46px) scale(.9);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
+
+/* SCENE A — hook */
+.eyebrow{font-family:'JB';font-weight:700;font-size:26px;letter-spacing:.28em;text-transform:uppercase;color:var(--red);margin-bottom:30px}
+.hook{font-family:'SG';font-weight:700;font-size:104px;line-height:1.02;letter-spacing:-.02em;color:var(--ink)}
+.hook .split{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hook .emoji{-webkit-text-fill-color:initial;background:none}
+body.go .sA{animation:sA var(--dur) ease both}
+@keyframes sA{0%{opacity:1}8%{opacity:1}11%{opacity:0;transform:translateY(-30px)}100%{opacity:0}}
+body.go .sA .eyebrow{animation-delay:.05s}
+body.go .sA .kw:nth-child(1){animation-delay:.25s}
+body.go .sA .kw:nth-child(2){animation-delay:.38s}
+body.go .sA .kw:nth-child(3){animation-delay:.55s}
+body.go .sA .kw:nth-child(4){animation-delay:.72s}
+body.go .sA .kw:nth-child(5){animation-delay:.9s}
+
+/* SCENE B — verb split + app card */
+.split-stage{position:relative;height:150px;display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+.sv{font-family:'SG';font-weight:700;font-size:96px;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
+.sv .pfx{display:inline-block;color:var(--red)}
+body.go .sB{animation:sB var(--dur) ease both}
+@keyframes sB{0%{opacity:0}11%{opacity:0}14%{opacity:1;transform:none}79%{opacity:1}82%{opacity:0;transform:translateY(-24px)}100%{opacity:0}}
+/* prefix flies to the end */
+body.go .sB .pfx{animation:fly var(--dur) ease both}
+@keyframes fly{0%{transform:translateX(0)}30%{transform:translateX(0)}37%{transform:translateX(360px) translateY(-4px)}44%{transform:translateX(340px)}100%{transform:translateX(340px)}}
+.blabel{font-family:'SG';font-weight:700;font-size:44px;color:var(--ink)}
+.blabel .t{color:var(--red)}
+.appwin{position:relative;width:720px;height:1040px;border-radius:36px;overflow:hidden;background:#fff;box-shadow:0 34px 80px -22px rgba(20,22,30,.5),0 0 0 8px #fff,0 0 0 10px rgba(20,22,30,.06);margin-top:22px}
+.strip{position:absolute;top:0;left:0;width:720px;display:block}
+body.go .sB .appwin{animation:winIn var(--dur) ease both}
+@keyframes winIn{0%{opacity:0;transform:translateY(60px)}11%{opacity:0;transform:translateY(60px)}15%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+body.go .sB .strip{animation:scroll var(--dur) cubic-bezier(.4,0,.25,1) both}
+@keyframes scroll{0%{transform:translateY(0)}16%{transform:translateY(0)}78%{transform:translateY(-8975px)}100%{transform:translateY(-8975px)}}
+
+/* SCENE C — example */
+.cbig{font-family:'SG';font-weight:700;font-size:70px;line-height:1.08;letter-spacing:-.02em;color:var(--ink);margin-bottom:36px}
+.cbig .red{color:var(--red)}
+.ex{font-family:'JB';font-weight:700;font-size:50px;color:var(--ink);background:#fff;border-radius:28px;padding:40px 44px;box-shadow:0 24px 60px -24px rgba(20,22,30,.45)}
+.ex .a{color:var(--red)}
+.extrans{font-family:'SB';font-weight:400;font-size:30px;color:#6a7080;margin-top:24px}
+body.go .sC{animation:sC var(--dur) ease both}
+@keyframes sC{0%{opacity:0}82%{opacity:0}84%{opacity:1;transform:none}90%{opacity:1}92%{opacity:0;transform:translateY(-22px)}100%{opacity:0}}
+body.go .sC .ex{animation:exPop var(--dur) ease both}
+@keyframes exPop{0%{transform:scale(.92)}82%{transform:scale(.92)}85%{transform:scale(1)}100%{transform:scale(1)}}
+
+/* SCENE D — CTA */
+.dbig{font-family:'SG';font-weight:700;font-size:76px;line-height:1.05;letter-spacing:-.02em;color:var(--ink);margin-bottom:40px}
+.pill{font-family:'SG';font-weight:700;font-size:46px;color:#fff;background:var(--ink);border-radius:999px;padding:26px 54px;box-shadow:0 20px 44px -16px rgba(20,22,30,.5)}
+.beta{margin-top:40px;font-family:'JB';font-weight:700;font-size:32px;color:var(--ink)}
+.beta .code{background:var(--red);color:#fff;padding:6px 16px;border-radius:10px}
+.beta2{font-family:'JB';font-weight:700;font-size:24px;letter-spacing:.06em;color:#6a7080;margin-top:16px;text-transform:uppercase}
+body.go .sD{animation:sD var(--dur) ease both}
+@keyframes sD{0%{opacity:0}92%{opacity:0}94%{opacity:1;transform:none}100%{opacity:1}}
+body.go .sD .pill{animation:pop var(--dur) ease both}
+@keyframes pop{0%{transform:scale(.9)}92%{transform:scale(.9)}95%{transform:scale(1.04)}98%{transform:scale(1)}100%{transform:scale(1)}}
+</style></head>
+<body>
+<div id="reel">
+  <div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div><div class="blob b5"></div></div>
+  <div class="veil"></div>
+  <div class="logo">
+    <svg class="mark" viewBox="1 4 30 24" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg>
+    <span class="w">Conju<b>Expert</b></span>
+  </div>
+
+  <div class="scene sA">
+    <div class="eyebrow kw" id="a-eye">Verb des Tages</div>
+    <div class="hook" id="a-hook"></div>
+  </div>
+
+  <div class="scene sB">
+    <div class="blabel" id="b-label"></div>
+    <div class="appwin"><img class="strip" id="b-img" src="" alt=""></div>
+  </div>
+
+  <div class="scene sC">
+    <div class="cbig" id="c-big"></div>
+    <div class="ex" id="c-ex"></div>
+    <div class="extrans" id="c-trans"></div>
+  </div>
+
+  <div class="scene sD">
+    <div class="dbig" id="d-big"></div>
+    <div class="pill" id="d-pill"></div>
+    <div class="beta" id="d-beta"></div>
+    <div class="beta2" id="d-beta2"></div>
+  </div>
+
+  <div class="prog"></div>
+  <div class="rframe"></div>
+</div>
+
+<script>
+const DEFAULT = {
+  eyebrow: "Verb des Tages",
+  hookTop: "German verbs that",
+  hookSplit: "split&nbsp;in&nbsp;half",
+  hookEmoji: "🤯",
+  bLabel: 'Meet: <span class="t">aufstehen</span> — every tense ↓',
+  bImg: "assets/aufstehen-scroll.png",
+  cBig: 'It&rsquo;s a <span class="red">separable</span> verb.',
+  cEx: 'Ich <span class="a">stehe</span> um 7 Uhr <span class="a">auf</span>.',
+  cTrans: "= I get up at 7.",
+  dBig: "Learn German verbs<br>faster 🎯",
+  dPill: "conjuexpert.app",
+  dBeta: 'Code <span class="code">FEEDBACK100</span>',
+  dBeta2: "30 days Premium · first 100 only",
+};
+const R = Object.assign({}, DEFAULT, (window.__REEL || {}));
+const set = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+// kinetic hook: wrap each word
+const words = (R.hookTop + ' ' + R.hookSplit).trim();
+document.getElementById('a-eye').textContent = R.eyebrow;
+set('a-hook',
+  R.hookTop.split(' ').map(w=>`<span class="kw">${w}</span>`).join(' ')
+  + '<br><span class="kw split">' + R.hookSplit + '</span>'
+  + (R.hookEmoji ? ' <span class="kw emoji">' + R.hookEmoji + '</span>' : ''));
+set('b-label', R.bLabel);
+document.getElementById('b-img').src = R.bImg;
+set('c-big', R.cBig); set('c-ex', R.cEx); set('c-trans', R.cTrans);
+set('d-big', R.dBig); set('d-pill', R.dPill); set('d-beta', R.dBeta); set('d-beta2', R.dBeta2);
+window.__ready = (async () => {
+  await document.fonts.ready;
+  const img = document.getElementById('b-img');
+  if (!img.complete) await new Promise(r => { img.onload = r; img.onerror = r; });
+  // Dynamic scroll distance: the strip is displayed at width:720px, so its shown
+  // height scales with the source image. Scroll exactly from top to bottom of the
+  // app screen (dispHeight − appwin height) so ANY verb strip lands cleanly — no
+  // hard-coded pixel value. Later same-name @keyframes overrides the fallback.
+  const APPWIN = 1040;
+  const dispH = img.getBoundingClientRect().height || (img.naturalHeight * 720 / (img.naturalWidth || 720));
+  const end = Math.max(0, Math.round(dispH - APPWIN));
+  const st = document.createElement('style');
+  st.textContent = `@keyframes scroll{0%{transform:translateY(0)}16%{transform:translateY(0)}78%{transform:translateY(-${end}px)}100%{transform:translateY(-${end}px)}}`;
+  document.head.appendChild(st);
+})();
+</script>
+</body></html>

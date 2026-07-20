@@ -1,0 +1,21 @@
+{
+  "id": "quiz-modals",
+  "pillar": "Daily Quiz",
+  "quiz": {
+    "intro": {"title": "Can you nail<br>these <span class=\"r\">3 verbs?</span> 💪", "sub": "Modals & separable verbs — swipe & test yourself"},
+    "words": [
+      {"verb": "können", "tense": "Präsens", "person": "ich", "hint": "modals drop the ending", "form": "kann", "hlpart": "kann", "tip": "Modal verbs have no ending for ich/er: ich kann, er kann."},
+      {"verb": "anrufen", "tense": "Perfekt", "person": "ich", "hint": "separable → ge in the middle", "form": "habe angerufen", "hlpart": "angerufen", "tip": "Separable prefix wraps the participle: an + ge + rufen."},
+      {"verb": "werden", "tense": "Präteritum", "person": "er / sie / es", "hint": "fully irregular", "form": "wurde", "hlpart": "wurde", "tip": "werden → wurde. Key for passive & future too."}
+    ],
+    "cta": {"title": "How many did<br>you get? 👇", "sub": "Practice every German verb — free"},
+    "beta": {
+      "title": "We need<br>your <span class=\"r\">feedback</span> 🙏",
+      "sub": "ConjuExpert is in beta — help us make it better.",
+      "code": "Code <span class=\"code\">FEEDBACK100</span> → 30 days Premium free",
+      "app": "conjuexpert.app · no download needed"
+    }
+  },
+  "caption": "Can you nail these 3 German verbs? 💪\nkönnen · anrufen · werden — swipe to check yourself!\n\nPractice every German verb — free 👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium (first 100 only)",
+  "hashtags": ["#learngerman", "#germanverbs", "#deutschlernen", "#germangrammar", "#conjuexpert"]
+}

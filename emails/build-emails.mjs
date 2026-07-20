@@ -104,7 +104,7 @@ const MAILS = [
       cta: "Essayer Premium maintenant →" },
   },
   {
-    file: "email-2-trial-ending.html", utm: "trial-ending", accent: "#1a9b46", price: true, cap: "capNow", banner: false,
+    file: "email-2-trial-ending.html", utm: "trial-ending", link: "feedback=1", accent: "#1a9b46", price: true, cap: "capNow", banner: false,
     de: { subject: "Deine Gratis-Testzeit endet bald", pre: "Deine Gratis-Testzeit endet bald – mit Feedback behältst du Premium für 5 € weniger.",
       eyebrow: "Deine Gratis-Testzeit endet bald", h1: "Premium behalten?",
       paras: ["Hallo {{name}}, deine kostenlose Premium-Testzeit läuft gleich aus. Wenn dir Quiz & Merken gefallen haben, kannst du sie dauerhaft behalten.", "Gib uns kurz dein Feedback zur App – dafür bekommst du einen 5-€-Code und zahlst fürs Jahresabo nur 24,99 € statt 29,99 €."],
@@ -127,7 +127,7 @@ const MAILS = [
       cta: "Donner mon avis & économiser 5 € →" },
   },
   {
-    file: "email-3-reminder.html", utm: "reminder", accent: "#1a9b46", price: true, cap: "capNow", banner: false,
+    file: "email-3-reminder.html", utm: "reminder", link: "feedback=1", accent: "#1a9b46", price: true, cap: "capNow", banner: false,
     de: { subject: "5 € Rabatt fürs Feedback: 24,99 € statt 29,99 €", pre: "Dein Feedback zur App bringt dir 5 € Rabatt: Jahresabo für 24,99 € statt 29,99 €.",
       eyebrow: "5 € für dein Feedback", h1: "24,99 € statt 29,99 €.",
       paras: ["Hallo {{name}}, hast du schon Premium? Für ein kurzes Feedback zur App bekommst du einen 5-€-Code – damit kostet das Jahresabo 24,99 € statt 29,99 €.", "So sicherst du dir ein ganzes Jahr Quiz, Merken & Lernziele zum besten Preis."],
@@ -150,7 +150,7 @@ const MAILS = [
       cta: "Donner mon avis & économiser 5 € →" },
   },
   {
-    file: "email-4-last-chance.html", utm: "last-chance", accent: "#1a9b46", price: true, cap: "capNow", banner: false,
+    file: "email-4-last-chance.html", utm: "last-chance", link: "feedback=1", accent: "#1a9b46", price: true, cap: "capNow", banner: false,
     de: { subject: "Deine 5 € fürs Feedback warten noch", pre: "Noch kein Feedback abgegeben? Dein 5-€-Code fürs Jahresabo wartet.",
       eyebrow: "5 € für dein Feedback", h1: "5 € sparen – für dein Feedback.",
       paras: ["Hallo {{name}}, du hast Quiz, Merken & Lernziele ausprobiert? Erzähl uns kurz, wie es war.", "Für dein Feedback bekommst du einen 5-€-Code – damit kostet das Jahresabo 24,99 € statt 29,99 €."],
@@ -172,6 +172,31 @@ const MAILS = [
       paras: ["Bonjour {{name}}, tu as essayé Quiz, Enregistrés et Objectifs ? Dis-nous vite ce que tu en as pensé.", "Pour ton avis, tu reçois un code de 5 € – l'abonnement annuel passe ainsi à 24,99 € au lieu de 29,99 €."],
       cta: "Donner mon avis & économiser 5 € →" },
   },
+  {
+    // Transaktions-Mail: verschickt von der Edge-Function send-feedback-code
+    // direkt nach dem Absenden des App-Feedbacks (nicht vom Lifecycle-Cron).
+    file: "email-5-feedback-code.html", utm: "feedback-code", link: "checkout=annual", accent: "#1a9b46", price: true, cap: "capNow", banner: false,
+    de: { subject: "Dein 5-€-Code DANKE5 ist da 🎁", pre: "Danke für dein Feedback – dein 5-€-Rabatt aufs Jahresabo ist freigeschaltet.",
+      eyebrow: "Danke für dein Feedback", h1: "5 € gespart – Code DANKE5.",
+      paras: ["Hallo {{name}}, danke für dein Feedback! Dein 5-€-Code <b>DANKE5</b> ist freigeschaltet – das Jahresabo kostet dich damit 24,99 € statt 29,99 €.", "Ein Klick, und der Rabatt ist automatisch angewendet:"],
+      cta: "Premium für 24,99 € sichern →" },
+    en: { subject: "Your €5 code DANKE5 is here 🎁", pre: "Thanks for your feedback – your €5 discount on the annual plan is unlocked.",
+      eyebrow: "Thanks for your feedback", h1: "€5 off – code DANKE5.",
+      paras: ["Hi {{name}}, thanks for your feedback! Your €5 code <b>DANKE5</b> is unlocked – the annual plan is now €24.99 instead of €29.99.", "One click and the discount is applied automatically:"],
+      cta: "Get Premium for €24.99 →" },
+    es: { subject: "Tu código de 5 € DANKE5 ya está aquí 🎁", pre: "Gracias por tu opinión: tu descuento de 5 € en el plan anual está activado.",
+      eyebrow: "Gracias por tu opinión", h1: "5 € menos – código DANKE5.",
+      paras: ["Hola {{name}}, ¡gracias por tu opinión! Tu código de 5 € <b>DANKE5</b> está activado: el plan anual te cuesta 24,99 € en vez de 29,99 €.", "Un clic y el descuento se aplica automáticamente:"],
+      cta: "Consigue Premium por 24,99 € →" },
+    nl: { subject: "Je code van € 5 DANKE5 is er 🎁", pre: "Bedankt voor je feedback – je korting van € 5 op het jaarabonnement staat klaar.",
+      eyebrow: "Bedankt voor je feedback", h1: "€ 5 korting – code DANKE5.",
+      paras: ["Hoi {{name}}, bedankt voor je feedback! Je code van € 5 <b>DANKE5</b> staat klaar – het jaarabonnement kost je nu € 24,99 in plaats van € 29,99.", "Eén klik en de korting wordt automatisch toegepast:"],
+      cta: "Premium voor € 24,99 halen →" },
+    fr: { subject: "Ton code de 5 € DANKE5 est là 🎁", pre: "Merci pour ton avis – ta réduction de 5 € sur l'abonnement annuel est débloquée.",
+      eyebrow: "Merci pour ton avis", h1: "5 € de moins – code DANKE5.",
+      paras: ["Bonjour {{name}}, merci pour ton avis ! Ton code de 5 € <b>DANKE5</b> est débloqué – l'abonnement annuel te revient à 24,99 € au lieu de 29,99 €.", "Un clic et la réduction s'applique automatiquement :"],
+      cta: "Passer Premium pour 24,99 € →" },
+  },
 ];
 
 /* ─── Renderer ───────────────────────────────────────────────────────────── */
@@ -179,7 +204,10 @@ function renderEmail(lang, mail) {
   const c = COMMON[lang];
   const p = PRICE[lang];
   const m = mail[lang];
-  const href = `${BASE}/?utm_source=email&amp;utm_medium=lifecycle&amp;utm_campaign=${mail.utm}&amp;lang=${lang}`;
+  // Optionaler Deep-Link je Mail (z. B. "feedback=1" öffnet in der App das
+  // Feedback-Formular; "checkout=annual" öffnet direkt den rabattierten Kauf).
+  const link = mail.link ? `${mail.link}&amp;` : "";
+  const href = `${BASE}/?${link}utm_source=email&amp;utm_medium=lifecycle&amp;utm_campaign=${mail.utm}&amp;lang=${lang}`;
 
   const banner = mail.banner
     ? `    <tr>

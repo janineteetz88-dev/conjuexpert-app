@@ -1,0 +1,21 @@
+{
+  "id": "quiz-irregular",
+  "pillar": "Daily Quiz",
+  "quiz": {
+    "intro": {"title": "Do you know<br>these <span class=\"r\">3 forms?</span> 🤔", "sub": "German irregular verbs — swipe & test yourself"},
+    "words": [
+      {"verb": "fahren", "tense": "Präsens", "person": "du", "hint": "stem change a → ä", "form": "fährst", "hlpart": "fährst", "tip": "The stem vowel takes an umlaut: fahren → du fährst."},
+      {"verb": "essen", "tense": "Perfekt", "person": "ich", "hint": "which auxiliary + participle?", "form": "habe gegessen", "hlpart": "gegessen", "tip": "„haben“ + gegessen — note the double s."},
+      {"verb": "haben", "tense": "Präteritum", "person": "ich", "hint": "fully irregular", "form": "hatte", "hlpart": "hatte", "tip": "haben → hatte. One of the first past forms to memorise."}
+    ],
+    "cta": {"title": "How many did<br>you get? 👇", "sub": "Practice every German verb — free"},
+    "beta": {
+      "title": "We need<br>your <span class=\"r\">feedback</span> 🙏",
+      "sub": "ConjuExpert is in beta — help us make it better.",
+      "code": "Code <span class=\"code\">FEEDBACK100</span> → 30 days Premium free",
+      "app": "conjuexpert.app · no download needed"
+    }
+  },
+  "caption": "Do you know these 3 German verb forms? 🤔\nfahren · essen · haben — swipe to check yourself!\n\nPractice every German verb — free 👉 conjuexpert.app\n🎁 Code FEEDBACK100 = 30 days Premium (first 100 only)",
+  "hashtags": ["#learngerman", "#germanverbs", "#deutschlernen", "#germangrammar", "#conjuexpert"]
+}

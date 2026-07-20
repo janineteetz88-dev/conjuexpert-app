@@ -1,0 +1,92 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face{font-family:'SG';src:url('assets/space.woff2') format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'SB';src:url('assets/schib.woff2') format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'JB';src:url('assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#211d15;--muted:#8b8068;--muted2:#b4a888;--surface:#fffdf6;--surface-2:#ece3d0;--bg:#f4eede;--border:rgba(60,48,24,.14);
+  --red:#ff3b5c;--rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+  --rainbow-full:linear-gradient(120deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff,#ff3b5c)}
+body{background:var(--bg);font-family:'SB',sans-serif}
+#stage{display:flex;flex-wrap:wrap;gap:20px;padding:20px}
+.slide{position:relative;width:1080px;height:1350px;overflow:hidden;background:
+  radial-gradient(120% 80% at 50% 8%,#fffdf6 0%,#f4eede 55%,#efe7d4 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 96px}
+.rframe{position:absolute;inset:0;z-index:20;pointer-events:none;padding:18px;background:var(--rainbow-full);background-size:100% 100%;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+  filter:drop-shadow(0 0 12px rgba(255,122,24,.5)) drop-shadow(0 0 24px rgba(10,132,255,.4))}
+.logo{position:absolute;top:48px;left:56px;display:flex;align-items:center;gap:13px;z-index:8}
+.logo .mark{width:48px;height:38px}
+.logo .w{font-family:'SB';font-weight:700;font-size:33px;letter-spacing:-.02em;color:var(--ink)}
+.logo .w b{font-weight:800;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pg{position:absolute;top:56px;right:60px;z-index:8;font-family:'JB';font-weight:700;font-size:24px;letter-spacing:.1em;color:var(--muted2)}
+.eyebrow{font-family:'JB';font-weight:700;font-size:26px;letter-spacing:.28em;text-transform:uppercase;color:var(--red);margin-bottom:28px}
+.signoff{position:absolute;left:0;right:0;bottom:74px;z-index:8;text-align:center;font-family:'JB';font-weight:700;font-size:29px;color:var(--ink)}
+.signoff .app{background:var(--ink);color:var(--surface);padding:9px 20px;border-radius:999px}
+.swipe{position:absolute;right:64px;bottom:150px;z-index:8;font-family:'JB';font-weight:700;font-size:26px;color:var(--red)}
+/* intro */
+h1{font-family:'SB';font-weight:800;font-size:96px;line-height:1.03;letter-spacing:-.02em;color:var(--ink)}
+h1 .r{color:var(--red)}
+.sub{font-family:'SB';font-weight:500;font-size:34px;color:var(--muted);margin-top:30px}
+/* quiz card (mirrors the app) — sand surface, rainbow top edge, red accents */
+.qcard{position:relative;width:820px;background:var(--surface);border:1px solid var(--border);border-radius:34px;padding:64px 48px 56px;box-shadow:0 34px 80px -26px rgba(70,55,25,.4);overflow:hidden}
+.qcard::before,.acard::before{content:"";position:absolute;top:0;left:0;right:0;height:10px;background:var(--rainbow)}
+.asked{font-family:'SB';font-weight:500;font-size:34px;color:var(--muted)}
+.asked b{color:var(--red);font-weight:700}
+.verb{font-family:'SB';font-weight:800;font-size:104px;letter-spacing:-.02em;color:var(--ink);margin:30px 0 18px}
+.hint{font-family:'JB';font-weight:700;font-size:26px;color:var(--muted2)}
+.think{font-family:'SB';font-weight:800;font-size:46px;color:var(--red);margin-top:34px}
+.langs{margin:22px 0 8px;border-bottom:2px solid var(--border);padding-bottom:26px;display:flex;flex-direction:column;gap:13px;text-align:left}
+.langs .cap{font-family:'JB';font-weight:700;font-size:20px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2);margin-bottom:4px}
+.langs .lrow{font-family:'SB';font-weight:500;font-size:27px;color:var(--muted);display:flex;align-items:center;gap:14px}
+.langs .chip{font-family:'JB';font-weight:700;font-size:20px;color:var(--ink);background:var(--surface-2);border-radius:8px;padding:5px 11px;min-width:52px;text-align:center}
+.langs .lw{color:var(--ink);font-weight:700}
+/* answer */
+.acard{position:relative;width:820px;background:var(--surface);border:1px solid var(--border);border-radius:34px;padding:64px 48px 56px;box-shadow:0 34px 80px -26px rgba(70,55,25,.4);overflow:hidden}
+.small{font-family:'SB';font-weight:500;font-size:32px;color:var(--muted)}
+.form{font-family:'JB';font-weight:700;font-size:84px;color:var(--ink);margin:26px 0 6px}
+.form .hl{background:#ffe3ea;color:var(--red);padding:2px 14px;border-radius:12px}
+.tip{font-family:'SB';font-weight:500;font-size:30px;color:var(--muted);margin-top:26px}
+.check{font-family:'SB';font-weight:800;font-size:40px;color:var(--red);margin-top:28px}
+.betabox{margin-top:44px;font-family:'JB';font-weight:700;font-size:40px;color:var(--ink);line-height:1.4}
+.betabox .code{background:var(--red);color:#fff;padding:8px 20px;border-radius:12px}
+.appline{margin-top:30px;font-family:'JB';font-weight:700;font-size:30px;letter-spacing:.02em;color:var(--muted)}
+</style></head>
+<body><div id="stage"></div>
+<script>
+const CFG = (window.__QUIZ || {
+  intro:{title:'Do you know<br>these <span class="r">3 forms?</span> 🤔', sub:'German verbs — swipe & test yourself'},
+  words:[
+    {verb:'nehmen', tense:'Präsens', person:'er / sie / es', hint:'stem change e → i', form:'nimmt', hlpart:'nimmt', tip:'Not „nehmt" — the stem vowel flips.'},
+    {verb:'gehen', tense:'Perfekt', person:'ich', hint:'which auxiliary?', form:'bin gegangen', hlpart:'bin', tip:'Movement verbs take „sein", not „haben".'},
+    {verb:'sein', tense:'Präteritum', person:'ich', hint:'fully irregular', form:'war', hlpart:'war', tip:'The most irregular verb — just memorise it.'},
+  ],
+  cta:{title:'How many did<br>you get? 👇', sub:'Practice every German verb — free'},
+  beta:{
+    title:'We need<br>your <span class="r">feedback</span> 🙏',
+    sub:"ConjuExpert is in beta — help us make it better.",
+    code:'Code <span class="code">FEEDBACK100</span> → 30 days Premium free',
+    app:'conjuexpert.app · no download needed'
+  }
+});
+const LOGO='<svg class="mark" viewBox="1 4 30 24"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg><span class="w">Conju<b>Expert</b></span>';
+const LANGS=[{c:'ES',w:'Buscamos'},{c:'EN',w:'We’re looking for'},{c:'FR',w:'Nous cherchons'},{c:'NL',w:'Wij zoeken'}];
+const TMAP={'Präsens':{ES:'Presente',EN:'Present',FR:'Présent',NL:'Tegenw. tijd'},'Perfekt':{ES:'P. perfecto',EN:'Perfect',FR:'Passé composé',NL:'V.t.t.'},'Präteritum':{ES:'Pretérito',EN:'Past',FR:'Prétérit',NL:'O.v.t.'}};
+const langsBand=(t)=>`<div class="langs"><div class="cap">in your language</div>${LANGS.map(l=>`<div class="lrow"><span class="chip">${l.c}</span><span class="lw">${l.w}</span> · ${(TMAP[t]||{})[l.c]||t}</div>`).join('')}</div>`;
+const chrome=(pg)=>`<div class="logo">${LOGO}</div><div class="pg">${pg}</div><div class="rframe"></div>`;
+const sign='<div class="signoff"><span class="app">conjuexpert.app</span> · FEEDBACK100</div>';
+const slides=[];
+slides.push(`<div class="slide">${chrome('QUIZ')}<div class="eyebrow">Daily Quiz</div><h1>${CFG.intro.title}</h1><div class="sub">${CFG.intro.sub}</div><div class="swipe">swipe →</div></div>`);
+CFG.words.forEach((w,i)=>{
+  slides.push(`<div class="slide">${chrome(`${i+1} / 3`)}<div class="eyebrow">Your turn</div>
+    <div class="qcard"><div class="asked">Gesucht: <b>${w.tense}</b> · ${w.person}</div>${langsBand(w.tense)}<div class="verb">${w.verb}</div><div class="hint">💡 ${w.hint}</div><div class="think">…?</div></div>
+    <div class="swipe">answer →</div></div>`);
+  slides.push(`<div class="slide">${chrome(`${i+1} / 3`)}<div class="eyebrow">Answer</div>
+    <div class="acard"><div class="small">${w.verb} · ${w.tense} · ${w.person}</div><div class="form">${w.form.replace(w.hlpart,`<span class="hl">${w.hlpart}</span>`)}</div><div class="tip">${w.tip}</div><div class="check">✓ got it?</div></div>
+    ${sign}</div>`);
+});
+slides.push(`<div class="slide">${chrome('★')}<div class="eyebrow">Your score</div><h1>${CFG.cta.title}</h1><div class="sub">${CFG.cta.sub}</div>${sign}</div>`);
+slides.push(`<div class="slide">${chrome('BETA')}<div class="eyebrow">We're in beta 🚀</div><h1>${CFG.beta.title}</h1><div class="sub">${CFG.beta.sub}</div><div class="betabox">${CFG.beta.code}</div><div class="appline">${CFG.beta.app}</div>${sign}</div>`);
+document.getElementById('stage').innerHTML=slides.join('');
+window.__count=slides.length;
+window.__ready=document.fonts.ready;
+</script>
+</body></html>
