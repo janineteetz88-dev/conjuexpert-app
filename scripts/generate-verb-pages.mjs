@@ -356,7 +356,7 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
   // ── GEO/AI-Citation blocks (deterministisch, keine KI) ──────────────────────
   const forms = extractForms(conjugated, pronouns);
   const auxWord = auxWordFor(lang, forms.perfect3);
-  const tldrBlock = tldrHtml({ verb, verbType, native: meta.native, meaning, forms });
+  const tldrBlock = tldrHtml({ lang, verb, verbType, native: meta.native, meaning, forms, site: SITE });
   const faq = buildFaq({ lang, verb, meaning, verbType, native: meta.native, forms, auxWord });
   const faqLdJson = faqLd(faq);
   const faqHtml = faqSectionHtml(verb, faq);

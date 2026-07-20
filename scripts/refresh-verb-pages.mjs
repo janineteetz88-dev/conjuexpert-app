@@ -360,7 +360,7 @@ function injectGeo(html, lang, verb) {
   const mm = html.match(/bedeutet\s+„([^"“”]+?)["“”]/);
   const meaning = mm ? mm[1].trim() : "";
 
-  const tldrBlock = tldrHtml({ verb, verbType, native, meaning, forms });
+  const tldrBlock = tldrHtml({ lang, verb, verbType, native, meaning, forms, site: SITE });
   const faq = buildFaq({ lang, verb, meaning, verbType, native, forms, auxWord });
   const faqHtml = faqSectionHtml(verb, faq);
   const related = pickRelated(ROOT, lang, verb);
@@ -384,7 +384,7 @@ function injectGeo(html, lang, verb) {
   html = html.replace("</head>", `<script type="application/ld+json">${faqLdJson}</script>\n</head>`);
 
   // 4. geoCss sicherstellen, falls das Stylesheet sie noch nicht enthält.
-  if (!html.includes(".verb-tldr {")) {
+  if (!html.includes(".verb-summary {")) {
     html = html.replace("</style>", geoCss() + "\n</style>");
   }
   return html;
@@ -393,7 +393,7 @@ function injectGeo(html, lang, verb) {
 // Idempotenter Gesamt-Transform: CI (falls nötig) + GEO (falls nötig).
 function transform(html, lang, verb) {
   const hasQz = html.includes('id="qz"');
-  const hasGeo = html.includes('class="verb-tldr"');
+  const hasGeo = html.includes('class="verb-summary"');
   if (hasQz && hasGeo) return null; // schon vollständig — überspringen
   if (!hasQz) html = ciTransform(html, lang, verb);
   if (!hasGeo) html = injectGeo(html, lang, verb);

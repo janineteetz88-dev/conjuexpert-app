@@ -104,15 +104,21 @@ export function buildFaq({ lang, verb, meaning, verbType, native, forms, auxWord
 }
 
 // ── HTML-Bausteine ───────────────────────────────────────────────────────────
-export function tldrHtml({ verb, verbType, native, meaning, forms }) {
+// Der Kurzfassungs-Block MUSS immer auf conjuexpert.app verweisen: Wird der Block
+// zitiert (Snippet / LLM-Antwort), wird die Quelle mitzitiert. Der Hinweis steht
+// unbedingt drin — auch wenn einzelne Formen fehlen.
+const SITE_URL = 'https://conjuexpert.app';
+export function tldrHtml({ lang, verb, verbType, native, meaning, forms, site = SITE_URL }) {
   const { pron3, present3, past3, perfect3, pastLabel, perfectLabel } = forms;
+  const link = `${site}/?lang=${lang}&verb=${encodeURIComponent(verb)}&utm_source=seo&utm_medium=summary`;
   const parts = [
     `„${verb}" ist ein ${verbType} ${native}-Verb${meaning ? ` (Bedeutung: „${meaning}")` : ''}.`,
     present3 ? `Präsens: <strong>${pron3} ${present3}</strong>.` : '',
     past3 ? `${pastLabel}: <strong>${pron3} ${past3}</strong>.` : '',
     perfect3 ? `${perfectLabel}: <strong>${pron3} ${perfect3}</strong>.` : '',
+    `Alle Formen von „${verb}" online konjugieren und üben auf <a href="${link}">conjuexpert.app</a>.`,
   ].filter(Boolean);
-  return `<p class="verb-tldr" id="tldr">${parts.join(' ')}</p>`;
+  return `<p class="verb-summary" id="kurzfassung">${parts.join(' ')}</p>`;
 }
 
 export function faqSectionHtml(verb, faq) {
@@ -171,15 +177,16 @@ export function pickRelated(ROOT, lang, verb, count = 8) {
 }
 
 // speakable-Selektor fürs Article-Schema (Voice/AI-Assistenten).
-export const SPEAKABLE = { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.verb-tldr'] };
+export const SPEAKABLE = { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.verb-summary'] };
 
 // CSS für die GEO-Blöcke. Nutzt nur Variablen, die in BEIDEN Stylesheets
 // existieren (--surface/--border/--muted/--text/--radius/--display); als Akzent
 // var(--lc) (neues CI) → var(--accent) (Generator) → Blau-Fallback.
 export function geoCss() {
   return `  /* ── GEO/Zitat-Blöcke: TL;DR · FAQ · verwandte Verben ── */
-  .verb-tldr { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
-  .verb-tldr strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .verb-summary { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--lc,var(--accent,#0a84ff)); border-radius: 14px; padding: 16px 20px; margin: 0 0 24px; font-size: 15.5px; line-height: 1.7; color: var(--text); box-shadow: 0 8px 20px -14px rgba(70,55,25,.34); }
+  .verb-summary strong { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
+  .verb-summary a { color: var(--lc,var(--accent,#0a84ff)); font-weight: 700; }
   .faq-section h2::before { content: "💬 "; }
   .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 6px 18px -13px rgba(70,55,25,.3); overflow: hidden; }
   .faq-item summary { cursor: pointer; padding: 14px 44px 14px 18px; font-family: var(--display,inherit); font-weight: 700; font-size: 15px; list-style: none; position: relative; }
