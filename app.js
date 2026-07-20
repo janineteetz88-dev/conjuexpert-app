@@ -17600,7 +17600,7 @@ function App() {
     onOpenGoal: () => { setGoalStep("choose"); setShowGoal(true); },
     onTab: handleTabSwitch,
     challengeEditable: hasPaidAccess()
-  }), /*#__PURE__*/React.createElement("footer", {
+  })), /*#__PURE__*/React.createElement("footer", {
     className: "legal-appfoot"
   }, /*#__PURE__*/React.createElement("a", {
     href: "/impressum",
@@ -17614,7 +17614,7 @@ function App() {
     href: "/datenschutz.html",
     target: "_blank",
     rel: "noopener"
-  }, "Datenschutz"))), /*#__PURE__*/React.createElement(AppTweaks, {
+  }, "Datenschutz")), /*#__PURE__*/React.createElement(AppTweaks, {
     t: t,
     setTweak: setTweak,
     name: name,
