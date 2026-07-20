@@ -32,6 +32,11 @@ jobs:
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: node scripts/generate-verb-pages.mjs
 
+      - name: Refresh CI + GEO auf den neuen Seiten
+        # Hebt die frisch generierten Seiten aufs aktuelle CI (Sand & Ink + Quiz)
+        # und stellt die GEO-Blöcke sicher. Idempotent, kein Netzwerk.
+        run: node scripts/refresh-verb-pages.mjs
+
       - name: Commit new pages
         run: |
           git config user.name "conjuexpert-bot"

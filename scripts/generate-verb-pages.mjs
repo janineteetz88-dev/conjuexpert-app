@@ -113,7 +113,7 @@ async function aiDirect(prompt, retries = 3) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${OPENAI_KEY}` },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
+          model: 'gpt-4.1-mini',
           messages: [{ role: 'user', content: prompt }],
           max_tokens: 600,
           temperature: 0.7,
