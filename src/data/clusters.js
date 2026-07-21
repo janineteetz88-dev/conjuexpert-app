@@ -198,6 +198,7 @@ export const clusters = [
       { slug: "/blog/verneinung-franzoesisch", title: "Die Verneinung im Französischen (ne … pas) und die Verbstellung", live: true },
       { slug: "/blog/verben-mit-praeposition-franzoesisch", title: "Französische Verben mit Präposition: penser à, parler de", live: true },
       { slug: "/blog/angleichung-participe-passe", title: "Die Angleichung des participe passé (accord) verständlich erklärt", live: true },
+      { slug: "/blog/passe-compose-avoir-etre", title: "Passé composé mit avoir oder être? Die Regel, die wirklich hilft", live: true },
     ],
   },
   {
@@ -209,6 +210,7 @@ export const clusters = [
     spokes: [
       { slug: "/blog/trennbare-verben-deutsch", title: "Trennbare Verben Deutsch: das Trenn-System", live: true },
       { slug: "/blog/perfekt-haben-oder-sein", title: "Perfekt mit haben oder sein? Die Regel, die wirklich hilft", live: true },
+      { slug: "/blog/perfekt-oder-praeteritum", title: "Perfekt oder Präteritum? Wann Deutsche welche Vergangenheit nutzen", live: true },
     ],
   },
   {
