@@ -10,5 +10,5 @@ await p.goto('file://'+path.join(DIR,'reel.html'),{waitUntil:'load'});await p.ev
 await p.evaluate(()=>{document.body.classList.add('go');window.__a=document.getAnimations();window.__a.forEach(a=>a.pause());});
 for(let i=0;i<N;i++){await p.evaluate(ms=>window.__a.forEach(a=>a.currentTime=ms),(i*1000)/FPS);await p.screenshot({path:path.join(fd,`f${String(i).padStart(4,'0')}.png`),clip:{x:0,y:0,width:1080,height:1920}});}
 await b.close();const mp4=path.join(DIR,outName);
-execFileSync('ffmpeg',['-y','-loglevel','error','-framerate',String(FPS),'-i',path.join(fd,'f%04d.png'),'-vf','format=yuv420p','-c:v','libx264','-preset','medium','-crf','19','-movflags','+faststart',mp4]);
+execFileSync('ffmpeg',['-y','-loglevel','error','-framerate',String(FPS),'-i',path.join(fd,'f%04d.png'),'-vf','format=yuv420p','-c:v','libx264','-preset','medium','-crf', '14','-movflags','+faststart',mp4]);
 fs.rmSync(fd,{recursive:true,force:true});console.log('OK',mp4);})().catch(e=>{console.error('FATAL',e);process.exit(1)});

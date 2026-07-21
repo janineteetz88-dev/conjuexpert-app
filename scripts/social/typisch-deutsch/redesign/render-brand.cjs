@@ -40,7 +40,7 @@ if (cfgArg && fs.existsSync(cfgArg)) cfg = JSON.parse(fs.readFileSync(cfgArg, 'u
   const mp4 = path.join(DIR, outName);
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS),
     '-i', path.join(framesDir, 'f%04d.png'), '-vf', 'format=yuv420p', '-c:v', 'libx264',
-    '-preset', 'medium', '-crf', '19', '-movflags', '+faststart', mp4]);
+    '-preset', 'medium', '-crf', '14', '-movflags', '+faststart', mp4]);
   fs.rmSync(framesDir, { recursive: true, force: true });
   console.log('OK', mp4, `(${N} frames, ${SECONDS}s)`);
 })().catch((e) => { console.error('FATAL', e); process.exit(1); });
