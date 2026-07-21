@@ -220,18 +220,25 @@
     const present = suffix(data.present);
     const praeteritum = suffix(data.praeteritum);
     const konjunktiv = suffix(data.konjunktiv);
+    // Konjunktiv I getrennt bauen (sonst hängt buildTenses ihn ungetrennt ans
+    // ganze Verb → "aufstehe" statt "stehe … auf"). Endungen sind immer regelmäßig.
+    const k1s = base === "sein" ? null : (base.endsWith("en") ? base.slice(0, -2) : base.endsWith("n") ? base.slice(0, -1) : base);
+    const konjunktiv1Base = base === "sein"
+      ? ["sei", "seist", "sei", "seien", "seiet", "seien"]
+      : [k1s + "e", k1s + "est", k1s + "e", base, k1s + "et", base];
+    const konjunktiv1 = suffix(konjunktiv1Base);
     // imperative: "steh früh auf"
     const imperativ = data.imperativ.map((f) => f === "—" ? "—" : (f.indexOf(" ") >= 0 ? `${f.split(" ")[0]} … ${prefix} ${f.split(" ").slice(1).join(" ")}`.trim() : `${f} … ${prefix}`));
     // participle: prefix + (ge)...  "aufgestanden", "ausgebreitet"
     const partizip = prefix + data.partizip;
     const aux = data.aux;
-    const dataS = { present, praeteritum, konjunktiv, imperativ, partizip, aux: auxOverride };
+    const dataS = { present, praeteritum, konjunktiv, konjunktiv1, imperativ, partizip, aux: auxOverride };
     const tenses = buildTenses(verb, dataS);
     // future/conditional use the full infinitive (attached) → already correct via `verb`
     if (isIrr) {
       const regReg = regularData(base);
       if (regReg) {
-        const regS = { present: regReg.present.map((f) => `${f} … ${prefix}`), praeteritum: regReg.praeteritum.map((f) => `${f} … ${prefix}`), konjunktiv: regReg.konjunktiv.map((f) => `${f} … ${prefix}`), imperativ: imperativ, partizip: prefix + regReg.partizip, aux: regReg.aux };
+        const regS = { present: regReg.present.map((f) => `${f} … ${prefix}`), praeteritum: regReg.praeteritum.map((f) => `${f} … ${prefix}`), konjunktiv: regReg.konjunktiv.map((f) => `${f} … ${prefix}`), konjunktiv1: konjunktiv1, imperativ: imperativ, partizip: prefix + regReg.partizip, aux: regReg.aux };
         const regT = buildTenses(verb, regS);
         tenses.forEach((t, i) => { t.reg = regT[i].forms; });
       }
@@ -289,9 +296,9 @@
     const konditional = wuerde.map(w => `${w} ${verb}`);
     const partizip1 = (verb.endsWith("n") ? verb : verb + "n") + "d";
     const k1stem = verb.endsWith("en") ? verb.slice(0, -2) : verb.endsWith("n") ? verb.slice(0, -1) : verb;
-    const konjunktiv1 = verb === "sein"
+    const konjunktiv1 = data.konjunktiv1 || (verb === "sein"
       ? ["sei","seist","sei","seien","seiet","seien"]
-      : [k1stem + "e", k1stem + "est", k1stem + "e", verb, k1stem + "et", verb];
+      : [k1stem + "e", k1stem + "est", k1stem + "e", verb, k1stem + "et", verb]);
     return [
       { id: "present", label: "Präsens", forms: data.present },
       { id: "past", label: "Präteritum", forms: data.praeteritum },
