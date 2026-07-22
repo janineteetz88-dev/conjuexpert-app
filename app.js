@@ -11163,7 +11163,10 @@ function VocabView({
     // In der Detail-Ansicht („Gemerkt") zurück zur Übersicht.
     if (focus && onListDeleted) onListDeleted();
   }
-  const langItems = items.filter(it => it.lang === lang && (!it.nat || it.nat === nativeName));
+  // Alle Wörter der Zielsprache zeigen — NICHT zusätzlich nach nat (Muttersprache)
+  // filtern. Sonst zählt die Übersicht (nat-agnostisch) z. B. „3 Wörter", während
+  // das Detail sie versteckt („keine sichtbar"). Zählung und Anzeige jetzt konsistent.
+  const langItems = items.filter(it => it.lang === lang);
   const shown = cat === "all" ? langItems : isGeneralCat(cat) ? langItems.filter(it => isGeneralCat(it.cat)) : langItems.filter(it => it.cat === cat);
 
   // ----- practice (self-typing, portions of 30) -----
