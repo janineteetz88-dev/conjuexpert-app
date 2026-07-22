@@ -7005,7 +7005,9 @@ function QuizView({
     const targetName = window.CONJ[lang].name;
     const nativeName = recall("kunju-native", "German");
     const lvl = skill === "advanced" ? "C1-level" : skill === "intermediate" ? "B1-level" : "very simple A1–A2";
-    const advConn = skill === "advanced" ? ` Make it a more complex sentence that naturally uses a subordinating connector (e.g. German: obwohl/trotzdem/damit/während/sodass; Spanish: aunque/a pesar de que/para que; French: bien que/quoique/afin que/pourtant; Dutch: hoewel/zodat/terwijl), like "Trotz der Umstände hielten sie durch."` : "";
+    // Nur GELEGENTLICH (nicht bei jedem Satz) einen Nebensatz-Konnektor verlangen —
+    // sonst fängt jeder Satz mit „Aunque …/Obwohl …" an. Der Rest bleibt abwechslungsreich.
+    const advConn = (skill === "advanced" && Math.random() < 0.35) ? ` Make it a more complex sentence that naturally uses a subordinating connector (e.g. German: obwohl/trotzdem/damit/während/sodass; Spanish: aunque/a pesar de que/para que; French: bien que/quoique/afin que/pourtant; Dutch: hoewel/zodat/terwijl), like "Trotz der Umstände hielten sie durch."` : "";
     const theme = allThemes.find(t => t.id === curTopic);
     // Eigene Liste als Thema (id "cat:<Name>") → NICHT „über <Name>" schreiben,
     // sondern die gespeicherten Wörter DIESER Liste im Satz üben.
@@ -7014,13 +7016,16 @@ function QuizView({
     if (catName) {
       try { catWords = (getVocab() || []).filter(v => v && v.lang === lang && (v.cat || generalCat()) === catName && v.term).map(v => String(v.term).trim()).filter(Boolean); } catch (e) {}
     }
-    // Eigene Liste MIT Wörtern → deren Wörter üben (kein „über <Name>"). Ein Custom-
-    // Thema OHNE Wörter (z. B. „football") → den Namen als Thema nutzen, sonst wird es ignoriert.
-    const topicTxt = (catName && catWords.length) ? "" : (theme && theme.topic ? ` The sentence should relate to: ${theme.topic}.` : "");
+    // Thema IMMER anwenden: eine eigene Liste (cat:) nutzt ihren NAMEN als Thema —
+    // egal ob sie Wörter hat (Wörter kommen zusätzlich dazu). So schlägt „Immobilien"
+    // sicher durch. „MUST be about" statt „should relate to", damit es im großen
+    // Prompt nicht untergeht.
+    const themeTopic = catName || (theme && theme.topic ? theme.topic : "");
+    const topicTxt = themeTopic ? ` The whole sentence MUST clearly be about the topic "${themeTopic}".` : "";
     let myWord = "", myWordTxt = "";
     if (catWords.length) {
       myWord = catWords[Math.floor(Math.random() * catWords.length)];
-      myWordTxt = ` The sentence MUST naturally include the learner's saved ${targetName} word "${myWord}".`;
+      myWordTxt = ` It MUST also naturally include the learner's saved ${targetName} word "${myWord}".`;
     } else {
       const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
       myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
@@ -7583,8 +7588,9 @@ function QuizView({
     if (catName) {
       try { catWords = (getVocab() || []).filter(v => v && v.lang === lang && (v.cat || generalCat()) === catName && v.term).map(v => String(v.term).trim()).filter(Boolean); } catch (e) {}
     }
-    // Custom-Thema OHNE Wörter → Name als Thema (nicht generisch), sonst wird es ignoriert.
-    const topic = (catName && catWords.length) ? "an everyday situation" : (theme && theme.topic ? theme.topic : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)]);
+    // Eigene Liste (cat:) → IMMER ihr Name als Thema (Wörter kommen separat dazu),
+    // damit z. B. „Immobilien" sicher durchschlägt statt generisch zu werden.
+    const topic = catName || (theme && theme.topic ? theme.topic : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)]);
     let myWord = "", myWordTxt = "";
     if (catWords.length) {
       myWord = catWords[Math.floor(Math.random() * catWords.length)];
@@ -7603,7 +7609,7 @@ function QuizView({
     const recent = recentSentRef.current[rkey] || [];
     const avoidTxt = attempt === 0 && recent.length ? ` Make it clearly DIFFERENT from these recent ones (no paraphrases): ${recent.slice(0, 10).map(s => `"${s}"`).join("; ")}.` : "";
     const seed = Math.floor(Math.random() * 100000);
-    const lvlTxt = skill === "advanced" ? " Use richer C1-level vocabulary and a more complex structure that naturally uses a subordinating connector (in the target language e.g. Spanish: aunque, a pesar de que, para que, sin que, mientras; German: obwohl, trotzdem, damit, während, sodass; French: bien que, quoique, afin que, pourtant; Dutch: hoewel, ofschoon, zodat, terwijl)." : skill === "intermediate" ? " Use everyday B1-level vocabulary." : " Use very simple A1\u2013A2 vocabulary and a short, easy structure (max 7 words).";
+    const lvlTxt = skill === "advanced" ? (" Use richer C1-level vocabulary." + (Math.random() < 0.35 ? " Give it a more complex structure with a natural subordinating connector (target language e.g. Spanish: aunque, a pesar de que, para que, mientras; German: obwohl, trotzdem, damit, während, sodass; French: bien que, quoique, afin que, pourtant; Dutch: hoewel, ofschoon, zodat, terwijl)." : "")) : skill === "intermediate" ? " Use everyday B1-level vocabulary." : " Use very simple A1\u2013A2 vocabulary and a short, easy structure (max 7 words).";
     const STYLES = [" Make it a normal statement.", " Make it a QUESTION ending with '?'.", " Make it an EXCLAMATION ending with '!'.", " Make it a short line of spoken dialogue (question or exclamation), as in a real conversation."];
     const styleTxt = STYLES[Math.floor(Math.random() * STYLES.length)];
     window.aiComplete(`Write ONE short, natural everyday sentence (max 10 words) in ${nativeName} about ${topic}.${tenseTxt}${lvlTxt}${styleTxt}${myWordTxt} Make it specific and fresh, NOT a clichéd textbook line (variety seed ${seed}).${avoidTxt} Both sentences MUST end with proper punctuation (. ! or ?). Then give its natural ${targetName} translation. Do NOT use any double-quote (") character inside either sentence. Reply with ONLY minified JSON and nothing else: {"n":"...","t":"..."}`).then(txt => {
