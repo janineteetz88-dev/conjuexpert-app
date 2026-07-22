@@ -11564,7 +11564,9 @@ function VocabView({
     className: "vimp-card",
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", { className: "vimp-h" }, tr("lch_title")),
-    /*#__PURE__*/React.createElement("input", { ref: lchNameRef, className: "lch-name" + (nameNeeded ? " need" : ""), value: newCatVal, placeholder: tr("lch_name_ph"), onChange: e => { setNewCatVal(e.target.value); if (nameNeeded) setNameNeeded(false); }, spellCheck: "false", autoComplete: "off" }),
+    /*#__PURE__*/React.createElement("div", { className: "lch-name-row" },
+      /*#__PURE__*/React.createElement("input", { ref: lchNameRef, className: "lch-name" + (nameNeeded ? " need" : ""), value: newCatVal, placeholder: tr("lch_name_ph"), onChange: e => { setNewCatVal(e.target.value); if (nameNeeded) setNameNeeded(false); }, onKeyDown: e => { if (e.key === "Enter") { e.preventDefault(); createEmptyList(); } }, spellCheck: "false", autoComplete: "off" }),
+      /*#__PURE__*/React.createElement("button", { className: "lch-name-go", type: "button", "aria-label": tr("lch_empty"), title: tr("lch_empty"), onClick: createEmptyList, dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='20' height='20' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 12h14M13 6l6 6-6 6'/></svg>" } })),
     nameNeeded ? /*#__PURE__*/React.createElement("div", { className: "lch-need" }, tr("lch_name_need")) : null,
     /*#__PURE__*/React.createElement("div", { className: "cross-h" }, tr("lch_how")),
     /*#__PURE__*/React.createElement("div", { className: "lch-opts" },
