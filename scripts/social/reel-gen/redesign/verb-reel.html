@@ -85,9 +85,7 @@ body.go .foot::before{animation:prog var(--dur) linear both}
       <div class="state sB"><div class="phone"><img class="strip" id="v-strip" src="" alt=""></div><div class="applabel" id="v-applabel"></div></div>
       <div class="state sC"><div class="card"><div class="exlead">For example</div><div class="ex" id="v-ex"></div><div class="extrans" id="v-extrans"></div></div></div>
       <div class="state sD"><div class="card">
-        <div class="dbig">ConjuExpert is the<br><span class="grad">missing piece</span> 🧩</div>
-        <div class="pill">conjuexpert.app</div>
-        <div class="code">Code <b>FEEDBACK100</b> · 30 days free</div>
+        <div class="dbig" id="v-payoff">Now use it in <span class="grad">every tense</span> 💪</div>
       </div></div>
     </div>
   </div>
@@ -104,7 +102,8 @@ const DEFAULT={
   appLabel:'real app · <b>every</b> tense',
   leadA:'This verb does <span class="r">two</span> things at once',
   ex:'Er <span class="a">f&auml;ngt</span> um 9 Uhr <span class="a">an</span>.',
-  exTrans:'= He starts at 9. (a→ä · „an" jumps to the end)'
+  exTrans:'= He starts at 9. (a→ä · „an" jumps to the end)',
+  payoff:'Now use it in <span class="grad">every tense</span> 💪'
 };
 const R=Object.assign({},DEFAULT,(window.__REEL||{}));
 const set=(id,h)=>{const el=document.getElementById(id);if(el)el.innerHTML=h;};

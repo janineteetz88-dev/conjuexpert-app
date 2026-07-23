@@ -1,0 +1,81 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face{font-family:'SB';src:url('../typisch-deutsch/assets/schib.woff2') format('woff2');font-weight:400 800;font-display:block}
+@font-face{font-family:'JB';src:url('../typisch-deutsch/assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
+:root{--ink:#211d15;--muted:#8b8068;--surface:#fffdf6;--bg:#f4eede;--border:rgba(60,48,24,.16);
+--rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);--shadow:0 30px 60px -30px rgba(70,55,25,.42);--dur:7s}
+*{margin:0;padding:0;box-sizing:border-box}
+#reel{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:'SB';
+ background:radial-gradient(120% 80% at 50% 14%,#fffdf6 0%,#f4eede 55%,#efe7d4 100%)}
+.top{position:absolute;top:0;left:0;right:0;height:14px;background:var(--rainbow);z-index:5}
+.glow{position:absolute;top:-220px;left:50%;transform:translateX(-50%);width:1200px;height:600px;background:var(--rainbow);filter:blur(150px);opacity:.12;border-radius:50%;z-index:0}
+.state{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 100px;text-align:center;opacity:0}
+.eyebrow{display:inline-flex;align-items:center;gap:14px;font-family:'JB';font-weight:700;font-size:30px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);background:var(--surface);border:1px solid var(--border);padding:16px 30px;border-radius:999px;box-shadow:0 8px 22px -12px rgba(70,55,25,.3);margin-bottom:56px}
+.eyebrow .g{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow svg{width:44px;height:35px}
+.small{font-family:'SB';font-weight:700;font-size:52px;color:var(--muted);margin-bottom:16px}
+.big{font-family:'SB';font-weight:800;font-size:112px;line-height:1.03;letter-spacing:-.03em;color:var(--ink)}
+.big b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.app{font-family:'JB';font-weight:700;font-size:60px;color:var(--muted);letter-spacing:-.01em}
+.sub{margin-top:34px;font-family:'SB';font-weight:600;font-size:46px;color:#4a4236;max-width:22ch}
+.sub b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.mini{margin-top:22px;font-family:'JB';font-weight:700;font-size:34px;color:var(--muted)}
+.rows{display:flex;flex-direction:column;gap:40px;text-align:left;width:100%;max-width:780px}
+.row{display:flex;align-items:center;gap:34px}
+.row .ic{font-size:78px;width:96px;text-align:center}
+.row .tx{font-family:'SB';font-weight:700;font-size:52px;color:var(--ink)}
+.btn{margin-top:70px;display:inline-flex;align-items:center;gap:22px;background:var(--ink);color:#fff;font-family:'SB';font-weight:800;font-size:64px;padding:38px 74px;border-radius:999px;box-shadow:var(--shadow)}
+.btn .plus{width:66px;height:66px;border-radius:50%;background:var(--rainbow);display:flex;align-items:center;justify-content:center;font-size:46px;color:#fff}
+.foot{position:absolute;left:0;right:0;bottom:360px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.logo{display:flex;align-items:center;gap:14px}.logo svg{width:56px;height:44px}
+.logo .w{font-family:'SB';font-weight:800;font-size:44px;color:var(--ink)}
+.logo .w b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.url{font-family:'JB';font-weight:700;font-size:30px;color:var(--muted)}
+/* timeline: S1 who 0-33% · S2 why 33-62% · S3 follow 62-100% */
+body.go .s1{animation:s1 var(--dur) ease both}
+body.go .s2{animation:s2 var(--dur) ease both}
+body.go .s3{animation:s3 var(--dur) ease both}
+@keyframes s1{0%{opacity:0;transform:translateY(26px)}4%{opacity:1;transform:none}28%{opacity:1;transform:none}33%{opacity:0;transform:translateY(-22px)}100%{opacity:0}}
+@keyframes s2{0%{opacity:0}33%{opacity:0}37%{opacity:1;transform:none}57%{opacity:1}62%{opacity:0;transform:translateY(-22px)}100%{opacity:0}}
+@keyframes s3{0%{opacity:0}62%{opacity:0}66%{opacity:1;transform:none}100%{opacity:1}}
+body.go .s2 .row{animation:rin .5s ease both}
+body.go .s2 .r1{animation-delay:calc(var(--dur)*.40)}
+body.go .s2 .r2{animation-delay:calc(var(--dur)*.45)}
+body.go .s2 .r3{animation-delay:calc(var(--dur)*.50)}
+@keyframes rin{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+body.go .s3 .btn{animation:pulse 1.5s ease-in-out calc(var(--dur)*.72) infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+</style></head>
+<body>
+<div id="reel">
+  <div class="top"></div><div class="glow"></div>
+  <!-- S1 WHO -->
+  <div class="state s1">
+    <div class="eyebrow"><svg viewBox="1 4 30 24" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg><span class="g">NEW HERE? 👋</span></div>
+    <div class="small">This is</div>
+    <div class="big">Conju<b>Expert</b><span class="app">.app</span></div>
+    <div class="sub">your German <b>verb-conjugation</b> trainer</div>
+    <div class="mini">5 languages · your own topics</div>
+  </div>
+  <!-- S2 WHY -->
+  <div class="state s2">
+    <div class="eyebrow"><span class="g">WHY FOLLOW?</span></div>
+    <div class="big" style="font-size:96px;margin-bottom:60px">Every day<br>you get 👇</div>
+    <div class="rows">
+      <div class="row r1"><div class="ic">🌈</div><div class="tx">A new German verb</div></div>
+      <div class="row r2"><div class="ic">💬</div><div class="tx">A quick quiz to test yourself</div></div>
+      <div class="row r3"><div class="ic">🎯</div><div class="tx">One trick that actually sticks</div></div>
+    </div>
+  </div>
+  <!-- S3 FOLLOW -->
+  <div class="state s3">
+    <div class="eyebrow"><span class="g">READY?</span></div>
+    <div class="big">Follow for your<br><b>daily German</b> 🌈</div>
+    <div class="btn"><span class="plus">+</span>Follow</div>
+    <div class="foot">
+      <div class="logo"><svg viewBox="1 4 30 24" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg><span class="w">Conju<b>Expert</b></span></div>
+      <div class="url">conjuexpert.app · code FEEDBACK100</div>
+    </div>
+  </div>
+</div>
+<script>window.__ready=document.fonts?document.fonts.ready:Promise.resolve();</script>
+</body></html>
