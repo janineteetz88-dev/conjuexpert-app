@@ -9,17 +9,22 @@
 > der Nachmittags-**Comment-Quiz** ist der Kommentar-Treiber (der Algorithmus belohnt Antworten bei neuen
 > Accounts). CTA durchgehend **Follow-first**. Quiz immer auf **unser Thema: Verb-Konjugation** — mit
 > Level-Label (A1–B2) und, bei B1–B2, Konnektoren + Nebensatz-Wortstellung.
+>
+> **⚠️ Produktion in Schritten:** Erst **nur Tag 1–3** produzieren & einplanen, damit wir nach den ersten
+> Tagen **nachjustieren** können (welches Level, welche Säule, welche Uhrzeit zieht?). Tag 4–6 sind als
+> Configs/Sets **fertig vorbereitet**, werden aber erst gerendert & eingeplant, wenn wir aus Tag 1–3 gelernt
+> haben. Kein Voraus-Produzieren einer ganzen Woche.
 
 ## Tagesplan
 
 | Tag | 🌅 ~11:00 — Reel | 🌇 ~17:00 — Comment-Quiz 💬 (Level) |
 |-----|------------------|--------------------------------------|
-| **Mo 27.** | 🌈 Verb: **werden** (become · future · passive) | **A1** Perfekt — „Ich ___ nach Hause gelaufen." (bin/habe) |
-| **Di 28.** | 🐷 Typisch: **„mein Schwein pfeift"** | **B1** Konjunktiv II — „Wenn ich Zeit ___, würde ich…" (hatte/hätte) |
-| **Mi 29.** | 🌈 Verb: **nehmen** (e→i) | **B2** Plusquamperfekt — „Nachdem er gegessen ___, …" (hätte/hatte) |
-| **Do 30.** | 🍅 Typisch: **„Tomaten auf den Augen"** | **A2** Partizip II — „Hast du schon ___?" (genommen/genehmt) |
-| **Fr 31.** | 🌈 Verb: **geben** (e→i · „es gibt") | **B1** Präteritum — „Ich ___ nicht kommen, weil…" (könnte/konnte) |
-| **Sa 01.** | 🚉 Typisch: **„nur Bahnhof"** | **B2** Präteritum — „Als ich kam, ___ alle weg." (waren/wären) |
+| **Mo 27.** ✅ jetzt | 🌈 Verb: **werden** (become · future · passive) | **A1** Perfekt — „Ich ___ nach Hause gelaufen." (bin/habe) |
+| **Di 28.** ✅ jetzt | 🐷 Typisch: **„mein Schwein pfeift"** | **B1** Konjunktiv II — „Wenn ich Zeit ___, würde ich…" (hatte/hätte) |
+| **Mi 29.** ✅ jetzt | 🌈 Verb: **nehmen** (e→i) | **B2** Plusquamperfekt — „Nachdem er gegessen ___, …" (hätte/hatte) |
+| Do 30. 🕓 vorbereitet | 🍅 Typisch: **„Tomaten auf den Augen"** | **A2** Partizip II — „Hast du schon ___?" (genommen/genehmt) |
+| Fr 31. 🕓 vorbereitet | 🌈 Verb: **geben** (e→i · „es gibt") | **B1** Präteritum — „Ich ___ nicht kommen, weil…" (könnte/konnte) |
+| Sa 01. 🕓 vorbereitet | 🚉 Typisch: **„nur Bahnhof"** | **B2** Präteritum — „Als ich kam, ___ alle weg." (waren/wären) |
 
 **Sendezeiten je Plattform:** IG 11:00/17:00 · TikTok 11:05/17:05 · Facebook 11:00/17:00 · YouTube 11:15/17:15.
 

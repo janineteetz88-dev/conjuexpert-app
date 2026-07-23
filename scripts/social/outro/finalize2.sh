@@ -22,7 +22,9 @@ ffmpeg -y -loglevel error -loop 1 -t 0.5 -i "$COVER" -i "$BODY" -i "$OUTRO" -fil
 
 DUR="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$CAT")"
 FADE_ST="$(awk "BEGIN{d=$DUR-1; if(d<0)d=0; printf \"%.3f\", d}")"
-ffmpeg -y -loglevel error -i "$CAT" -i "$MUSIC" -filter_complex \
+# Musik loopen (-stream_loop), damit sie IMMER mindestens so lang wie das Video ist,
+# dann exakt auf Videolänge trimmen + 1s Fade-out. So kürzt -shortest nie das Video.
+ffmpeg -y -loglevel error -i "$CAT" -stream_loop -1 -i "$MUSIC" -filter_complex \
   "[1:a]atrim=0:${DUR},afade=t=out:st=${FADE_ST}:d=1,aformat=sample_rates=48000:channel_layouts=stereo[a]" \
   -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k -shortest -movflags +faststart "$OUT"
 echo "OK -> $OUT ($DUR s)"
