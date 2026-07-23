@@ -199,6 +199,7 @@ export const clusters = [
       { slug: "/blog/verben-mit-praeposition-franzoesisch", title: "Französische Verben mit Präposition: penser à, parler de", live: true },
       { slug: "/blog/angleichung-participe-passe", title: "Die Angleichung des participe passé (accord) verständlich erklärt", live: true },
       { slug: "/blog/passe-compose-avoir-etre", title: "Passé composé mit avoir oder être? Die Regel, die wirklich hilft", live: true },
+      { slug: "/blog/unregelmaessige-verben-franzoesisch", title: "Die wichtigsten unregelmäßigen französischen Verben: être, avoir, aller, faire", live: true },
     ],
   },
   {
@@ -226,6 +227,7 @@ export const clusters = [
     spokes: [
       { slug: "/blog/irregular-verbs-englisch", title: "Unregelmäßige Verben Englisch: 4 Gruppen, die das Chaos beenden", live: true },
       { slug: "/blog/present-continuous-simple-present", title: "Present continuous vs. simple present: -ing oder nicht?", live: true },
+      { slug: "/blog/present-perfect-vs-simple-past", title: "Present Perfect vs. Simple Past: der Klassiker für deutsche Englischlerner", live: true },
     ],
   },
   {
@@ -270,6 +272,16 @@ export const clusters = [
     hub: null,
     spokes: [
       { slug: "/blog/franzoesische-verbgruppen", title: "Die drei französischen Verbgruppen: -er, -ir, -re konjugieren", live: true },
+    ],
+  },
+  {
+    id: "franzsisch-verb-gruppen",
+    lang: "fr",
+    label: "Französisch",
+    color: "#a557ff",
+    hub: null,
+    spokes: [
+      { slug: "/blog/reflexive-verben-franzoesisch", title: "Reflexive Verben im Französischen (se lever, s'appeler)", live: true },
     ],
   },
 ];
