@@ -20,6 +20,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { socialRow } from "./lib/social.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -65,6 +66,7 @@ function footer() {
           <span data-l="de">Der KI-Konjugationstrainer für 5 Sprachen - Quiz, Merken &amp; Lernen.</span>
           <span data-l="en">The AI conjugation trainer for 5 languages - quiz, save &amp; learn.</span>
         </p>
+        ${socialRow({ mt: 16 }).replace('justify-content:center', 'justify-content:flex-start')}
       </div>
       <div class="links">
         <div>

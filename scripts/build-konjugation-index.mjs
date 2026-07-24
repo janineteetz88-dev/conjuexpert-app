@@ -19,6 +19,7 @@
 import { readdirSync, statSync, writeFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+import { socialRow } from "./lib/social.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ORIGIN = "https://conjuexpert.app";
@@ -253,6 +254,7 @@ ${listItems}
 
 <footer class="site-footer">
   <p>© ConjuExpert · <a href="${ORIGIN}/landing/">Über uns</a> · <a href="${ORIGIN}/agb.html">AGB</a> · <a href="${ORIGIN}/datenschutz.html">Datenschutz</a> · <a href="${ORIGIN}/impressum.html">Impressum</a> · <a href="${ORIGIN}/barrierefreiheit.html">Barrierefreiheit</a></p>
+  ${socialRow({ mt: 12 })}
 </footer>
 
 <script>(function(){var BR=["#ff5a4d","#ff9e2c","#ffcf3f","#5bbf6a","#3aa6c9"];document.querySelectorAll("[data-mark]").forEach(function(m){for(var i=0;i<5;i++){var s=document.createElement("i");s.style.background=BR[i];m.appendChild(s);}});})();</script>
