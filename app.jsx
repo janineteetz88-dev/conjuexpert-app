@@ -436,6 +436,23 @@ function conceptTranslate(verb, from, to) {
   for (const row of CONCEPTS) {if (row[fi] === v) return row[ti];}
   return null;
 }
+// Cross-language rescue: input is a known verb in ANOTHER language than the
+// selected one → return the target-language equivalent + source language code.
+// Lets German "sein" typed while learning Dutch resolve to "zijn" instead of the
+// engine fabricating a bogus regular conjugation.
+function conceptFromAny(verb, to) {
+  const v = (verb || "").trim().toLowerCase();
+  const ti = _LIDX[to];
+  if (!v || ti == null) return null;
+  const codeOf = ["de", "es", "en", "nl", "fr"];
+  for (const row of CONCEPTS) {
+    if (row[ti] === v) return null; // already the target-language verb
+    for (let j = 0; j < row.length; j++) {
+      if (j !== ti && row[j] === v && row[ti] && row[ti] !== v) return { base: row[ti], fromLang: codeOf[j] };
+    }
+  }
+  return null;
+}
 
 /* Verb meaning in the learner's mother tongue, when we can know it instantly
    (same language, a built-in cross-language equivalent, or the English gloss). */
@@ -861,7 +878,7 @@ function DeconjBanner({ deconj, lang, activeInf, onView }) {
 }
 
 /* ---------- Conjugate view ---------- */
-function ConjugateView({ engine, lang, verb, setVerb, result, onConjugate, t, favs, toggleFav, history, clearHistory, pickVerb, adVisible, onAdClick, onAdDismiss, name, translating, deconj, activeInf, onViewInf }) {
+function ConjugateView({ engine, lang, verb, setVerb, result, onConjugate, t, favs, toggleFav, history, clearHistory, pickVerb, adVisible, onAdClick, onAdDismiss, name, translating, deconj, xlate, activeInf, onViewInf }) {
   const inputRef = useRef(null);
   const diceRef = useRef([]);
   const [hidden, setHidden] = useState({});
@@ -971,6 +988,7 @@ function ConjugateView({ engine, lang, verb, setVerb, result, onConjugate, t, fa
 
       {result && !result.error &&
       <div className="resultwrap">
+          {xlate && <div className="xlate-note" style={{ fontSize: "13.5px", color: "var(--muted)", background: "var(--surface-2, #ece3d0)", border: "1px solid var(--border)", borderRadius: "12px", padding: "9px 13px", margin: "0 0 12px", lineHeight: 1.5 }}>„{xlate.fromVerb}“ {UILANG === "en" ? "is " + xlate.fromName + " — showing the matching verb " : "ist " + xlate.fromName + " — hier das passende Verb "}<b>„{xlate.base}“</b></div>}
           {deconj && <DeconjBanner deconj={deconj} lang={lang} activeInf={activeInf} onView={onViewInf} />}
           <div className="resulthead" style={{ "--lc": LANG_META[lang].color }}>
             <div className="rh-top">
@@ -3327,6 +3345,7 @@ function App() {
   const [result, setResult] = useState(null);
   const [deconj, setDeconj] = useState(null);
   const [activeInf, setActiveInf] = useState(null);
+  const [xlate, setXlate] = useState(null);
   const [tab, setTab] = useState("conjugate");
   const [lastVerb, setLastVerb] = useState("");
   const [favs, setFavs] = useState(() => recall("kunju-favs", []));
@@ -3454,7 +3473,8 @@ function App() {
 
   function onConjugate(v) {
     const raw = (v || "").trim();
-    if (!raw) {setResult(null);setDeconj(null);setActiveInf(null);return;}
+    if (!raw) {setResult(null);setDeconj(null);setActiveInf(null);setXlate(null);return;}
+    setXlate(null);
 
     // 0) Reflexive infinitive (lavarse / se laver / sich freuen / zich …) → conjugate directly.
     const Rfx = REFLEX[lang];
@@ -3477,6 +3497,16 @@ function App() {
       setDeconj(dq);setActiveInf(target.base);
       setVerb(target.base); // auto-switch the field to the infinitive
       finishConjugate(lang, target.base, conjugateMaybeReflexive(lang, target.base));
+      return;
+    }
+    // 2.5) Not a target-language verb, but a known verb in another language
+    //      (e.g. German "sein" typed while learning Dutch) → translate & conjugate.
+    const xl = conceptFromAny(raw, lang);
+    if (xl && xl.base !== raw.trim().toLowerCase()) {
+      setDeconj(null);setActiveInf(null);
+      setXlate({ fromVerb: raw.trim().toLowerCase(), fromName: (window.CONJ[xl.fromLang] || {}).name || xl.fromLang, base: xl.base });
+      setVerb(xl.base);
+      finishConjugate(lang, xl.base, conjugateMaybeReflexive(lang, xl.base));
       return;
     }
     // 3) Nothing recognised → fall back (shows the engine's guidance/error).
@@ -3551,7 +3581,7 @@ function App() {
         <ConjugateView engine={engine} lang={lang} verb={verb} setVerb={setVerb} result={result} onConjugate={onConjugate}
         t={t} favs={favs} toggleFav={toggleFav} history={history} clearHistory={clearHistory} pickVerb={pickVerb}
         adVisible={adVisible} onAdClick={onAdClick} onAdDismiss={onAdDismiss} name={name} translating={translating}
-        deconj={deconj} activeInf={activeInf} onViewInf={viewInfinitive} />
+        deconj={deconj} xlate={xlate} activeInf={activeInf} onViewInf={viewInfinitive} />
         }
         {tab === "quiz" && <QuizView lang={lang} favs={favs} toggleFav={toggleFav} sound={t.sound} skill={skill} onStudy={pickVerb} onActivity={onActivity} />}
         {tab === "grammar" && <LearnView lang={lang} engine={engine} sound={t.sound} native={native} setNative={setNat} onStudy={pickVerb} />}
