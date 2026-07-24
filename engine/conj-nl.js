@@ -212,7 +212,7 @@
     return {
       present: [stem, stT, stT, verb, verb, verb],
       past: [pastSing, pastSing, pastSing, pastPlur, pastPlur, pastPlur],
-      subjunctive: [stem + "e", stem + "e", stem + "e", verb, verb, verb],
+      subjunctive: [verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb, verb, verb], // Aanvoegende wijs = Infinitiv minus -n (hebben→hebbe, lopen→lope)
       imperative: ["—", stem, stem, "laten we " + verb, stT, stT + " u"],
       participle,
       aux: "hebben"
