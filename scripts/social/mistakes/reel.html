@@ -1,0 +1,81 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face{font-family:'SB';src:url('../typisch-deutsch/assets/schib.woff2') format('woff2');font-weight:400 800;font-display:block}
+@font-face{font-family:'JB';src:url('../typisch-deutsch/assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
+:root{--ink:#211d15;--muted:#8b8068;--surface:#fffdf6;--surface-2:#ece3d0;--bg:#f4eede;
+  --border:rgba(60,48,24,.14);--red:#ff3b5c;--green:#1faa59;
+  --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
+  --shadow:0 30px 60px -30px rgba(70,55,25,.42);--shadow-sm:0 8px 22px -12px rgba(70,55,25,.3);--dur:13s}
+*{margin:0;padding:0;box-sizing:border-box}
+#reel{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--bg);font-family:'SB',sans-serif}
+.glow{position:absolute;top:-220px;left:50%;transform:translateX(-50%);width:1200px;height:620px;background:var(--rainbow);filter:blur(150px);opacity:.10;border-radius:50%;z-index:0}
+body.go .glow{animation:drift var(--dur) ease-in-out infinite alternate}
+@keyframes drift{to{transform:translateX(-50%) translateY(40px) scale(1.08)}}
+.wrap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;padding:140px 88px 210px}
+.eyebrow{display:inline-flex;align-items:center;gap:14px;font-family:'JB';font-weight:700;font-size:29px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:var(--surface);border:1px solid var(--border);padding:15px 28px;border-radius:999px;box-shadow:var(--shadow-sm);opacity:0}
+.eyebrow .grad{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow .lvl{color:var(--green);border-left:1.5px solid var(--border);padding-left:14px}
+body.go .eyebrow{animation:pop .5s cubic-bezier(.2,.9,.25,1) .05s both}
+@keyframes pop{from{opacity:0;transform:translateY(-14px) scale(.96)}to{opacity:1;transform:none}}
+.lead{margin-top:36px;font-family:'SB';font-weight:800;font-size:66px;line-height:1.08;color:var(--ink);letter-spacing:-.02em;text-align:center;opacity:0}
+.lead .r{color:var(--red)}
+body.go .lead{animation:fly .6s cubic-bezier(.2,.9,.25,1) .45s both}
+@keyframes fly{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+.card{position:relative;overflow:hidden;margin-top:34px;width:100%;background:var(--surface);border:1px solid var(--border);border-radius:32px;box-shadow:var(--shadow);padding:48px 46px;opacity:0}
+.card .bar{position:absolute;top:0;left:0;right:0;height:10px}
+.card.wrong .bar{background:var(--red)}
+.card.right .bar{background:var(--green)}
+.mark{display:inline-flex;align-items:center;gap:16px;font-family:'JB';font-weight:700;font-size:30px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:20px}
+.card.wrong .mark{color:var(--red)}
+.card.right .mark{color:var(--green)}
+.mark .ic{font-size:40px}
+.sentence{font-family:'JB';font-weight:700;font-size:52px;line-height:1.32;color:var(--ink)}
+.card.wrong .sentence{color:#8b8068;text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:6px}
+.card.right .sentence .fix{background:linear-gradient(180deg,transparent 58%,#bff0d0 58% 94%,transparent 94%);padding:0 8px;color:var(--ink);font-weight:800}
+body.go .card.wrong{animation:cin .55s cubic-bezier(.2,.9,.25,1) 1.15s both}
+body.go .card.right{animation:cin .55s cubic-bezier(.2,.9,.25,1) 2.5s both}
+@keyframes cin{from{opacity:0;transform:translateY(40px) scale(.98)}to{opacity:1;transform:none}}
+.rule{margin-top:30px;width:100%;font-family:'SB';font-weight:600;font-size:38px;line-height:1.4;color:#4a4236;text-align:center;opacity:0}
+.rule b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+body.go .rule{animation:fly .6s cubic-bezier(.2,.9,.25,1) 3.9s both}
+.cta{margin-top:auto;margin-bottom:36px;width:100%;display:flex;justify-content:center;opacity:0}
+body.go .cta{animation:fly .6s cubic-bezier(.2,.9,.25,1) 4.9s both}
+.cta .banner{font-family:'SB';font-weight:800;font-size:50px;color:#fff;background:var(--ink);border-radius:999px;padding:28px 52px;box-shadow:var(--shadow);text-align:center;line-height:1.15}
+body.go .cta .banner{animation:pulse 1.6s ease-in-out 5.5s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+.foot{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:0 90px 54px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:14px}.logo svg{width:52px;height:42px}
+.logo .w{font-family:'SB';font-weight:700;font-size:40px;color:var(--ink)}
+.logo .w b{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.url{font-family:'JB';font-weight:700;font-size:32px;color:var(--muted)}
+.prog2{position:absolute;left:90px;right:90px;bottom:130px;height:4px;background:var(--rainbow);border-radius:999px;transform:scaleX(0);transform-origin:left;z-index:4}
+body.go .prog2{animation:pg var(--dur) linear both}
+@keyframes pg{to{transform:scaleX(1)}}
+</style></head>
+<body>
+<div id="reel">
+  <div class="glow"></div>
+  <div class="wrap">
+    <div class="eyebrow">❌ ➡️ ✅ <span class="grad">Common Mistake</span><span class="lvl" id="m-lvl">A2</span></div>
+    <div class="lead" id="m-hook"></div>
+    <div class="card wrong"><div class="bar"></div><div class="mark"><span class="ic">❌</span>Don’t say</div><div class="sentence" id="m-wrong"></div></div>
+    <div class="card right"><div class="bar"></div><div class="mark"><span class="ic">✅</span>Say</div><div class="sentence" id="m-right"></div></div>
+    <div class="rule" id="m-rule"></div>
+    <div class="cta"><div class="banner">☆ Save this<br>before you forget!</div></div>
+  </div>
+  <div class="prog2"></div>
+  <div class="foot">
+    <div class="logo"><svg viewBox="1 4 30 24" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg><span class="w">Conju<b>Expert</b></span></div>
+    <div class="url">conjuexpert.app</div>
+  </div>
+</div>
+<script>
+const DEFAULT={level:"A2",hook:'You’re saying this <span class="r">wrong</span> 🙈',
+  wrong:'Ich will Deutsch <span>zu</span> lernen.',
+  right:'Ich will Deutsch <span class="fix">lernen</span>.',
+  rule:'After a modal verb, the 2nd verb goes to the end — <b>no „zu"</b>.'};
+const C=Object.assign({},DEFAULT,(window.__M||{}));
+const set=(id,h)=>{const el=document.getElementById(id);if(el)el.innerHTML=h;};
+set('m-lvl',C.level);set('m-hook',C.hook);set('m-wrong',C.wrong);set('m-right',C.right);set('m-rule',C.rule);
+window.__ready=document.fonts?document.fonts.ready:Promise.resolve();
+</script>
+</body></html>
