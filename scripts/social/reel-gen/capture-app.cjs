@@ -52,6 +52,8 @@ const waitServer = async (url, tries = 60) => {
       try {
         localStorage.setItem('kunju-langorder', JSON.stringify(['de', 'es', 'en', 'nl', 'fr']));
         localStorage.setItem('kunju-lang', 'de');
+        // pre-answer the cookie/consent banner so it never overlays the scroll capture
+        localStorage.setItem('ce-consent', 'denied');
       } catch {}
     });
     await page.goto(`http://127.0.0.1:${PORT}/?lang=de&verb=${encodeURIComponent(verb)}`, { waitUntil: 'networkidle' });
