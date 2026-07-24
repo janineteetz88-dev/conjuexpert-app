@@ -2,7 +2,7 @@
 @font-face{font-family:'SB';src:url('../typisch-deutsch/assets/schib.woff2') format('woff2');font-weight:400 800;font-display:block}
 @font-face{font-family:'JB';src:url('../typisch-deutsch/assets/mono.woff2') format('woff2');font-weight:400 700;font-display:block}
 :root{--ink:#211d15;--muted:#8b8068;--surface:#fffdf6;--bg:#f4eede;--border:rgba(60,48,24,.16);
---rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);--shadow:0 30px 60px -30px rgba(70,55,25,.42);--dur:7s}
+--rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);--shadow:0 30px 60px -30px rgba(70,55,25,.42);--dur:12s}
 *{margin:0;padding:0;box-sizing:border-box}
 #reel{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:'SB';
  background:radial-gradient(120% 80% at 50% 14%,#fffdf6 0%,#f4eede 55%,#efe7d4 100%)}
@@ -34,15 +34,15 @@
 body.go .s1{animation:s1 var(--dur) ease both}
 body.go .s2{animation:s2 var(--dur) ease both}
 body.go .s3{animation:s3 var(--dur) ease both}
-@keyframes s1{0%{opacity:0;transform:translateY(26px)}4%{opacity:1;transform:none}28%{opacity:1;transform:none}33%{opacity:0;transform:translateY(-22px)}100%{opacity:0}}
-@keyframes s2{0%{opacity:0}33%{opacity:0}37%{opacity:1;transform:none}57%{opacity:1}62%{opacity:0;transform:translateY(-22px)}100%{opacity:0}}
-@keyframes s3{0%{opacity:0}62%{opacity:0}66%{opacity:1;transform:none}100%{opacity:1}}
-body.go .s2 .row{animation:rin .5s ease both}
-body.go .s2 .r1{animation-delay:calc(var(--dur)*.40)}
-body.go .s2 .r2{animation-delay:calc(var(--dur)*.45)}
-body.go .s2 .r3{animation-delay:calc(var(--dur)*.50)}
+@keyframes s1{0%{opacity:0;transform:translateY(26px)}4%{opacity:1;transform:none}24%{opacity:1;transform:none}27%{opacity:0;transform:translateY(-22px)}100%{opacity:0}}
+@keyframes s2{0%{opacity:0}27%{opacity:0}31%{opacity:1;transform:none}62%{opacity:1}66%{opacity:0;transform:translateY(-22px)}100%{opacity:0}}
+@keyframes s3{0%{opacity:0}66%{opacity:0}70%{opacity:1;transform:none}100%{opacity:1}}
+body.go .s2 .row{animation:rin .6s ease both}
+body.go .s2 .r1{animation-delay:calc(var(--dur)*.33)}
+body.go .s2 .r2{animation-delay:calc(var(--dur)*.37)}
+body.go .s2 .r3{animation-delay:calc(var(--dur)*.41)}
 @keyframes rin{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
-body.go .s3 .btn{animation:pulse 1.5s ease-in-out calc(var(--dur)*.72) infinite}
+body.go .s3 .btn{animation:pulse 1.5s ease-in-out calc(var(--dur)*.80) infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 </style></head>
 <body>
