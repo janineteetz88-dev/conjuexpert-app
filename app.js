@@ -4305,6 +4305,25 @@ function conceptTranslate(verb, from, to) {
   }
   return null;
 }
+// Cross-language rescue: the input is a known verb in ANOTHER language (not the
+// selected one) — return the target-language equivalent + the source language
+// code. Lets e.g. German "sein" typed while learning Dutch resolve to "zijn"
+// instead of the engine fabricating a bogus regular conjugation.
+function conceptFromAny(verb, to) {
+  const v = (verb || "").trim().toLowerCase();
+  const ti = _LIDX[to];
+  if (!v || ti == null) return null;
+  const codeOf = ["de", "es", "en", "nl", "fr"];
+  for (const row of CONCEPTS) {
+    if (row[ti] === v) return null; // already the target-language verb → no rescue
+    for (let j = 0; j < row.length; j++) {
+      if (j !== ti && row[j] === v && row[ti] && row[ti] !== v) {
+        return { base: row[ti], fromLang: codeOf[j] };
+      }
+    }
+  }
+  return null;
+}
 
 /* Verb meaning in the learner's mother tongue, when we can know it instantly
    (same language, a built-in cross-language equivalent, or the English gloss). */
@@ -5393,6 +5412,7 @@ function ConjugateView({
   name,
   translating,
   deconj,
+  xlate,
   activeInf,
   onViewInf,
   onTab,
@@ -5614,7 +5634,19 @@ function ConjugateView({
     className: "errorbox"
   }, result.error), result && !result.error && /*#__PURE__*/React.createElement("div", {
     className: "resultwrap"
-  }, deconj && /*#__PURE__*/React.createElement(DeconjBanner, {
+  }, xlate && /*#__PURE__*/React.createElement("div", {
+    className: "xlate-note",
+    style: {
+      fontSize: "13.5px",
+      color: "var(--muted)",
+      background: "var(--surface-2, #ece3d0)",
+      border: "1px solid var(--border)",
+      borderRadius: "12px",
+      padding: "9px 13px",
+      margin: "0 0 12px",
+      lineHeight: 1.5
+    }
+  }, "„" + xlate.fromVerb + "“ ", UILANG === "en" ? "is " + xlate.fromName + " — showing the matching verb " : "ist " + xlate.fromName + " — hier das passende Verb ", /*#__PURE__*/React.createElement("b", null, "„" + xlate.base + "“")), deconj && /*#__PURE__*/React.createElement(DeconjBanner, {
     deconj: deconj,
     lang: lang,
     activeInf: activeInf,
@@ -16385,6 +16417,7 @@ function App() {
   const [result, setResult] = useState(null);
   const [deconj, setDeconj] = useState(null);
   const [activeInf, setActiveInf] = useState(null);
+  const [xlate, setXlate] = useState(null);
   const [tab, setTab] = useState("conjugate");
   const [lastVerb, setLastVerb] = useState("");
   const [favs, setFavs] = useState(() => recall("kunju-favs", []));
@@ -17255,8 +17288,10 @@ function App() {
       setResult(null);
       setDeconj(null);
       setActiveInf(null);
+      setXlate(null);
       return;
     }
+    setXlate(null);
 
     // 0) Reflexive infinitive (lavarse / se laver / sich freuen / zich …) → conjugate directly.
     const Rfx = REFLEX[lang];
@@ -17282,6 +17317,22 @@ function App() {
       setActiveInf(target.base);
       setVerb(target.base); // auto-switch the field to the infinitive
       finishConjugate(lang, target.base, conjugateMaybeReflexive(lang, target.base));
+      return;
+    }
+    // 2.5) Not a target-language verb, but a known verb in another language
+    //      (e.g. German "sein" typed while learning Dutch) → translate & conjugate
+    //      the correct equivalent instead of fabricating a bogus conjugation.
+    const xl = conceptFromAny(raw, lang);
+    if (xl && xl.base !== raw.trim().toLowerCase()) {
+      setDeconj(null);
+      setActiveInf(null);
+      setXlate({
+        fromVerb: raw.trim().toLowerCase(),
+        fromName: (window.CONJ[xl.fromLang] || {}).name || xl.fromLang,
+        base: xl.base
+      });
+      setVerb(xl.base);
+      finishConjugate(lang, xl.base, conjugateMaybeReflexive(lang, xl.base));
       return;
     }
     // 3) Nothing recognised → fall back (shows the engine's guidance/error).
@@ -17576,6 +17627,7 @@ function App() {
     name: name,
     translating: translating,
     deconj: deconj,
+    xlate: xlate,
     activeInf: activeInf,
     onViewInf: viewInfinitive,
     onTab: handleTabSwitch,
