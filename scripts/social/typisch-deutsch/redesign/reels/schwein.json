@@ -2,7 +2,8 @@
   "reel": {
     "notSay": "&ldquo;I can&rsquo;t believe it&rdquo;",
     "saying": "&bdquo;ich glaub, mein<br><span class=\"hl\">Schwein pfeift</span> 🐷&ldquo;",
-    "meaning": "= literally <span class=\"q\">&ldquo;my pig is whistling&rdquo;</span>"
+    "meaning": "= literally <span class=\"q\">&ldquo;my pig is whistling&rdquo;</span>",
+    "hook": "Germans don’t freak out — they do <span class=\"r\">THIS</span> 🐷"
   },
   "cover": {
     "big": "&ldquo;I can&rsquo;t<br>believe it&rdquo;",

@@ -1,7 +1,7 @@
 {
   "reel": {
     "verb": "nehmen",
-    "leadA": "This verb <span class=\"r\">swaps</span> its vowel 🔀",
+    "leadA": "You’re saying this German verb <span class=\"r\">wrong</span> 🙈",
     "quirkHtml": "<span class=\"hl\">e → i</span> · strong verb",
     "strip": "../assets/nehmen-scroll.png",
     "appLabel": "real app · <b>every</b> tense",

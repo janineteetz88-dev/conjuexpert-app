@@ -4,7 +4,7 @@
 :root{--ink:#211d15;--muted:#8b8068;--surface:#fffdf6;--surface-2:#ece3d0;--bg:#f4eede;
   --border:rgba(60,48,24,.14);--red:#ff3b5c;--gold:#ffd23f;
   --rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#0a84ff,#a557ff);
-  --shadow:0 30px 60px -30px rgba(70,55,25,.42);--shadow-sm:0 8px 22px -12px rgba(70,55,25,.3);--dur:15s}
+  --shadow:0 30px 60px -30px rgba(70,55,25,.42);--shadow-sm:0 8px 22px -12px rgba(70,55,25,.3);--dur:17s}
 *{margin:0;padding:0;box-sizing:border-box}
 #reel{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--bg);font-family:'SB',sans-serif}
 .glow{position:absolute;top:-220px;left:50%;transform:translateX(-50%);width:1200px;height:620px;background:var(--rainbow);filter:blur(150px);opacity:.10;border-radius:50%;z-index:0}
@@ -91,7 +91,7 @@ body.go .foot::before{animation:prog var(--dur) linear both}
   <div class="wrap">
     <div class="eyebrow"><span class="dot"></span>Typisch Deutsch 🇩🇪</div>
     <div class="leadslot">
-      <div class="lead laA">In Germany, <span class="r">nobody</span> says</div>
+      <div class="lead laA" id="s-hook">In Germany, <span class="r">nobody</span> says</div>
       <div class="lead laB">We Germans just <span class="k">say</span></div>
       <div class="lead laC">Psst — one more thing 👀</div>
       <div class="lead laD">So here's the <span class="g">deal</span> 👇</div>
@@ -129,6 +129,7 @@ const DEFAULT={
   meaning:'= you literally <span class="q">&ldquo;can&rsquo;t complain&rdquo;</span>'
 };
 const R=Object.assign({},DEFAULT,(window.__REEL||{}));
+if(R.hook) document.getElementById('s-hook').innerHTML=R.hook;
 const notsay=document.getElementById('s-notsay');
 notsay.innerHTML=R.notSay;
 if(R.notSaySize) notsay.style.fontSize=R.notSaySize;

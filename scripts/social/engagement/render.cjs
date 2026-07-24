@@ -1,6 +1,6 @@
 const path=require('path'),fs=require('fs'),{execFileSync}=require('child_process');
 let chromium;try{({chromium}=require('playwright'));}catch{({chromium}=require('/opt/node22/lib/node_modules/playwright'));}
-const DIR=__dirname,FPS=30,SECONDS=13,N=FPS*SECONDS;
+const DIR=__dirname,FPS=30,SECONDS=16,N=FPS*SECONDS;
 const cfgArg=process.argv[2],outName=process.argv[3]||'cq.mp4';let cfg=null;
 if(cfgArg&&fs.existsSync(cfgArg))cfg=JSON.parse(fs.readFileSync(cfgArg,'utf8'));
 (async()=>{const fd=path.join(DIR,'.frames');fs.rmSync(fd,{recursive:true,force:true});fs.mkdirSync(fd,{recursive:true});
