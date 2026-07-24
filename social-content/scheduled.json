@@ -31,5 +31,30 @@
       "publicUrl": "https://www.tiktok.com/@jane.von.conjuexpe/video/7663794085706173718",
       "status": "published"
     }
+  },
+  "vb-wissen-ig-2026-07-25": {
+    "scheduledAt": "2026-07-24T17:35:00+02:00",
+    "source": "skipped-superseded-week1",
+    "note": "nicht feuern - vor Rework, geparkt/alte Caption"
+  },
+  "vb-wissen-tt-2026-07-25": {
+    "scheduledAt": "2026-07-24T17:35:00+02:00",
+    "source": "skipped-superseded-week1",
+    "note": "nicht feuern - vor Rework, geparkt/alte Caption"
+  },
+  "quiz-strong-ig-2026-07-24": {
+    "scheduledAt": "2026-07-24T17:35:00+02:00",
+    "source": "skipped-superseded-week1",
+    "note": "nicht feuern - vor Rework, geparkt/alte Caption"
+  },
+  "quiz-more-ig-2026-07-25": {
+    "scheduledAt": "2026-07-24T17:35:00+02:00",
+    "source": "skipped-superseded-week1",
+    "note": "nicht feuern - vor Rework, geparkt/alte Caption"
+  },
+  "cq-konjunktiv2-ig-2026-07-24": {
+    "scheduledAt": "2026-07-24T17:35:00+02:00",
+    "source": "skipped-superseded-week1",
+    "note": "nicht feuern - vor Rework, geparkt/alte Caption"
   }
 }
