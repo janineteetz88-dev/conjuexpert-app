@@ -113,7 +113,36 @@ wo `[…]` steht. Adaptiert aus zwei Social-Prompt-Sammlungen und auf unsere Nis
 > Hashtags). Halte sie so generisch, dass sie für **jedes** Verb / jede Redewendung / jede
 > Quiz-Regel funktioniert.
 
-> **Hinweis:** Recherche-/Validierungs-Prompt („top-performing Posts der letzten 30 Tage
-> cross-plattform finden") und die Voll-Automatisierung sind bei uns bereits durch die
-> Blotato-Pipeline + den Reel-Generator abgedeckt — die 5 Prompts oben sind der kreative Teil,
-> der davor sitzt.
+## 🔎 Recherche & Themen (Schritt 0 — was geht gerade ab?)
+
+**Läuft VOR den Prompts 1–5.** Findet, welche Themen/Hooks in unserer Nische gerade viral
+gehen — das liefert das Rohmaterial (Verben, Redewendungen, Grammatik-Fragen), aus dem die
+Erstellungs-Prompts dann Reels bauen. Die Blotato-Pipeline plant & rendert nur — **suchen tut
+sie nicht**, deshalb ist dieser Schritt eigenständig.
+
+> ⚠️ **Braucht echte Daten:** Für belastbare Ergebnisse mit einem Tool laufen lassen, das
+> live auf Social-/Web-Daten zugreift (z. B. WebSearch, ein Social-Analytics-Connector) — ein
+> reines Sprachmodell schätzt sonst nur aus dem Training. Alternativ als Rechercheauftrag an
+> Hans geben, der die Suche mit WebSearch fährt.
+
+### R1 · Themen-Radar (Niche & Content Validation)
+> Durchsuche **Instagram Reels, TikTok und Reddit** nach den **top-performenden Posts der
+> letzten 30 Tage** in der Nische **Deutschlernen / Sprachenlernen / Verb-Konjugation**
+> (Suchbegriffe u. a.: „learn German", „German grammar", „deutsch lernen", „German verbs",
+> „language learning hacks"). Identifiziere wiederkehrende **visuelle Stile, Hooks und Themen**,
+> die konstant viral gehen. Gleiche ab, was **plattformübergreifend** funktioniert, und gib mir
+> die **5 nachfragestärksten Content-Winkel** — optimiert für kurze, textlastige 9:16-Reels im
+> ConjuExpert-Look. Für jeden Winkel: warum er zieht + wie wir ihn auf unsere Säulen
+> (Verb / Typisch / Quiz) übertragen.
+
+### R2 · Viral-Hook-Analyse
+> Analysiere die **Top 10 viralen Reels** in der Nische Deutschlernen/Sprachenlernen der letzten
+> Wochen. Identifiziere die **Hook-Muster, das Pacing und die emotionalen Trigger**, die sie in
+> den **ersten 3 Sekunden** nutzen. Erstelle daraus **5 neue Hook-Varianten für ConjuExpert**,
+> provokanter und neugier-getriebener, optimiert für Scroll-Stopp. Fokus auf psychologische
+> Trigger: Überraschung, Ego, Aha-Moment, Frust über die deutsche Grammatik.
+
+---
+
+**Workflow gesamt:** R1/R2 (was zieht?) → 1 (Hooks) → 3 (Watch-Time) → 4/5 (Saves/Format) →
+Reel-Generator → Blotato-Pipeline. Prompt 2 (Algorithmus-Trigger) ist Grundlagenwissen für alle.
