@@ -2555,34 +2555,6 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 }</style>
 <style id="seo-static-css">#seo-static{display:none;max-width:880px;margin:40px auto 56px;padding:0 22px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;color:#14151a}#seo-static h1{font-size:30px;line-height:1.18;margin:.1em 0 .35em}#seo-static h2{font-size:20px;margin:1.4em 0 .4em}#seo-static a{color:#a557ff;text-decoration:underline}#seo-static ul{padding-left:18px;margin:.4em 0}#seo-static li{margin:.2em 0}</style>
 <noscript><style>#seo-static{display:block}</style></noscript>
-<!-- Cookie-Consent (Opt-in): cookielose Plausible-Statistik erst nach Zustimmung -->
-<style id="cc-css">
-#cc-banner{position:fixed;left:12px;right:12px;bottom:12px;z-index:2147483000;max-width:520px;margin:0 auto;background:#fffdf8;color:#1b1813;border:1px solid rgba(60,48,24,.2);border-radius:16px;box-shadow:0 20px 54px -18px rgba(30,25,10,.55);padding:15px 17px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:13px;line-height:1.5;display:none}
-#cc-banner.show{display:block}
-#cc-banner h4{margin:0 0 4px;font-size:14.5px;font-weight:800}
-#cc-banner a{color:#a557ff;text-decoration:underline;cursor:pointer}
-#cc-act{display:flex;gap:9px;margin-top:12px}
-#cc-act button{flex:1;border:0;border-radius:11px;padding:11px 12px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer}
-.cc-ok{background:#1b1813;color:#fff}
-.cc-no{background:#efe7d8;color:#1b1813;border:1px solid rgba(60,48,24,.2)!important}
-</style>
-<script>
-(function(){
-  var PA='https://plausible.io/js/pa-XgJaIs7-4NdkrrYiNyupz.js';
-  function loadPA(){ if(window.__paLoaded)return; window.__paLoaded=true;
-    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)};
-    plausible.init=plausible.init||function(i){plausible.o=i||{}};
-    var s=document.createElement('script'); s.async=true; s.src=PA; document.head.appendChild(s);
-    try{plausible.init();}catch(e){} }
-  window.ccSet=function(v){ try{localStorage.setItem('ce-consent',v);}catch(e){}
-    var b=document.getElementById('cc-banner'); if(b)b.classList.remove('show');
-    if(v==='granted')loadPA(); };
-  window.ccOpen=function(){ var b=document.getElementById('cc-banner'); if(b)b.classList.add('show'); };
-  var c=null; try{c=localStorage.getItem('ce-consent');}catch(e){}
-  if(c==='granted'){ loadPA(); }
-  else if(c!=='denied'){ document.addEventListener('DOMContentLoaded',function(){ var b=document.getElementById('cc-banner'); if(b)b.classList.add('show'); }); }
-})();
-</script>
 <style id="app-splash-css">
 #app-splash{position:fixed;inset:0;z-index:2147483647;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;transition:opacity .35s ease}
 #app-splash .as-w{font:800 30px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;letter-spacing:-.5px}
@@ -2992,14 +2964,6 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 </style>
 </head>
 <body>
-<div id="cc-banner" role="dialog" aria-label="Datenschutz-Einstellungen">
-  <h4>Datenschutz &amp; Cookies</h4>
-  <div>Wir nutzen nur <b>technisch Notwendiges</b> und – mit deiner Zustimmung – eine <b>cookielose, anonyme Statistik</b> (Plausible), um ConjuExpert zu verbessern. Keine Werbe-Cookies, keine Weitergabe. <a onclick="document.getElementById('overlay-datenschutz').classList.add('open')">Mehr erfahren</a></div>
-  <div id="cc-act">
-    <button class="cc-no" onclick="ccSet('denied')">Nur notwendige</button>
-    <button class="cc-ok" onclick="ccSet('granted')">Akzeptieren</button>
-  </div>
-</div>
 <div id="approot">
   <div id="root"></div>
   <div id="app-splash" aria-hidden="true"><div class="as-w"><span style="color:#e71583">Conju</span><span style="background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;color:transparent">Expert</span></div><div class="as-b"></div></div>
@@ -3050,7 +3014,6 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   <div class="legal-footer">
     <a onclick="document.getElementById('overlay-impressum').classList.add('open')">Impressum</a>
     <a onclick="document.getElementById('overlay-datenschutz').classList.add('open')">Datenschutz</a>
-    <a onclick="ccOpen()">Cookie-Einstellungen</a>
     <a href="/agb.html" target="_blank" rel="noopener">AGB</a>
     <div class="social-row" style="margin-top:14px;display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap"><a href="https://www.instagram.com/conjuexpert.app/" target="_blank" rel="me noopener" aria-label="ConjuExpert auf Instagram" title="Instagram" style="display:inline-flex;color:inherit;opacity:.72"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c-2.72 0-3.06.01-4.12.06-1.07.05-1.8.22-2.43.47-.66.25-1.22.6-1.77 1.15-.55.55-.9 1.1-1.15 1.77-.25.63-.42 1.36-.47 2.43C2.01 8.94 2 9.28 2 12s.01 3.06.06 4.12c.05 1.07.22 1.8.47 2.43.25.66.6 1.22 1.15 1.77.55.55 1.1.9 1.77 1.15.63.25 1.36.42 2.43.47C8.94 21.99 9.28 22 12 22s3.06-.01 4.12-.06c1.07-.05 1.8-.22 2.43-.47.66-.25 1.22-.6 1.77-1.15.55-.55.9-1.1 1.15-1.77.25-.63.42-1.36.47-2.43.05-1.06.06-1.4.06-4.12s-.01-3.06-.06-4.12c-.05-1.07-.22-1.8-.47-2.43-.25-.66-.6-1.22-1.15-1.77-.55-.55-1.1-.9-1.77-1.15-.63-.25-1.36-.42-2.43-.47C15.06 2.01 14.72 2 12 2zm0 1.8c2.67 0 2.99.01 4.04.06.97.05 1.5.21 1.85.35.47.18.8.4 1.15.75.35.35.57.68.75 1.15.14.35.3.88.35 1.85.05 1.05.06 1.37.06 4.04s-.01 2.99-.06 4.04c-.05.97-.21 1.5-.35 1.85-.18.47-.4.8-.75 1.15-.35.35-.68.57-1.15.75-.35.14-.88.3-1.85.35-1.05.05-1.37.06-4.04.06s-2.99-.01-4.04-.06c-.97-.05-1.5-.21-1.85-.35-.47-.18-.8-.4-1.15-.75-.35-.35-.57-.68-.75-1.15-.14-.35-.3-.88-.35-1.85-.05-1.05-.06-1.37-.06-4.04s.01-2.99.06-4.04c.05-.97.21-1.5.35-1.85.18-.47.4-.8.75-1.15.35-.35.68-.57 1.15-.75.35-.14.88-.3 1.85-.35C9.01 3.81 9.33 3.8 12 3.8zm0 3.06A5.14 5.14 0 1 0 12 17.14 5.14 5.14 0 0 0 12 6.86zm0 8.47A3.33 3.33 0 1 1 12 8.67a3.33 3.33 0 0 1 0 6.66zm5.34-8.67a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/></svg></a><a href="https://www.tiktok.com/@jane.von.conjuexpe" target="_blank" rel="me noopener" aria-label="ConjuExpert auf TikTok" title="TikTok" style="display:inline-flex;color:inherit;opacity:.72"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 5.82a4.28 4.28 0 0 1-1.05-2.82h-3.11v12.31a2.54 2.54 0 0 1-2.53 2.48 2.54 2.54 0 0 1-.6-5.01 2.54 2.54 0 0 1 .6.08V9.7a5.66 5.66 0 0 0-.6-.03 5.65 5.65 0 1 0 5.65 5.65V9.01a7.3 7.3 0 0 0 4.28 1.37V7.27a4.28 4.28 0 0 1-2.64-1.45z"/></svg></a><a href="https://www.youtube.com/@ConjuExpertApp" target="_blank" rel="me noopener" aria-label="ConjuExpert auf YouTube" title="YouTube" style="display:inline-flex;color:inherit;opacity:.72"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.5a3.02 3.02 0 0 0-2.12-2.14C19.5 3.85 12 3.85 12 3.85s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.5 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.5 3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 0 0 2.12-2.14A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.5zM9.6 15.6V8.4l6.24 3.6z"/></svg></a><a href="https://www.facebook.com/profile.php?id=61592183729019" target="_blank" rel="me noopener" aria-label="ConjuExpert auf Facebook" title="Facebook" style="display:inline-flex;color:inherit;opacity:.72"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></a></div>
   </div>
@@ -3173,7 +3136,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   </table>
   <h3>6. Cookies, Statistik und Einwilligung</h3>
   <p>Es werden <strong>keine Werbe- oder Tracking-Cookies</strong> gesetzt und keine Daten an Dritte verkauft. Technisch notwendig ist lediglich eine lokale Speicherung (u. a. dein Lernfortschritt und – bei Konto-Nutzung – ein Anmelde-Token); diese ist für den Betrieb erforderlich (Art. 6 Abs. 1 lit. f DSGVO) und benötigt keine Einwilligung.</p>
-  <p>Zur Verbesserung der App nutzen wir <strong>Plausible Analytics</strong> – ein <strong>cookieloses, datenschutzfreundliches</strong> Statistik-Tool, das keine personenbezogenen Profile bildet und keine Daten über Geräte oder Websites hinweg zusammenführt. Plausible wird <strong>erst geladen, nachdem du im Cookie-Banner „Akzeptieren" gewählt hast</strong> (Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO). Ohne Zustimmung findet keine Statistik-Erhebung statt. Deine Wahl kannst du jederzeit über „Cookie-Einstellungen" im Footer ändern.</p>
+  <p>Zur Verbesserung der App nutzen wir <strong>Cloudflare Web Analytics</strong> – ein <strong>cookieloses, datenschutzfreundliches</strong> Statistik-Tool, das keine Cookies setzt, keine personenbezogenen Profile bildet und keine Daten über Geräte oder Websites hinweg zusammenführt. Erhoben werden nur aggregierte, anonyme Nutzungsstatistiken (z. B. Seitenaufrufe). Da keine Cookies gesetzt und keine Endgeräte-Informationen ausgelesen werden, ist keine Einwilligung nötig (Art. 6 Abs. 1 lit. f DSGVO, § 25 Abs. 2 TDDDG).</p>
   <h3>7. Ihre Rechte</h3>
   <p>Sie haben folgende Rechte gemäß DSGVO (Art. 15–22):</p>
   <ul>
