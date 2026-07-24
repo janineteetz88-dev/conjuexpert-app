@@ -48,11 +48,7 @@ const FONT_LINKS =
   '<link rel="preload" href="/fonts/Jqz55SSPQuCQF3t8uOwiUL-taUTtap9Gayo.woff2" as="font" type="font/woff2" crossorigin>\n' +
   '<link rel="stylesheet" href="/fonts/verb.css">';
 
-// Cookielose, anonyme Statistik (Plausible) — keine Cookies, kein Consent nötig.
-// Landet in derselben Plausible-Property wie die App (per-site Script-Token).
-const PLAUSIBLE_SNIPPET =
-  '<!-- Cookielose, anonyme Statistik (Plausible) — keine Cookies -->\n' +
-  "<script>(function(){window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)};plausible.init=plausible.init||function(i){plausible.o=i||{}};var s=document.createElement('script');s.defer=true;s.src='https://plausible.io/js/pa-XgJaIs7-4NdkrrYiNyupz.js';document.head.appendChild(s);try{plausible.init();}catch(e){}})();</script>";
+// Analytics: keine (Plausible entfernt; Cloudflare Web Analytics läuft cookielos am Edge).
 
 function css(accent, transFlag) {
   return `  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -405,20 +401,14 @@ function ensureLocalFonts(html) {
   return html;
 }
 
-// Cookielose Plausible-Statistik einsetzen (falls noch nicht vorhanden). Idempotent.
-function ensurePlausible(html) {
-  if (html.includes("plausible.io")) return html;
-  return html.replace("</head>", PLAUSIBLE_SNIPPET + "\n</head>");
-}
 
-// Idempotenter Gesamt-Transform: CI · GEO · lokale Fonts · Plausible.
+// Idempotenter Gesamt-Transform: CI · GEO · lokale Fonts.
 // Jede Facette wird einzeln geprüft; null nur, wenn sich nichts geändert hat.
 function transform(html, lang, verb) {
   const before = html;
   if (!html.includes('id="qz"')) html = ciTransform(html, lang, verb);
   if (!html.includes('class="verb-summary"')) html = injectGeo(html, lang, verb);
   html = ensureLocalFonts(html);
-  html = ensurePlausible(html);
   return html === before ? null : html;
 }
 
