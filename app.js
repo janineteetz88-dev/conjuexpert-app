@@ -5327,7 +5327,10 @@ function TenseCard({
     }
   }, "\u21BB"))), /*#__PURE__*/React.createElement("span", {
     className: "exnative2"
-  }, tenseEx.n)))));
+  }, tenseEx.n), /*#__PURE__*/React.createElement("button", {
+    className: "rep-link exreport-link",
+    onClick: ev => { ev.stopPropagation(); window.__openReport && window.__openReport({ kind: "sentence", lang: langCode, sentence: stripMark(tenseEx.s), translation: tenseEx.n, verb: verb, tense: tense.label }); }
+  }, /*#__PURE__*/React.createElement("span", { className: "rep-link-ic", dangerouslySetInnerHTML: { __html: IC_FLAG } }), tr("report_link"))))));
 }
 
 /* ---------- Deconjugation banner ---------- */
