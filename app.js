@@ -12186,11 +12186,12 @@ function GemerktOverview({ lang, favs, onOpenList, onVerbs, onChallenge, onNewLi
         h("span", { className: "gm-chcta-s" }, tr("gm_ch_cta_s"))),
       h("span", { className: "gm-chcta-chev", dangerouslySetInnerHTML: { __html: IC_CHEV } })),
     h("div", { className: "gm-seclbl" }, tr("gm_your_lists")),
+    // VERBEN — eine Kategorie. (Verb-Listen legst du in der Challenge an.)
     h("button", { className: "gm-row", onClick: onVerbs },
       ico(IC_STAR2),
       h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, tr("gm_verbs")), h("span", { className: "gm-meta" }, favCount + " " + tr("saved_verbs"))),
       chev),
-    // „Gemerkte Wörter" ist ein fester Sammelplatz — immer sichtbar, auch wenn (noch) leer.
+    // WÖRTER — der Sammelplatz; die eigenen Wortlisten hängen darunter (eingerückt).
     (() => {
       const g = lists.find(l => l.general);
       return h("button", { className: "gm-row", key: "__gen__", onClick: () => onOpenList(g ? g.cat : generalCat()) },
@@ -12200,15 +12201,17 @@ function GemerktOverview({ lang, favs, onOpenList, onVerbs, onChallenge, onNewLi
         g ? dueBadge(g.due) : null,
         chev);
     })(),
-    lists.filter(l => !l.general).map(l => h("div", { className: "gm-rowwrap", key: l.cat },
-      h("button", { className: "gm-row", onClick: () => onOpenList(l.cat) },
-        ico(IC_LIST),
-        h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, l.cat), metaEl(l)),
-        dueBadge(l.due),
-        chev),
-      h("button", { className: "gm-row-del", "aria-label": tr("gm_del_list"), onClick: () => setDelCat(l.cat) },
-        h("span", { className: "gm-row-del-ic", dangerouslySetInnerHTML: { __html: IC_TRASH } })))),
-    h("button", { className: "gm-addliste", onClick: onNewList }, h("span", { className: "gm-ic-plus", dangerouslySetInnerHTML: { __html: IC_PLUS2 } }), " ", tr("gm_new_list")),
+    // Eigene Wortlisten + „Neue Liste" gehören zu WÖRTER → eingerückt darunter.
+    h("div", { className: "gm-nest" },
+      lists.filter(l => !l.general).map(l => h("div", { className: "gm-rowwrap", key: l.cat },
+        h("button", { className: "gm-row", onClick: () => onOpenList(l.cat) },
+          ico(IC_LIST),
+          h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, l.cat), metaEl(l)),
+          dueBadge(l.due),
+          chev),
+        h("button", { className: "gm-row-del", "aria-label": tr("gm_del_list"), onClick: () => setDelCat(l.cat) },
+          h("span", { className: "gm-row-del-ic", dangerouslySetInnerHTML: { __html: IC_TRASH } })))),
+      h("button", { className: "gm-addliste", onClick: onNewList }, h("span", { className: "gm-ic-plus", dangerouslySetInnerHTML: { __html: IC_PLUS2 } }), " ", tr("gm_new_list"))),
     delCat ? h("div", { className: "chpick-bg", onClick: () => setDelCat(null) },
       h("div", { className: "chpick", onClick: e => e.stopPropagation() },
         h("div", { className: "chpick-hd" }, h("b", null, tr("gm_del_t")), h("button", { className: "chpick-x", "aria-label": "close", onClick: () => setDelCat(null) }, "×")),

@@ -1411,6 +1411,9 @@ body {
 .gm-badge { flex: none; font-size: 10.5px; font-weight: 800; padding: 3px 9px; border-radius: 999px; background: color-mix(in srgb, var(--lc, #ff9f0a) 14%, var(--surface)); color: var(--lc, #ff9f0a); }
 .gm-chev { color: var(--muted); flex: none; display: inline-flex; }
 .gm-seclbl { font-family: var(--font-mono, var(--font-display)); font-size: 10px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; color: var(--muted); margin: 15px 4px 9px; }
+/* Listen unter ihrer Kategorie (Verben / Wörter) einrücken — Baum-Optik */
+.gm-nest { margin: 0 0 0 9px; padding-left: 12px; border-left: 2px solid var(--border); }
+.gm-nest > .gm-addliste { margin-top: 2px; }
 .gm-addliste { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px; border-radius: 12px; border: 1.5px solid var(--text); background: var(--surface); color: var(--text); font-weight: 800; font-size: 14.5px; font-family: var(--font-display); cursor: pointer; margin-top: 4px; }
 .gm-ic-plus { display: inline-flex; }
 .gm-backbar { margin-bottom: 12px; }
@@ -3100,7 +3103,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-146"></script>
+<script defer src="/app.js?v=c-sand-147"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
