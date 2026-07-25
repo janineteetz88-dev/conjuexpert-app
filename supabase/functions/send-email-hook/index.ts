@@ -20,10 +20,15 @@ type Key = "confirm" | "magic" | "reset";
 
 const BASE = "https://conjuexpert.app";
 const RAINBOW = "linear-gradient(to right,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff)";
-// CI-Button: Pink → Violett (kein Blau). CTA_FALLBACK = solide Farbe für Clients ohne Verlauf (Gmail).
-const CTA_BG = "#e71583"; // Button: solides CI-Pink
-const CTA_FALLBACK = "#e71583";
-// Verlinkungen: dunkles Blau (kein Babyblau).
+const RAINBOW_FB = "#211d15"; // solider Fallback (Clients ohne Verläufe → Tinte, wirkt als Rahmen)
+// Einheitliche CI mit den Lifecycle-Mails: Sand-Fläche, Tinte-Text/Button, Regenbogen-Highlights.
+const SAND_BG = "#f4eede";
+const CARD = "#fffdf6";
+const INK = "#211d15";
+const BODY_TXT = "#574f3b";
+const MUTED = "#8b8068";
+const HAIRLINE = "#e7dcc6";
+const CTA_BG = "#211d15"; // Button-Füllung: Tinte (mit Regenbogen-Rand)
 const LINK = "#0b4f9e";
 const LEGAL = "Janine Kreiser · Blasewitzer Straße 41 · 01307 Dresden";
 
@@ -96,7 +101,7 @@ function renderHtml(lang: Lang, key: Key, url: string, firstName: string): strin
   const eyebrow = key === "confirm" && name ? `${WELCOME[lang]}, ${escHtml(name)}` : m.eyebrow;
   const body = m.paras.map((t, i) => (i === 0 ? stripLeadingGreeting(t) : t)).filter(Boolean);
   const paras = [greeting, ...body]
-    .map((t) => `        <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.55;">${t}</p>`)
+    .map((t) => `        <p style="margin:0 0 16px;font-size:15px;color:${BODY_TXT};line-height:1.55;">${t}</p>`)
     .join("\n");
   return `<!DOCTYPE html>
 <html lang="${lang}" dir="ltr">
@@ -106,34 +111,38 @@ function renderHtml(lang: Lang, key: Key, url: string, firstName: string): strin
 <meta name="x-apple-disable-message-reformatting">
 <title>${m.subject}</title>
 </head>
-<body style="margin:0;padding:0;background-color:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
+<body style="margin:0;padding:0;background-color:${SAND_BG};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">${m.pre}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
 <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f5f5f7">
 <tr><td align="center" style="padding:32px 16px;">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.08);">
-    <tr><td height="4" style="background:${RAINBOW};font-size:0;line-height:0;">&nbsp;</td></tr>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:${CARD};border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(33,29,21,0.10);">
+    <tr><td height="4" bgcolor="${RAINBOW_FB}" style="background:${RAINBOW};font-size:0;line-height:0;">&nbsp;</td></tr>
     <tr>
       <td align="center" style="padding:32px 40px 28px;">
         <img src="${BASE}/logo-wordmark.png" alt="ConjuExpert" width="200" style="display:block;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;margin:0 auto 24px;" />
-        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:1px;">${eyebrow}</p>
-        <h1 style="margin:0 0 18px;font-size:32px;font-weight:900;color:#111827;letter-spacing:-1px;line-height:1.1;">${m.h1}</h1>
+        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${INK};text-transform:uppercase;letter-spacing:1px;">${eyebrow}</p>
+        <h1 style="margin:0 0 18px;font-size:32px;font-weight:900;color:${INK};letter-spacing:-1px;line-height:1.1;">${m.h1}</h1>
         <div style="text-align:left;">
 ${paras}
         </div>
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:8px;">
-          <tr><td align="center" bgcolor="${CTA_FALLBACK}" style="border-radius:14px;background-color:${CTA_FALLBACK};background:${CTA_BG};">
-            <a href="${url}" style="display:block;padding:16px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;">${m.cta}</a>
+          <tr><td bgcolor="${RAINBOW_FB}" style="background:${RAINBOW};border-radius:16px;padding:2px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+              <td align="center" bgcolor="${CTA_BG}" style="background:${CTA_BG};border-radius:14px;">
+                <a href="${url}" style="display:block;padding:15px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;">${m.cta}</a>
+              </td>
+            </tr></table>
           </td></tr>
         </table>
-        <p style="margin:18px 0 0;font-size:12px;color:#9ca3af;line-height:1.5;text-align:left;">${f.fallback}<br>
+        <p style="margin:18px 0 0;font-size:12px;color:${MUTED};line-height:1.5;text-align:left;">${f.fallback}<br>
           <a href="${url}" style="color:${LINK};word-break:break-all;">${url}</a>
         </p>
       </td>
     </tr>
     <tr>
-      <td style="padding:16px 40px;border-top:1px solid #f3f4f6;">
-        <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;line-height:1.6;">
-          <a href="${BASE}/datenschutz.html" style="color:#9ca3af;">${f.privacy}</a> · <a href="${BASE}/agb.html" style="color:#9ca3af;">${f.terms}</a><br>
+      <td style="padding:16px 40px;border-top:1px solid ${HAIRLINE};">
+        <p style="margin:0;font-size:12px;color:${MUTED};text-align:center;line-height:1.6;">
+          <a href="${BASE}/datenschutz.html" style="color:${MUTED};">${f.privacy}</a> · <a href="${BASE}/agb.html" style="color:${MUTED};">${f.terms}</a><br>
           ${LEGAL}
         </p>
       </td>
