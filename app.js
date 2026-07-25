@@ -12204,14 +12204,9 @@ function GemerktOverview({ lang, favs, onOpenList, onVerbs, onOpenVerbList, onCh
   const dueBadge = (n) => n > 0 ? h("span", { className: "gm-badge", style: { "--lc": lc } }, n + " " + tr("gm_due")) : null;
   return h("div", { className: "view", style: { gap: 0 } },
     h("div", { className: "gm-legend" }, h(ExplainCard, { seenKey: "kunju-xpl-gemerkt", title: tr("gm_xpl_hd"), html: gemerktExplainHtml() })),
-    dueTotal > 0 ? h("button", { className: "gm-hero", onClick: () => onOpenList("all") },
-      h("span", { className: "gm-hero-rb" }),
-      h("span", { className: "gm-hero-top" },
-        h("span", { className: "gm-hero-ic", dangerouslySetInnerHTML: { __html: IC_ACT } }),
-        h("span", null,
-          h("span", { className: "gm-hero-lbl" }, tr("gm_due_head")),
-          h("span", { className: "gm-hero-num" }, dueTotal, " ", h("small", null, tr("gm_words_verbs"))))),
-      h("span", { className: "gm-hero-cta" }, h("span", { className: "gm-hero-play", dangerouslySetInnerHTML: { __html: IC_PLAY } }), tr("gm_review_now"))) : null,
+    // Die aggregierte „Fällig heute"-Kachel wurde entfernt: Auf „Gemerkt" gehören
+    // die eigenen Listen (+ Challenge) — nicht eine fremde Gesamtzahl aus dem
+    // Wiederhol-Modus. Üben passiert innerhalb der Listen bzw. im Quiz.
     hasCh ? h("button", { className: "gm-row gm-ch", onClick: onChallenge },
       ico(IC_TARGET),
       h("span", { className: "gm-mid" },
