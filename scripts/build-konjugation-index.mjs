@@ -19,6 +19,7 @@
 import { readdirSync, statSync, writeFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+import { socialRow } from "./lib/social.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ORIGIN = "https://conjuexpert.app";
@@ -39,10 +40,8 @@ const FONT_LINKS =
   '<link rel="preload" href="/fonts/Jqz55SSPQuCQF3t8uOwiUL-taUTtap9Gayo.woff2" as="font" type="font/woff2" crossorigin>\n' +
   '<link rel="stylesheet" href="/fonts/verb.css">';
 
-// Cookielose, anonyme Statistik (Plausible) — dieselbe Property wie App/Verbseiten.
-const PLAUSIBLE_SNIPPET =
-  '<!-- Cookielose, anonyme Statistik (Plausible) — keine Cookies -->\n' +
-  "<script>(function(){window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)};plausible.init=plausible.init||function(i){plausible.o=i||{}};var s=document.createElement('script');s.defer=true;s.src='https://plausible.io/js/pa-XgJaIs7-4NdkrrYiNyupz.js';document.head.appendChild(s);try{plausible.init();}catch(e){}})();</script>";
+// Analytics: keine (Plausible entfernt; Cloudflare Web Analytics läuft cookielos
+// am Edge, kein Seiten-Snippet nötig).
 
 function esc(s) {
   return String(s ?? "").replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" })[c]);
@@ -207,7 +206,6 @@ ${FONT_LINKS}
 <style>
 ${css(cfg.accent)}
 </style>
-${PLAUSIBLE_SNIPPET}
 </head>
 <body>
 
@@ -253,6 +251,7 @@ ${listItems}
 
 <footer class="site-footer">
   <p>© ConjuExpert · <a href="${ORIGIN}/landing/">Über uns</a> · <a href="${ORIGIN}/agb.html">AGB</a> · <a href="${ORIGIN}/datenschutz.html">Datenschutz</a> · <a href="${ORIGIN}/impressum.html">Impressum</a> · <a href="${ORIGIN}/barrierefreiheit.html">Barrierefreiheit</a></p>
+  ${socialRow({ mt: 12 })}
 </footer>
 
 <script>(function(){var BR=["#ff5a4d","#ff9e2c","#ffcf3f","#5bbf6a","#3aa6c9"];document.querySelectorAll("[data-mark]").forEach(function(m){for(var i=0;i<5;i++){var s=document.createElement("i");s.style.background=BR[i];m.appendChild(s);}});})();</script>

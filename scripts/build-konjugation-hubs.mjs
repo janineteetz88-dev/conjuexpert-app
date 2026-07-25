@@ -12,6 +12,7 @@
 import { readFileSync, writeFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { socialRow } from "./lib/social.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const KONJ = join(ROOT, "konjugation");
@@ -203,6 +204,7 @@ ${STYLE}
 
 <footer class="site-footer">
   <p>© ConjuExpert · <a href="https://conjuexpert.app/landing/">Über uns</a> · <a href="https://conjuexpert.app/agb.html">AGB</a> · <a href="https://conjuexpert.app/datenschutz.html">Datenschutz</a> · <a href="https://conjuexpert.app/impressum.html">Impressum</a> · <a href="https://conjuexpert.app/barrierefreiheit.html">Barrierefreiheit</a></p>
+  ${socialRow({ mt: 12 })}
 </footer>
 
 ${MARK_SCRIPT}

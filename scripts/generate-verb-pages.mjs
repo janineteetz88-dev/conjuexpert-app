@@ -19,6 +19,7 @@ import {
   tldrHtml, faqSectionHtml, faqLd, relatedSectionHtml,
   pickRelated, geoCss, SPEAKABLE,
 } from './geo-blocks.mjs';
+import { socialRow } from './lib/social.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -561,6 +562,7 @@ ${geoCss()}
 
 <footer class="site-footer">
   <p>© ConjuExpert · <a href="${SITE}/landing/">Über uns</a> · <a href="${SITE}/agb.html">AGB</a> · <a href="${SITE}/datenschutz.html">Datenschutz</a> · <a href="${SITE}/impressum.html">Impressum</a> · <a href="${SITE}/barrierefreiheit.html">Barrierefreiheit</a></p>
+  ${socialRow({ mt: 12 })}
 </footer>
 
 </body>
