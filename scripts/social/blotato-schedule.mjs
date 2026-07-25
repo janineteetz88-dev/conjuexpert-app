@@ -39,6 +39,17 @@ const horizon = now + LOOKAHEAD_DAYS * 24 * 3600 * 1000;
 let changed = false;
 let failures = 0;
 
+// TikTok verschluckt in per-API gesendeten Captions LEERE Zeilen — dadurch fallen
+// alle Absätze zu einem Textblock zusammen (Instagram/Facebook behalten sie).
+// Fix: leere Zeilen durch ein Braille-Blank (U+2800) ersetzen. Das ist für TikTok
+// eine „nicht leere" Zeile (bleibt erhalten), sieht aber aus wie eine Leerzeile.
+// Nur TikTok wird angefasst, alle anderen Plattformen bleiben unverändert.
+const captionFor = (post) => {
+  const text = post.caption || '';
+  if (post.platform !== 'tiktok') return text;
+  return text.split('\n').map((line) => (line.trim() === '' ? '⠀' : line)).join('\n');
+};
+
 for (const post of manifest.posts || []) {
   if (!post.id) { console.error('skip: Post ohne id'); continue; }
   if (ledger[post.id]) { console.log(`skip ${post.id}: bereits eingeplant`); continue; }
@@ -55,7 +66,7 @@ for (const post of manifest.posts || []) {
       target: { targetType: post.platform },
       content: {
         platform: post.platform,
-        text: post.caption,
+        text: captionFor(post),
         mediaUrls,
       },
     },
