@@ -16558,6 +16558,7 @@ function App() {
       persist("kunju-premium", true);
       setIsPremium(true);
       setShowPaySuccess(true);
+      if (window.ceTrack) { const plan = params.get("plan"); window.ceTrack("subscribe", { plan: plan === "monthly" ? "monthly" : "annual" }); }
       window.history.replaceState({}, "", "/");
       // Background verify: sync DB status once webhook has likely landed
       if (window.__supa) {
@@ -16987,6 +16988,7 @@ function App() {
           exp
         });
         persist("kunju-acct-trial", true);
+        if (window.ceTrack) window.ceTrack("trial_start");
         setTrialExpiry(exp);
         // Bestätigung nach der Konto-Erstellung (E-Mail bestätigt + zurück in der App)
         setToastMsg(tr("acct_created"));
@@ -17142,6 +17144,7 @@ function App() {
     };
   }, []);
   function onActivity() {
+    if (window.ceTrack) window.ceTrack("activity", { tab: tab });
     // Free accounts: each quiz card counts toward the 20/day cap.
     // (Merken/vocab practice is Premium-only, so it never reaches the "limited" tier.)
     if (tab === "quiz" && quizTier() === "limited") {
