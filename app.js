@@ -11487,7 +11487,8 @@ function VocabView({
     cat !== "all" && !isGeneralCat(cat) ? /*#__PURE__*/React.createElement("button", {
       className: "voc-del",
       onClick: () => setAskDel(true)
-    }, /*#__PURE__*/React.createElement("span", { className: "voc-del-ic", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: IC_TRASH } }), tr("gm_del_list")) : null), askDel && /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("span", { className: "voc-del-ic", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: IC_TRASH } }), tr("gm_del_list")) : null,
+    /*#__PURE__*/React.createElement("button", { className: "voc-newlist-btn", onClick: () => { setNewCatVal(""); setChooserTpl(false); setShowChooser(true); } }, "+ ", tr("gm_new_list"))), askDel && /*#__PURE__*/React.createElement("div", {
     className: "chpick-bg",
     onClick: () => setAskDel(false)
   }, /*#__PURE__*/React.createElement("div", {
@@ -12263,8 +12264,8 @@ function GemerktOverview({ lang, favs, onOpenList, onVerbs, onOpenVerbList, onCh
           dueBadge(l.due),
           chev),
         h("button", { className: "gm-row-del", "aria-label": tr("gm_del_list"), onClick: () => setDelCat(l.cat) },
-          h("span", { className: "gm-row-del-ic", dangerouslySetInnerHTML: { __html: IC_TRASH } })))),
-      h("button", { className: "gm-addliste", onClick: onNewList }, h("span", { className: "gm-ic-plus", dangerouslySetInnerHTML: { __html: IC_PLUS2 } }), " ", tr("gm_new_list"))),
+          h("span", { className: "gm-row-del-ic", dangerouslySetInnerHTML: { __html: IC_TRASH } }))))),
+    // „Neue Liste" lebt jetzt in den Bereichen Verben bzw. Wörter selbst — nicht mehr hier.
     delCat ? h("div", { className: "chpick-bg", onClick: () => setDelCat(null) },
       h("div", { className: "chpick", onClick: e => e.stopPropagation() },
         h("div", { className: "chpick-hd" }, h("b", null, tr("gm_del_t")), h("button", { className: "chpick-x", "aria-label": "close", onClick: () => setDelCat(null) }, "×")),
@@ -12411,10 +12412,37 @@ function SavedView({
   onActivity,
   filterCat
 }) {
-  // Optional nach Verbliste (cat) filtern — „all" = alle gemerkten Verben.
-  const catFilter = filterCat && filterCat !== "all" ? filterCat : null;
-  const langFavs = favs.filter(f => f.lang === lang && (!catFilter || (f.cat || generalCat()) === catFilter));
+  const h = React.createElement;
+  // Verbliste (cat) als lokaler Zustand — Filtern, Anlegen, Zuordnen, Löschen
+  // passieren jetzt hier (analog zu den Wörtern). „all" = alle gemerkten Verben.
+  const [cat, setCat] = useState(() => filterCat && filterCat !== "all" ? filterCat : "all");
+  const [moveV, setMoveV] = useState(null);   // Verb, das gerade einer Liste zugeordnet wird
+  const [askDelV, setAskDelV] = useState(false); // Liste auflösen: Bestätigung
+  function persistCat(c) { setCat(c); persist("kunju-verb-cat", c); }
+  const catFilter = cat && cat !== "all" ? cat : null;
+  const allLangFavs = favs.filter(f => f.lang === lang && f.verb);
+  const langFavs = allLangFavs.filter(f => !catFilter || (f.cat || generalCat()) === catFilter);
   const catTitle = catFilter ? (isGeneralCat(catFilter) ? tr("gm_verbs") : catFilter) : tr("saved");
+  // Alle Verblisten für die Leiste: Allgemein + Listen mit Verben + leere eigene Listen.
+  const catNames = (() => {
+    const seen = {}, out = [];
+    const push = c => { const k = String(c).toLowerCase(); if (c && !seen[k]) { seen[k] = 1; out.push(c); } };
+    push(generalCat());
+    verbLists(lang, favs).forEach(l => push(l.cat));
+    (recall("kunju-verb-catnames", []) || []).forEach(n => { if (n && !isGeneralCat(n)) push(n); });
+    return out;
+  })();
+  function createVerbList() {
+    const name = (window.prompt(tr("vocab_new_cat_q")) || "").trim();
+    if (!name) return;
+    const names = recall("kunju-verb-catnames", []);
+    if (names.indexOf(name) < 0) persist("kunju-verb-catnames", [...names, name]);
+    persistCat(name);
+  }
+  function moveVerbTo(verb, targetCat) {
+    if (window.__addVerbFav) window.__addVerbFav(lang, verb, targetCat || generalCat());
+    setMoveV(null);
+  }
   const [pr, setPr] = useState(null); // {pool, idx, val, state, mist}
   const vpool = useMemo(() => langFavs.map(f => f.verb), [langFavs.length, lang, catFilter]);
   const vmistKey = `kunju-vbmist-${lang}`;
@@ -12572,7 +12600,22 @@ function SavedView({
       } : null;
     });
   }
-  if (!langFavs.length) {
+  // Verbliste-Leiste (Filtern \u00b7 Anlegen) + Verschiebe-Dialog \u2014 auch bei leerer Liste sichtbar.
+  const listBar = h("div", { className: "voccats", style: { marginBottom: "10px" } },
+    h("button", { className: "voccat" + (cat === "all" ? " on" : ""), onClick: () => persistCat("all") }, tr("vocab_all")),
+    catNames.map(c => h("button", { key: c, className: "voccat" + (cat === c ? " on" : ""), onClick: () => persistCat(c) }, isGeneralCat(c) ? tr("gm_verbs") : c)),
+    h("button", { className: "voccat addcat", onClick: createVerbList }, "+ ", tr("gm_new_list")));
+  const moveSheet = moveV ? h("div", { className: "chpick-bg", onClick: () => setMoveV(null) },
+    h("div", { className: "chpick", onClick: e => e.stopPropagation() },
+      h("div", { className: "chpick-hd" }, h("b", null, tr("mv_title")), h("button", { className: "chpick-x", "aria-label": "close", onClick: () => setMoveV(null) }, "\u00d7")),
+      h("div", { className: "ch-pick-list" }, catNames.map(c => {
+        const cur = (favs.find(f => f.lang === lang && f.verb === moveV) || {}).cat || generalCat();
+        const on = cur === c;
+        return h("button", { key: c, className: "chpick-row" + (on ? " on" : ""), onClick: () => moveVerbTo(moveV, c) },
+          h("span", { className: "chpick-lb" }, isGeneralCat(c) ? tr("gm_verbs") : c),
+          h("span", { className: "chpick-mk" }, on ? "\u2713" : "+"));
+      })))) : null;
+  if (!allLangFavs.length) {
     return /*#__PURE__*/React.createElement("div", {
       className: "view"
     }, /*#__PURE__*/React.createElement("div", {
@@ -12598,7 +12641,18 @@ function SavedView({
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "grammar-intro"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, catTitle, " \xB7 ", langFavs.length))), pr ? /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, catTitle, " \xB7 ", langFavs.length)),
+    catFilter && !isGeneralCat(catFilter) ? h("button", { className: "voc-del", onClick: () => setAskDelV(true) }, h("span", { className: "voc-del-ic", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: IC_TRASH } }), tr("gm_del_list")) : null),
+    !pr ? listBar : null, moveSheet,
+    askDelV ? h("div", { className: "chpick-bg", onClick: () => setAskDelV(false) },
+      h("div", { className: "chpick", onClick: e => e.stopPropagation() },
+        h("div", { className: "chpick-hd" }, h("b", null, tr("gm_del_t")), h("button", { className: "chpick-x", "aria-label": "close", onClick: () => setAskDelV(false) }, "×")),
+        h("p", { style: { fontSize: "13.5px", lineHeight: 1.5, color: "var(--muted)", margin: "0 0 16px" } }, tr("gm_del_vb", { n: langFavs.length })),
+        h("div", { style: { display: "flex", gap: "9px" } },
+          h("button", { className: "voc-del-keep", onClick: () => setAskDelV(false) }, tr("gm_del_no")),
+          h("button", { className: "voc-del-go", onClick: () => { const c = catFilter; setAskDelV(false); removeVerbList(lang, c); persistCat("all"); } }, tr("gm_del_yes"))))) : null,
+    !pr && !langFavs.length ? h("p", { className: "quizhint", style: { textAlign: "center", padding: "18px 0" } }, tr("ch_pick_empty_v")) : null,
+    pr ? /*#__PURE__*/React.createElement("div", {
     className: "quizcard quizmodern",
     style: {
       "--lc": LANG_META[lang].color
@@ -12643,7 +12697,7 @@ function SavedView({
   }, tr("next")), /*#__PURE__*/React.createElement("button", {
     className: "nameskip",
     onClick: () => setPr(null)
-  }, tr("back"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, tr("back"))) : !langFavs.length ? null : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "vocpractice-bar"
   }, vbDue().length > 0 && /*#__PURE__*/React.createElement("button", {
     className: "quizbtn vocstart vocdue",
@@ -12698,7 +12752,7 @@ function SavedView({
       onClick: () => speak(base, window.CONJ[it.lang].ttsLang)
     }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } })), /*#__PURE__*/React.createElement("span", {
       className: "vtbadge"
-    }, LANG_META[it.lang].code)), /*#__PURE__*/React.createElement(SavedCell, {
+    }, LANG_META[it.lang].code), h("button", { className: "voccatchip vtcatchip", title: tr("mv_title"), onClick: () => setMoveV(it.verb) }, isGeneralCat(it.cat || generalCat()) ? tr("gm_verbs") : it.cat)), /*#__PURE__*/React.createElement(SavedCell, {
       base: base,
       from: it.lang,
       to: transLang
