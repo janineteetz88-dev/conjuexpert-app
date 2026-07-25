@@ -1660,6 +1660,10 @@ body {
 .voc-del { margin-left: auto; flex: none; display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-family: var(--font-display); font-weight: 700; font-size: 12.5px; cursor: pointer; }
 .voc-del:hover { color: #ff3b5c; border-color: color-mix(in srgb, #ff3b5c 40%, var(--border)); }
 .voc-del-ic { display: inline-flex; }
+/* „Neue Liste" direkt im Bereich (Verben/Wörter) statt in der Gemerkt-Übersicht */
+.voc-newlist-btn { margin-left: auto; flex: none; display: inline-flex; align-items: center; gap: 4px; border: 1.5px solid var(--text); background: var(--surface); color: var(--text); border-radius: 999px; padding: 6px 12px; font-family: var(--font-display); font-weight: 800; font-size: 12.5px; cursor: pointer; }
+.voc-del + .voc-newlist-btn { margin-left: 8px; }
+.vtcatchip { margin-left: 6px; }
 .voc-del-keep { flex: 1; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 13px; padding: 12px; font-family: var(--font-display); font-weight: 800; font-size: 14px; cursor: pointer; }
 .voc-del-go { flex: 1; border: 0; background: #ff3b5c; color: #fff; border-radius: 13px; padding: 12px; font-family: var(--font-display); font-weight: 800; font-size: 14px; cursor: pointer; }
 .vocitem { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lc); border-radius: 12px; padding: 11px 13px; box-shadow: var(--shadow-sm); }
@@ -3103,7 +3107,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-157"></script>
+<script defer src="/app.js?v=c-sand-158"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->

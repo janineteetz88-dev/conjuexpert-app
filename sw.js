@@ -1,5 +1,5 @@
 /* ConjuExpert service worker — app shell, cache-first (stale-while-revalidate) */
-const CACHE = "conjuexpert-v178";
+const CACHE = "conjuexpert-v179";
 const ASSETS = [
   "./index.html", "./app.js", "./manifest.webmanifest",
   "./icon-192.png", "./icon-512.png", "./icon-maskable.png",
@@ -37,14 +37,14 @@ self.addEventListener("fetch", (e) => {
     const path = new URL(req.url).pathname;
     const isAppRoot = path === "/" || path === "/index.html";
     if (isAppRoot) {
+      // NETWORK-FIRST für die App-Shell: Neue Deploys kommen sofort beim nächsten
+      // Laden an. Nur wenn das Netz nicht antwortet, wird die gecachte index.html
+      // gezeigt (Offline-Fallback) — index.html ist winzig, also kein Schwarzbild.
       e.respondWith(
-        caches.match("./index.html").then((cached) => {
-          const net = fetch(req).then((res) => {
-            if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put("./index.html", copy)); }
-            return res;
-          }).catch(() => null);
-          return cached || net.then((r) => r || caches.match("./index.html"));
-        })
+        fetch(req).then((res) => {
+          if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put("./index.html", copy)); }
+          return res;
+        }).catch(() => caches.match("./index.html"))
       );
     } else {
       // Netzwerk zuerst; nur offline auf Cache (bzw. App-Shell) zurückfallen.
@@ -58,8 +58,22 @@ self.addEventListener("fetch", (e) => {
     return;
   }
 
-  // Übrige eigene GETs (app.js, engine/*, Icons …): stale-while-revalidate.
-  // ignoreSearch, damit app.js?v=xyz auf das gecachte ./app.js trifft.
+  // app.js ist versioniert (app.js?v=NNN). EXAKT nach ?v cachen (kein ignoreSearch):
+  // Eine neue Version ist damit ein Cache-Miss → wird frisch geladen und danach
+  // schnell aus dem Cache bedient. So kommt jeder Deploy beim nächsten Laden an,
+  // ohne den Start zu verlangsamen. Offline: irgendeine gecachte app.js als Fallback.
+  if (new URL(req.url).pathname === "/app.js") {
+    e.respondWith(
+      caches.match(req).then((cached) => cached || fetch(req).then((res) => {
+        if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
+        return res;
+      }).catch(() => caches.match("/app.js", { ignoreSearch: true })))
+    );
+    return;
+  }
+
+  // Übrige eigene GETs (engine/*, Icons …): stale-while-revalidate.
+  // ignoreSearch, damit z. B. engine/*.js unabhängig von Query-Strings trifft.
   e.respondWith(
     caches.match(req, { ignoreSearch: true }).then((cached) => {
       const net = fetch(req).then((res) => {
