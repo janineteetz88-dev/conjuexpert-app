@@ -113,7 +113,7 @@ function renderHtml(lang: Lang, key: Key, url: string, firstName: string): strin
 </head>
 <body style="margin:0;padding:0;background-color:${SAND_BG};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">${m.pre}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f5f5f7">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${SAND_BG}">
 <tr><td align="center" style="padding:32px 16px;">
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:${CARD};border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(33,29,21,0.10);">
     <tr><td height="4" bgcolor="${RAINBOW_FB}" style="background:${RAINBOW};font-size:0;line-height:0;">&nbsp;</td></tr>
