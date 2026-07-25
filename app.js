@@ -6335,6 +6335,9 @@ function WordSentence({
   const [saved, setSaved] = useState({});
   // Ziel-Liste fürs Wort-Merken: zuletzt gewählte Liste (pro Sprache) merken.
   const [targetCat, setTargetCat] = useState(() => recall("kunju-lastsave-cat-" + (saveLang || ""), null) || generalCat());
+  // Verb-Merken: eigene zuletzt gewählte Verbliste + Modus (Wort | Verb).
+  const [targetVCat, setTargetVCat] = useState(() => recall("kunju-lastsave-vcat-" + (saveLang || ""), null) || generalCat());
+  const [targetKind, setTargetKind] = useState("w"); // "w" = Wort, "v" = Verb
   function catLabelWS(cat) { return isGeneralCat(cat) ? tr("gm_words") : cat; }
   function listCatsForWS() {
     const seen = {}, out = [];
@@ -6343,6 +6346,29 @@ function WordSentence({
     if (targetCat && !isGeneralCat(targetCat) && !seen[targetCat]) out.push(targetCat);
     return out;
   }
+  function verbListsForWS() {
+    const seen = {}, out = [];
+    try { (recall("kunju-favs", []) || []).forEach(f => { if (f && f.lang === saveLang && f.cat && !isGeneralCat(f.cat) && !seen[f.cat]) { seen[f.cat] = 1; out.push(f.cat); } }); } catch (e) {}
+    recall("kunju-verb-catnames", []).forEach(n => { if (n && !isGeneralCat(n) && !seen[n]) { seen[n] = 1; out.push(n); } });
+    if (targetVCat && !isGeneralCat(targetVCat) && !seen[targetVCat]) out.push(targetVCat);
+    return out;
+  }
+  // Angetipptes Wort automatisch als Verb erkennen (nur wenn es ein Wort der
+  // Zielsprache ist, also saveDir === "fromTarget"). Gibt den Infinitiv zurück
+  // oder null. Die Engine schlägt vor — im Dropdown bleibt Wort/Verb frei wählbar.
+  const verbInf = useMemo(() => {
+    if (!openW || !saveLang || saveDir !== "fromTarget") return null;
+    try {
+      const dq = deconjugate(saveLang, openW.w);
+      if (dq && dq.infinitives && dq.infinitives.length) {
+        const inf = (dq.infinitives[0].base || dq.infinitives[0].infinitive || "").replace(/^to /, "").trim();
+        return inf || null;
+      }
+    } catch (e) {}
+    return null;
+  }, [openW && openW.w, saveLang, saveDir]);
+  // Wird ein Verb erkannt, den Verb-Modus vorschlagen (Nutzer kann überschreiben).
+  useEffect(() => { if (openW) setTargetKind(verbInf ? "v" : "w"); }, [openW && openW.i, verbInf]);
   const [hintVisible, setHintVisible] = useState(() => showHint && !recall("kunju-word-hint-seen", false));
   useEffect(() => {
     if (!hintVisible) return;
@@ -6473,34 +6499,70 @@ function WordSentence({
       afterTrans(out);
     }).catch(() => afterTrans(""));
   }
+  // Als Verb merken: Infinitiv in „Gemerkte Verben" (kunju-favs) mit Liste (cat).
+  function saveVerbWord(toCat) {
+    if (!saveLang || !openW) return;
+    const c = openW.w;
+    const inf = (verbInf || c).replace(/^to /, "").trim();
+    if (!inf) return;
+    const cat = toCat || targetVCat || generalCat();
+    if (window.__addVerbFav) window.__addVerbFav(saveLang, inf); // Basis + Cloud-Sync + Dedup
+    // Kategorie lokal setzen (favorites-Tabelle kennt (noch) keine cat-Spalte).
+    const favs = recall("kunju-favs", []) || [];
+    const i = favs.findIndex(f => f && f.lang === saveLang && String(f.verb).replace(/^to /, "").trim().toLowerCase() === inf.toLowerCase());
+    if (i >= 0) { favs[i] = Object.assign({}, favs[i], { cat: cat }); persist("kunju-favs", favs); }
+    else persist("kunju-favs", [{ lang: saveLang, verb: inf, cat: cat }, ...favs]);
+    setTargetVCat(cat); persist("kunju-lastsave-vcat-" + saveLang, cat);
+    setSaved(s => ({ ...s, [c]: true }));
+    if (window.__toast) window.__toast("„" + inf + "“ → " + (isGeneralCat(cat) ? tr("gm_verbs") : cat));
+  }
   function pickList(e) {
-    const v = e.target.value;
+    const raw = e.target.value;
+    const sep = raw.indexOf(":");
+    const kind = raw.slice(0, sep);
+    const v = raw.slice(sep + 1);
     if (v === "__new__") {
       const name = (window.prompt(tr("vocab_new_cat_q")) || "").trim();
       if (!name) return;
-      const names = recall("kunju-vocab-catnames", []);
-      if (names.indexOf(name) < 0) persist("kunju-vocab-catnames", [...names, name]);
-      setTargetCat(name); persist("kunju-lastsave-cat-" + (saveLang || ""), name);
-      saveWord(name);
+      if (kind === "v") {
+        const names = recall("kunju-verb-catnames", []);
+        if (names.indexOf(name) < 0) persist("kunju-verb-catnames", [...names, name]);
+        setTargetKind("v"); setTargetVCat(name); persist("kunju-lastsave-vcat-" + (saveLang || ""), name);
+        saveVerbWord(name);
+      } else {
+        const names = recall("kunju-vocab-catnames", []);
+        if (names.indexOf(name) < 0) persist("kunju-vocab-catnames", [...names, name]);
+        setTargetKind("w"); setTargetCat(name); persist("kunju-lastsave-cat-" + (saveLang || ""), name);
+        saveWord(name);
+      }
       return;
     }
     const cat = v === "__gen__" ? generalCat() : v;
-    setTargetCat(cat); persist("kunju-lastsave-cat-" + (saveLang || ""), cat);
-    saveWord(cat);
+    if (kind === "v") { setTargetKind("v"); setTargetVCat(cat); persist("kunju-lastsave-vcat-" + (saveLang || ""), cat); saveVerbWord(cat); }
+    else { setTargetKind("w"); setTargetCat(cat); persist("kunju-lastsave-cat-" + (saveLang || ""), cat); saveWord(cat); }
   }
   function listDropdown() {
     if (!saveLang) return null;
+    const curCat = targetKind === "v" ? targetVCat : targetCat;
+    const val = targetKind + ":" + (isGeneralCat(curCat) ? "__gen__" : curCat);
+    const groups = [
+      /*#__PURE__*/React.createElement("optgroup", { key: "wg", label: tr("gm_words") },
+        /*#__PURE__*/React.createElement("option", { key: "w__gen__", value: "w:__gen__" }, tr("gm_words")),
+        ...listCatsForWS().map(n => /*#__PURE__*/React.createElement("option", { key: "w:" + n, value: "w:" + n }, n)),
+        /*#__PURE__*/React.createElement("option", { key: "w__new__", value: "w:__new__" }, "＋ " + tr("gm_new_list")))
+    ];
+    // Verb-Listen nur zeigen, wenn das Wort als Verb erkannt wurde.
+    if (verbInf) groups.push(/*#__PURE__*/React.createElement("optgroup", { key: "vg", label: tr("gm_verbs") },
+      /*#__PURE__*/React.createElement("option", { key: "v__gen__", value: "v:__gen__" }, tr("gm_verbs")),
+      ...verbListsForWS().map(n => /*#__PURE__*/React.createElement("option", { key: "v:" + n, value: "v:" + n }, n)),
+      /*#__PURE__*/React.createElement("option", { key: "v__new__", value: "v:__new__" }, "＋ " + tr("gm_new_list"))));
     return /*#__PURE__*/React.createElement("select", {
       className: "wsave-list",
-      value: isGeneralCat(targetCat) ? "__gen__" : targetCat,
+      value: val,
       onClick: e => e.stopPropagation(),
       onChange: pickList,
       title: tr("mv_title")
-    }, [
-      /*#__PURE__*/React.createElement("option", { key: "__gen__", value: "__gen__" }, tr("gm_words")),
-      ...listCatsForWS().map(n => /*#__PURE__*/React.createElement("option", { key: n, value: n }, n)),
-      /*#__PURE__*/React.createElement("option", { key: "__new__", value: "__new__" }, "＋ " + tr("gm_new_list"))
-    ]);
+    }, groups);
   }
   function chipInner() {
     const c = openW.w;
@@ -6514,8 +6576,12 @@ function WordSentence({
       className: "wsave saved"
     }, "\u2713 ", tr("vocab_saved")) : /*#__PURE__*/React.createElement("button", {
       className: "wsave",
-      onClick: () => saveWord()
-    }, "+ ", tr("vocab_save"))), listDropdown(), /*#__PURE__*/React.createElement("button", {
+      onClick: () => targetKind === "v" ? saveVerbWord() : saveWord()
+    }, "+ ", tr("vocab_save"))),
+    verbInf && norm(verbInf) !== norm(c) ? /*#__PURE__*/React.createElement("span", {
+      className: "wsave-vb", title: tr("gm_verbs")
+    }, "→ ", verbInf) : null,
+    listDropdown(), /*#__PURE__*/React.createElement("button", {
       className: "wtrans-x",
       "aria-label": tr("ios_close"),
       title: tr("ios_close"),
