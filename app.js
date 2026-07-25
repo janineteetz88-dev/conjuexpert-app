@@ -16558,10 +16558,6 @@ function App() {
       persist("kunju-premium", true);
       setIsPremium(true);
       setShowPaySuccess(true);
-      if (window.plausible) {
-        const plan = params.get("plan");
-        plausible(plan === "monthly" ? "abo_monthly" : "abo_annual");
-      }
       window.history.replaceState({}, "", "/");
       // Background verify: sync DB status once webhook has likely landed
       if (window.__supa) {
@@ -16991,7 +16987,6 @@ function App() {
           exp
         });
         persist("kunju-acct-trial", true);
-        if (window.plausible) plausible("trial_start");
         setTrialExpiry(exp);
         // Bestätigung nach der Konto-Erstellung (E-Mail bestätigt + zurück in der App)
         setToastMsg(tr("acct_created"));
