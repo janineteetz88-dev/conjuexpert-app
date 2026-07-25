@@ -1426,8 +1426,10 @@ body {
 .ch-head { display: flex; align-items: baseline; justify-content: space-between; }
 .ch-head b { font-family: var(--font-display); font-size: 18px; letter-spacing: -0.01em; }
 .ch-left { font-size: 12.5px; color: var(--muted); }
-.ch-sec { display: flex; flex-direction: column; gap: 6px; }
-.ch-sec-h { font-family: var(--font-display); font-weight: 700; font-size: 12px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--muted); }
+.ch-sec { display: flex; flex-direction: column; gap: 6px; margin-top: 20px; padding-top: 16px; border-top: 1.5px solid var(--border); }
+.ch-sec.ch-sec-v { margin-top: 6px; padding-top: 0; border-top: 0; }
+.ch-sec-h { display: flex; align-items: center; gap: 7px; font-family: var(--font-display); font-weight: 800; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text); }
+.ch-sec-ic { font-size: 15px; line-height: 1; }
 .ch-wordhint { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 2px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 11px; padding: 9px 12px; font-size: 12.5px; font-weight: 600; color: var(--muted); cursor: pointer; text-align: left; }
 .ch-wordhint:active { transform: scale(0.99); }
 .ch-wordhint .ch-wordhint-go { margin-left: auto; color: var(--text); font-weight: 700; white-space: nowrap; }
@@ -3080,7 +3082,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-137"></script>
+<script defer src="/app.js?v=c-sand-138"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
