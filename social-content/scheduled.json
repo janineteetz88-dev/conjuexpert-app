@@ -200,5 +200,21 @@
     "response": {
       "postSubmissionId": "9a99fd4b-0b27-4fff-ad42-71b6080186c6"
     }
+  },
+  "app-tour-intro-facebook-2026-07-25": {
+    "scheduledAt": "2026-07-25T19:14:27Z",
+    "scheduledTime": "2026-07-25T21:30:00+02:00",
+    "source": "github-action",
+    "response": {
+      "postSubmissionId": "c5fec59f-72ee-4fb9-8739-46e47c0818a8"
+    }
+  },
+  "app-tour-intro-tiktok-2026-07-25": {
+    "scheduledAt": "2026-07-25T19:14:27Z",
+    "scheduledTime": "2026-07-25T21:30:00+02:00",
+    "source": "github-action",
+    "response": {
+      "postSubmissionId": "516e1499-77a8-48be-a3b7-5c2beb5a16d8"
+    }
   }
 }
