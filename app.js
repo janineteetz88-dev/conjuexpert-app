@@ -10733,7 +10733,7 @@ function VocabView({
     const topic = VOCAB_TOPICS[idx] || catName;
     const lvl = skill === "advanced" ? "advanced C1-level" : skill === "intermediate" ? "intermediate B1-level" : "basic A1–A2";
     setSeeding(catName);
-    window.aiComplete(`List 5 useful ${lvl} ${targetName()} words or short phrases about "${topic}".${adjFormsNote(lang, targetName(), isAdjTopic(catName))} For each, give the ${targetName()} term and its ${nativeName} translation. Avoid duplicates. Reply with ONLY a minified JSON array, nothing else: [{"t":"<${targetName()} term>","n":"<${nativeName} translation>"}]`).then(txt => {
+    window.aiComplete(`List 5 useful ${lvl} ${targetName()} words or short phrases about "${topic}".${adjFormsNote(lang, targetName(), isAdjTopic(catName))}${lang === "nl" ? NL_RULES : ""} For each, give the ${targetName()} term and its ${nativeName} translation. Avoid duplicates. Reply with ONLY a minified JSON array, nothing else: [{"t":"<${targetName()} term>","n":"<${nativeName} translation>"}]`).then(txt => {
       let arr = null;
       try {
         let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
@@ -10785,7 +10785,7 @@ function VocabView({
     }
     const lvl = skill === "advanced" ? "advanced C1-level" : skill === "intermediate" ? "intermediate B1-level" : "basic A1–A2";
     setSeeding(catName);
-    window.aiComplete(`List 5 useful ${lvl} ${targetName()} words or short phrases about "${catName}".${adjFormsNote(lang, targetName(), isAdjTopic(catName))} For each, give the ${targetName()} term and its ${nativeName} translation. Avoid duplicates. Reply with ONLY a minified JSON array: [{"t":"<${targetName()} term>","n":"<${nativeName} translation>"}]`).then(txt => {
+    window.aiComplete(`List 5 useful ${lvl} ${targetName()} words or short phrases about "${catName}".${adjFormsNote(lang, targetName(), isAdjTopic(catName))}${lang === "nl" ? NL_RULES : ""} For each, give the ${targetName()} term and its ${nativeName} translation. Avoid duplicates. Reply with ONLY a minified JSON array: [{"t":"<${targetName()} term>","n":"<${nativeName} translation>"}]`).then(txt => {
       let arr = null;
       try {
         let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
@@ -10891,7 +10891,7 @@ function VocabView({
     const avoid = avoidList.length ? ` The learner already knows these — do NOT include any of them: ${avoidList.join(", ")}.` : "";
     const adjNote = adjFormsNote(lang, targetName(), isAdjTopic(catName) || isAdjTopic(cat));
     setSeeding(cat || "all");
-    window.aiComplete(`Suggest 10 useful ${lvl} ${targetName()} words or short phrases about "${topic}".${avoid}${adjNote} For each give the ${targetName()} term and its ${nativeName} translation. Reply with ONLY a minified JSON array, nothing else: [{"t":"...","n":"..."}]`).then(txt => {
+    window.aiComplete(`Suggest 10 useful ${lvl} ${targetName()} words or short phrases about "${topic}".${avoid}${adjNote}${lang === "nl" ? NL_RULES : ""} For each give the ${targetName()} term and its ${nativeName} translation. Reply with ONLY a minified JSON array, nothing else: [{"t":"...","n":"..."}]`).then(txt => {
       let arr = null;
       try {
         let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
@@ -11025,7 +11025,7 @@ function VocabView({
       const x = src[i];
       let term = "";
       try {
-        const r = await window.aiComplete(`Translate this ${srcName} word or phrase into ${targetName()}: "${x.term}". Reply with ONLY the ${targetName()} translation, no quotes, no extra text.`);
+        const r = await window.aiComplete(`Translate this ${srcName} word or phrase into ${targetName()}: "${x.term}".${lang === "nl" ? " Give REAL, standard Dutch — never a German word (Dutch and German look similar; e.g. Dutch 'met'/'tijd'/'vriend', not German 'mit'/'Zeit'/'Freund')." : ""} Reply with ONLY the ${targetName()} translation, no quotes, no extra text.`);
         term = String(r || "").trim().replace(/^["'«».]+|["'«».]+$/g, "").split("\n")[0].trim();
       } catch (e) {}
       if (!term || seen.has(norm(term))) continue;
