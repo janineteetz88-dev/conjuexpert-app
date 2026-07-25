@@ -17611,8 +17611,12 @@ function App() {
       return;
     }
     // 2) Looks inflected → reverse-lookup the infinitive, person & tense.
+    //    Only accept a SOLID match here. A mere ending-guess must NOT pre-empt
+    //    the cross-language rescue below — otherwise German "sein" typed in NL
+    //    mode gets fabricated as a bogus regular Dutch verb instead of being
+    //    translated to "zijn".
     const dq = deconjugate(lang, raw);
-    if (dq) {
+    if (dq && !dq.guessed) {
       const target = dq.infinitives[0];
       setDeconj(dq);
       setActiveInf(target.base);
@@ -17620,9 +17624,9 @@ function App() {
       finishConjugate(lang, target.base, conjugateMaybeReflexive(lang, target.base));
       return;
     }
-    // 2.5) Not a target-language verb, but a known verb in another language
-    //      (e.g. German "sein" typed while learning Dutch) → translate & conjugate
-    //      the correct equivalent instead of fabricating a bogus conjugation.
+    // 2.5) Not a solid target-language form, but a known verb in another
+    //      language (e.g. German "sein" while learning Dutch) → translate &
+    //      conjugate the correct equivalent instead of guessing.
     const xl = conceptFromAny(raw, lang);
     if (xl && xl.base !== raw.trim().toLowerCase()) {
       setDeconj(null);
@@ -17634,6 +17638,16 @@ function App() {
       });
       setVerb(xl.base);
       finishConjugate(lang, xl.base, conjugateMaybeReflexive(lang, xl.base));
+      return;
+    }
+    // 2.6) No cross-language rescue → fall back to the guessed deconjugation
+    //      (best-effort ending analysis) if we have one.
+    if (dq) {
+      const target = dq.infinitives[0];
+      setDeconj(dq);
+      setActiveInf(target.base);
+      setVerb(target.base);
+      finishConjugate(lang, target.base, conjugateMaybeReflexive(lang, target.base));
       return;
     }
     // 3) Nothing recognised → fall back (shows the engine's guidance/error).
