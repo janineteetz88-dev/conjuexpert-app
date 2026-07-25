@@ -11913,9 +11913,10 @@ function ChallengeView({ lang, onNew, onPractice, onWords, canEdit = true }) {
   const section = (kind) => {
     const lst = kind === "v" ? vl : wl;
     if (!lst.length && !edit) return null;
-    const head = (kind === "v" ? tr("saved_verbs") + " · " + tr("ch_done_v", { a: vDone, b: vl.length }) : tr("saved_vocab") + " · " + tr("ch_done_w", { a: wDone, b: wl.length }));
+    const secName = kind === "v" ? tr("saved_verbs") : tr("saved_vocab");
+    const secCount = " · " + (kind === "v" ? tr("ch_done_v", { a: vDone, b: vl.length }) : tr("ch_done_w", { a: wDone, b: wl.length }));
     return h("div", { className: "ch-sec ch-sec-" + kind },
-      h("div", { className: "ch-sec-h" }, h("span", { className: "ch-sec-ic", "aria-hidden": "true" }, kind === "v" ? "🔤" : "📖"), h("span", null, head)),
+      h("div", { className: "ch-sec-h" }, h("span", { className: "ch-sec-name" }, secName), h("span", { className: "ch-sec-count" }, secCount)),
       lst.map((x, i) => item(kind === "v" ? x.v : x.w, x.done, kind, i)),
       edit ? addRow(kind) : null,
       kind === "w" && lst.length && !edit
