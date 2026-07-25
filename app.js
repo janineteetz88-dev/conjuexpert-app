@@ -17533,6 +17533,9 @@ function App() {
     lang: lang,
     setLang: switchLang
   }), (() => {
+    // Auf dem Conjugate-Tab übernimmt die Hero-Karte den Challenge-Anstoß → hier
+    // keine zweite Challenge-Leiste (Duplikat vermeiden). Auf den anderen Tabs bleibt sie.
+    if (tab === "conjugate") return null;
     // Aktive Challenge → Status-/Rückhol-Leiste. Keine Challenge (aber onboarded)
     // → einladende „Challenge starten"-Leiste (sichtbarer Einstieg, #27).
     const onboarded = !!(name && String(name).trim());
