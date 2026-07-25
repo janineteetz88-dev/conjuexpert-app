@@ -168,6 +168,30 @@ footer{padding:52px 0 40px;border-top:1px solid var(--border)}
 </head>
 <body>
 
+<!-- Zurück-Leiste: erscheint nur, wenn die Seite AUS DER APP geöffnet wurde
+     (?from=app). Schließt den Tab und bringt den Nutzer zurück zu seinem Quiz. -->
+<div id="backToApp" style="display:none;position:sticky;top:0;z-index:200;background:#14151a;padding:11px 16px;text-align:center">
+  <a href="#" id="backToAppBtn" style="color:#fff;font:600 14px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;text-decoration:none">← <span id="backToAppTxt">Zurück zur App</span></a>
+</div>
+<script>
+(function(){
+  try{
+    var p = new URLSearchParams(location.search);
+    if(p.get('from') !== 'app') return;
+    var L = { de:'Zurück zur App', en:'Back to the app', es:'Volver a la app', fr:"Retour à l'app", nl:'Terug naar de app' };
+    var lang = (p.get('lang')||'de').slice(0,2).toLowerCase();
+    var bar = document.getElementById('backToApp');
+    document.getElementById('backToAppTxt').textContent = L[lang] || L.de;
+    bar.style.display = 'block';
+    document.getElementById('backToAppBtn').addEventListener('click', function(e){
+      e.preventDefault();
+      window.close(); // schließt den (per window.open erzeugten) Tab → zurück zum Quiz-Tab
+      setTimeout(function(){ location.href = 'https://conjuexpert.app/'; }, 150); // Fallback, falls close blockiert
+    });
+  }catch(e){}
+})();
+</script>
+
 <header class="nav">
   <div class="wrap nav-in">
     <a class="brand" href="https://conjuexpert.app/landing/" aria-label="ConjuExpert"><span class="brand-mark" data-mark></span><span class="brand-name">Conju<b>Expert</b></span></a>

@@ -4817,7 +4817,7 @@ ${RB}
   w.document.close();
 }
 function rateApp() {
-  window.open("https://conjuexpert.app/bewertungen/", "_blank");
+  window.open("https://conjuexpert.app/bewertungen/?from=app&lang=" + UILANG, "_blank");
 }
 async function shareApp() {
   const lang = (navigator.language || navigator.userLanguage || "en").toLowerCase().slice(0, 2);
