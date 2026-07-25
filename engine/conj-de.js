@@ -294,7 +294,11 @@
     const futur = werden.map(w => `${w} ${verb}`);
     const wuerde = ["würde","würdest","würde","würden","würdet","würden"];
     const konditional = wuerde.map(w => `${w} ${verb}`);
-    const partizip1 = (verb.endsWith("n") ? verb : verb + "n") + "d";
+    // Partizip I = Infinitiv + "d" (gehen→gehend, wandern→wandernd). Ausnahmen:
+    // „sein"→„seiend" und „…tun"→„…tuend" (kurzer Vokal+n, „e" wird eingeschoben).
+    const partizip1 = verb === "sein" ? "seiend"
+      : verb.endsWith("tun") ? verb.slice(0, -1) + "end"
+      : (verb.endsWith("n") ? verb : verb + "n") + "d";
     const k1stem = verb.endsWith("en") ? verb.slice(0, -2) : verb.endsWith("n") ? verb.slice(0, -1) : verb;
     const konjunktiv1 = data.konjunktiv1 || (verb === "sein"
       ? ["sei","seist","sei","seien","seiet","seien"]
