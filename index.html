@@ -1475,6 +1475,20 @@ body {
 .ch-choose-car { margin-left: 1px; color: var(--muted); font-size: 11px; }
 /* Inline-Dropdown der gemerkten Verben/Wörter (öffnet an Ort und Stelle) */
 .ch-pick-inline { display: flex; flex-direction: column; gap: 7px; margin-top: 8px; animation: skup 0.18s ease both; }
+/* Listen-Browser im Wort-Picker */
+.ch-listbrowser { max-height: 320px; overflow-y: auto; padding: 2px; }
+.ch-newlist { align-self: flex-start; border: 1.5px dashed var(--border); background: var(--surface); color: var(--text); border-radius: 11px; padding: 8px 13px; font-family: var(--font-display); font-weight: 700; font-size: 12.5px; cursor: pointer; margin-bottom: 2px; }
+.ch-newlist:active { transform: scale(0.97); }
+.ch-lb-cat { border: 1px solid var(--border); background: var(--surface); border-radius: 12px; overflow: hidden; }
+.ch-lb-head { display: flex; align-items: center; gap: 8px; padding: 4px 6px 4px 4px; }
+.ch-lb-name { flex: 1; display: inline-flex; align-items: center; gap: 8px; border: 0; background: none; color: var(--text); font-family: var(--font-display); font-weight: 700; font-size: 14px; cursor: pointer; text-align: left; padding: 8px 6px; }
+.ch-lb-car { color: var(--muted); font-size: 12px; width: 12px; flex: none; }
+.ch-lb-lbl { flex: 1; }
+.ch-lb-count { color: var(--muted); font-size: 12px; font-weight: 600; background: var(--surface-2); border-radius: 999px; padding: 2px 9px; }
+.ch-lb-addall { flex: none; border: 0; background: var(--selbg); color: var(--selfg); border-radius: 999px; padding: 6px 12px; font-family: var(--font-display); font-weight: 700; font-size: 11.5px; cursor: pointer; }
+.ch-lb-addall:active { transform: scale(0.95); }
+.ch-lb-words { display: flex; flex-direction: column; gap: 6px; padding: 0 8px 10px; }
+.ch-lb-add { display: flex; gap: 8px; margin-top: 2px; }
 .ch-pick-list { display: flex; flex-direction: column; gap: 6px; max-height: 280px; overflow-y: auto; padding: 2px; }
 /* Picker-Sheet: gemerkte Verben/Wörter auswählen */
 .chpick-bg { position: fixed; inset: 0; z-index: 6000; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; padding: 22px; }
@@ -3082,7 +3096,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-140"></script>
+<script defer src="/app.js?v=c-sand-141"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
