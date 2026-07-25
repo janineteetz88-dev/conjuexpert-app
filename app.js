@@ -11781,6 +11781,8 @@ function ChallengeView({ lang, onNew, onPractice, onWords, canEdit = true }) {
   const [picker, setPicker] = useState(null); // null | "v" | "w" — Auswahl aus gemerkter Liste
   const [expandCat, setExpandCat] = useState(null); // im Wort-Picker aufgeklappte Liste
   const [lbWordVal, setLbWordVal] = useState(""); // Inline: Wort zur aufgeklappten Liste
+  const [expandVCat, setExpandVCat] = useState(null); // im Verb-Picker aufgeklappte Liste
+  const [lbVerbVal, setLbVerbVal] = useState(""); // Inline: Verb zur aufgeklappten Liste
   const force = () => setTick(t => t + 1);
   const vl = (g && g.verbList) || [];
   const wl = (g && g.wordList) || [];
@@ -11816,10 +11818,6 @@ function ChallengeView({ lang, onNew, onPractice, onWords, canEdit = true }) {
   const left = Math.max(0, days - passed);
   const inV = new Set(vl.map(x => String(x.v).toLowerCase()));
   const inW = new Set(wl.map(x => String(x.w).toLowerCase()));
-  const allSavedV = Array.from(new Set((recall("kunju-favs", []) || []).filter(f => f.lang === lang && f.verb).map(f => String(f.verb).replace(/^to /, "").trim()).filter(Boolean)));
-  const allSavedW = Array.from(new Set((getVocab() || []).filter(x => x.lang === lang && x.term).map(x => String(x.term).trim()).filter(Boolean)));
-  const savedVerbs = allSavedV.filter(v => !inV.has(v.toLowerCase()));
-  const savedWords = allSavedW.filter(w => !inW.has(w.toLowerCase()));
   const item = (label, done, kind, i) => {
     const st = (done || 0) >= CH_DONE ? "done" : (done || 0) > 0 ? "learn" : "open";
     return h("div", { className: "ch-item ch-" + st, key: kind + i },
@@ -11877,16 +11875,61 @@ function ChallengeView({ lang, onNew, onPractice, onWords, canEdit = true }) {
               h("button", { className: "ch-addbtn", onClick: () => addWordToList(cat, lbWordVal) }, "+"))) : null);
       }));
   };
+  // Listenbasierter Verb-Picker (analog zu den Wörtern): gemerkte Verben sind in
+  // Listen organisiert (Standardliste „Verben" + eigene Listen). Ganze Liste oder
+  // einzelne Verben in die Challenge übernehmen; neue Liste direkt hier anlegen.
+  const verbPicker = () => {
+    const seen = {}, catNames = [];
+    const pushCat = c => { const k = String(c).toLowerCase(); if (c && !seen[k]) { seen[k] = 1; catNames.push(c); } };
+    pushCat(generalCat());
+    (recall("kunju-verb-catnames", []) || []).forEach(pushCat);
+    (recall("kunju-favs", []) || []).forEach(f => { if (f && f.lang === lang && f.verb) pushCat(f.cat || generalCat()); });
+    const verbsIn = cat => Array.from(new Set((recall("kunju-favs", []) || []).filter(f => f && f.lang === lang && f.verb && (f.cat || generalCat()) === cat).map(f => String(f.verb).replace(/^to /, "").trim()).filter(Boolean)));
+    function newList() {
+      const name = (window.prompt(tr("vocab_new_cat_q")) || "").trim();
+      if (!name) return;
+      const names = recall("kunju-verb-catnames", []);
+      if (names.indexOf(name) < 0) persist("kunju-verb-catnames", [...names, name]);
+      setExpandVCat(name);
+    }
+    function addVerbToList(cat, term) {
+      const t = String(term || "").replace(/^to /, "").trim(); if (!t) return;
+      const favs = recall("kunju-favs", []) || [];
+      const i = favs.findIndex(f => f && f.lang === lang && String(f.verb).replace(/^to /, "").trim().toLowerCase() === t.toLowerCase());
+      if (i >= 0) { favs[i] = Object.assign({}, favs[i], { cat: cat }); persist("kunju-favs", favs); }
+      else persist("kunju-favs", [{ lang: lang, verb: t, cat: cat }, ...favs]);
+      addVerb(t); // gleich in die Challenge übernehmen
+      setLbVerbVal(""); force();
+    }
+    return h("div", { className: "ch-pick-inline ch-listbrowser" },
+      h("button", { className: "ch-newlist", onClick: newList }, "+ ", tr("gm_new_list")),
+      catNames.map((cat, ci) => {
+        const verbs = verbsIn(cat);
+        const exp = expandVCat === cat;
+        const label = isGeneralCat(cat) ? tr("gm_verbs") : cat;
+        const notInList = verbs.filter(v => !inV.has(v.toLowerCase()));
+        return h("div", { className: "ch-lb-cat", key: ci },
+          h("div", { className: "ch-lb-head" },
+            h("button", { className: "ch-lb-name", onClick: () => setExpandVCat(exp ? null : cat) },
+              h("span", { className: "ch-lb-car" }, exp ? "▾" : "▸"),
+              h("span", { className: "ch-lb-lbl" }, label),
+              h("span", { className: "ch-lb-count" }, verbs.length)),
+            notInList.length ? h("button", { className: "ch-lb-addall", onClick: () => notInList.forEach(addVerb) }, tr("ch_add_all")) : null),
+          exp ? h("div", { className: "ch-lb-words" },
+            verbs.length
+              ? verbs.map((v, vi) => { const on = inV.has(v.toLowerCase()); return h("button", { key: vi, className: "chpick-row" + (on ? " on" : ""), onClick: () => on ? removeName("v", v) : addVerb(v) }, h("span", { className: "chpick-lb" }, v), h("span", { className: "chpick-mk" }, on ? "✓" : "+")); })
+              : h("p", { className: "chpick-empty" }, tr("ch_pick_empty_v")),
+            h("div", { className: "ch-lb-add" },
+              h("input", { className: "ch-input", value: lbVerbVal, placeholder: tr("ch_ph_verb"), onChange: e => setLbVerbVal(e.target.value), onKeyDown: e => { if (e.key === "Enter") addVerbToList(cat, lbVerbVal); } }),
+              h("button", { className: "ch-addbtn", onClick: () => addVerbToList(cat, lbVerbVal) }, "+"))) : null);
+      }));
+  };
   const addRow = (kind) => {
     const val = kind === "v" ? vIn : wIn;
     const setVal = kind === "v" ? setVIn : setWIn;
     const add = (t) => { kind === "v" ? addVerb(t) : addWord(t); };
     const doAdd = () => { add(val); setVal(""); };
     const open = picker === kind;
-    const all = kind === "v" ? allSavedV : allSavedW;
-    const inSet = kind === "v" ? inV : inW;
-    const notIn = all.filter(c => !inSet.has(c.toLowerCase()));
-    const addOne = c => kind === "v" ? addVerb(c) : addWord(c);
     return h("div", { className: "ch-edit" },
       h("div", { className: "ch-addrow" },
         h("input", { className: "ch-input", value: val, placeholder: kind === "v" ? tr("ch_ph_verb") : tr("ch_ph_word"), onChange: e => setVal(e.target.value), onKeyDown: e => { if (e.key === "Enter") doAdd(); } }),
@@ -11898,17 +11941,8 @@ function ChallengeView({ lang, onNew, onPractice, onWords, canEdit = true }) {
           tr("ch_choose"),
           h("span", { className: "ch-choose-car" }, open ? "▴" : "▾")),
         h("button", { className: "ch-fill", onClick: kind === "v" ? fillVerbs : fillWords }, tr("ch_fill"))),
-      // Inline-Dropdown (öffnet an Ort und Stelle, kein Popup). Wörter: Listen-Browser.
-      open ? (kind === "w" ? wordPicker() : h("div", { className: "ch-pick-inline" },
-        all.length
-          ? h("div", { className: "ch-pick-list" }, all.map((c, ci) => {
-              const on = inSet.has(c.toLowerCase());
-              return h("button", { key: ci, className: "chpick-row" + (on ? " on" : ""), onClick: () => on ? removeName(kind, c) : addOne(c) },
-                h("span", { className: "chpick-lb" }, c),
-                h("span", { className: "chpick-mk" }, on ? "✓" : "+"));
-            }))
-          : h("p", { className: "chpick-empty" }, kind === "v" ? tr("ch_pick_empty_v") : tr("ch_pick_empty_w")),
-        notIn.length ? h("button", { className: "ch-from-all", onClick: () => notIn.forEach(addOne) }, tr("ch_add_all")) : null)) : null);
+      // Inline-Dropdown (öffnet an Ort und Stelle, kein Popup). Beide listenbasiert.
+      open ? (kind === "w" ? wordPicker() : verbPicker()) : null);
   };
   const section = (kind) => {
     const lst = kind === "v" ? vl : wl;
