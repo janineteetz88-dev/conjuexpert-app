@@ -216,5 +216,13 @@
     "response": {
       "postSubmissionId": "516e1499-77a8-48be-a3b7-5c2beb5a16d8"
     }
+  },
+  "app-tour-intro-instagram-2026-07-25": {
+    "scheduledAt": "2026-07-25T19:17:00.859Z",
+    "scheduledTime": "2026-07-25T21:30:00+02:00",
+    "source": "github-action",
+    "response": {
+      "postSubmissionId": "6e4b50d3-5073-419a-ae1f-b84542f934c1"
+    }
   }
 }
