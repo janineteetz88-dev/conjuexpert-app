@@ -4777,8 +4777,14 @@ td{padding:2.5px 0;font-size:13.5px}
 .exn{display:block;font-size:11px;color:#b0b7c8;margin-top:1px}
 .rb-b{margin-top:20px}
 @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.cbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;background:#fff;border-bottom:1px solid #f0f1f4}
+.cbar a,.cbar button{font:600 13.5px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;border-radius:9px;padding:10px 15px;cursor:pointer;text-decoration:none;border:0}
+.cbar a{color:#14151a;background:#f0f1f4}
+.cbar button{color:#fff;background:#14151a}
+@media print{.cbar{display:none!important}}
 </style></head>
 <body>
+<div class="cbar"><a href="https://conjuexpert.app/">← Zur App</a><button type="button" onclick="window.close();setTimeout(function(){location.href='https://conjuexpert.app/'},150)">Fertig ✕</button></div>
 ${RB}
 <div class="wrap">
   <div class="hdr">
