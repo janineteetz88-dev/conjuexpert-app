@@ -12188,7 +12188,6 @@ function GemerktOverview({ lang, favs, onOpenList, onVerbs, onOpenVerbList, onCh
   const [, forceTick] = useState(0);             // Re-Render nach dem Löschen
   const lists = vocabLists(lang);
   const vlists = verbLists(lang, favs);
-  const dueTotal = vocabDueCount(lang);
   const favCount = (favs || []).filter(f => f.lang === lang && f.verb).length;
   const goal = recall("kunju-goal-data", null);
   const hasCh = !!(goal && Array.isArray(goal.verbList) && goal.verbList.length);
@@ -12198,7 +12197,6 @@ function GemerktOverview({ lang, favs, onOpenList, onVerbs, onOpenVerbList, onCh
   const ico = svg => h("span", { className: "gm-ic", dangerouslySetInnerHTML: { __html: svg } });
   const chev = h("span", { className: "gm-chev", dangerouslySetInnerHTML: { __html: IC_CHEV } });
   const metaEl = (l) => h("span", { className: "gm-meta" }, l.count + " " + tr("gm_words_n"), h("span", { className: "gm-bar" }, h("i", { style: { width: Math.round(l.pct * 100) + "%" } })));
-  const dueBadge = (n) => n > 0 ? h("span", { className: "gm-badge", style: { "--lc": lc } }, n + " " + tr("gm_due")) : null;
   return h("div", { className: "view", style: { gap: 0 } },
     h("div", { className: "gm-legend" }, h(ExplainCard, { seenKey: "kunju-xpl-gemerkt", title: tr("gm_xpl_hd"), html: gemerktExplainHtml() })),
     // Die aggregierte „Fällig heute"-Kachel wurde entfernt: Auf „Gemerkt" gehören
