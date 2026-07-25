@@ -6506,12 +6506,9 @@ function WordSentence({
     const inf = (verbInf || c).replace(/^to /, "").trim();
     if (!inf) return;
     const cat = toCat || targetVCat || generalCat();
-    if (window.__addVerbFav) window.__addVerbFav(saveLang, inf); // Basis + Cloud-Sync + Dedup
-    // Kategorie lokal setzen (favorites-Tabelle kennt (noch) keine cat-Spalte).
-    const favs = recall("kunju-favs", []) || [];
-    const i = favs.findIndex(f => f && f.lang === saveLang && String(f.verb).replace(/^to /, "").trim().toLowerCase() === inf.toLowerCase());
-    if (i >= 0) { favs[i] = Object.assign({}, favs[i], { cat: cat }); persist("kunju-favs", favs); }
-    else persist("kunju-favs", [{ lang: saveLang, verb: inf, cat: cat }, ...favs]);
+    // Basis + Cloud-Sync (favorites inkl. cat) + Dedup zentral in __addVerbFav.
+    if (window.__addVerbFav) window.__addVerbFav(saveLang, inf, cat);
+    else { const favs = recall("kunju-favs", []) || []; if (!favs.some(f => f && f.lang === saveLang && String(f.verb).replace(/^to /, "").trim().toLowerCase() === inf.toLowerCase())) persist("kunju-favs", [{ lang: saveLang, verb: inf, cat: cat }, ...favs]); }
     setTargetVCat(cat); persist("kunju-lastsave-vcat-" + saveLang, cat);
     setSaved(s => ({ ...s, [c]: true }));
     if (window.__toast) window.__toast("„" + inf + "“ → " + (isGeneralCat(cat) ? tr("gm_verbs") : cat));
@@ -11849,6 +11846,7 @@ function ChallengeView({ lang, onNew, onPractice, onWords, canEdit = true }) {
   const [lbWordVal, setLbWordVal] = useState(""); // Inline: Wort zur aufgeklappten Liste
   const [expandVCat, setExpandVCat] = useState(null); // im Verb-Picker aufgeklappte Liste
   const [lbVerbVal, setLbVerbVal] = useState(""); // Inline: Verb zur aufgeklappten Liste
+  const [chSeeding, setChSeeding] = useState(false); // „Vorschlagen": KI generiert gerade
   const force = () => setTick(t => t + 1);
   const vl = (g && g.verbList) || [];
   const wl = (g && g.wordList) || [];
@@ -11877,8 +11875,48 @@ function ChallengeView({ lang, onNew, onPractice, onWords, canEdit = true }) {
   function addVerb(v) { const t = String(v || "").replace(/^to /, "").trim(); if (!t) return; save(gg => { gg.verbList = gg.verbList || []; if (!gg.verbList.some(x => String(x.v).toLowerCase() === t.toLowerCase())) gg.verbList.push({ v: t, done: 0, lastDay: "" }); }); }
   function addWord(w) { const t = String(w || "").trim(); if (!t) return; save(gg => { gg.wordList = gg.wordList || []; if (!gg.wordList.some(x => String(x.w).toLowerCase() === t.toLowerCase())) gg.wordList.push({ w: t, done: 0, lastDay: "" }); }); }
   function fillVerbs() { save(gg => { const target = gg.verbs || 0; const rej = new Set(chRej("v")); const have = new Set((gg.verbList || []).map(x => String(x.v).toLowerCase())); let pool = []; try { pool = quizPool(lang, recall("kunju-skill", "beginner")) || []; } catch (e) {} for (let i = 0; i < pool.length && (gg.verbList || []).length < target; i++) { const v = String(pool[i]).replace(/^to /, "").trim(); const vl = v.toLowerCase(); if (v && !have.has(vl) && !rej.has(vl)) { have.add(vl); gg.verbList.push({ v: v, done: 0, lastDay: "" }); } } }); }
-  // Wörter: aus dem gemerkten Vokabular vorschlagen (für Wörter gibt es keinen Verb-Pool).
-  function fillWords() { save(gg => { const target = gg.words || 0; gg.wordList = gg.wordList || []; const rej = new Set(chRej("w")); const have = new Set(gg.wordList.map(x => String(x.w).toLowerCase())); const pool = (getVocab() || []).filter(x => x.lang === lang && x.term).map(x => String(x.term).trim()).filter(Boolean); for (let i = 0; i < pool.length && gg.wordList.length < target; i++) { const w = pool[i]; const wl = w.toLowerCase(); if (w && !have.has(wl) && !rej.has(wl)) { have.add(wl); gg.wordList.push({ w: w, done: 0, lastDay: "" }); } } }); }
+  // Fallback ohne KI: aus dem gemerkten Vokabular auffüllen (kein Verb-Pool für Wörter).
+  function fillWordsFromSaved() { save(gg => { const target = gg.words || 0; gg.wordList = gg.wordList || []; const rej = new Set(chRej("w")); const have = new Set(gg.wordList.map(x => String(x.w).toLowerCase())); const pool = (getVocab() || []).filter(x => x.lang === lang && x.term).map(x => String(x.term).trim()).filter(Boolean); for (let i = 0; i < pool.length && gg.wordList.length < target; i++) { const w = pool[i]; const wl = w.toLowerCase(); if (w && !have.has(wl) && !rej.has(wl)) { have.add(wl); gg.wordList.push({ w: w, done: 0, lastDay: "" }); } } }); }
+  // „Vorschlagen": echte KI-Wörter generieren (Niveau- & Sprachgerecht), in die
+  // Challenge übernehmen UND ins Vokabular (allgemeine Liste) speichern, damit sie
+  // bleiben und im Listen-Picker auftauchen. Ohne KI / bei Fehler: Fallback oben.
+  function fillWords() {
+    if (chSeeding) return;
+    if (!window.__hasAI || !window.__hasAI()) { fillWordsFromSaved(); return; }
+    const gg0 = recall("kunju-goal-data", null) || {};
+    const target = gg0.words || 0;
+    const cur = (gg0.wordList || []).length;
+    let need = target > cur ? target - cur : 8;
+    need = Math.max(3, Math.min(need, 12));
+    const skl = recall("kunju-skill", "beginner");
+    const lvl = skl === "advanced" ? "advanced C1-level" : skl === "intermediate" ? "intermediate B1-level" : "basic A1–A2";
+    const tName = window.CONJ[lang].name;
+    const nativeName = recall("kunju-native", "German");
+    const avoidList = [...new Set([...(gg0.wordList || []).map(x => x.w), ...(getVocab() || []).filter(it => it.lang === lang).map(it => it.term), ...knownTerms(lang), ...chRej("w")])].filter(Boolean).slice(0, 60);
+    const avoid = avoidList.length ? ` The learner already knows or has these — do NOT include any of them: ${avoidList.join(", ")}.` : "";
+    setChSeeding(true);
+    window.aiComplete(`Suggest ${need} useful ${lvl} ${tName} words or short phrases for everyday learning.${avoid}${lang === "nl" ? NL_RULES : ""} For each give the ${tName} term and its ${nativeName} translation. Reply with ONLY a minified JSON array, nothing else: [{"t":"...","n":"..."}]`).then(txt => {
+      setChSeeding(false);
+      let arr = null;
+      try { let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim(); const a = s.indexOf("["), b = s.lastIndexOf("]"); if (a >= 0 && b > a) s = s.slice(a, b + 1); arr = JSON.parse(s); } catch (_) { arr = null; }
+      if (!Array.isArray(arr) || !arr.length) { fillWordsFromSaved(); return; }
+      const vocab = getVocab();
+      const additions = [], seenAdd = new Set();
+      arr.forEach((e, i) => {
+        const term = (e && (e.t || e.term) || "").trim();
+        const nat = (e && (e.n || e.trans) || "").trim();
+        if (!term) return;
+        const nk = norm(term);
+        if (seenAdd.has(nk)) return; seenAdd.add(nk);
+        addWord(term); // in die Challenge
+        if (!vocab.some(x => x.lang === lang && norm(x.term) === nk)) {
+          additions.push({ id: Date.now() + "-cs" + i, lang: lang, term: term, trans: nat, cat: generalCat(), kind: term.indexOf(" ") >= 0 ? "phrase" : "word", created: Date.now(), nat: nativeName });
+        }
+      });
+      if (additions.length) saveVocab([...additions, ...vocab]);
+      force();
+    }).catch(() => { setChSeeding(false); fillWordsFromSaved(); });
+  }
   const days = (g.weeks || 2) * 7;
   const passed = g.startDate ? Math.floor((Date.now() - new Date(g.startDate).getTime()) / 86400000) : 0;
   const left = Math.max(0, days - passed);
@@ -11960,10 +11998,14 @@ function ChallengeView({ lang, onNew, onPractice, onWords, canEdit = true }) {
     }
     function addVerbToList(cat, term) {
       const t = String(term || "").replace(/^to /, "").trim(); if (!t) return;
-      const favs = recall("kunju-favs", []) || [];
-      const i = favs.findIndex(f => f && f.lang === lang && String(f.verb).replace(/^to /, "").trim().toLowerCase() === t.toLowerCase());
-      if (i >= 0) { favs[i] = Object.assign({}, favs[i], { cat: cat }); persist("kunju-favs", favs); }
-      else persist("kunju-favs", [{ lang: lang, verb: t, cat: cat }, ...favs]);
+      // Cloud-Sync (favorites inkl. cat) + Dedup zentral in __addVerbFav.
+      if (window.__addVerbFav) window.__addVerbFav(lang, t, cat);
+      else {
+        const favs = recall("kunju-favs", []) || [];
+        const i = favs.findIndex(f => f && f.lang === lang && String(f.verb).replace(/^to /, "").trim().toLowerCase() === t.toLowerCase());
+        if (i >= 0) { favs[i] = Object.assign({}, favs[i], { cat: cat }); persist("kunju-favs", favs); }
+        else persist("kunju-favs", [{ lang: lang, verb: t, cat: cat }, ...favs]);
+      }
       addVerb(t); // gleich in die Challenge übernehmen
       setLbVerbVal(""); force();
     }
@@ -12006,7 +12048,7 @@ function ChallengeView({ lang, onNew, onPractice, onWords, canEdit = true }) {
           h("span", { className: "ch-choose-ic", dangerouslySetInnerHTML: { __html: IC_LIST } }),
           tr("ch_choose"),
           h("span", { className: "ch-choose-car" }, open ? "▴" : "▾")),
-        h("button", { className: "ch-fill", onClick: kind === "v" ? fillVerbs : fillWords }, tr("ch_fill"))),
+        h("button", { className: "ch-fill", disabled: kind === "w" && chSeeding, onClick: kind === "v" ? fillVerbs : fillWords }, kind === "w" && chSeeding ? "…" : tr("ch_fill"))),
       // Inline-Dropdown (öffnet an Ort und Stelle, kein Popup). Beide listenbasiert.
       open ? (kind === "w" ? wordPicker() : verbPicker()) : null);
   };
@@ -16657,13 +16699,26 @@ function App() {
   useEffect(() => {
     window.__toast = msg => setToastMsg(msg);
     // Verb aus dem Text ins konto-synchronisierte „Gemerkte Verben" legen (Infinitiv).
-    window.__addVerbFav = (lg, vb) => {
+    // Optional cat = Verbliste; wird lokal UND in der Cloud (favorites.cat) gehalten,
+    // damit die Listen den Gerätewechsel überleben.
+    window.__addVerbFav = (lg, vb, cat) => {
       if (!lg || !vb) return;
       setFavs(prev => {
-        if (prev.some(x => x.lang === lg && x.verb === vb)) return prev;
-        const nx = [{ lang: lg, verb: vb }, ...prev];
+        const i = prev.findIndex(x => x.lang === lg && x.verb === vb);
+        if (i >= 0) {
+          // Bereits gemerkt: nur die Liste (cat) aktualisieren, falls eine neue kommt.
+          if (cat && prev[i].cat !== cat) {
+            const nx = prev.slice(); nx[i] = Object.assign({}, nx[i], { cat: cat });
+            persist("kunju-favs", nx);
+            if (__vocabUser && window.__supa) { try { window.__supa.from("favorites").update({ cat: cat }).match({ user_id: __vocabUser, lang: lg, verb: vb }); } catch (e) {} }
+            return nx;
+          }
+          return prev;
+        }
+        const entry = cat ? { lang: lg, verb: vb, cat: cat } : { lang: lg, verb: vb };
+        const nx = [entry, ...prev];
         persist("kunju-favs", nx);
-        if (__vocabUser && window.__supa) { try { window.__supa.from("favorites").insert({ user_id: __vocabUser, lang: lg, verb: vb }); } catch (e) {} }
+        if (__vocabUser && window.__supa) { try { window.__supa.from("favorites").insert({ user_id: __vocabUser, lang: lg, verb: vb, cat: cat || null }); } catch (e) {} }
         return nx;
       });
     };
@@ -17151,14 +17206,16 @@ function App() {
         // Wortschatz aus dem Konto laden & vereinen (Listen überleben Gerätewechsel)
         mergeVocabFromCloud(user.id);
         // Load cloud favorites + premium status on login
-        window.__supa.from("favorites").select("lang,verb").eq("user_id", user.id).then(({
+        window.__supa.from("favorites").select("lang,verb,cat").eq("user_id", user.id).then(({
           data
         }) => {
           if (data && data.length) {
             setFavs(prev => {
-              const merged = [...prev];
+              const merged = prev.map(x => Object.assign({}, x));
               data.forEach(f => {
-                if (!merged.some(x => x.lang === f.lang && x.verb === f.verb)) merged.push(f);
+                const ex = merged.find(x => x.lang === f.lang && x.verb === f.verb);
+                if (ex) { if (f.cat && !ex.cat) ex.cat = f.cat; } // Cloud-Liste übernehmen, falls lokal keine
+                else merged.push(f.cat ? { lang: f.lang, verb: f.verb, cat: f.cat } : { lang: f.lang, verb: f.verb });
               });
               persist("kunju-favs", merged);
               return merged;
