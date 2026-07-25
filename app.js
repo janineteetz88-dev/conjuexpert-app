@@ -17015,6 +17015,8 @@ function App() {
   }
   const [authResolved, setAuthResolved] = useState(false);
   const paywallOnExpiryShown = useRef(false);
+  const hadUserRef = useRef(false);     // war zuletzt ein Konto eingeloggt?
+  const suppressUpsell = useRef(false); // direkt nach Abmelden: Paywall/Nudges unterdrücken
   const [showOffer, setShowOffer] = useState(false);
   const [bonusActive] = useState(() => isBonusActive());
   const deferredInstall = useRef(null);
@@ -17189,7 +17191,8 @@ function App() {
     if (tab === "saved") {
       if (!hasPaidAccess()) {
         setTab("conjugate");
-        setShowPaywall(true);
+        // Nach dem Abmelden nicht die Paywall zeigen — die Anmelde-Ansicht ist offen.
+        if (!suppressUpsell.current) setShowPaywall(true);
       }
       return;
     }
@@ -17262,6 +17265,7 @@ function App() {
     if (loadJourneyShown.current) return;
     if (!authResolved) return;
     if (showOnboard || showTour) return;
+    if (suppressUpsell.current || showLogin) return; // direkt nach Abmelden: kein Nudge
     const lastSeen = recall("kunju-lastseen", 0);
     const now = Date.now();
     const returning = lastSeen && now - lastSeen > 6 * 60 * 60 * 1000; // ≥6h gap
@@ -17382,8 +17386,19 @@ function App() {
           setIsPremium(false);
           setPremiumUntil(null);
         }
+        // Nur bei EXPLIZITEM Abmelden (vorher war ein Konto da): direkt die
+        // Anmelde-Ansicht zeigen — und NICHT mit Paywall/Trial-Nudge überfallen.
+        if (hadUserRef.current) {
+          hadUserRef.current = false;
+          suppressUpsell.current = true;
+          setShowPaywall(false);
+          setJourney(null);
+          setShowLogin(true);
+        }
         return;
       }
+      hadUserRef.current = true;
+      suppressUpsell.current = false;
       // Use the first name from the login profile (Google / email signup),
       // not the email prefix — only when the user hasn't set a name yet.
       if (!recall("kunju-name", null)) {
@@ -17933,7 +17948,7 @@ function App() {
   }), /*#__PURE__*/React.createElement("b", {
     className: "streaknum" + (daily.streak > 0 ? "" : " zero")
   }, daily.streak)))), showLogin && /*#__PURE__*/React.createElement(LoginModal, {
-    onClose: () => setShowLogin(false),
+    onClose: () => { suppressUpsell.current = false; setShowLogin(false); },
     fromPayment: pendingPayment
   }), showDeletedMsg && /*#__PURE__*/React.createElement(AccountDeletedModal, {
     onClose: () => setShowDeletedMsg(false),
