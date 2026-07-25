@@ -10241,10 +10241,9 @@ function LearnView({
       __html: tp.body
     }
   }))))), /*#__PURE__*/React.createElement("a", {
-    href: "/blog/",
+    href: "/blog/?from=app&lang=" + UILANG,
     className: "learn-blog-btn",
-    target: "_blank",
-    rel: "noopener"
+    target: "_blank"
   }, /*#__PURE__*/React.createElement("span", {
     className: "gg"
   }), /*#__PURE__*/React.createElement("span", null, {
@@ -18062,17 +18061,14 @@ function App() {
   })), /*#__PURE__*/React.createElement("footer", {
     className: "legal-appfoot"
   }, /*#__PURE__*/React.createElement("a", {
-    href: "/impressum.html",
-    target: "_blank",
-    rel: "noopener"
+    href: "/impressum.html?from=app&lang=" + UILANG,
+    target: "_blank"
   }, "Impressum"), " · ", /*#__PURE__*/React.createElement("a", {
-    href: "/agb.html",
-    target: "_blank",
-    rel: "noopener"
+    href: "/agb.html?from=app&lang=" + UILANG,
+    target: "_blank"
   }, "AGB"), " · ", /*#__PURE__*/React.createElement("a", {
-    href: "/datenschutz.html",
-    target: "_blank",
-    rel: "noopener"
+    href: "/datenschutz.html?from=app&lang=" + UILANG,
+    target: "_blank"
   }, "Datenschutz")), /*#__PURE__*/React.createElement(AppTweaks, {
     t: t,
     setTweak: setTweak,
