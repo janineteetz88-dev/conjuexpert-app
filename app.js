@@ -2112,11 +2112,11 @@
         examples: [{ s: "Je **parle** français." }, { s: "Elle **habite** à Lyon." }],
         compare: { with: "Futur simple" },
         n: {
-          fr: { explain_n: "Pour les habitudes, les faits et le moment présent. Surveille les trois groupes (-er/-ir/-re).", mnemonic: "1er groupe -er : je -e, tu -es, il -e — le plus régulier.", signals: ["aujourd'hui", "toujours", "souvent", "maintenant"], examples: ["Je parle français.", "Elle habite à Lyon."], use: ["Habitudes et routines", "Faits et vérités générales"], avoid: ["Pour le passé, utilise le passé composé ou l'imparfait."], compare_rows: [["maintenant / général", "explicitement futur"]], compare_note: "Je parle (présent) vs. Je parlerai (futur)." },
-          de: { explain_n: "Für Gewohnheiten, Fakten und den Moment jetzt. Achte auf die drei Gruppen (-er/-ir/-re).", mnemonic: "1. Gruppe -er: je -e, tu -es, il -e — die regelmäßigste.", signals: ["heute", "immer", "oft", "jetzt"], examples: ["Ich spreche Französisch.", "Sie wohnt in Lyon."], use: ["Gewohnheiten und Routinen", "Fakten und Allgemeingültiges"], avoid: ["Für Vergangenes nimm das Passé composé oder Imparfait."], compare_rows: [["jetzt / allgemein", "ausdrücklich Zukunft"]], compare_note: "Je parle (Präsens) vs. Je parlerai (Futur)." },
-          en: { explain_n: "For habits, facts and the present moment. Watch the three groups (-er/-ir/-re).", mnemonic: "1st group -er: je -e, tu -es, il -e — the most regular.", signals: ["today", "always", "often", "now"], examples: ["I speak French.", "She lives in Lyon."], use: ["Habits and routines", "Facts and general truths"], avoid: ["For the past, use the passé composé or imparfait."], compare_rows: [["now / general", "explicitly future"]], compare_note: "Je parle (present) vs. Je parlerai (future)." },
-          es: { explain_n: "Para hábitos, hechos y el momento presente. Atención a los tres grupos (-er/-ir/-re).", mnemonic: "1er grupo -er: je -e, tu -es, il -e — el más regular.", signals: ["hoy", "siempre", "a menudo", "ahora"], examples: ["Hablo francés.", "Ella vive en Lyon."], use: ["Hábitos y rutinas", "Hechos y verdades generales"], avoid: ["Para el pasado, usa el passé composé o el imparfait."], compare_rows: [["ahora / general", "explícitamente futuro"]], compare_note: "Je parle (presente) vs. Je parlerai (futuro)." },
-          nl: { explain_n: "Voor gewoontes, feiten en het moment nu. Let op de drie groepen (-er/-ir/-re).", mnemonic: "1e groep -er: je -e, tu -es, il -e — de meest regelmatige.", signals: ["vandaag", "altijd", "vaak", "nu"], examples: ["Ik spreek Frans.", "Zij woont in Lyon."], use: ["Gewoontes en routines", "Feiten en algemene waarheden"], avoid: ["Voor het verleden gebruik je de passé composé of imparfait."], compare_rows: [["nu / algemeen", "expliciet toekomst"]], compare_note: "Je parle (heden) vs. Je parlerai (toekomst)." }
+          fr: { explain_n: "Pour les habitudes, les faits et le moment présent.", mnemonic: "1er groupe -er : je -e, tu -es, il -e — le plus régulier.", signals: ["aujourd'hui", "toujours", "souvent", "maintenant"], examples: ["Je parle français.", "Elle habite à Lyon."], use: ["Habitudes et routines", "Faits et vérités générales"], avoid: ["Pour le passé, utilise le passé composé ou l'imparfait."], compare_rows: [["maintenant / général", "explicitement futur"]], compare_note: "Je parle (présent) vs. Je parlerai (futur)." },
+          de: { explain_n: "Für Gewohnheiten, Fakten und den Moment jetzt.", mnemonic: "1. Gruppe -er: je -e, tu -es, il -e — die regelmäßigste.", signals: ["heute", "immer", "oft", "jetzt"], examples: ["Ich spreche Französisch.", "Sie wohnt in Lyon."], use: ["Gewohnheiten und Routinen", "Fakten und Allgemeingültiges"], avoid: ["Für Vergangenes nimm das Passé composé oder Imparfait."], compare_rows: [["jetzt / allgemein", "ausdrücklich Zukunft"]], compare_note: "Je parle (Präsens) vs. Je parlerai (Futur)." },
+          en: { explain_n: "For habits, facts and the present moment.", mnemonic: "1st group -er: je -e, tu -es, il -e — the most regular.", signals: ["today", "always", "often", "now"], examples: ["I speak French.", "She lives in Lyon."], use: ["Habits and routines", "Facts and general truths"], avoid: ["For the past, use the passé composé or imparfait."], compare_rows: [["now / general", "explicitly future"]], compare_note: "Je parle (present) vs. Je parlerai (future)." },
+          es: { explain_n: "Para hábitos, hechos y el momento presente.", mnemonic: "1er grupo -er: je -e, tu -es, il -e — el más regular.", signals: ["hoy", "siempre", "a menudo", "ahora"], examples: ["Hablo francés.", "Ella vive en Lyon."], use: ["Hábitos y rutinas", "Hechos y verdades generales"], avoid: ["Para el pasado, usa el passé composé o el imparfait."], compare_rows: [["ahora / general", "explícitamente futuro"]], compare_note: "Je parle (presente) vs. Je parlerai (futuro)." },
+          nl: { explain_n: "Voor gewoontes, feiten en het moment nu.", mnemonic: "1e groep -er: je -e, tu -es, il -e — de meest regelmatige.", signals: ["vandaag", "altijd", "vaak", "nu"], examples: ["Ik spreek Frans.", "Zij woont in Lyon."], use: ["Gewoontes en routines", "Feiten en algemene waarheden"], avoid: ["Voor het verleden gebruik je de passé composé of imparfait."], compare_rows: [["nu / algemeen", "expliciet toekomst"]], compare_note: "Je parle (heden) vs. Je parlerai (toekomst)." }
         }
       },
       past: {
@@ -9653,12 +9653,12 @@ function staticGrammar(lang, tid, native) {
     name: G.name,
     explain_t: G.explain_t,
     explain_n: n.explain_n || "",
-    mnemonic: n.mnemonic || "",
+    mnemonic: "", // Eselsbrücke global ausgeblendet (Franzi-Feedback: redundant zur Bildung)
     signals,
     examples,
     use: n.use || [],
     avoid: n.avoid || [],
-    compare
+    compare: { with: "", rows: [], note: "" } // Vergleich global ausgeblendet (Franzi-Feedback)
   };
 }
 function parseLLMJSON(text) {
