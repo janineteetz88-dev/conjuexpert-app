@@ -224,29 +224,5 @@
     "response": {
       "postSubmissionId": "6e4b50d3-5073-419a-ae1f-b84542f934c1"
     }
-  },
-  "beta-call-instagram-2026-07-26": {
-    "scheduledAt": "2026-07-25T21:20:42.834Z",
-    "scheduledTime": "2026-07-26T09:27:00+02:00",
-    "source": "github-action",
-    "response": {
-      "postSubmissionId": "35c1177d-f9f9-4a0f-8f04-6c3b9356ee2f"
-    }
-  },
-  "beta-call-facebook-2026-07-26": {
-    "scheduledAt": "2026-07-25T21:20:43.425Z",
-    "scheduledTime": "2026-07-26T09:27:00+02:00",
-    "source": "github-action",
-    "response": {
-      "postSubmissionId": "dd89d8d5-ab4a-470c-b244-f62282646fd5"
-    }
-  },
-  "beta-call-tiktok-2026-07-26": {
-    "scheduledAt": "2026-07-25T21:20:43.940Z",
-    "scheduledTime": "2026-07-26T09:27:00+02:00",
-    "source": "github-action",
-    "response": {
-      "postSubmissionId": "9e721259-eb22-492f-99a3-44c15b0e8b1a"
-    }
   }
 }
