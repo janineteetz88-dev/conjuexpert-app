@@ -1417,6 +1417,15 @@ body {
 .gm-kindbtn.on { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
 .gm-cat { display: flex; flex-direction: column; }
 .gm-row-q .gm-nm { color: var(--muted); }
+/* Quick-Start-Themen als kompaktes Dropdown statt großer Dauer-Zeilen */
+.gm-quickdrop { position: relative; display: flex; align-items: center; margin: 13px 0 4px; }
+.gm-quickdrop-ic { position: absolute; left: 13px; display: flex; pointer-events: none; color: var(--muted); }
+.gm-quickdrop-ic svg { width: 18px; height: 18px; }
+.gm-quickdrop-sel { width: 100%; appearance: none; -webkit-appearance: none; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 40px 12px 41px; font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--text); cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.gm-quickdrop-sel:hover { border-color: color-mix(in srgb, var(--text) 20%, var(--border)); }
+.gm-quickdrop-sel:focus-visible { outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--lc, #7a5cff) 30%, transparent); }
+.gm-quickdrop-chev { position: absolute; right: 14px; display: flex; pointer-events: none; color: var(--muted); transform: rotate(90deg); }
+.gm-quickdrop-chev svg { width: 16px; height: 16px; }
 .gm-last { flex: none; font-family: var(--font-mono, var(--font-display)); font-size: 8.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--lc, #7a5cff); border: 1px solid color-mix(in srgb, var(--lc, #7a5cff) 34%, var(--border)); border-radius: 999px; padding: 3px 7px; }
 /* Listen unter ihrer Kategorie (Verben / Wörter) einrücken — Baum-Optik */
 .gm-nest { margin: 0 0 0 9px; padding-left: 12px; border-left: 2px solid var(--border); }
@@ -3126,7 +3135,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-170"></script>
+<script defer src="/app.js?v=c-sand-171"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->

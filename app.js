@@ -12132,11 +12132,12 @@ function GemerktOverview({ lang, favs, onOpenList, onOpenVerbList, onChallenge, 
           chev),
         h("button", { className: "gm-row-del", "aria-label": tr("gm_del_list"), onClick: () => setDelCat(c) },
           h("span", { className: "gm-row-del-ic", dangerouslySetInnerHTML: { __html: IC_TRASH } })))),
-      quickThemes.length ? h("div", { className: "gm-seclbl" }, tr("gm_quickstart")) : null,
-      quickThemes.map(t => h("button", { className: "gm-row gm-row-q", key: "q-" + t, onClick: () => onOpenList(t) },
-        ico(IC_LIST),
-        h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, t), h("span", { className: "gm-meta" }, tr("gm_template"))),
-        chev)))
+      quickThemes.length ? h("div", { className: "gm-quickdrop" },
+        h("span", { className: "gm-quickdrop-ic", dangerouslySetInnerHTML: { __html: IC_LIST } }),
+        h("select", { className: "gm-quickdrop-sel", value: "", "aria-label": tr("gm_quickstart"), onChange: e => { const v = e.target.value; if (v) onOpenList(v); } },
+          h("option", { value: "" }, tr("gm_quickstart") + " …"),
+          quickThemes.map(t => h("option", { value: t, key: "q-" + t }, t))),
+        h("span", { className: "gm-quickdrop-chev", dangerouslySetInnerHTML: { __html: IC_CHEV } })) : null)
     // ---- VERBEN-Katalog ----
     : h("div", { className: "gm-cat" },
       h("button", { className: "gm-addliste", style: { marginTop: 0, marginBottom: "12px" }, onClick: newVerbList }, h("span", { className: "gm-ic-plus", dangerouslySetInnerHTML: { __html: IC_PLUS2 } }), " ", tr("gm_new_list")),
