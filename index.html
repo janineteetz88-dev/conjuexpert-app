@@ -1411,6 +1411,13 @@ body {
 .gm-badge { flex: none; font-size: 10.5px; font-weight: 800; padding: 3px 9px; border-radius: 999px; background: color-mix(in srgb, var(--lc, #ff9f0a) 14%, var(--surface)); color: var(--lc, #ff9f0a); }
 .gm-chev { color: var(--muted); flex: none; display: inline-flex; }
 .gm-seclbl { font-family: var(--font-mono, var(--font-display)); font-size: 10px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; color: var(--muted); margin: 15px 4px 9px; }
+/* Katalog-Umschalter Wörter | Verben (Gemerkt-Start) */
+.gm-kindtoggle { display: flex; gap: 3px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 13px; padding: 3px; margin: 6px 0 4px; }
+.gm-kindbtn { flex: 1; border: 0; background: transparent; color: var(--muted); font-family: var(--font-display); font-weight: 800; font-size: 14px; padding: 9px 6px; border-radius: 10px; cursor: pointer; transition: background .15s, color .15s; }
+.gm-kindbtn.on { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.gm-cat { display: flex; flex-direction: column; }
+.gm-row-q .gm-nm { color: var(--muted); }
+.gm-last { flex: none; font-family: var(--font-mono, var(--font-display)); font-size: 8.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--lc, #7a5cff); border: 1px solid color-mix(in srgb, var(--lc, #7a5cff) 34%, var(--border)); border-radius: 999px; padding: 3px 7px; }
 /* Listen unter ihrer Kategorie (Verben / Wörter) einrücken — Baum-Optik */
 .gm-nest { margin: 0 0 0 9px; padding-left: 12px; border-left: 2px solid var(--border); }
 .gm-nest > .gm-addliste { margin-top: 2px; }
@@ -3107,7 +3114,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-163"></script>
+<script defer src="/app.js?v=c-sand-164"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
