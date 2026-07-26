@@ -35,8 +35,8 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' }}
         env:
           BLOTATO_API_KEY: ${{ secrets.BLOTATO_API_KEY }}
-          MODE: 'delete'
-          ID: '2879841'
+          MODE: 'list'
+          ID: ''
           PATHSEG: 'schedules'
         run: node scripts/social/blotato-admin.mjs
 
