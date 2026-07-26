@@ -23,9 +23,15 @@ const LANGS = ["de", "en", "es", "nl", "fr"];
 const BASE = "https://conjuexpert.app";
 const LOGO = `${BASE}/logo-wordmark.png`;
 const RAINBOW = "linear-gradient(to right,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff)";
-const CTA_BG = "#e71583"; // Button: solides CI-Pink
-const CTA_FALLBACK = "#e71583"; // solide Button-Farbe (Gmail u.a. ohne Verlauf)
-const LINK = "#0b4f9e"; // Verlinkungen: dunkles Blau statt Babyblau
+const RAINBOW_FB = "#211d15"; // solider Fallback (Clients ohne Verläufe → Tinte, wirkt als Rahmen)
+const SAND_BG = "#f4eede"; // Seiten-Hintergrund (Sand) — einheitliche CI mit den Lifecycle-Mails
+const CARD = "#fffdf6"; // Karten-Fläche (warmes Weiß)
+const INK = "#211d15"; // Überschriften / Eyebrow / Button-Füllung
+const BODY_TXT = "#574f3b"; // Fließtext (warm)
+const MUTED = "#8b8068"; // gedämpft (Footer, Kleingedrucktes)
+const HAIRLINE = "#e7dcc6"; // feine Trennlinie auf Sand
+const CTA_BG = "#211d15"; // Button-Füllung: Tinte (mit Regenbogen-Rand)
+const LINK = "#0b4f9e"; // Verlinkungen: dunkles Blau
 const LEGAL = "Janine Kreiser · Blasewitzer Straße 41 · 01307 Dresden";
 const CONFIRM = "{{ .ConfirmationURL }}"; // Supabase-Variable – bleibt wörtlich stehen
 
@@ -72,7 +78,7 @@ function render(lang, tpl) {
   const accent = tpl.accent;
 
   const paras = m.paras
-    .map((t) => `        <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.55;">${t}</p>`)
+    .map((t) => `        <p style="margin:0 0 16px;font-size:15px;color:${BODY_TXT};line-height:1.55;">${t}</p>`)
     .join("\n");
 
   return `<!DOCTYPE html>
@@ -86,19 +92,19 @@ function render(lang, tpl) {
 <!-- Subject (in Supabase separat eintragen): ${m.subject} -->
 <!-- Variablen: {{ .ConfirmationURL }} · {{ .Token }} · {{ .SiteURL }} · {{ .Email }} -->
 </head>
-<body style="margin:0;padding:0;background-color:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
+<body style="margin:0;padding:0;background-color:${SAND_BG};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
 
 <!-- Preheader -->
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">${m.pre}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f5f5f7">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${SAND_BG}">
 <tr><td align="center" style="padding:32px 16px;">
 
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.08);">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:${CARD};border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(33,29,21,0.10);">
 
     <!-- Rainbow bar (CI) -->
     <tr>
-      <td height="4" style="background:${RAINBOW};font-size:0;line-height:0;">&nbsp;</td>
+      <td height="4" bgcolor="${RAINBOW_FB}" style="background:${RAINBOW};font-size:0;line-height:0;">&nbsp;</td>
     </tr>
 
     <tr>
@@ -108,25 +114,31 @@ function render(lang, tpl) {
         <img src="${LOGO}" alt="ConjuExpert" width="200" style="display:block;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;margin:0 auto 24px;" />
 
         <!-- Eyebrow + Headline -->
-        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${accent};text-transform:uppercase;letter-spacing:1px;">${m.eyebrow}</p>
-        <h1 style="margin:0 0 18px;font-size:32px;font-weight:900;color:#111827;letter-spacing:-1px;line-height:1.1;">${m.h1}</h1>
+        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${INK};text-transform:uppercase;letter-spacing:1px;">${m.eyebrow}</p>
+        <h1 style="margin:0 0 18px;font-size:32px;font-weight:900;color:${INK};letter-spacing:-1px;line-height:1.1;">${m.h1}</h1>
 
         <!-- Body -->
         <div style="text-align:left;">
 ${paras}
         </div>
 
-        <!-- CTA -->
+        <!-- CTA: Tinte-Button mit Regenbogen-Rand (wie .btn-primary; Fallback = reine Tinte) -->
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:8px;">
           <tr>
-            <td align="center" bgcolor="${CTA_FALLBACK}" style="border-radius:14px;background-color:${CTA_FALLBACK};background:${CTA_BG};">
-              <a href="${CONFIRM}" style="display:block;padding:16px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;">${m.cta}</a>
+            <td bgcolor="${RAINBOW_FB}" style="background:${RAINBOW};border-radius:16px;padding:2px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" bgcolor="${CTA_BG}" style="background:${CTA_BG};border-radius:14px;">
+                    <a href="${CONFIRM}" style="display:block;padding:15px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;">${m.cta}</a>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>
 
         <!-- Fallback-Link -->
-        <p style="margin:18px 0 0;font-size:12px;color:#9ca3af;line-height:1.5;text-align:left;">${f.fallback}<br>
+        <p style="margin:18px 0 0;font-size:12px;color:${MUTED};line-height:1.5;text-align:left;">${f.fallback}<br>
           <a href="${CONFIRM}" style="color:${LINK};word-break:break-all;">${CONFIRM}</a>
         </p>
 
@@ -135,9 +147,9 @@ ${paras}
 
     <!-- Footer -->
     <tr>
-      <td style="padding:16px 40px;border-top:1px solid #f3f4f6;">
-        <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;line-height:1.6;">
-          <a href="${BASE}/datenschutz.html" style="color:#9ca3af;">${f.privacy}</a> · <a href="${BASE}/agb.html" style="color:#9ca3af;">${f.terms}</a><br>
+      <td style="padding:16px 40px;border-top:1px solid ${HAIRLINE};">
+        <p style="margin:0;font-size:12px;color:${MUTED};text-align:center;line-height:1.6;">
+          <a href="${BASE}/datenschutz.html" style="color:${MUTED};">${f.privacy}</a> · <a href="${BASE}/agb.html" style="color:${MUTED};">${f.terms}</a><br>
           ${LEGAL}
         </p>
       </td>
