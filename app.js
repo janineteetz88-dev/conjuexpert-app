@@ -17198,9 +17198,12 @@ function App() {
     if (!authResolved) return;
     if (tab === "saved") {
       if (!hasPaidAccess()) {
+        // Beim Laden nur STILL auf „Konjugieren" zurück — hier KEINE Paywall
+        // automatisch aufpoppen. Sonst stapelt sie sich mit dem Willkommens-
+        // zurück-/Trial-Nudge (p8/tend) zu zwei Premium-Popups direkt
+        // hintereinander. Die Paywall kommt erst, wenn der Nutzer den
+        // „Gemerkt"-Tab AKTIV antippt (siehe handleTabSwitch).
         setTab("conjugate");
-        // Nach dem Abmelden nicht die Paywall zeigen — die Anmelde-Ansicht ist offen.
-        if (!suppressUpsell.current) setShowPaywall(true);
       }
       return;
     }
