@@ -39,13 +39,37 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return new Response("Method Not Allowed", { status: 405, headers: corsHeaders });
 
-  const { plan, userId, email } = await req.json();
-  if (!plan || !userId) {
-    return new Response(JSON.stringify({ error: "Missing plan or userId" }), {
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  const supaUser = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_ANON_KEY")!,
+    { global: { headers: { Authorization: authHeader } } },
+  );
+  const { data: { user }, error: authError } = await supaUser.auth.getUser();
+  if (authError || !user) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  const { plan } = await req.json();
+  if (!plan) {
+    return new Response(JSON.stringify({ error: "Missing plan" }), {
       status: 400,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
+  // userId/email come from the verified JWT, not the request body — the caller
+  // can no longer request a checkout session (and its Stripe metadata.userId)
+  // on behalf of an arbitrary account.
+  const userId = user.id;
+  const email = user.email;
 
   const secretKey = Deno.env.get("STRIPE_SECRET_KEY")!;
   // Resolve the effective plan: a bonus request only stays "annual_bonus" if the
