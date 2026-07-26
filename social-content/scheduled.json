@@ -256,5 +256,13 @@
     "response": {
       "postSubmissionId": "28d926c1-63f2-406f-8e43-a91d53189fbd"
     }
+  },
+  "beta-reel-tiktok-2026-07-26": {
+    "scheduledAt": "2026-07-26T12:51:17.724Z",
+    "scheduledTime": "2026-07-26T18:00:00+02:00",
+    "source": "github-action",
+    "response": {
+      "postSubmissionId": "8e542b54-7b2e-4c41-92d1-e93112acb3c5"
+    }
   }
 }
