@@ -10770,16 +10770,6 @@ function VocabView({
     return [...merged];
   }, [items, customCatNames]);
   const allCats = [generalCat(), ...templateCats(), ...customCats].filter(c => isGeneralCat(c) || hiddenCats.indexOf(c) < 0);
-  // Für die Listen-Leiste im „Gemerkt → Wörter"-Bereich (focus): Allgemein + Listen
-  // mit Wörtern + eigene Listen (keine leeren Vorlagen-Themen).
-  const focusCats = (() => {
-    const seen = {}, out = [];
-    const push = c => { const k = String(c).toLowerCase(); if (c && !seen[k]) { seen[k] = 1; out.push(c); } };
-    push(generalCat());
-    items.forEach(it => { if (it && it.lang === lang && it.term && it.cat && !isGeneralCat(it.cat)) push(it.cat); });
-    customCatNames.forEach(n => { if (n && !isGeneralCat(n)) push(n); });
-    return out;
-  })();
   function persistItems(next) {
     setItems(next);
     saveVocab(next);
@@ -12222,7 +12212,7 @@ function gemerktExplainHtml() {
     "<span class='gmxpl-p'>" + r[2] + "</span></span></div>"
   ).join("");
 }
-function GemerktOverview({ lang, favs, onOpenList, onVerbs, onOpenVerbList, onChallenge, onNewList, onNewChallenge }) {
+function GemerktOverview({ lang, favs, onOpenList, onOpenVerbList, onChallenge, onNewChallenge }) {
   const h = React.createElement;
   const [delCat, setDelCat] = useState(null);   // Wortliste löschen: Bestätigung
   const [delVCat, setDelVCat] = useState(null);  // Verbliste auflösen: Bestätigung
@@ -12367,10 +12357,8 @@ function SavedTab({
       lang: lang,
       favs: favs,
       onOpenList: openList,
-      onVerbs: () => { persist("kunju-verb-cat", "all"); pick("verbs"); },
       onOpenVerbList: openVerbList,
       onChallenge: () => pick("challenge"),
-      onNewList: () => { persist("kunju-vocab-open-newlist", true); openList("all"); },
       onNewChallenge: onOpenGoal
     });
   }
@@ -12484,13 +12472,6 @@ function SavedView({
     (recall("kunju-verb-catnames", []) || []).forEach(n => { if (n && !isGeneralCat(n)) push(n); });
     return out;
   })();
-  async function createVerbList() {
-    const name = ((window.__ciPrompt ? await window.__ciPrompt(tr("vocab_new_cat_q")) : window.prompt(tr("vocab_new_cat_q"))) || "").trim();
-    if (!name) return;
-    const names = recall("kunju-verb-catnames", []);
-    if (names.indexOf(name) < 0) persist("kunju-verb-catnames", [...names, name]);
-    persistCat(name);
-  }
   function moveVerbTo(verb, targetCat) {
     if (window.__addVerbFav) window.__addVerbFav(lang, verb, targetCat || generalCat());
     setMoveV(null);
@@ -12653,10 +12634,6 @@ function SavedView({
     });
   }
   // Verbliste-Leiste (Filtern \u00b7 Anlegen) + Verschiebe-Dialog \u2014 auch bei leerer Liste sichtbar.
-  const listBar = h("div", { className: "voccats", style: { marginBottom: "10px" } },
-    h("button", { className: "voccat" + (cat === "all" ? " on" : ""), onClick: () => persistCat("all") }, tr("vocab_all")),
-    catNames.map(c => h("button", { key: c, className: "voccat" + (cat === c ? " on" : ""), onClick: () => persistCat(c) }, isGeneralCat(c) ? tr("gm_verbs") : c)),
-    h("button", { className: "voccat addcat", onClick: createVerbList }, "+ ", tr("gm_new_list")));
   const moveSheet = moveV ? h("div", { className: "chpick-bg", onClick: () => setMoveV(null) },
     h("div", { className: "chpick", onClick: e => e.stopPropagation() },
       h("div", { className: "chpick-hd" }, h("b", null, tr("mv_title")), h("button", { className: "chpick-x", "aria-label": "close", onClick: () => setMoveV(null) }, "\u00d7")),
