@@ -264,5 +264,21 @@
     "response": {
       "postSubmissionId": "8e542b54-7b2e-4c41-92d1-e93112acb3c5"
     }
+  },
+  "test-reel-instagram-2026-07-26": {
+    "scheduledAt": "2026-07-26T13:06:53.540Z",
+    "scheduledTime": "2026-07-26T15:10:00+02:00",
+    "source": "github-action",
+    "response": {
+      "postSubmissionId": "fe350bbf-0be1-484f-a05b-70eef95e7069"
+    }
+  },
+  "test-reel-tiktok-2026-07-26": {
+    "scheduledAt": "2026-07-26T13:06:54.317Z",
+    "scheduledTime": "2026-07-26T15:10:00+02:00",
+    "source": "github-action",
+    "response": {
+      "postSubmissionId": "e39873e3-8a24-4f7e-b898-52eee767c8eb"
+    }
   }
 }
