@@ -10770,6 +10770,16 @@ function VocabView({
     return [...merged];
   }, [items, customCatNames]);
   const allCats = [generalCat(), ...templateCats(), ...customCats].filter(c => isGeneralCat(c) || hiddenCats.indexOf(c) < 0);
+  // Für die Listen-Leiste im „Gemerkt → Wörter"-Bereich (focus): Allgemein + Listen
+  // mit Wörtern + eigene Listen (keine leeren Vorlagen-Themen).
+  const focusCats = (() => {
+    const seen = {}, out = [];
+    const push = c => { const k = String(c).toLowerCase(); if (c && !seen[k]) { seen[k] = 1; out.push(c); } };
+    push(generalCat());
+    items.forEach(it => { if (it && it.lang === lang && it.term && it.cat && !isGeneralCat(it.cat)) push(it.cat); });
+    customCatNames.forEach(n => { if (n && !isGeneralCat(n)) push(n); });
+    return out;
+  })();
   function persistItems(next) {
     setItems(next);
     saveVocab(next);
@@ -11518,8 +11528,12 @@ function VocabView({
     cat !== "all" && !isGeneralCat(cat) ? /*#__PURE__*/React.createElement("button", {
       className: "voc-del",
       onClick: () => setAskDel(true)
-    }, /*#__PURE__*/React.createElement("span", { className: "voc-del-ic", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: IC_TRASH } }), tr("gm_del_list")) : null,
-    /*#__PURE__*/React.createElement("button", { className: "voc-newlist-btn", onClick: () => { setNewCatVal(""); setChooserTpl(false); setShowChooser(true); } }, "+ ", tr("gm_new_list"))), askDel && /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("span", { className: "voc-del-ic", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: IC_TRASH } }), tr("gm_del_list")) : null),
+    focus && /*#__PURE__*/React.createElement("div", { className: "voccats", style: { marginBottom: "10px" } },
+      /*#__PURE__*/React.createElement("button", { className: "voccat" + (cat === "all" ? " on" : ""), onClick: () => { setCat("all"); persist("kunju-vocab-cat", "all"); } }, tr("vocab_all")),
+      focusCats.map(c => /*#__PURE__*/React.createElement("button", { key: c, className: "voccat" + (cat === c ? " on" : ""), onClick: () => { setCat(c); persist("kunju-vocab-cat", c); } }, isGeneralCat(c) ? generalCat() : c)),
+      /*#__PURE__*/React.createElement("button", { className: "voccat addcat", onClick: () => { setNewCatVal(""); setChooserTpl(false); setShowChooser(true); } }, "+ ", tr("gm_new_list"))),
+    askDel && /*#__PURE__*/React.createElement("div", {
     className: "chpick-bg",
     onClick: () => setAskDel(false)
   }, /*#__PURE__*/React.createElement("div", {
@@ -12247,60 +12261,21 @@ function GemerktOverview({ lang, favs, onOpenList, onVerbs, onOpenVerbList, onCh
         h("span", { className: "gm-chcta-s" }, tr("gm_ch_cta_s"))),
       h("span", { className: "gm-chcta-chev", dangerouslySetInnerHTML: { __html: IC_CHEV } })),
     h("div", { className: "gm-seclbl" }, tr("gm_your_lists")),
-    // VERBEN — „Allgemein" (Verben ohne Liste) + eigene Verblisten darunter (eingerückt).
+    // VERBEN — öffnet die Verben-Ansicht (dort: Listen-Leiste zum Wechseln/Anlegen/Löschen).
+    h("button", { className: "gm-row", onClick: () => onVerbs && onVerbs() },
+      ico(IC_STAR2),
+      h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, tr("gm_verbs")),
+        h("span", { className: "gm-meta" }, favCount + " " + tr("saved_verbs"))),
+      chev),
+    // WÖRTER — öffnet die Wörter-Ansicht (dort: Listen-Leiste zum Wechseln/Anlegen/Löschen).
     (() => {
-      const g = vlists.find(l => l.general);
-      const open = cat => onOpenVerbList ? onOpenVerbList(cat) : onVerbs && onVerbs();
-      return h("button", { className: "gm-row", key: "__vgen__", onClick: () => open(g ? g.cat : generalCat()) },
-        ico(IC_STAR2),
-        h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, tr("gm_verbs")),
-          h("span", { className: "gm-meta" }, (g ? g.count : favCount) + " " + tr("saved_verbs"))),
-        chev);
-    })(),
-    // Eigene Verblisten (in der Challenge angelegt) — hier gruppiert unter Verben.
-    vlists.filter(l => !l.general).length ? h("div", { className: "gm-nest" },
-      vlists.filter(l => !l.general).map(l => h("div", { className: "gm-rowwrap", key: "v-" + l.cat },
-        h("button", { className: "gm-row", onClick: () => onOpenVerbList ? onOpenVerbList(l.cat) : onVerbs && onVerbs() },
-          ico(IC_LIST),
-          h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, l.cat), h("span", { className: "gm-meta" }, l.count + " " + tr("saved_verbs"))),
-          chev),
-        h("button", { className: "gm-row-del", "aria-label": tr("gm_del_list"), onClick: () => setDelVCat(l.cat) },
-          h("span", { className: "gm-row-del-ic", dangerouslySetInnerHTML: { __html: IC_TRASH } }))))) : null,
-    // WÖRTER — der Sammelplatz; die eigenen Wortlisten hängen darunter (eingerückt).
-    (() => {
-      const g = lists.find(l => l.general);
-      return h("button", { className: "gm-row", key: "__gen__", onClick: () => onOpenList(g ? g.cat : generalCat()) },
+      const total = lists.reduce((a, l) => a + l.count, 0);
+      return h("button", { className: "gm-row", key: "__words__", onClick: () => onOpenList("all") },
         ico(IC_INBOX),
         h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, tr("gm_words")),
-          g ? metaEl(g) : h("span", { className: "gm-meta" }, "0 " + tr("gm_words_n"))),
+          h("span", { className: "gm-meta" }, total + " " + tr("gm_words_n"))),
         chev);
-    })(),
-    // Eigene Wortlisten + „Neue Liste" gehören zu WÖRTER → eingerückt darunter.
-    h("div", { className: "gm-nest" },
-      lists.filter(l => !l.general).map(l => h("div", { className: "gm-rowwrap", key: l.cat },
-        h("button", { className: "gm-row", onClick: () => onOpenList(l.cat) },
-          ico(IC_LIST),
-          h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, l.cat), metaEl(l)),
-          chev),
-        h("button", { className: "gm-row-del", "aria-label": tr("gm_del_list"), onClick: () => setDelCat(l.cat) },
-          h("span", { className: "gm-row-del-ic", dangerouslySetInnerHTML: { __html: IC_TRASH } }))))),
-    // „Neue Liste" lebt jetzt in den Bereichen Verben bzw. Wörter selbst — nicht mehr hier.
-    delCat ? h("div", { className: "chpick-bg", onClick: () => setDelCat(null) },
-      h("div", { className: "chpick", onClick: e => e.stopPropagation() },
-        h("div", { className: "chpick-hd" }, h("b", null, tr("gm_del_t")), h("button", { className: "chpick-x", "aria-label": "close", onClick: () => setDelCat(null) }, "×")),
-        h("p", { style: { fontSize: "13.5px", lineHeight: 1.5, color: "var(--muted)", margin: "0 0 16px" } },
-          tr("gm_del_b", { n: getVocab().filter(it => it && it.lang === lang && it.cat === delCat).length })),
-        h("div", { style: { display: "flex", gap: "9px" } },
-          h("button", { className: "voc-del-keep", onClick: () => setDelCat(null) }, tr("gm_del_no")),
-          h("button", { className: "voc-del-go", onClick: () => { const c = delCat; setDelCat(null); removeVocabList(lang, c); forceTick(t => t + 1); } }, tr("gm_del_yes"))))) : null,
-    delVCat ? h("div", { className: "chpick-bg", onClick: () => setDelVCat(null) },
-      h("div", { className: "chpick", onClick: e => e.stopPropagation() },
-        h("div", { className: "chpick-hd" }, h("b", null, tr("gm_del_t")), h("button", { className: "chpick-x", "aria-label": "close", onClick: () => setDelVCat(null) }, "×")),
-        h("p", { style: { fontSize: "13.5px", lineHeight: 1.5, color: "var(--muted)", margin: "0 0 16px" } },
-          tr("gm_del_vb", { n: (favs || []).filter(f => f && f.lang === lang && f.cat === delVCat && f.verb).length })),
-        h("div", { style: { display: "flex", gap: "9px" } },
-          h("button", { className: "voc-del-keep", onClick: () => setDelVCat(null) }, tr("gm_del_no")),
-          h("button", { className: "voc-del-go", onClick: () => { const c = delVCat; setDelVCat(null); removeVerbList(lang, c); forceTick(t => t + 1); } }, tr("gm_del_yes"))))) : null);
+    })());
 }
 function SavedTab({
   lang,
