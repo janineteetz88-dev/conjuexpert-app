@@ -31,6 +31,15 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Blotato admin (nur manuell, list/delete geplanter Posts)
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          BLOTATO_API_KEY: ${{ secrets.BLOTATO_API_KEY }}
+          MODE: 'list'
+          ID: ''
+          PATHSEG: 'posts'
+        run: node scripts/social/blotato-admin.mjs
+
       - name: Fällige Posts in Blotato einplanen
         env:
           BLOTATO_API_KEY: ${{ secrets.BLOTATO_API_KEY }}
