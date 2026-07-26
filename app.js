@@ -11529,10 +11529,6 @@ function VocabView({
       className: "voc-del",
       onClick: () => setAskDel(true)
     }, /*#__PURE__*/React.createElement("span", { className: "voc-del-ic", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: IC_TRASH } }), tr("gm_del_list")) : null),
-    focus && /*#__PURE__*/React.createElement("div", { className: "voccats", style: { marginBottom: "10px" } },
-      /*#__PURE__*/React.createElement("button", { className: "voccat" + (cat === "all" ? " on" : ""), onClick: () => { setCat("all"); persist("kunju-vocab-cat", "all"); } }, tr("vocab_all")),
-      focusCats.map(c => /*#__PURE__*/React.createElement("button", { key: c, className: "voccat" + (cat === c ? " on" : ""), onClick: () => { setCat(c); persist("kunju-vocab-cat", c); } }, isGeneralCat(c) ? generalCat() : c)),
-      /*#__PURE__*/React.createElement("button", { className: "voccat addcat", onClick: () => { setNewCatVal(""); setChooserTpl(false); setShowChooser(true); } }, "+ ", tr("gm_new_list"))),
     askDel && /*#__PURE__*/React.createElement("div", {
     className: "chpick-bg",
     onClick: () => setAskDel(false)
@@ -11744,7 +11740,7 @@ function VocabView({
             /*#__PURE__*/React.createElement("span", null, tr("gm_verbs"))) : null,
           targets.map(c => /*#__PURE__*/React.createElement("button", { key: c, className: "vmove-opt", onClick: () => moveItem(mit.id, c) },
             /*#__PURE__*/React.createElement("span", { className: "vmove-ic", dangerouslySetInnerHTML: { __html: isGeneralCat(c) ? IC_INBOX : IC_LIST } }),
-            /*#__PURE__*/React.createElement("span", null, isGeneralCat(c) ? tr("gm_words") : c)))),
+            /*#__PURE__*/React.createElement("span", null, isGeneralCat(c) ? generalCat() : c)))),
         /*#__PURE__*/React.createElement("button", { className: "vmove-cancel", onClick: () => setMoveId(null) }, tr("gf_back"))));
   })(), addingCat && /*#__PURE__*/React.createElement("div", {
     onClick: () => setAddingCat(false),
@@ -11864,7 +11860,7 @@ function VocabView({
     className: "voccatchip",
     title: tr("mv_title"),
     onClick: () => setMoveId(it.id)
-  }, isGeneralCat(it.cat) ? tr("gm_words") : it.cat), /*#__PURE__*/React.createElement("button", {
+  }, isGeneralCat(it.cat) ? generalCat() : it.cat), /*#__PURE__*/React.createElement("button", {
     className: "vocx",
     onClick: () => remove(it.id)
   }, "\u2715")))));
@@ -12274,6 +12270,7 @@ function GemerktOverview({ lang, favs, onOpenList, onVerbs, onOpenVerbList, onCh
       h("button", { className: "gm-kindbtn" + (kind === "v" ? " on" : ""), onClick: () => setKindP("v") }, tr("gm_verbs"))),
     // ---- WÖRTER-Katalog ----
     kind === "w" ? h("div", { className: "gm-cat" },
+      h("button", { className: "gm-addliste", style: { marginTop: 0, marginBottom: "12px" }, onClick: newWordList }, h("span", { className: "gm-ic-plus", dangerouslySetInnerHTML: { __html: IC_PLUS2 } }), " ", tr("gm_new_list")),
       h("div", { className: "gm-seclbl" }, tr("gm_your_lists")),
       lists.map(l => h("div", { className: "gm-rowwrap", key: "w-" + l.cat },
         h("button", { className: "gm-row", onClick: () => onOpenList(l.cat) },
@@ -12295,10 +12292,10 @@ function GemerktOverview({ lang, favs, onOpenList, onVerbs, onOpenVerbList, onCh
       quickThemes.map(t => h("button", { className: "gm-row gm-row-q", key: "q-" + t, onClick: () => onOpenList(t) },
         ico(IC_LIST),
         h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, t), h("span", { className: "gm-meta" }, tr("gm_template"))),
-        chev)),
-      h("button", { className: "gm-addliste", onClick: newWordList }, h("span", { className: "gm-ic-plus", dangerouslySetInnerHTML: { __html: IC_PLUS2 } }), " ", tr("gm_new_list")))
+        chev)))
     // ---- VERBEN-Katalog ----
     : h("div", { className: "gm-cat" },
+      h("button", { className: "gm-addliste", style: { marginTop: 0, marginBottom: "12px" }, onClick: newVerbList }, h("span", { className: "gm-ic-plus", dangerouslySetInnerHTML: { __html: IC_PLUS2 } }), " ", tr("gm_new_list")),
       h("div", { className: "gm-seclbl" }, tr("gm_your_lists")),
       vlists.map(l => h("div", { className: "gm-rowwrap", key: "v-" + l.cat },
         h("button", { className: "gm-row", onClick: () => onOpenVerbList(l.cat) },
@@ -12315,8 +12312,7 @@ function GemerktOverview({ lang, favs, onOpenList, onVerbs, onOpenVerbList, onCh
           c === lastV ? h("span", { className: "gm-last" }, tr("gm_recent")) : null,
           chev),
         h("button", { className: "gm-row-del", "aria-label": tr("gm_del_list"), onClick: () => setDelVCat(c) },
-          h("span", { className: "gm-row-del-ic", dangerouslySetInnerHTML: { __html: IC_TRASH } })))),
-      h("button", { className: "gm-addliste", onClick: newVerbList }, h("span", { className: "gm-ic-plus", dangerouslySetInnerHTML: { __html: IC_PLUS2 } }), " ", tr("gm_new_list"))),
+          h("span", { className: "gm-row-del-ic", dangerouslySetInnerHTML: { __html: IC_TRASH } })))) ),
     // Löschen-Bestätigungen
     delCat ? h("div", { className: "chpick-bg", onClick: () => setDelCat(null) },
       h("div", { className: "chpick", onClick: e => e.stopPropagation() },
@@ -12668,7 +12664,7 @@ function SavedView({
         const cur = (favs.find(f => f.lang === lang && f.verb === moveV) || {}).cat || generalCat();
         const on = isGeneralCat(c) ? isGeneralCat(cur) : cur === c;
         return h("button", { key: c, className: "chpick-row" + (on ? " on" : ""), onClick: () => moveVerbTo(moveV, c) },
-          h("span", { className: "chpick-lb" }, isGeneralCat(c) ? tr("gm_verbs") : c),
+          h("span", { className: "chpick-lb" }, isGeneralCat(c) ? generalCat() : c),
           h("span", { className: "chpick-mk" }, on ? "\u2713" : "+"));
       })))) : null;
   if (!allLangFavs.length) {
@@ -12699,7 +12695,7 @@ function SavedView({
     className: "grammar-intro"
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, catTitle, " \xB7 ", langFavs.length)),
     catFilter && !isGeneralCat(catFilter) ? h("button", { className: "voc-del", onClick: () => setAskDelV(true) }, h("span", { className: "voc-del-ic", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: IC_TRASH } }), tr("gm_del_list")) : null),
-    !pr ? listBar : null, moveSheet,
+    moveSheet,
     askDelV ? h("div", { className: "chpick-bg", onClick: () => setAskDelV(false) },
       h("div", { className: "chpick", onClick: e => e.stopPropagation() },
         h("div", { className: "chpick-hd" }, h("b", null, tr("gm_del_t")), h("button", { className: "chpick-x", "aria-label": "close", onClick: () => setAskDelV(false) }, "×")),
@@ -12805,7 +12801,7 @@ function SavedView({
       onClick: () => speak(base, window.CONJ[it.lang].ttsLang)
     }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } })), /*#__PURE__*/React.createElement("span", {
       className: "vtbadge"
-    }, LANG_META[it.lang].code), h("button", { className: "voccatchip vtcatchip", title: tr("mv_title"), onClick: () => setMoveV(it.verb) }, isGeneralCat(it.cat || generalCat()) ? tr("gm_verbs") : it.cat)), /*#__PURE__*/React.createElement(SavedCell, {
+    }, LANG_META[it.lang].code), h("button", { className: "voccatchip vtcatchip", title: tr("mv_title"), onClick: () => setMoveV(it.verb) }, isGeneralCat(it.cat || generalCat()) ? generalCat() : it.cat)), /*#__PURE__*/React.createElement(SavedCell, {
       base: base,
       from: it.lang,
       to: transLang

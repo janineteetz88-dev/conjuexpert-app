@@ -1670,7 +1670,7 @@ body {
 /* „Neue Liste" direkt im Bereich (Verben/Wörter) statt in der Gemerkt-Übersicht */
 .voc-newlist-btn { margin-left: auto; flex: none; display: inline-flex; align-items: center; gap: 4px; border: 1.5px solid var(--text); background: var(--surface); color: var(--text); border-radius: 999px; padding: 6px 12px; font-family: var(--font-display); font-weight: 800; font-size: 12.5px; cursor: pointer; }
 .voc-del + .voc-newlist-btn { margin-left: 8px; }
-.vtcatchip { margin-left: 6px; }
+.vtcatchip { margin-left: 6px; font-size: 9.5px; padding: 3px 7px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .voc-del-keep { flex: 1; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 13px; padding: 12px; font-family: var(--font-display); font-weight: 800; font-size: 14px; cursor: pointer; }
 .voc-del-go { flex: 1; border: 0; background: #ff3b5c; color: #fff; border-radius: 13px; padding: 12px; font-family: var(--font-display); font-weight: 800; font-size: 14px; cursor: pointer; }
 .vocitem { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--lc); border-radius: 12px; padding: 11px 13px; box-shadow: var(--shadow-sm); }
@@ -1697,7 +1697,7 @@ body {
 .vocpr-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .vocpr-count { font-family: var(--font-display); font-weight: 700; font-size: 13px; color: var(--muted); }
 .vtable { display: flex; flex-direction: column; border-radius: var(--radius); overflow: auto; box-shadow: var(--shadow); background: var(--surface); }
-.vtrow { display: grid; grid-template-columns: minmax(min-content, 1.8fr) minmax(min-content, 1fr); align-items: stretch; }
+.vtrow { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); align-items: stretch; }
 .vtrow + .vtrow { }
 .vtrow:not(.vthead):nth-child(even) { background: color-mix(in srgb, var(--surface-2) 40%, var(--surface)); }
 .vthead { background: transparent; position: sticky; top: 0; z-index: 2; }
@@ -1721,7 +1721,7 @@ body {
 .vtsel .nativesel:focus { border-color: var(--lang-color, #a557ff); box-shadow: 0 0 0 3px color-mix(in srgb, var(--lang-color, #a557ff) 14%, transparent); }
 .vtsel .nativecaret { right: 12px; font-size: 9px; color: var(--lang-color, #a557ff); }
 .vtcell { padding: 12px 11px; display: flex; align-items: center; gap: 7px; min-width: 0; }
-.vtcell.vtfirst { box-shadow: inset 3px 0 0 var(--ink); gap: 6px; }
+.vtcell.vtfirst { box-shadow: inset 3px 0 0 var(--ink); gap: 6px; flex-wrap: wrap; row-gap: 4px; }
 .vtx { border: 0; background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; width: 20px; height: 20px; border-radius: 6px; flex: none; line-height: 1; opacity: 0.55; transition: all 0.15s; }
 .vtx:hover { color: #ff3b5c; background: color-mix(in srgb, #ff3b5c 14%, transparent); opacity: 1; }
 .vtverb { border: 0; background: transparent; padding: 0; font-family: var(--font-display); font-weight: 600; font-size: 17px; letter-spacing: -0.01em; color: var(--text); cursor: pointer; text-align: left; flex: 1; min-width: 0; white-space: nowrap; }
@@ -3114,7 +3114,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-168"></script>
+<script defer src="/app.js?v=c-sand-169"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
