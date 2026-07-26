@@ -859,6 +859,39 @@
         "isAiGenerated": false
       },
       "caption": "We understood the words. But the moment we had to react — recall the right verb form ourselves — we froze. 😮‍💨\n\nMy friends and I hit that same wall learning languages. And no app let us practise in our own topics — the worlds we actually talk about. So we built it.\n\nConjuExpert: drill verbs in your own topics, 6 quiz modes, 5 languages — until the right form just comes. We're in open beta — try it free and tell me what you think. 🙏\n\n👉 conjuexpert.app · code FEEDBACK100 = 30 days Premium free 🎁\n\n#LearnGerman #LanguageLearning #DeutschLernen #ConjuExpert"
+    },
+    {
+      "id": "test-reel-instagram-2026-07-26",
+      "platform": "instagram",
+      "accountId": "57778",
+      "scheduledTime": "2026-07-26T15:10:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/92d775810ddc11b3f75805fcd9adc2f599c5bf81/scripts/social/test-reel",
+      "media": [
+        "test-reel.mp4"
+      ],
+      "mediaType": "reel",
+      "coverImageUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/92d775810ddc11b3f75805fcd9adc2f599c5bf81/scripts/social/test-reel/test-reel-cover.jpg",
+      "caption": "Your German verb of the day: gehen (to go) 🇩🇪\n\nich gehe · du gehst · er/sie/es geht · wir gehen · ihr geht · sie gehen\n\nExample: Ich gehe nach Hause. = I'm going home.\n\n#LearnGerman #GermanVerbs"
+    },
+    {
+      "id": "test-reel-tiktok-2026-07-26",
+      "platform": "tiktok",
+      "accountId": "50129",
+      "scheduledTime": "2026-07-26T15:10:00+02:00",
+      "mediaBaseUrl": "https://raw.githubusercontent.com/janineteetz88-dev/conjuexpert-app/92d775810ddc11b3f75805fcd9adc2f599c5bf81/scripts/social/test-reel",
+      "media": [
+        "test-reel.mp4"
+      ],
+      "platformOptions": {
+        "privacyLevel": "PUBLIC_TO_EVERYONE",
+        "disabledComments": false,
+        "disabledDuet": false,
+        "disabledStitch": false,
+        "isBrandedContent": false,
+        "isYourBrand": true,
+        "isAiGenerated": false
+      },
+      "caption": "Your German verb of the day: gehen (to go) 🇩🇪\n\nich gehe · du gehst · er/sie/es geht · wir gehen · ihr geht · sie gehen\n\nExample: Ich gehe nach Hause. = I'm going home.\n\n#LearnGerman #GermanVerbs"
     }
   ]
 }
