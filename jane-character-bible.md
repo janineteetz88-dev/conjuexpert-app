@@ -26,7 +26,13 @@ Janes Autorität: **native Deutsche** + **eigene Lern-Erfahrung** (hat beim Span
 - **Haupt-Drehort:** eine gemütliche, lichtdurchflutete **Ecke** — Holz, **Pflanzen**, Textilien/Kissen, **weiches Fensterlicht**; ein **Regal mit Sprach-, Finanz- & KI-Büchern**; dezente Familien-Spuren (macht's echt).
 - **Wiedererkennung:** Bücherregal + **große Pflanze** + **Lieblings-Kaffeetasse** + dezenter **Rot/Regenbogen-Akzent** (Kissen/Tasse).
 - **Licht/Zeit:** warmes **Morgenlicht** — „bevor die Kinder wach sind" (relatable für Eltern & Selbstständige).
-- **Zweit-Schauplätze (für Abwechslung/Säulen):** Küche mit Kaffee · **unterwegs/auf Reisen** (Spanien!) · Café/Co-Working = der digitale Traum in Bildern.
+- **Zweit-Schauplätze (für Abwechslung & gegen Dubletten-Drossel) — je Format:**
+  - 🚗 **Im Auto** (viel unterwegs, beruflich eingebunden) → **Talking-Head-Tipps „zwischendurch"**, Freeze-Fix, Mini-Quiz, Hot-Takes. Sehr TikTok-nativ & authentisch.
+  - 💻 **Am Computer/Schreibtisch** → **Gründer-Saga / Build-in-Public** (an der App bauen).
+  - 🌿 **Draußen in der Natur / mit den Kindern unterwegs** → Lifestyle & Relatability (der „Jane als Mensch"-Anteil), Reise-Traum in Bildern.
+  - 🧘 **Yoga** & ☕ **Kaffee mit Freundinnen** → nahbare Alltags-Momente, Werte (Balance, echte Menschen).
+  - 🧳 **Unterwegs/auf Reisen** (Spanien!) · Café/Co-Working = der digitale Traum sichtbar gemacht.
+  - **Küche mit Kaffee** = der ruhige Morgen-Klassiker.
 
 ## 💛 Persönlichkeit & Werte
 - **Eigenschaften:** warm · ermutigend · ehrlich mit Augenzwinkern · clever/neugierig (KI & Finanzen) · nachhaltig-bewusst · **chic, aber nahbar**.
