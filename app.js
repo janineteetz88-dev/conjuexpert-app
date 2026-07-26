@@ -2967,11 +2967,6 @@ function langOrder() {
   LANG_ORDER.forEach(c => { if (!valid.includes(c)) valid.push(c); });
   return valid.length ? valid : LANG_ORDER.slice();
 }
-function moveLangToFront(code) {
-  const next = [code, ...langOrder().filter(c => c !== code)];
-  persist("kunju-langorder", next);
-  return next;
-}
 const LANG_META = {
   de: {
     code: "DE",
@@ -4457,14 +4452,6 @@ function conjugateMaybeReflexive(langCode, input) {
   return eng.conjugate(input);
 }
 
-/* Accent helper keys per language */
-const ACCENTS = {
-  de: ["ä", "ö", "ü", "ß"],
-  es: ["á", "é", "í", "ó", "ú", "ñ", "ü", "¿", "¡"],
-  fr: ["à", "â", "ç", "é", "è", "ê", "ë", "î", "ï", "ô", "û", "ù", "œ"],
-  nl: ["ë", "ï", "é"],
-  en: []
-};
 function AccentBar({
   lang,
   onInsert
@@ -4832,56 +4819,6 @@ ${RB}
 }
 function rateApp() {
   window.open("https://conjuexpert.app/bewertungen/?from=app&lang=" + UILANG, "_blank");
-}
-async function shareApp() {
-  const lang = (navigator.language || navigator.userLanguage || "en").toLowerCase().slice(0, 2);
-  const slogans = {
-    de: {
-      title: "ConjuExpert — KI-Support für 5 Sprachen 🌍",
-      text: "🌍✨ 5 Sprachen. KI-Support. Ein Klick.\n\nMit ConjuExpert konjugierst du Verben auf Deutsch, Spanisch, Englisch, Niederländisch & Französisch – mit KI-Support. Sofort. Kostenlos. Kein Download nötig.",
-      copied: "Link kopiert – einfach in WhatsApp, Instagram oder eine E-Mail einfügen! 🎉"
-    },
-    es: {
-      title: "ConjuExpert — Soporte IA para 5 idiomas 🌍",
-      text: "🌍✨ 5 idiomas. Soporte IA. Un clic.\n\nCon ConjuExpert conjugas verbos en alemán, español, inglés, neerlandés y francés – con soporte de IA. Al instante. Gratis. Sin descargas.",
-      copied: "¡Enlace copiado – pégalo en WhatsApp, Instagram o un correo! 🎉"
-    },
-    nl: {
-      title: "ConjuExpert — AI-ondersteuning voor 5 talen 🌍",
-      text: "🌍✨ 5 talen. AI-ondersteuning. Één klik.\n\nMet ConjuExpert vervoeg je werkwoorden in het Duits, Spaans, Engels, Nederlands & Frans – met AI-ondersteuning. Direct. Gratis. Geen download nodig.",
-      copied: "Link gekopieerd – plak het in WhatsApp, Instagram of een e-mail! 🎉"
-    },
-    fr: {
-      title: "ConjuExpert — Support IA pour 5 langues 🌍",
-      text: "🌍✨ 5 langues. Support IA. Un clic.\n\nAvec ConjuExpert, conjuguez des verbes en allemand, espagnol, anglais, néerlandais et français – avec le support de l'IA. Instantané. Gratuit. Sans téléchargement.",
-      copied: "Lien copié – colle-le dans WhatsApp, Instagram ou un e-mail ! 🎉"
-    },
-    en: {
-      title: "ConjuExpert — AI support for 5 languages 🌍",
-      text: "🌍✨ 5 languages. AI support. One click.\n\nWith ConjuExpert you conjugate verbs in German, Spanish, English, Dutch & French – with AI support. Instant. Free. No download needed.",
-      copied: "Link copied – paste it into WhatsApp, Instagram or an email! 🎉"
-    }
-  };
-  const s = slogans[lang] || slogans.en;
-  const shareData = {
-    title: s.title,
-    text: s.text,
-    url: "https://conjuexpert.app"
-  };
-  try {
-    if (navigator.share) {
-      await navigator.share(shareData);
-      return;
-    }
-    await navigator.clipboard.writeText(s.text + "\n\n👉 conjuexpert.app");
-    if (window.__toast) window.__toast(s.copied);
-  } catch (e) {
-    if (e && e.name !== "AbortError") {
-      try {
-        await navigator.clipboard.writeText("https://conjuexpert.app");
-      } catch {}
-    }
-  }
 }
 async function shareConjugation(result, langCode, meaning) {
   try {
@@ -5508,7 +5445,6 @@ function ConjugateView({
     });
     return m;
   }, [deconj, activeInf]);
-  const langHist = history.filter(x => x.lang === lang && !favs.some(f => f.lang === lang && f.verb === x.verb)).slice(0, 10);
   function rnd() {
     const pool = verbPool(lang);
     let v = null;
@@ -5520,50 +5456,8 @@ function ConjugateView({
     setVerb(v);
     onConjugate(v);
   }
-  const [nativeVerb, setNativeVerb] = useState("");
-  const [nativeBusy, setNativeBusy] = useState(false);
   const natName = recall("kunju-native", "German");
   const natCode = NATIVE_TO_UI[natName];
-  const natBadge = natCode ? natCode.toUpperCase() : nativeLabel(natName).slice(0, 2).toUpperCase();
-  function submitNative() {
-    const w = (nativeVerb || "").trim().toLowerCase();
-    if (!w || nativeBusy) return;
-    if (natCode === lang) {
-      setVerb(w);
-      onConjugate(w);
-      setNativeVerb("");
-      return;
-    }
-    if (natCode) {
-      const ct = conceptTranslate(w, natCode, lang);
-      if (ct) {
-        setVerb(ct);
-        onConjugate(ct);
-        setNativeVerb("");
-        return;
-      }
-    }
-    const key = `kunju-n2t-${natName}-${lang}-${w}`;
-    const cached = recall(key, null);
-    if (cached) {
-      setVerb(cached);
-      onConjugate(cached);
-      setNativeVerb("");
-      return;
-    }
-    if (!window.__hasAI()) return;
-    setNativeBusy(true);
-    window.aiComplete(`Translate the ${natName} verb "${w}" to its ${engine.name} infinitive. Reply with ONLY the single infinitive word in ${engine.name}, lowercase, no article, no extra text.`).then(txt => {
-      const out = String(txt || "").trim().toLowerCase().replace(/^to\s+/, "").split(/\s+/)[0].replace(/[^a-zà-ÿ'’\-]/gi, "");
-      setNativeBusy(false);
-      if (out) {
-        persist(key, out);
-        setVerb(out);
-        onConjugate(out);
-        setNativeVerb("");
-      }
-    }).catch(() => setNativeBusy(false));
-  }
   return /*#__PURE__*/React.createElement("div", {
     className: "view"
   }, /*#__PURE__*/React.createElement("div", {
@@ -6734,7 +6628,6 @@ function QuizView({
   const allTenseIds = useMemo(() => tenseOpts.map(t => t.id), [tenseOpts]);
   const [tenseSel, setTenseSel] = useState([]);
   const [mistMode, setMistMode] = useState(false);
-  const allTensesOn = tenseSel.length > 0 && tenseSel.length === allTenseIds.length;
   const [selGroup, setSelGroup] = useState(() => recall("kunju-quiz-group", "all"));
   const _chActive = (() => {
     const g = recall("kunju-goal-data", null);
@@ -6796,14 +6689,7 @@ function QuizView({
   const [heard, setHeard] = useState("");
   const [micHint, setMicHint] = useState(false); // true → native Prompt half nicht, geräte­genaue Anleitung zeigen
   const [msg, setMsg] = useState("");
-  const [autoSpeak, setAutoSpeak] = useState(() => recall("kunju-autospeak", false));
-  function toggleAutoSpeak() {
-    setAutoSpeak(v => {
-      const n = !v;
-      persist("kunju-autospeak", n);
-      return n;
-    });
-  }
+  const [autoSpeak] = useState(() => recall("kunju-autospeak", false));
   const [spkMode, setSpkMode] = useState("form");
   const [typeMode, setTypeMode] = useState("form");
   const [revealed, setRevealed] = useState(false);
@@ -6887,7 +6773,6 @@ function QuizView({
   const langVoices = voices.filter(v => (v.lang || "").toLowerCase().split("-")[0] === ttsBase);
   const storyTokenRef = useRef(0);
   const qTokRef = useRef(0);
-  const clozeTokRef = useRef(0);
   const lastStoryRef = useRef(null);
   const genRef = useRef(0);
   const texteModeRef = useRef("question");
@@ -9689,7 +9574,6 @@ function nativeLabel(name) {
   const f = NATIVE_LANGS.find(l => l.name === name);
   return f ? f.label : name;
 }
-const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const arr = x => Array.isArray(x) ? x : [];
 const stripMark = s => String(s || "").replace(/\*\*/g, "");
 function fmtVerbMark(s) {
@@ -10143,7 +10027,7 @@ function LearnView({
     }
     if (jumpTense && onJumpDone) onJumpDone(); /* eslint-disable-next-line */
   }, [jumpTense]);
-  const [level, setLevel] = useState(() => recall("kunju-level", "A2"));
+  const [level] = useState(() => recall("kunju-level", "A2"));
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -10205,10 +10089,6 @@ function LearnView({
       cancelled = true;
     };
   }, [lang, selTense, level, native, curLabel]);
-  function setLvl(l) {
-    setLevel(l);
-    persist("kunju-level", l);
-  }
   const tips = window.GRAMMAR && window.GRAMMAR[lang] || [];
   return /*#__PURE__*/React.createElement("div", {
     className: "view"
@@ -10975,7 +10855,6 @@ function VocabView({
   }, [lang]);
   function suggestMore() {
     if (seeding) return;
-    const isTpl = templateCats().indexOf(cat) >= 0;
     const catName = cat === "all" || cat === generalCat() ? null : cat;
     const idx = catName ? templateCats().indexOf(catName) : -1;
     const topic = idx >= 0 ? VOCAB_TOPICS[idx] : catName || "useful everyday vocabulary";
@@ -11357,26 +11236,8 @@ function VocabView({
     };
     persist(srKey(), m);
   }
-  function isDue(term) {
-    return (srInfo(term).due || 0) <= Date.now();
-  }
-  // Nur Wörter DIESER Liste zählen für „fällig"/„Üben" — sonst zeigt eine neue,
-  // leere Liste fälschlich die globalen fälligen Wörter an.
-  const dueItems = shown.filter(it => it.term && it.trans && isDue(it.term));
   // Fehler-Übung ebenfalls auf die aktuelle Liste beschränken.
   const shownMist = getVMist().filter(m => shown.some(it => norm(it.term) === norm(m.term)));
-  function startDuePractice() {
-    const pool = shuffle(dueItems).slice(0, 30);
-    if (!pool.length) return;
-    setPractice({
-      pool,
-      idx: 0,
-      val: "",
-      state: "idle",
-      due: true,
-      right: 0
-    });
-  }
   function startPractice(portion) {
     const pool = shuffle(shown.filter(it => it.term && it.trans)).slice(portion * 30, portion * 30 + 30);
     if (!pool.length) return;
@@ -12122,13 +11983,7 @@ const IC_CHEV = "<svg viewBox='0 0 24 24' width='18' height='18' fill='none' str
 const IC_CHEVL = "<svg viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14.5 6l-6 6 6 6'/></svg>";
 const IC_PLUS2 = "<svg viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 5v14M5 12h14'/></svg>";
 const IC_ACT = "<svg viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M3 12h3.4l2.4 7 4-15 2.5 8H21'/></svg>";
-const IC_INFO = "<svg viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='8.5'/><path d='M12 11v5M12 7.6h.01'/></svg>";
-const IC_X2 = "<svg viewBox='0 0 24 24' width='14' height='14' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M6 6l12 12M18 6L6 18'/></svg>";
 function srMapFor(lang) { return recall("kunju-sr-" + lang, {}); }
-function vocabDueCount(lang) {
-  const m = srMapFor(lang), now = Date.now();
-  return getVocab().filter(it => it && it.lang === lang && it.term && it.trans && (((m[norm(it.term)] && m[norm(it.term)].due) || 0) <= now)).length;
-}
 function vocabLists(lang) {
   const m = srMapFor(lang), now = Date.now();
   const groups = {};
@@ -12229,7 +12084,6 @@ function GemerktOverview({ lang, favs, onOpenList, onOpenVerbList, onChallenge, 
   const emptyW = (() => { const have = new Set(lists.map(l => l.cat.toLowerCase())); return (recall("kunju-vocab-catnames", []) || []).filter(n => n && !isGeneralCat(n) && !have.has(n.toLowerCase())); })();
   const emptyV = (() => { const have = new Set(vlists.map(l => l.cat.toLowerCase())); return (recall("kunju-verb-catnames", []) || []).filter(n => n && !isGeneralCat(n) && !have.has(n.toLowerCase())); })();
   const quickThemes = (() => { const used = new Set(lists.map(l => l.cat)); const hid = recall("kunju-vocab-cathidden", []); return templateCats().filter(t => !used.has(t) && emptyW.indexOf(t) < 0 && hid.indexOf(t) < 0); })();
-  const favCount = (favs || []).filter(f => f.lang === lang && f.verb).length;
   const goal = recall("kunju-goal-data", null);
   const hasCh = !!(goal && Array.isArray(goal.verbList) && goal.verbList.length);
   const lc = (LANG_META[lang] && LANG_META[lang].color) || "#ff9f0a";
@@ -13289,7 +13143,6 @@ function TourGate({
 const HINT_ICON_OPEN = "<svg viewBox='0 0 24 24' width='20' height='20' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'>";
 /* ConjuExpert internal mark (ascending rainbow bars) — used as the "due today"
    indicator instead of a flame: it signals progress, not heat. */
-const DUE_BARS = "<svg viewBox='0 0 100 100' width='15' height='15' fill='none' aria-hidden='true'><rect x='16' y='33' width='9' height='34' rx='3.5' fill='#ff3b5c'/><rect x='31' y='21' width='9' height='58' rx='3.5' fill='#ff8a18'/><rect x='46' y='10' width='9' height='80' rx='3.5' fill='#ffc400'/><rect x='61' y='26' width='9' height='48' rx='3.5' fill='#1fbf6b'/><rect x='76' y='36' width='9' height='28' rx='3.5' fill='#0a84ff'/></svg>";
 /* Aufklappbare Erklärungs-Karte im Quiz-Screen (Design 2026) */
 const EXPLAIN_BULB = "<svg viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10c.7.7 1 1.3 1 2h6c0-.7.3-1.3 1-2a6 6 0 0 0-4-10z'/></svg>";
 const EXPLAIN_CARET = "<svg viewBox='0 0 24 24' width='13' height='13' fill='none' stroke='currentColor' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>";
