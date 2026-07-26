@@ -2751,6 +2751,17 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   }
   body{ background:#ded5c4 !important; }
   @media (min-width:480px){ body{ background:radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,160,70,.10), transparent 60%), #d8cdb8 !important; } }
+  /* Desktop-Backdrop: die zentrierte App steht sonst „verloren" im leeren Sand.
+     Weiche, markenfarbene Lichter in den Ecken lassen den Rand bewusst gestaltet
+     wirken — nur ab 900px (Mobil/Tablet bleiben unberührt). */
+  @media (min-width:900px){ body{ background:
+      radial-gradient(38% 46% at 15% 22%, rgba(255,120,60,.11), transparent 62%),
+      radial-gradient(40% 44% at 85% 20%, rgba(168,116,230,.09), transparent 62%),
+      radial-gradient(46% 50% at 84% 84%, rgba(58,166,201,.10), transparent 64%),
+      radial-gradient(42% 48% at 16% 82%, rgba(91,191,106,.09), transparent 64%),
+      radial-gradient(ellipse 60% 42% at 50% 0%, rgba(255,160,70,.10), transparent 60%),
+      #d8cdb8 !important;
+    background-attachment:fixed !important; } }
   /* Konstante Textgröße über alle Tabs (iOS-Auto-Sizing aus) — kein „kleiner werden" beim Wechsel */
   html, body, #approot{ -webkit-text-size-adjust:100% !important; text-size-adjust:100% !important; }
 
