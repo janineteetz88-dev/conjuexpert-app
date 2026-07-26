@@ -36,7 +36,9 @@ if (MODE === 'list') {
 } else if (MODE === 'delete') {
   if (!ID) { console.error('FEHLER: ID fehlt für delete.'); process.exit(1); }
   const url = `${BASE}/${PATHSEG}/${ID}`;
-  const res = await fetch(url, { method: 'DELETE', headers: H });
+  // DELETE ohne Body: KEIN Content-Type:application/json senden, sonst 400
+  // ("Body cannot be empty when content-type is set to 'application/json'").
+  const res = await fetch(url, { method: 'DELETE', headers: { 'blotato-api-key': API_KEY } });
   const txt = await show(`DELETE /${PATHSEG}/${ID}`, res);
   if (!res.ok) { console.error('Löschen fehlgeschlagen.'); process.exit(1); }
   console.log('OK gelöscht:', ID);
