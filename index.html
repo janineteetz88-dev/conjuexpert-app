@@ -1384,13 +1384,15 @@ body {
 .gm-hero-cta { display: inline-flex; align-items: center; gap: 7px; background: var(--text); color: var(--surface); border-radius: 12px; padding: 10px 15px; font-weight: 800; font-size: 14px; }
 .gm-hero-play { display: inline-flex; }
 /* Challenge-CTA (wenn noch keine Challenge existiert) — im Sprachakzent, nicht schwarz */
-.gm-chcta { width: 100%; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 12px; background: color-mix(in srgb, var(--lc, #ff9f0a) 9%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--lc, #ff9f0a) 38%, var(--border)); border-radius: 16px; padding: 14px; margin-bottom: 12px; font-family: var(--font-display); transition: transform .1s; }
+/* Challenge-CTA als ruhige weiße Karte mit dunklem Pfeil-Knopf (Design Screen 1) */
+.gm-chcta { width: 100%; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 15px 14px; margin-bottom: 12px; font-family: var(--font-display); box-shadow: var(--raise); transition: transform .1s; }
 .gm-chcta:active { transform: scale(.99); }
-.gm-chcta-ic { width: 40px; height: 40px; border-radius: 11px; background: color-mix(in srgb, var(--lc, #ff9f0a) 16%, var(--surface)); color: var(--lc, #ff9f0a); display: flex; align-items: center; justify-content: center; flex: none; }
+.gm-chcta-ic { display: none; }
 .gm-chcta-mid { flex: 1; min-width: 0; }
 .gm-chcta-h { display: block; font-weight: 800; font-size: 15px; color: var(--text); }
 .gm-chcta-s { display: block; font-size: 12.5px; color: var(--muted); font-weight: 600; margin-top: 2px; }
-.gm-chcta-chev { color: var(--lc, #ff9f0a); flex: none; display: inline-flex; }
+.gm-chcta-chev { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 999px; background: var(--selbg, #211d15); color: var(--selfg, #fdf8ec); }
+.gm-chcta-chev svg { width: 14px; height: 14px; }
 .gm-row { width: 100%; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 11px 13px; margin-bottom: 8px; font-family: var(--font-display); transition: transform .1s; }
 .gm-row:active { transform: scale(.99); }
 /* Themenliste + Löschen-Knopf nebeneinander */
@@ -1410,14 +1412,21 @@ body {
 .gm-bar i { display: block; height: 100%; background: var(--muted); border-radius: 3px; }
 .gm-badge { flex: none; font-size: 10.5px; font-weight: 800; padding: 3px 9px; border-radius: 999px; background: color-mix(in srgb, var(--lc, #ff9f0a) 14%, var(--surface)); color: var(--lc, #ff9f0a); }
 .gm-chev { color: var(--muted); flex: none; display: inline-flex; }
-.gm-seclbl { font-family: var(--font-mono, var(--font-display)); font-size: 10px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; color: var(--muted); margin: 15px 4px 9px; }
+.gm-seclbl { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono, var(--font-display)); font-size: 10px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; color: var(--muted); margin: 15px 4px 9px; }
+.gm-seclbl-line { flex: 1; height: 2px; border-radius: 2px; background: var(--brand-rainbow, #ffcf3f); opacity: .45; }
 /* Katalog-Umschalter Wörter | Verben (Gemerkt-Start) */
-.gm-kindtoggle { display: flex; gap: 3px; background: var(--surface-2); border: 1px solid color-mix(in srgb, var(--text) 11%, var(--border)); border-radius: 13px; padding: 3px; margin: 6px 0 4px; box-shadow: inset 0 1px 3px rgba(0,0,0,.05); }
-.gm-kindbtn { flex: 1; border: 0; background: transparent; color: color-mix(in srgb, var(--text) 52%, var(--muted)); font-family: var(--font-display); font-weight: 800; font-size: 14px; padding: 8px 6px; border-radius: 10px; cursor: pointer; transition: background .15s, color .15s; display: flex; flex-direction: column; align-items: center; gap: 1px; line-height: 1.12; }
-.gm-kindbtn:hover { color: var(--text); }
-.gm-kindbtn.on { background: var(--surface); color: var(--text); box-shadow: 0 2px 7px -2px rgba(0,0,0,.2), 0 1px 0 rgba(255,255,255,.5); }
+/* Ansicht-Zeile über dem Umschalter (Design Screen 1: „ANSICHT · tippen zum Wechseln") */
+.gm-viewrow { display: flex; align-items: baseline; justify-content: space-between; margin: 10px 4px 7px; }
+.gm-viewrow-l { font-family: var(--font-mono, var(--font-display)); font-size: 10px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; color: var(--muted); }
+.gm-viewrow-r { font-size: 11px; font-weight: 600; color: var(--muted); opacity: .85; }
+/* Umschalter als zwei Karten: aktiv = Tinte mit Regenbogen-Linie (Design Screen 1) */
+.gm-kindtoggle { display: flex; gap: 8px; background: transparent; border: 0; border-radius: 0; padding: 0; margin: 0 0 4px; box-shadow: none; }
+.gm-kindbtn { flex: 1; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: var(--font-display); font-weight: 800; font-size: 14px; padding: 12px 8px 14px; border-radius: 15px; cursor: pointer; transition: border-color .15s, color .15s; display: flex; flex-direction: column; align-items: center; gap: 2px; line-height: 1.12; position: relative; overflow: hidden; box-shadow: var(--raise); }
+.gm-kindbtn:not(.on):hover { color: var(--text); }
+.gm-kindbtn.on { background: var(--selbg, #211d15); border-color: var(--selbg, #211d15); color: var(--selfg, #fdf8ec); box-shadow: none; }
+.gm-kindbtn.on::after { content: ""; position: absolute; left: 20px; right: 20px; bottom: 7px; height: 2.5px; border-radius: 3px; background: var(--brand-rainbow, #ffcf3f); }
 .gm-kindbtn-lb { font-size: 14px; font-weight: 900; }
-.gm-kindbtn-n { font-size: 10.5px; font-weight: 700; opacity: .68; letter-spacing: .01em; }
+.gm-kindbtn-n { font-size: 10.5px; font-weight: 700; opacity: .68; letter-spacing: .01em; text-transform: lowercase; }
 .gm-cat { display: flex; flex-direction: column; }
 .gm-row-q .gm-nm { color: var(--muted); }
 .gm-row-q .gm-nm, .gm-quickrow .gm-nm { color: var(--text); }
@@ -3197,7 +3206,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-175"></script>
+<script defer src="/app.js?v=c-sand-176"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
