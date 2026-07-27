@@ -12081,6 +12081,8 @@ function GemerktOverview({ lang, favs, onOpenList, onOpenVerbList, onChallenge, 
   async function newVerbList() { const name = ((window.__ciPrompt ? await window.__ciPrompt(tr("vocab_new_cat_q")) : window.prompt(tr("vocab_new_cat_q"))) || "").trim(); if (!name) return; const ns = recall("kunju-verb-catnames", []); if (ns.indexOf(name) < 0) persist("kunju-verb-catnames", [...ns, name]); onOpenVerbList(name); }
   const lists = vocabLists(lang);
   const vlists = verbLists(lang, favs);
+  const wCount = getVocab().filter(it => it && it.lang === lang && it.term).length;
+  const vCount = (favs || []).filter(f => f && f.lang === lang && f.verb).length;
   // Leere eigene Listen (angelegt, noch keine Einträge) trotzdem im Katalog zeigen.
   const emptyW = (() => { const have = new Set(lists.map(l => l.cat.toLowerCase())); return (recall("kunju-vocab-catnames", []) || []).filter(n => n && !isGeneralCat(n) && !have.has(n.toLowerCase())); })();
   const emptyV = (() => { const have = new Set(vlists.map(l => l.cat.toLowerCase())); return (recall("kunju-verb-catnames", []) || []).filter(n => n && !isGeneralCat(n) && !have.has(n.toLowerCase())); })();
@@ -12093,6 +12095,17 @@ function GemerktOverview({ lang, favs, onOpenList, onOpenVerbList, onChallenge, 
   const ico = svg => h("span", { className: "gm-ic", dangerouslySetInnerHTML: { __html: svg } });
   const chev = h("span", { className: "gm-chev", dangerouslySetInnerHTML: { __html: IC_CHEV } });
   const metaEl = (l) => h("span", { className: "gm-meta" }, l.count + " " + tr("gm_words_n"), h("span", { className: "gm-bar" }, h("i", { style: { width: Math.round(l.pct * 100) + "%" } })));
+  // Bottom-Sheet mit Raster der Vorschlags-Themen (statt Dropdown) — Design „Gemerkt Journey".
+  const quickSheet = quickOpen ? h("div", { className: "gm-sheet-bg", onClick: () => setQuickOpen(false) },
+    h("div", { className: "gm-sheet", onClick: e => e.stopPropagation() },
+      h("div", { className: "gm-sheet-grip" }),
+      h("div", { className: "gm-sheet-hd" },
+        h("div", { className: "gm-sheet-tt" }, h("b", null, tr("gm_quickstart")), h("span", { className: "gm-sheet-sub" }, tr("gm_template"))),
+        h("button", { className: "gm-sheet-x", "aria-label": "close", onClick: () => setQuickOpen(false) }, "×")),
+      h("div", { className: "gm-sheet-grid" },
+        quickThemes.map(t => h("button", { type: "button", className: "gm-theme", key: "q-" + t, onClick: () => { setQuickOpen(false); onOpenList(t); } },
+          h("span", { className: "gm-theme-nm" }, t),
+          h("span", { className: "gm-theme-sub" }, tr("gm_template"))))))) : null;
   return h("div", { className: "view", style: { gap: 0 } },
     h("div", { className: "gm-legend" }, h(ExplainCard, { seenKey: "kunju-xpl-gemerkt", title: tr("gm_xpl_hd"), html: gemerktExplainHtml() })),
     // Die aggregierte „Fällig heute"-Kachel wurde entfernt: Auf „Gemerkt" gehören
@@ -12111,8 +12124,12 @@ function GemerktOverview({ lang, favs, onOpenList, onOpenVerbList, onChallenge, 
       h("span", { className: "gm-chcta-chev", dangerouslySetInnerHTML: { __html: IC_CHEV } })),
     // Umschalter Wörter | Verben — der „Gemerkt"-Tab ist selbst der Listen-Katalog.
     h("div", { className: "gm-kindtoggle" },
-      h("button", { className: "gm-kindbtn" + (kind === "w" ? " on" : ""), onClick: () => setKindP("w") }, tr("gm_words")),
-      h("button", { className: "gm-kindbtn" + (kind === "v" ? " on" : ""), onClick: () => setKindP("v") }, tr("gm_verbs"))),
+      h("button", { className: "gm-kindbtn" + (kind === "w" ? " on" : ""), onClick: () => setKindP("w") },
+        h("span", { className: "gm-kindbtn-lb" }, tr("gm_words")),
+        h("span", { className: "gm-kindbtn-n" }, wCount + " " + tr("vocab_saved"))),
+      h("button", { className: "gm-kindbtn" + (kind === "v" ? " on" : ""), onClick: () => setKindP("v") },
+        h("span", { className: "gm-kindbtn-lb" }, tr("gm_verbs")),
+        h("span", { className: "gm-kindbtn-n" }, vCount + " " + tr("vocab_saved")))),
     // ---- WÖRTER-Katalog ----
     kind === "w" ? h("div", { className: "gm-cat" },
       h("button", { className: "gm-addliste", style: { marginTop: 0, marginBottom: "12px" }, onClick: newWordList }, h("span", { className: "gm-ic-plus", dangerouslySetInnerHTML: { __html: IC_PLUS2 } }), " ", tr("gm_new_list")),
@@ -12133,16 +12150,11 @@ function GemerktOverview({ lang, favs, onOpenList, onOpenVerbList, onChallenge, 
           chev),
         h("button", { className: "gm-row-del", "aria-label": tr("gm_del_list"), onClick: () => setDelCat(c) },
           h("span", { className: "gm-row-del-ic", dangerouslySetInnerHTML: { __html: IC_TRASH } })))),
-      quickThemes.length ? h("div", { className: "gm-quickdrop" + (quickOpen ? " open" : "") },
-        h("button", { type: "button", className: "gm-quickdrop-btn", "aria-expanded": quickOpen, onClick: () => setQuickOpen(o => !o) },
-          h("span", { className: "gm-quickdrop-ic", dangerouslySetInnerHTML: { __html: IC_LIST } }),
-          h("span", { className: "gm-quickdrop-lbl" }, tr("gm_quickstart")),
-          h("span", { className: "gm-quickdrop-chev", dangerouslySetInnerHTML: { __html: IC_CHEV } })),
-        quickOpen ? h("div", { className: "gm-quickdrop-list" },
-          quickThemes.map(t => h("button", { type: "button", className: "gm-quickdrop-opt", key: "q-" + t, onClick: () => onOpenList(t) },
-            h("span", { className: "gm-quickdrop-optic", dangerouslySetInnerHTML: { __html: IC_LIST } }),
-            h("span", { className: "gm-quickdrop-optnm" }, t),
-            h("span", { className: "gm-quickdrop-optchev", dangerouslySetInnerHTML: { __html: IC_CHEV } })))) : null) : null)
+      quickThemes.length ? h("button", { type: "button", className: "gm-row gm-quickrow", onClick: () => setQuickOpen(true) },
+        ico(IC_LIST),
+        h("span", { className: "gm-mid" }, h("span", { className: "gm-nm" }, tr("gm_quickstart")), h("span", { className: "gm-meta" }, quickThemes.length + " " + tr("gm_template"))),
+        chev) : null,
+      quickSheet)
     // ---- VERBEN-Katalog ----
     : h("div", { className: "gm-cat" },
       h("button", { className: "gm-addliste", style: { marginTop: 0, marginBottom: "12px" }, onClick: newVerbList }, h("span", { className: "gm-ic-plus", dangerouslySetInnerHTML: { __html: IC_PLUS2 } }), " ", tr("gm_new_list")),
