@@ -1515,7 +1515,8 @@ body {
 .gm-nest > .gm-addliste { margin-top: 2px; }
 .gm-addliste { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px; border-radius: 12px; border: 1.5px solid var(--text); background: var(--surface); color: var(--text); font-weight: 800; font-size: 14.5px; font-family: var(--font-display); cursor: pointer; margin-top: 4px; }
 .gm-ic-plus { display: inline-flex; }
-.gm-backbar { margin-bottom: 12px; }
+/* Zurück-Leiste im Listen-Detail: sticky, damit sie beim Scrollen sichtbar bleibt */
+.gm-backbar { position: sticky; top: 0; z-index: 40; margin: 0 calc(var(--pad) * -1) 12px; padding: 8px var(--pad); background: color-mix(in srgb, var(--bg, #f4eede) 90%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .gm-back { display: inline-flex; align-items: center; gap: 5px; background: none; border: none; color: var(--muted); font-family: var(--font-display); font-weight: 700; font-size: 14px; cursor: pointer; padding: 4px 2px; }
 /* Challenge-Listenansicht (3. Reiter) */
 .ch-empty { text-align: center; padding: 30px 10px 26px; }
@@ -3221,7 +3222,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-177"></script>
+<script defer src="/app.js?v=c-sand-178"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
