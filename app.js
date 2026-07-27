@@ -12316,6 +12316,14 @@ function SavedView({
   const [cat, setCat] = useState(() => filterCat && filterCat !== "all" ? filterCat : "all");
   const [moveV, setMoveV] = useState(null);   // Verb, das gerade einer Liste zugeordnet wird
   const [askDelV, setAskDelV] = useState(false); // Liste auflösen: Bestätigung
+  // Helfer zum Befüllen einer Verb-Liste (analog zu den Wörtern)
+  const [vAddText, setVAddText] = useState("");
+  const [vAddBusy, setVAddBusy] = useState(false);
+  const [vSeeding, setVSeeding] = useState(false);
+  const [showVImport, setShowVImport] = useState(false);
+  const [vImpText, setVImpText] = useState("");
+  const [showVCross, setShowVCross] = useState(false);
+  const [vCrossBusy, setVCrossBusy] = useState(false);
   function persistCat(c) { setCat(c); persist("kunju-verb-cat", c); }
   const catFilter = cat && cat !== "all" ? cat : null;
   const allLangFavs = favs.filter(f => f.lang === lang && f.verb);
@@ -12336,6 +12344,115 @@ function SavedView({
     if (window.__addVerbFav) window.__addVerbFav(lang, verb, targetCat || generalCat());
     setMoveV(null);
   }
+  // --- Helfer zum Befüllen der Verb-Liste --------------------------------
+  const vTargetCat = () => cat === "all" ? generalCat() : cat;
+  const vSeenSet = () => new Set(allLangFavs.map(f => f.verb.replace(/^to /, "").trim().toLowerCase()));
+  function vAdd(inf, seen) {
+    const t = String(inf || "").trim().toLowerCase().replace(/^to\s+/, "");
+    if (!t) return false;
+    if (seen) { if (seen.has(t)) return false; seen.add(t); }
+    if (window.__addVerbFav) window.__addVerbFav(lang, t, vTargetCat());
+    return true;
+  }
+  function addVerbManual() {
+    const raw = (vAddText || "").trim().toLowerCase().replace(/^to\s+/, "");
+    if (!raw || vAddBusy) return;
+    // Infinitiv bestimmen: direkt bekannt, sonst rückkonjugieren, sonst Eingabe übernehmen.
+    let inf = isKnownInfinitive(lang, raw) ? raw : null;
+    if (!inf) { try { const dq = deconjugate(lang, raw); if (dq && !dq.guessed && dq.infinitives && dq.infinitives.length) inf = dq.infinitives[0]; } catch (e) {} }
+    vAdd(inf || raw, vSeenSet());
+    setVAddText("");
+  }
+  function suggestVerbs() {
+    if (vSeeding || !window.__hasAI()) return;
+    const topic = (cat === "all" || isGeneralCat(cat)) ? "useful everyday verbs" : cat;
+    const have = [...new Set(allLangFavs.map(f => f.verb.replace(/^to /, "")))].slice(0, 60);
+    const avoid = have.length ? ` Do NOT include any of these: ${have.join(", ")}.` : "";
+    setVSeeding(true);
+    window.aiComplete(`Suggest 10 useful ${window.CONJ[lang].name} verbs (plain infinitives) about "${topic}".${avoid} Reply with ONLY a minified JSON array of infinitive strings, nothing else: ["...","..."]`).then(txt => {
+      let arr = null;
+      try { let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim(); const a = s.indexOf("["), b = s.lastIndexOf("]"); if (a >= 0 && b > a) s = s.slice(a, b + 1); arr = JSON.parse(s); } catch (_) { arr = null; }
+      setVSeeding(false);
+      if (!Array.isArray(arr)) return;
+      const seen = vSeenSet();
+      arr.slice(0, 12).forEach(v => vAdd(v, seen));
+    }).catch(() => setVSeeding(false));
+  }
+  function parseVerbImport(text) {
+    const out = [], seen = vSeenSet();
+    String(text || "").split(/\r?\n/).forEach(line => {
+      let s = String(line || "").trim();
+      if (!s) return;
+      s = s.split(/\s+[-–—=]\s+|\t| \/ |,/)[0];
+      s = s.replace(/^[-–—•*·\d.\)\s]+/, "").trim().toLowerCase().replace(/^to\s+/, "");
+      if (!s || s.length > 40 || s.split(/\s+/).length > 4) return;
+      if (seen.has(s)) return;
+      seen.add(s);
+      out.push(s);
+    });
+    return out;
+  }
+  function runVerbImport() {
+    const parsed = parseVerbImport(vImpText);
+    parsed.forEach(v => vAdd(v));
+    setShowVImport(false); setVImpText("");
+    if (parsed.length && window.__toast) window.__toast(tr("cross_done", { n: parsed.length }));
+  }
+  function vCrossLangs() {
+    const seen = {}, out = [];
+    (recall("kunju-favs", []) || []).forEach(f => { if (f && f.verb && f.lang && f.lang !== lang && !seen[f.lang]) { seen[f.lang] = 1; out.push(f.lang); } });
+    return out;
+  }
+  function crossVerbRun(src) {
+    const list = (recall("kunju-favs", []) || []).filter(f => f && f.lang === src && f.verb);
+    if (!list.length) { setShowVCross(false); return; }
+    const seen = vSeenSet();
+    let added = 0;
+    const missing = [];
+    list.forEach(f => { const v = f.verb.replace(/^to /, ""); const ct = conceptTranslate(v, src, lang); if (ct) { if (vAdd(ct, seen)) added++; } else missing.push(v); });
+    if (!missing.length || !window.__hasAI()) { setShowVCross(false); if (window.__toast) window.__toast(tr("cross_done", { n: added })); return; }
+    setVCrossBusy(true);
+    window.aiComplete(`Translate these ${window.CONJ[src].name} verbs to their ${window.CONJ[lang].name} plain infinitives. Reply with ONLY a minified JSON array of infinitive strings in the same order, nothing else: ${JSON.stringify(missing.slice(0, 60))}`).then(txt => {
+      let arr = null;
+      try { let s = String(txt || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim(); const a = s.indexOf("["), b = s.lastIndexOf("]"); if (a >= 0 && b > a) s = s.slice(a, b + 1); arr = JSON.parse(s); } catch (_) { arr = null; }
+      if (Array.isArray(arr)) arr.forEach(v => { if (vAdd(v, seen)) added++; });
+      setVCrossBusy(false); setShowVCross(false);
+      if (window.__toast) window.__toast(tr("cross_done", { n: added }));
+    }).catch(() => { setVCrossBusy(false); setShowVCross(false); });
+  }
+  const vImpSvg = "<svg viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><rect x='6' y='4' width='12' height='16' rx='2'/><path d='M9.5 4h5v2.4h-5z'/><path d='M9 11h6M9 15h4'/></svg>";
+  const vCrossSvg = "<svg viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M3 12h18M12 3c2.5 2.4 3.8 5.5 3.8 9s-1.3 6.6-3.8 9c-2.5-2.4-3.8-5.5-3.8-9S9.5 5.4 12 3z'/></svg>";
+  const vHelpers = h(React.Fragment, null,
+    h("div", { className: "vocaddrow" },
+      h("input", { className: "vocinput", value: vAddText, "aria-label": tr("ch_ph_verb"), placeholder: tr("ch_ph_verb"), autoComplete: "off", spellCheck: "false",
+        onChange: e => setVAddText(e.target.value), onKeyDown: e => { if (e.key === "Enter") addVerbManual(); } }),
+      h("button", { className: "vocaddbtn", onClick: addVerbManual, disabled: vAddBusy || !vAddText.trim() }, "+")),
+    h("div", { className: "vocactions" },
+      window.__hasAI() ? h("button", { className: "vocsuggest", onClick: suggestVerbs, disabled: vSeeding },
+        h("span", { className: "vocact-ic", dangerouslySetInnerHTML: { __html: IC_SPARK } }),
+        h("span", { className: "vocact-lb" }, vSeeding ? "…" : tr("voc_a_suggest"))) : null,
+      h("button", { className: "vocsuggest vocimport", onClick: () => setShowVImport(true) },
+        h("span", { className: "vocact-ic", dangerouslySetInnerHTML: { __html: vImpSvg } }),
+        h("span", { className: "vocact-lb" }, tr("voc_a_import"))),
+      vCrossLangs().length > 0 ? h("button", { className: "vocsuggest voccross", onClick: () => setShowVCross(true) },
+        h("span", { className: "vocact-ic", dangerouslySetInnerHTML: { __html: vCrossSvg } }),
+        h("span", { className: "vocact-lb" }, tr("voc_a_cross"))) : null));
+  const vImpDialog = showVImport ? h("div", { className: "vimp-bg", onClick: () => setShowVImport(false) },
+    h("div", { className: "vimp-card", onClick: e => e.stopPropagation() },
+      h("div", { className: "vimp-h" }, tr("imp_title")),
+      h("p", { className: "vimp-sub" }, tr("imp_help")),
+      h("textarea", { className: "vimp-ta", value: vImpText, placeholder: tr("imp_ph"), onChange: e => setVImpText(e.target.value) }),
+      h("button", { className: "vimp-cta", onClick: runVerbImport }, tr("imp_cta")))) : null;
+  const vCrossDialog = showVCross ? h("div", { className: "vimp-bg", onClick: () => { if (!vCrossBusy) setShowVCross(false); } },
+    h("div", { className: "vimp-card", onClick: e => e.stopPropagation() },
+      h("div", { className: "vimp-h" }, tr("cross_title")),
+      vCrossBusy ? h("p", { className: "vimp-sub" }, tr("cross_busy"))
+        : h(React.Fragment, null,
+          h("p", { className: "vimp-sub" }, tr("cross_help")),
+          h("div", { className: "ch-pick-list" }, vCrossLangs().map(sl =>
+            h("button", { key: sl, className: "chpick-row", onClick: () => crossVerbRun(sl) },
+              h("span", { className: "chpick-lb" }, window.CONJ[sl] ? window.CONJ[sl].name : sl),
+              h("span", { className: "chpick-mk" }, "+"))))))) : null;
   const [pr, setPr] = useState(null); // {pool, idx, val, state, mist}
   const vpool = useMemo(() => langFavs.map(f => f.verb), [langFavs.length, lang, catFilter]);
   const vmistKey = `kunju-vbmist-${lang}`;
@@ -12504,25 +12621,6 @@ function SavedView({
           h("span", { className: "chpick-lb" }, isGeneralCat(c) ? generalCat() : c),
           h("span", { className: "chpick-mk" }, on ? "\u2713" : "+"));
       })))) : null;
-  if (!allLangFavs.length) {
-    return /*#__PURE__*/React.createElement("div", {
-      className: "view"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "emptystate"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "emptystate-rings"
-    }, RAINBOW.slice(0, 6).map((c, i) => /*#__PURE__*/React.createElement("span", {
-      key: i,
-      style: {
-        background: c,
-        animationDelay: i * 0.12 + "s"
-      }
-    }))), /*#__PURE__*/React.createElement("p", {
-      className: "emptystate-title"
-    }, "\u2605"), /*#__PURE__*/React.createElement("p", {
-      className: "emptystate-sub"
-    }, tr("saved_empty"))));
-  }
   return /*#__PURE__*/React.createElement("div", {
     className: "view",
     style: {
@@ -12533,6 +12631,9 @@ function SavedView({
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, catTitle, " \xB7 ", langFavs.length)),
     catFilter && !isGeneralCat(catFilter) ? h("button", { className: "voc-del", onClick: () => setAskDelV(true) }, h("span", { className: "voc-del-ic", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: IC_TRASH } }), tr("gm_del_list")) : null),
     moveSheet,
+    vImpDialog,
+    vCrossDialog,
+    !pr ? vHelpers : null,
     askDelV ? h("div", { className: "chpick-bg", onClick: () => setAskDelV(false) },
       h("div", { className: "chpick", onClick: e => e.stopPropagation() },
         h("div", { className: "chpick-hd" }, h("b", null, tr("gm_del_t")), h("button", { className: "chpick-x", "aria-label": "close", onClick: () => setAskDelV(false) }, "×")),
