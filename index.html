@@ -1454,7 +1454,7 @@ body {
 .gm-sm-ic svg { width: 100%; height: 100%; }
 
 /* Listen-Detail (Gemerkt Journey, Stufe 3): dunkler Fortschritts-Header */
-.vdh { background: var(--selbg, #211d15); color: var(--selfg, #fdf8ec); border-radius: 20px; padding: 17px 17px 15px; margin: 0 0 14px; box-shadow: var(--shadow-sm); }
+.vdh { background: var(--selbg, #211d15); color: var(--selfg, #fdf8ec); border-radius: 20px; padding: 17px 17px 15px; margin: 0; box-shadow: var(--shadow-sm); }
 .vdh-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .vdh-nm { font-family: var(--font-display); font-weight: 800; font-size: 19px; letter-spacing: -.01em; line-height: 1.25; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .vdh-del { flex: none; border: 0; background: color-mix(in srgb, var(--selfg, #fdf8ec) 12%, transparent); color: inherit; width: 31px; height: 31px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; opacity: .9; }
@@ -1468,14 +1468,14 @@ body {
 .vdh-cta:active { transform: scale(.985); }
 
 /* Filter-Chips Alle / Neu / Sicher */
-.vd-chips { display: flex; gap: 7px; margin: 2px 0 10px; }
+.vd-chips { display: flex; gap: 7px; margin: -3px 0 -6px; }
 .vd-chip { border: 1px solid var(--border); background: var(--surface); color: var(--muted); border-radius: 999px; padding: 7px 12px; font-family: var(--font-display); font-weight: 700; font-size: 12.5px; cursor: pointer; transition: border-color .12s; }
 .vd-chip.on { background: var(--selbg, #211d15); border-color: var(--selbg, #211d15); color: var(--selfg, #fdf8ec); }
 .vd-chip:disabled { opacity: .45; cursor: default; }
 .vd-chip small { font-weight: 700; font-size: 11px; opacity: .65; margin-left: 4px; }
 
 /* Einfüge-Panel: inline ausklappbar statt Modal (KI erkennt Wörter/Sätze) */
-.vd-imp { border: 1px solid var(--border); background: var(--surface); border-radius: 16px; padding: 12px 13px 13px; margin: 8px 0 2px; animation: fade .18s ease; }
+.vd-imp { border: 1px solid var(--border); background: var(--surface); border-radius: 16px; padding: 12px 13px 13px; margin: -8px 0 0; animation: fade .18s ease; }
 .vd-imp-h { font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin: 1px 1px 7px; }
 .vd-imp .vimp-ta { min-height: 84px; }
 .vocact-car { margin-left: 2px; font-size: 10px; opacity: .7; }
@@ -1608,14 +1608,15 @@ body {
 #approot[data-accent="mono"] .savedsubbtn.on { border-color: var(--text); background: color-mix(in srgb, var(--text) 8%, var(--surface)); }
 
 /* ===== Personal vocabulary ===== */
-.vocadd { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 13px 14px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+.vocadd { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 11px 12px; display: flex; flex-direction: column; gap: 7px; margin-bottom: 0; }
 .vocdir { display: flex; gap: 6px; }
-.vocdirbtn { flex: 1; border: 1px solid var(--border); background: var(--surface-2); color: var(--muted); border-radius: 10px; padding: 7px 6px; font-family: var(--font-display); font-weight: 600; font-size: 11.5px; cursor: pointer; transition: all 0.15s; }
-.vocdirbtn.on { border-color: var(--lc); background: color-mix(in srgb, var(--lc) 12%, var(--surface)); color: var(--text); }
-.vocaddrow { display: flex; gap: 8px; }
-.vocinput { flex: 1; border: 1.5px solid var(--border); background: var(--surface-2); border-radius: 12px; padding: 12px 14px; font-family: var(--font-body); font-size: 16px; color: var(--text); outline: 0; transition: border-color 0.15s; }
+/* Richtungs-Umschalter als dezente Textzeile statt grauer Pille (Design Stufe 3) */
+.vocdirbtn, .vocdirbtn.on { flex: 0 0 auto; align-self: flex-start; border: 0; background: transparent; color: var(--muted); border-radius: 8px; padding: 1px 3px; font-family: var(--font-display); font-weight: 600; font-size: 11.5px; text-align: left; cursor: pointer; transition: color 0.15s; }
+.vocdirbtn:hover { color: var(--text); }
+.vocaddrow { display: flex; gap: 8px; align-items: center; }
+.vocinput { flex: 1; min-width: 0; border: 1.5px solid var(--border); background: var(--surface-2); border-radius: 12px; padding: 12px 14px; font-family: var(--font-body); font-size: 16px; color: var(--text); outline: 0; transition: border-color 0.15s; }
 .vocinput:focus { border-color: var(--lc); box-shadow: 0 0 0 4px color-mix(in srgb, var(--lc) 13%, transparent); }
-.vocaddbtn { flex: none; width: 48px; border: 0; background: var(--lc); color: #fff; border-radius: 12px; font-size: 24px; font-weight: 700; cursor: pointer; transition: transform 0.12s; }
+.vocaddbtn { flex: none; width: 44px; height: 44px; border: 0; background: var(--selbg, #211d15); color: var(--selfg, #fdf8ec); border-radius: 999px; font-size: 22px; font-weight: 700; line-height: 1; cursor: pointer; transition: transform 0.12s; }
 .vocaddbtn:active { transform: scale(0.93); }
 .vocaddbtn:disabled { opacity: 0.4; }
 .voccats { display: flex; flex-wrap: wrap; gap: 6px; max-height: 78px; overflow: hidden; transition: max-height 0.22s ease; }
@@ -1632,10 +1633,12 @@ body {
 .vocsuggest:disabled { opacity: 0.6; cursor: default; }
 .vocmist { margin-bottom: 12px; }
 /* Wörter-Aktionen in EINER Zeile: Vorschlagen · Einfügen · Andere Sprache */
-.vocactions { display: flex; gap: 8px; margin-bottom: 12px; }
-.vocactions .vocsuggest { width: auto; flex: 1 1 0; min-width: 0; margin-bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 12px 6px; font-size: 12px; line-height: 1.15; text-align: center; }
+/* Helfer als kompakte Chip-Zeile (Design Stufe 3: „Vorschlagen / Einfügen / Sprache") */
+.vocactions { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 0; }
+.vocactions .vocsuggest { width: auto; flex: 0 1 auto; min-width: 0; margin-bottom: 0; display: inline-flex; flex-direction: row; align-items: center; justify-content: center; gap: 6px; padding: 9px 13px; border-radius: 999px; font-size: 12.5px; line-height: 1.15; text-align: center; }
 .vocact-ic { display: inline-flex; }
 .vocact-ic svg { width: 18px; height: 18px; display: block; }
+.vocactions .vocact-ic svg { width: 15px; height: 15px; }
 .vocact-lb { display: block; }
 /* Einheitlich im CI: gleiche Umrandung + gleiche Strich-Icons bei allen drei */
 .vocactions .vocsuggest { border: 1.5px solid var(--border) !important; background: var(--surface) !important; color: var(--text) !important; }
