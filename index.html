@@ -1439,6 +1439,52 @@ body {
 .gm-theme:active { transform: scale(.98); }
 .gm-theme-nm { font-size: 14.5px; font-weight: 800; color: var(--text); }
 .gm-theme-sub { font-size: 11.5px; color: var(--muted); }
+/* Themen-Sheet (Gemerkt Journey, Stufe 2): genutzte Themen invertiert + Badge,
+   „Weitere Themen vorschlagen" als dunkler Abschluss-Button */
+.gm-theme.used { background: var(--selbg, #211d15); border-color: var(--selbg, #211d15); }
+.gm-theme.used .gm-theme-nm { color: var(--selfg, #fdf8ec); }
+.gm-theme-badge { font-size: 11px; font-weight: 600; color: color-mix(in srgb, var(--selfg, #fdf8ec) 72%, transparent); }
+.gm-suggestmore { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; margin-top: 10px; border: 0; background: var(--selbg, #211d15); color: var(--selfg, #fdf8ec); border-radius: 15px; padding: 13px 15px; font-family: var(--font-display); cursor: pointer; text-align: left; transition: opacity .12s, transform .1s; }
+.gm-suggestmore:active { transform: scale(.985); }
+.gm-suggestmore:disabled { opacity: .6; cursor: default; }
+.gm-sm-mid { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.gm-sm-t { font-size: 14px; font-weight: 800; }
+.gm-sm-s { font-size: 11.5px; font-weight: 500; opacity: .7; }
+.gm-sm-ic { flex: none; display: inline-flex; width: 18px; height: 18px; opacity: .9; }
+.gm-sm-ic svg { width: 100%; height: 100%; }
+
+/* Listen-Detail (Gemerkt Journey, Stufe 3): dunkler Fortschritts-Header */
+.vdh { background: var(--selbg, #211d15); color: var(--selfg, #fdf8ec); border-radius: 20px; padding: 17px 17px 15px; margin: 0 0 14px; box-shadow: var(--shadow-sm); }
+.vdh-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.vdh-nm { font-family: var(--font-display); font-weight: 800; font-size: 19px; letter-spacing: -.01em; line-height: 1.25; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.vdh-del { flex: none; border: 0; background: color-mix(in srgb, var(--selfg, #fdf8ec) 12%, transparent); color: inherit; width: 31px; height: 31px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; opacity: .9; }
+.vdh-del .voc-del-ic { display: inline-flex; width: 15px; height: 15px; }
+.vdh-del svg { width: 100%; height: 100%; }
+.vdh-stats { font-size: 12.5px; font-weight: 600; opacity: .75; margin: 5px 1px 9px; }
+.vdh-bar { height: 5px; border-radius: 4px; background: color-mix(in srgb, var(--selfg, #fdf8ec) 16%, transparent); overflow: hidden; }
+.vdh-bar i { display: block; height: 100%; border-radius: 4px; background: var(--brand-rainbow, #ffcf3f); opacity: .85; }
+.vdh-cta { position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 13px; border: 0; border-radius: 13px; padding: 12px 14px 14px; background: var(--selfg, #fdf8ec); color: var(--selbg, #211d15); font-family: var(--font-display); font-weight: 800; font-size: 14.5px; cursor: pointer; overflow: hidden; transition: transform .1s; }
+.vdh-cta::after { content: ""; position: absolute; left: 16px; right: 16px; bottom: 6px; height: 2.5px; border-radius: 3px; background: var(--brand-rainbow, #ffcf3f); }
+.vdh-cta:active { transform: scale(.985); }
+
+/* Filter-Chips Alle / Neu / Sicher */
+.vd-chips { display: flex; gap: 7px; margin: 2px 0 10px; }
+.vd-chip { border: 1px solid var(--border); background: var(--surface); color: var(--muted); border-radius: 999px; padding: 7px 12px; font-family: var(--font-display); font-weight: 700; font-size: 12.5px; cursor: pointer; transition: border-color .12s; }
+.vd-chip.on { background: var(--selbg, #211d15); border-color: var(--selbg, #211d15); color: var(--selfg, #fdf8ec); }
+.vd-chip:disabled { opacity: .45; cursor: default; }
+.vd-chip small { font-weight: 700; font-size: 11px; opacity: .65; margin-left: 4px; }
+
+/* Einfüge-Panel: inline ausklappbar statt Modal (KI erkennt Wörter/Sätze) */
+.vd-imp { border: 1px solid var(--border); background: var(--surface); border-radius: 16px; padding: 12px 13px 13px; margin: 8px 0 2px; animation: fade .18s ease; }
+.vd-imp-h { font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin: 1px 1px 7px; }
+.vd-imp .vimp-ta { min-height: 84px; }
+.vocact-car { margin-left: 2px; font-size: 10px; opacity: .7; }
+.vocsuggest.on { background: var(--selbg, #211d15); border-color: var(--selbg, #211d15); color: var(--selfg, #fdf8ec); }
+.vocsuggest.on .vocact-ic, .vocsuggest.on .vocact-lb { color: var(--selfg, #fdf8ec); }
+
+/* „+N weitere" unter der zusammengeklappten Wortliste */
+.vd-more { width: 100%; margin-top: 8px; border: 0; background: transparent; color: var(--muted); padding: 10px; font-family: var(--font-display); font-weight: 700; font-size: 13px; cursor: pointer; }
+.vd-more:hover { color: var(--text); }
 .gm-last { flex: none; font-family: var(--font-mono, var(--font-display)); font-size: 8.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--lc, #7a5cff); border: 1px solid color-mix(in srgb, var(--lc, #7a5cff) 34%, var(--border)); border-radius: 999px; padding: 3px 7px; }
 /* Listen unter ihrer Kategorie (Verben / Wörter) einrücken — Baum-Optik */
 .gm-nest { margin: 0 0 0 9px; padding-left: 12px; border-left: 2px solid var(--border); }
@@ -3148,7 +3194,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-174"></script>
+<script defer src="/app.js?v=c-sand-175"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
