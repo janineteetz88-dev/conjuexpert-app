@@ -1398,18 +1398,25 @@ body {
 /* Themenliste + Löschen-Knopf nebeneinander */
 .gm-rowwrap { display: flex; align-items: stretch; gap: 8px; margin-bottom: 8px; }
 .gm-rowwrap .gm-row { flex: 1; min-width: 0; margin-bottom: 0; }
-.gm-row-del { flex: none; width: 48px; border: 1px solid var(--border); background: var(--surface); border-radius: 14px; color: var(--muted); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: color .15s, border-color .15s; }
-.gm-row-del:hover, .gm-row-del:active { color: #ff3b5c; border-color: color-mix(in srgb, #ff3b5c 40%, var(--border)); }
-.gm-row-del-ic { display: inline-flex; }
-.gm-row-del-ic svg { width: 17px; height: 17px; }
+/* Zeilen-Menü (Design Screen 1): ⌄ statt Papierkorb, Aktionen klappen darunter auf */
+.gm-count { flex: none; font-family: var(--font-mono, var(--font-display)); font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .02em; }
+.gm-row-dd { flex: none; width: 44px; border: 1px solid var(--border); background: var(--surface); border-radius: 14px; color: var(--muted); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: color .15s, border-color .15s; }
+.gm-row-dd:hover { color: var(--text); }
+.gm-dd-car { display: inline-flex; }
+.gm-dd-car svg { width: 15px; height: 15px; transform: rotate(90deg); transition: transform .18s; }
+.gm-dd-car.open svg { transform: rotate(-90deg); }
+.gm-ddwrap { flex-wrap: wrap; }
+.gm-dd { width: 100%; display: flex; gap: 7px; padding: 1px 2px 3px; animation: fade .15s ease; }
+.gm-dd-it { flex: 1; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 11px; padding: 9px 8px; font-family: var(--font-display); font-weight: 700; font-size: 12.5px; cursor: pointer; transition: border-color .12s; }
+.gm-dd-it:hover { border-color: color-mix(in srgb, var(--text) 22%, var(--border)); }
+.gm-dd-danger { color: #c43b3b; }
+.gm-quickrow .gm-chev svg { transform: rotate(90deg); }
 .gm-ch { border-left: 3px solid var(--lang-color, #ff9f0a); }
 .gm-ic { width: 36px; height: 36px; border-radius: 10px; background: var(--surface-2); display: flex; align-items: center; justify-content: center; color: var(--text); flex: none; }
 .gm-mid { flex: 1; min-width: 0; }
 .gm-nm { font-weight: 800; font-size: 14px; color: var(--text); display: block; }
 .gm-nm b { color: var(--lang-color, #ff9f0a); }
 .gm-meta { font-size: 11.5px; color: var(--muted); font-weight: 600; margin-top: 4px; display: flex; align-items: center; gap: 8px; }
-.gm-bar { width: 66px; height: 5px; border-radius: 3px; background: var(--surface-2); overflow: hidden; display: inline-block; }
-.gm-bar i { display: block; height: 100%; background: var(--muted); border-radius: 3px; }
 .gm-badge { flex: none; font-size: 10.5px; font-weight: 800; padding: 3px 9px; border-radius: 999px; background: color-mix(in srgb, var(--lc, #ff9f0a) 14%, var(--surface)); color: var(--lc, #ff9f0a); }
 .gm-chev { color: var(--muted); flex: none; display: inline-flex; }
 .gm-seclbl { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono, var(--font-display)); font-size: 10px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; color: var(--muted); margin: 15px 4px 9px; }
@@ -1461,6 +1468,14 @@ body {
 .gm-sm-s { font-size: 11.5px; font-weight: 500; opacity: .7; }
 .gm-sm-ic { flex: none; display: inline-flex; width: 18px; height: 18px; opacity: .9; }
 .gm-sm-ic svg { width: 100%; height: 100%; }
+
+/* Eingabe-Karte im Listen-Detail: Richtungszeile + Eingabe + Helfer-Chips +
+   Externe-Panel in EINER Karte mit Regenbogen-Unterkante (Design Screen 3) */
+.vd-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow-sm); padding: 12px 12px 15px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
+.vd-card::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--brand-rainbow, #ffcf3f); opacity: .8; }
+.vd-card .vocadd { border: 0; background: transparent; box-shadow: none; border-radius: 0; padding: 0; margin: 0; }
+.vd-card .vd-imp { margin: 0; }
+.vd-imp .vimp-ta { border: 1.5px dashed var(--border); background: var(--surface); }
 
 /* Listen-Detail (Gemerkt Journey, Stufe 3): dunkler Fortschritts-Header */
 .vdh { background: var(--selbg, #211d15); color: var(--selfg, #fdf8ec); border-radius: 20px; padding: 17px 17px 15px; margin: 0; box-shadow: var(--shadow-sm); }
@@ -1620,8 +1635,8 @@ body {
 .vocadd { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 11px 12px; display: flex; flex-direction: column; gap: 7px; margin-bottom: 0; }
 .vocdir { display: flex; gap: 6px; }
 /* Richtungs-Umschalter als dezente Textzeile statt grauer Pille (Design Stufe 3) */
-.vocdirbtn, .vocdirbtn.on { flex: 0 0 auto; align-self: flex-start; border: 0; background: transparent; color: var(--muted); border-radius: 8px; padding: 1px 3px; font-family: var(--font-display); font-weight: 600; font-size: 11.5px; text-align: left; cursor: pointer; transition: color 0.15s; }
-.vocdirbtn:hover { color: var(--text); }
+.vocdirbtn, .vocdirbtn.on { flex: 0 0 auto; align-self: flex-start; border: 0; background: transparent; color: var(--text); border-radius: 8px; padding: 1px 3px; font-family: var(--font-display); font-weight: 800; font-size: 13px; letter-spacing: -.01em; text-align: left; cursor: pointer; transition: opacity 0.15s; }
+.vocdirbtn:hover { opacity: .75; }
 .vocaddrow { display: flex; gap: 8px; align-items: center; }
 .vocinput { flex: 1; min-width: 0; border: 1.5px solid var(--border); background: var(--surface-2); border-radius: 12px; padding: 12px 14px; font-family: var(--font-body); font-size: 16px; color: var(--text); outline: 0; transition: border-color 0.15s; }
 .vocinput:focus { border-color: var(--lc); box-shadow: 0 0 0 4px color-mix(in srgb, var(--lc) 13%, transparent); }
@@ -3206,7 +3221,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-176"></script>
+<script defer src="/app.js?v=c-sand-177"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
