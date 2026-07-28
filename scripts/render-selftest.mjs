@@ -114,6 +114,31 @@ if (brokenProblems.length === 0) {
   console.log(`✅ Guard-Selbstkontrolle: kaputtes HTML erkannt (${brokenProblems.length} Probleme)`);
 }
 
+// Selbstkontrolle: Notion-Vorlagen-Platzhalter dürfen nie live rutschen
+// (wiederholt vorgekommener Live-Bug, siehe Notion-Karten).
+const metaPlaceholderHtml =
+  "<!DOCTYPE html><html lang=\"de\"><head><title>x</title>" +
+  "<meta name=\"description\" content=\"Meta (für Blog-Engine &amp; Freigabe)\" />" +
+  "</head><body><h1>A</h1>Text</body></html>";
+const metaPlaceholderProblems = auditRenderedHtml(metaPlaceholderHtml);
+if (!metaPlaceholderProblems.some((p) => /Meta \(für Blog-Engine/.test(p))) {
+  console.log("❌ Guard-Selbstkontrolle: Meta-Header-Platzhalter in der Description wurde NICHT erkannt!");
+  failed++;
+} else {
+  console.log("✅ Guard-Selbstkontrolle: Meta-Header-Platzhalter in der Description erkannt");
+}
+
+const coverPlaceholderHtml =
+  "<!DOCTYPE html><html lang=\"de\"><head><title>x</title></head><body><h1>A</h1>" +
+  "Cover-Bild: beim Veröffentlichen ein passendes Canva-Asset einsetzen.</body></html>";
+const coverPlaceholderProblems = auditRenderedHtml(coverPlaceholderHtml);
+if (!coverPlaceholderProblems.some((p) => /Cover-Bild:/.test(p))) {
+  console.log("❌ Guard-Selbstkontrolle: Cover-Bild-Editor-Platzhalter wurde NICHT erkannt!");
+  failed++;
+} else {
+  console.log("✅ Guard-Selbstkontrolle: Cover-Bild-Editor-Platzhalter erkannt");
+}
+
 if (failed) {
   console.error(`\n💥 Render-Selbsttest fehlgeschlagen (${failed}) — Deploy blockiert.`);
   process.exit(1);

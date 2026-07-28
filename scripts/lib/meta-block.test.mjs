@@ -211,3 +211,35 @@ test("firstHeadIntro: leere Blöcke → leerer String", () => {
   assert.equal(firstHeadIntro([]), "");
   assert.equal(firstHeadIntro(null), "");
 });
+
+/* ─── Bugfix: Meta-Header-Zeile darf nie als Intro-Fallback zurückkommen ───
+ * Live-Bug (Notion-Karte "Interner Platzhaltertext ..."): fehlt sowohl der
+ * "Meta-Description:"-Bullet als auch ein echter Intro-Absatz vor der H1,
+ * fiel firstHeadIntro() auf die Meta-Header-Zeile selbst zurück ("Meta (für
+ * Blog-Engine & Freigabe)") — die landete dann wörtlich in meta/og/twitter-
+ * description und JSON-LD. */
+
+test("firstHeadIntro: Meta-Header-Zeile selbst wird übersprungen (nicht als Intro genommen)", () => {
+  const blocks = [
+    para("Meta (für Blog-Engine & Freigabe)"),
+    h1("Titel"),
+    para("Fließtext des Artikels."),
+  ];
+  assert.equal(firstHeadIntro(blocks), "");
+  assert.equal(firstHeadIntro(blocks, { italicOnly: true }), "");
+});
+
+test("blocksToMetaText: ohne Meta-Description-Bullet und ohne echten Intro bleibt die Description leer (kein Platzhalter-Leak)", () => {
+  const blocks = [
+    para("Meta (für Blog-Engine & Freigabe)"),
+    bullet("**Typ:** Spoke · **Säule:** Anwendung"),
+    bullet("**Slug:** spoke-ohne-beschreibung"),
+    bullet("**Cluster:** irgendwas"),
+    bullet("**Hoch:** /blog/irgendein-hub"),
+    h1("Titel"),
+    para("Fließtext des Artikels."),
+  ];
+  const meta = metaFromBlocks(blocks);
+  assert.notEqual(meta.metaDescription, "Meta (für Blog-Engine & Freigabe)");
+  assert.ok(!meta.metaDescription, `metaDescription sollte leer sein, war: "${meta.metaDescription}"`);
+});
