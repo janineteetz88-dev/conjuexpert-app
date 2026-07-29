@@ -3361,6 +3361,21 @@ function QModeIcon({
   }, p)));
   return null;
 }
+/* Dropdown-Menü im Viewport halten: das Sand-Theme gibt dem Menü eine
+   Mindestbreite — steht der Knopf weit links, ragte es sonst links aus dem
+   Bild (und „✕ Ninguno" war kaum klickbar). Beim Öffnen wird die Position
+   relativ zum Wrapper so verschoben, dass links/rechts 14px Rand bleiben. */
+function clampMenuPos(wrapEl) {
+  try {
+    const r = wrapEl.getBoundingClientRect();
+    const vw = window.innerWidth || 400;
+    const w = Math.min(290, vw - 28);
+    const target = Math.min(Math.max(r.left, 14), vw - 14 - w);
+    return { left: Math.round(target - r.left) + "px", right: "auto", width: w + "px" };
+  } catch (e) {
+    return null;
+  }
+}
 function TenseDropdown({
   lang,
   tenses,
@@ -3373,17 +3388,20 @@ function TenseDropdown({
   hideLbl
 }) {
   const [open, setOpen] = useState(false);
+  const wrapRef = useRef(null);
+  const [mpos, setMpos] = useState(null);
   const onCount = tenses.filter(t => isOn(t.id)).length;
   const cur = single ? (tenses.find(t => isOn(t.id)) || {}).label : null;
   const summary = single ? cur || "—" : onCount === tenses.length || onCount === 0 ? tr("all_tenses") : onCount + " / " + tenses.length;
   return /*#__PURE__*/React.createElement("div", {
     className: "tdwrap",
+    ref: wrapRef,
     style: {
       "--lc": LANG_META[lang].color
     }
   }, /*#__PURE__*/React.createElement("button", {
     className: "tdbtn" + (open ? " open" : ""),
-    onClick: () => setOpen(o => !o)
+    onClick: () => { if (!open && wrapRef.current) setMpos(clampMenuPos(wrapRef.current)); setOpen(o => !o); }
   }, !hideLbl && /*#__PURE__*/React.createElement("span", {
     className: "tdbtn-lbl"
   }, tr("tense_word")), /*#__PURE__*/React.createElement("span", {
@@ -3394,7 +3412,8 @@ function TenseDropdown({
     className: "tdbackdrop",
     onClick: () => setOpen(false)
   }), /*#__PURE__*/React.createElement("div", {
-    className: "tdmenu"
+    className: "tdmenu",
+    style: mpos || undefined
   }, !single && /*#__PURE__*/React.createElement("div", {
     className: "tdactions"
   }, /*#__PURE__*/React.createElement("button", {
@@ -3428,15 +3447,18 @@ function OneDropdown({
   onPick
 }) {
   const [open, setOpen] = useState(false);
+  const wrapRef = useRef(null);
+  const [mpos, setMpos] = useState(null);
   const cur = (options.find(o => o.id === valueId) || options[0] || {}).label;
   return /*#__PURE__*/React.createElement("div", {
     className: "tdwrap",
+    ref: wrapRef,
     style: {
       "--lc": LANG_META[lang].color
     }
   }, /*#__PURE__*/React.createElement("button", {
     className: "tdbtn" + (open ? " open" : ""),
-    onClick: () => setOpen(o => !o)
+    onClick: () => { if (!open && wrapRef.current) setMpos(clampMenuPos(wrapRef.current)); setOpen(o => !o); }
   }, /*#__PURE__*/React.createElement("span", {
     className: "tdbtn-sum"
   }, cur), /*#__PURE__*/React.createElement("span", {
@@ -3445,7 +3467,8 @@ function OneDropdown({
     className: "tdbackdrop",
     onClick: () => setOpen(false)
   }), /*#__PURE__*/React.createElement("div", {
-    className: "tdmenu"
+    className: "tdmenu",
+    style: mpos || undefined
   }, /*#__PURE__*/React.createElement("div", {
     className: "tdlist"
   }, options.map(o => /*#__PURE__*/React.createElement("button", {
@@ -3476,6 +3499,8 @@ function MultiDropdown({
   removable
 }) {
   const [open, setOpen] = useState(false);
+  const wrapRef = useRef(null);
+  const [mpos, setMpos] = useState(null);
   const [newVal, setNewVal] = useState("");
   function commitAdd() {
     const v = newVal.trim();
@@ -3487,12 +3512,13 @@ function MultiDropdown({
   const summary = onCount === options.length || onCount === 0 ? tr("all_themes") : onCount + " / " + options.length;
   return /*#__PURE__*/React.createElement("div", {
     className: "tdwrap",
+    ref: wrapRef,
     style: {
       "--lc": LANG_META[lang].color
     }
   }, /*#__PURE__*/React.createElement("button", {
     className: "tdbtn" + (open ? " open" : ""),
-    onClick: () => setOpen(o => !o)
+    onClick: () => { if (!open && wrapRef.current) setMpos(clampMenuPos(wrapRef.current)); setOpen(o => !o); }
   }, /*#__PURE__*/React.createElement("span", {
     className: "tdbtn-sum"
   }, summary), /*#__PURE__*/React.createElement("span", {
@@ -3501,7 +3527,8 @@ function MultiDropdown({
     className: "tdbackdrop",
     onClick: () => setOpen(false)
   }), /*#__PURE__*/React.createElement("div", {
-    className: "tdmenu"
+    className: "tdmenu",
+    style: mpos || undefined
   }, /*#__PURE__*/React.createElement("div", {
     className: "tdactions"
   }, /*#__PURE__*/React.createElement("button", {
