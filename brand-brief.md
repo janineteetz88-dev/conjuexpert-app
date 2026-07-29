@@ -71,13 +71,23 @@ Problem · Mythos · Aha · Mini-Quiz · Alltagssatz · Fehler (Reframe) · Vorh
 
 ## Blotato-Accounts
 - Instagram **57778** · TikTok **50129** · YouTube **42799** · Facebook accountId **42186** + pageId **1283343028187105**.
-- Planung/Publish via Blotato. Braille-Blank für TikTok, IG ≤5 Hashtags.
+- Planung/Publish via Blotato. Braille-Blank für TikTok. **Keine Hashtags** (auf allen Plattformen — Regel von Janine, 07/2026).
 
 ## Sprache
 **Deutsch.** Alle Captions, Skripte, Voiceover auf Deutsch (klar, B1–B2-tauglich).
 
 ## Freigabe-Gate
 Nichts wird veröffentlicht/geplant ohne Janines ausdrückliches **„Go"**. Nur Janine merged Pull Requests.
+
+## Geschenk-Check (Pflicht-Gate für JEDEN Post)
+Vor jeder Freigabe-Vorlage muss jeder Post die Frage beantworten:
+**„Welches Geschenk nimmt der Zuschauer mit?"** — eine Regel, eine Übung,
+ein Satz zum Nachsprechen, ein Aha-Moment. Reine Vorstellung, reine Story
+oder reine Aufforderung ohne Geschenk = durchgefallen, neu machen.
+Zusätzlich pro Post prüfen: Save-Grund (behaltbares Wissen), Kommentar-Motor
+(konkrete Frage/Quiz) oder Share-Trigger („schick das jemandem …") — mindestens
+einer muss vorhanden sein. Captions: lang, mit Substanz, Storytelling,
+Frage am Ende, **ohne Hashtags**.
 
 ## Universal Voice Rules (jeder Post)
 - Du-Form; Kontraktionen natürlich.
