@@ -3368,10 +3368,16 @@ function QModeIcon({
 function clampMenuPos(wrapEl) {
   try {
     const r = wrapEl.getBoundingClientRect();
-    const vw = window.innerWidth || 400;
-    const w = Math.min(290, vw - 28);
-    const target = Math.min(Math.max(r.left, 14), vw - 14 - w);
-    return { left: Math.round(target - r.left) + "px", right: "auto", width: w + "px" };
+    // Am Telefon-Rahmen klemmen (nicht am Browserfenster) — auf dem Desktop
+    // ragte das Menü sonst rechts aus dem Mockup auf den Backdrop.
+    const ph = wrapEl.closest(".phone");
+    const pr = ph ? ph.getBoundingClientRect() : { left: 0, width: window.innerWidth || 400 };
+    // Desktop-Mockup nutzt zoom < 1: Rects sind visuell, CSS-Werte im Element
+    // aber ungezoomt — Offset/Breite entsprechend zurückrechnen.
+    const z = ph ? parseFloat(getComputedStyle(ph).zoom) || 1 : 1;
+    const w = Math.min(290 * z, pr.width - 28);
+    const target = Math.min(Math.max(r.left, pr.left + 14), pr.left + pr.width - 14 - w);
+    return { left: Math.round((target - r.left) / z) + "px", right: "auto", width: Math.round(w / z) + "px" };
   } catch (e) {
     return null;
   }
