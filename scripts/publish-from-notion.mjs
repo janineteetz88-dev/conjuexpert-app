@@ -40,7 +40,7 @@ import { normalizeFaq } from "./lib/faq.mjs";
 import { renderArticle } from "./lib/render-article.mjs";
 import { auditRenderedHtml } from "./lib/render-guard.mjs";
 import { lintRenderedHtml, hardErrors, htmlToText } from "./lib/standard-lint.mjs";
-import { aiLektorat } from "./lib/ai-lektorat.mjs";
+import { aiLektorat, htmlForLektorat } from "./lib/ai-lektorat.mjs";
 import { normalizeGermanQuotesHtml } from "./lib/text-polish.mjs";
 import { blocksToMetaText, extractFaqAndContent } from "./lib/notion-adapt.mjs";
 import {
@@ -434,7 +434,7 @@ async function main() {
     // einen Lauf später als ungeprüft live). AI_LEKTORAT=0 schaltet ab.
     if (a.isNew && !AI_LEKTORAT_OFF && !DRY_RUN) {
       try {
-        const check = await aiLektorat(htmlToText(html), { title: a.title });
+        const check = await aiLektorat(htmlForLektorat(html), { title: a.title });
         if (!check.ok) {
           guardFailures.push(a.meta.slug);
           warn(`KI-Lektorat → NICHT veröffentlicht (${check.errors.length} Fehler): ${a.meta.slug}`);
