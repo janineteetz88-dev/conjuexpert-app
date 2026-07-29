@@ -8556,11 +8556,7 @@ function QuizView({
     className: "flashhint-inline"
   }, quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) : null), q.isIrregular && /*#__PURE__*/React.createElement("span", {
     className: "flashtag"
-  }, tr("irregular")), /*#__PURE__*/React.createElement("button", {
-    className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
-    title: "Save verb",
-    onClick: () => toggleFav(lang, q.verb)
-  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular, vtrans: transl, strans: skill !== "beginner" && cloze ? cloze.native : null }), /*#__PURE__*/React.createElement("div", {
+  }, tr("irregular"))), /*#__PURE__*/React.createElement("div", { className: "tiprow" }, /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular, vtrans: transl, strans: skill !== "beginner" && cloze ? cloze.native : null }), /*#__PURE__*/React.createElement("button", { className: "starbtn qm-star qm-star-tip" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""), title: "Save verb", onClick: () => toggleFav(lang, q.verb) }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement("div", {
     className: "qm-prompt"
   }, /*#__PURE__*/React.createElement("button", {
     className: "flashverb flashverb-link",
@@ -8591,7 +8587,7 @@ function QuizView({
   }), state !== "idle" && /*#__PURE__*/React.createElement("button", {
     className: "flashspeak",
     onClick: () => speak(cloze.full, q.ttsLang)
-  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), cloze.native && skill === "beginner" && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), cloze.native && (skill === "beginner" || state !== "idle") && /*#__PURE__*/React.createElement("div", {
     className: "clozenative"
   }, cloze.native))), /*#__PURE__*/React.createElement("div", {
     className: "quizinput"
@@ -9035,11 +9031,7 @@ function QuizView({
     className: "flashhint-inline"
   }, quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) : null), q.isIrregular && /*#__PURE__*/React.createElement("span", {
     className: "flashtag"
-  }, tr("irregular")), /*#__PURE__*/React.createElement("button", {
-    className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
-    title: "Save verb",
-    onClick: () => toggleFav(lang, q.verb)
-  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular, vtrans: transl, strans: skill !== "beginner" && cloze ? cloze.native : null }), /*#__PURE__*/React.createElement("div", {
+  }, tr("irregular"))), /*#__PURE__*/React.createElement("div", { className: "tiprow" }, /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular, vtrans: transl, strans: skill !== "beginner" && cloze ? cloze.native : null }), /*#__PURE__*/React.createElement("button", { className: "starbtn qm-star qm-star-tip" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""), title: "Save verb", onClick: () => toggleFav(lang, q.verb) }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement("div", {
     className: "qm-prompt"
   }, /*#__PURE__*/React.createElement("button", {
     className: "flashverb flashverb-link",
@@ -9069,7 +9061,7 @@ function QuizView({
   }), state !== "idle" && /*#__PURE__*/React.createElement("button", {
     className: "flashspeak",
     onClick: () => speak(cloze.full, q.ttsLang)
-  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), cloze.native && skill === "beginner" && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), cloze.native && (skill === "beginner" || state !== "idle") && /*#__PURE__*/React.createElement("div", {
     className: "clozenative"
   }, cloze.native))), reportBtn(), /*#__PURE__*/React.createElement("div", {
     className: "choose-label"
@@ -9126,11 +9118,7 @@ function QuizView({
     className: "flashtense"
   }, q.tenseLabel), q.isIrregular && /*#__PURE__*/React.createElement("span", {
     className: "flashtag"
-  }, tr("irregular")), /*#__PURE__*/React.createElement("button", {
-    className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
-    title: "Save verb",
-    onClick: () => toggleFav(lang, q.verb)
-  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular, vtrans: transl }), /*#__PURE__*/React.createElement("div", {
+  }, tr("irregular"))), /*#__PURE__*/React.createElement("div", { className: "tiprow" }, /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular, vtrans: transl }), /*#__PURE__*/React.createElement("button", { className: "starbtn qm-star qm-star-tip" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""), title: "Save verb", onClick: () => toggleFav(lang, q.verb) }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement("div", {
     className: "qm-prompt"
   }, /*#__PURE__*/React.createElement("button", {
     className: "flashverb flashverb-link",
@@ -9391,11 +9379,7 @@ function QuizView({
     className: "flashhint-inline"
   }, quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer)) : null), q.isIrregular && /*#__PURE__*/React.createElement("span", {
     className: "flashtag"
-  }, tr("irregular")), /*#__PURE__*/React.createElement("button", {
-    className: "starbtn qm-star" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""),
-    title: "Save verb",
-    onClick: () => toggleFav(lang, q.verb)
-  }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular, vtrans: transl }), /*#__PURE__*/React.createElement(Prompt, null), cloze && (cloze.loading ? /*#__PURE__*/React.createElement("div", {
+  }, tr("irregular"))), /*#__PURE__*/React.createElement("div", { className: "tiprow" }, /*#__PURE__*/React.createElement(QuizTip, { formation: quizHint(lang, q) || auxHint(lang, q.tenseId, q.answer), irregular: q.isIrregular, vtrans: transl }), /*#__PURE__*/React.createElement("button", { className: "starbtn qm-star qm-star-tip" + (favs.some(x => x.lang === lang && x.verb === q.verb) ? " on" : ""), title: "Save verb", onClick: () => toggleFav(lang, q.verb) }, favs.some(x => x.lang === lang && x.verb === q.verb) ? "★" : "☆")), /*#__PURE__*/React.createElement(Prompt, null), cloze && (cloze.loading ? /*#__PURE__*/React.createElement("div", {
     className: "spkreveal"
   }, /*#__PURE__*/React.createElement("span", {
     className: "exloading"
@@ -9415,7 +9399,7 @@ function QuizView({
   }), state !== "idle" && /*#__PURE__*/React.createElement("button", {
     className: "flashspeak",
     onClick: () => speak(cloze.full, q.ttsLang)
-  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), cloze.native && skill === "beginner" && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), cloze.native && (skill === "beginner" || state !== "idle") && /*#__PURE__*/React.createElement("div", {
     className: "clozenative"
   }, cloze.native)))) : /*#__PURE__*/React.createElement("div", {
     className: "spksent"

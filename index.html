@@ -878,7 +878,7 @@ body {
 .quizcard.quizmodern::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--lc); opacity: 0.9; }
 .qm-top { display: flex; align-items: center; gap: 8px; }
 .qm-star { margin-left: auto; width: 34px; height: 34px; }
-.tiprow { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; }
+.tiprow { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; min-height: 36px; }
 .tiprow .qm-star-tip { position: absolute; right: 0; top: 50%; transform: translateY(-50%); margin: 0; }
 .flashverb-link { border: 0; background: transparent; cursor: pointer; font: inherit; color: inherit; padding: 2px 6px; display: inline-flex; align-items: center; gap: 7px; border-radius: 10px; transition: background 0.15s, transform 0.12s; }
 .flashverb-link:hover { background: color-mix(in srgb, var(--lc, #a557ff) 9%, transparent); }
@@ -3223,7 +3223,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-178"></script>
+<script defer src="/app.js?v=c-sand-179"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
