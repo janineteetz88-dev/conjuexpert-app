@@ -200,6 +200,7 @@ export const clusters = [
       { slug: "/blog/angleichung-participe-passe", title: "Die Angleichung des participe passé (accord) verständlich erklärt", live: true },
       { slug: "/blog/passe-compose-avoir-etre", title: "Passé composé mit avoir oder être? Die Regel, die wirklich hilft", live: true },
       { slug: "/blog/unregelmaessige-verben-franzoesisch", title: "Die wichtigsten unregelmäßigen französischen Verben: être, avoir, aller, faire", live: true },
+      { slug: "/blog/conditionnel-franzoesisch", title: "Le conditionnel: höflich bitten und Irreales ausdrücken", live: true },
     ],
   },
   {
