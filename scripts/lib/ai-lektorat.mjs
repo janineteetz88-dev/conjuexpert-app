@@ -88,7 +88,7 @@ export async function aiLektorat(text, { title = "" } = {}) {
 1. Fremdsprachige Beispielsätze und Verbformen: Konjugation, Accents, Elision, Angleichung, Wortstellung.
 2. Fachliche Grammatik-Aussagen: Ist jede behauptete Regel korrekt (keine falschen oder falsch herum erklärten Regeln, keine irreführenden Übergeneralisierungen)?
 3. Deutscher Fließtext: klare Grammatik-/Rechtschreibfehler.
-Melde AUSSCHLIESSLICH Fehler, bei denen du dir sicher bist — KEINE Stilfragen, KEINE Geschmacksurteile, KEINE Vorschläge. Wenn es keine sicheren Fehler gibt, melde eine leere Liste.
+Melde AUSSCHLIESSLICH Fehler, bei denen du dir sicher bist — KEINE Stilfragen, KEINE Geschmacksurteile, KEINE Vorschläge. Wichtig: Wenn bei einer Zeitform-/Modus-Wahl MEHRERE Varianten vertretbar sind (z. B. imparfait vs. passé composé bei Zustandsverben wie avoir/être/vouloir/pouvoir, Perfekt vs. Präteritum im Deutschen), ist das KEIN Fehler — melde eine Form nur, wenn sie eindeutig falsch ist und jede Lehrkraft sie anstreichen würde. Prüfe vor jeder Meldung: „Könnte ein Muttersprachler das genau so sagen?" Wenn ja, NICHT melden. Wenn es keine sicheren Fehler gibt, melde eine leere Liste.
 Antworte mit NUR minifiziertem JSON, nichts anderem: {"errors":[{"zitat":"<wörtliches Zitat aus dem Text>","korrektur":"<so wäre es richtig>","grund":"<1 Satz>"}]}
 
 ARTIKELTEXT:
