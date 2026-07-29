@@ -7037,12 +7037,12 @@ function QuizView({
     if (catName) {
       try { catWords = (getVocab() || []).filter(v => v && v.lang === lang && (v.cat || generalCat()) === catName && v.term).map(v => String(v.term).trim()).filter(Boolean); } catch (e) {}
     }
-    // Thema IMMER anwenden: eine eigene Liste (cat:) nutzt ihren NAMEN als Thema —
-    // egal ob sie Wörter hat (Wörter kommen zusätzlich dazu). So schlägt „Immobilien"
-    // sicher durch. „MUST be about" statt „should relate to", damit es im großen
-    // Prompt nicht untergeht.
-    const themeTopic = catName || (theme && theme.topic ? theme.topic : "");
-    const topicTxt = themeTopic ? ` The whole sentence MUST clearly be about the topic "${themeTopic}".` : "";
+    // Eigene Listen (cat:): der NAME ist nur ein Etikett (kann z. B. ein Personen-
+    // name sein) und darf die Sätze NICHT prägen — nur der INHALT der Liste.
+    // Als Thema dienen daher die gespeicherten Wörter selbst.
+    const themeTopic = catName ? "" : (theme && theme.topic ? theme.topic : "");
+    const ctxWords = catName ? catWords.slice(0, 6) : [];
+    const topicTxt = themeTopic ? ` The whole sentence MUST clearly be about the topic "${themeTopic}".` : (ctxWords.length ? ` Fit the sentence to the everyday theme suggested by these words from the learner's vocabulary list (they set the theme — do NOT treat the list's name as a topic): ${ctxWords.join(", ")}.` : "");
     let myWord = "", myWordTxt = "";
     if (catWords.length) {
       myWord = catWords[Math.floor(Math.random() * catWords.length)];
@@ -7052,7 +7052,7 @@ function QuizView({
       myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
       myWordTxt = myWord ? ` If it fits naturally, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence.` : "";
     }
-    const key = `kunju-cloze8-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
+    const key = `kunju-cloze9-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {
       setCloze(cached);
@@ -7609,9 +7609,9 @@ function QuizView({
     if (catName) {
       try { catWords = (getVocab() || []).filter(v => v && v.lang === lang && (v.cat || generalCat()) === catName && v.term).map(v => String(v.term).trim()).filter(Boolean); } catch (e) {}
     }
-    // Eigene Liste (cat:) → IMMER ihr Name als Thema (Wörter kommen separat dazu),
-    // damit z. B. „Immobilien" sicher durchschlägt statt generisch zu werden.
-    const topic = catName || (theme && theme.topic ? theme.topic : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)]);
+    // Eigene Liste (cat:): NICHT der Name (nur ein Etikett), sondern der INHALT
+    // bestimmt das Thema — leere Liste fällt auf ein Zufallsthema zurück.
+    const topic = catName ? (catWords.length ? `the everyday theme suggested by these words from the learner's vocabulary list (the words set the theme — do NOT treat the list's name as a topic): ${catWords.slice(0, 6).join(", ")}` : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)]) : (theme && theme.topic ? theme.topic : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)]);
     let myWord = "", myWordTxt = "";
     if (catWords.length) {
       myWord = catWords[Math.floor(Math.random() * catWords.length)];
