@@ -3014,17 +3014,22 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   @media (hover:hover) and (pointer:fine){
     .phone{
       zoom: .8; max-width: 500px !important; height: min(115dvh, 1100px) !important;
-      border-radius: 52px !important;
-      box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.14),
-        0 0 0 3px #3b3227,
-        0 0 0 17px #1d1811,
-        0 0 0 18px rgba(255,255,255,.09),
-        0 48px 95px -30px rgba(40,30,10,.7) !important;
+      border-radius: 44px !important;
+      box-shadow: none !important;
     }
-    /* Seitentasten wieder zeigen — knapp über den 18px-Bezel hinaus */
-    .device::before{ display:block !important; background:#1d1811 !important; left:-24px !important; }
-    .device::after{ display:block !important; background:#1d1811 !important; right:-24px !important; }
+    /* Bezel als ECHTER Kasten um das Telefon (background+padding) — ein
+       Schatten-Ring auf dem gezoomten .phone wird von Chrome versetzt
+       gemalt und ließ den Rahmen verschwinden. */
+    .device{
+      position: relative;
+      background: #1d1811;
+      padding: 10px;
+      border-radius: 54px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.09), 0 48px 95px -30px rgba(40,30,10,.7);
+    }
+    /* Seitentasten: 4px über die Bezel-Außenkante hinaus */
+    .device::before{ display:block !important; background:#1d1811 !important; left:-14px !important; }
+    .device::after{ display:block !important; background:#1d1811 !important; right:-14px !important; }
   }
   /* untere Leiste: gleichmäßig + klar aktive Pille */
   .tabs-track{ gap:4px !important; }
