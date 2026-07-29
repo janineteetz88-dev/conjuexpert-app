@@ -35,7 +35,18 @@ function escText(s) {
 export function convertStrayAsterisks(text) {
   const s = String(text || "");
   if (!s.includes("*")) return s;
-  return s.replace(/\*([^*]+)\*/g, "<em>$1</em>").replace(/\*/g, "");
+  // Nur „echte" Hervorhebungen umsetzen: kompakter Inhalt, der weder mit
+  // Leerzeichen/Satzzeichen beginnt noch mit Leerzeichen endet. Falsch
+  // gepaarte Sternchen (zerrissenes Markdown wie „…misses*, aus wash →
+  // *washes…") erzeugten sonst Kursiv-Bereiche quer über Phrasengrenzen;
+  // solche Paare werden jetzt NICHT konvertiert, die Sterne fliegen raus.
+  return s
+    .replace(/\*([^*]+)\*/g, (m, inner) =>
+      /^[\s.,;:!?)\]»]/.test(inner) || /\s$/.test(inner) || inner.length > 80
+        ? inner
+        : `<em>${inner}</em>`
+    )
+    .replace(/\*/g, "");
 }
 
 /* ─── Überschrift → ID-Slug ──────────────────────────────────────────────── */

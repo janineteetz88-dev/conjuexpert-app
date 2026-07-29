@@ -743,33 +743,33 @@ console.log("[12] TL;DR → Kurz gesagt (Callout-Label-Normalisierung)");
   // normalizeTldrLabel direkt testen
   eq(
     normalizeTldrLabel("<strong>TL;DR:</strong> Inhalt."),
-    "<strong>Kurz gesagt:</strong> Inhalt.",
-    "bold TL;DR: → Kurz gesagt:"
+    "<strong>Das Wichtigste in Kürze:</strong> Inhalt.",
+    "bold TL;DR: → Das Wichtigste in Kürze:"
   );
   eq(
     normalizeTldrLabel("<strong>TL;DR</strong> Inhalt."),
-    "<strong>Kurz gesagt</strong> Inhalt.",
-    "bold TL;DR ohne Separator → Kurz gesagt"
+    "<strong>Das Wichtigste in Kürze</strong> Inhalt.",
+    "bold TL;DR ohne Separator → Das Wichtigste in Kürze"
   );
   eq(
     normalizeTldrLabel("<strong>TL;DR –</strong> Inhalt."),
-    "<strong>Kurz gesagt –</strong> Inhalt.",
-    "bold TL;DR – → Kurz gesagt –"
+    "<strong>Das Wichtigste in Kürze –</strong> Inhalt.",
+    "bold TL;DR – → Das Wichtigste in Kürze –"
   );
   eq(
     normalizeTldrLabel("TL;DR: Inhalt."),
-    "Kurz gesagt: Inhalt.",
-    "plain TL;DR: → Kurz gesagt:"
+    "Das Wichtigste in Kürze: Inhalt.",
+    "plain TL;DR: → Das Wichtigste in Kürze:"
   );
   eq(
     normalizeTldrLabel("TLDR: Inhalt."),
-    "Kurz gesagt: Inhalt.",
-    "TLDR (kein Semikolon) → Kurz gesagt:"
+    "Das Wichtigste in Kürze: Inhalt.",
+    "TLDR (kein Semikolon) → Das Wichtigste in Kürze:"
   );
   eq(
     normalizeTldrLabel("TL;DR – Inhalt."),
-    "Kurz gesagt – Inhalt.",
-    "plain TL;DR – → Kurz gesagt –"
+    "Das Wichtigste in Kürze – Inhalt.",
+    "plain TL;DR – → Das Wichtigste in Kürze –"
   );
   // Mitten im Text: NICHT ersetzen
   eq(
@@ -793,7 +793,7 @@ console.log("[12] TL;DR → Kurz gesagt (Callout-Label-Normalisierung)");
     ]},
     _children: null,
   });
-  assert(boldCallout.includes("<strong>Kurz gesagt:</strong>"), "Callout: bold TL;DR: → <strong>Kurz gesagt:</strong>");
+  assert(boldCallout.includes("<strong>Das Wichtigste in Kürze:</strong>"), "Callout: bold TL;DR: → <strong>Das Wichtigste in Kürze:</strong>");
   assert(!boldCallout.includes("TL;DR"), "Callout: TL;DR vollständig ersetzt");
   assert(boldCallout.includes("Das Wichtigste hier"), "Callout: Inhalt bleibt erhalten");
 

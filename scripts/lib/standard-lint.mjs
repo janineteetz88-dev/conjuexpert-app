@@ -51,6 +51,32 @@ export function lintSignals(sig = {}) {
     err("DRAFT_MARKER", 'Entwurfs-Marker (✍️/[Entwurf]/[Draft]) im Text');
   if (has(/wartet auf (deine |die )?Freigabe|Geht nicht live ohne Freigabe|Status:\s*Entwurf/i, text))
     err("EDITORIAL_NOTE", "Interner Redaktionshinweis im Text (…wartet auf Freigabe / Status: Entwurf …)");
+  if (has(/Cover-Bild:|Canva-Asset|beim Veröffentlichen ein passendes/i, text))
+    err("EDITORIAL_NOTE", 'Redaktionsnotiz im Text („Cover-Bild: … Canva-Asset einsetzen")');
+  if (sig.metaPlaceholder)
+    err("META_PLACEHOLDER", 'Platzhalter „Meta (für Blog-Engine & Freigabe)" statt echter Meta-Description');
+
+  // ── HART: Konvertierungs-Reste dürfen nie live ─────────────────────────────
+  if (sig.visibleStars)
+    err("RAW_MARKDOWN", `${sig.visibleStars}× sichtbares „*" im gerenderten Text (Markdown-Rest)`);
+  if (sig.doubleHr)
+    err("DOUBLE_HR", "Doppelte <hr>-Trennlinie direkt hintereinander");
+  if (sig.brokenInline)
+    err("BROKEN_INLINE", `${sig.brokenInline}× zerrissene Fett/Kursiv-Auszeichnung (Fließtext klebt ohne Leerzeichen am schließenden Tag — Muster zerrissener Sternchen-Paare)`);
+
+  // ── HART: Typografie-Fehler, die sofort auffallen ──────────────────────────
+  // Auf textTight prüfen (Tags ersatzlos entfernt) — text ersetzt Tags durch
+  // Leerzeichen und würde „<em>works</em>." fälschlich als „works ." melden.
+  const tight = String(sig.textTight != null ? sig.textTight : text);
+  // Leerzeichen vor . oder , (Ellipsen „…"/"..." ausgenommen; frz. Spatium
+  // betrifft nur ! ? : ; — Punkt und Komma nie).
+  const spacePunct = (tight.match(/[^\s.] [.,](?=\s|["“”«»)\]]|$)/g) || []).length;
+  if (spacePunct)
+    err("SPACE_PUNCT", `${spacePunct}× Leerzeichen vor Punkt/Komma`);
+  // Deutsch geöffnetes „ mit geradem "-Zeichen geschlossen.
+  const mixedQuotes = (tight.match(/„[^„“"\n]{1,80}"/g) || []).length;
+  if (mixedQuotes)
+    err("MIXED_QUOTES", `${mixedQuotes}× „…" mit geradem Anführungszeichen geschlossen (soll „…“ sein)`);
 
   // ── HART: verbotenes Box-Label / verbotener Einstieg ───────────────────────
   // „TL;DR" ist nie zulässig; „Kurz gesagt" nur als BOX-LABEL verboten (nicht als
@@ -127,8 +153,9 @@ export function lintArticleText(markdown, opts = {}) {
   const badAnchors = (md.match(/\[(hier(?: klicken)?|mehr)\]\(/gi) || []).length;
   // Box-Label „Kurz gesagt" = fett bzw. am Callout-Anfang (nicht Fließtext).
   const boxLabelKurzGesagt = /(?:^|\n)\s*(?:>\s*)?\*\*\s*Kurz gesagt/i.test(md);
+  const metaPlaceholder = /Meta \(für Blog-Engine/i.test(md);
 
-  return lintSignals({ text: md, faqCount, upLinks, downLinks, badAnchors, boxLabelKurzGesagt, meta: opts.meta || null });
+  return lintSignals({ text: md, faqCount, upLinks, downLinks, badAnchors, boxLabelKurzGesagt, metaPlaceholder, meta: opts.meta || null });
 }
 
 /* ─── Adapter 2: gerenderter/Live-HTML ───────────────────────────────────── */
@@ -174,7 +201,22 @@ export function lintRenderedHtml(html, opts = {}) {
 
   const boxLabelKurzGesagt = /<(?:strong|b)>\s*Kurz gesagt/i.test(body);
 
-  return lintSignals({ text, faqCount, upLinks, downLinks, badAnchors, boxLabelKurzGesagt, meta: opts.meta || null });
+  // Konvertierungs-/Platzhalter-Signale (nur im gerenderten HTML sinnvoll —
+  // in der Markdown-Quelle sind Sternchen legitime Auszeichnung).
+  const metaPlaceholder = /Meta \(für Blog-Engine/i.test(s);
+  const doubleHr = /<hr\b[^>]*>\s*<hr\b/i.test(body);
+  // Zerrissene Auszeichnung: ein Lauf MIT Leerzeichen im Inhalt endet, und das
+  // Wort läuft ohne Leerzeichen weiter („…aus wash → </strong>washes…").
+  // Absichtliche Morphem-Hervorhebungen (auf<strong>ge</strong>standen,
+  // <strong>I</strong>ndefinido) haben keine Leerzeichen im Lauf und matchen
+  // nicht; Run-Splits aus Notion („</strong><em>…") ebenfalls nicht.
+  const brokenInline = (body.match(/<(strong|em)>[^<]*\s[^<]*<\/\1>\p{L}/gu) || []).length;
+  const visibleStars = (text.match(/(?:^|\s)\*+|\*+(?:\s|$)/g) || []).length;
+  // Enge Text-Extraktion für Typografie-Checks: Tags ersatzlos entfernen,
+  // damit Tag-Grenzen keine Phantom-Leerzeichen erzeugen.
+  const textTight = htmlToText(body.replace(/<[^>]+>/g, ""));
+
+  return lintSignals({ text, textTight, faqCount, upLinks, downLinks, badAnchors, boxLabelKurzGesagt, metaPlaceholder, doubleHr, brokenInline, visibleStars, meta: opts.meta || null });
 }
 
 /* ─── Bequemlichkeit: nur harte Fehler (Gate-Entscheidung) ───────────────── */

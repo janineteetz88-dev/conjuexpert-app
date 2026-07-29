@@ -39,7 +39,9 @@ import { parseMetaBlock, validateMeta, cleanMetaDescription } from "./lib/meta-b
 import { normalizeFaq } from "./lib/faq.mjs";
 import { renderArticle } from "./lib/render-article.mjs";
 import { auditRenderedHtml } from "./lib/render-guard.mjs";
-import { lintRenderedHtml, hardErrors } from "./lib/standard-lint.mjs";
+import { lintRenderedHtml, hardErrors, htmlToText } from "./lib/standard-lint.mjs";
+import { aiLektorat } from "./lib/ai-lektorat.mjs";
+import { normalizeGermanQuotesHtml } from "./lib/text-polish.mjs";
 import { blocksToMetaText, extractFaqAndContent } from "./lib/notion-adapt.mjs";
 import {
   upsertClusters,
@@ -59,8 +61,15 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ARGS = process.argv.slice(2);
 const DRY_RUN = ARGS.includes("--dry-run");
 const WRITEBACK = process.env.WRITEBACK === "1";
-// Gold-Standard-Linter: standardmäßig nur melden; =1 blockt harte CI/Stil-Fehler.
-const STANDARD_LINT_STRICT = process.env.STANDARD_LINT_STRICT === "1";
+// Qualitäts-Gate: harte Lint-Fehler blocken IMMER die Veröffentlichung
+// (Vorgabe Janine: „Es dürfen auf gar keinen Fall falsche Dinge im Blog-
+// artikel stehen"). Nur für Notfälle abschaltbar: STANDARD_LINT_OFF=1
+// (dann wieder nur melden, wie früher ohne STANDARD_LINT_STRICT).
+const STANDARD_LINT_OFF = process.env.STANDARD_LINT_OFF === "1";
+// KI-Lektorat (inhaltliche Prüfung neuer Artikel vor dem Livegang):
+// abschaltbar mit AI_LEKTORAT=0 — z. B. wenn die API klemmt und ein
+// bereits manuell geprüfter Artikel raus muss.
+const AI_LEKTORAT_OFF = process.env.AI_LEKTORAT === "0";
 
 // Handgebaute Artikel: NIEMALS von der Pipeline (über)schreiben. Diese Seiten
 // werden von Hand gepflegt; die Engine lässt sie unangetastet.
@@ -309,9 +318,11 @@ async function main() {
       warn(`Meta ungültig → ÜBERSPRUNGEN: "${trackerTitle}" — ${hardErrors.join("; ")}`);
       continue;
     }
-    if (!meta.metaDescription || !String(meta.metaDescription).trim()) {
+    // Platzhalter („Meta (für Blog-Engine & Freigabe)") zählt wie FEHLEND —
+    // er stand sonst wörtlich als Description im Live-HTML.
+    if (!meta.metaDescription || !String(meta.metaDescription).trim() || /Meta \(für Blog-Engine/i.test(meta.metaDescription)) {
       meta.metaDescription = cleanMetaDescription(trackerTitle);
-      warn(`Meta-Description fehlte → Fallback (Titel) genutzt: "${trackerTitle}"`);
+      warn(`Meta-Description fehlte/Platzhalter → Fallback (Titel) genutzt: "${trackerTitle}"`);
     }
 
     const { contentBlocks, faqBlocks } = extractFaqAndContent(blocks);
@@ -342,6 +353,9 @@ async function main() {
   const budget = Math.max(0, MAX_PER_DAY - alreadyToday);
   const alreadyLive = sorted.filter((a) => htmlExists(a.meta.slug));
   const newOnes = sorted.filter((a) => !htmlExists(a.meta.slug));
+  // NEU vs. Refresh merken: das KI-Lektorat prüft nur Erstveröffentlichungen
+  // (Bestandsartikel werden bei Template-Refreshes nicht erneut gegengelesen).
+  for (const a of newOnes) a.isNew = true;
   const newToPublish = newOnes.slice(0, budget);
   const deferred = newOnes.slice(budget);
   const toPublish = sortArticles([...alreadyLive, ...newToPublish]);
@@ -385,6 +399,9 @@ async function main() {
       continue;
     }
 
+    // Typografie-Reparatur: „…" / „…&quot; → „…“ (häufigster Entwurfs-Fehler).
+    html = normalizeGermanQuotesHtml(html);
+
     // Render-Guard: kaputtes HTML wird NIE geschrieben/veröffentlicht.
     const problems = auditRenderedHtml(html, { slug: a.meta.slug });
     if (problems.length) {
@@ -394,19 +411,44 @@ async function main() {
       continue;
     }
 
-    // Gold-Standard-Linter (CI/Stil): meldet redaktionelle Verstöße. Standard
-    // = nur melden (Rollout). Mit STANDARD_LINT_STRICT=1 blocken harte Fehler
-    // die Veröffentlichung (analog Render-Guard) — für den Scharf-Betrieb.
+    // Gold-Standard-Linter (CI/Stil/Konvertierungs-Reste): harte Fehler blocken
+    // die Veröffentlichung IMMER (analog Render-Guard). Der Artikel bleibt im
+    // Tracker „Freigegeben", die Fehler stehen im Log → in Notion korrigieren,
+    // der nächste Lauf nimmt ihn automatisch wieder mit.
     const lint = lintRenderedHtml(html, { meta: a.meta });
     const lintHard = hardErrors(lint);
     if (lint.length) {
       warn(`Gold-Standard: ${lintHard.length} Fehler, ${lint.length - lintHard.length} Warnungen — ${a.meta.slug}`);
       for (const f of lint) warn(`        • [${f.level}] ${f.code}: ${f.msg}`);
     }
-    if (STANDARD_LINT_STRICT && lintHard.length) {
+    if (lintHard.length && !STANDARD_LINT_OFF) {
       guardFailures.push(a.meta.slug);
-      warn(`Gold-Standard STRICT → NICHT veröffentlicht: ${a.meta.slug}`);
+      warn(`Gold-Standard → NICHT veröffentlicht: ${a.meta.slug}`);
       continue;
+    }
+
+    // KI-Lektorat (nur Erstveröffentlichungen): ein LLM liest den kompletten
+    // Artikel gegen — fremdsprachige Beispielsätze, Grammatik-Regeln, grobe
+    // Deutschfehler. Sichere Fehler ⇒ Artikel wird zurückgehalten. Schlägt
+    // der Prüf-Aufruf selbst fehl, wird ebenfalls zurückgehalten (lieber
+    // einen Lauf später als ungeprüft live). AI_LEKTORAT=0 schaltet ab.
+    if (a.isNew && !AI_LEKTORAT_OFF && !DRY_RUN) {
+      try {
+        const check = await aiLektorat(htmlToText(html), { title: a.title });
+        if (!check.ok) {
+          guardFailures.push(a.meta.slug);
+          warn(`KI-Lektorat → NICHT veröffentlicht (${check.errors.length} Fehler): ${a.meta.slug}`);
+          for (const e of check.errors) warn(`        • „${e.zitat}" → „${e.korrektur}" (${e.grund || ""})`);
+          continue;
+        }
+        log(`    ✓ KI-Lektorat ohne Befund: ${a.meta.slug}`);
+      } catch (e) {
+        guardFailures.push(a.meta.slug);
+        warn(`KI-Lektorat nicht durchführbar (${e.message}) → sicherheitshalber NICHT veröffentlicht: ${a.meta.slug} (Override: AI_LEKTORAT=0)`);
+        continue;
+      }
+    } else if (a.isNew && !DRY_RUN) {
+      warn(`KI-Lektorat übersprungen (AI_LEKTORAT=0): ${a.meta.slug}`);
     }
 
     const outDir = slugDir(a.meta.slug);

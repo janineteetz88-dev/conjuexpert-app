@@ -47,6 +47,9 @@ jobs:
       - name: Freigegeben → rendern + live + Notion aktualisieren
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          # KI-Lektorat neuer Artikel (Gate vor dem Livegang); ohne Key läuft
+          # es über den ConjuExpert-Worker als Fallback.
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           WRITEBACK: '1'
           REFRESH_ALL: ${{ inputs.refresh_all && '1' || '0' }}
         run: |
