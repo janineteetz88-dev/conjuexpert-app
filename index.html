@@ -3005,11 +3005,13 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
     .device::before, .device::after{ display:none !important; }
   }
   /* Desktop: dichteres Mockup — der Inhalt wird intern breiter/höher gelayoutet
-     (470px) und auf die gewohnte ~400px-Silhouette skaliert. Ergebnis: ~18%
+     (500px) und auf die gewohnte ~400px-Silhouette skaliert. Ergebnis: ~25%
      mehr Inhalt auf einen Blick, Schrift entsprechend kleiner — statt der
-     „riesigen" Handy-Ansicht auf großen Bildschirmen. */
-  @media (min-width:900px){
-    .phone{ zoom: .85; max-width: 470px !important; height: min(108dvh, 1035px) !important; }
+     „riesigen" Handy-Ansicht. Erkennung über das Eingabegerät (Maus statt
+     Touch), damit es auch in schmalen Desktop-Fenstern/bei Windows-Skalierung
+     greift — echte Handys (Touch) bleiben unberührt. */
+  @media (hover:hover) and (pointer:fine){
+    .phone{ zoom: .8; max-width: 500px !important; height: min(115dvh, 1100px) !important; }
   }
   /* untere Leiste: gleichmäßig + klar aktive Pille */
   .tabs-track{ gap:4px !important; }
@@ -3232,7 +3234,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-184"></script>
+<script defer src="/app.js?v=c-sand-185"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
