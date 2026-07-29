@@ -2136,7 +2136,8 @@ body {
 .wword { cursor: pointer; border-radius: 5px; padding: 1px 3px; transition: background 0.12s; text-decoration: underline; text-decoration-style: dotted; text-decoration-color: color-mix(in srgb, var(--lc, #a557ff) 55%, transparent); text-underline-offset: 3px; }
 .wword:hover { background: color-mix(in srgb, var(--lc, #a557ff) 12%, transparent); }
 .wword.open { background: color-mix(in srgb, var(--lc, #a557ff) 18%, transparent); }
-.wtrans { display: inline-flex; align-items: baseline; gap: 7px; font-size: 13.5px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 5px 13px; box-shadow: var(--shadow-sm); animation: fade 0.2s ease both; }
+/* Auf schmalen Screens umbrechen statt seitlich aus der Karte zu laufen */
+.wtrans { display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 7px; row-gap: 5px; max-width: 100%; box-sizing: border-box; font-size: 13.5px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 6px 13px; box-shadow: var(--shadow-sm); animation: fade 0.2s ease both; }
 .wtrans b { font-family: var(--font-display); font-weight: 700; color: var(--lc, var(--text)); font-size: 13.5px; }
 .wtrans-x { flex: 0 0 auto; border: 0; background: color-mix(in srgb, var(--muted) 16%, transparent); color: var(--muted); font-size: 12px; font-weight: 700; line-height: 1; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; padding: 0; margin-left: 3px; cursor: pointer; border-radius: 50%; align-self: center; }
 .wtrans-x:hover { color: var(--text); background: color-mix(in srgb, var(--muted) 28%, transparent); }
