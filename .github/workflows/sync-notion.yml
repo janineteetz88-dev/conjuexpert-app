@@ -19,6 +19,10 @@ on:
         description: "(ohne Wirkung — Writeback läuft jetzt automatisch bei jedem Lauf)"
         type: boolean
         default: false
+      skip_ai_lektorat:
+        description: "KI-Lektorat für diesen Lauf überspringen (nur für manuell geprüfte Artikel)"
+        type: boolean
+        default: false
 
 jobs:
   sync:
@@ -50,6 +54,8 @@ jobs:
           # KI-Lektorat neuer Artikel (Gate vor dem Livegang); ohne Key läuft
           # es über den ConjuExpert-Worker als Fallback.
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Manuell geprüfte Artikel: Lektorat per Dispatch-Häkchen überspringbar
+          AI_LEKTORAT: ${{ inputs.skip_ai_lektorat && '0' || '1' }}
           WRITEBACK: '1'
           REFRESH_ALL: ${{ inputs.refresh_all && '1' || '0' }}
         run: |
