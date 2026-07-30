@@ -18,9 +18,13 @@ export function normalizeGermanQuotesHtml(html) {
     .split(/(<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>)/g)
     .map((chunk) => {
       if (/^<(script|style)/i.test(chunk)) return chunk;
+      // &quot;-Variante MUSS zuerst laufen: sonst überspringt die "-Variante
+      // ein &quot; als normalen Text und läuft bis zum nächsten echten "
+      // durch — das kann das schließende Anführungszeichen eines HTML-
+      // Attributs selbst erwischen (siehe Regression vom 29.07.2026).
       return chunk
-        .replace(/„((?:[^„“"<]|<[^>]+>){1,400}?)"/g, "„$1“")
-        .replace(/„((?:[^„“<]|<[^>]+>){1,400}?)&quot;/g, "„$1“");
+        .replace(/„((?:[^„“<]|<[^>]+>){1,400}?)&quot;/g, "„$1“")
+        .replace(/„((?:[^„“"<]|<[^>]+>){1,400}?)"/g, "„$1“");
     })
     .join("");
 }
