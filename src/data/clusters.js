@@ -122,6 +122,7 @@ export const clusters = [
       { slug: "/blog/sterke-werkwoorden", title: "Sterke werkwoorden: die wichtigsten unregelmäßigen niederländischen Verben", live: true },
       { slug: "/blog/hebben-of-zijn", title: "hebben of zijn? Das niederländische Perfekt sicher bilden", live: true },
       { slug: "/blog/reflexive-verben-niederlaendisch", title: "Reflexive Verben im Niederländischen (zich wassen, zich voelen)", live: true },
+      { slug: "/blog/trennbare-verben-niederlaendisch", title: "Trennbare Verben im Niederländischen: das Bumerang-Präfix (opstaan, meenemen)", live: true },
     ],
   },
   {
