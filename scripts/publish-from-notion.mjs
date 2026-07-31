@@ -3,7 +3,8 @@
  * publish-from-notion.mjs  —  generischer, meta-block-getriebener Produktionspfad
  *
  * Ablauf (siehe Schritt-2-Spezifikation):
- *   1. Notion-Tracker-DB nach Status=="Freigegeben" abfragen.
+ *   1. Notion-Tracker-DB nach Publish-Status abfragen ("Freigegeben" sowie
+ *      "…zur Freigabe an J" — Auto-Publish, siehe PUBLISH_STATUSES).
  *   2. Sortieren: Nummer aufsteigend, dann Hubs vor Spokes innerhalb des Clusters.
  *   3. Pro Eintrag den verlinkten Entwurf (Feld "Entwurf (Notion)") laden.
  *   4. Meta-Block aus den führenden Draft-Blöcken parsen + validieren
@@ -93,6 +94,19 @@ const BLOG_INDEX_PATH = join(ROOT, "blog/index.html");
 
 const KEY = process.env.NOTION_API_KEY;
 
+// Auto-Publish (Janines Entscheidung vom 31.07.2026): Blogartikel gehen OHNE
+// manuelle Freigabe live — die Wächter (Render-Guard, Standard-Lint, KI-
+// Lektorat) übernehmen die Qualitätskontrolle. Die Pipeline holt daher auch
+// die "…zur Freigabe an J"-Status ab; "Freigegeben" bleibt als manueller Weg
+// bestehen. Zurückhalten kann Janine jederzeit über jeden anderen Status
+// ("… an Hans", "Wartet auf mich", "Backlog").
+const PUBLISH_STATUSES = [
+  "Freigegeben",
+  "1. Korrektur - zur Freigabe an J",
+  "2. Korrektur zur Freigabe an J",
+  "Update - zur Freigabe an J",
+];
+
 /* ─── kleine Logger ──────────────────────────────────────────────────────── */
 
 const log = (...a) => console.log(...a);
@@ -120,14 +134,8 @@ async function getFreigegebene() {
   // Template-/Render-Update auf ALLE Live-Artikel angewandt wird (idempotenter
   // Refresh, budget-frei; Writeback lässt "Veröffentlicht" unangetastet).
   const refreshAll = process.env.REFRESH_ALL === "1";
-  const statusFilter = refreshAll
-    ? {
-        or: [
-          { property: "Status", select: { equals: "Freigegeben" } },
-          { property: "Status", select: { equals: "Veröffentlicht" } },
-        ],
-      }
-    : { property: "Status", select: { equals: "Freigegeben" } };
+  const names = refreshAll ? [...PUBLISH_STATUSES, "Veröffentlicht"] : PUBLISH_STATUSES;
+  const statusFilter = { or: names.map((n) => ({ property: "Status", select: { equals: n } })) };
   const entries = [];
   let cursor;
   do {
@@ -280,7 +288,7 @@ async function main() {
     console.error(`❌  Notion-Abfrage fehlgeschlagen: ${e.message}`);
     process.exit(1);
   }
-  log(`📋  Freigegeben: ${tracker.length}`);
+  log(`📋  Veröffentlichungs-Kandidaten (Freigegeben/zur Freigabe an J): ${tracker.length}`);
 
   // 2) Pro Eintrag Entwurf laden + Meta parsen (PASS 1: sammeln/validieren).
   const articles = []; // { trackerPage, title, meta, contentBlocks, faqItems, nummer, draftId }
@@ -332,6 +340,7 @@ async function main() {
     articles.push({
       trackerPage: page,
       trackerTitle,
+      trackerStatus: readStatus(page),
       title,
       meta,
       contentBlocks,
@@ -432,7 +441,8 @@ async function main() {
     // Deutschfehler. Sichere Fehler ⇒ Artikel wird zurückgehalten. Schlägt
     // der Prüf-Aufruf selbst fehl, wird ebenfalls zurückgehalten (lieber
     // einen Lauf später als ungeprüft live). AI_LEKTORAT=0 schaltet ab.
-    if (a.isNew && !AI_LEKTORAT_OFF && !DRY_RUN) {
+    const lektoratNeeded = a.isNew || a.trackerStatus === "Update - zur Freigabe an J";
+    if (lektoratNeeded && !AI_LEKTORAT_OFF && !DRY_RUN) {
       try {
         const check = await aiLektorat(htmlForLektorat(html), { title: a.title });
         if (!check.ok) {
@@ -447,7 +457,7 @@ async function main() {
         warn(`KI-Lektorat nicht durchführbar (${e.message}) → sicherheitshalber NICHT veröffentlicht: ${a.meta.slug} (Override: AI_LEKTORAT=0)`);
         continue;
       }
-    } else if (a.isNew && !DRY_RUN) {
+    } else if (lektoratNeeded && !DRY_RUN) {
       warn(`KI-Lektorat übersprungen (AI_LEKTORAT=0): ${a.meta.slug}`);
     }
 
@@ -584,8 +594,8 @@ async function main() {
         log(`    ⏭  bereits Veröffentlicht: ${d.slug}`);
         continue;
       }
-      if (status !== "Freigegeben") {
-        warn(`Status ist "${status}" (nicht "Freigegeben") → kein Writeback: ${d.slug}`);
+      if (!PUBLISH_STATUSES.includes(status)) {
+        warn(`Status ist "${status}" (kein Publish-Status) → kein Writeback: ${d.slug}`);
         continue;
       }
       try {
