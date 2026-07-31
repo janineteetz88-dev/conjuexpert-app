@@ -7048,6 +7048,21 @@ function QuizView({
     }
   }
   const clozeTokenRef = useRef(0);
+  // Satz-Wächter (Wächter-Prinzip wie beim Blog-Lektorat): jeder KI-Satz wird
+  // von einem zweiten, eng geführten Prüf-Auftrag gegengelesen — Schwerpunkt
+  // Konjugation & Subjekt-Verb-Kongruenz in JEDEM Teilsatz ("Obwohl ihr im
+  // Meeting gähntet, bliebt ihr aufmerksam", nie "blieb ihr"). Rückgabe:
+  // "" = Satz ok · String = korrigierter Satz · null = Prüfung nicht möglich.
+  function verifySentence(tName, sentence, mustKeep) {
+    const keep = mustKeep ? ` The form "${mustKeep}" is the practised word and MUST remain exactly unchanged.` : "";
+    return window.aiComplete(`You are a strict ${tName} grammar checker. Check ONLY this single ${tName} sentence: "${sentence}". Focus hard on verb conjugation and subject-verb agreement in EVERY clause, including subordinate and main clauses (German example: with "ihr" the verb must be "bliebt"/"wart", NEVER "blieb"/"war"), plus case endings, adjective agreement and word order.${keep} If the sentence is 100% correct standard ${tName}, reply with exactly: OK. Otherwise reply with ONLY the corrected sentence — change as little as possible, no quotes, no explanation.`).then(r => {
+      let t = String(r || "").trim().replace(/^["'«»\s]+/, "").replace(/["'«»\s]+$/, "");
+      if (!t) return null;
+      if (/^ok[.! ]*$/i.test(t)) return "";
+      t = t.split("\n")[0].trim();
+      return t || null;
+    }).catch(() => null);
+  }
   function fetchCloze(qq, attempt, topicOverride) {
     attempt = attempt || 0;
     const curTopic = topicOverride || (topicsSel.length ? topicsSel[Math.floor(Math.random() * topicsSel.length)] : "random");
@@ -7085,7 +7100,7 @@ function QuizView({
       myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
       myWordTxt = myWord ? ` If it fits naturally, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence.` : "";
     }
-    const key = `kunju-cloze10-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
+    const key = `kunju-cloze11-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {
       setCloze(cached);
@@ -7193,13 +7208,39 @@ function QuizView({
         setCloze(null);
         return;
       }
-      const out = {
-        full,
-        gap,
-        native: j && j.n ? String(j.n).trim() : ""
+      // Zweiter, unabhängiger Grammatik-Check: nur geprüfte Sätze werden
+      // angezeigt UND gecacht — lieber kein Beispiel als ein falsches.
+      const buildGapFrom = txt => {
+        let g = txt, ok = false;
+        const esc2 = w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const mk = w => { try { return new RegExp("(?<![\\p{L}])" + esc2(w) + "(?![\\p{L}])", "iu"); } catch (x) { return new RegExp("\\b" + esc2(w) + "\\b", "i"); } };
+        const wl = splitLang && isCompound ? qq.answer.split(/\s+/) : [qq.answer];
+        wl.forEach(w => { const r = mk(w); if (r.test(g)) { g = g.replace(r, "…"); ok = true; } });
+        return ok ? g : null;
       };
-      persist(key, out);
-      setCloze(out);
+      verifySentence(targetName, full, qq.answer).then(v => {
+        if (clozeTokenRef.current !== myTok) return;
+        if (v === null) {
+          if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic); else setCloze(null);
+          return;
+        }
+        let full2 = full, gap2 = gap;
+        if (v && v !== full) {
+          const rebuilt = buildGapFrom(v);
+          if (!rebuilt) {
+            if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic); else setCloze(null);
+            return;
+          }
+          full2 = v; gap2 = rebuilt;
+        }
+        const out = {
+          full: full2,
+          gap: gap2,
+          native: j && j.n ? String(j.n).trim() : ""
+        };
+        persist(key, out);
+        setCloze(out);
+      });
     }).catch(() => {
       if (clozeTokenRef.current !== myTok) return;
       if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic);else setCloze(null);
@@ -7685,11 +7726,20 @@ function QuizView({
         return;
       }
       recentSentRef.current[rkey] = [j.n, ...recent].slice(0, 30);
-      setSent({
-        n: j.n,
-        t: j.t,
-        tenseLabel: oneTense,
-        tenseId: chosenId
+      // Satz-Wächter auch hier: die Zielsprach-Übersetzung gegenprüfen.
+      verifySentence(targetName, j.t).then(v => {
+        if (genTokenRef.current !== myTok) return;
+        if (v === null) {
+          if (attempt < 2) { genSentence(tc, attempt + 1, tid); return; }
+          setSent({ error: 1 });
+          return;
+        }
+        setSent({
+          n: j.n,
+          t: v || j.t,
+          tenseLabel: oneTense,
+          tenseId: chosenId
+        });
       });
     }).catch(() => {
       if (genTokenRef.current !== myTok) return;
