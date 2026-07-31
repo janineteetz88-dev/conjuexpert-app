@@ -208,23 +208,33 @@
     const { data, isIrr } = conjugateBase(base);
     // movement/change separable verbs take "sein"; otherwise inherit base aux
     const SEIN_BASES = ["stehen","kommen","gehen","fahren","reisen","fallen","laufen","fliegen","steigen","ziehen","springen","wachsen","treten","schwimmen"];
-    const auxOverride = (SEIN_BASES.indexOf(base) >= 0 && ["auf","an","ab","ein","aus","mit","zurück","vor","um","weg","los","her","hin","empor","hoch","weiter","heim"].indexOf(prefix) >= 0) ? "sein" : data.aux;
+    // Einzelne trennbare Verben, deren Hilfsverb von der Basis-Heuristik abweicht
+    // (z. B. "einschlafen" nimmt sein, obwohl "schlafen" selbst haben nimmt).
+    const SEP_AUX_OVERRIDE = { einschlafen: "sein" };
+    const auxOverride = SEP_AUX_OVERRIDE[verb] || ((SEIN_BASES.indexOf(base) >= 0 && ["auf","an","ab","ein","aus","mit","zurück","vor","um","weg","los","her","hin","empor","hoch","weiter","heim"].indexOf(prefix) >= 0) ? "sein" : data.aux);
     const suffix = (arr) => arr.map((f) => f === "—" ? "—" : `${f} … ${prefix}`); // finite verb + prefix at clause end
     const present = suffix(data.present);
     const praeteritum = suffix(data.praeteritum);
     const konjunktiv = suffix(data.konjunktiv);
+    // Konjunktiv I getrennt bauen (sonst hängt buildTenses ihn ungetrennt ans
+    // ganze Verb → "abholet" statt "holet … ab"). Endungen sind immer regelmäßig.
+    const k1s = base === "sein" ? null : (base.endsWith("en") ? base.slice(0, -2) : base.endsWith("n") ? base.slice(0, -1) : base);
+    const konjunktiv1Base = base === "sein"
+      ? ["sei", "seist", "sei", "seien", "seiet", "seien"]
+      : [k1s + "e", k1s + "est", k1s + "e", base, k1s + "et", base];
+    const konjunktiv1 = suffix(konjunktiv1Base);
     // imperative: "steh früh auf"
     const imperativ = data.imperativ.map((f) => f === "—" ? "—" : (f.indexOf(" ") >= 0 ? `${f.split(" ")[0]} … ${prefix} ${f.split(" ").slice(1).join(" ")}`.trim() : `${f} … ${prefix}`));
     // participle: prefix + (ge)...  "aufgestanden", "ausgebreitet"
     const partizip = prefix + data.partizip;
     const aux = data.aux;
-    const dataS = { present, praeteritum, konjunktiv, imperativ, partizip, aux: auxOverride };
+    const dataS = { present, praeteritum, konjunktiv, konjunktiv1, imperativ, partizip, aux: auxOverride };
     const tenses = buildTenses(verb, dataS);
     // future/conditional use the full infinitive (attached) → already correct via `verb`
     if (isIrr) {
       const regReg = regularData(base);
       if (regReg) {
-        const regS = { present: regReg.present.map((f) => `${f} … ${prefix}`), praeteritum: regReg.praeteritum.map((f) => `${f} … ${prefix}`), konjunktiv: regReg.konjunktiv.map((f) => `${f} … ${prefix}`), imperativ: imperativ, partizip: prefix + regReg.partizip, aux: regReg.aux };
+        const regS = { present: regReg.present.map((f) => `${f} … ${prefix}`), praeteritum: regReg.praeteritum.map((f) => `${f} … ${prefix}`), konjunktiv: regReg.konjunktiv.map((f) => `${f} … ${prefix}`), konjunktiv1: konjunktiv1, imperativ: imperativ, partizip: prefix + regReg.partizip, aux: regReg.aux };
         const regT = buildTenses(verb, regS);
         tenses.forEach((t, i) => { t.reg = regT[i].forms; });
       }
@@ -280,11 +290,14 @@
     const futur = werden.map(w => `${w} ${verb}`);
     const wuerde = ["würde","würdest","würde","würden","würdet","würden"];
     const konditional = wuerde.map(w => `${w} ${verb}`);
-    const partizip1 = (verb.endsWith("n") ? verb : verb + "n") + "d";
+    // Partizip I = Infinitiv + "d"; Ausnahmen „sein"→„seiend", „…tun"→„…tuend".
+    const partizip1 = verb === "sein" ? "seiend"
+      : verb.endsWith("tun") ? verb.slice(0, -1) + "end"
+      : (verb.endsWith("n") ? verb : verb + "n") + "d";
     const k1stem = verb.endsWith("en") ? verb.slice(0, -2) : verb.endsWith("n") ? verb.slice(0, -1) : verb;
-    const konjunktiv1 = verb === "sein"
+    const konjunktiv1 = data.konjunktiv1 || (verb === "sein"
       ? ["sei","seist","sei","seien","seiet","seien"]
-      : [k1stem + "e", k1stem + "est", k1stem + "e", verb, k1stem + "et", verb];
+      : [k1stem + "e", k1stem + "est", k1stem + "e", verb, k1stem + "et", verb]);
     return [
       { id: "present", label: "Präsens", forms: data.present },
       { id: "past", label: "Präteritum", forms: data.praeteritum },
@@ -7106,7 +7119,7 @@ function QuizView({
       myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
       myWordTxt = myWord ? ` If it fits naturally, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence.` : "";
     }
-    const key = `kunju-cloze14-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
+    const key = `kunju-cloze15-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {
       setCloze(cached);
