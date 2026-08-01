@@ -124,8 +124,8 @@
       const GRAVE_ELER = /^(acheter|racheter|geler|dégeler|congeler|surgeler|peler|modeler|remodeler|ciseler|démanteler|écarteler|marteler|haleter|fureter|crocheter)$/;
       let silentStem = null;
       const m1 = /^(.+)e([lt])$/.exec(stem);
-      const m2 = m1 ? null : /^(.+)e([bcdfgmnprsvz][rl]?)$/.exec(stem);
-      const m3 = /^(.+)é([bcdfgmnprstvz][rl]?|ch|gn|qu)$/.exec(stem);
+      const m2 = m1 ? null : /^(.+)e([bcdfgmnprsvz]|[bcdfgptv][rl])$/.exec(stem);
+      const m3 = /^(.+)é([bcdfgmnprstvz]|[bcdfgptv][rl]|ch|gn|qu)$/.exec(stem);
       if (m1) silentStem = GRAVE_ELER.test(verb) ? m1[1] + "è" + m1[2] : stem + m1[2];
       else if (m2) silentStem = m2[1] + "è" + m2[2];
       else if (m3) silentStem = m3[1] + "è" + m3[2];
