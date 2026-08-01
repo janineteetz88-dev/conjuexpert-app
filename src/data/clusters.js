@@ -122,6 +122,7 @@ export const clusters = [
       { slug: "/blog/sterke-werkwoorden", title: "Sterke werkwoorden: die wichtigsten unregelmäßigen niederländischen Verben", live: true },
       { slug: "/blog/hebben-of-zijn", title: "hebben of zijn? Das niederländische Perfekt sicher bilden", live: true },
       { slug: "/blog/reflexive-verben-niederlaendisch", title: "Reflexive Verben im Niederländischen (zich wassen, zich voelen)", live: true },
+      { slug: "/blog/trennbare-verben-niederlaendisch", title: "Trennbare Verben im Niederländischen: das Bumerang-Präfix (opstaan, meenemen)", live: true },
     ],
   },
   {
@@ -230,6 +231,7 @@ export const clusters = [
       { slug: "/blog/present-continuous-simple-present", title: "Present continuous vs. simple present: -ing oder nicht?", live: true },
       { slug: "/blog/present-perfect-vs-simple-past", title: "Present Perfect vs. Simple Past: der Klassiker für deutsche Englischlerner", live: true },
       { slug: "/blog/englisch-3-person-s", title: "Das -s in der 3. Person Singular (he works, she goes)", live: true },
+      { slug: "/blog/passiv-englisch", title: "Das englische Passiv (be + past participle) verständlich erklärt", live: true },
     ],
   },
   {
