@@ -214,7 +214,7 @@
     const SEIN_BASES = ["stehen","kommen","gehen","fahren","reisen","fallen","laufen","fliegen","steigen","ziehen","springen","wachsen","treten","schwimmen"];
     // Individual separable verbs whose aux differs from what the base-verb heuristic above would give
     // (e.g. "einschlafen" takes sein even though "schlafen" itself, and "ausschlafen", take haben).
-    const SEP_AUX_OVERRIDE = { einschlafen: "sein" };
+    const SEP_AUX_OVERRIDE = { einschlafen: "sein", anziehen: "haben" };
     const auxOverride = SEP_AUX_OVERRIDE[verb] || ((SEIN_BASES.indexOf(base) >= 0 && ["auf","an","ab","ein","aus","mit","zurück","vor","um","weg","los","her","hin","empor","hoch","weiter","heim"].indexOf(prefix) >= 0) ? "sein" : data.aux);
     const suffix = (arr) => arr.map((f) => f === "—" ? "—" : `${f} … ${prefix}`); // finite verb + prefix at clause end
     const present = suffix(data.present);
@@ -228,7 +228,8 @@
       : [k1s + "e", k1s + "est", k1s + "e", base, k1s + "et", base];
     const konjunktiv1 = suffix(konjunktiv1Base);
     // imperative: "steh früh auf"
-    const imperativ = data.imperativ.map((f) => f === "—" ? "—" : (f.indexOf(" ") >= 0 ? `${f.split(" ")[0]} … ${prefix} ${f.split(" ").slice(1).join(" ")}`.trim() : `${f} … ${prefix}`));
+    // "X wir"/"X Sie": Pronomen bleibt beim Verb, Präfix ans Ende ("holen wir … ab")
+    const imperativ = data.imperativ.map((f) => f === "—" ? "—" : `${f} … ${prefix}`);
     // participle: prefix + (ge)...  "aufgestanden", "ausgebreitet"
     const partizip = prefix + data.partizip;
     const aux = data.aux;
@@ -317,15 +318,38 @@
     ];
   }
 
+  // Reflexive Verben (sich freuen): Basisverb konjugieren, mich/dich/sich/uns/
+  // euch/sich hinter das finite Verb; Perfekt/Plusquamperfekt immer mit haben.
+  const DE_REFL = ["mich", "dich", "sich", "uns", "euch", "sich"];
+  const DE_R_SEIN_P = ["bin","bist","ist","sind","seid","sind"], DE_R_HAB_P = ["habe","hast","hat","haben","habt","haben"];
+  const DE_R_SEIN_T = ["war","warst","war","waren","wart","waren"], DE_R_HAB_T = ["hatte","hattest","hatte","hatten","hattet","hatten"];
+  function deReflexivize(tenses) {
+    const map = (t) => (f, i) => {
+      if (!f || f === "—") return f;
+      if (t.nonFinite) return "sich " + f;
+      if (t.id === "perfect" && f.startsWith(DE_R_SEIN_P[i] + " ")) f = DE_R_HAB_P[i] + f.slice(DE_R_SEIN_P[i].length);
+      if (t.id === "pluperfect" && f.startsWith(DE_R_SEIN_T[i] + " ")) f = DE_R_HAB_T[i] + f.slice(DE_R_SEIN_T[i].length);
+      if (t.id === "imperative") {
+        const sp0 = f.indexOf(" … ");
+        return sp0 < 0 ? f + " " + DE_REFL[i] : f.slice(0, sp0) + " " + DE_REFL[i] + f.slice(sp0);
+      }
+      const sp = f.indexOf(" ");
+      return sp < 0 ? f + " " + DE_REFL[i] : f.slice(0, sp) + " " + DE_REFL[i] + f.slice(sp);
+    };
+    tenses.forEach(t => { t.forms = t.forms.map(map(t)); if (t.reg) t.reg = t.reg.map(map(t)); });
+  }
   function conjugate(input) {
-    const verb = clean(input);
+    let verb = clean(input);
+    const refl = verb.startsWith("sich ");
+    if (refl) verb = verb.slice(5).trim();
     if (!verb) return null;
     const reg = regularData(verb);
     if (!reg) return { error: "German verbs end in -en or -n. Try e.g. machen, gehen, arbeiten." };
     const sep = splitSeparable(verb);
     if (sep) {
       const tenses = separableTenses(verb, sep.prefix, sep.base);
-      return { isIrregular: !!IRR[sep.base], infinitive: verb, pronouns: PRON, tenses, separable: true };
+      if (refl) deReflexivize(tenses);
+      return { isIrregular: !!IRR[sep.base], infinitive: refl ? "sich " + verb : verb, pronouns: PRON, tenses, separable: true };
     }
     const irr = IRR[verb];
     let data = reg, isIrr = false;
@@ -342,7 +366,8 @@
     }
     const tenses = buildTenses(verb, data);
     if (isIrr) { const regT = buildTenses(verb, reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
-    return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
+    if (refl) deReflexivize(tenses);
+    return { isIrregular: isIrr, infinitive: refl ? "sich " + verb : verb, pronouns: PRON, tenses };
   }
 
   window.CONJ.de = {

@@ -398,8 +398,21 @@
 
   const KEYS = ["present","preterite","imperfect","subjunctive","future","conditional","imperative","gerund","participle"];
 
+  // Reflexive Verben (levantarse): Basisverb konjugieren, me/te/se/nos/os/se
+  // voranstellen. Imperativ bleibt leer (angehängte Form bräuchte Akzentregeln).
+  const ES_REFL = ["me", "te", "se", "nos", "os", "se"];
+  function esReflexivize(tenses) {
+    const map = (t) => (f, i) => {
+      if (!f || f === "—") return f;
+      if (t.id === "imperative") return "—";
+      return ES_REFL[i] + " " + f;
+    };
+    tenses.forEach(t => { t.forms = t.forms.map(map(t)); if (t.reg) t.reg = t.reg.map(map(t)); });
+  }
   function conjugate(input) {
-    const verb = clean(input);
+    let verb = clean(input);
+    const refl = /(?:ar|er|ir|ír)se$/.test(verb);
+    if (refl) verb = verb.slice(0, -2);
     if (!verb) return null;
     const irr = IRR[verb];
     const reg = regularData(verb);
@@ -409,7 +422,8 @@
     else d = reg;
     const tenses = tensesFrom(d);
     if (isIrr && reg) { const regT = tensesFrom(reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
-    return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
+    if (refl) esReflexivize(tenses);
+    return { isIrregular: isIrr, infinitive: refl ? verb + "se" : verb, pronouns: PRON, tenses };
   }
 
   window.CONJ.es = {

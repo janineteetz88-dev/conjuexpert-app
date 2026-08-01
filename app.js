@@ -210,7 +210,7 @@
     const SEIN_BASES = ["stehen","kommen","gehen","fahren","reisen","fallen","laufen","fliegen","steigen","ziehen","springen","wachsen","treten","schwimmen"];
     // Einzelne trennbare Verben, deren Hilfsverb von der Basis-Heuristik abweicht
     // (z. B. "einschlafen" nimmt sein, obwohl "schlafen" selbst haben nimmt).
-    const SEP_AUX_OVERRIDE = { einschlafen: "sein" };
+    const SEP_AUX_OVERRIDE = { einschlafen: "sein", anziehen: "haben" };
     const auxOverride = SEP_AUX_OVERRIDE[verb] || ((SEIN_BASES.indexOf(base) >= 0 && ["auf","an","ab","ein","aus","mit","zurück","vor","um","weg","los","her","hin","empor","hoch","weiter","heim"].indexOf(prefix) >= 0) ? "sein" : data.aux);
     const suffix = (arr) => arr.map((f) => f === "—" ? "—" : `${f} … ${prefix}`); // finite verb + prefix at clause end
     const present = suffix(data.present);
@@ -223,8 +223,9 @@
       ? ["sei", "seist", "sei", "seien", "seiet", "seien"]
       : [k1s + "e", k1s + "est", k1s + "e", base, k1s + "et", base];
     const konjunktiv1 = suffix(konjunktiv1Base);
-    // imperative: "steh früh auf"
-    const imperativ = data.imperativ.map((f) => f === "—" ? "—" : (f.indexOf(" ") >= 0 ? `${f.split(" ")[0]} … ${prefix} ${f.split(" ").slice(1).join(" ")}`.trim() : `${f} … ${prefix}`));
+    // imperative: "steh früh auf"; bei "X wir"/"X Sie" bleibt das Pronomen beim
+    // Verb und der Präfix wandert ans Ende ("holen wir … ab", nicht "holen … ab wir")
+    const imperativ = data.imperativ.map((f) => f === "—" ? "—" : `${f} … ${prefix}`);
     // participle: prefix + (ge)...  "aufgestanden", "ausgebreitet"
     const partizip = prefix + data.partizip;
     const aux = data.aux;
@@ -312,15 +313,41 @@
     ];
   }
 
+  // Reflexive Verben (sich freuen): Basisverb konjugieren und mich/dich/sich/
+  // uns/euch/sich hinter das finite Verb setzen ("freue mich", "habe mich
+  // gefreut"). Vorher stand wörtlich "sich freue" in der Tabelle.
+  const DE_REFL = ["mich", "dich", "sich", "uns", "euch", "sich"];
+  // Reflexive Verben nehmen im Perfekt/Plusquamperfekt IMMER "haben"
+  // ("habe mich angezogen", auch wenn "umziehen" allein mit sein geht).
+  const DE_R_SEIN_P = ["bin","bist","ist","sind","seid","sind"], DE_R_HAB_P = ["habe","hast","hat","haben","habt","haben"];
+  const DE_R_SEIN_T = ["war","warst","war","waren","wart","waren"], DE_R_HAB_T = ["hatte","hattest","hatte","hatten","hattet","hatten"];
+  function deReflexivize(tenses) {
+    const map = (t) => (f, i) => {
+      if (!f || f === "—") return f;
+      if (t.nonFinite) return "sich " + f;
+      if (t.id === "perfect" && f.startsWith(DE_R_SEIN_P[i] + " ")) f = DE_R_HAB_P[i] + f.slice(DE_R_SEIN_P[i].length);
+      if (t.id === "pluperfect" && f.startsWith(DE_R_SEIN_T[i] + " ")) f = DE_R_HAB_T[i] + f.slice(DE_R_SEIN_T[i].length);
+      if (t.id === "imperative") {
+        const sp0 = f.indexOf(" … ");
+        return sp0 < 0 ? f + " " + DE_REFL[i] : f.slice(0, sp0) + " " + DE_REFL[i] + f.slice(sp0);
+      }
+      const sp = f.indexOf(" ");
+      return sp < 0 ? f + " " + DE_REFL[i] : f.slice(0, sp) + " " + DE_REFL[i] + f.slice(sp);
+    };
+    tenses.forEach(t => { t.forms = t.forms.map(map(t)); if (t.reg) t.reg = t.reg.map(map(t)); });
+  }
   function conjugate(input) {
-    const verb = clean(input);
+    let verb = clean(input);
+    const refl = verb.startsWith("sich ");
+    if (refl) verb = verb.slice(5).trim();
     if (!verb) return null;
     const reg = regularData(verb);
     if (!reg) return { error: "German verbs end in -en or -n. Try e.g. machen, gehen, arbeiten." };
     const sep = splitSeparable(verb);
     if (sep) {
       const tenses = separableTenses(verb, sep.prefix, sep.base);
-      return { isIrregular: !!IRR[sep.base], infinitive: verb, pronouns: PRON, tenses, separable: true };
+      if (refl) deReflexivize(tenses);
+      return { isIrregular: !!IRR[sep.base], infinitive: refl ? "sich " + verb : verb, pronouns: PRON, tenses, separable: true };
     }
     const irr = IRR[verb];
     let data = reg, isIrr = false;
@@ -337,7 +364,8 @@
     }
     const tenses = buildTenses(verb, data);
     if (isIrr) { const regT = buildTenses(verb, reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
-    return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
+    if (refl) deReflexivize(tenses);
+    return { isIrregular: isIrr, infinitive: refl ? "sich " + verb : verb, pronouns: PRON, tenses };
   }
 
   window.CONJ.de = {
@@ -905,8 +933,23 @@
 
   const KEYS = ["present","preterite","imperfect","subjunctive","future","conditional","imperative","gerund","participle"];
 
+  // Reflexive Verben (levantarse, ducharse): Basisverb konjugieren und me/te/
+  // se/nos/os/se voranstellen ("me levanto", "me he levantado"). Imperativ
+  // bleibt leer — die angehängte Form (levántate) braucht Akzentregeln, lieber
+  // keine Form als eine falsche.
+  const ES_REFL = ["me", "te", "se", "nos", "os", "se"];
+  function esReflexivize(tenses) {
+    const map = (t) => (f, i) => {
+      if (!f || f === "—") return f;
+      if (t.id === "imperative") return "—";
+      return ES_REFL[i] + " " + f;
+    };
+    tenses.forEach(t => { t.forms = t.forms.map(map(t)); if (t.reg) t.reg = t.reg.map(map(t)); });
+  }
   function conjugate(input) {
-    const verb = clean(input);
+    let verb = clean(input);
+    const refl = /(?:ar|er|ir|ír)se$/.test(verb);
+    if (refl) verb = verb.slice(0, -2);
     if (!verb) return null;
     const irr = IRR[verb];
     const reg = regularData(verb);
@@ -916,7 +959,8 @@
     else d = reg;
     const tenses = tensesFrom(d);
     if (isIrr && reg) { const regT = tensesFrom(reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
-    return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
+    if (refl) esReflexivize(tenses);
+    return { isIrregular: isIrr, infinitive: refl ? verb + "se" : verb, pronouns: PRON, tenses };
   }
 
   window.CONJ.es = {
@@ -1034,6 +1078,7 @@
     scheppen: { pastSg: "schiep", pastPl: "schiepen", participle: "geschapen", aux: "hebben" },
     slaan:    { presentFull: ["sla","slaat","slaat","slaan","slaan","slaan"], pastSg: "sloeg", pastPl: "sloegen", participle: "geslagen", aux: "hebben", imp: "sla" },
     duiken:   { pastSg: "dook", pastPl: "doken", participle: "gedoken", aux: "hebben" },
+    wassen:   { pastSg: "waste", pastPl: "wasten", participle: "gewassen", aux: "hebben" },
     spuiten:  { pastSg: "spoot", pastPl: "spoten", participle: "gespoten", aux: "hebben" }
   });
   // inseparable-prefixed strong verbs derived from a base
@@ -1098,7 +1143,9 @@
     const { data, isIrr } = nlBaseData(base);
     const aux = (NL_SEIN_BASE.indexOf(base) >= 0) ? "zijn" : data.aux;
     const suf = (arr) => arr.map((f) => f === "—" ? "—" : `${f} … ${prefix}`);
-    const imp = data.imperative.map((f) => f === "—" ? "—" : (f.indexOf(" ") >= 0 ? f.replace("laten we " + base, "laten we " + verb) : `${f} … ${prefix}`));
+    // "laten we opstaan" bleibt ganz; alle anderen Formen (auch "sta u")
+    // bekommen den Präfix ans Ende ("sta u … op").
+    const imp = data.imperative.map((f) => f === "—" ? "—" : (f.indexOf("laten we ") === 0 ? f.replace("laten we " + base, "laten we " + verb) : `${f} … ${prefix}`));
     const part = data.participle === "—" ? "—" : prefix + data.participle; // opgestaan, meegenomen
     const dataS = { present: suf(data.present), past: suf(data.past), subjunctive: suf(data.subjunctive), imperative: imp, participle: part, aux };
     const tenses = buildTenses(verb, dataS);
@@ -1124,7 +1171,11 @@
 
   function regularData(verb) {
     const stem = stemOf(verb);
-    const lastSound = /ch$/.test(stem) ? "ch" : stem.slice(-1);
+    // 't kofschip gilt für den Konsonanten des INFINITIV-Stamms: reizen/leven
+    // haben stimmhaftes z/v (→ -de/-d), obwohl der geschriebene Stamm auf s/f
+    // endet. Sonst entstünde "reiste/geleeft" statt korrekt "reisde/geleefd".
+    const rawStem = verb.endsWith("en") ? verb.slice(0, -2) : verb.replace(/n$/, "");
+    const lastSound = /ch$/.test(rawStem) ? "ch" : rawStem.slice(-1);
     const voiceless = KOFSCHIP.includes(lastSound);
     const t = voiceless ? "t" : "d";
     const pastSing = stem + t + "e";
@@ -1135,7 +1186,9 @@
       past: [pastSing, pastSing, pastSing, pastPlur, pastPlur, pastPlur],
       subjunctive: [verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb, verb, verb], // Aanvoegende wijs = Infinitiv minus -n (hebben→hebbe)
       imperative: ["—", stem, stem, "laten we " + verb, stT, stT + " u"],
-      participle: "ge" + stem + t,
+      // Unbetonte Präfixe (be-, ge-, er-, her-, ont-, ver-) bekommen KEIN ge-:
+      // geloven→geloofd, verhuizen→verhuisd (nicht "gegelooft"/"geverhuist").
+      participle: (/^(be|ge|er|her|ont|ver)/.test(verb) ? "" : "ge") + (stem.endsWith(t) ? stem : stem + t),
       aux: "hebben"
     };
   }
@@ -1153,7 +1206,7 @@
     const future = zullen.map(z => `${z} ${verb}`);
     const zou = ["zou","zou","zou","zouden","zouden","zouden"];
     const conditional = zou.map(z => `${z} ${verb}`);
-    const gerund = verb + "d";
+    const gerund = verb === "zijn" ? "zijnde" : verb + "d";
     return [
       { id: "present", label: "Tegenwoordige tijd", forms: data.present },
       { id: "past", label: "Verleden tijd", forms: data.past },
@@ -1167,8 +1220,24 @@
     ];
   }
 
+  // Reflexive Verben (zich wassen, zich herinneren): Basisverb konjugieren und
+  // me/je/zich/ons/je/zich hinter das finite Verb setzen ("was me",
+  // "heb me gewassen").
+  const NL_REFL = ["me", "je", "zich", "ons", "je", "zich"];
+  function nlReflexivize(tenses) {
+    const map = (t) => (f, i) => {
+      if (!f || f === "—") return f;
+      if (t.nonFinite) return "zich " + f;
+      if (t.id === "imperative") return /^laten we /.test(f) ? f + " ons" : f + " " + NL_REFL[i];
+      const sp = f.indexOf(" ");
+      return sp < 0 ? f + " " + NL_REFL[i] : f.slice(0, sp) + " " + NL_REFL[i] + f.slice(sp);
+    };
+    tenses.forEach(t => { t.forms = t.forms.map(map(t)); if (t.reg) t.reg = t.reg.map(map(t)); });
+  }
   function conjugate(input) {
-    const verb = clean(input);
+    let verb = clean(input);
+    const refl = verb.startsWith("zich ");
+    if (refl) verb = verb.slice(5).trim();
     if (!verb) return null;
     if (!verb.endsWith("en") && !verb.endsWith("n")) {
       return { error: "Dutch verbs end in -en. Try e.g. werken, maken, lopen." };
@@ -1177,7 +1246,8 @@
     const sep = nlSplit(verb);
     if (sep) {
       const tenses = nlSeparableTenses(verb, sep.prefix, sep.base);
-      return { isIrregular: !!IRR[sep.base], infinitive: verb, pronouns: PRON, tenses, separable: true };
+      if (refl) nlReflexivize(tenses);
+      return { isIrregular: !!IRR[sep.base], infinitive: refl ? "zich " + verb : verb, pronouns: PRON, tenses, separable: true };
     }
     const irr = IRR[verb];
     let data = reg, isIrr = false;
@@ -1195,7 +1265,8 @@
     }
     const tenses = buildTenses(verb, data);
     if (isIrr) { const regT = buildTenses(verb, reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
-    return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
+    if (refl) nlReflexivize(tenses);
+    return { isIrregular: isIrr, infinitive: refl ? "zich " + verb : verb, pronouns: PRON, tenses };
   }
 
   window.CONJ.nl = {
@@ -1327,12 +1398,27 @@
       const stem = verb.slice(0, -2);
       const isG = /g$/.test(stem), isC = /c$/.test(stem);
       const sft = (e) => { if (/^[ao]/.test(e)) { if (isG) return stem + "e" + e; if (isC) return stem.slice(0, -1) + "ç" + e; } return stem + e; };
+      // Stammwechsel vor STUMMER Endung (-e, -es, -ent): lever→lève, espérer→
+      // espère, régler→règle; -eler/-eter verdoppeln (appeler→appelle, jeter→
+      // jette) außer der è-Gruppe (acheter→achète, geler→gèle, …).
+      const GRAVE_ELER = /^(acheter|racheter|geler|dégeler|congeler|surgeler|peler|modeler|remodeler|ciseler|démanteler|écarteler|marteler|haleter|fureter|crocheter)$/;
+      let silentStem = null;
+      const m1 = /^(.+)e([lt])$/.exec(stem);
+      const m2 = m1 ? null : /^(.+)e([bcdfgmnprsvz][rl]?)$/.exec(stem);
+      const m3 = /^(.+)é([bcdfgmnprstvz][rl]?|ch|gn|qu)$/.exec(stem);
+      if (m1) silentStem = GRAVE_ELER.test(verb) ? m1[1] + "è" + m1[2] : stem + m1[2];
+      else if (m2) silentStem = m2[1] + "è" + m2[2];
+      else if (m3) silentStem = m3[1] + "è" + m3[2];
+      const sil = (e) => (silentStem || stem) + e;
+      // Futur/Conditionnel: e-Gruppe behält den gewechselten Stamm (lèverai,
+      // appellerai, achèterai); é-Gruppe behält é (espérerai — traditionell).
+      const futStem = (silentStem && !m3) ? silentStem + "er" : verb;
       return {
-        present: [sft("e"), sft("es"), sft("e"), sft("ons"), sft("ez"), sft("ent")],
+        present: [sil("e"), sil("es"), sil("e"), sft("ons"), sft("ez"), sil("ent")],
         imparfait: E_IMPARF.map(e => sft(e)),
-        subj: [stem + "e", stem + "es", stem + "e", stem + "ions", stem + "iez", stem + "ent"],
+        subj: [sil("e"), sil("es"), sil("e"), stem + "ions", stem + "iez", sil("ent")],
         ppr: sft("ant"),
-        futStem: verb, pp: stem + "é", aux: "avoir", erType: true
+        futStem: futStem, pp: stem + "é", aux: "avoir", erType: true
       };
     }
     if (verb.endsWith("ir")) {
@@ -1366,15 +1452,18 @@
     const conditionnel = E_COND.map(e => data.futStem + e);
     let subj = data.subj;
     if (!subj) { const ss = present[5].replace(/ent$/, ""); subj = [ss + "e", ss + "es", ss + "e", impStem + "ions", impStem + "iez", ss + "ent"]; }
-    const pc = auxPresent(data.aux).map(a => data.pp === "—" ? "—" : `${a} ${data.pp}`);
+    // Mit être kongruiert das Participe: Plural bekommt -s (sommes allés,
+    // sont venus) — ohne war "nous sommes allé" schlicht falsch.
+    const ppAt = (i) => (data.aux === "être" && i >= 3 && !/s$/.test(data.pp)) ? data.pp + "s" : data.pp;
+    const pc = auxPresent(data.aux).map((a, i) => data.pp === "—" ? "—" : `${a} ${ppAt(i)}`);
     const auxImp = data.aux === "être"
       ? ["étais","étais","était","étions","étiez","étaient"]
       : ["avais","avais","avait","avions","aviez","avaient"];
-    const pqp = auxImp.map(a => data.pp === "—" ? "—" : `${a} ${data.pp}`);
+    const pqp = auxImp.map((a, i) => data.pp === "—" ? "—" : `${a} ${ppAt(i)}`);
     const auxCond = data.aux === "être"
       ? ["serais","serais","serait","serions","seriez","seraient"]
       : ["aurais","aurais","aurait","aurions","auriez","auraient"];
-    const condPasse = auxCond.map(a => data.pp === "—" ? "—" : `${a} ${data.pp}`);
+    const condPasse = auxCond.map((a, i) => data.pp === "—" ? "—" : `${a} ${ppAt(i)}`);
     const ppr = data.ppr || (impStem + "ant");
     let imp = data.imp;
     if (!imp) { let tu = present[1]; if (data.erType) tu = tu.replace(/s$/, ""); imp = ["—", tu, "—", present[3], present[4], "—"]; }
@@ -1392,7 +1481,25 @@
     ];
   }
 
+  // Reflexive Verben (se lever, s'appeler): Basisverb konjugieren, Pronomen
+  // me/te/se/nous/vous/se (mit Elision) voranstellen, zusammengesetzte Zeiten
+  // MIT être. Vorher wurde das "se" still verworfen → "ai levé" statt
+  // "me suis levé".
+  const FR_REFL = ["me", "te", "se", "nous", "vous", "se"];
+  const frVowel = (w) => /^[aeiouâàêéèîôûh]/i.test(w);
+  function frReflexivize(tenses) {
+    const map = (t) => (f, i) => {
+      if (!f || f === "—") return f;
+      if (t.id === "imperative") return i === 1 ? f + "-toi" : i === 3 ? f + "-nous" : i === 4 ? f + "-vous" : "—";
+      if (t.nonFinite) return (frVowel(f) ? "s'" : "se ") + f;
+      const p = FR_REFL[i];
+      return (p.length === 2 && frVowel(f) ? p[0] + "'" : p + " ") + f;
+    };
+    tenses.forEach(t => { t.forms = t.forms.map(map(t)); if (t.reg) t.reg = t.reg.map(map(t)); });
+  }
   function conjugate(input) {
+    const raw = (input || "").trim().toLowerCase();
+    const refl = raw.startsWith("se ") || raw.startsWith("s'");
     const verb = clean(input);
     if (!verb) return null;
     const reg = regularData(verb);
@@ -1400,9 +1507,11 @@
     const irr = IRR[verb];
     let data = reg, isIrr = false;
     if (irr) { isIrr = true; data = Object.assign({}, irr); }
+    if (refl) data = Object.assign({}, data, { aux: "être" });
     const tenses = build(verb, data);
-    if (isIrr) { const regT = build(verb, reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
-    return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
+    if (isIrr) { const regT = build(verb, refl ? Object.assign({}, reg, { aux: "être" }) : reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
+    if (refl) frReflexivize(tenses);
+    return { isIrregular: isIrr, infinitive: refl ? (frVowel(verb) ? "s'" : "se ") + verb : verb, pronouns: PRON, tenses };
   }
 
   window.CONJ.fr = {

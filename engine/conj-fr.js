@@ -118,12 +118,27 @@
       const stem = verb.slice(0, -2);
       const isG = /g$/.test(stem), isC = /c$/.test(stem);
       const sft = (e) => { if (/^[ao]/.test(e)) { if (isG) return stem + "e" + e; if (isC) return stem.slice(0, -1) + "ç" + e; } return stem + e; };
+      // Stammwechsel vor STUMMER Endung (-e, -es, -ent): lever→lève, espérer→
+      // espère, régler→règle; -eler/-eter verdoppeln (appeler→appelle) außer
+      // der è-Gruppe (acheter→achète, geler→gèle, …).
+      const GRAVE_ELER = /^(acheter|racheter|geler|dégeler|congeler|surgeler|peler|modeler|remodeler|ciseler|démanteler|écarteler|marteler|haleter|fureter|crocheter)$/;
+      let silentStem = null;
+      const m1 = /^(.+)e([lt])$/.exec(stem);
+      const m2 = m1 ? null : /^(.+)e([bcdfgmnprsvz][rl]?)$/.exec(stem);
+      const m3 = /^(.+)é([bcdfgmnprstvz][rl]?|ch|gn|qu)$/.exec(stem);
+      if (m1) silentStem = GRAVE_ELER.test(verb) ? m1[1] + "è" + m1[2] : stem + m1[2];
+      else if (m2) silentStem = m2[1] + "è" + m2[2];
+      else if (m3) silentStem = m3[1] + "è" + m3[2];
+      const sil = (e) => (silentStem || stem) + e;
+      // Futur/Conditionnel: e-Gruppe behält den gewechselten Stamm (lèverai,
+      // appellerai); é-Gruppe behält é (espérerai — traditionell).
+      const futStem = (silentStem && !m3) ? silentStem + "er" : verb;
       return {
-        present: [sft("e"), sft("es"), sft("e"), sft("ons"), sft("ez"), sft("ent")],
+        present: [sil("e"), sil("es"), sil("e"), sft("ons"), sft("ez"), sil("ent")],
         imparfait: E_IMPARF.map(e => sft(e)),
-        subj: [stem + "e", stem + "es", stem + "e", stem + "ions", stem + "iez", stem + "ent"],
+        subj: [sil("e"), sil("es"), sil("e"), stem + "ions", stem + "iez", sil("ent")],
         ppr: sft("ant"),
-        futStem: verb, pp: stem + "é", aux: "avoir", erType: true
+        futStem: futStem, pp: stem + "é", aux: "avoir", erType: true
       };
     }
     if (verb.endsWith("ir")) {
@@ -157,15 +172,17 @@
     const conditionnel = E_COND.map(e => data.futStem + e);
     let subj = data.subj;
     if (!subj) { const ss = present[5].replace(/ent$/, ""); subj = [ss + "e", ss + "es", ss + "e", impStem + "ions", impStem + "iez", ss + "ent"]; }
-    const pc = auxPresent(data.aux).map(a => data.pp === "—" ? "—" : `${a} ${data.pp}`);
+    // Mit être kongruiert das Participe: Plural bekommt -s (sommes allés).
+    const ppAt = (i) => (data.aux === "être" && i >= 3 && !/s$/.test(data.pp)) ? data.pp + "s" : data.pp;
+    const pc = auxPresent(data.aux).map((a, i) => data.pp === "—" ? "—" : `${a} ${ppAt(i)}`);
     const auxImp = data.aux === "être"
       ? ["étais","étais","était","étions","étiez","étaient"]
       : ["avais","avais","avait","avions","aviez","avaient"];
-    const pqp = auxImp.map(a => data.pp === "—" ? "—" : `${a} ${data.pp}`);
+    const pqp = auxImp.map((a, i) => data.pp === "—" ? "—" : `${a} ${ppAt(i)}`);
     const auxCond = data.aux === "être"
       ? ["serais","serais","serait","serions","seriez","seraient"]
       : ["aurais","aurais","aurait","aurions","auriez","auraient"];
-    const condPasse = auxCond.map(a => data.pp === "—" ? "—" : `${a} ${data.pp}`);
+    const condPasse = auxCond.map((a, i) => data.pp === "—" ? "—" : `${a} ${ppAt(i)}`);
     const ppr = data.ppr || (impStem + "ant");
     let imp = data.imp;
     if (!imp) { let tu = present[1]; if (data.erType) tu = tu.replace(/s$/, ""); imp = ["—", tu, "—", present[3], present[4], "—"]; }
@@ -186,7 +203,23 @@
   // Otherwise-regular verbs of movement/state that take être (not avoir) in compound tenses.
   const FR_ETRE_ONLY = ["monter", "descendre", "rester", "arriver", "entrer"];
 
+  // Reflexive Verben (se lever, s'appeler): Pronomen me/te/se/nous/vous/se
+  // (mit Elision) voranstellen, zusammengesetzte Zeiten MIT être.
+  const FR_REFL = ["me", "te", "se", "nous", "vous", "se"];
+  const frVowel = (w) => /^[aeiouâàêéèîôûh]/i.test(w);
+  function frReflexivize(tenses) {
+    const map = (t) => (f, i) => {
+      if (!f || f === "—") return f;
+      if (t.id === "imperative") return i === 1 ? f + "-toi" : i === 3 ? f + "-nous" : i === 4 ? f + "-vous" : "—";
+      if (t.nonFinite) return (frVowel(f) ? "s'" : "se ") + f;
+      const p = FR_REFL[i];
+      return (p.length === 2 && frVowel(f) ? p[0] + "'" : p + " ") + f;
+    };
+    tenses.forEach(t => { t.forms = t.forms.map(map(t)); if (t.reg) t.reg = t.reg.map(map(t)); });
+  }
   function conjugate(input) {
+    const raw = (input || "").trim().toLowerCase();
+    const refl = raw.startsWith("se ") || raw.startsWith("s'");
     const verb = clean(input);
     if (!verb) return null;
     const reg = regularData(verb);
@@ -195,9 +228,11 @@
     let data = reg, isIrr = false;
     if (irr) { isIrr = true; data = Object.assign({}, irr); }
     else if (FR_ETRE_ONLY.includes(verb)) { isIrr = true; data = Object.assign({}, reg, { aux: "être" }); }
+    if (refl) data = Object.assign({}, data, { aux: "être" });
     const tenses = build(verb, data);
-    if (isIrr) { const regT = build(verb, reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
-    return { isIrregular: isIrr, infinitive: verb, pronouns: PRON, tenses };
+    if (isIrr) { const regT = build(verb, refl ? Object.assign({}, reg, { aux: "être" }) : reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
+    if (refl) frReflexivize(tenses);
+    return { isIrregular: isIrr, infinitive: refl ? (frVowel(verb) ? "s'" : "se ") + verb : verb, pronouns: PRON, tenses };
   }
 
   window.CONJ.fr = {
