@@ -1114,6 +1114,24 @@
   // Separable prefixes (scheidbare werkwoorden): conjugate the base, then move the prefix to the end.
   const NL_SEP = ["aan","af","bij","in","mee","na","om","onder","op","over","toe","uit","voor","weg","terug","door","samen","neer","tegen","vast","los","klaar","thuis","open","dicht","achteruit","vooruit","binnen","buiten","mis"];
   const NL_SEIN_BASE = ["staan","komen","gaan","lopen","vallen","stijgen","springen","rijden","vliegen","groeien"];
+
+  // Regular verbs with a genuine unstressed prefix (be-/ge-/er-/her-/ont-/ver-) take NO ge- in the
+  // participle: geloven→geloofd, verhuizen→verhuisd. This must be an explicit list, not a string test
+  // on the verb itself — many regular verbs merely start with the same letters without being prefixed
+  // (bellen→gebeld not "beld", verven→geverfd not "verfd", erven→geërfd not "erfd", geven→gegeven).
+  const NL_UNSTRESSED_PREFIX_VERBS = [
+    "beantwoorden", "bedanken", "bedoelen", "bedreigen", "begroeten", "beloven", "bepalen",
+    "behandelen", "bereiden", "beschermen", "beschouwen", "bestellen", "bestuderen", "betalen",
+    "betekenen", "betwijfelen", "bewaren",
+    "geloven", "gebeuren", "gebruiken", "gedogen",
+    "herhalen", "herinneren", "herkennen", "herstellen",
+    "ontdekken", "ontmoeten", "ontspannen", "ontwikkelen",
+    "verbeteren", "verbranden", "verdedigen", "verdienen", "verduidelijken", "veranderen",
+    "vergroten", "verhogen", "verhuizen", "verklaren", "verkleinen", "verlagen",
+    "vermenigvuldigen", "verminderen", "vernieuwen", "veroorzaken", "verrassen", "versieren",
+    "verspreiden", "vertalen", "vertellen", "vertragen", "vertrouwen", "verwachten",
+    "verwarmen", "verwennen", "verzamelen", "verzekeren", "verzorgen"
+  ];
   function nlSplit(verb) {
     for (const p of NL_SEP) {
       if (verb.length > p.length + 2 && verb.startsWith(p)) {
@@ -1186,9 +1204,7 @@
       past: [pastSing, pastSing, pastSing, pastPlur, pastPlur, pastPlur],
       subjunctive: [verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb, verb, verb], // Aanvoegende wijs = Infinitiv minus -n (hebben→hebbe)
       imperative: ["—", stem, stem, "laten we " + verb, stT, stT + " u"],
-      // Unbetonte Präfixe (be-, ge-, er-, her-, ont-, ver-) bekommen KEIN ge-:
-      // geloven→geloofd, verhuizen→verhuisd (nicht "gegelooft"/"geverhuist").
-      participle: (/^(be|ge|er|her|ont|ver)/.test(verb) ? "" : "ge") + (stem.endsWith(t) ? stem : stem + t),
+      participle: (NL_UNSTRESSED_PREFIX_VERBS.includes(verb) ? "" : "ge") + (stem.endsWith(t) ? stem : stem + t),
       aux: "hebben"
     };
   }
