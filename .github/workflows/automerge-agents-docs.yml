@@ -1,0 +1,47 @@
+name: Automerge – reine .agents/*.md Doku-PRs
+
+# Aktiviert Auto-Merge für PRs, die AUSSCHLIESSLICH Top-Level-Dateien unter
+# .agents/*.md ändern (kein Code, kein Produkt-Repo). Grund: Reine Doku-Commits
+# (z.B. .agents/product-marketing.md) landeten sonst strukturell nie automatisch
+# in main, solange niemand manuell einen PR öffnet und mergt.
+#
+# Betrifft NICHT Produkt-Code oder den Blog-Publish-Pfad — dort bleibt das
+# Freigabe-Gate (nur Janine merged) unangetastet.
+#
+# Dev-Auftrag: Notion „Aufgaben & Entscheidungen" — Automerge-Pfad für reine
+# .agents/*.md-Doku-Änderungen einrichten.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge-docs-only:
+    if: github.event.pull_request.base.ref == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Geänderte Dateien prüfen
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const files = await github.paginate(
+              github.rest.pulls.listFiles,
+              { owner: context.repo.owner, repo: context.repo.repo, pull_number: context.payload.pull_request.number }
+            );
+            const isDocsOnly = files.length > 0 && files.every(f => /^\.agents\/[^/]+\.md$/.test(f.filename));
+            core.info(`Geänderte Dateien: ${files.map(f => f.filename).join(', ')}`);
+            core.info(`docs_only=${isDocsOnly}`);
+            core.setOutput('docs_only', String(isDocsOnly));
+
+      - name: Auto-Merge aktivieren
+        if: steps.check.outputs.docs_only == 'true'
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
