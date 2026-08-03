@@ -7188,10 +7188,11 @@ function QuizView({
   // "" = Satz ok · String = korrigierter Satz · null = Prüfung nicht möglich.
   function verifySentence(tName, sentence, mustKeep) {
     const keep = mustKeep ? ` The form "${mustKeep}" is the practised word and MUST remain exactly unchanged.` : "";
-    return window.aiComplete(`You are a strict ${tName} grammar checker. Check ONLY this single ${tName} sentence: "${sentence}". Focus hard on verb conjugation and subject-verb agreement in EVERY clause, including subordinate and main clauses (German example: with "ihr" the verb must be "bliebt"/"wart", NEVER "blieb"/"war"), plus case endings, adjective agreement and word order.${langRules(lang)}${keep} If the sentence is 100% correct standard ${tName}, reply with exactly: OK. Otherwise reply with ONLY the corrected sentence — change as little as possible, no quotes, no explanation.`).then(r => {
+    return window.aiComplete(`You are a strict ${tName} grammar AND common-sense checker. Check ONLY this single ${tName} sentence: "${sentence}". First: verb conjugation and subject-verb agreement in EVERY clause, including subordinate and main clauses (German example: with "ihr" the verb must be "bliebt"/"wart", NEVER "blieb"/"war"), plus case endings, adjective agreement and word order.${langRules(lang)} Second — just as important: the sentence must make real-world SENSE. If it is grammatically fine but semantically absurd (drinking a building, wearing a soup, a question no native speaker would ever ask), it is WRONG: fix it by swapping the absurd word(s) for natural everyday ones. Would a native speaker say exactly this sentence without smiling? If not, fix it.${keep} If the sentence is 100% correct AND natural, reply with exactly: OK. If you can fix it, reply with ONLY the corrected sentence — change as little as possible, no quotes, no explanation. If it cannot be fixed while keeping the required form, reply with exactly: BAD.`).then(r => {
       let t = String(r || "").trim().replace(/^["'«»\s]+/, "").replace(/["'«»\s]+$/, "");
       if (!t) return null;
       if (/^ok[.! ]*$/i.test(t)) return "";
+      if (/^bad[.! ]*$/i.test(t)) return null;
       t = t.split("\n")[0].trim();
       return t || null;
     }).catch(() => null);
@@ -7227,13 +7228,13 @@ function QuizView({
     let myWord = "", myWordTxt = "";
     if (catWords.length) {
       myWord = catWords[Math.floor(Math.random() * catWords.length)];
-      myWordTxt = ` It MUST also naturally include the learner's saved ${targetName} word "${myWord}".`;
+      myWordTxt = ` Try to also include the learner's saved ${targetName} word "${myWord}" — but ONLY if the result makes complete real-world sense with this verb and sounds like something a native speaker would actually say. If the word does not fit this verb naturally (you cannot drink a building, wear a soup, …), DO NOT use the word at all — a plain natural sentence without it is ALWAYS better than an absurd one with it.`;
     } else {
       const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
       myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
-      myWordTxt = myWord ? ` If it fits naturally, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence.` : "";
+      myWordTxt = myWord ? ` If — and ONLY if — it fits completely naturally with this verb, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence; otherwise silently leave it out.` : "";
     }
-    const key = `kunju-cloze16-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
+    const key = `kunju-cloze17-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {
       setCloze(cached);
