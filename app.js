@@ -7197,6 +7197,17 @@ function QuizView({
       return t || null;
     }).catch(() => null);
   }
+  // Zweiter, unabhängiger SINN-Richter (nur Urteil, keine Reparatur — ein
+  // reiner Ja/Nein-Richter ist strenger als ein Prüfer, der retten will).
+  // true = gut, false/null = durchgefallen (im Zweifel KEIN Beispiel zeigen).
+  function verifySense(tName, sentence) {
+    return window.aiComplete(`You are a native ${tName} speaker reading ONE sentence: "${sentence}". Think about what it LITERALLY says. Judge strictly: Is this something a real person could plausibly say in everyday life — sensible meaning, no absurd combinations (drinking a building, setting a topic on fire, ordering a joke), every pronoun/clitic with a sensible referent, natural wording rather than a stitched-together exercise sentence? Reply with EXACTLY one letter and nothing else: G if it is fine, B if anything is off.`).then(r => {
+      const t = String(r || "").trim();
+      if (/^g\b/i.test(t)) return true;
+      if (/^b\b/i.test(t)) return false;
+      return null;
+    }).catch(() => null);
+  }
   function fetchCloze(qq, attempt, topicOverride) {
     attempt = attempt || 0;
     const curTopic = topicOverride || (topicsSel.length ? topicsSel[Math.floor(Math.random() * topicsSel.length)] : "random");
@@ -7241,7 +7252,7 @@ function QuizView({
     if (!myWord && skill === "advanced" && Math.random() < 0.35) {
       advConn = ` Make it a more complex sentence that naturally uses a subordinating connector (e.g. German: obwohl/trotzdem/damit/während/sodass; Spanish: aunque/a pesar de que/para que; French: bien que/quoique/afin que/pourtant; Dutch: hoewel/zodat/terwijl), like "Trotz der Umstände hielten sie durch." Only do this if the result still sounds like something a native speaker would actually say — otherwise keep the sentence simple.`;
     }
-    const key = `kunju-cloze18-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
+    const key = `kunju-cloze19-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {
       setCloze(cached);
@@ -7407,13 +7418,22 @@ function QuizView({
           }
           full2 = v; gap2 = rebuilt;
         }
-        const out = {
-          full: full2,
-          gap: gap2,
-          native: j && j.n ? String(j.n).trim() : ""
-        };
-        persist(key, out);
-        setCloze(out);
+        // Finales Veto des Sinn-Richters: nur Sätze, die BEIDE unabhängigen
+        // Prüfungen bestehen, werden angezeigt und gecacht.
+        verifySense(targetName, full2).then(ok => {
+          if (clozeTokenRef.current !== myTok) return;
+          if (ok !== true) {
+            if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic); else setCloze(null);
+            return;
+          }
+          const out = {
+            full: full2,
+            gap: gap2,
+            native: j && j.n ? String(j.n).trim() : ""
+          };
+          persist(key, out);
+          setCloze(out);
+        });
       });
     }).catch(() => {
       if (clozeTokenRef.current !== myTok) return;
@@ -7908,11 +7928,20 @@ function QuizView({
           setSent({ error: 1 });
           return;
         }
-        setSent({
-          n: j.n,
-          t: v || j.t,
-          tenseLabel: oneTense,
-          tenseId: chosenId
+        // Finales Veto des Sinn-Richters — wie bei den Karten-Beispielen.
+        verifySense(targetName, v || j.t).then(ok => {
+          if (genTokenRef.current !== myTok) return;
+          if (ok !== true) {
+            if (attempt < 2) { genSentence(tc, attempt + 1, tid); return; }
+            setSent({ error: 1 });
+            return;
+          }
+          setSent({
+            n: j.n,
+            t: v || j.t,
+            tenseLabel: oneTense,
+            tenseId: chosenId
+          });
         });
       });
     }).catch(() => {
