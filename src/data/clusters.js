@@ -181,6 +181,7 @@ export const clusters = [
       { slug: "/blog/estar-gerundio", title: "Die Verlaufsform: estar + gerundio (estoy hablando)", live: true },
       { slug: "/blog/reflexive-verben-spanisch", title: "Reflexive Verben Spanisch: me levanto, te llamas & der ganze Tagesablauf", live: true },
       { slug: "/blog/imperativo-spanisch", title: "Der Imperativo: Befehle und Bitten auf Spanisch souverän geben", live: true },
+      { slug: "/blog/conjuguemos-fuer-erwachsene", title: "Conjuguemos für Erwachsene: Stärken und Grenzen", live: true },
     ],
   },
   {
