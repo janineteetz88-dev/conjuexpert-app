@@ -575,7 +575,12 @@ function updateSitemap(newUrls) {
   const sitemapPath = path.join(ROOT, 'sitemap.xml');
   let xml = fs.readFileSync(sitemapPath, 'utf8');
   const today = new Date().toISOString().slice(0, 10);
-  const entries = newUrls.map(u => `
+  const existingLocs = new Set(
+    [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1].trim())
+  );
+  const urlsToAdd = newUrls.filter(u => !existingLocs.has(u));
+  if (!urlsToAdd.length) return;
+  const entries = urlsToAdd.map(u => `
   <url>
     <loc>${u}</loc>
     <lastmod>${today}</lastmod>
