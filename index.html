@@ -1052,6 +1052,7 @@ body {
 .irrchip { border: 1.5px solid color-mix(in srgb, #ff7a18 40%, var(--border)); background: color-mix(in srgb, #ff7a18 9%, var(--surface)); color: var(--text); border-radius: 999px; padding: 8px 14px; font-family: var(--font-display); font-weight: 700; font-size: 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: transform 0.12s, background 0.15s; }
 .irrchip:active { transform: scale(0.94); }
 .irrchip-go { font-size: 12px; color: #d4660a; }
+.irrchip-form { font-size: 13px; font-weight: 600; color: #d4660a; font-family: var(--font); }
 .irrnote { font-size: 12.5px; color: var(--muted); margin: 10px 0 0; font-style: italic; }
 .auxnote { font-size: 13px; color: var(--text); margin: 0 0 14px; line-height: 1.5; }
 .auxnote b { font-family: var(--mono); color: var(--lc, var(--text)); font-weight: 700; }
@@ -2977,6 +2978,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   .lcard.irrcard::before{ content:"" !important; position:absolute !important; left:0 !important; top:0 !important; bottom:0 !important; width:3px !important; background:var(--brand-rainbow) !important; }
   .irrchip{ border-color:var(--border) !important; background:var(--surface) !important; }
   .irrchip-go{ color:var(--muted) !important; }
+  .irrchip-form{ color:var(--muted) !important; }
   /* Verwendung: Haken grün bleibt, Kreuz ins CI (kein Orange) */
   .usei.no{ color:var(--muted) !important; background:var(--surface-2) !important; }
   /* Quiz-Karte: Inline-Hinweis & reg/unreg-Tag raus → in den Tipp-Aufklapper */
@@ -3252,7 +3254,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-196"></script>
+<script defer src="/app.js?v=c-sand-197"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->

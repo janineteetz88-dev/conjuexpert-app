@@ -10143,6 +10143,22 @@ function LearnContent({
       inf: r.infinitive
     } : null;
   }, [lang, selTense]);
+  // Unregelmäßige Verben direkt in ihrer unregelmäßigen Form der gewählten
+  // Zeit zeigen (ser → fuera), nicht nur als Link (Janines Wunsch, 07.08.).
+  const irrForms = useMemo(() => {
+    const out = {};
+    (IRR_TOP[lang] || []).forEach(v => {
+      try {
+        const r = engine.conjugate(v);
+        if (!r || r.error) return;
+        const t = r.tenses.find(x => x.id === selTense);
+        if (!t) return;
+        const f = t.forms.find(x => x && x !== "—");
+        if (f) out[v] = f;
+      } catch (e) {}
+    });
+    return out;
+  }, [lang, selTense]);
   return /*#__PURE__*/React.createElement("div", {
     className: "learn-list",
     style: {
@@ -10182,7 +10198,9 @@ function LearnContent({
     className: "irrchip",
     key: v,
     onClick: () => onStudy && onStudy(lang, v)
-  }, v, " ", /*#__PURE__*/React.createElement("span", {
+  }, v, irrForms[v] && /*#__PURE__*/React.createElement("span", {
+    className: "irrchip-form"
+  }, "\u2192 ", irrForms[v]), " ", /*#__PURE__*/React.createElement("span", {
     className: "irrchip-go"
   }, "\u2197")))), /*#__PURE__*/React.createElement("p", {
     className: "irrnote"
