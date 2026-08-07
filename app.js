@@ -3511,6 +3511,12 @@ function clampMenuPos(wrapEl) {
     // Desktop-Mockup nutzt zoom < 1: Rects sind visuell, CSS-Werte im Element
     // aber ungezoomt — Offset/Breite entsprechend zurückrechnen.
     const z = ph ? parseFloat(getComputedStyle(ph).zoom) || 1 : 1;
+    // Echtes Handy (schmal, ohne Desktop-Zoom): Menü über die volle Breite
+    // des Rahmens legen — so kann es nie seitlich herausragen oder Kästchen
+    // anschneiden ("verrutscht am Handy", 07.08.).
+    if (z === 1 && pr.width <= 560) {
+      return { left: Math.round(pr.left + 14 - r.left) + "px", right: "auto", width: Math.round(pr.width - 28) + "px" };
+    }
     const w = Math.min(290 * z, pr.width - 28);
     const target = Math.min(Math.max(r.left, pr.left + 14), pr.left + pr.width - 14 - w);
     return { left: Math.round((target - r.left) / z) + "px", right: "auto", width: Math.round(w / z) + "px" };
