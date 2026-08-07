@@ -50,13 +50,23 @@ async function toWebp(src, quality) {
   return dst;
 }
 
-console.log('\n=== blog/img/ konvertieren ===');
+console.log('\n=== blog/img/ konvertieren (rekursiv) ===');
 const blogImgDir = path.join(ROOT, 'blog/img');
-for (const f of fs.readdirSync(blogImgDir)) {
-  if (/\.(jpg|jpeg|png)$/i.test(f)) {
-    const ext = path.extname(f).toLowerCase();
-    await toWebp(path.join(blogImgDir, f), ext === '.png' ? 80 : 82);
+
+function findImages(dir, results = []) {
+  for (const f of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (f.isDirectory()) {
+      findImages(path.join(dir, f.name), results);
+    } else if (/\.(jpg|jpeg|png)$/i.test(f.name)) {
+      results.push(path.join(dir, f.name));
+    }
   }
+  return results;
+}
+
+for (const p of findImages(blogImgDir)) {
+  const ext = path.extname(p).toLowerCase();
+  await toWebp(p, ext === '.png' ? 80 : 82);
 }
 
 console.log('\n=== Root Pexels-Bilder konvertieren ===');
