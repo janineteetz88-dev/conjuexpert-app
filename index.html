@@ -2245,6 +2245,8 @@ body {
 .tdaction:last-child { background: var(--surface-2); color: var(--muted); }
 .tdaction:active { transform: scale(0.96); }
 .tdlist { display: flex; flex-direction: column; gap: 3px; max-height: 320px; overflow-y: auto; }
+/* Mehrere regelmäßige Klassen untereinander (hablar/comer/vivir): Abstand zwischen den Blöcken */
+.formwrap + .formtable-cap { margin-top: 12px; }
 /* Scrollbalken DAUERHAFT sichtbar (iOS blendet ihn sonst aus) — so sieht man
    sofort, dass die Liste scrollbar ist. Plus 2px Randabstand für den Daumen. */
 .tdlist { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--text) 30%, transparent) transparent; padding-right: 6px; }
@@ -3260,7 +3262,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-200"></script>
+<script defer src="/app.js?v=c-sand-201"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->

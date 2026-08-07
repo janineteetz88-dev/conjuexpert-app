@@ -3741,6 +3741,15 @@ const REG_SAMPLE = {
   fr: "parler",
   nl: "werken"
 };
+/* ALLE regelmäßigen Klassen je Sprache für „Wie wird es gebildet?" — vorher
+   fehlten z. B. die spanischen -er/-ir- und die französischen -ir/-re-Endungen. */
+const REG_SAMPLES = {
+  es: ["hablar", "comer", "vivir"],
+  en: ["work"],
+  de: ["machen", "arbeiten"],
+  fr: ["parler", "finir", "vendre"],
+  nl: ["werken", "wonen"]
+};
 function persist(k, v) {
   try {
     localStorage.setItem(k, JSON.stringify(v));
@@ -10151,17 +10160,16 @@ function LearnContent({
 }) {
   const d = data || {};
   const hint = tenseHint(lang, selTense);
-  const sample = REG_SAMPLE[lang];
+  const sampleList = REG_SAMPLES[lang] || (REG_SAMPLE[lang] ? [REG_SAMPLE[lang]] : []);
   const sampleForms = useMemo(() => {
-    if (!sample) return null;
-    const r = engine.conjugate(sample);
-    if (!r || r.error) return null;
-    const t = r.tenses.find(x => x.id === selTense);
-    return t ? {
-      pronouns: r.pronouns,
-      forms: t.forms,
-      inf: r.infinitive
-    } : null;
+    const out = [];
+    sampleList.forEach(sv => {
+      const r = engine.conjugate(sv);
+      if (!r || r.error) return;
+      const t = r.tenses.find(x => x.id === selTense);
+      if (t) out.push({ verb: sv, pronouns: r.pronouns, forms: t.forms, inf: r.infinitive });
+    });
+    return out.length ? out : null;
   }, [lang, selTense]);
   // Unregelmäßige Verben direkt in ihrer unregelmäßigen Form der gewählten
   // Zeit zeigen (ser → fuera), nicht nur als Link (Janines Wunsch, 07.08.).
@@ -10196,19 +10204,21 @@ function LearnContent({
     className: "formhint-val"
   }, hint)), sampleForms && /*#__PURE__*/React.createElement("div", {
     className: "formtable"
+  }, sampleForms.map(sf => /*#__PURE__*/React.createElement(React.Fragment, {
+    key: sf.verb
   }, /*#__PURE__*/React.createElement("div", {
     className: "formtable-cap"
-  }, tr("example"), ": ", /*#__PURE__*/React.createElement("b", null, sampleForms.inf.replace(/^to /, ""))), /*#__PURE__*/React.createElement("div", {
+  }, tr("example"), ": ", /*#__PURE__*/React.createElement("b", null, sf.inf.replace(/^to /, ""))), /*#__PURE__*/React.createElement("div", {
     className: "formwrap"
-  }, sampleForms.pronouns.map((p, i) => sampleForms.forms[i] && sampleForms.forms[i] !== "—" && /*#__PURE__*/React.createElement("span", {
+  }, sf.pronouns.map((p, i) => sf.forms[i] && sf.forms[i] !== "—" && /*#__PURE__*/React.createElement("span", {
     className: "formitem",
     key: i
   }, /*#__PURE__*/React.createElement("span", {
     className: "formval",
     dangerouslySetInnerHTML: {
-      __html: hl3(sample, sampleForms.forms[i])
+      __html: hl3(sf.verb, sf.forms[i])
     }
-  })))))), /*#__PURE__*/React.createElement("div", {
+  })))))))), /*#__PURE__*/React.createElement("div", {
     className: "lcard irrcard"
   }, /*#__PURE__*/React.createElement("div", {
     className: "lcard-tag"
