@@ -2245,6 +2245,12 @@ body {
 .tdaction:last-child { background: var(--surface-2); color: var(--muted); }
 .tdaction:active { transform: scale(0.96); }
 .tdlist { display: flex; flex-direction: column; gap: 3px; max-height: 320px; overflow-y: auto; }
+/* Scrollbalken DAUERHAFT sichtbar (iOS blendet ihn sonst aus) — so sieht man
+   sofort, dass die Liste scrollbar ist. Plus 2px Randabstand für den Daumen. */
+.tdlist { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--text) 30%, transparent) transparent; padding-right: 6px; }
+.tdlist::-webkit-scrollbar { width: 5px; }
+.tdlist::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--text) 30%, transparent); border-radius: 999px; }
+.tdlist::-webkit-scrollbar-track { background: color-mix(in srgb, var(--text) 8%, transparent); border-radius: 999px; }
 .tditem { display: flex; align-items: center; gap: 10px; border: 0; background: transparent; border-radius: 10px; padding: 9px 10px; cursor: pointer; text-align: left; transition: background 0.12s; }
 .tditem:hover { background: var(--surface-2); }
 .tdcheck { flex: none; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; }
@@ -3254,7 +3260,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-199"></script>
+<script defer src="/app.js?v=c-sand-200"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
