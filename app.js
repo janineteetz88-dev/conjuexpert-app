@@ -3207,23 +3207,23 @@ const HERO_CONFETTI = [{
 /* Short formation hints for regular verbs, per language + tense id (memory aid). */
 const TENSE_HINTS = {
   es: {
-    present: "-o · -as/-es",
-    imperfect: "-aba / -ía",
-    past: "-é·-aste·-ó",
+    present: [{ c: "-ar", e: "-o · -as · -a · -amos · -áis · -an" }, { c: "-er", e: "-o · -es · -e · -emos · -éis · -en" }, { c: "-ir", e: "-o · -es · -e · -imos · -ís · -en" }],
+    imperfect: [{ c: "-ar", e: "-aba · -abas · -aba · -ábamos · -abais · -aban" }, { c: "-er/-ir", e: "-ía · -ías · -ía · -íamos · -íais · -ían" }],
+    past: [{ c: "-ar", e: "-é · -aste · -ó · -amos · -asteis · -aron" }, { c: "-er/-ir", e: "-í · -iste · -ió · -imos · -isteis · -ieron" }],
     perfect: "he + -ado/-ido",
     pluperfect: "había + -ado/-ido",
-    future: "Inf. + -é",
-    subjunctive: "-e / -a",
-    subjunctiveImp: "-ara / -iera",
-    conditional: "Inf. + -ía",
-    imperative: "¡-a! / ¡-e!",
+    future: "Inf. + -é · -ás · -á · -emos · -éis · -án",
+    subjunctive: [{ c: "-ar", e: "-e · -es · -e · -emos · -éis · -en" }, { c: "-er/-ir", e: "-a · -as · -a · -amos · -áis · -an" }],
+    subjunctiveImp: [{ c: "-ar", e: "-ara · -aras · -ara · -áramos · -arais · -aran" }, { c: "-er/-ir", e: "-iera · -ieras · -iera · -iéramos · -ierais · -ieran" }],
+    conditional: "Inf. + -ía · -ías · -ía · -íamos · -íais · -ían",
+    imperative: [{ c: "-ar", e: "¡-a! · ¡-e! (Ud.)" }, { c: "-er/-ir", e: "¡-e! · ¡-a! (Ud.)" }],
     continuous: "estoy + -ando/-iendo",
     continuousPerfect: "he estado + -ndo",
     gerund: "-ando / -iendo",
     participle: "-ado / -ido"
   },
   en: {
-    present: "base (+ -s)",
+    present: "base (+ -s bei he/she/it)",
     presentCont: "am/is/are + -ing",
     past: "-ed",
     pastCont: "was/were + -ing",
@@ -3237,34 +3237,34 @@ const TENSE_HINTS = {
     gerund: "-ing"
   },
   de: {
-    present: "-e · -st · -t",
-    past: "-te",
+    present: "-e · -st · -t · -en · -t · -en",
+    past: "-te · -test · -te · -ten · -tet · -ten",
     perfect: "haben/sein + ge-…-t",
     pluperfect: "hatte/war + ge-…-t",
     future: "werden + Inf.",
     subjunctive: "würde + Inf.",
-    subjunctive1: "-e · -est · -e",
+    subjunctive1: "-e · -est · -e · -en · -et · -en",
     conditional: "würde + Inf.",
     imperative: "Stamm!",
     gerund: "-end"
   },
   fr: {
-    present: "-e·-es·-e / -is",
-    past: "-ais",
-    perfect: "avoir/être + -é",
-    pluperfect: "avais + -é",
-    future: "Inf. + -ai",
-    subjunctive: "-e",
-    conditional: "Inf. + -ais",
+    present: [{ c: "-er", e: "-e · -es · -e · -ons · -ez · -ent" }, { c: "-ir", e: "-is · -is · -it · -issons · -issez · -issent" }, { c: "-re", e: "-s · -s · — · -ons · -ez · -ent" }],
+    past: "-ais · -ais · -ait · -ions · -iez · -aient",
+    perfect: "avoir/être + -é/-i/-u",
+    pluperfect: "avais + -é/-i/-u",
+    future: "Inf. + -ai · -as · -a · -ons · -ez · -ont",
+    subjunctive: "-e · -es · -e · -ions · -iez · -ent",
+    conditional: "Inf. + -ais · -ais · -ait · -ions · -iez · -aient",
     conditionalPast: "aurais + -é",
-    imperative: "-e !",
+    imperative: "-e ! · -ons ! · -ez !",
     gerund: "-ant"
   },
   nl: {
-    present: "- / -t",
-    past: "-te / -de",
-    perfect: "hebben/zijn + ge-…",
-    pluperfect: "had + ge-…",
+    present: "stam · stam+t · stam+t",
+    past: [{ c: "na t·k·f·s·ch·p", e: "-te / -ten" }, { c: "na b·d·g·v·z …", e: "-de / -den" }],
+    perfect: "hebben/zijn + ge-…-t/-d",
+    pluperfect: "had + ge-…-t/-d",
     future: "zullen + Inf.",
     subjunctive: "-e",
     conditional: "zou + Inf.",
@@ -3272,8 +3272,18 @@ const TENSE_HINTS = {
     gerund: "-end"
   }
 };
+// Volle Endungs-Zeilen je Verbklasse (für die Lernseite als Spickzettel);
+// null, wenn die Zeitform nur eine Klasse hat.
+function tenseHintRows(lang, id) {
+  const h = (TENSE_HINTS[lang] || {})[id];
+  return Array.isArray(h) ? h : null;
+}
+// Kompakter String (Quiz-Pillen): bei mehreren Klassen die ersten drei
+// Endungen je Klasse, z. B. "-ar -é·-aste·-ó | -er/-ir -í·-iste·-ió".
 function tenseHint(lang, id) {
-  return (TENSE_HINTS[lang] || {})[id] || "";
+  const h = (TENSE_HINTS[lang] || {})[id] || "";
+  if (!Array.isArray(h)) return h;
+  return h.map(x => x.c + " " + x.e.split(" · ").slice(0, 3).join("·")).join(" | ");
 }
 /* For tenses whose regular endings change per person, a single fixed hint
    (e.g. FR "-ais", DE "-te") mismatches the shown form. Derive the ending that
@@ -10160,6 +10170,7 @@ function LearnContent({
 }) {
   const d = data || {};
   const hint = tenseHint(lang, selTense);
+  const hintRows = tenseHintRows(lang, selTense);
   const sampleList = REG_SAMPLES[lang] || (REG_SAMPLE[lang] ? [REG_SAMPLE[lang]] : []);
   const sampleForms = useMemo(() => {
     const out = [];
@@ -10196,11 +10207,20 @@ function LearnContent({
     className: "lcard formcard"
   }, /*#__PURE__*/React.createElement("div", {
     className: "lcard-tag"
-  }, tr("how_formed")), hint && /*#__PURE__*/React.createElement("div", {
-    className: "formhint"
+  }, tr("how_formed")), (hintRows || hint) && /*#__PURE__*/React.createElement("div", {
+    className: "formhint" + (hintRows ? " multi" : "")
   }, /*#__PURE__*/React.createElement("span", {
     className: "formhint-lbl"
-  }, tr("regular")), /*#__PURE__*/React.createElement("span", {
+  }, tr("regular")), hintRows ? /*#__PURE__*/React.createElement("div", {
+    className: "formhint-rows"
+  }, hintRows.map((h, i) => /*#__PURE__*/React.createElement("div", {
+    className: "formhint-row",
+    key: i
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "formhint-cls"
+  }, h.c), /*#__PURE__*/React.createElement("span", {
+    className: "formhint-val"
+  }, h.e)))) : /*#__PURE__*/React.createElement("span", {
     className: "formhint-val"
   }, hint)), sampleForms && /*#__PURE__*/React.createElement("div", {
     className: "formtable"

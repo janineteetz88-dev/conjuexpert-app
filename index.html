@@ -1040,6 +1040,13 @@ body {
 .formhint { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
 .formhint-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 700; }
 .formhint-val { font-family: var(--mono); font-weight: 700; font-size: 16px; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); padding: 4px 11px; border-radius: 10px; }
+/* Spickzettel: mehrere Klassen (-ar/-er/-ir) je in eigener Zeile mit Klassen-Label */
+.formhint.multi { align-items: flex-start; }
+.formhint.multi .formhint-lbl { margin-top: 7px; }
+.formhint-rows { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.formhint-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.formhint-cls { flex: none; font-size: 12px; font-weight: 800; color: var(--muted); font-family: var(--mono); min-width: 52px; }
+.formhint-row .formhint-val { font-size: 13.5px; padding: 3px 9px; line-height: 1.45; }
 .formtable { background: var(--surface-2); border-radius: 12px; padding: 10px 12px; }
 .formtable-cap { font-size: 12px; color: var(--muted); margin-bottom: 7px; }
 .formtable-cap b { font-family: var(--font-display); color: var(--text); }
@@ -3262,7 +3269,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-201"></script>
+<script defer src="/app.js?v=c-sand-202"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
