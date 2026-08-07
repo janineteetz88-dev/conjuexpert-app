@@ -205,6 +205,7 @@ export const clusters = [
       { slug: "/blog/unregelmaessige-verben-franzoesisch", title: "Die wichtigsten unregelmäßigen französischen Verben: être, avoir, aller, faire", live: true },
       { slug: "/blog/conditionnel-franzoesisch", title: "Le conditionnel: höflich bitten und Irreales ausdrücken", live: true },
       { slug: "/blog/reverso-vs-conjuexpert", title: "Reverso vs. ConjuExpert: Wo liegen die Unterschiede?", live: true },
+      { slug: "/blog/imperatif-franzoesisch", title: "L'impératif: Aufforderungen und Bitten auf Französisch", live: true },
     ],
   },
   {
