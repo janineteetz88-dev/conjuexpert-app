@@ -7280,18 +7280,24 @@ function QuizView({
     const ctxWords = catName ? catWords.slice(0, 6) : [];
     const topicTxt = themeTopic ? ` The whole sentence MUST clearly be about the topic "${themeTopic}".` : (ctxWords.length ? ` Fit the sentence to the everyday theme suggested by these words from the learner's vocabulary list (they set the theme — do NOT treat the list's name as a topic): ${ctxWords.join(", ")}.` : "");
     let myWord = "", myWordTxt = "";
-    if (catWords.length) {
-      myWord = catWords[Math.floor(Math.random() * catWords.length)];
+    // Nur EINZELWÖRTER als Einbau-Kandidat: Mehrwort-Phrasen ("movilidad
+    // urbana") passen fast nie natürlich zu einem zufälligen Verb und
+    // erzeugten die absurdesten Sätze. Phrasen prägen weiter das Thema,
+    // werden aber nicht mehr in den Satz gezwungen.
+    const mwSingle = catWords.filter(w => !/\s/.test(w));
+    if (mwSingle.length) {
+      myWord = mwSingle[Math.floor(Math.random() * mwSingle.length)];
       myWordTxt = ` Try to also include the learner's saved ${targetName} word "${myWord}" — but ONLY if the result makes complete real-world sense with this verb and sounds like something a native speaker would actually say. If the word does not fit this verb naturally (you cannot drink a building, wear a soup, …), DO NOT use the word at all — a plain natural sentence without it is ALWAYS better than an absurd one with it.`;
     } else {
       const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
-      myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
+      const mwP1 = mwPool.filter(w => !/\s/.test(w));
+      myWord = mwP1.length ? mwP1[Math.floor(Math.random() * mwP1.length)] : "";
       myWordTxt = myWord ? ` If — and ONLY if — it fits completely naturally with this verb, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence; otherwise silently leave it out.` : "";
     }
     if (!myWord && skill === "advanced" && Math.random() < 0.35) {
       advConn = ` Make it a more complex sentence that naturally uses a subordinating connector (e.g. German: obwohl/trotzdem/damit/während/sodass; Spanish: aunque/a pesar de que/para que; French: bien que/quoique/afin que/pourtant; Dutch: hoewel/zodat/terwijl), like "Trotz der Umstände hielten sie durch." Only do this if the result still sounds like something a native speaker would actually say — otherwise keep the sentence simple.`;
     }
-    const key = `kunju-cloze19-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
+    const key = `kunju-cloze20-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {
       setCloze(cached);
@@ -7920,12 +7926,18 @@ function QuizView({
     // bestimmt das Thema — leere Liste fällt auf ein Zufallsthema zurück.
     const topic = catName ? (catWords.length ? `the everyday theme suggested by these words from the learner's vocabulary list (the words set the theme — do NOT treat the list's name as a topic): ${catWords.slice(0, 6).join(", ")}` : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)]) : (theme && theme.topic ? theme.topic : SENT_TOPICS[Math.floor(Math.random() * SENT_TOPICS.length)]);
     let myWord = "", myWordTxt = "";
-    if (catWords.length) {
-      myWord = catWords[Math.floor(Math.random() * catWords.length)];
+    // Nur EINZELWÖRTER als Einbau-Kandidat: Mehrwort-Phrasen ("movilidad
+    // urbana") passen fast nie natürlich zu einem zufälligen Verb und
+    // erzeugten die absurdesten Sätze. Phrasen prägen weiter das Thema,
+    // werden aber nicht mehr in den Satz gezwungen.
+    const mwSingle = catWords.filter(w => !/\s/.test(w));
+    if (mwSingle.length) {
+      myWord = mwSingle[Math.floor(Math.random() * mwSingle.length)];
       myWordTxt = ` Its ${targetName} translation MUST naturally include the saved word "${myWord}".`;
     } else {
       const mwPool = clozeMyWordsRef.current ? gatherMyWords() : [];
-      myWord = mwPool.length ? mwPool[Math.floor(Math.random() * mwPool.length)] : "";
+      const mwP1 = mwPool.filter(w => !/\s/.test(w));
+      myWord = mwP1.length ? mwP1[Math.floor(Math.random() * mwP1.length)] : "";
       myWordTxt = myWord ? ` Its ${targetName} translation should, if it fits naturally, include the saved word "${myWord}".` : "";
     }
     const pool = tenseSel.length ? tenseSel : tenseOpts.map(t => t.id);
