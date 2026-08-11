@@ -256,8 +256,11 @@
   function duEnd(stem) { if (needsE(stem)) return "est"; if (/([sßxz]|ss|tz)$/.test(stem)) return "t"; return "st"; }
   function praetForms(praet, weak) {
     if (weak) { const s = praet.replace(/e$/, ""); return [s + "e", s + "est", s + "e", s + "en", s + "et", s + "en"]; }
-    const e = /([dtszxß]|ss)$/.test(praet) ? "e" : "";
-    return [praet, praet + e + "st", praet, praet + "en", praet + e + "t", praet + "en"];
+    // du: e-Einschub nach d/t/s-Lauten (du genossest); ihr: nur nach d/t —
+    // modern heißt es "ihr genosst", "ihr last" (nicht "genosset"/"laset").
+    const eDu = /([dtszxß]|ss)$/.test(praet) ? "e" : "";
+    const eIhr = /[dt]$/.test(praet) ? "e" : "";
+    return [praet, praet + eDu + "st", praet, praet + "en", praet + eIhr + "t", praet + "en"];
   }
   function konjForms(stem) { return [stem + "e", stem + "est", stem + "e", stem + "en", stem + "et", stem + "en"]; }
   function imperativeForms(verb, impDu, impFull) {

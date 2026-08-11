@@ -80,19 +80,28 @@ function looseParse(t) {
   try { return JSON.parse(s); } catch { return null; }
 }
 
-// SYNC-Kopie der App-Kernregeln (kompakt).
-function genPrompt(lang, verb, tenseLabel, pronoun, answer) {
+// SYNC-Kopie der App-Kernregeln (kompakt) — inkl. der Zeitform-Wächter aus
+// fetchCloze (K1-Redewiedergabe, Präteritum-Erzählton, Subjuntivo-Auslöser),
+// damit die Stichprobe misst, was die App wirklich erzeugt.
+function tenseRules(lang, tenseId) {
+  if (lang === "de" && tenseId === "subjunctive1") return " German Konjunktiv I is REPORTED SPEECH: frame the sentence as indirect speech with a saying-verb (Er sagt, sie … / Laut ihr …).";
+  if (lang === "de" && tenseId === "past") return " German Präteritum is narrative/written register — a short narrative statement is natural here.";
+  if ((lang === "es" || lang === "fr") && (tenseId === "subjunctive" || tenseId === "subjunctiveImp")) return " The subjunctive needs a natural main-clause trigger (wishes, doubt, emotion, ojalá/il faut que …; vary the trigger), and where the trigger requires it the subordinate subject must differ from the main-clause subject.";
+  if (tenseId === "imperative") return " Write a natural short command or friendly request.";
+  return "";
+}
+function genPrompt(lang, verb, tenseLabel, pronoun, answer, tenseId) {
   const tName = LANG_NAME[lang];
   const compound = answer.indexOf(" ") >= 0;
   return `Write ONE short, natural everyday sentence in ${tName} (max 9 words) ${compound
     ? `that correctly expresses the ${tenseLabel} of "${verb}" for "${pronoun}" — its parts are ${answer.split(" ").map(p => `"${p}"`).join(" + ")}. Use natural word order (finite verb second, prefix/participle at clause end where the language requires it).`
     : `that CONTAINS exactly the verb form "${answer}" (the ${tenseLabel} of "${verb}", ${pronoun}).`
-  } The sentence must be 100% correct standard ${tName}, make real-world sense, use only natural everyday collocations, keep the content light (no accidents/illness/death), and sound like something a native speaker would actually say. Avoid vague filler nouns (zona/área/cosa and equivalents). Then give a natural German translation of the whole sentence. Do NOT use double-quote characters. Reply with ONLY minified JSON: {"t":"<${tName} sentence>","n":"<German translation>"}`;
+  }${tenseRules(lang, tenseId)} The sentence must be 100% correct standard ${tName}, make real-world sense, use only natural everyday collocations, keep the content light (no accidents/illness/death), and sound like something a native speaker would actually say. Avoid vague filler nouns (zona/área/cosa and equivalents). Then give a natural German translation of the whole sentence. Do NOT use double-quote characters. Reply with ONLY minified JSON: {"t":"<${tName} sentence>","n":"<German translation>"}`;
 }
 
 function judgePrompt(lang, verb, tenseLabel, pronoun, answer, sentence, translation) {
   const tName = LANG_NAME[lang];
-  return `You are an extremely strict ${tName} native-speaker examiner. Sentence: "${sentence}" (should contain the ${tenseLabel} form "${answer}" of "${verb}" for ${pronoun}). German translation given: "${translation}". FAIL it if ANY of these hold: a grammar error anywhere; the required form is missing or altered; the sentence is semantically absurd or contrived (a stitched-together textbook line no native would say); an object/complement the verb cannot naturally take; unnatural or word-for-word German in the translation; morbid content. Otherwise PASS. Reply with ONLY minified JSON: {"ok":true} or {"ok":false,"grund":"<one short German sentence>"}`;
+  return `You are an extremely strict ${tName} native-speaker examiner. Sentence: "${sentence}" (should contain the ${tenseLabel} form "${answer}" of "${verb}" for ${pronoun}). German translation given: "${translation}". FAIL it if ANY of these hold: a grammar error anywhere; the required form is missing or altered; the sentence is semantically absurd or contrived (a stitched-together textbook line no native would say); an object/complement the verb cannot naturally take; unnatural or word-for-word German in the translation; morbid content. Do NOT fail for any of these (they are correct): the German translation renders a foreign simple past or perfect as German Perfekt (that IS the natural spoken German past); German has no progressive form, so a progressive is correctly translated with plain present or "gerade"; German Konjunktiv I in reported speech is formal but fully correct; German Präteritum sounding narrative/written — that register is intended; Dutch polite imperatives with inversion ("reist u", "komt u", "weest u") are standard; minor register formality is not an error. Judge the sentence in its own language on grammar and naturalness, not on stylistic taste. Otherwise PASS. Reply with ONLY minified JSON: {"ok":true} or {"ok":false,"grund":"<one short German sentence>"}`;
 }
 
 async function checkOne(lang, verb, tenseId, engines) {
@@ -109,7 +118,7 @@ async function checkOne(lang, verb, tenseId, engines) {
   const pronoun = (r.pronouns || [])[idx] || "";
   const tenseLabel = t.label || tenseId;
 
-  const genRaw = await ai(genPrompt(lang, verb, tenseLabel, pronoun, answer), lang);
+  const genRaw = await ai(genPrompt(lang, verb, tenseLabel, pronoun, answer, tenseId), lang);
   const gen = looseParse(genRaw);
   if (!gen || !gen.t) return { lang, verb, tenseLabel, pronoun, answer, ok: false, grund: "Generierung fehlgeschlagen/kein JSON" };
 

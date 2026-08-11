@@ -143,7 +143,10 @@
   const NL_SEIN_BASE = ["staan","komen","gaan","lopen","vallen","stijgen","springen","rijden","vliegen","groeien"];
   // Not separable, even though they start with a string that's also a NL_SEP prefix (e.g. "mis" in "missen").
   const NL_NOT_SEPARABLE = ["missen"];
+  // Untrennbare Verben, die wie Präfix+Basis aussehen: openen ist NICHT op+enen.
+  const NL_NOSEP = ["openen", "opereren", "toetsen", "omarmen", "overtuigen", "overleggen", "overwegen", "overleven", "overlijden", "overhandigen", "overtreffen", "onderzoeken", "ondertekenen", "ondersteunen", "onderbouwen"];
   function nlSplit(verb) {
+    if (NL_NOSEP.indexOf(verb) >= 0) return null;
     if (NL_NOT_SEPARABLE.includes(verb)) return null;
     for (const p of NL_SEP) {
       if (verb.length > p.length + 2 && verb.startsWith(p)) {
@@ -156,6 +159,13 @@
     }
     return null;
   }
+  // Höflichkeits-Imperativ: Stamm+t ("koopt u", "weest u"), mit Vokal-Dehnung
+  // bei offener Silbe ("ga" → "gaat u", "sta" → "staat u").
+  function nlPoliteImp(imp) {
+    if (imp.endsWith("t")) return imp + " u";
+    if (/(^|[^aeiou])[aou]$/.test(imp)) return imp + imp.slice(-1) + "t u";
+    return imp + "t u";
+  }
   function nlBaseData(base) {
     const reg = regularData(base);
     const irr = IRR[base];
@@ -164,7 +174,9 @@
       present: irr.presentFull || reg.present,
       past: [irr.pastSg, irr.pastSg, irr.pastSg, irr.pastPl, irr.pastPl, irr.pastPl],
       subjunctive: irr.subj || reg.subjunctive,
-      imperative: ["—", (irr.imp != null ? irr.imp : reg.imperative[1]), (irr.imp != null ? irr.imp : reg.imperative[1]), "laten we " + base, (irr.presentFull ? irr.presentFull[4] : reg.imperative[4]), (irr.imp != null ? irr.imp : reg.imperative[1]) + " u"],
+      // Gebiedende wijs: kein hij/zij-Imperativ (—); Höflichkeitsform = Stamm+t
+      // ("koopt u", "weest u"), nicht die Du-Form ("koop u").
+      imperative: ["—", (irr.imp != null ? irr.imp : reg.imperative[1]), "—", "laten we " + base, (irr.presentFull ? irr.presentFull[4] : reg.imperative[4]), (irr.imp != null ? nlPoliteImp(irr.imp) : reg.imperative[5])],
       participle: irr.participle,
       aux: irr.aux || "hebben"
     }, isIrr: true };
@@ -187,11 +199,22 @@
     return tenses;
   }
 
+  // Native -eren-Verben mit Schwa in der letzten Silbe: KEINE Dehnung
+  // (luisteren → luister, nicht "luisteer"). Lehnwörter auf -eren
+  // (studeren → studeer, controleren → controleer) dehnen dagegen regulär.
+  const NL_SCHWA_EREN = ["luisteren","fluisteren","herinneren","schilderen","verbeteren","verminderen","veranderen","verwijderen","ergeren","verzekeren","bewonderen","verwonderen","stotteren","mopperen","bibberen","fladderen","hameren","jammeren","kletteren","donderen","hinderen","plunderen"];
   function stemOf(verb) {
     let stem = verb.endsWith("en") ? verb.slice(0, -2) : verb.replace(/n$/, "");
+    // Schwa-Endsilben (-elen/-enen/-emen/-igen bei mehrsilbigem Kern) und Stämme
+    // auf -w werden NICHT gedehnt: oefenen → oefen, koppelen → koppel, duwen → duw.
+    const core0 = stem.replace(/^(be|ge|er|her|ont|ver)/, "");
+    const core = /[aeiou]/.test(core0) ? core0 : stem;
+    const vGroups = (core.match(/[aeiou]+/g) || []).length;
+    const schwa = ((/e[lnm]$/.test(stem) || /ig$/.test(stem)) && vGroups >= 2) || (/er$/.test(stem) && NL_SCHWA_EREN.indexOf(verb) >= 0) || /w$/.test(stem);
     if (/([bcdfghklmnprst])\1$/.test(stem)) {
       stem = stem.slice(0, -1); // double consonant => short vowel, do NOT lengthen
-    } else if (/[^aeiou][aeiou][^aeiou]$/.test(stem)) {
+    } else if (!schwa && /(^|[^aeiou])[aeiou][^aeiou]$/.test(stem)) {
+      // auch vokal-anlautende Stämme dehnen: eten → "et" → "eet"
       const v = stem[stem.length - 2]; stem = stem.slice(0, -1) + v + stem.slice(-1);
     }
     // Final-obstruent devoicing (v/z -> f/s) is a spelling convention for the infinitive
@@ -218,7 +241,7 @@
       present: [stem, stT, stT, verb, verb, verb],
       past: [pastSing, pastSing, pastSing, pastPlur, pastPlur, pastPlur],
       subjunctive: [verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb, verb, verb], // Aanvoegende wijs = Infinitiv minus -n (hebben→hebbe, lopen→lope)
-      imperative: ["—", stem, stem, "laten we " + verb, stT, stT + " u"],
+      imperative: ["—", stem, "—", "laten we " + verb, stT, stT + " u"],
       participle,
       aux: "hebben"
     };
@@ -288,7 +311,7 @@
         present: irr.presentFull || reg.present,
         past: [irr.pastSg, irr.pastSg, irr.pastSg, irr.pastPl, irr.pastPl, irr.pastPl],
         subjunctive: irr.subj || reg.subjunctive,
-        imperative: ["—", impForm, impForm, "laten we " + verb, (irr.presentFull ? irr.presentFull[4] : reg.imperative[4]), impForm + " u"],
+        imperative: ["—", impForm, "—", "laten we " + verb, (irr.presentFull ? irr.presentFull[4] : reg.imperative[4]), nlPoliteImp(impForm)],
         participle: irr.participle,
         aux: irr.aux || "hebben"
       };
