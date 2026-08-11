@@ -7230,7 +7230,7 @@ function QuizView({
   // "" = Satz ok · String = korrigierter Satz · null = Prüfung nicht möglich.
   function verifySentence(tName, sentence, mustKeep) {
     const keep = mustKeep ? ` The form "${mustKeep}" is the practised word and MUST remain exactly unchanged.` : "";
-    return window.aiComplete(`You are a strict ${tName} grammar AND common-sense checker. Check ONLY this single ${tName} sentence: "${sentence}". First: verb conjugation and subject-verb agreement in EVERY clause, including subordinate and main clauses (German example: with "ihr" the verb must be "bliebt"/"wart", NEVER "blieb"/"war"), plus case endings, adjective agreement and word order.${langRules(lang)} Second — just as important: the sentence must make real-world SENSE. If it is grammatically fine but semantically absurd (drinking a building, wearing a soup, ordering a joke) OR sounds contrived — like an artificial textbook exercise stitched together to tick boxes rather than something a real person would ever say — it is WRONG: fix it by swapping the odd part for a natural everyday one. The test: would a native speaker say exactly this sentence in real life without smiling? If not, fix it.${keep} If the sentence is 100% correct AND natural, reply with exactly: OK. If you can fix it, reply with ONLY the corrected sentence — change as little as possible, no quotes, no explanation. If it cannot be fixed while keeping the required form, reply with exactly: BAD.`).then(r => {
+    return window.aiComplete(`You are a strict ${tName} grammar AND common-sense checker. Check ONLY this single ${tName} sentence: "${sentence}". First: verb conjugation and subject-verb agreement in EVERY clause, including subordinate and main clauses (German example: with "ihr" the verb must be "bliebt"/"wart", NEVER "blieb"/"war"), plus case endings, adjective agreement and word order.${langRules(lang)} Second — just as important: the sentence must make real-world SENSE when read LITERALLY. If it is grammatically fine but semantically absurd (drinking a building, wearing a soup, ordering a joke, setting a topic on fire), if any pronoun/clitic lacks a sensible referent, OR if it sounds contrived — like an artificial textbook exercise stitched together to tick boxes rather than something a real person would ever say — it is WRONG: fix it by swapping the odd part for a natural everyday one. The test: would a native speaker say exactly this sentence in real life without smiling? If not, fix it.${keep} If the sentence is 100% correct AND natural, reply with exactly: OK. If you can fix it, reply with ONLY the corrected sentence — change as little as possible, no quotes, no explanation. If it cannot be fixed while keeping the required form, reply with exactly: BAD.`).then(r => {
       let t = String(r || "").trim().replace(/^["'«»\s]+/, "").replace(/["'«»\s]+$/, "");
       if (!t) return null;
       if (/^ok[.! ]*$/i.test(t)) return "";
@@ -7239,17 +7239,9 @@ function QuizView({
       return t || null;
     }).catch(() => null);
   }
-  // Zweiter, unabhängiger SINN-Richter (nur Urteil, keine Reparatur — ein
-  // reiner Ja/Nein-Richter ist strenger als ein Prüfer, der retten will).
-  // true = gut, false/null = durchgefallen (im Zweifel KEIN Beispiel zeigen).
-  function verifySense(tName, sentence) {
-    return window.aiComplete(`You are a native ${tName} speaker reading ONE sentence: "${sentence}". Think about what it LITERALLY says. Judge strictly: Is this something a real person could plausibly say in everyday life — sensible meaning, no absurd combinations (drinking a building, setting a topic on fire, ordering a joke), every pronoun/clitic with a sensible referent, natural wording rather than a stitched-together exercise sentence? Reply with EXACTLY one letter and nothing else: G if it is fine, B if anything is off.`).then(r => {
-      const t = String(r || "").trim();
-      if (/^g\b/i.test(t)) return true;
-      if (/^b\b/i.test(t)) return false;
-      return null;
-    }).catch(() => null);
-  }
+  // Hinweis Tempo: Grammatik- und Sinn-Prüfung laufen bewusst in EINEM
+  // Aufruf (verifySentence oben) — ein zweiter separater Richter-Aufruf
+  // verdreifachte die Wartezeit pro Satz, ohne messbar strenger zu sein.
   function fetchCloze(qq, attempt, topicOverride) {
     attempt = attempt || 0;
     const curTopic = topicOverride || (topicsSel.length ? topicsSel[Math.floor(Math.random() * topicsSel.length)] : "random");
@@ -7466,22 +7458,13 @@ function QuizView({
           }
           full2 = v; gap2 = rebuilt;
         }
-        // Finales Veto des Sinn-Richters: nur Sätze, die BEIDE unabhängigen
-        // Prüfungen bestehen, werden angezeigt und gecacht.
-        verifySense(targetName, full2).then(ok => {
-          if (clozeTokenRef.current !== myTok) return;
-          if (ok !== true) {
-            if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic); else setCloze(null);
-            return;
-          }
-          const out = {
-            full: full2,
-            gap: gap2,
-            native: j && j.n ? String(j.n).trim() : ""
-          };
-          persist(key, out);
-          setCloze(out);
-        });
+        const out = {
+          full: full2,
+          gap: gap2,
+          native: j && j.n ? String(j.n).trim() : ""
+        };
+        persist(key, out);
+        setCloze(out);
       });
     }).catch(() => {
       if (clozeTokenRef.current !== myTok) return;
@@ -7982,20 +7965,11 @@ function QuizView({
           setSent({ error: 1 });
           return;
         }
-        // Finales Veto des Sinn-Richters — wie bei den Karten-Beispielen.
-        verifySense(targetName, v || j.t).then(ok => {
-          if (genTokenRef.current !== myTok) return;
-          if (ok !== true) {
-            if (attempt < 2) { genSentence(tc, attempt + 1, tid); return; }
-            setSent({ error: 1 });
-            return;
-          }
-          setSent({
-            n: j.n,
-            t: v || j.t,
-            tenseLabel: oneTense,
-            tenseId: chosenId
-          });
+        setSent({
+          n: j.n,
+          t: v || j.t,
+          tenseLabel: oneTense,
+          tenseId: chosenId
         });
       });
     }).catch(() => {
