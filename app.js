@@ -17481,7 +17481,11 @@ function App() {
       persist("kunju-premium", true);
       setIsPremium(true);
       setShowPaySuccess(true);
-      if (window.ceTrack) { const plan = params.get("plan"); window.ceTrack("subscribe", { plan: plan === "monthly" ? "monthly" : "annual" }); }
+      if (window.ceTrack) {
+        const plan = params.get("plan") === "monthly" ? "monthly" : "annual";
+        window.ceTrack("subscribe", { plan });
+        window.ceTrack(plan === "monthly" ? "abo_monthly" : "abo_annual");
+      }
       window.history.replaceState({}, "", "/");
       // Background verify: sync DB status once webhook has likely landed
       if (window.__supa) {
