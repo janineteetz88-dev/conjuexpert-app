@@ -7228,15 +7228,20 @@ function QuizView({
   // Konjugation & Subjekt-Verb-Kongruenz in JEDEM Teilsatz ("Obwohl ihr im
   // Meeting gähntet, bliebt ihr aufmerksam", nie "blieb ihr"). Rückgabe:
   // "" = Satz ok · String = korrigierter Satz · null = Prüfung nicht möglich.
-  function verifySentence(tName, sentence, mustKeep) {
+  function verifySentence(tName, sentence, mustKeep, natName, natTx) {
     const keep = mustKeep ? ` The form "${mustKeep}" is the practised word and MUST remain exactly unchanged.` : "";
-    return window.aiComplete(`You are a strict ${tName} grammar AND common-sense checker. Check ONLY this single ${tName} sentence: "${sentence}". First: verb conjugation and subject-verb agreement in EVERY clause, including subordinate and main clauses (German example: with "ihr" the verb must be "bliebt"/"wart", NEVER "blieb"/"war"), plus case endings, adjective agreement and word order.${langRules(lang)} Second — just as important: the sentence must make real-world SENSE when read LITERALLY. If it is grammatically fine but semantically absurd (drinking a building, wearing a soup, ordering a joke, setting a topic on fire), if any pronoun/clitic lacks a sensible referent, OR if it sounds contrived — like an artificial textbook exercise stitched together to tick boxes rather than something a real person would ever say — it is WRONG: fix it by swapping the odd part for a natural everyday one. The test: would a native speaker say exactly this sentence in real life without smiling? If not, fix it.${keep} If the sentence is 100% correct AND natural, reply with exactly: OK. If you can fix it, reply with ONLY the corrected sentence — change as little as possible, no quotes, no explanation. If it cannot be fixed while keeping the required form, reply with exactly: BAD.`).then(r => {
+    const tx = natName && natTx ? ` Also given is its ${natName} translation: "${natTx}". Check the translation as well: it must be natural, idiomatic ${natName} — no word-for-word calques (e.g. Spanish "esa zona" must become natural ${natName} like "diese Gegend", never "diese Zone").` : "";
+    return window.aiComplete(`You are a strict ${tName} grammar AND common-sense checker. Check ONLY this single ${tName} sentence: "${sentence}". First: verb conjugation and subject-verb agreement in EVERY clause, including subordinate and main clauses (German example: with "ihr" the verb must be "bliebt"/"wart", NEVER "blieb"/"war"), plus case endings, adjective agreement and word order.${langRules(lang)} Second — just as important: the sentence must make real-world SENSE when read LITERALLY. If it is grammatically fine but semantically absurd (drinking a building, wearing a soup, ordering a joke, setting a topic on fire), if any pronoun/clitic lacks a sensible referent, OR if it sounds contrived — like an artificial textbook exercise stitched together to tick boxes rather than something a real person would ever say — it is WRONG: fix it by swapping the odd part for a natural everyday one. The test: would a native speaker say exactly this sentence in real life without smiling? If not, fix it.${tx}${keep} If sentence AND translation are 100% correct and natural, reply with exactly: OK. If anything is fixable, reply with ONLY minified JSON {"t":"<corrected or unchanged sentence>","n":"<corrected or unchanged translation>"} — change as little as possible, no explanation. If it cannot be fixed while keeping the required form, reply with exactly: BAD.`).then(r => {
       let t = String(r || "").trim().replace(/^["'«»\s]+/, "").replace(/["'«»\s]+$/, "");
       if (!t) return null;
       if (/^ok[.! ]*$/i.test(t)) return "";
       if (/^bad[.! ]*$/i.test(t)) return null;
+      try {
+        const j2 = looseParse(t);
+        if (j2 && j2.t) return { t: String(j2.t).trim(), n: j2.n ? String(j2.n).trim() : "" };
+      } catch (_) {}
       t = t.split("\n")[0].trim();
-      return t || null;
+      return t ? { t: t, n: "" } : null;
     }).catch(() => null);
   }
   // Hinweis Tempo: Grammatik- und Sinn-Prüfung laufen bewusst in EINEM
@@ -7292,7 +7297,7 @@ function QuizView({
     if (!myWord && skill === "advanced" && Math.random() < 0.35) {
       advConn = ` Make it a more complex sentence that naturally uses a subordinating connector (e.g. German: obwohl/trotzdem/damit/während/sodass; Spanish: aunque/a pesar de que/para que; French: bien que/quoique/afin que/pourtant; Dutch: hoewel/zodat/terwijl), like "Trotz der Umstände hielten sie durch." Only do this if the result still sounds like something a native speaker would actually say — otherwise keep the sentence simple.`;
     }
-    const key = `kunju-cloze20-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
+    const key = `kunju-cloze21-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {
       setCloze(cached);
@@ -7321,6 +7326,10 @@ function QuizView({
     // NL Aanvoegende wijs ist im modernen Niederländisch archaisch und lebt nur
     // in festen Wendungen — ein Alltagssatz mit dieser Form klingt immer falsch.
     const nlSubjCard = lang === "nl" && (qq.tenseId === "subjunctive" || /aanvoegende/i.test(qq.tenseLabel || ""));
+    // Subjuntivo-Karten: Trigger variieren — das Modell klammerte sich sonst
+    // an "Dudaba(s) que …"-Zweifelsfragen (oft gestelzt, nie über die eigene
+    // Handlung zweifeln).
+    const subjTxt = /subjunctive/i.test(qq.tenseId || "") ? ' If this form needs a trigger clause (subjunctive), pick a NATURAL, varied everyday trigger — a wish, request, emotion, "si"/"como si" or a common set phrase — do NOT default to a doubt question, and NEVER have someone doubt or question their own action in the same sentence.' : "";
     const clozeStyle = isProverb ? "" : nlSubjCard
       ? ' The Dutch aanvoegende wijs is ARCHAIC and survives only in fixed formulas — the sentence MUST be one of these natural fossilized patterns: a formal wish ("Leve de koning!", "Het ga je goed!", "God zij dank!"), a recipe-style instruction ("Men neme twee eieren …") or a set phrase ("Het zij zo.", "Kome wat komt."). NEVER build a plain everyday sentence around this form.'
       : imperativeCard
@@ -7328,7 +7337,7 @@ function QuizView({
       : dePraetNarrative
       ? ' Make it a written-narrative STATEMENT, like a sentence from a novel, memoir or report — NEVER a question, exclamation or spoken dialogue (German Präteritum of everyday verbs belongs to written narration). It MUST have a narrative past frame: use "damals", "früher", "den ganzen Abend/Tag", "jahrelang" or an "als …"/"während …" clause. Do NOT use everyday-speech time words like "gestern", "heute", "vorhin" or "letzte Woche" — with those a German would use Perfekt, and the sentence sounds wrong. Example of the right register: "Damals störtet ihr ständig den Unterricht, bis der Lehrer die Eltern anrief."'
       : clozeStyles[Math.floor(Math.random() * clozeStyles.length)];
-    const prompt = isProverb ? `Give ONE of the MOST FAMOUS, standard ${targetName} proverbs ("Sprichwort") — the kind every native speaker knows and that appears in proverb collections (e.g. for German: "Übung macht den Meister", "Morgenstund hat Gold im Mund", "Wer A sagt, muss auch B sagen"). It must be a real, complete proverb in standard ${targetName}, NOT regional slang, NOT an everyday idiom, NOT invented. Pick a varied one (variety #${provN}). Wrap its main conjugated verb in **double asterisks**. Then give its meaning in ${nativeName}. Do NOT use double-quote characters. Reply with ONLY minified JSON: {"t":"<the proverb with **verb**>","n":"<${nativeName} meaning>"}` : `Write ONE short, natural ${lvl} sentence in ${targetName} (max ${advConn ? 14 : 9} words) ${splitLang && isCompound ? `that correctly expresses the ${qq.tenseLabel} of "${qq.verb}" for "${qq.pronoun}" — its parts are ${qq.answer.split(" ").map(p => `"${p}"`).join(" + ")}. Use natural ${targetName} word order: the finite/auxiliary verb stays in SECOND position and the participle or infinitive moves to the END of the clause (e.g. "Ich habe das Buch gestern gelesen").` : `that CONTAINS exactly the verb form "${qq.answer}" (the ${qq.tenseLabel} of "${qq.verb}", ${qq.pronoun}).`}${clozeStyle}${advConn}${splitLang ? ` IMPORTANT: if "${qq.verb}" is a separable-prefix verb (trennbares Verb / scheidbaar werkwoord), split the prefix to the END of the main clause in simple tenses (e.g. "ausbreiten" → "Das Feuer breitete sich schnell aus", NEVER "ausbreitete").` : ""}${topicTxt}${myWordTxt} End with proper punctuation (. ! or ?). ${langRules(lang)} Before replying, silently PROOFREAD and guarantee the sentence is 100% correct standard ${targetName} (verb position, separable-prefix split, case government, agreement, word order); if anything is off, fix it and output only the corrected sentence. The sentence must also make real-world SENSE, never nonsense: use a subject that fits the verb's meaning and its correct case government. Adjectives and participles MUST agree in gender and number with the word they describe (with a we/nosotros subject write "Desesperados", NEVER "Desesperado"). Use ONLY natural, everyday collocations — if a detail like an adjective on a noun would sound odd to a native speaker (e.g. "la fiesta vieja"), DROP it and keep the sentence plain instead. When in doubt, always prefer the simpler, safer sentence. For dative verbs of belonging/liking ("gehören", "gefallen", "schmecken", "fehlen"), the THING is the SUBJECT and the person is a DATIVE object — say "Das Buch gehört ihr" / "Das Buch wird ihr gehören", NEVER a dummy-"es" like "Es wird ihr das Buch gehören". Some verbs describe an EVENT and take a thing/event as subject, not a person (German "stattfinden", "geschehen", "passieren", "gelingen"; Dutch "plaatsvinden", "gebeuren") — e.g. "Die Feier **fand statt**", NEVER "Ich fand die Feier statt". If the requested tense expresses an action completed BEFORE another past moment (a pluperfect / past-perfect — German Plusquamperfekt, English past perfect, Spanish pluscuamperfecto, French plus-que-parfait, Dutch voltooid verleden tijd), do NOT leave it standing alone: anchor it to a later reference point with a subordinate clause (e.g. German "Als wir ankamen, …", "Bevor …", "Nachdem …"; English "By the time …") so it doesn't hang in the air. Above all it must sound NATURAL to a native speaker in everyday register — pick a context and sentence type where exactly "${qq.answer}" is idiomatic. In German the simple-past Präteritum of everyday verbs belongs in written narration, NOT in spoken questions or dialogue (a native would say the Perfekt there), so if the requested style would sound stilted with this form, use whatever sentence type sounds most natural instead. Then give a natural ${nativeName} translation of the WHOLE sentence — and in that translation render the verb "${qq.verb}" with its most standard, DIRECT ${nativeName} equivalent (the dictionary meaning), NOT a loose synonym or paraphrase, so the practised verb is clearly recognizable in the translation. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`;
+    const prompt = isProverb ? `Give ONE of the MOST FAMOUS, standard ${targetName} proverbs ("Sprichwort") — the kind every native speaker knows and that appears in proverb collections (e.g. for German: "Übung macht den Meister", "Morgenstund hat Gold im Mund", "Wer A sagt, muss auch B sagen"). It must be a real, complete proverb in standard ${targetName}, NOT regional slang, NOT an everyday idiom, NOT invented. Pick a varied one (variety #${provN}). Wrap its main conjugated verb in **double asterisks**. Then give its meaning in ${nativeName}. Do NOT use double-quote characters. Reply with ONLY minified JSON: {"t":"<the proverb with **verb**>","n":"<${nativeName} meaning>"}` : `Write ONE short, natural ${lvl} sentence in ${targetName} (max ${advConn ? 14 : 9} words) ${splitLang && isCompound ? `that correctly expresses the ${qq.tenseLabel} of "${qq.verb}" for "${qq.pronoun}" — its parts are ${qq.answer.split(" ").map(p => `"${p}"`).join(" + ")}. Use natural ${targetName} word order: the finite/auxiliary verb stays in SECOND position and the participle or infinitive moves to the END of the clause (e.g. "Ich habe das Buch gestern gelesen").` : `that CONTAINS exactly the verb form "${qq.answer}" (the ${qq.tenseLabel} of "${qq.verb}", ${qq.pronoun}).`}${clozeStyle}${subjTxt}${advConn}${splitLang ? ` IMPORTANT: if "${qq.verb}" is a separable-prefix verb (trennbares Verb / scheidbaar werkwoord), split the prefix to the END of the main clause in simple tenses (e.g. "ausbreiten" → "Das Feuer breitete sich schnell aus", NEVER "ausbreitete").` : ""}${topicTxt}${myWordTxt} End with proper punctuation (. ! or ?). ${langRules(lang)} Before replying, silently PROOFREAD and guarantee the sentence is 100% correct standard ${targetName} (verb position, separable-prefix split, case government, agreement, word order); if anything is off, fix it and output only the corrected sentence. The sentence must also make real-world SENSE, never nonsense: use a subject that fits the verb's meaning and its correct case government. Adjectives and participles MUST agree in gender and number with the word they describe (with a we/nosotros subject write "Desesperados", NEVER "Desesperado"). Use ONLY natural, everyday collocations — if a detail like an adjective on a noun would sound odd to a native speaker (e.g. "la fiesta vieja"), DROP it and keep the sentence plain instead. When in doubt, always prefer the simpler, safer sentence. For dative verbs of belonging/liking ("gehören", "gefallen", "schmecken", "fehlen"), the THING is the SUBJECT and the person is a DATIVE object — say "Das Buch gehört ihr" / "Das Buch wird ihr gehören", NEVER a dummy-"es" like "Es wird ihr das Buch gehören". Some verbs describe an EVENT and take a thing/event as subject, not a person (German "stattfinden", "geschehen", "passieren", "gelingen"; Dutch "plaatsvinden", "gebeuren") — e.g. "Die Feier **fand statt**", NEVER "Ich fand die Feier statt". If the requested tense expresses an action completed BEFORE another past moment (a pluperfect / past-perfect — German Plusquamperfekt, English past perfect, Spanish pluscuamperfecto, French plus-que-parfait, Dutch voltooid verleden tijd), do NOT leave it standing alone: anchor it to a later reference point with a subordinate clause (e.g. German "Als wir ankamen, …", "Bevor …", "Nachdem …"; English "By the time …") so it doesn't hang in the air. Above all it must sound NATURAL to a native speaker in everyday register — pick a context and sentence type where exactly "${qq.answer}" is idiomatic. In German the simple-past Präteritum of everyday verbs belongs in written narration, NOT in spoken questions or dialogue (a native would say the Perfekt there), so if the requested style would sound stilted with this form, use whatever sentence type sounds most natural instead. Then give a natural ${nativeName} translation of the WHOLE sentence — and in that translation render the verb "${qq.verb}" with its most standard, DIRECT ${nativeName} equivalent (the dictionary meaning), NOT a loose synonym or paraphrase, so the practised verb is clearly recognizable in the translation. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`;
     window.aiComplete(prompt).then(txt => {
       if (clozeTokenRef.current !== myTok) return; // stale response — a newer question is active
       let j = null;
@@ -7443,25 +7452,28 @@ function QuizView({
         wl.forEach(w => { const r = mk(w); if (r.test(g)) { g = g.replace(r, "…"); ok = true; } });
         return ok ? g : null;
       };
-      verifySentence(targetName, full, qq.answer).then(v => {
+      verifySentence(targetName, full, qq.answer, nativeName, j && j.n ? String(j.n).trim() : "").then(v => {
         if (clozeTokenRef.current !== myTok) return;
         if (v === null) {
           if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic); else setCloze(null);
           return;
         }
-        let full2 = full, gap2 = gap;
-        if (v && v !== full) {
-          const rebuilt = buildGapFrom(v);
-          if (!rebuilt) {
-            if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic); else setCloze(null);
-            return;
+        let full2 = full, gap2 = gap, native2 = j && j.n ? String(j.n).trim() : "";
+        if (v && typeof v === "object") {
+          if (v.t && v.t !== full) {
+            const rebuilt = buildGapFrom(v.t);
+            if (!rebuilt) {
+              if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic); else setCloze(null);
+              return;
+            }
+            full2 = v.t; gap2 = rebuilt;
           }
-          full2 = v; gap2 = rebuilt;
+          if (v.n) native2 = v.n;
         }
         const out = {
           full: full2,
           gap: gap2,
-          native: j && j.n ? String(j.n).trim() : ""
+          native: native2
         };
         persist(key, out);
         setCloze(out);
@@ -7958,7 +7970,7 @@ function QuizView({
       }
       recentSentRef.current[rkey] = [j.n, ...recent].slice(0, 30);
       // Satz-Wächter auch hier: die Zielsprach-Übersetzung gegenprüfen.
-      verifySentence(targetName, j.t).then(v => {
+      verifySentence(targetName, j.t, null, nativeName, j.n).then(v => {
         if (genTokenRef.current !== myTok) return;
         if (v === null) {
           if (attempt < 2) { genSentence(tc, attempt + 1, tid); return; }
@@ -7966,8 +7978,8 @@ function QuizView({
           return;
         }
         setSent({
-          n: j.n,
-          t: v || j.t,
+          n: v && typeof v === "object" && v.n ? v.n : j.n,
+          t: v && typeof v === "object" && v.t ? v.t : j.t,
           tenseLabel: oneTense,
           tenseId: chosenId
         });
