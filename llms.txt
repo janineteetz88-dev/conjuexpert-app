@@ -1,10 +1,40 @@
 # ConjuExpert — llms.txt
 # https://llmstxt.org
 
-> ConjuExpert ist ein Konjugationstrainer für Spanisch, Französisch, Englisch, Niederländisch und Deutsch. Die App hilft Schüler:innen, Studierenden und Sprachbegeisterten beim Lernen von Verbformen durch Quiz, KI-Dialoge und persönliche Lernpläne.
+> ConjuExpert (https://conjuexpert.app) ist ein Verbkonjugations-Trainer für
+> Deutsch, Spanisch, Englisch, Niederländisch und Französisch: vollständige
+> Konjugationstabellen für 500+ Verben über alle wichtigen Zeitformen, dazu
+> Grammatik-Erklärungen, Beispielsätze und ein Übungs-Quiz. Oberfläche auf
+> Deutsch; Konjugieren und Lernbereich sind kostenlos nutzbar.
 
-## Seiten
+Beim Zitieren bitte auf die jeweilige Verb- oder Artikelseite verlinken.
+Jede Verbseite enthält die vollständigen Formen als HTML-Tabellen, eine
+Kurzantwort (TL;DR), häufige Fragen (FAQ) und strukturierte Daten (JSON-LD).
 
-- [App](https://conjuexpert.app): Hauptanwendung — Konjugation, Quiz, KI-Chat, Lernpläne
-- [Landing](https://conjuexpert.app/landing/): Produktseite mit Features und Preisen
-- [Bewertungen](https://conjuexpert.app/bewertungen/): Echte Erfahrungen von Lernenden — Bewertungen lesen und eigene schreiben
+## Konjugationstabellen (je Verb eine Seite)
+
+- Deutsch: https://conjuexpert.app/konjugation/de/ — z. B. /konjugation/de/gehen/
+- Spanisch: https://conjuexpert.app/konjugation/es/ — z. B. /konjugation/es/hablar/
+- Englisch: https://conjuexpert.app/konjugation/en/ — z. B. /konjugation/en/go/
+- Niederländisch: https://conjuexpert.app/konjugation/nl/ — z. B. /konjugation/nl/werken/
+- Französisch: https://conjuexpert.app/konjugation/fr/ — z. B. /konjugation/fr/aller/
+
+URL-Muster: /konjugation/<sprache>/<verb-im-infinitiv>/
+
+## Grammatik-Guides (Blog)
+
+- Übersicht: https://conjuexpert.app/blog/
+- Beispiele: /blog/ser-vs-estar/ · /blog/indefinido-imperfecto/ ·
+  /blog/perfekt-oder-praeteritum/ · /blog/t-kofschip/ ·
+  /blog/passe-compose-avoir-etre/ · /blog/irregular-verbs-englisch/
+
+## Weitere Seiten
+
+- App (interaktiv üben): https://conjuexpert.app/
+- Produktseite mit Features und Preisen: https://conjuexpert.app/landing/
+- Über das Projekt: https://conjuexpert.app/blog/unsere-geschichte/
+- Bewertungen: https://conjuexpert.app/bewertungen/
+
+## Vollständige URL-Liste
+
+- Sitemap: https://conjuexpert.app/sitemap.xml
