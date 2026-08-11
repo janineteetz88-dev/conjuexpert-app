@@ -7379,12 +7379,14 @@ function QuizView({
       'a hypothetical "si"-type clause with a conditional main clause (like "Si …, viajaría más.")',
       'a comparison with "como si …" (or its equivalent in the target language)',
       'an impersonal judgement (like "era importante que…", "fue una pena que…")',
-      'a negated belief (like "no creía que…", "no parecía que…")'
+      'a negated belief (like "no creía que…", "no parecía que…")',
+      'a wish exclamation with "ojalá" (or the target language\'s equivalent)',
+      'a doubt in the main clause about SOMEONE ELSE\'s action (like "dudaba que él…" — never about one\'s own action)'
     ];
     let subjTxt = "";
     if (/subjunctive/i.test(qq.tenseId || "")) {
       if (qq._sf === undefined) qq._sf = Math.floor(Math.random() * SUBJ_FRAMES.length);
-      subjTxt = ` If this form needs a trigger clause (subjunctive), build the sentence around ${SUBJ_FRAMES[qq._sf]} — word it naturally in the target language. Do NOT use "ojalá" and do NOT use any form of "dudar"/"douter"/"twijfeln" (massively overused), and NEVER have someone doubt or question their own action.`;
+      subjTxt = ` If this form needs a trigger clause (subjunctive), build the sentence around ${SUBJ_FRAMES[qq._sf]} — word it naturally in the target language. Use "ojalá" or forms of "dudar" ONLY if the chosen pattern above says so (they are heavily overused otherwise), and NEVER have someone doubt or question their own action.`;
     }
     const clozeStyle = isProverb ? "" : nlSubjCard
       ? ' The Dutch aanvoegende wijs is ARCHAIC and survives only in fixed formulas — the sentence MUST be one of these natural fossilized patterns: a formal wish ("Leve de koning!", "Het ga je goed!", "God zij dank!"), a recipe-style instruction ("Men neme twee eieren …") or a set phrase ("Het zij zo.", "Kome wat komt."). NEVER build a plain everyday sentence around this form.'
