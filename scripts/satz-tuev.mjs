@@ -37,19 +37,35 @@ const PRON_IDX = [0, 1, 2, 3, 4, 5];
 
 function fail(msg) { console.error(`✗ ${msg}`); process.exit(1); }
 
+const OPENAI_KEY = process.env.OPENAI_API_KEY || "";
 async function ai(prompt, lang) {
   for (let i = 0; i < 3; i++) {
     try {
-      const res = await fetch(WORKER, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, lang }),
-      });
-      if (res.ok) {
-        const j = await res.json().catch(() => null);
-        const txt = j && (j.text || j.completion || j.result || (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content));
-        if (typeof txt === "string" && txt.trim()) return txt.trim();
-        if (typeof j === "string") return j;
+      if (OPENAI_KEY) {
+        // Direktweg (CI): identisches Modell wie der Worker (gpt-4.1),
+        // umgeht Cloudflares Bot-Schutz für Rechenzentrums-IPs.
+        const res = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${OPENAI_KEY}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ model: "gpt-4.1", messages: [{ role: "user", content: prompt }], temperature: 0.7, max_tokens: 500 }),
+        });
+        if (res.ok) {
+          const j = await res.json();
+          const txt = j.choices?.[0]?.message?.content;
+          if (typeof txt === "string" && txt.trim()) return txt.trim();
+        }
+      } else {
+        const res = await fetch(WORKER, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt, lang }),
+        });
+        if (res.ok) {
+          const j = await res.json().catch(() => null);
+          const txt = j && (j.text || j.completion || j.result || (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content));
+          if (typeof txt === "string" && txt.trim()) return txt.trim();
+          if (typeof j === "string") return j;
+        }
       }
     } catch (e) {}
     await new Promise(r => setTimeout(r, 1500 * (i + 1)));

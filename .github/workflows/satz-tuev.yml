@@ -19,4 +19,6 @@ jobs:
         with:
           node-version: "22"
       - name: Stichprobe erzeugen & richten
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node scripts/satz-tuev.mjs
