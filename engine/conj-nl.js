@@ -176,7 +176,7 @@
       subjunctive: irr.subj || reg.subjunctive,
       // Gebiedende wijs: kein hij/zij-Imperativ (—); Höflichkeitsform = Stamm+t
       // ("koopt u", "weest u"), nicht die Du-Form ("koop u").
-      imperative: ["—", (irr.imp != null ? irr.imp : reg.imperative[1]), "—", "laten we " + base, (irr.presentFull ? irr.presentFull[4] : reg.imperative[4]), (irr.imp != null ? nlPoliteImp(irr.imp) : reg.imperative[5])],
+      imperative: ["—", (irr.imp != null ? irr.imp : reg.imperative[1]), "—", "laten we " + base, (irr.imp != null ? irr.imp : reg.imperative[1]), (irr.imp != null ? nlPoliteImp(irr.imp) : reg.imperative[5])],
       participle: irr.participle,
       aux: irr.aux || "hebben"
     }, isIrr: true };
@@ -241,7 +241,8 @@
       present: [stem, stT, stT, verb, verb, verb],
       past: [pastSing, pastSing, pastSing, pastPlur, pastPlur, pastPlur],
       subjunctive: [verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb, verb, verb], // Aanvoegende wijs = Infinitiv minus -n (hebben→hebbe, lopen→lope)
-      imperative: ["—", stem, "—", "laten we " + verb, stT, stT + " u"],
+      // Moderner Imperativ: Stamm für jij UND jullie ("werk!"); "werkt!" ist archaisch.
+      imperative: ["—", stem, "—", "laten we " + verb, stem, stT + " u"],
       participle,
       aux: "hebben"
     };
@@ -311,7 +312,7 @@
         present: irr.presentFull || reg.present,
         past: [irr.pastSg, irr.pastSg, irr.pastSg, irr.pastPl, irr.pastPl, irr.pastPl],
         subjunctive: irr.subj || reg.subjunctive,
-        imperative: ["—", impForm, "—", "laten we " + verb, (irr.presentFull ? irr.presentFull[4] : reg.imperative[4]), nlPoliteImp(impForm)],
+        imperative: ["—", impForm, "—", "laten we " + verb, impForm, nlPoliteImp(impForm)],
         participle: irr.participle,
         aux: irr.aux || "hebben"
       };
