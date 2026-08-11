@@ -6937,7 +6937,11 @@ function QuizView({
     if (!cloze || cloze.loading || !cloze.full) return null;
     return /*#__PURE__*/React.createElement("button", {
       className: "rep-link",
-      onClick: () => window.__openReport && window.__openReport({ kind: "sentence", lang: lang, sentence: cloze.full, translation: cloze.native, verb: q && q.verb, tense: q && q.tenseLabel, pronoun: q && q.pronoun })
+      onClick: () => window.__openReport && window.__openReport({ kind: "sentence", lang: lang, sentence: cloze.full, translation: cloze.native, verb: q && q.verb, tense: q && q.tenseLabel, pronoun: q && q.pronoun, onPurge: () => {
+        // Gemeldeter Satz verschwindet SOFORT beim Melder und wird neu gebaut.
+        try { if (cloze && cloze.k) localStorage.removeItem(cloze.k); } catch (e) {}
+        try { if (q) { setCloze({ loading: true }); fetchCloze(q, 0); } } catch (e) {}
+      } })
     }, /*#__PURE__*/React.createElement("span", { className: "rep-link-ic", dangerouslySetInnerHTML: { __html: IC_FLAG } }), tr("report_link"));
   }
   const recentRef = useRef([]);
@@ -7420,7 +7424,8 @@ function QuizView({
           full,
           gap: full,
           native: j && j.n ? String(j.n).trim() : "",
-          proverb: true
+          proverb: true,
+          k: key
         };
         persist(key, out);
         !silent && setCloze(out);
@@ -7493,6 +7498,7 @@ function QuizView({
         }
         const tpl = deClozeTemplate(qq);
         if (tpl) {
+          tpl.k = key;
           persist(key, tpl);
           !silent && setCloze(tpl);
           return;
@@ -7531,7 +7537,8 @@ function QuizView({
         const out = {
           full: full2,
           gap: gap2,
-          native: native2
+          native: native2,
+          k: key
         };
         persist(key, out);
         !silent && setCloze(out);
@@ -13869,6 +13876,7 @@ function ReportSheet({ ctx, onClose }) {
   }
   function submit() {
     sendReport({ kind: ctx.kind, lang: ctx.lang, reason: reason || "feedback", note: note, screenshot: shot, verb: ctx.verb, tense: ctx.tense, pronoun: ctx.pronoun, sentence: ctx.sentence, translation: ctx.translation });
+    if (ctx.onPurge) { try { ctx.onPurge(); } catch (e) {} }
     setSent(true);
     setTimeout(onClose, 1300);
   }
