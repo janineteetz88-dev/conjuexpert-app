@@ -8645,11 +8645,13 @@ function QuizView({
   useEffect(() => {
     if (mode === "texte") genStory(); /* eslint-disable-next-line */
   }, [mode, lang, skill, topicsSel.join(","), tenseSel.join(",")]);
-  // Vorlade-Trigger: Karte beantwortet/umgedreht → nächste vorbereiten.
+  // Vorlade-Trigger: Sobald eine Karte ANGEZEIGT wird, die nächste schon
+  // vorbereiten — nicht erst nach dem Beantworten. Der KI-Satz braucht ~4–5 s;
+  // die laufen so parallel zum Lesen/Antworten statt nach dem Weiter-Tippen.
   useEffect(() => {
-    if (q && (state !== "idle" || flipped)) prepareNext();
+    if (q) prepareNext();
     /* eslint-disable-next-line */
-  }, [state, flipped]);
+  }, [q, state, flipped]);
   // Vorbereitete Frage verwerfen, wenn sich Kontext/Filter ändern.
   useEffect(() => {
     preQRef.current = null;
