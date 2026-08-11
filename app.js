@@ -6904,7 +6904,14 @@ function QuizView({
   const [sentMistMode, setSentMistMode] = useState(false);
   const [smver, setSmver] = useState(0);
   const [cloze, setCloze] = useState(null);
-  const [topicsSel, setTopicsSel] = useState(["random"]);
+  const preQRef = useRef(null);
+  // Listen-&-Themen-Auswahl überlebt App-Neustarts (je Sprache gespeichert).
+  const [topicsSel, setTopicsSelRaw] = useState(() => recall("kunju-topics-" + lang, ["random"]));
+  const setTopicsSel = (v) => setTopicsSelRaw(prev => {
+    const nx = typeof v === "function" ? v(prev) : v;
+    try { persist("kunju-topics-" + lang, nx); } catch (e) {}
+    return nx;
+  });
   const [sent, setSent] = useState(null);
   const [spkTarget, setSpkTarget] = useState(lang);
   const [score, setScore] = useState({
@@ -7044,6 +7051,12 @@ function QuizView({
       return n.length ? n : ["random"];
     });
   }
+  useEffect(() => {
+    const stored = recall("kunju-topics-" + lang, ["random"]);
+    const valid = (Array.isArray(stored) ? stored : ["random"]).filter(id => id === "random" || allThemes.some(t => t.id === id));
+    setTopicsSelRaw(valid.length ? valid : ["random"]);
+    /* eslint-disable-next-line */
+  }, [lang]);
   function reloadTenses() {
     const saved = recall(`kunju-tenses-${lang}`, null);
     const ids = eng.conjugate(eng.samples[0]);
@@ -7129,6 +7142,18 @@ function QuizView({
     if (qn) recentRef.current = [qn.verb, ...recentRef.current].slice(0, 30);
     return qn;
   }
+  // Vorladen: Sobald die aktuelle Karte beantwortet/umgedreht ist, wird die
+  // NÄCHSTE Frage vorgemerkt und ihr KI-Satz still im Hintergrund erzeugt
+  // (fetchCloze im silent-Modus schreibt nur in den Cache). Beim Weitergehen
+  // ist der Satz dann sofort da.
+  function prepareNext() {
+    if (mistMode || preQRef.current) return;
+    if (!(mode === "choice" || mode === "cards" || mode === "type" && typeMode === "form" || mode === "speak" && spkMode === "form")) return;
+    const nq = newQ();
+    if (!nq) return;
+    preQRef.current = nq;
+    try { fetchCloze(nq, 0, undefined, true); } catch (e) {}
+  }
   function next() {
     if (recRef.current) {
       try {
@@ -7137,7 +7162,9 @@ function QuizView({
       } catch (e) {}
       recRef.current = null;
     }
-    setQ(newQ());
+    const nq2 = !mistMode && preQRef.current ? preQRef.current : newQ();
+    preQRef.current = null;
+    setQ(nq2);
     setVal("");
     setState("idle");
     setPicked(null);
@@ -7247,14 +7274,17 @@ function QuizView({
   // Hinweis Tempo: Grammatik- und Sinn-Prüfung laufen bewusst in EINEM
   // Aufruf (verifySentence oben) — ein zweiter separater Richter-Aufruf
   // verdreifachte die Wartezeit pro Satz, ohne messbar strenger zu sein.
-  function fetchCloze(qq, attempt, topicOverride) {
+  function fetchCloze(qq, attempt, topicOverride, silent) {
     attempt = attempt || 0;
-    const curTopic = topicOverride || (topicsSel.length ? topicsSel[Math.floor(Math.random() * topicsSel.length)] : "random");
+    // Thema an der Frage festnageln (qq._topic): Vorlade- und Anzeige-Aufruf
+    // müssen denselben Cache-Schlüssel treffen, sonst ist das Vorladen wertlos.
+    const curTopic = topicOverride || (qq && qq._topic) || (topicsSel.length ? topicsSel[Math.floor(Math.random() * topicsSel.length)] : "random");
+    if (qq && !qq._topic) qq._topic = curTopic;
     if (!qq || !qq.answer || qq.answer === "—") {
-      setCloze(null);
+      !silent && setCloze(null);
       return;
     }
-    const myTok = attempt === 0 ? ++clozeTokenRef.current : clozeTokenRef.current;
+    const myTok = silent ? clozeTokenRef.current : (attempt === 0 ? ++clozeTokenRef.current : clozeTokenRef.current);
     const targetName = window.CONJ[lang].name;
     const nativeName = recall("kunju-native", "German");
     const lvl = skill === "advanced" ? "C1-level" : skill === "intermediate" ? "B1-level" : "very simple A1–A2";
@@ -7285,7 +7315,9 @@ function QuizView({
     // erzeugten die absurdesten Sätze. Phrasen prägen weiter das Thema,
     // werden aber nicht mehr in den Satz gezwungen.
     const mwSingle = catWords.filter(w => !/\s/.test(w));
-    if (mwSingle.length) {
+    if (qq && qq._mw !== undefined) {
+      myWord = qq._mw;
+    } else if (mwSingle.length) {
       myWord = mwSingle[Math.floor(Math.random() * mwSingle.length)];
       myWordTxt = ` Try to also include the learner's saved ${targetName} word "${myWord}" — but ONLY if the result makes complete real-world sense with this verb and sounds like something a native speaker would actually say. If the word does not fit this verb naturally (you cannot drink a building, wear a soup, …), DO NOT use the word at all — a plain natural sentence without it is ALWAYS better than an absurd one with it.`;
     } else {
@@ -7294,20 +7326,23 @@ function QuizView({
       myWord = mwP1.length ? mwP1[Math.floor(Math.random() * mwP1.length)] : "";
       myWordTxt = myWord ? ` If — and ONLY if — it fits completely naturally with this verb, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence; otherwise silently leave it out.` : "";
     }
-    if (!myWord && skill === "advanced" && Math.random() < 0.35) {
+    if (qq && qq._mw === undefined) qq._mw = myWord;
+    if (qq && qq._adv === undefined) qq._adv = (!myWord && skill === "advanced" && Math.random() < 0.35);
+    if (qq && qq._mw !== undefined && qq._mw && !myWordTxt) myWordTxt = ` If — and ONLY if — it fits completely naturally with this verb, also use the learner's saved ${targetName} word "${myWord}" somewhere in the sentence; otherwise silently leave it out.`;
+    if (qq ? qq._adv : (!myWord && skill === "advanced" && Math.random() < 0.35)) {
       advConn = ` Make it a more complex sentence that naturally uses a subordinating connector (e.g. German: obwohl/trotzdem/damit/während/sodass; Spanish: aunque/a pesar de que/para que; French: bien que/quoique/afin que/pourtant; Dutch: hoewel/zodat/terwijl), like "Trotz der Umstände hielten sie durch." Only do this if the result still sounds like something a native speaker would actually say — otherwise keep the sentence simple.`;
     }
     const key = `kunju-cloze21-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {
-      setCloze(cached);
+      !silent && setCloze(cached);
       return;
     }
     if (!window.__hasAI()) {
-      setCloze(null);
+      !silent && setCloze(null);
       return;
     }
-    setCloze({
+    !silent && setCloze({
       loading: true
     });
     const splitLang = lang === "de" || lang === "nl";
@@ -7339,7 +7374,7 @@ function QuizView({
       : clozeStyles[Math.floor(Math.random() * clozeStyles.length)];
     const prompt = isProverb ? `Give ONE of the MOST FAMOUS, standard ${targetName} proverbs ("Sprichwort") — the kind every native speaker knows and that appears in proverb collections (e.g. for German: "Übung macht den Meister", "Morgenstund hat Gold im Mund", "Wer A sagt, muss auch B sagen"). It must be a real, complete proverb in standard ${targetName}, NOT regional slang, NOT an everyday idiom, NOT invented. Pick a varied one (variety #${provN}). Wrap its main conjugated verb in **double asterisks**. Then give its meaning in ${nativeName}. Do NOT use double-quote characters. Reply with ONLY minified JSON: {"t":"<the proverb with **verb**>","n":"<${nativeName} meaning>"}` : `Write ONE short, natural ${lvl} sentence in ${targetName} (max ${advConn ? 14 : 9} words) ${splitLang && isCompound ? `that correctly expresses the ${qq.tenseLabel} of "${qq.verb}" for "${qq.pronoun}" — its parts are ${qq.answer.split(" ").map(p => `"${p}"`).join(" + ")}. Use natural ${targetName} word order: the finite/auxiliary verb stays in SECOND position and the participle or infinitive moves to the END of the clause (e.g. "Ich habe das Buch gestern gelesen").` : `that CONTAINS exactly the verb form "${qq.answer}" (the ${qq.tenseLabel} of "${qq.verb}", ${qq.pronoun}).`}${clozeStyle}${subjTxt}${advConn}${splitLang ? ` IMPORTANT: if "${qq.verb}" is a separable-prefix verb (trennbares Verb / scheidbaar werkwoord), split the prefix to the END of the main clause in simple tenses (e.g. "ausbreiten" → "Das Feuer breitete sich schnell aus", NEVER "ausbreitete").` : ""}${topicTxt}${myWordTxt} End with proper punctuation (. ! or ?). ${langRules(lang)} Before replying, silently PROOFREAD and guarantee the sentence is 100% correct standard ${targetName} (verb position, separable-prefix split, case government, agreement, word order); if anything is off, fix it and output only the corrected sentence. The sentence must also make real-world SENSE, never nonsense: use a subject that fits the verb's meaning and its correct case government. Adjectives and participles MUST agree in gender and number with the word they describe (with a we/nosotros subject write "Desesperados", NEVER "Desesperado"). Use ONLY natural, everyday collocations — if a detail like an adjective on a noun would sound odd to a native speaker (e.g. "la fiesta vieja"), DROP it and keep the sentence plain instead. When in doubt, always prefer the simpler, safer sentence. For dative verbs of belonging/liking ("gehören", "gefallen", "schmecken", "fehlen"), the THING is the SUBJECT and the person is a DATIVE object — say "Das Buch gehört ihr" / "Das Buch wird ihr gehören", NEVER a dummy-"es" like "Es wird ihr das Buch gehören". Some verbs describe an EVENT and take a thing/event as subject, not a person (German "stattfinden", "geschehen", "passieren", "gelingen"; Dutch "plaatsvinden", "gebeuren") — e.g. "Die Feier **fand statt**", NEVER "Ich fand die Feier statt". If the requested tense expresses an action completed BEFORE another past moment (a pluperfect / past-perfect — German Plusquamperfekt, English past perfect, Spanish pluscuamperfecto, French plus-que-parfait, Dutch voltooid verleden tijd), do NOT leave it standing alone: anchor it to a later reference point with a subordinate clause (e.g. German "Als wir ankamen, …", "Bevor …", "Nachdem …"; English "By the time …") so it doesn't hang in the air. Above all it must sound NATURAL to a native speaker in everyday register — pick a context and sentence type where exactly "${qq.answer}" is idiomatic. In German the simple-past Präteritum of everyday verbs belongs in written narration, NOT in spoken questions or dialogue (a native would say the Perfekt there), so if the requested style would sound stilted with this form, use whatever sentence type sounds most natural instead. Then give a natural ${nativeName} translation of the WHOLE sentence — and in that translation render the verb "${qq.verb}" with its most standard, DIRECT ${nativeName} equivalent (the dictionary meaning), NOT a loose synonym or paraphrase, so the practised verb is clearly recognizable in the translation. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`;
     window.aiComplete(prompt).then(txt => {
-      if (clozeTokenRef.current !== myTok) return; // stale response — a newer question is active
+      if (!silent && clozeTokenRef.current !== myTok) return; // stale response — a newer question is active
       let j = null;
       try {
         j = looseParse(txt);
@@ -7350,10 +7385,10 @@ function QuizView({
         let raw = j && j.t ? String(j.t).trim() : "";
         if (!raw) {
           if (attempt < 1) {
-            fetchCloze(qq, attempt + 1, curTopic);
+            fetchCloze(qq, attempt + 1, curTopic, silent);
             return;
           }
-          setCloze(null);
+          !silent && setCloze(null);
           return;
         }
         const full = raw.replace(/\*\*/g, "");
@@ -7365,7 +7400,7 @@ function QuizView({
           proverb: true
         };
         persist(key, out);
-        setCloze(out);
+        !silent && setCloze(out);
         return;
       }
       const s = j && j.t ? String(j.t).trim() : "";
@@ -7399,14 +7434,14 @@ function QuizView({
       }
       if (!s || !hit) {
         if (attempt < 1) {
-          fetchCloze(qq, attempt + 1, curTopic);
+          fetchCloze(qq, attempt + 1, curTopic, silent);
           return;
         }
         // Quality gate: only ever show an example that actually contains the exact
         // form being practised ("${qq.answer}"). If the AI dropped it or changed
         // it (e.g. declined a participle: kommend → kommende), the sentence is
         // misleading — show no example rather than a wrong one.
-        setCloze(null);
+        !silent && setCloze(null);
         return;
       }
       // Imperativ-Wächter (alle Sprachen): Befehlsform als Frage oder mit
@@ -7420,8 +7455,8 @@ function QuizView({
         const pron = IMP_PRON[lang] || "";
         const misuse = /\?\s*$/.test(full) || (pron && new RegExp("\\b" + escA + "\\s+(" + pron + ")\\b", "i").test(full));
         if (misuse) {
-          if (attempt < 2) { fetchCloze(qq, attempt + 1, curTopic); return; }
-          setCloze(null);
+          if (attempt < 2) { fetchCloze(qq, attempt + 1, curTopic, silent); return; }
+          !silent && setCloze(null);
           return;
         }
       }
@@ -7430,16 +7465,16 @@ function QuizView({
       // und nach Versuchen lieber eine korrekte Vorlage als einen falschen Satz zeigen.
       if (lang === "de" && !isCompound && /pr[äa]teritum/i.test(qq.tenseLabel || "") && (deClozeBadFrame(full, qq.answer) || (dePraetNarrative && (/\?\s*$/.test(full) || /\b(gestern|heute|vorhin|eben|gerade eben)\b/i.test(full))))) {
         if (attempt < 2) {
-          fetchCloze(qq, attempt + 1, curTopic);
+          fetchCloze(qq, attempt + 1, curTopic, silent);
           return;
         }
         const tpl = deClozeTemplate(qq);
         if (tpl) {
           persist(key, tpl);
-          setCloze(tpl);
+          !silent && setCloze(tpl);
           return;
         }
-        setCloze(null);
+        !silent && setCloze(null);
         return;
       }
       // Zweiter, unabhängiger Grammatik-Check: nur geprüfte Sätze werden
@@ -7453,9 +7488,9 @@ function QuizView({
         return ok ? g : null;
       };
       verifySentence(targetName, full, qq.answer, nativeName, j && j.n ? String(j.n).trim() : "").then(v => {
-        if (clozeTokenRef.current !== myTok) return;
+        if (!silent && clozeTokenRef.current !== myTok) return;
         if (v === null) {
-          if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic); else setCloze(null);
+          if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic, silent); else !silent && setCloze(null);
           return;
         }
         let full2 = full, gap2 = gap, native2 = j && j.n ? String(j.n).trim() : "";
@@ -7463,7 +7498,7 @@ function QuizView({
           if (v.t && v.t !== full) {
             const rebuilt = buildGapFrom(v.t);
             if (!rebuilt) {
-              if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic); else setCloze(null);
+              if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic, silent); else !silent && setCloze(null);
               return;
             }
             full2 = v.t; gap2 = rebuilt;
@@ -7476,11 +7511,11 @@ function QuizView({
           native: native2
         };
         persist(key, out);
-        setCloze(out);
+        !silent && setCloze(out);
       });
     }).catch(() => {
-      if (clozeTokenRef.current !== myTok) return;
-      if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic);else setCloze(null);
+      if (!silent && clozeTokenRef.current !== myTok) return;
+      if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic, silent);else !silent && setCloze(null);
     });
   }
   useEffect(() => {
@@ -8553,6 +8588,16 @@ function QuizView({
   useEffect(() => {
     if (mode === "texte") genStory(); /* eslint-disable-next-line */
   }, [mode, lang, skill, topicsSel.join(","), tenseSel.join(",")]);
+  // Vorlade-Trigger: Karte beantwortet/umgedreht → nächste vorbereiten.
+  useEffect(() => {
+    if (q && (state !== "idle" || flipped)) prepareNext();
+    /* eslint-disable-next-line */
+  }, [state, flipped]);
+  // Vorbereitete Frage verwerfen, wenn sich Kontext/Filter ändern.
+  useEffect(() => {
+    preQRef.current = null;
+    /* eslint-disable-next-line */
+  }, [lang, mode, mistMode, typeMode, spkMode, skill, smver, topicsSel.join(","), tenseSel.join(",")]);
   // when the story is ready or the sub-mode changes, prepare that sub-mode's task
   useEffect(() => {
     if (mode !== "texte" || !story || !story.sentences) return;
