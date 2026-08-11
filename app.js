@@ -7332,7 +7332,7 @@ function QuizView({
     if (qq ? qq._adv : (!myWord && skill === "advanced" && Math.random() < 0.35)) {
       advConn = ` Make it a more complex sentence that naturally uses a subordinating connector (e.g. German: obwohl/trotzdem/damit/während/sodass; Spanish: aunque/a pesar de que/para que; French: bien que/quoique/afin que/pourtant; Dutch: hoewel/zodat/terwijl), like "Trotz der Umstände hielten sie durch." Only do this if the result still sounds like something a native speaker would actually say — otherwise keep the sentence simple.`;
     }
-    const key = `kunju-cloze21-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
+    const key = `kunju-cloze22-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {
       !silent && setCloze(cached);
@@ -7361,10 +7361,23 @@ function QuizView({
     // NL Aanvoegende wijs ist im modernen Niederländisch archaisch und lebt nur
     // in festen Wendungen — ein Alltagssatz mit dieser Form klingt immer falsch.
     const nlSubjCard = lang === "nl" && (qq.tenseId === "subjunctive" || /aanvoegende/i.test(qq.tenseLabel || ""));
-    // Subjuntivo-Karten: Trigger variieren — das Modell klammerte sich sonst
-    // an "Dudaba(s) que …"-Zweifelsfragen (oft gestelzt, nie über die eigene
-    // Handlung zweifeln).
-    const subjTxt = /subjunctive/i.test(qq.tenseId || "") ? ' If this form needs a trigger clause (subjunctive), pick a NATURAL, varied everyday trigger — a wish, request, emotion, "si"/"como si" or a common set phrase — do NOT default to a doubt question, and NEVER have someone doubt or question their own action in the same sentence.' : "";
+    // Subjuntivo-Karten: Auslöser-Familie WÜRFELT DER CODE (das Modell pendelte
+    // sonst trotz Vielfalts-Bitte zwischen "ojalá" und "dudaba"). ojalá/dudar
+    // sind ganz verboten; die Familie wird an der Frage festgenagelt (_sf),
+    // damit Vorladen und Anzeige denselben Satz erzeugen.
+    const SUBJ_FRAMES = [
+      'a WISH or REQUEST in the main clause (like Spanish "quería que…", "esperaba que…", "me pidió que…")',
+      'an EMOTION reaction in the main clause (like "me alegró que…", "me molestaba que…", "me sorprendió que…")',
+      'a hypothetical "si"-type clause with a conditional main clause (like "Si …, viajaría más.")',
+      'a comparison with "como si …" (or its equivalent in the target language)',
+      'an impersonal judgement (like "era importante que…", "fue una pena que…")',
+      'a negated belief (like "no creía que…", "no parecía que…")'
+    ];
+    let subjTxt = "";
+    if (/subjunctive/i.test(qq.tenseId || "")) {
+      if (qq._sf === undefined) qq._sf = Math.floor(Math.random() * SUBJ_FRAMES.length);
+      subjTxt = ` If this form needs a trigger clause (subjunctive), build the sentence around ${SUBJ_FRAMES[qq._sf]} — word it naturally in the target language. Do NOT use "ojalá" and do NOT use any form of "dudar"/"douter"/"twijfeln" (massively overused), and NEVER have someone doubt or question their own action.`;
+    }
     const clozeStyle = isProverb ? "" : nlSubjCard
       ? ' The Dutch aanvoegende wijs is ARCHAIC and survives only in fixed formulas — the sentence MUST be one of these natural fossilized patterns: a formal wish ("Leve de koning!", "Het ga je goed!", "God zij dank!"), a recipe-style instruction ("Men neme twee eieren …") or a set phrase ("Het zij zo.", "Kome wat komt."). NEVER build a plain everyday sentence around this form.'
       : imperativeCard
