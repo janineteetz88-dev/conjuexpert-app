@@ -7286,9 +7286,9 @@ function QuizView({
   // Konjugation & Subjekt-Verb-Kongruenz in JEDEM Teilsatz ("Obwohl ihr im
   // Meeting gähntet, bliebt ihr aufmerksam", nie "blieb ihr"). Rückgabe:
   // "" = Satz ok · String = korrigierter Satz · null = Prüfung nicht möglich.
-  function verifySentence(tName, sentence, mustKeep, natName, natTx) {
-    const keep = mustKeep ? ` The form "${mustKeep}" is the practised word and MUST remain exactly unchanged.` : "";
-    const tx = natName && natTx ? ` Also given is its ${natName} translation: "${natTx}". Check the translation as well: it must be natural, idiomatic ${natName} — no word-for-word calques (e.g. Spanish "esa zona" must become natural ${natName} like "diese Gegend", never "diese Zone").` : "";
+  function verifySentence(tName, sentence, mustKeep, natName, natTx, pron) {
+    const keep = mustKeep ? ` The form "${mustKeep}" is the practised word and MUST remain exactly unchanged.${pron ? ` Its subject must be "${pron}" — subjunctive/past endings can look identical across persons, so if the clause reads as a DIFFERENT person, rewrite it so "${pron}" is unmistakably the subject of "${mustKeep}".` : ""}` : "";
+    const tx = natName && natTx ? ` Also given is its ${natName} translation: "${natTx}". Check the translation as well: it must be natural, idiomatic AND grammatically correct ${natName} in its own right — correct cases and verb government (German "ausweichen" takes the dative: "der Sache ausweichen", NEVER "die Sache ausweichen") — and no word-for-word calques (e.g. Spanish "esa zona" must become natural ${natName} like "diese Gegend", never "diese Zone"). If the translation misrepresents what the ${tName} sentence says, fix it.` : "";
     return window.aiComplete(`You are a strict ${tName} grammar AND common-sense checker. Check ONLY this single ${tName} sentence: "${sentence}". First: verb conjugation and subject-verb agreement in EVERY clause, including subordinate and main clauses (German example: with "ihr" the verb must be "bliebt"/"wart", NEVER "blieb"/"war"), plus case endings, adjective agreement and word order. Check verb-complement FIT explicitly: the object/complement must be something this verb naturally takes (Spanish "asistir a" takes an event, never a document — "asistir al contrato" is WRONG).${langRules(lang)} Second — just as important: the sentence must make real-world SENSE when read LITERALLY. If it is grammatically fine but semantically absurd (drinking a building, wearing a soup, ordering a joke, setting a topic on fire), if any pronoun/clitic lacks a sensible referent, OR if it sounds contrived — like an artificial textbook exercise stitched together to tick boxes rather than something a real person would ever say — it is WRONG: fix it by swapping the odd part for a natural everyday one. The test: would a native speaker say exactly this sentence in real life without smiling? If not, fix it.${tx}${keep} If sentence AND translation are 100% correct and natural, reply with exactly: OK. If anything is fixable, reply with ONLY minified JSON {"t":"<corrected or unchanged sentence>","n":"<corrected or unchanged translation>"} — change as little as possible, no explanation. If it cannot be fixed while keeping the required form, reply with exactly: BAD.`).then(r => {
       let t = String(r || "").trim().replace(/^["'«»\s]+/, "").replace(/["'«»\s]+$/, "");
       if (!t) return null;
@@ -7371,7 +7371,9 @@ function QuizView({
     if (qq ? qq._adv : (!myWord && skill === "advanced" && Math.random() < 0.35)) {
       advConn = ` Make it a more complex sentence that naturally uses a subordinating connector (e.g. German: obwohl/trotzdem/damit/während/sodass; Spanish: aunque/a pesar de que/para que; French: bien que/quoique/afin que/pourtant; Dutch: hoewel/zodat/terwijl), like "Trotz der Umstände hielten sie durch." Only do this if the result still sounds like something a native speaker would actually say — otherwise keep the sentence simple.`;
     }
-    const key = `kunju-cloze26-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
+    // cloze27: Cache-Neuaufbau — Sätze aus der Zeit VOR den Qualitäts-Wächtern
+    // (Pronomen-Pflicht im Nebensatz, Übersetzungs-Grammatikprüfung) verwerfen.
+    const key = `kunju-cloze27-${lang}-${qq.verb}-${qq.tenseLabel}-${qq.pronoun}-${skill}-${nativeName}-${curTopic}${myWord ? "-mw:" + norm(myWord) : ""}`;
     const cached = recall(key, null);
     if (cached != null) {
       !silent && setCloze(cached);
@@ -7417,7 +7419,7 @@ function QuizView({
     let subjTxt = "";
     if (/subjunctive/i.test(qq.tenseId || "")) {
       if (qq._sf === undefined) qq._sf = Math.floor(Math.random() * SUBJ_FRAMES.length);
-      subjTxt = ` If this form needs a trigger clause (subjunctive), build the sentence around ${SUBJ_FRAMES[qq._sf]} — word it naturally in the target language. Use "ojalá" or forms of "dudar" ONLY if the chosen pattern above says so (they are heavily overused otherwise), and NEVER have someone doubt or question their own action.`;
+      subjTxt = ` If this form needs a trigger clause (subjunctive), build the sentence around ${SUBJ_FRAMES[qq._sf]} — word it naturally in the target language. Use "ojalá" or forms of "dudar" ONLY if the chosen pattern above says so (they are heavily overused otherwise), and NEVER have someone doubt or question their own action. CRITICAL: the clause containing "${qq.answer}" must be about ${qq.pronoun} — where the verb ending alone doesn't identify the person (e.g. Spanish yo/él share the imperfect-subjunctive form), write that subject pronoun explicitly; any wishing/doubting OTHER person belongs in the main clause.`;
     }
     const clozeStyle = isProverb ? "" : nlSubjCard
       ? ' The Dutch aanvoegende wijs is ARCHAIC and survives only in fixed formulas — the sentence MUST be one of these natural fossilized patterns: a formal wish ("Leve de koning!", "Het ga je goed!", "God zij dank!"), a recipe-style instruction ("Men neme twee eieren …") or a set phrase ("Het zij zo.", "Kome wat komt."). NEVER build a plain everyday sentence around this form.'
@@ -7543,7 +7545,7 @@ function QuizView({
         wl.forEach(w => { const r = mk(w); if (r.test(g)) { g = g.replace(r, "…"); ok = true; } });
         return ok ? g : null;
       };
-      verifySentence(targetName, full, qq.answer, nativeName, j && j.n ? String(j.n).trim() : "").then(v => {
+      verifySentence(targetName, full, qq.answer, nativeName, j && j.n ? String(j.n).trim() : "", qq.pronoun).then(v => {
         if (!silent && clozeTokenRef.current !== myTok) return;
         if (v === null) {
           if (attempt < 1) fetchCloze(qq, attempt + 1, curTopic, silent); else !silent && setCloze(null);
@@ -19072,4 +19074,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.c
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
 }
+// Einmalige Aufräumaktion: alte KI-Satz-Caches (kunju-cloze26 und früher)
+// löschen — sie stammen aus der Zeit vor den Qualitäts-Wächtern und
+// würden sonst dauerhaft Speicher belegen.
+(function () {
+  try {
+    Object.keys(localStorage).filter(function (k) { return k.indexOf("kunju-cloze") === 0 && k.indexOf("kunju-cloze27-") !== 0; }).forEach(function (k) { localStorage.removeItem(k); });
+  } catch (e) {}
+})();
 ;(function(){try{var s=document.getElementById('app-splash');if(!s)return;requestAnimationFrame(function(){requestAnimationFrame(function(){s.style.opacity='0';setTimeout(function(){if(s&&s.parentNode)s.parentNode.removeChild(s);},400);});});}catch(e){}})();
