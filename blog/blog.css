@@ -177,8 +177,12 @@ section.block{padding:80px 0;scroll-margin-top:84px}
 .toc a{color:var(--ink)}
 .toc a:hover{color:var(--violet)}
 
+/* Abschnitts-Nummern — spiegeln die TOC-Zählung (01, 02, …) an den H2 der artcards */
+.artcard>h2{counter-increment:sect}
+.artcard>h2::before{content:counter(sect,decimal-leading-zero);display:block;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--violet);margin:0 0 8px}
+
 /* prose */
-.prose{font-size:18px;line-height:1.82;color:#23262f}
+.prose{font-size:18px;line-height:1.82;color:#23262f;counter-reset:sect}
 .prose>h2{font-family:var(--display);font-weight:700;font-size:clamp(23px,2.8vw,30px);letter-spacing:-.025em;line-height:1.14;margin:60px 0 18px;padding-top:30px;border-top:1px solid var(--border);scroll-margin-top:90px;text-wrap:balance}
 .prose>h2:first-child{border-top:0;padding-top:0;margin-top:8px}
 .prose>h3{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.02em;margin:42px 0 12px}

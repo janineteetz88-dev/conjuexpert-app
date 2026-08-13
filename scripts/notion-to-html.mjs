@@ -387,7 +387,7 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
 <meta name="twitter:image" content="${BASE_URL}/blog/img/prod-1.png" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="/fonts/blog.css" />
-<link rel="stylesheet" href="/blog/blog.css?v=12" />
+<link rel="stylesheet" href="/blog/blog.css?v=13" />
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
