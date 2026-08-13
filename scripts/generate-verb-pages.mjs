@@ -372,10 +372,10 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${verb} ${meta.name} konjugieren — alle Zeitformen | ConjuExpert</title>
-<meta name="description" content="Konjugation von „${verb}" auf ${meta.name}: alle Zeitformen auf einen Blick, Beispielsätze und eine Geschichte zum Merken. ${verbType} Verb.">
+<meta name="description" content="Konjugation von „${verb}&quot; auf ${meta.name}: alle Zeitformen auf einen Blick, Beispielsätze und eine Geschichte zum Merken. ${verbType} Verb.">
 <link rel="canonical" href="${SITE}/konjugation/${lang}/${verb}/">
 <meta property="og:title" content="${verb} (${meta.name}) — alle Zeitformen">
-<meta property="og:description" content="Vollständige Konjugationstabelle + Beispielsätze + Geschichte für „${verb}".">
+<meta property="og:description" content="Vollständige Konjugationstabelle + Beispielsätze + Geschichte für „${verb}&quot;.">
 <meta property="og:url" content="${SITE}/konjugation/${lang}/${verb}/">
 <meta property="og:site_name" content="ConjuExpert">
 <script type="application/ld+json">${jsonLd}</script>
