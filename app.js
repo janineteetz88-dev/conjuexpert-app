@@ -1387,7 +1387,8 @@
     appeler:{ present: ["appelle","appelles","appelle","appelons","appelez","appellent"], imparfait: ["appelais","appelais","appelait","appelions","appeliez","appelaient"], futStem: "appeller", pp: "appelé", aux: "avoir", subj: ["appelle","appelles","appelle","appelions","appeliez","appellent"], ppr: "appelant", erType: true },
     acheter:{ present: ["achète","achètes","achète","achetons","achetez","achètent"], imparfait: ["achetais","achetais","achetait","achetions","achetiez","achetaient"], futStem: "achèter", pp: "acheté", aux: "avoir", subj: ["achète","achètes","achète","achetions","achetiez","achètent"], ppr: "achetant", erType: true },
     payer:  { present: ["paie","paies","paie","payons","payez","paient"], imparfait: ["payais","payais","payait","payions","payiez","payaient"], futStem: "paier", pp: "payé", aux: "avoir", subj: ["paie","paies","paie","payions","payiez","paient"], ppr: "payant", erType: true },
-    envoyer:{ present: ["envoie","envoies","envoie","envoyons","envoyez","envoient"], imparfait: ["envoyais","envoyais","envoyait","envoyions","envoyiez","envoyaient"], futStem: "enverr", pp: "envoyé", aux: "avoir", subj: ["envoie","envoies","envoie","envoyions","envoyiez","envoient"], ppr: "envoyant", erType: true }
+    envoyer:{ present: ["envoie","envoies","envoie","envoyons","envoyez","envoient"], imparfait: ["envoyais","envoyais","envoyait","envoyions","envoyiez","envoyaient"], futStem: "enverr", pp: "envoyé", aux: "avoir", subj: ["envoie","envoies","envoie","envoyions","envoyiez","envoient"], ppr: "envoyant", erType: true },
+    falloir:{ present: ["faut","faut","faut","faut","faut","faut"], imparfait: ["fallait","fallait","fallait","fallait","fallait","fallait"], futStem: "faudr", pp: "fallu", aux: "avoir", subj: ["faille","faille","faille","faille","faille","faille"], imp: ["—","—","—","—","—","—"], ppr: "—", onlyIndices: [2] }
   };
 
   /* ---- C1 expansion: derive new irregulars from verified patterns (no hand-typing of full tables) ---- */
@@ -1512,7 +1513,7 @@
     const ppr = data.ppr || (impStem + "ant");
     let imp = data.imp;
     if (!imp) { let tu = present[1]; if (data.erType) tu = tu.replace(/s$/, ""); imp = ["—", tu, "—", present[3], present[4], "—"]; }
-    return [
+    const tenses = [
       { id: "present", label: "Présent", forms: present },
       { id: "past", label: "Imparfait", forms: imparfait },
       { id: "perfect", label: "Passé composé", forms: pc },
@@ -1524,7 +1525,16 @@
       { id: "imperative", label: "Impératif", forms: imp },
       { id: "gerund", label: "Participe présent", forms: PRON.map(() => ppr), nonFinite: true }
     ];
+    // Impersonal verbs (e.g. falloir) only conjugate for "il / elle" — blank out every other pronoun.
+    if (data.onlyIndices) {
+      const allowed = new Set(data.onlyIndices);
+      tenses.forEach((t) => { t.forms = t.forms.map((f, i) => allowed.has(i) ? f : "—"); });
+    }
+    return tenses;
   }
+
+  // Otherwise-regular verbs of movement/state that take être (not avoir) in compound tenses.
+  const FR_ETRE_ONLY = ["monter", "descendre", "rester", "arriver", "entrer", "rentrer", "tomber", "retourner"];
 
   // Reflexive Verben (se lever, s'appeler): Basisverb konjugieren, Pronomen
   // me/te/se/nous/vous/se (mit Elision) voranstellen, zusammengesetzte Zeiten
@@ -1552,6 +1562,7 @@
     const irr = IRR[verb];
     let data = reg, isIrr = false;
     if (irr) { isIrr = true; data = Object.assign({}, irr); }
+    else if (FR_ETRE_ONLY.includes(verb)) { isIrr = true; data = Object.assign({}, reg, { aux: "être" }); }
     if (refl) data = Object.assign({}, data, { aux: "être" });
     const tenses = build(verb, data);
     if (isIrr) { const regT = build(verb, refl ? Object.assign({}, reg, { aux: "être" }) : reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
