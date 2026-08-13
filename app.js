@@ -2382,7 +2382,10 @@
   // Aktive Lernsprache (kunju-lang) an den Proxy mitgeben — der Worker wählt
   // danach das Modell (nur 'de' → gpt-4.1-mini, sonst günstiger gpt-4o-mini).
   function aiLang(){ try { return JSON.parse(localStorage.getItem('kunju-lang')) || 'de'; } catch(e){ return 'de'; } }
-  var queue = [], busy = false, lastCall = 0, INTERVAL = 300;
+  // Bis zu 3 Aufrufe PARALLEL: Eine rein serielle Schlange staute sich bei
+  // intensiver Nutzung (Karte + Prüfung + Vorladen) minutenlang auf — Sätze
+  // kamen dann erst an, wenn die Karte längst gewechselt war (= nie sichtbar).
+  var queue = [], active = 0, MAXC = 3, lastCall = 0, INTERVAL = 150;
   function delay(ms){ return new Promise(function(r){setTimeout(r,ms);}); }
   async function callWorker(prompt, attempt){
     attempt = attempt || 0;
@@ -2401,22 +2404,22 @@
     }
     return d.text || '';
   }
-  async function processQueue(){
-    if(busy) return; busy = true;
-    while(queue.length){
+  async function runItem(item){
+    try{
       var wait = lastCall + INTERVAL - Date.now();
       if(wait > 0) await delay(wait);
-      var item = queue.shift();
       lastCall = Date.now();
-      try{ item.resolve(await callWorker(item.prompt)); }
-      catch(e){ item.reject(e); }
-    }
-    busy = false;
+      item.resolve(await callWorker(item.prompt));
+    } catch(e){ item.reject(e); }
+    active--; pump();
+  }
+  function pump(){
+    while(active < MAXC && queue.length){ active++; runItem(queue.shift()); }
   }
   function enqueue(prompt){
     return new Promise(function(resolve,reject){
       queue.push({prompt:prompt,resolve:resolve,reject:reject});
-      processQueue();
+      pump();
     });
   }
   window.claude = { complete: enqueue };
