@@ -1120,6 +1120,23 @@
   const NL_SEIN_BASE = ["staan","komen","gaan","lopen","vallen","stijgen","springen","rijden","vliegen","groeien"];
   // Untrennbare Verben, die wie Präfix+Basis aussehen: openen ist NICHT op+enen.
   const NL_NOSEP = ["openen", "opereren", "toetsen", "omarmen", "overtuigen", "overleggen", "overwegen", "overleven", "overlijden", "overhandigen", "overtreffen", "onderzoeken", "ondertekenen", "ondersteunen", "onderbouwen"];
+  // Regular verbs with a genuine unstressed prefix (be-/ge-/er-/her-/ont-/ver-) take NO ge- in the
+  // participle: geloven→geloofd, verhuizen→verhuisd. This must be an explicit list, not a string test
+  // on the verb itself — many regular verbs merely start with the same letters without being prefixed
+  // (bellen→gebeld not "beld", verven→geverfd not "verfd", erven→geërfd not "erfd", geven→gegeven).
+  const NL_UNSTRESSED_PREFIX_VERBS = [
+    "beantwoorden", "bedanken", "bedoelen", "bedreigen", "begroeten", "beloven", "bepalen",
+    "behandelen", "bereiden", "beschermen", "beschouwen", "bestellen", "bestuderen", "betalen",
+    "betekenen", "betwijfelen", "bewaren",
+    "geloven", "gebeuren", "gebruiken", "gedogen",
+    "herhalen", "herinneren", "herkennen", "herstellen",
+    "ontdekken", "ontmoeten", "ontspannen", "ontwikkelen",
+    "verbeteren", "verbranden", "verdedigen", "verdienen", "verduidelijken", "veranderen",
+    "vergroten", "verhogen", "verhuizen", "verklaren", "verkleinen", "verlagen",
+    "vermenigvuldigen", "verminderen", "vernieuwen", "veroorzaken", "verrassen", "versieren",
+    "verspreiden", "vertalen", "vertellen", "vertragen", "vertrouwen", "verwachten",
+    "verwarmen", "verwennen", "verzamelen", "verzekeren", "verzorgen"
+  ];
   function nlSplit(verb) {
     if (NL_NOSEP.indexOf(verb) >= 0) return null;
     for (const p of NL_SEP) {
@@ -1214,9 +1231,9 @@
       subjunctive: [verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb, verb, verb], // Aanvoegende wijs = Infinitiv minus -n (hebben→hebbe)
       // Moderner Imperativ: Stamm für jij UND jullie ("werk!"); "werkt!" ist archaisch.
       imperative: ["—", stem, "—", "laten we " + verb, stem, stT + " u"],
-      // Unbetonte Präfixe (be-, ge-, er-, her-, ont-, ver-) bekommen KEIN ge-:
-      // geloven→geloofd, verhuizen→verhuisd (nicht "gegelooft"/"geverhuist").
-      participle: (/^(be|ge|er|her|ont|ver)/.test(verb) ? "" : "ge") + (stem.endsWith(t) ? stem : stem + t),
+      // Unbetonte Präfixe nur laut Whitelist — kein blinder String-Test auf den
+      // Verbanfang (bellen→gebeld, verven→geverfd, aber geloven→geloofd).
+      participle: (NL_UNSTRESSED_PREFIX_VERBS.includes(verb) ? "" : "ge") + (stem.endsWith(t) ? stem : stem + t),
       aux: "hebben"
     };
   }
