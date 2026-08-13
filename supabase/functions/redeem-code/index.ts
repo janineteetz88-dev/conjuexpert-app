@@ -40,6 +40,27 @@ Deno.serve(async (req) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
   );
 
+  // Rate-Limit: maximal 10 Einlöseversuche pro Nutzer innerhalb von 15
+  // Minuten, um Brute-Force-Erraten gültiger Codes zu verhindern. Der
+  // Versuch wird atomar protokolliert, bevor der Code selbst geprüft wird.
+  const { data: attemptAllowed, error: attemptError } = await supaAdmin.rpc(
+    "check_and_record_redeem_attempt",
+    { p_user_id: user.id }
+  );
+
+  if (attemptError) {
+    return new Response(JSON.stringify({ error: attemptError.message }), {
+      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  if (!attemptAllowed) {
+    return new Response(
+      JSON.stringify({ error: "Zu viele Versuche. Bitte warte 15 Minuten und versuche es erneut." }),
+      { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
+
   const { data: promo, error: promoError } = await supaAdmin
     .from("promo_codes")
     .select("code, months, active, max_uses, current_uses")
