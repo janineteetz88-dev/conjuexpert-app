@@ -5509,7 +5509,7 @@ function TenseCard({
     text: stripMark(tenseEx.s),
     fromName: engineName,
     toName: native,
-    cachePrefix: `kunju-wtr-${langCode}-nat`,
+    cachePrefix: `kunju-wtr2-${langCode}-nat`,
     accent: true,
     saveLang: langCode,
     saveDir: "fromTarget"
@@ -6583,7 +6583,7 @@ function WordSentence({
       ...t,
       [c]: "…"
     }));
-    window.aiComplete(`In the ${fromName} sentence "${text}", what does the word "${c}" mean in ${toName}? Reply with ONLY the ${toName} translation, 1–3 words, no punctuation, no extra text.`).then(r => {
+    window.aiComplete(`In the ${fromName} sentence "${text}", what does the word "${c}" mean in ${toName}? Use ONLY real, existing ${toName} words — NEVER invent a look-alike pseudo-word (Spanish "partierais" means "ihr würdet abfahren" in German, NEVER the fake word "partieren"). For a conjugated verb form, give the matching ${toName} form of its standard dictionary translation. Reply with ONLY the ${toName} translation, 1–3 words, no punctuation, no extra text.`).then(r => {
       const out = String(r || "").trim().replace(/^["'.]+|["'.]+$/g, "").split("\n")[0].trim() || "—";
       persist(key, out);
       setTrans(t => ({
@@ -6648,7 +6648,7 @@ function WordSentence({
       afterTrans("");
       return;
     }
-    window.aiComplete(`In the ${fromName} sentence "${text}", what does the word "${c}" mean in ${toName}? Reply with ONLY the ${toName} translation, 1–3 words, no punctuation, no extra text.`).then(r => {
+    window.aiComplete(`In the ${fromName} sentence "${text}", what does the word "${c}" mean in ${toName}? Use ONLY real, existing ${toName} words — NEVER invent a look-alike pseudo-word (Spanish "partierais" means "ihr würdet abfahren" in German, NEVER the fake word "partieren"). For a conjugated verb form, give the matching ${toName} form of its standard dictionary translation. Reply with ONLY the ${toName} translation, 1–3 words, no punctuation, no extra text.`).then(r => {
       const out = String(r || "").trim().replace(/^["'«».]+|["'«».]+$/g, "").split("\n")[0].trim();
       if (out) {
         persist(tkey, out);
@@ -7414,8 +7414,8 @@ function QuizView({
       'a WISH or REQUEST in the main clause (like Spanish "quería que…", "esperaba que…", "me pidió que…")',
       'an EMOTION reaction in the main clause (like "me alegró que…", "me molestaba que…", "me sorprendió que…")',
       'a hypothetical "si"-type clause with a conditional main clause (like "Si …, viajaría más.")',
-      'a comparison with "como si …" (or its equivalent in the target language)',
-      'an impersonal judgement (like "era importante que…", "fue una pena que…")',
+      'a comparison with "como si …" (or its equivalent) — the MAIN clause must state a real observable action that the como-si clause exaggerates (like "Gasta dinero como si fuera millonario."), never a bare wish glued to a comparison',
+      'an impersonal judgement (like "era importante que…", "fue una pena que…") about an action genuinely worth judging (arriving on time, missing a celebration) — never an empty motion like "que saltara hoy"',
       'a negated belief (like "no creía que…", "no parecía que…")',
       'a wish exclamation with "ojalá" (or the target language\'s equivalent)',
       'a doubt in the main clause about SOMEONE ELSE\'s action (like "dudaba que él…" — never about one\'s own action)'
@@ -7432,7 +7432,7 @@ function QuizView({
       : dePraetNarrative
       ? ' Make it a written-narrative STATEMENT, like a sentence from a novel, memoir or report — NEVER a question, exclamation or spoken dialogue (German Präteritum of everyday verbs belongs to written narration). It MUST have a narrative past frame: use "damals", "früher", "den ganzen Abend/Tag", "jahrelang" or an "als …"/"während …" clause. Do NOT use everyday-speech time words like "gestern", "heute", "vorhin" or "letzte Woche" — with those a German would use Perfekt, and the sentence sounds wrong. Example of the right register: "Damals störtet ihr ständig den Unterricht, bis der Lehrer die Eltern anrief."'
       : clozeStyles[Math.floor(Math.random() * clozeStyles.length)];
-    const prompt = isProverb ? `Give ONE of the MOST FAMOUS, standard ${targetName} proverbs ("Sprichwort") — the kind every native speaker knows and that appears in proverb collections (e.g. for German: "Übung macht den Meister", "Morgenstund hat Gold im Mund", "Wer A sagt, muss auch B sagen"). It must be a real, complete proverb in standard ${targetName}, NOT regional slang, NOT an everyday idiom, NOT invented. Pick a varied one (variety #${provN}). Wrap its main conjugated verb in **double asterisks**. Then give its meaning in ${nativeName}. Do NOT use double-quote characters. Reply with ONLY minified JSON: {"t":"<the proverb with **verb**>","n":"<${nativeName} meaning>"}` : `Write ONE short, natural ${lvl} sentence in ${targetName} (max ${advConn ? 14 : skill === "beginner" ? 7 : 9} words) ${splitLang && isCompound ? `that correctly expresses the ${qq.tenseLabel} of "${qq.verb}" for "${qq.pronoun}" — its parts are ${qq.answer.split(" ").map(p => `"${p}"`).join(" + ")}. Use natural ${targetName} word order: the finite/auxiliary verb stays in SECOND position and the participle or infinitive moves to the END of the clause (e.g. "Ich habe das Buch gestern gelesen").` : `that CONTAINS exactly the verb form "${qq.answer}" (the ${qq.tenseLabel} of "${qq.verb}", ${qq.pronoun}).`}${clozeStyle}${subjTxt}${advConn}${splitLang ? ` IMPORTANT: if "${qq.verb}" is a separable-prefix verb (trennbares Verb / scheidbaar werkwoord), split the prefix to the END of the main clause in simple tenses (e.g. "ausbreiten" → "Das Feuer breitete sich schnell aus", NEVER "ausbreitete").` : ""}${topicTxt}${sceneTxt}${myWordTxt}${skill === "beginner" ? " BEGINNER LEVEL: use ONLY very common, concrete everyday words (roughly the 1000 most frequent), ONE simple main clause plus at most the minimal trigger clause the tense requires, no idioms, no abstract nouns — even when the practised tense is advanced, everything AROUND the form must be understandable for an A2 learner (like: Quería que comieras más.)" : ""} Avoid vague filler nouns the model overuses — never "zona"/"área"/"cosa(s)" or their equivalents; use concrete, specific everyday nouns instead. End with proper punctuation (. ! or ?). ${langRules(lang)} Before replying, silently PROOFREAD and guarantee the sentence is 100% correct standard ${targetName} (verb position, separable-prefix split, case government, agreement, word order); if anything is off, fix it and output only the corrected sentence. Keep the content light and everyday — never accidents, injuries, illness or death. The sentence must also make real-world SENSE, never nonsense: use a subject that fits the verb's meaning and its correct case government. Adjectives and participles MUST agree in gender and number with the word they describe (with a we/nosotros subject write "Desesperados", NEVER "Desesperado"). Use ONLY natural, everyday collocations — if a detail like an adjective on a noun would sound odd to a native speaker (e.g. "la fiesta vieja"), DROP it and keep the sentence plain instead. When in doubt, always prefer the simpler, safer sentence. For dative verbs of belonging/liking ("gehören", "gefallen", "schmecken", "fehlen"), the THING is the SUBJECT and the person is a DATIVE object — say "Das Buch gehört ihr" / "Das Buch wird ihr gehören", NEVER a dummy-"es" like "Es wird ihr das Buch gehören". Some verbs describe an EVENT and take a thing/event as subject, not a person (German "stattfinden", "geschehen", "passieren", "gelingen"; Dutch "plaatsvinden", "gebeuren") — e.g. "Die Feier **fand statt**", NEVER "Ich fand die Feier statt". If the requested tense expresses an action completed BEFORE another past moment (a pluperfect / past-perfect — German Plusquamperfekt, English past perfect, Spanish pluscuamperfecto, French plus-que-parfait, Dutch voltooid verleden tijd), do NOT leave it standing alone: anchor it to a later reference point with a subordinate clause (e.g. German "Als wir ankamen, …", "Bevor …", "Nachdem …"; English "By the time …") so it doesn't hang in the air. Above all it must sound NATURAL to a native speaker in everyday register — pick a context and sentence type where exactly "${qq.answer}" is idiomatic. In German the simple-past Präteritum of everyday verbs belongs in written narration, NOT in spoken questions or dialogue (a native would say the Perfekt there), so if the requested style would sound stilted with this form, use whatever sentence type sounds most natural instead. Then give a natural ${nativeName} translation of the WHOLE sentence — and in that translation render the verb "${qq.verb}" with its most standard, DIRECT ${nativeName} equivalent (the dictionary meaning), NOT a loose synonym or paraphrase, so the practised verb is clearly recognizable in the translation. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`;
+    const prompt = isProverb ? `Give ONE of the MOST FAMOUS, standard ${targetName} proverbs ("Sprichwort") — the kind every native speaker knows and that appears in proverb collections (e.g. for German: "Übung macht den Meister", "Morgenstund hat Gold im Mund", "Wer A sagt, muss auch B sagen"). It must be a real, complete proverb in standard ${targetName}, NOT regional slang, NOT an everyday idiom, NOT invented. Pick a varied one (variety #${provN}). Wrap its main conjugated verb in **double asterisks**. Then give its meaning in ${nativeName}. Do NOT use double-quote characters. Reply with ONLY minified JSON: {"t":"<the proverb with **verb**>","n":"<${nativeName} meaning>"}` : `Write ONE short, natural ${lvl} sentence in ${targetName} (max ${advConn ? 14 : skill === "beginner" ? 7 : 9} words) ${splitLang && isCompound ? `that correctly expresses the ${qq.tenseLabel} of "${qq.verb}" for "${qq.pronoun}" — its parts are ${qq.answer.split(" ").map(p => `"${p}"`).join(" + ")}. Use natural ${targetName} word order: the finite/auxiliary verb stays in SECOND position and the participle or infinitive moves to the END of the clause (e.g. "Ich habe das Buch gestern gelesen").` : `that CONTAINS exactly the verb form "${qq.answer}" (the ${qq.tenseLabel} of "${qq.verb}", ${qq.pronoun}).`}${clozeStyle}${subjTxt}${advConn}${splitLang ? ` IMPORTANT: if "${qq.verb}" is a separable-prefix verb (trennbares Verb / scheidbaar werkwoord), split the prefix to the END of the main clause in simple tenses (e.g. "ausbreiten" → "Das Feuer breitete sich schnell aus", NEVER "ausbreitete").` : ""}${topicTxt}${sceneTxt}${myWordTxt}${skill === "beginner" ? " BEGINNER LEVEL: use ONLY very common, concrete everyday words (roughly the 1000 most frequent), ONE simple main clause plus at most the minimal trigger clause the tense requires, no idioms, no abstract nouns — even when the practised tense is advanced, everything AROUND the form must be understandable for an A2 learner (like: Quería que comieras más.)" : ""} Avoid vague filler nouns the model overuses — never "zona"/"área"/"cosa(s)" or their equivalents; use concrete, specific everyday nouns instead. End with proper punctuation (. ! or ?). ${langRules(lang)} Before replying, silently PROOFREAD and guarantee the sentence is 100% correct standard ${targetName} (verb position, separable-prefix split, case government, agreement, word order); if anything is off, fix it and output only the corrected sentence. Keep the content light and everyday — never accidents, injuries, illness or death. The sentence must also make real-world SENSE, never nonsense: use a subject that fits the verb's meaning and its correct case government. Adjectives and participles MUST agree in gender and number with the word they describe (with a we/nosotros subject write "Desesperados", NEVER "Desesperado"). Use ONLY natural, everyday collocations — if a detail like an adjective on a noun would sound odd to a native speaker (e.g. "la fiesta vieja"), DROP it and keep the sentence plain instead. When in doubt, always prefer the simpler, safer sentence. For dative verbs of belonging/liking ("gehören", "gefallen", "schmecken", "fehlen"), the THING is the SUBJECT and the person is a DATIVE object — say "Das Buch gehört ihr" / "Das Buch wird ihr gehören", NEVER a dummy-"es" like "Es wird ihr das Buch gehören". Some verbs describe an EVENT and take a thing/event as subject, not a person (German "stattfinden", "geschehen", "passieren", "gelingen"; Dutch "plaatsvinden", "gebeuren") — e.g. "Die Feier **fand statt**", NEVER "Ich fand die Feier statt". If the requested tense expresses an action completed BEFORE another past moment (a pluperfect / past-perfect — German Plusquamperfekt, English past perfect, Spanish pluscuamperfecto, French plus-que-parfait, Dutch voltooid verleden tijd), do NOT leave it standing alone: anchor it to a later reference point with a subordinate clause (e.g. German "Als wir ankamen, …", "Bevor …", "Nachdem …"; English "By the time …") so it doesn't hang in the air. Above all it must sound NATURAL to a native speaker in everyday register — pick a context and sentence type where exactly "${qq.answer}" is idiomatic. In German the simple-past Präteritum of everyday verbs belongs in written narration, NOT in spoken questions or dialogue (a native would say the Perfekt there), so if the requested style would sound stilted with this form, use whatever sentence type sounds most natural instead. Then give a natural ${nativeName} translation of the WHOLE sentence — ONE complete, grammatical ${nativeName} sentence with every clause keeping its finite verb and the right tense ("Era importante que…" → "Es WAR wichtig, dass…", never "Es wichtig, dass…") — and in that translation render the verb "${qq.verb}" with its most standard, DIRECT ${nativeName} equivalent (the dictionary meaning), NOT a loose synonym or paraphrase, so the practised verb is clearly recognizable in the translation. Do NOT use double-quote characters. Reply with ONLY minified JSON and nothing else: {"t":"<${targetName} sentence>","n":"<${nativeName} translation>"}`;
     window.aiComplete(prompt).then(txt => {
       if (!silent && clozeTokenRef.current !== myTok) return; // stale response — a newer question is active
       let j = null;
@@ -9019,7 +9019,7 @@ function QuizView({
     text: state === "idle" ? cloze.gap : cloze.full,
     fromName: window.CONJ[lang].name,
     toName: recall("kunju-native", "German"),
-    cachePrefix: `kunju-wtr-${lang}-nat`,
+    cachePrefix: `kunju-wtr2-${lang}-nat`,
     big: true,
     accent: true,
     saveLang: lang,
@@ -9030,7 +9030,7 @@ function QuizView({
     onClick: () => speak(cloze.full, q.ttsLang)
   }, /*#__PURE__*/React.createElement("span", { className: "ico-spk", "aria-hidden": "true", dangerouslySetInnerHTML: { __html: "<svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display:block'><path d='M11 5 6 9H2v6h4l5 4V5z'/><path d='M15.5 8.5a5 5 0 0 1 0 7'/><path d='M19 5a9 9 0 0 1 0 14'/></svg>" } }))), cloze.native && (skill === "beginner" || state !== "idle") && /*#__PURE__*/React.createElement("div", {
     className: "clozenative"
-  }, cloze.native))), /*#__PURE__*/React.createElement("div", {
+  }, cloze.native), reportBtn())), /*#__PURE__*/React.createElement("div", {
     className: "quizinput"
   }, /*#__PURE__*/React.createElement("input", {
     ref: inRef,
@@ -9091,7 +9091,7 @@ function QuizView({
     text: sent.n,
     fromName: recall("kunju-native", "German"),
     toName: window.CONJ[lang].name,
-    cachePrefix: `kunju-wtr-nat-${lang}`,
+    cachePrefix: `kunju-wtr2-nat-${lang}`,
     big: true,
     saveLang: lang,
     saveDir: "fromNative"
@@ -9128,7 +9128,7 @@ function QuizView({
     text: sent.t,
     fromName: window.CONJ[lang].name,
     toName: recall("kunju-native", "German"),
-    cachePrefix: `kunju-wtr-${lang}-nat`,
+    cachePrefix: `kunju-wtr2-${lang}-nat`,
     big: true,
     accent: true,
     saveLang: lang,
@@ -9405,7 +9405,7 @@ function QuizView({
     text: s.t,
     fromName: window.CONJ[lang].name,
     toName: recall("kunju-native", "German"),
-    cachePrefix: `kunju-wtr-${lang}-nat`,
+    cachePrefix: `kunju-wtr2-${lang}-nat`,
     big: true,
     accent: true,
     saveLang: lang,
@@ -9494,7 +9494,7 @@ function QuizView({
     text: state === "idle" ? cloze.gap : cloze.full,
     fromName: window.CONJ[lang].name,
     toName: recall("kunju-native", "German"),
-    cachePrefix: `kunju-wtr-${lang}-nat`,
+    cachePrefix: `kunju-wtr2-${lang}-nat`,
     big: true,
     accent: true,
     saveLang: lang,
@@ -9675,7 +9675,7 @@ function QuizView({
     text: cloze.gap,
     fromName: window.CONJ[lang].name,
     toName: nativeName,
-    cachePrefix: `kunju-wtr-${lang}-nat`,
+    cachePrefix: `kunju-wtr2-${lang}-nat`,
     big: true,
     accent: true,
     saveLang: lang,
@@ -9703,7 +9703,7 @@ function QuizView({
     text: cloze.full,
     fromName: window.CONJ[lang].name,
     toName: nativeName,
-    cachePrefix: `kunju-wtr-${lang}-nat`,
+    cachePrefix: `kunju-wtr2-${lang}-nat`,
     big: true,
     accent: true,
     saveLang: lang,
@@ -9832,7 +9832,7 @@ function QuizView({
     text: state === "idle" ? cloze.gap : cloze.full,
     fromName: window.CONJ[lang].name,
     toName: recall("kunju-native", "German"),
-    cachePrefix: `kunju-wtr-${lang}-nat`,
+    cachePrefix: `kunju-wtr2-${lang}-nat`,
     big: true,
     accent: true,
     saveLang: lang,
@@ -9852,7 +9852,7 @@ function QuizView({
     text: sent.n,
     fromName: recall("kunju-native", "German"),
     toName: window.CONJ[spkTarget].name,
-    cachePrefix: `kunju-wtr-nat-${spkTarget}`,
+    cachePrefix: `kunju-wtr2-nat-${spkTarget}`,
     big: true,
     saveLang: spkTarget,
     saveDir: "fromNative"
@@ -9931,7 +9931,7 @@ function QuizView({
       text: sent.t,
       fromName: window.CONJ[spkTarget].name,
       toName: recall("kunju-native", "German"),
-      cachePrefix: `kunju-wtr-${spkTarget}-nat`,
+      cachePrefix: `kunju-wtr2-${spkTarget}-nat`,
       big: true,
       accent: true,
       saveLang: spkTarget,
@@ -19084,6 +19084,9 @@ if ("serviceWorker" in navigator) {
 (function () {
   try {
     Object.keys(localStorage).filter(function (k) { return k.indexOf("kunju-cloze") === 0 && k.indexOf("kunju-cloze28-") !== 0; }).forEach(function (k) { localStorage.removeItem(k); });
+    // Wort-Übersetzungs-Cache ebenso: wtr → wtr2 (alte Einträge konnten
+    // erfundene Scheinwörter wie "partieren" enthalten).
+    Object.keys(localStorage).filter(function (k) { return k.indexOf("kunju-wtr-") === 0; }).forEach(function (k) { localStorage.removeItem(k); });
   } catch (e) {}
 })();
 ;(function(){try{var s=document.getElementById('app-splash');if(!s)return;requestAnimationFrame(function(){requestAnimationFrame(function(){s.style.opacity='0';setTimeout(function(){if(s&&s.parentNode)s.parentNode.removeChild(s);},400);});});}catch(e){}})();
