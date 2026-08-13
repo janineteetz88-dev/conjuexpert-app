@@ -325,7 +325,7 @@ export function renderArticle({
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/blog/blog.css?v=13" />
+<link rel="stylesheet" href="/blog/blog.css?v=14" />
 <script type="application/ld+json">${jsonLd}</script>
 <style>
 .art-glow{position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:1000px;height:480px;background:var(--vivid);filter:blur(120px);opacity:.13;z-index:-1;border-radius:50%}
@@ -429,6 +429,8 @@ export function renderArticle({
             <span class="g"></span><span class="l">Kostenlos testen</span>
           </a>
         </div>
+
+        <p class="ai-note">Transparenz: Dieser Artikel wurde mit KI-Unterstützung erstellt und redaktionell geprüft.</p>
 
         <div class="authorbox">
           <span class="av" style="width:56px;height:56px;border-radius:50%;background:linear-gradient(140deg,var(--pink),var(--violet));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;flex:none">J</span>

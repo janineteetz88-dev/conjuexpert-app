@@ -177,9 +177,10 @@ section.block{padding:80px 0;scroll-margin-top:84px}
 .toc a{color:var(--ink)}
 .toc a:hover{color:var(--violet)}
 
-/* Abschnitts-Nummern — spiegeln die TOC-Zählung (01, 02, …) an den H2 der artcards */
-.artcard>h2{counter-increment:sect}
-.artcard>h2::before{content:counter(sect,decimal-leading-zero);display:block;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--violet);margin:0 0 8px}
+/* Abschnitts-Nummern — spiegeln die TOC-Zählung (01, 02, …) an den H2 der artcards.
+   FAQ + Quellen leben zwar auch in Karten, zählen aber nicht mit. */
+.artcard>h2:not(#faq):not(#quellen){counter-increment:sect}
+.artcard>h2:not(#faq):not(#quellen)::before{content:counter(sect,decimal-leading-zero);display:block;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--violet);margin:0 0 8px}
 
 /* prose */
 .prose{font-size:18px;line-height:1.82;color:#23262f;counter-reset:sect}
@@ -193,7 +194,11 @@ section.block{padding:80px 0;scroll-margin-top:84px}
 .prose ul,.prose ol{margin:6px 0 28px;padding-left:24px;display:flex;flex-direction:column;gap:12px}
 .prose li{padding-left:4px}
 .prose strong{font-weight:700;color:var(--ink)}
-.prose em{font-style:italic;font-weight:inherit;color:inherit;font-family:inherit;font-size:inherit}
+/* Fremdsprachliche Beispiele: statt Dauer-Kursiv ein ruhiger Marker-Chip */
+.prose em{font-style:normal;font-weight:600;color:var(--ink);background:color-mix(in srgb,var(--violet) 9%,transparent);border-radius:6px;padding:1px 5px;margin:0 1px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.quizcta em{font-style:italic;font-weight:inherit;background:none;border-radius:0;padding:0;margin:0}
+/* KI-Transparenz-Hinweis am Artikelende */
+.ai-note{margin:26px 0 0;font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;color:var(--muted)}
 .pull{border-left:3px solid;border-image:var(--vivid) 1;padding:4px 0 4px 18px;margin:24px 0;font-family:inherit;font-weight:400;font-size:17px;letter-spacing:normal;line-height:1.62;color:var(--ink)}
 .note{background:var(--surface-2);border:1px solid var(--border);border-left:4px solid color-mix(in srgb,var(--violet) 60%,var(--border));border-radius:14px;padding:18px 22px;margin:34px 0;font-size:16px;line-height:1.62;color:var(--muted)}
 .note b{color:var(--ink)}
