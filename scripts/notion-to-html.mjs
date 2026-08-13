@@ -387,7 +387,7 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
 <meta name="twitter:image" content="${BASE_URL}/blog/img/prod-1.png" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="/fonts/blog.css" />
-<link rel="stylesheet" href="/blog/blog.css?v=12" />
+<link rel="stylesheet" href="/blog/blog.css?v=14" />
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
@@ -528,6 +528,8 @@ function buildHtml({ title, description, slug, langInfo, datePublished, contentH
             <span class="g"></span><span class="l">Kostenlos testen</span>
           </a>
         </div>
+
+        <p class="ai-note">Transparenz: Dieser Artikel wurde mit KI-Unterstützung erstellt und redaktionell geprüft.</p>
 
         <div class="authorbox">
           <span class="av" style="width:56px;height:56px;border-radius:50%;background:linear-gradient(140deg,var(--pink),var(--violet));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;flex:none">J</span>

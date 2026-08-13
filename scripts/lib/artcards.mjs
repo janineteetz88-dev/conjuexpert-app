@@ -130,7 +130,9 @@ export function wrapContentCards(contentHtml, { langCode } = {}) {
 
   const widget = flipWidgetHtml(langCode);
   let out = "";
-  if (preamble) out += `${preamble}\n`;
+  // Auch der Lede-Text vor dem ersten Abschnitt bekommt eine Karte —
+  // sonst „schwebt" er als einziger Block ohne Hintergrund auf der Seite.
+  if (preamble) out += `<section class="artcard artcard-lede">\n${preamble}\n</section>\n`;
   if (widget && cards.length) {
     out += [cards[0], widget, ...cards.slice(1)].join("\n");
   } else {

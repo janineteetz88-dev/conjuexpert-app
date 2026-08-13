@@ -55,8 +55,10 @@ export function renderSourcesSection(text) {
 
   const listItems = items.map((t) => `          <li>${t}</li>`).join("\n");
   return `
+        <section class="artcard">
         <h2 id="quellen">Quellen</h2>
         <ol class="sources">
 ${listItems}
-        </ol>`;
+        </ol>
+        </section>`;
 }

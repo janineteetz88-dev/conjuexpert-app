@@ -70,7 +70,23 @@ Artikel sauber erfassen. Helfer dafür: `scripts/lib/geo-blocks.mjs` (TOC + Box)
    aus Inline-Zitaten `(Autor, Jahr)` gegen den Belegpool (`sources-pool.json`),
    siehe Regel 6. Nichts erfinden — nur gepflegte Belege.
 
-Reihenfolge im `.prose`: Box → TOC → Fließtext → FAQ → Quellen.
+Reihenfolge im `.prose`: Box → TOC → Fließtext → FAQ → Quellen → KI-Hinweis.
+
+## Karten-Layout & sichtbare Bausteine (Stand 08/2026)
+
+- **Alles Inhaltliche lebt in Karten:** Jeder H2-Abschnitt wird zu
+  `<section class="artcard">` (`scripts/lib/artcards.mjs`). Auch der **Lede-Text**
+  vor dem ersten Abschnitt (`artcard artcard-lede`), der **FAQ-Block** und die
+  **Quellen** bekommen Karten — kein Text „schwebt" ohne Hintergrund auf der Seite.
+- **Abschnitts-Nummern:** Die H2 der Abschnitts-Karten tragen per CSS-Counter
+  dieselbe Nummer (01, 02, …) wie das TOC (`blog.css`, Counter `sect`).
+  FAQ- und Quellen-H2 sind per `:not(#faq):not(#quellen)` ausgenommen.
+- **Kursiv → Marker-Chip:** `<em>` im Fließtext (fremdsprachliche Beispiele) wird
+  in `blog.css` als dezenter Chip gerendert (kein Schrägschrift-Dauerfeuer).
+  Semantik im HTML bleibt `<em>`.
+- **KI-Transparenz-Hinweis:** Beide Renderer hängen ans Artikelende
+  `<p class="ai-note">Transparenz: Dieser Artikel wurde mit KI-Unterstützung
+  erstellt und redaktionell geprüft.</p>` an. Nicht im Notion-Entwurf duplizieren.
 Styling der Bausteine lebt im Inline-`<style>` der Engine (`.keytakeaways`,
 `.toc`, `.faq2`) und nutzt die Blog-Tokens. Akzeptanz: `render-selftest.mjs`
 prüft an einem Muster-Artikel, dass **alle vier** Bausteine live erscheinen.

@@ -10607,7 +10607,8 @@ function LearnView({
   }))))), /*#__PURE__*/React.createElement("a", {
     href: "/blog/?from=app&lang=" + UILANG,
     className: "learn-blog-btn",
-    target: "_blank"
+    target: "_blank",
+    rel: "noopener"
   }, /*#__PURE__*/React.createElement("span", {
     className: "gg"
   }), /*#__PURE__*/React.createElement("span", null, {

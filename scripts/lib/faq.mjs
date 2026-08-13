@@ -294,7 +294,7 @@ export function renderFaqHtml(faqItems) {
     })
     .join("\n");
 
-  return `        <h2 id="faq">Häufige Fragen</h2>\n        <div class="faq2">\n${details}\n        </div>`;
+  return `        <section class="artcard">\n        <h2 id="faq">Häufige Fragen</h2>\n        <div class="faq2">\n${details}\n        </div>\n        </section>`;
 }
 
 /* ─── Renderer: FAQPage JSON-LD ──────────────────────────────────────────── */
