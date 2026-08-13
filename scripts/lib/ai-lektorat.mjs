@@ -24,7 +24,7 @@
  */
 
 const OPENAI_KEY = process.env.OPENAI_API_KEY || "";
-const WORKER = "https://bitter-bird-3204.janine-teetz88.workers.dev";
+const WORKER = process.env.WORKER_URL || "https://bitter-bird-3204.janine-teetz88.workers.dev";
 
 async function aiDirect(prompt, retries = 3) {
   for (let i = 0; i < retries; i++) {

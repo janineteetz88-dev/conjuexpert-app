@@ -4,8 +4,10 @@
  * Each page includes conjugation table + AI example sentences per tense + AI story + CTA.
  *
  * Usage:
- *   node scripts/generate-verb-pages.mjs
- *   PAGES_PER_RUN=10 node scripts/generate-verb-pages.mjs
+ *   WORKER_URL=https://... node scripts/generate-verb-pages.mjs
+ *   WORKER_URL=https://... PAGES_PER_RUN=10 node scripts/generate-verb-pages.mjs
+ *
+ * WORKER_URL (required): Cloudflare Worker AI proxy URL — ask Hans/Janine.
  *
  * Reads/writes scripts/verb-queue.json to track progress.
  */
@@ -23,7 +25,8 @@ import { socialRow } from './lib/social.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
-const WORKER = 'https://bitter-bird-3204.janine-teetz88.workers.dev';
+const WORKER = process.env.WORKER_URL || "https://bitter-bird-3204.janine-teetz88.workers.dev";
+if (!WORKER) { console.error('WORKER_URL env var is required (Cloudflare Worker AI proxy URL).'); process.exit(1); }
 const OPENAI_KEY = process.env.OPENAI_API_KEY || '';
 const UNSPLASH_KEY = process.env.UNSPLASH_ACCESS_KEY || '';
 const PEXELS_KEY = process.env.PEXELS_API_KEY || '';
