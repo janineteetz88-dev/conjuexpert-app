@@ -6,19 +6,16 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
   <url>
     <loc>https://conjuexpert.app/landing/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
   <url>
     <loc>https://conjuexpert.app/bewertungen/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://conjuexpert.app/blog/</loc>
     <changefreq>weekly</changefreq>
@@ -84,15 +81,12 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
   <url>
     <loc>https://conjuexpert.app/blog/mit-der-sprache-umgeben/</loc>
     <lastmod>2026-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
-
   <url>
     <loc>https://conjuexpert.app/konjugation/de/</loc>
     <lastmod>2026-06-17</lastmod>
@@ -544,19 +538,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/aller/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/faire/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/venir/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -604,12 +586,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/devenir/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/tenir/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
@@ -629,18 +605,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/fr/mettre/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/partir/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/sortir/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -748,12 +712,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/revenir/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/valoir/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
@@ -809,12 +767,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/fr/courir/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/mourir/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -958,24 +910,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/parvenir/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/intervenir/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/survenir/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/convenir/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
@@ -983,12 +917,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/fr/pr%C3%A9venir/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/repartir/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -2291,12 +2219,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/nl/lopen/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/zijn/</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -3693,19 +3615,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
-  <url>
-    <loc>https://conjuexpert.app/konjugation/es/levantarse/</loc>
-    <lastmod>2026-07-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/es/llamarse/</loc>
-    <lastmod>2026-07-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
   <url>
     <loc>https://conjuexpert.app/blog/reflexive-verben-niederlaendisch/</loc>
     <lastmod>2026-07-05</lastmod>
@@ -3742,7 +3651,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
   <url>
     <loc>https://conjuexpert.app/konjugation/es/mirar/</loc>
     <lastmod>2026-07-20</lastmod>
@@ -6006,24 +5914,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/arriver/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/entrer/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/rester/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/passer/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -6325,12 +6215,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/fr/laisser/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/monter/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -6882,12 +6766,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/accélérer/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/accrocher/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -7038,12 +6916,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/compléter/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/compliquer/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -7158,12 +7030,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/emmener/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/encourager/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -7176,12 +7042,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/enlever/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/entourer/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -7189,12 +7049,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/fr/épargner/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/espérer/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -7362,18 +7216,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/lever/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/libérer/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/limiter/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -7536,12 +7378,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/posséder/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/prier/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -7560,19 +7396,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/protéger/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/prouver/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/rappeler/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -7603,12 +7427,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/fr/recommander/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/régler/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -7645,12 +7463,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/fr/renverser/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/répéter/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -7716,12 +7528,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/fr/sécher/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/fr/séparer/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -7753,12 +7559,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/fr/souffler/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/fr/soulever/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -7981,144 +7781,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/de/baden/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/aufstehen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/ankommen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/einkaufen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/anrufen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/mitnehmen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/aufmachen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/zumachen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/anfangen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/aufhören/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/einschlafen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/aussehen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/vorbereiten/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/abholen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/anziehen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/ausziehen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/fernsehen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/aufräumen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/einladen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/vorstellen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/teilnehmen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/stattfinden/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/zurückkommen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/de/ausbreiten/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -9432,78 +9094,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/nl/opstaan/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/aankomen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/meenemen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/opbellen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/uitgaan/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/meedoen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/afspreken/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/opruimen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/aankleden/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/uitleggen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/voorstellen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/terugkomen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/nl/zetten/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -9517,12 +9107,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/nl/danken/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/geloven/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -9553,12 +9137,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/nl/wensen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/betalen/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -9619,42 +9197,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/nl/telefoneren/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/bedanken/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/beantwoorden/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/bestellen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/openen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/gebruiken/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/herhalen/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -9726,12 +9268,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/nl/bewaren/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/nl/branden/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -9786,12 +9322,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/nl/verven/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/nl/wandelen/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -9805,60 +9335,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/nl/bouwen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/gebeuren/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/herinneren/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/bedoelen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/begroeten/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/behandelen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/bellen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/bereiden/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/beschermen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/betekenen/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -9960,18 +9436,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/nl/verbeteren/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/vertalen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/nl/wisselen/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -9979,12 +9443,6 @@
   </url>
   <url>
     <loc>https://conjuexpert.app/konjugation/nl/zorgen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/afmaken/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -10008,37 +9466,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/nl/ontmoeten/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/nl/registreren/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/verzamelen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/aanraken/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/bestuderen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/herstellen/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -10050,79 +9478,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://conjuexpert.app/konjugation/nl/ontspannen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://conjuexpert.app/konjugation/nl/strepen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/verbranden/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/verdienen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/vergroten/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/verhuizen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/verkleinen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/vermenigvuldigen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/verminderen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/veroorzaken/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/versieren/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/verwarmen/</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://conjuexpert.app/konjugation/nl/voorbereiden/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -12653,7 +12009,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
   <url>
     <loc>https://conjuexpert.app/konjugation/de/abholen/</loc>
     <lastmod>2026-08-01</lastmod>
