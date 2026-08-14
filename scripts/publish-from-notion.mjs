@@ -43,7 +43,7 @@ import { auditRenderedHtml } from "./lib/render-guard.mjs";
 import { lintRenderedHtml, hardErrors, htmlToText } from "./lib/standard-lint.mjs";
 import { aiLektorat, htmlForLektorat } from "./lib/ai-lektorat.mjs";
 import { normalizeGermanQuotesHtml } from "./lib/text-polish.mjs";
-import { blocksToMetaText, extractFaqAndContent } from "./lib/notion-adapt.mjs";
+import { blocksToMetaText, extractFaqAndContent, firstHeadIntro } from "./lib/notion-adapt.mjs";
 import {
   upsertClusters,
   mergeSitemap,
@@ -329,8 +329,18 @@ async function main() {
     // Platzhalter („Meta (für Blog-Engine & Freigabe)") zählt wie FEHLEND —
     // er stand sonst wörtlich als Description im Live-HTML.
     if (!meta.metaDescription || !String(meta.metaDescription).trim() || /Meta \(für Blog-Engine/i.test(meta.metaDescription)) {
-      meta.metaDescription = cleanMetaDescription(trackerTitle);
-      warn(`Meta-Description fehlte/Platzhalter → Fallback (Titel) genutzt: "${trackerTitle}"`);
+      // Vor dem Titel-Fallback: kursiven Intro-Satz aus den Roh-Blöcken versuchen
+      // (blocksToMetaText hat das bereits für den Meta-Block-Text probiert, aber
+      // nur wenn dort ÜBERHAUPT kein "Meta-Description:"-Bullet erzeugt wurde;
+      // hier greifen wir direkt auf die Original-Blöcke zu, falls das fehlschlug).
+      const intro = firstHeadIntro(blocks, { italicOnly: true }) || firstHeadIntro(blocks);
+      if (intro) {
+        meta.metaDescription = cleanMetaDescription(intro);
+        warn(`Meta-Description fehlte/Platzhalter → Fallback (kursiver Intro-Satz) genutzt: "${trackerTitle}"`);
+      } else {
+        meta.metaDescription = cleanMetaDescription(trackerTitle);
+        warn(`Meta-Description fehlte/Platzhalter → Fallback (Titel) genutzt: "${trackerTitle}"`);
+      }
     }
 
     const { contentBlocks, faqBlocks } = extractFaqAndContent(blocks);
