@@ -21,7 +21,7 @@ import { loadEngine } from "./geo-blocks.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-const WORKER = "https://bitter-bird-3204.janine-teetz88.workers.dev";
+const WORKER = process.env.WORKER_URL || "https://bitter-bird-3204.janine-teetz88.workers.dev";
 const PASS_ALARM = 0.85;
 
 const LANG_NAME = { de: "German", es: "Spanish", en: "English", nl: "Dutch", fr: "French" };

@@ -1,0 +1,30 @@
+name: App-Nutzungs-Bericht (Plausible + GSC)
+
+# Holt wöchentlich die App-Nutzung (Plausible + Google Search Console) und legt
+# einen Eintrag in der Notion-Datenbank "🫡 Berichte" an. Reiner Report, committet
+# nichts. Braucht die Secrets PLAUSIBLE_API_KEY, GSC_SA_KEY (wie gsc-inspect) und
+# NOTION_API_KEY (wie sync-notion-tracker).
+#
+# Der wöchentliche Schedule ist bewusst auskommentiert: aussagekräftig erst ab
+# Live-Gang Welle 1 (siehe Notion-Karte "App-Nutzungs-Bericht"). Bis dahin per
+# workflow_dispatch manuell testen; zum Launch die "schedule:"-Zeilen aktivieren.
+
+on:
+  workflow_dispatch: {}
+  # schedule:
+  #   - cron: "0 6 * * 1" # montags 06:00 UTC — bei Launch aktivieren
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: App-Nutzungs-Bericht erstellen
+        env:
+          PLAUSIBLE_API_KEY: ${{ secrets.PLAUSIBLE_API_KEY }}
+          GSC_SA_KEY: ${{ secrets.GSC_SA_KEY }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        run: node scripts/app-usage-report.mjs

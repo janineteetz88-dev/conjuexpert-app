@@ -76,7 +76,8 @@
     brechen: { du: "brichst", er: "bricht", praet: "brach", konj: "bräch", partizip: "gebrochen", aux: "haben", impDu: "brich" },
     schneiden:{ praet: "schnitt", konj: "schnitt", partizip: "geschnitten", aux: "haben" },
     greifen: { praet: "griff", konj: "griff", partizip: "gegriffen", aux: "haben" },
-    riechen: { praet: "roch", konj: "röch", partizip: "gerochen", aux: "haben" }
+    riechen: { praet: "roch", konj: "röch", partizip: "gerochen", aux: "haben" },
+    schmelzen: { du: "schmilzt", er: "schmilzt", praet: "schmolz", konj: "schmölz", partizip: "geschmolzen", aux: "sein" }
   };
 
   /* ---- C1 expansion ---- */
@@ -210,7 +211,7 @@
     const SEIN_BASES = ["stehen","kommen","gehen","fahren","reisen","fallen","laufen","fliegen","steigen","ziehen","springen","wachsen","treten","schwimmen"];
     // Einzelne trennbare Verben, deren Hilfsverb von der Basis-Heuristik abweicht
     // (z. B. "einschlafen" nimmt sein, obwohl "schlafen" selbst haben nimmt).
-    const SEP_AUX_OVERRIDE = { einschlafen: "sein", anziehen: "haben" };
+    const SEP_AUX_OVERRIDE = { einschlafen: "sein", aufwachen: "sein", anziehen: "haben" };
     const auxOverride = SEP_AUX_OVERRIDE[verb] || ((SEIN_BASES.indexOf(base) >= 0 && ["auf","an","ab","ein","aus","mit","zurück","vor","um","weg","los","her","hin","empor","hoch","weiter","heim"].indexOf(prefix) >= 0) ? "sein" : data.aux);
     const suffix = (arr) => arr.map((f) => f === "—" ? "—" : `${f} … ${prefix}`); // finite verb + prefix at clause end
     const present = suffix(data.present);
@@ -1119,6 +1120,23 @@
   const NL_SEIN_BASE = ["staan","komen","gaan","lopen","vallen","stijgen","springen","rijden","vliegen","groeien"];
   // Untrennbare Verben, die wie Präfix+Basis aussehen: openen ist NICHT op+enen.
   const NL_NOSEP = ["openen", "opereren", "toetsen", "omarmen", "overtuigen", "overleggen", "overwegen", "overleven", "overlijden", "overhandigen", "overtreffen", "onderzoeken", "ondertekenen", "ondersteunen", "onderbouwen"];
+  // Regular verbs with a genuine unstressed prefix (be-/ge-/er-/her-/ont-/ver-) take NO ge- in the
+  // participle: geloven→geloofd, verhuizen→verhuisd. This must be an explicit list, not a string test
+  // on the verb itself — many regular verbs merely start with the same letters without being prefixed
+  // (bellen→gebeld not "beld", verven→geverfd not "verfd", erven→geërfd not "erfd", geven→gegeven).
+  const NL_UNSTRESSED_PREFIX_VERBS = [
+    "beantwoorden", "bedanken", "bedoelen", "bedreigen", "begroeten", "beloven", "bepalen",
+    "behandelen", "bereiden", "beschermen", "beschouwen", "bestellen", "bestuderen", "betalen",
+    "betekenen", "betwijfelen", "bewaren",
+    "geloven", "gebeuren", "gebruiken", "gedogen",
+    "herhalen", "herinneren", "herkennen", "herstellen",
+    "ontdekken", "ontmoeten", "ontspannen", "ontwikkelen",
+    "verbeteren", "verbranden", "verdedigen", "verdienen", "verduidelijken", "veranderen",
+    "vergroten", "verhogen", "verhuizen", "verklaren", "verkleinen", "verlagen",
+    "vermenigvuldigen", "verminderen", "vernieuwen", "veroorzaken", "verrassen", "versieren",
+    "verspreiden", "vertalen", "vertellen", "vertragen", "vertrouwen", "verwachten",
+    "verwarmen", "verwennen", "verzamelen", "verzekeren", "verzorgen"
+  ];
   function nlSplit(verb) {
     if (NL_NOSEP.indexOf(verb) >= 0) return null;
     for (const p of NL_SEP) {
@@ -1213,9 +1231,9 @@
       subjunctive: [verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb.replace(/n$/, ""), verb, verb, verb], // Aanvoegende wijs = Infinitiv minus -n (hebben→hebbe)
       // Moderner Imperativ: Stamm für jij UND jullie ("werk!"); "werkt!" ist archaisch.
       imperative: ["—", stem, "—", "laten we " + verb, stem, stT + " u"],
-      // Unbetonte Präfixe (be-, ge-, er-, her-, ont-, ver-) bekommen KEIN ge-:
-      // geloven→geloofd, verhuizen→verhuisd (nicht "gegelooft"/"geverhuist").
-      participle: (/^(be|ge|er|her|ont|ver)/.test(verb) ? "" : "ge") + (stem.endsWith(t) ? stem : stem + t),
+      // Unbetonte Präfixe nur laut Whitelist — kein blinder String-Test auf den
+      // Verbanfang (bellen→gebeld, verven→geverfd, aber geloven→geloofd).
+      participle: (NL_UNSTRESSED_PREFIX_VERBS.includes(verb) ? "" : "ge") + (stem.endsWith(t) ? stem : stem + t),
       aux: "hebben"
     };
   }
@@ -1369,7 +1387,8 @@
     appeler:{ present: ["appelle","appelles","appelle","appelons","appelez","appellent"], imparfait: ["appelais","appelais","appelait","appelions","appeliez","appelaient"], futStem: "appeller", pp: "appelé", aux: "avoir", subj: ["appelle","appelles","appelle","appelions","appeliez","appellent"], ppr: "appelant", erType: true },
     acheter:{ present: ["achète","achètes","achète","achetons","achetez","achètent"], imparfait: ["achetais","achetais","achetait","achetions","achetiez","achetaient"], futStem: "achèter", pp: "acheté", aux: "avoir", subj: ["achète","achètes","achète","achetions","achetiez","achètent"], ppr: "achetant", erType: true },
     payer:  { present: ["paie","paies","paie","payons","payez","paient"], imparfait: ["payais","payais","payait","payions","payiez","payaient"], futStem: "paier", pp: "payé", aux: "avoir", subj: ["paie","paies","paie","payions","payiez","paient"], ppr: "payant", erType: true },
-    envoyer:{ present: ["envoie","envoies","envoie","envoyons","envoyez","envoient"], imparfait: ["envoyais","envoyais","envoyait","envoyions","envoyiez","envoyaient"], futStem: "enverr", pp: "envoyé", aux: "avoir", subj: ["envoie","envoies","envoie","envoyions","envoyiez","envoient"], ppr: "envoyant", erType: true }
+    envoyer:{ present: ["envoie","envoies","envoie","envoyons","envoyez","envoient"], imparfait: ["envoyais","envoyais","envoyait","envoyions","envoyiez","envoyaient"], futStem: "enverr", pp: "envoyé", aux: "avoir", subj: ["envoie","envoies","envoie","envoyions","envoyiez","envoient"], ppr: "envoyant", erType: true },
+    falloir:{ present: ["faut","faut","faut","faut","faut","faut"], imparfait: ["fallait","fallait","fallait","fallait","fallait","fallait"], futStem: "faudr", pp: "fallu", aux: "avoir", subj: ["faille","faille","faille","faille","faille","faille"], imp: ["—","—","—","—","—","—"], ppr: "—", onlyIndices: [2] }
   };
 
   /* ---- C1 expansion: derive new irregulars from verified patterns (no hand-typing of full tables) ---- */
@@ -1494,7 +1513,7 @@
     const ppr = data.ppr || (impStem + "ant");
     let imp = data.imp;
     if (!imp) { let tu = present[1]; if (data.erType) tu = tu.replace(/s$/, ""); imp = ["—", tu, "—", present[3], present[4], "—"]; }
-    return [
+    const tenses = [
       { id: "present", label: "Présent", forms: present },
       { id: "past", label: "Imparfait", forms: imparfait },
       { id: "perfect", label: "Passé composé", forms: pc },
@@ -1506,7 +1525,16 @@
       { id: "imperative", label: "Impératif", forms: imp },
       { id: "gerund", label: "Participe présent", forms: PRON.map(() => ppr), nonFinite: true }
     ];
+    // Impersonal verbs (e.g. falloir) only conjugate for "il / elle" — blank out every other pronoun.
+    if (data.onlyIndices) {
+      const allowed = new Set(data.onlyIndices);
+      tenses.forEach((t) => { t.forms = t.forms.map((f, i) => allowed.has(i) ? f : "—"); });
+    }
+    return tenses;
   }
+
+  // Otherwise-regular verbs of movement/state that take être (not avoir) in compound tenses.
+  const FR_ETRE_ONLY = ["monter", "descendre", "rester", "arriver", "entrer", "rentrer", "tomber", "retourner"];
 
   // Reflexive Verben (se lever, s'appeler): Basisverb konjugieren, Pronomen
   // me/te/se/nous/vous/se (mit Elision) voranstellen, zusammengesetzte Zeiten
@@ -1534,6 +1562,7 @@
     const irr = IRR[verb];
     let data = reg, isIrr = false;
     if (irr) { isIrr = true; data = Object.assign({}, irr); }
+    else if (FR_ETRE_ONLY.includes(verb)) { isIrr = true; data = Object.assign({}, reg, { aux: "être" }); }
     if (refl) data = Object.assign({}, data, { aux: "être" });
     const tenses = build(verb, data);
     if (isIrr) { const regT = build(verb, refl ? Object.assign({}, reg, { aux: "être" }) : reg); tenses.forEach((t, i) => { t.reg = regT[i].forms; }); }
@@ -2130,7 +2159,7 @@
         compare: { with: "Presente (indicativo)" },
         n: {
           es: { explain_n: "El mundo de lo no-real: deseos, dudas, emociones y peticiones, casi siempre tras ‘que’.", mnemonic: "WEIRDO: Wish, Emotion, Impersonal, Request, Doubt, Ojalá → subjuntivo.", signals: ["espero que", "ojalá", "para que", "es importante que", "algo me hace feliz", "algo me incomoda", "algo me gusta mucho", "algo me da inseguridad o miedo", "algo me enfada mucho", "algo me irrita", "algo me pone triste", "algo me sorprende (para bien)", "algo me da calma"], examples: ["Espero que tengas un buen día.", "Quiero que me llames.", "Me alegra que estés aquí.", "Me molesta que siempre llegues tarde."], use: ["Deseos y peticiones (quiero que, espero que)", "Duda, emoción y expresiones impersonales", "No digas solo estoy feliz o estoy triste — expresa la emoción con me … que + subjuntivo.", "Emociones positivas: me alegra que · me encanta que · me flipa que · me tranquiliza que", "Emociones negativas: me molesta que · me da rabia que · me fastidia que · me da pena que · me preocupa que"], avoid: ["No para hechos seguros (eso es el indicativo)."], compare_rows: [["deseo / duda / subjetivo", "hecho seguro y real"]], compare_note: "Creo que viene (hecho) vs. Espero que venga (deseo)." },
-          de: { explain_n: "Die Welt des Nicht-Realen: Wünsche, Zweifel, Gefühle und Bitten, fast immer nach ‚que‘.", mnemonic: "WEIRDO: Wunsch, Emotion, Unpersönlich, Bitte, Zweifel, Ojalá → Subjuntivo.", signals: ["ich hoffe, dass", "hoffentlich", "damit", "es ist wichtig, dass", "es freut mich, dass", "es stört mich, dass", "ich liebe es, dass", "es beunruhigt mich, dass", "es macht mich wütend, dass", "es nervt mich, dass", "es macht mich traurig, dass", "es begeistert mich, dass", "es beruhigt mich, dass"], examples: ["Ich hoffe, dass du einen schönen Tag hast.", "Ich möchte, dass du mich anrufst.", "Es freut mich, dass du hier bist.", "Es stört mich, dass du immer zu spät kommst."], use: ["Wünsche und Bitten (quiero que, espero que)", "Zweifel, Gefühl und unpersönliche Ausdrücke", "Sag nicht nur estoy feliz oder estoy triste — drück das Gefühl mit me … que + Subjuntivo aus.", "Gefühle positiv: me alegra que (freut mich) · me encanta que (gefällt mir sehr) · me flipa que (finde ich stark) · me tranquiliza que (beruhigt mich)", "Gefühle negativ: me molesta que (stört mich) · me da rabia que (macht mich wütend) · me fastidia que (nervt mich) · me da pena que (macht mich traurig) · me preocupa que (beunruhigt mich)"], avoid: ["Nicht für sichere Tatsachen (das ist der Indikativ)."], compare_rows: [["Wunsch / Zweifel / subjektiv", "sichere, reale Tatsache"]], compare_note: "Creo que viene (Tatsache) vs. Espero que venga (Wunsch)." },
+          de: { explain_n: "Die Welt des Nicht-Realen: Wünsche, Zweifel, Gefühle und Bitten, fast immer nach ‚que‘.", mnemonic: "WEIRDO (englische Merkhilfe): Wunsch, Emotion, Unpersönliches, Aufforderung, Zweifel, Ojalá → Subjuntivo.", signals: ["ich hoffe, dass", "hoffentlich", "damit", "es ist wichtig, dass", "es freut mich, dass", "es stört mich, dass", "ich liebe es, dass", "es beunruhigt mich, dass", "es macht mich wütend, dass", "es nervt mich, dass", "es macht mich traurig, dass", "es begeistert mich, dass", "es beruhigt mich, dass"], examples: ["Ich hoffe, dass du einen schönen Tag hast.", "Ich möchte, dass du mich anrufst.", "Es freut mich, dass du hier bist.", "Es stört mich, dass du immer zu spät kommst."], use: ["Wünsche und Bitten (quiero que, espero que)", "Zweifel, Gefühl und unpersönliche Ausdrücke", "Sag nicht nur estoy feliz oder estoy triste — drück das Gefühl mit me … que + Subjuntivo aus.", "Gefühle positiv: me alegra que (freut mich) · me encanta que (gefällt mir sehr) · me flipa que (finde ich stark) · me tranquiliza que (beruhigt mich)", "Gefühle negativ: me molesta que (stört mich) · me da rabia que (macht mich wütend) · me fastidia que (nervt mich) · me da pena que (macht mich traurig) · me preocupa que (beunruhigt mich)"], avoid: ["Nicht für sichere Tatsachen (das ist der Indikativ)."], compare_rows: [["Wunsch / Zweifel / subjektiv", "sichere, reale Tatsache"]], compare_note: "Creo que viene (Tatsache) vs. Espero que venga (Wunsch)." },
           en: { explain_n: "The world of the non-real: wishes, doubts, emotions and requests, almost always after 'que'.", mnemonic: "WEIRDO: Wish, Emotion, Impersonal, Request, Doubt, Ojalá → subjunctive.", signals: ["I hope that", "if only / hopefully", "so that", "it's important that", "it makes me happy that", "it bothers me that", "I love that", "it worries me that", "it makes me angry that", "it annoys me that", "it makes me sad that", "I'm thrilled that", "it reassures me that"], examples: ["I hope you have a good day.", "I want you to call me.", "I'm glad you're here.", "It bothers me that you're always late."], use: ["Wishes and requests (quiero que, espero que)", "Doubt, emotion and impersonal expressions", "Don't just say estoy feliz or estoy triste — express the emotion with me … que + subjunctive.", "Positive emotions: me alegra que (makes me happy) · me encanta que (I love it) · me flipa que (I'm amazed) · me tranquiliza que (calms me)", "Negative emotions: me molesta que (bothers me) · me da rabia que (makes me angry) · me fastidia que (annoys me) · me da pena que (makes me sad) · me preocupa que (worries me)"], avoid: ["Not for certain facts (that's the indicative)."], compare_rows: [["wish / doubt / subjective", "certain, real fact"]], compare_note: "Creo que viene (fact) vs. Espero que venga (wish)." },
           nl: { explain_n: "De wereld van het niet-reële: wensen, twijfels, emoties en verzoeken, bijna altijd na ‘que’.", mnemonic: "WEIRDO: Wens, Emotie, Onpersoonlijk, Verzoek, Twijfel, Ojalá → subjuntivo.", signals: ["ik hoop dat", "hopelijk", "zodat", "het is belangrijk dat", "het maakt me blij dat", "het stoort me dat", "ik vind het geweldig dat", "het baart me zorgen dat", "het maakt me boos dat", "het ergert me dat", "het maakt me verdrietig dat", "ik vind het te gek dat", "het stelt me gerust dat"], examples: ["Ik hoop dat je een fijne dag hebt.", "Ik wil dat je me belt.", "Ik ben blij dat je hier bent.", "Het stoort me dat je altijd te laat komt."], use: ["Wensen en verzoeken (quiero que, espero que)", "Twijfel, emotie en onpersoonlijke uitdrukkingen", "Zeg niet alleen estoy feliz of estoy triste — druk het gevoel uit met me … que + subjuntivo.", "Positieve emoties: me alegra que (maakt me blij) · me encanta que (vind ik heerlijk) · me flipa que (vind ik te gek) · me tranquiliza que (stelt me gerust)", "Negatieve emoties: me molesta que (stoort me) · me da rabia que (maakt me boos) · me fastidia que (irriteert me) · me da pena que (maakt me verdrietig) · me preocupa que (baart me zorgen)"], avoid: ["Niet voor zekere feiten (dat is de indicatief)."], compare_rows: [["wens / twijfel / subjectief", "zeker, reëel feit"]], compare_note: "Creo que viene (feit) vs. Espero que venga (wens)." },
           fr: { explain_n: "Le monde du non-réel : souhaits, doutes, émotions et demandes, presque toujours après ‘que’.", mnemonic: "WEIRDO : Wish, Emotion, Impersonnel, Requête, Doute, Ojalá → subjonctif.", signals: ["j'espère que", "si seulement", "pour que", "il est important que", "ça me réjouit que", "ça me dérange que", "j'adore que", "ça m'inquiète que", "ça me met en colère que", "ça m'agace que", "ça m'attriste que", "ça m'épate que", "ça me rassure que"], examples: ["J'espère que tu passes une bonne journée.", "Je veux que tu m'appelles.", "Je suis content(e) que tu sois là.", "Ça me dérange que tu arrives toujours en retard."], use: ["Souhaits et demandes (quiero que, espero que)", "Doute, émotion et expressions impersonnelles", "Ne dis pas seulement estoy feliz ou estoy triste — exprime l'émotion avec me … que + subjonctif.", "Émotions positives : me alegra que (ça me réjouit) · me encanta que (j'adore) · me flipa que (ça m'épate) · me tranquiliza que (ça me rassure)", "Émotions négatives : me molesta que (ça me dérange) · me da rabia que (ça m'énerve) · me fastidia que (ça m'agace) · me da pena que (ça m'attriste) · me preocupa que (ça m'inquiète)"], avoid: ["Pas pour des faits certains (c'est l'indicatif)."], compare_rows: [["souhait / doute / subjectif", "fait certain et réel"]], compare_note: "Creo que viene (fait) vs. Espero que venga (souhait)." }
@@ -8155,13 +8184,15 @@ function QuizView({
   function libInsert(lg, topic, level, tenses, sentences, questions) {
     if (!window.__supa) return;
     try {
-      window.__supa.from("texte_stories").insert({
-        lang: lg,
-        topic,
-        level,
-        tenses,
-        sentences,
-        questions: questions || null
+      window.__supa.functions.invoke("submit-story", {
+        body: {
+          lang: lg,
+          topic,
+          level,
+          tenses,
+          sentences,
+          questions: questions || null
+        }
       }).then(() => {}, () => {});
     } catch (e) {}
   }

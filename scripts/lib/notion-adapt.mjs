@@ -46,6 +46,7 @@ export function firstHeadIntro(list, { italicOnly = false } = {}) {
     const rt = b.paragraph?.rich_text || [];
     const t = plainOf(rt).trim();
     if (!t) continue;
+    if (isMetaHeaderText(t)) continue;
     if (/^\s*\*?\*?\s*Meta-Description:/i.test(t)) continue;
     if (/Slug:/i.test(t)) continue;
     if (italicOnly) {
