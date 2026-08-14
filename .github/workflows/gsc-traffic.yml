@@ -1,0 +1,27 @@
+name: GSC Traffic-Report
+
+# Klicks/Impressionen/Top-Anfragen aus der Google Search Console —
+# reiner Report in Log + Job-Summary, committet nichts.
+# Braucht das Secret GSC_SA_KEY (wie submit-sitemap / gsc-inspect).
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Zeitraum in Tagen'
+        default: '28'
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Suchanalyse abfragen
+        env:
+          GSC_SA_KEY: ${{ secrets.GSC_SA_KEY }}
+          SITE_URL: 'sc-domain:conjuexpert.app'
+          DAYS: ${{ github.event.inputs.days }}
+        run: node scripts/gsc-traffic.mjs

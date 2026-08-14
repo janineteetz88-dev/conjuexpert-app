@@ -40,9 +40,30 @@ Deno.serve(async (req) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
   );
 
+  // Rate-Limit: maximal 10 Einlöseversuche pro Nutzer innerhalb von 15
+  // Minuten, um Brute-Force-Erraten gültiger Codes zu verhindern. Der
+  // Versuch wird atomar protokolliert, bevor der Code selbst geprüft wird.
+  const { data: attemptAllowed, error: attemptError } = await supaAdmin.rpc(
+    "check_and_record_redeem_attempt",
+    { p_user_id: user.id }
+  );
+
+  if (attemptError) {
+    return new Response(JSON.stringify({ error: attemptError.message }), {
+      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  if (!attemptAllowed) {
+    return new Response(
+      JSON.stringify({ error: "Zu viele Versuche. Bitte warte 15 Minuten und versuche es erneut." }),
+      { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
+
   const { data: promo, error: promoError } = await supaAdmin
     .from("promo_codes")
-    .select("code, months, active, max_uses, current_uses")
+    .select("code, months, active, max_uses, current_uses, expires_at")
     .eq("code", code.trim().toUpperCase())
     .eq("active", true)
     .single();
@@ -55,6 +76,13 @@ Deno.serve(async (req) => {
 
   // Nutzungslimit prüfen. max_uses === null bedeutet unbegrenzt nutzbar.
   if (promo.max_uses !== null && (promo.current_uses ?? 0) >= promo.max_uses) {
+    return new Response(JSON.stringify({ error: "Ungültiger Code" }), {
+      status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  // Ablaufdatum prüfen. expires_at === null bedeutet kein Ablauf.
+  if (promo.expires_at && new Date(promo.expires_at).getTime() < Date.now()) {
     return new Response(JSON.stringify({ error: "Ungültiger Code" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

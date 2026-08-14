@@ -1,0 +1,15 @@
+-- texte_stories erlaubte bisher INSERT direkt per RLS-Policy für anon UND
+-- authenticated (texte_stories_insert_bounded) — jeder Besucher mit dem
+-- öffentlichen Anon-Key konnte per PostgREST beliebige (bis zur Längengrenze
+-- zulässige) Inhalte in die geteilte Lesetext-Bibliothek einschleusen, die
+-- app.js laut Kommentar "shared story library — reused for everyone" an ALLE
+-- Lernenden ausspielt (Content-Injection/Cache-Poisoning-Risiko).
+--
+-- Fix: clientseitigen INSERT komplett unterbinden. Story-Einträge entstehen
+-- ab jetzt ausschließlich über die submit-story Edge Function (service_role,
+-- umgeht RLS ohnehin), die dieselben Bounds serverseitig nachbildet, die
+-- zuvor nur in der policy's WITH CHECK standen (siehe supabase/functions/
+-- submit-story/index.ts).
+--
+-- Lesen bleibt unverändert öffentlich (texte_stories_read_all, qual: true).
+DROP POLICY IF EXISTS texte_stories_insert_bounded ON public.texte_stories;

@@ -123,6 +123,7 @@ export const clusters = [
       { slug: "/blog/hebben-of-zijn", title: "hebben of zijn? Das niederländische Perfekt sicher bilden", live: true },
       { slug: "/blog/reflexive-verben-niederlaendisch", title: "Reflexive Verben im Niederländischen (zich wassen, zich voelen)", live: true },
       { slug: "/blog/trennbare-verben-niederlaendisch", title: "Trennbare Verben im Niederländischen: das Bumerang-Präfix (opstaan, meenemen)", live: true },
+      { slug: "/blog/zukunft-zullen-niederlaendisch", title: "Die Zukunft im Niederländischen: zullen + Infinitiv", live: true },
     ],
   },
   {
@@ -180,6 +181,7 @@ export const clusters = [
       { slug: "/blog/estar-gerundio", title: "Die Verlaufsform: estar + gerundio (estoy hablando)", live: true },
       { slug: "/blog/reflexive-verben-spanisch", title: "Reflexive Verben Spanisch: me levanto, te llamas & der ganze Tagesablauf", live: true },
       { slug: "/blog/imperativo-spanisch", title: "Der Imperativo: Befehle und Bitten auf Spanisch souverän geben", live: true },
+      { slug: "/blog/conjuguemos-fuer-erwachsene", title: "Conjuguemos für Erwachsene: Stärken und Grenzen", live: true },
     ],
   },
   {
@@ -202,6 +204,8 @@ export const clusters = [
       { slug: "/blog/passe-compose-avoir-etre", title: "Passé composé mit avoir oder être? Die Regel, die wirklich hilft", live: true },
       { slug: "/blog/unregelmaessige-verben-franzoesisch", title: "Die wichtigsten unregelmäßigen französischen Verben: être, avoir, aller, faire", live: true },
       { slug: "/blog/conditionnel-franzoesisch", title: "Le conditionnel: höflich bitten und Irreales ausdrücken", live: true },
+      { slug: "/blog/reverso-vs-conjuexpert", title: "Reverso vs. ConjuExpert: Wo liegen die Unterschiede?", live: true },
+      { slug: "/blog/imperatif-franzoesisch", title: "L'impératif: Aufforderungen und Bitten auf Französisch", live: true },
     ],
   },
   {
@@ -231,6 +235,7 @@ export const clusters = [
       { slug: "/blog/present-continuous-simple-present", title: "Present continuous vs. simple present: -ing oder nicht?", live: true },
       { slug: "/blog/present-perfect-vs-simple-past", title: "Present Perfect vs. Simple Past: der Klassiker für deutsche Englischlerner", live: true },
       { slug: "/blog/englisch-3-person-s", title: "Das -s in der 3. Person Singular (he works, she goes)", live: true },
+      { slug: "/blog/passiv-englisch", title: "Das englische Passiv (be + past participle) verständlich erklärt", live: true },
     ],
   },
   {

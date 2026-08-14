@@ -50,13 +50,23 @@ async function toWebp(src, quality) {
   return dst;
 }
 
-console.log('\n=== blog/img/ konvertieren ===');
+console.log('\n=== blog/img/ konvertieren (inkl. Unterordner) ===');
 const blogImgDir = path.join(ROOT, 'blog/img');
-for (const f of fs.readdirSync(blogImgDir)) {
-  if (/\.(jpg|jpeg|png)$/i.test(f)) {
-    const ext = path.extname(f).toLowerCase();
-    await toWebp(path.join(blogImgDir, f), ext === '.png' ? 80 : 82);
+
+function findImages(dir, results = []) {
+  for (const f of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (f.isDirectory()) {
+      findImages(path.join(dir, f.name), results);
+    } else if (/\.(jpg|jpeg|png)$/i.test(f.name)) {
+      results.push(path.join(dir, f.name));
+    }
   }
+  return results;
+}
+
+for (const p of findImages(blogImgDir)) {
+  const ext = path.extname(p).toLowerCase();
+  await toWebp(p, ext === '.png' ? 80 : 82);
 }
 
 console.log('\n=== Root Pexels-Bilder konvertieren ===');
@@ -78,9 +88,10 @@ const IMG_RE = /<img\b([^>]*?)src="(\/blog\/img\/[^"]+\.(jpg|jpeg|png))"([^>]*?)
 
 function addWebpPicture(html) {
   return html.replace(IMG_RE, (match, pre, src, _ext, post) => {
-    // Nicht doppelt wrappen
-    const closingSlash = match.endsWith('/>') ? '' : '';
     const webpSrc = src.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+    // Nur wrappen, wenn die WebP-Datei tatsächlich existiert — sonst 404 im <source>,
+    // das <picture> fällt bei einem fehlgeschlagenen Source-Request NICHT auf <img> zurück.
+    if (!fs.existsSync(path.join(ROOT, webpSrc))) return match;
     const selfClose = match.endsWith('/>') ? ' />' : '>';
     const imgTag = `<img${pre}src="${src}"${post}${selfClose}`;
     return `<picture><source srcset="${webpSrc}" type="image/webp">${imgTag}</picture>`;
