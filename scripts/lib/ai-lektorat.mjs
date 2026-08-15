@@ -115,8 +115,19 @@ ARTIKELTEXT:
 ${body}`;
   const raw = await ai(prompt);
   const j = parseJson(raw);
+  // Selbstwiderspruchs-Wächter auf CODE-Ebene — der Prompt-Appell allein
+  // reicht nicht (Praxisfall: Korrektur war zeichengleich mit dem Zitat und
+  // die Begründung endete mit "daher kein Fehler", blockierte aber den Lauf):
+  // (a) identische "Korrektur" = keine Änderung = kein Fehler;
+  // (b) Begründungen, die selbst mit "kein Fehler" schließen, zählen nicht.
+  const normTxt = (t) => String(t || "").replace(/\s+/g, " ").trim();
   const errors = Array.isArray(j.errors)
-    ? j.errors.filter((e) => e && e.zitat && e.korrektur).slice(0, 20)
+    ? j.errors.filter((e) => {
+        if (!e || !e.zitat || !e.korrektur) return false;
+        if (normTxt(e.korrektur) === normTxt(e.zitat)) return false;
+        if (/kein fehler\W*$/i.test(normTxt(e.grund))) return false;
+        return true;
+      }).slice(0, 20)
     : [];
   return errors.length ? { ok: false, errors } : { ok: true };
 }
