@@ -140,6 +140,7 @@ export const clusters = [
       { slug: "/blog/haeufigste-probleme-sprachenlernen", title: "Die häufigsten Probleme beim Sprachenlernen — was die Community wirklich nervt (und was wirklich hilft)", live: true },
       { slug: "/blog/feynman-methode-grammatik", title: "Die Feynman-Methode für Grammatik — erklär es, dann kannst du es", live: true },
       { slug: "/blog/interleaving-sprachenlernen", title: "Interleaving beim Sprachenlernen: warum du Verben und Zeiten mischen solltest statt zu pauken", live: true },
+      { slug: "/blog/duolingo-erklaert-keine-grammatik", title: "Duolingo erklärt keine Grammatik — was tun?", live: true },
     ],
   },
   {
