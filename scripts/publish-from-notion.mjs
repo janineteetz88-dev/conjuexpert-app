@@ -402,6 +402,7 @@ async function main() {
   const renderedSlugs = [];
   const deployed = []; // { article, slug } für Writeback
   const guardFailures = [];
+  const blockedArticles = []; // { slug, page, findings } → Rückgabe an den Tracker
   for (const a of toPublish) {
     let html;
     try {
@@ -425,6 +426,7 @@ async function main() {
     const problems = auditRenderedHtml(html, { slug: a.meta.slug });
     if (problems.length) {
       guardFailures.push(a.meta.slug);
+      blockedArticles.push({ slug: a.meta.slug, page: a.trackerPage, findings: problems.map((p) => `Render-Guard: ${p}`) });
       warn(`Render-Guard FEHLER → NICHT veröffentlicht: ${a.meta.slug}`);
       for (const p of problems) warn(`        • ${p}`);
       continue;
@@ -442,6 +444,7 @@ async function main() {
     }
     if (lintHard.length && !STANDARD_LINT_OFF) {
       guardFailures.push(a.meta.slug);
+      blockedArticles.push({ slug: a.meta.slug, page: a.trackerPage, findings: lintHard.map((f) => `Gold-Standard ${f.code}: ${f.msg}`) });
       warn(`Gold-Standard → NICHT veröffentlicht: ${a.meta.slug}`);
       continue;
     }
@@ -457,6 +460,7 @@ async function main() {
         const check = await aiLektorat(htmlForLektorat(html), { title: a.title });
         if (!check.ok) {
           guardFailures.push(a.meta.slug);
+          blockedArticles.push({ slug: a.meta.slug, page: a.trackerPage, findings: check.errors.map((e) => `KI-Lektorat: „${e.zitat}“ → „${e.korrektur}“ (${e.grund || ""})`) });
           warn(`KI-Lektorat → NICHT veröffentlicht (${check.errors.length} Fehler): ${a.meta.slug}`);
           for (const e of check.errors) warn(`        • „${e.zitat}" → „${e.korrektur}" (${e.grund || ""})`);
           continue;
@@ -627,9 +631,36 @@ async function main() {
 
   log(`\n✅  Fertig. Gerendert: ${renderedSlugs.length}/${toPublish.length}` + (deferred.length ? ` · verschoben (Tageslimit): ${deferred.length}` : "") + `\n`);
 
-  if (guardFailures.length) {
+  // Blockierte Artikel gehen an den TRACKER zurück (Status „1. Korrektur - an
+  // Hans" + Kommentar mit den Wächter-Funden) statt den Lauf stündlich rot zu
+  // färben: Der Artikel verlässt den Kandidaten-Pool, die Schreib-Routine
+  // arbeitet die Funde ab, der Lauf endet grün. Rot bleibt der Lauf nur, wenn
+  // die Rückgabe selbst nicht möglich war (Writeback aus / Dry-Run / API-Fehler).
+  let unresolved = guardFailures.slice();
+  if (blockedArticles.length && WRITEBACK && !DRY_RUN) {
+    log(`\n↩️   Rückgabe an den Tracker (${blockedArticles.length}):`);
+    for (const b of blockedArticles) {
+      if (!b.page || !b.page.id) { warn(`    keine Tracker-Seite bekannt: ${b.slug}`); continue; }
+      try {
+        await notionQuery(`/pages/${b.page.id}`, "PATCH", {
+          properties: { "Status": { select: { name: "1. Korrektur - an Hans" } } },
+        });
+        try {
+          await notionQuery(`/comments`, "POST", {
+            parent: { page_id: b.page.id },
+            rich_text: [{ text: { content: `Automatisch zurückgegeben (Publish-Pipeline ${today()}) — Wächter-Funde:\n• ${b.findings.slice(0, 10).join("\n• ")}`.slice(0, 1900) } }],
+          });
+        } catch (e) { warn(`    Kommentar fehlgeschlagen (${b.slug}): ${e.message}`); }
+        log(`    ✓ ${b.slug} → Status „1. Korrektur - an Hans"`);
+        unresolved = unresolved.filter((s) => s !== b.slug);
+      } catch (e) {
+        warn(`    Rückgabe fehlgeschlagen (${b.slug}): ${e.message}`);
+      }
+    }
+  }
+  if (unresolved.length) {
     console.error(
-      `❌  Render-Guard: ${guardFailures.length} Artikel mit Struktur-/Chrome-Fehlern → NICHT veröffentlicht:\n   - ${guardFailures.join("\n   - ")}\n   Lauf schlägt fehl. Bitte Template/Inhalt prüfen.`
+      `❌  ${unresolved.length} Artikel blockiert und NICHT an den Tracker zurückgegeben:\n   - ${unresolved.join("\n   - ")}\n   Lauf schlägt fehl. Bitte Template/Inhalt prüfen.`
     );
     process.exit(1);
   }
