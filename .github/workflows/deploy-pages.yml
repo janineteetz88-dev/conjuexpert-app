@@ -8,25 +8,20 @@ name: Deploy Pages (Allowlist)
 # „[KRITISCH] Kompletter Repo-Quellcode … öffentlich über die Live-Domain
 # abrufbar".
 #
-# WICHTIG — läuft NOCH NICHT automatisch scharf:
-# Dieser Workflow deployt nur, wenn unter Settings → Pages → Build and
-# deployment → Source „GitHub Actions" statt „Deploy from a branch" gewählt
-# ist. Das ist eine bewusste Freigabe-Entscheidung von Janine (Deploy-Gate),
-# deshalb hier absichtlich NUR workflow_dispatch (manuell testbar, ändert an
-# der Live-Site nichts) statt eines push-Triggers.
-#
-# Rollout-Schritte für Janine (nach Merge dieses PRs):
-#   1. Im Actions-Tab diesen Workflow einmal manuell laufen lassen (Run
-#      workflow) und die Job-Summary prüfen (Dateizahl/Ausschlussliste).
-#   2. Settings → Pages → Source → "GitHub Actions" umstellen.
-#   3. Danach den "on:"-Trigger unten um "push: branches: [main]" ergänzen
-#      (kleiner Folge-PR), damit jeder Merge automatisch neu deployt.
+# Seit 16.08.2026 scharf: Pages-Source steht auf „GitHub Actions", der erste
+# manuelle Testlauf war grün und hat die Live-Site auf den Allowlist-Build
+# umgestellt (sensible Pfade wie /supabase/, /docs/, /scripts/, /package.json
+# → 404). Der push-Trigger sorgt dafür, dass jeder Merge auf main automatisch
+# neu deployt — ohne ihn friert die Live-Site ein, da der alte Branch-Deploy
+# mit der Source-Umstellung deaktiviert ist.
 #
 # Die Allowlist ist absichtlich eine Positivliste (nicht Ausschlussliste):
 # neue Top-Level-Dateien/Ordner sind automatisch NICHT öffentlich, bis sie
 # hier bewusst ergänzt werden.
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch: {}
 
 permissions:
