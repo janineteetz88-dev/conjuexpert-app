@@ -219,6 +219,7 @@ export const clusters = [
       { slug: "/blog/trennbare-verben-deutsch", title: "Trennbare Verben Deutsch: das Trenn-System", live: true },
       { slug: "/blog/perfekt-haben-oder-sein", title: "Perfekt mit haben oder sein? Die Regel, die wirklich hilft", live: true },
       { slug: "/blog/perfekt-oder-praeteritum", title: "Perfekt oder Präteritum? Wann Deutsche welche Vergangenheit nutzen", live: true },
+      { slug: "/blog/modalverben-deutsch", title: "Modalverben Deutsch: können, müssen, dürfen & Co. sicher einsetzen", live: true },
     ],
   },
   {
