@@ -15,7 +15,10 @@ on:
   push:
     branches: [main]
   workflow_run:
-    workflows: ["pages build and deployment"]
+    # Seit der Pages-Umstellung auf "GitHub Actions" (16.08.2026) heißt der
+    # Deploy-Workflow "Deploy Pages (Allowlist)" — der alte klassische
+    # Pages-Workflow "pages build and deployment" läuft nicht mehr.
+    workflows: ["Deploy Pages (Allowlist)"]
     types: [completed]
   workflow_dispatch:
 
