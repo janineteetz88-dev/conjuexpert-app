@@ -97,6 +97,27 @@ jobs:
             comm -23 <(ls -A | sort) <(printf '%s\n' "${FILES[@]}" "${DIRS[@]}" | sort) | sed 's/^/- /'
           } >> "$GITHUB_STEP_SUMMARY"
 
+      # PageSpeed Insights (18.08.2026) zeigte auf Mobil FCP 3,8s / LCP 4,7s (rot)
+      # bei TBT 10ms / CLS 0 (grün) — reine Downloadgröße vor dem ersten Render war
+      # der Engpass, nicht Interaktivität. Minifiziert NUR die Kopie in _site, die
+      # Quelldateien im Repo (app.js, index.html) bleiben unverändert und direkt
+      # editierbar — siehe scripts/minify-for-deploy.mjs.
+      - name: Node.js einrichten (für Minifizierung)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: JS/CSS im Publish-Verzeichnis minifizieren
+        run: |
+          set -euo pipefail
+          npm ci
+          {
+            echo "### Minifizierung (nur im Publish-Verzeichnis, Quelldateien unverändert)"
+            echo '```'
+            node scripts/minify-for-deploy.mjs _site
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
