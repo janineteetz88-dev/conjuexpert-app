@@ -17636,7 +17636,6 @@ function App() {
       setShowPaySuccess(true);
       if (window.ceTrack) {
         const plan = params.get("plan") === "monthly" ? "monthly" : "annual";
-        window.ceTrack("subscribe", { plan });
         window.ceTrack(plan === "monthly" ? "abo_monthly" : "abo_annual");
       }
       window.history.replaceState({}, "", "/");
@@ -17803,6 +17802,7 @@ function App() {
     persist("kunju-offer-seen", Date.now());
     setTrialExpiry(exp);
     setShowOffer(false);
+    if (window.ceTrack) window.ceTrack("trial_start");
   }
   const savedDeepLinkRef = useRef(false);
   // Frisches Laden startet „Gemerkt" immer auf der Bibliotheks-Übersicht — nicht
