@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="de" data-lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#f5e4c3" />
+<title>Sind Verbkonjugationen in Apps zuverlässig? So testest du dein Tool in zwei Minuten | ConjuExpert</title>
+<meta name="description" content="Sind Verbkonjugationen in Apps zuverlässig? Nicht immer. Woher Fehler kommen, welche Schwächen dokumentiert sind — und wie du dein Tool in zwei Minuten selbst…" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<link rel="canonical" href="https://conjuexpert.app/blog/verbkonjugation-apps-zuverlaessig/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="ConjuExpert Blog" />
+<meta property="og:title" content="Sind Verbkonjugationen in Apps zuverlässig? So testest du dein Tool in zwei Minuten" />
+<meta property="og:description" content="Sind Verbkonjugationen in Apps zuverlässig? Nicht immer. Woher Fehler kommen, welche Schwächen dokumentiert sind — und wie du dein Tool in zwei Minuten selbst…" />
+<meta property="og:url" content="https://conjuexpert.app/blog/verbkonjugation-apps-zuverlaessig/" />
+<meta property="og:image" content="https://conjuexpert.app/blog/img/prod-1.png" />
+<meta name="twitter:site" content="@conjuexpert" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Sind Verbkonjugationen in Apps zuverlässig? So testest du dein Tool in zwei Minuten" />
+<meta name="twitter:description" content="Sind Verbkonjugationen in Apps zuverlässig? Nicht immer. Woher Fehler kommen, welche Schwächen dokumentiert sind — und wie du dein Tool in zwei Minuten selbst…" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/blog/blog.css?v=14" />
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://conjuexpert.app/blog/verbkonjugation-apps-zuverlaessig/#article",
+      "headline": "Sind Verbkonjugationen in Apps zuverlässig? So testest du dein Tool in zwei Minuten",
+      "description": "Sind Verbkonjugationen in Apps zuverlässig? Nicht immer. Woher Fehler kommen, welche Schwächen dokumentiert sind — und wie du dein Tool in zwei Minuten selbst…",
+      "inLanguage": "de",
+      "datePublished": "2026-08-18",
+      "dateModified": "2026-08-18",
+      "articleSection": "Methodik",
+      "image": "https://conjuexpert.app/blog/img/prod-1.png",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+          "h1",
+          ".faq2 summary",
+          ".faq2 .a"
+        ]
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Janine Kreiser",
+        "jobTitle": "Gründerin",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "ConjuExpert"
+        }
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "ConjuExpert",
+        "url": "https://conjuexpert.app/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://conjuexpert.app/icon-192.png"
+        }
+      },
+      "mainEntityOfPage": "https://conjuexpert.app/blog/verbkonjugation-apps-zuverlaessig/"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://conjuexpert.app/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Sind Verbkonjugationen in Apps zuverlässig? So testest du dein Tool in zwei Minuten",
+          "item": "https://conjuexpert.app/blog/verbkonjugation-apps-zuverlaessig/"
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+.art-glow{position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:1000px;height:480px;background:var(--vivid);filter:blur(120px);opacity:.13;z-index:-1;border-radius:50%}
+.art-hero-grad{height:clamp(220px,38vw,400px);border-radius:26px;overflow:hidden;margin:30px 0 10px;box-shadow:var(--shadow);position:relative;display:flex;align-items:center;justify-content:center;text-align:center}
+.art-hero-grad .gfill{position:absolute;inset:0;background:linear-gradient(140deg,#34c759,#0a84ff)}
+.art-hero-grad .hcontent{position:relative;z-index:2;color:#fff;padding:24px}
+.art-hero-grad .hk{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.92;margin:0 0 10px}
+.art-hero-grad .hf{font-family:var(--display);font-weight:800;font-size:clamp(26px,5vw,46px);letter-spacing:-.02em;line-height:1.05;text-shadow:0 3px 18px rgba(0,0,0,.28)}
+.slot-cap{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;margin:0 0 28px}
+.cluster-up{margin:14px 0 0}
+.cluster-up .uplink{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink);text-decoration:none;border:1px solid var(--border);border-radius:999px;padding:8px 16px;background:var(--surface)}
+.cluster-up .uplink:hover{background:var(--surface-2)}
+.faq2{margin:8px 0 0}
+.faq2 details{border:1px solid var(--border);border-radius:16px;background:var(--surface);box-shadow:var(--shadow-sm);margin-bottom:12px;overflow:hidden}
+.faq2 summary{list-style:none;cursor:pointer;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.01em}
+.faq2 summary::-webkit-details-marker{display:none}
+.faq2 summary .pm{flex:none;width:26px;height:26px;border-radius:50%;background:var(--surface-2);border:1px solid var(--border);position:relative;transition:transform .35s}
+.faq2 summary .pm::before,.faq2 summary .pm::after{content:"";position:absolute;top:50%;left:50%;width:11px;height:2.2px;border-radius:2px;background:var(--blue);transform:translate(-50%,-50%)}
+.faq2 summary .pm::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq2 details[open] summary .pm{transform:rotate(135deg)}
+.faq2 details[open] summary{border-bottom:1px solid var(--border)}
+.faq2 .a{padding:16px 20px 20px;color:var(--muted);font-size:15.5px;line-height:1.6}
+.keytakeaways{position:relative;margin:18px 0 28px;padding:20px 22px 20px 26px;border:1px solid var(--border);border-radius:18px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.keytakeaways::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:4px;border-radius:4px;background:linear-gradient(180deg,var(--pink),var(--violet))}
+.keytakeaways h2{margin:0 0 10px;font-size:18px}
+.keytakeaways p{margin:0;color:var(--ink);line-height:1.6}
+.keytakeaways ul,.keytakeaways ol{margin:0;padding-left:20px}
+.keytakeaways li{margin:6px 0;color:var(--ink);line-height:1.55}
+.toc{margin:0 0 30px;padding:16px 20px;border:1px solid var(--border);border-radius:16px;background:var(--surface-2)}
+.toc-h{margin:0 0 8px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.toc ol{margin:0;padding-left:20px}
+.toc li{margin:4px 0}
+.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+.toc a:hover{border-bottom-color:var(--pink)}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/blog/" aria-label="ConjuExpert Blog">
+      <span class="brand-mark" data-mark></span>
+      <span class="brand-name">Conju<b>Expert</b> <span class="sub">Blog</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Blog-Navigation">
+      <a href="/blog/" data-l="de">Alle Artikel</a><a href="/blog/" data-l="en">All articles</a>
+      <a href="/blog/#grammatik" data-l="de">Grammatik</a><a href="/blog/#grammatik" data-l="en">Grammar</a>
+      <a href="/blog/#lernen" data-l="de">Lerntipps</a><a href="/blog/#lernen" data-l="en">Learning</a>
+      <a href="/blog/#produkt" data-l="de">News</a><a href="/blog/#produkt" data-l="en">News</a>
+    </nav>
+    <div class="nav-right">
+      <div class="langsw" role="group" aria-label="Interface-Sprache">
+        <button data-set="de" class="on" aria-pressed="true">DE</button><button data-set="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn btn-primary btn-sm" href="/?utm_source=blog&amp;utm_medium=nav&amp;utm_content=verbkonjugation-apps-zuverlaessig">
+        <span class="g"></span>
+        <span class="l"><span data-l="de">App öffnen</span><span data-l="en">Open app</span></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <article style="position:relative">
+    <div class="art-glow"></div>
+
+    <div class="artwrap">
+      <div class="art-head reveal">
+        <!-- CLUSTER:CRUMBS -->
+        <div class="crumbs">
+          <a href="/blog/">Blog</a>
+          <span aria-hidden="true">›</span>
+          <span class="cat gram"><span class="d"></span>Sind Verbkonjugationen in Apps zuverlässig? So testest du dein Tool in zwei Minuten</span>
+        </div>
+        <!-- /CLUSTER:CRUMBS -->
+        
+        <h1>Sind Verbkonjugationen in Apps zuverlässig? So testest du dein Tool in zwei Minuten</h1>
+        <div class="art-meta">
+          <span class="av">J</span>
+          <span>Janine Kreiser, Gründerin ConjuExpert</span>
+          <span class="dotsep"></span>
+          <span class="mono">18. Aug. 2026</span>
+          <span class="dotsep"></span>
+          <span class="mono">8 min</span>
+          <span class="dotsep"></span>
+          <span class="lngtag" style="position:static">DE</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="artwrap">
+      <div class="prose">
+
+                <div class="keytakeaways">
+          <h2 id="kurz">Das Wichtigste in Kürze</h2>
+          <p>Verbkonjugationen in Apps sind nicht automatisch korrekt — die Qualität hängt davon ab, wie die Daten entstehen. Linguistisch geprüfte Datenbanken sind verlässlich, gescrapte oder rein KI-generierte Formen sind es nicht immer. Mit drei Stichproben — seltene Person, Akzent, doppeldeutige Form — erkennst du in zwei Minuten, wo dein Tool steht.</p>
+        </div>
+                <nav class="toc" aria-label="Inhaltsverzeichnis">
+          <p class="toc-h">Inhalt</p>
+          <ol>
+            <li><a href="#woher-eine-app-ihre-verbformen-uberhaupt-hat">Woher eine App ihre Verbformen überhaupt hat</a></li>
+            <li><a href="#was-an-schwachen-dokumentiert-ist">Was an Schwächen dokumentiert ist</a></li>
+            <li><a href="#der-zwei-minuten-test-drei-stichproben">Der Zwei-Minuten-Test: drei Stichproben</a></li>
+            <li><a href="#warum-eine-falsche-form-doppelt-teuer-ist">Warum eine falsche Form doppelt teuer ist</a></li>
+            <li><a href="#woran-du-geprufte-daten-erkennst">Woran du geprüfte Daten erkennst</a></li>
+            <li><a href="#takeaway">Takeaway</a></li>
+          </ol>
+        </nav>
+        <section class="artcard artcard-lede">
+<p>Tipp dieselbe seltene Verbform in zwei Konjugations-Tools ein — mit etwas Pech bekommst du zwei verschiedene Antworten. Und jetzt: Wem glaubst du, der App mit dem schöneren Design oder der mit den meisten Downloads? Die unbequeme Antwort lautet: weder noch, denn beides sagt nichts über die Datenqualität. Aber es gibt einen Test, der dir in zwei Minuten zeigt, ob dein Tool vertrauenswürdig ist — und genau den bekommst du hier.</p>
+</section>
+<section class="artcard">
+<h2 id="woher-eine-app-ihre-verbformen-uberhaupt-hat">Woher eine App ihre Verbformen überhaupt hat</h2>
+
+<p>Bevor du einer Konjugationstabelle vertraust, lohnt ein Blick dahinter: Wie kommt die Form eigentlich in die App? Grob gibt es vier Wege. Manche Anbieter pflegen eine von Linguisten kuratierte Datenbank, in der jede einzelne Form geprüft wurde. Andere bauen eine regelbasierte Engine, die Formen nach Grammatikregeln automatisch erzeugt. Wieder andere sammeln Formen aus großen Textkorpora oder aus Community-Beiträgen ein. Und die jüngste Gruppe lässt schlicht ein KI-Sprachmodell antworten. Falls du dir erst einen Überblick verschaffen willst, wie Konjugation als Ganzes funktioniert, findest du im <a class="inline" href="https://conjuexpert.app/blog/verben-konjugieren-lernen/">Leitfaden zum Verben konjugieren lernen</a> das Fundament — hier geht es um die Datenfrage dahinter.</p>
+
+<p>Warum der Unterschied zählt, zeigt ein durchgespieltes Beispiel aus dem Niederländischen. Eine regelbasierte Engine kennt die t-kofschip-Regel und bildet aus <em>werken</em> korrekt das Präteritum <strong>werkte</strong> — der Stamm endet auf k, das k steckt in 't kofschip, also kommt -te ans Ende. So weit, so zuverlässig, und für Tausende schwache Verben funktioniert das fehlerfrei. Beim starken Verb <em>rijden</em> (fahren) liefert dieselbe Regel aber Unsinn: Sie würde ❌ <em>rijdde</em> erzeugen, die richtige Form ist <strong>reed</strong>. Eine Engine ohne gepflegte Ausnahmeliste produziert hier eine Form, die es schlicht nicht gibt — und zeigt sie dir genauso selbstbewusst an wie die richtige. Genau deshalb ist die Frage „Woher kommen die Daten?“ keine Nerd-Frage, sondern der Kern der Zuverlässigkeit.</p>
+</section>
+<section class="artcard">
+<h2 id="was-an-schwachen-dokumentiert-ist">Was an Schwächen dokumentiert ist</h2>
+
+<p>Das ist keine theoretische Sorge — für mehrere bekannte Tools sind Schwachstellen öffentlich dokumentiert. Beim Nachschlage-Riesen Reverso berichten Nutzerbewertungen, darunter von professionellen Übersetzerinnen, von fehlerhaften Formen; laut denselben Berichten hat der Betreiber eingeräumt, keine festangestellten Linguisten zur Prüfung zu beschäftigen. Was das konkret bedeutet und wofür Reverso trotzdem stark bleibt, haben wir im <a class="inline" href="https://conjuexpert.app/blog/reverso-vs-conjuexpert/">Vergleich von Reverso und ConjuExpert</a> aufgedröselt. Wichtig für die Einordnung: Das macht Reverso nicht wertlos, als Übersetzungs- und Kontextmaschine leistet es viel. Es zeigt nur, dass ein großer Name keine Garantie für geprüfte Konjugationsdaten ist. Popularität und Korrektheit sind zwei verschiedene Baustellen.</p>
+
+<p>Auch bei den großen Lern-Apps gibt es dokumentierte Eigenheiten — nur anderer Natur. Bei Duolingo bemängeln Nutzer auf Bewertungsplattformen, dass Grammatik-Erklärungen weitgehend entfernt wurden: Die App sagt dir, dass etwas falsch ist, aber selten warum. Beim Drill-Klassiker Conjuguemos berichten mehrere unabhängige Reviews übereinstimmend, dass fehlende Akzente hart bestraft werden, ohne dass die Regel dahinter erklärt wird. Beides sind keine falschen Formen, aber es sind Lücken im Feedback — und ohne das Warum lernst du aus einem Fehler fast nichts. Wie sich die großen Apps insgesamt schlagen, sortiert unser <a class="inline" href="https://conjuexpert.app/blog/sprachlern-app-vergleich/">ehrlicher Sprachlern-App-Vergleich</a>; für das Drill-Thema lohnt der Blick auf <a class="inline" href="https://conjuexpert.app/blog/conjuguemos-fuer-erwachsene/">Conjuguemos aus Erwachsenen-Sicht</a>. Für deine Zuverlässigkeits-Prüfung heißt das: Schau nicht nur, ob die Formen stimmen, sondern auch, ob die App dir Fehler erklärt.</p>
+
+<p>Ein Sonderfall sind KI-Chatbots als Konjugations-Nachschlagewerk. Sprachmodelle erzeugen Text nach Wahrscheinlichkeit — sie schlagen nicht in einer Grammatiktabelle nach. Bei häufigen Verben geht das meistens gut, bei seltenen Formen können sie mit voller Überzeugung eine Form ausgeben, die es nicht gibt. Zum Erklären von Regeln sind sie stark, als letzte Instanz für eine konkrete Form sind sie riskant. Der Unterschied zwischen „klingt plausibel“ und „ist geprüft“ — genau darum geht es bei Zuverlässigkeit. Deshalb gilt die einfache Arbeitsteilung: KI fürs Erklären gern, die Formen selbst sollten aus einer geprüften Datenbank kommen.</p>
+
+<div class="note"><strong>Geprüfte Formen statt Bauchgefühl:</strong> Bei <a class="inline" href="https://conjuexpert.app/">ConjuExpert</a> sind die Konjugationsdaten linguistisch geprüft — Korrektheit ist das Kernversprechen, in allen fünf Sprachen. <a class="inline" href="https://conjuexpert.app/">Tabellen direkt öffnen →</a></div>
+</section>
+<section class="artcard">
+<h2 id="der-zwei-minuten-test-drei-stichproben">Der Zwei-Minuten-Test: drei Stichproben</h2>
+
+<p>Du musst keine Datenbank auditieren, um dein Tool einzuschätzen — du brauchst nur die richtigen Stichproben. Fehler verstecken sich nämlich nicht gleichmäßig verteilt, sondern dort, wo wenige Nutzer hinschauen: in seltenen Personen, bei Akzenten und bei doppeldeutigen Formen. Nimm dir eine Sprache, in der du sattelfest bist, oder leg eine verlässliche Referenz daneben — für Spanisch etwa die RAE, für Deutsch den Duden. Dann stellst du deinem Tool genau drei Aufgaben. Zwei Minuten reichen dafür wirklich. So sieht der Test konkret aus:</p>
+
+<p><strong>Probe 1 — die seltene Person.</strong> Frag ein hochfrequentes unregelmäßiges Verb in einer Person ab, die kaum jemand nachschlägt. Für Spanisch ist <a class="inline" href="https://conjuexpert.app/konjugation/es/ir/">ir im Pretérito Indefinido</a> ideal: <em>yo fui</em>, <em>tú fuiste</em> — und die vosotros-Form? Richtig ist <strong>fuisteis</strong>. Häufig abgefragte Formen werden durch Nutzer-Feedback schnell sauber, seltene Personen bleiben dagegen lange ungeprüft. Wer hier eine Lücke lässt oder eine erfundene Form anzeigt, hat sein Datenproblem schon verraten.</p>
+
+<p><strong>Probe 2 — der Akzent.</strong> Im Spanischen entscheidet ein einziger Strich über Zeitform und Person: <strong>habló</strong> heißt „er/sie sprach“, <em>hablo</em> heißt „ich spreche“. Schlag <a class="inline" href="https://conjuexpert.app/konjugation/es/hablar/">alle Formen von hablar</a> nach und prüfe, ob die Tabelle die Akzente vollständig und korrekt setzt. Hat das Tool einen Quiz-Modus, beantworte eine Frage absichtlich ohne Akzent. Ein gutes Tool wertet das als Fehler und erklärt dir den Unterschied. Ein schwaches zieht stumm Punkte ab und lässt dich ratlos zurück.</p>
+
+<p><strong>Probe 3 — der Doppelgänger.</strong> Manche Formen gehören zu zwei Verben gleichzeitig: Das spanische <em>fui</em> ist das Indefinido <a class="inline" href="https://conjuexpert.app/konjugation/es/ser/">von ser</a> und von ir, das deutsche „gehört“ gehört zu <em>hören</em> und zu <em>gehören</em>. Gib so eine Form in die Suche oder Dekonjugation deines Tools ein. Zeigt es dir beide Verben an, arbeitet die Datenbank sauber. Zeigt es nur eines, fehlt dem Tool ein Stück Sprachwirklichkeit — und das fällt dir ausgerechnet dann auf die Füße, wenn du eine unbekannte Form beim Lesen nachschlagen willst. Doppelgänger sind der härteste der drei Tests, denn sie lassen sich nicht mit einer simplen Regel-Engine lösen.</p>
+
+<div class="note"><strong>Merk-Trick — die Drei-Proben-Regel:</strong> eine seltene Person, ein Akzent, ein Doppelgänger. Besteht ein Tool alle drei Stichproben, darfst du auch dem Rest der Datenbank vertrauen.</div>
+
+<div class="note"><strong>Dreh den Test um:</strong> Statt nur die App zu prüfen, prüf dich selbst — im Quiz von <a class="inline" href="https://conjuexpert.app/">ConjuExpert</a> tippst oder sprichst du die Formen, bevor du nachschaust. Nachschlagen ist für immer kostenlos. Das Quiz ist Premium — erst gratis testen, dann 2,99 €/Monat.</div>
+</section>
+<section class="artcard">
+<h2 id="warum-eine-falsche-form-doppelt-teuer-ist">Warum eine falsche Form doppelt teuer ist</h2>
+
+<p>Vielleicht denkst du jetzt: Na und, dann ist eben mal eine Form falsch — so schlimm wird das schon nicht sein. Beim gelegentlichen Nachschlagen stimmt das halbwegs, beim Üben leider überhaupt nicht. Aktives Abrufen gehört zu den wirksamsten Lernmethoden überhaupt (Dunlosky et al., 2013): Was du selbst produzierst, verankert dein Gedächtnis deutlich fester als das, was du nur liest. Genau dieser Mechanismus kennt aber keine Qualitätskontrolle — er festigt, was du abrufst, auch wenn es falsch ist. Wer mit fehlerhaften Daten übt, automatisiert den Fehler mit demselben Fleiß, mit dem andere die richtige Form automatisieren. Eine eingeschliffene falsche Form wieder loszuwerden kostet dich später mehr Wiederholungen als das erste Lernen. Warum aktives Üben trotzdem unschlagbar bleibt, liest du im Artikel über <a class="inline" href="https://conjuexpert.app/blog/aktiv-lernen-statt-tabellen-auswendig/">aktives Lernen statt Tabellen-Auswendiglernen</a> — die Voraussetzung ist nur, dass die Datenbasis stimmt.</p>
+</section>
+<section class="artcard">
+<h2 id="woran-du-geprufte-daten-erkennst">Woran du geprüfte Daten erkennst</h2>
+
+<p>Neben dem Zwei-Minuten-Test gibt es Signale, die du ganz ohne Testlauf erkennst. Sie verraten, ob ein Anbieter Datenqualität ernst nimmt oder vor allem schöne Oberflächen baut. Keine einzelne dieser Fragen ist für sich ein Beweis, aber zusammen ergeben sie ein ehrliches Bild. Achte beim nächsten App-Test bewusst auf diese vier Punkte. Länger als fünf Minuten brauchst du dafür nicht:</p>
+
+<ul>
+<li>Erklärt das Tool bei einer falschen Antwort, <strong>warum</strong> sie falsch ist — oder zieht es nur Punkte ab?</li>
+<li>Setzt es Akzente und Sonderzeichen konsequent — und bewertet sie fair?</li>
+<li>Zeigt es bei doppeldeutigen Formen <strong>beide</strong> Verben an?</li>
+<li>Gibt es einen sichtbaren Weg, Fehler zu melden — und werden gemeldete Fehler korrigiert?</li>
+</ul>
+
+<p>Bei ConjuExpert ist Korrektheit das Kernversprechen: Die Konjugationsdaten sind linguistisch geprüft, in allen fünf Sprachen. Die Dekonjugation zeigt dir bei einer Form wie <em>fui</em> beide Kandidaten samt Zeitform und Person an, und im Quiz bekommst du bei einem Fehler die richtige Form mit Kontext statt eines stummen Punktabzugs. Trotzdem sagen wir dir ehrlich: Auch wir empfehlen, bei ganz seltenen oder strittigen Formen zusätzlich eine Referenzgrammatik oder Muttersprachler zu fragen. Kein Tool der Welt ersetzt den kritischen Blick — ein gutes sorgt nur dafür, dass du ihn so selten wie möglich brauchst. Genau daran darfst du uns messen. Und findest du eine Form, die dir falsch vorkommt, dann melde sie uns — das ist der vierte Punkt der Liste oben, und er gilt auch für uns selbst.</p>
+</section>
+<section class="artcard">
+<h2 id="takeaway">Takeaway</h2>
+
+<p>Die eine Sache zum Mitnehmen: Vertrauen in eine Konjugations-App ist keine Glaubensfrage, sondern testbar. Seltene Person, Akzent, Doppelgänger — drei Stichproben, zwei Minuten, klares Ergebnis. Downloads, Sterne und hübsches Design sagen dagegen nichts über die Datenbank dahinter. Und weil aktives Üben alles festigt, was du ihm gibst, ist Datenqualität keine Nebensache, sondern die Grundlage deines Lernerfolgs. Welches Tool nimmst du dir als Erstes vor — und welche der drei Proben startest du zuerst?</p>
+
+<div class="note"><strong>Teste es direkt:</strong> <a class="inline" href="https://conjuexpert.app/">App kostenlos öffnen →</a> — und wenn du magst, fang gleich mit <em>fuisteis</em> an.</div>
+
+<details>
+  <summary>Sind die Verbkonjugationen in Apps immer korrekt?<span class="pm"></span></summary>
+  <div class="a"><p>Nein. Die Qualität variiert stark: Für einzelne bekannte Tools sind fehlerhafte Formen dokumentiert, und KI-generierte Antworten können ebenfalls danebenliegen. ConjuExpert arbeitet mit linguistisch geprüften Konjugationsdaten und nennt Korrektheit explizit als Kernversprechen. Im Zweifel gilt: gerade bei unregelmäßigen Verben mit einer Referenzgrammatik oder Muttersprachlern gegenchecken.</p></div>
+</details>
+
+<details>
+  <summary>Wie teste ich schnell, ob meine Konjugations-App zuverlässig ist?<span class="pm"></span></summary>
+  <div class="a"><p>Mit drei Stichproben: Frag ein häufiges unregelmäßiges Verb in einer seltenen Person ab (spanisch <em>ir</em> → vosotros: <strong>fuisteis</strong>), prüfe eine akzentkritische Form (<strong>habló</strong> vs. <em>hablo</em>) und gib eine doppeldeutige Form wie <em>fui</em> ein — ein gutes Tool zeigt beide Verben an. Besteht die App alle drei Proben, ist die Datenbasis mit hoher Wahrscheinlichkeit sauber gepflegt.</p></div>
+</details>
+
+<details>
+  <summary>Was mache ich, wenn zwei Tools unterschiedliche Formen anzeigen?<span class="pm"></span></summary>
+  <div class="a"><p>Nicht raten, sondern eine maßgebliche dritte Quelle entscheiden lassen: für Spanisch die RAE, für Deutsch den Duden, für Französisch ein Standardwerk wie den Bescherelle. Melde den Fehler anschließend dem Tool, das danebenlag — seriöse Anbieter haben dafür einen sichtbaren Weg und korrigieren gemeldete Fehler.</p></div>
+</details>
+</section>
+        
+        
+        <section class="artcard">
+        <h2 id="quellen">Quellen</h2>
+        <ol class="sources">
+          <li>Dunlosky, J., Rawson, K. A., Marsh, E. J., Nathan, M. J. &amp; Willingham, D. T. (2013): <i>Improving Students' Learning With Effective Learning Techniques.</i> Psychological Science in the Public Interest, 14(1), 4–58. <a class="inline" href="https://doi.org/10.1177/1529100612453266" target="_blank" rel="noopener">doi.org/10.1177/1529100612453266</a></li>
+        </ol>
+        </section>
+
+        <div class="quizcta">
+          <span class="qi" style="display:flex;align-items:center;justify-content:center;background:#fff"><img src="/favicon.svg" alt="ConjuExpert" width="60" height="60" /></span>
+          <span class="qt">
+            <b>Aktiv üben</b>
+            <span>Im Quiz mit Themen, die <em>dich</em> interessieren – so lange, bis es sitzt.</span>
+          </span>
+          <a class="btn btn-primary" href="/?utm_source=blog&amp;utm_medium=cta-inline&amp;utm_content=verbkonjugation-apps-zuverlaessig">
+            <span class="g"></span><span class="l">Kostenlos testen</span>
+          </a>
+        </div>
+
+        <p class="ai-note">Transparenz: Dieser Artikel wurde mit KI-Unterstützung erstellt und redaktionell geprüft.</p>
+
+        <div class="authorbox">
+          <span class="av" style="width:56px;height:56px;border-radius:50%;background:linear-gradient(140deg,var(--pink),var(--violet));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;flex:none">J</span>
+          <div>
+            <b>Janine Kreiser</b>
+            <p>Gründerin von ConjuExpert. Macht Sprachgrammatik sichtbar – mit Mustern statt Chaos.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    
+    <!-- CLUSTER:RELATED -->
+    <section class="block related" style="padding:54px 0 0">
+      <div class="wrap">
+        <span class="sec-tag">Weiterlesen</span>
+        <div class="relgrid">
+          <a class="relcard" href="/blog/sprachlern-app-vergleich/">
+            <span class="reltxt">
+              <span class="relcat">Methodik</span>
+              <span class="reltitle">Duolingo, Babbel, Busuu &amp; Co.: Was diese Apps wirklich können — und wo sie schweigen (v2)</span>
+            </span>
+            <span class="relgo" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- /CLUSTER:RELATED -->
+
+  </article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href="/"><span class="brand-mark" data-mark></span><span class="brand-name">Conju<b>Expert</b></span></a>
+        <p style="color:var(--muted);font-size:14.5px;max-width:30ch;margin:14px 0 0">Der KI-Konjugationstrainer für 5 Sprachen - Quiz, Merken &amp; Lernen.</p>
+      </div>
+      <div class="links">
+        <div>
+          <h4>Blog</h4>
+          <ul>
+            <li><a href="/blog/">Alle Artikel</a></li>
+            <li><a href="/blog/#grammatik">Grammatik</a></li>
+            <li><a href="/blog/#story">Story</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>ConjuExpert</h4>
+          <ul>
+            <li><a href="/">App</a></li>
+            <li><a href="/bewertungen/">Rezensionen</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 ConjuExpert</span>
+      <span class="mono">Verben konjugieren · ES · FR · EN · NL · DE</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add('js');
+var BR = ["#ff3b5c","#ff7a18","#ffc400","#34c759","#0a84ff"];
+document.querySelectorAll('[data-mark]').forEach(function(m) {
+  for (var i = 0; i < 5; i++) {
+    var s = document.createElement('i');
+    s.style.background = BR[i];
+    m.appendChild(s);
+  }
+});
+</script>
+<script src="/blog/blog-chrome.js" defer></script>
+</body>
+</html>
