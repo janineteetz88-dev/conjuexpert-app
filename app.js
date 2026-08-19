@@ -18259,6 +18259,11 @@ function App() {
     setSkHint(false);
     persist("kunju-skhint", true);
   }
+  // Einmal pro Sitzung: "hat die App wirklich benutzt" (erste Konjugation/Quizantwort/
+  // Vokabel-Aktion o.ä. — alle Aufrufer von onActivity()), unabhängig von den 8
+  // Funnel-Events oben. Macht Plausibles Visit-Duration auch für Nutzer aussagekräftig,
+  // die z.B. nur ein paar Verben nachschlagen, ohne einen Trial zu starten.
+  const sessionEngagedRef = useRef(false);
   const [offline, setOffline] = useState(() => !navigator.onLine);
   useEffect(() => {
     const on = () => setOffline(false),
@@ -18271,11 +18276,17 @@ function App() {
     };
   }, []);
   function onActivity() {
-    // Bewusst KEIN Tracking-Event pro Interaktion hier (jede Quizkarte/jeder
+    // Bewusst KEIN Tracking-Event PRO Interaktion hier (jede Quizkarte/jeder
     // Tab-Wechsel) — würde das Plausible-Kontingent sprengen, ohne eine
     // konkrete Produktentscheidung zu beantworten. Stattdessen gezielte
     // Funnel-Events an den Stellen, die wirklich zählen (Trial, Tour,
-    // Quiz-Limit, Paywall, Checkout, Kauf).
+    // Quiz-Limit, Paywall, Checkout, Kauf) — plus dieses eine Mal pro Sitzung,
+    // damit auch reines Nachschlagen/Üben (ohne einen der 8 Meilensteine) in
+    // Plausibles Visit-Duration auftaucht statt als 0-Sekunden-Bounce zu zählen.
+    if (!sessionEngagedRef.current) {
+      sessionEngagedRef.current = true;
+      if (window.ceTrack) window.ceTrack("app_engaged");
+    }
     // Free accounts: each quiz card counts toward the 20/day cap.
     // (Merken/vocab practice is Premium-only, so it never reaches the "limited" tier.)
     if (tab === "quiz" && quizTier() === "limited") {
