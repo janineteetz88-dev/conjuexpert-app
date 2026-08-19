@@ -124,6 +124,7 @@ export const clusters = [
       { slug: "/blog/reflexive-verben-niederlaendisch", title: "Reflexive Verben im Niederländischen (zich wassen, zich voelen)", live: true },
       { slug: "/blog/trennbare-verben-niederlaendisch", title: "Trennbare Verben im Niederländischen: das Bumerang-Präfix (opstaan, meenemen)", live: true },
       { slug: "/blog/zukunft-zullen-niederlaendisch", title: "Die Zukunft im Niederländischen: zullen + Infinitiv", live: true },
+      { slug: "/blog/niederlaendisch-praesens-t-regel", title: "Das niederländische Präsens: Stamm + t-Regel (ik werk, jij werkt)", live: true },
     ],
   },
   {
@@ -183,6 +184,7 @@ export const clusters = [
       { slug: "/blog/reflexive-verben-spanisch", title: "Reflexive Verben Spanisch: me levanto, te llamas & der ganze Tagesablauf", live: true },
       { slug: "/blog/imperativo-spanisch", title: "Der Imperativo: Befehle und Bitten auf Spanisch souverän geben", live: true },
       { slug: "/blog/conjuguemos-fuer-erwachsene", title: "Conjuguemos für Erwachsene: Stärken und Grenzen", live: true },
+      { slug: "/blog/subjuntivo-bilden-endungen", title: "Subjuntivo bilden — die spanischen Endungen Schritt für Schritt", live: true },
     ],
   },
   {
@@ -238,6 +240,7 @@ export const clusters = [
       { slug: "/blog/present-perfect-vs-simple-past", title: "Present Perfect vs. Simple Past: der Klassiker für deutsche Englischlerner", live: true },
       { slug: "/blog/englisch-3-person-s", title: "Das -s in der 3. Person Singular (he works, she goes)", live: true },
       { slug: "/blog/passiv-englisch", title: "Das englische Passiv (be + past participle) verständlich erklärt", live: true },
+      { slug: "/blog/past-perfect-englisch", title: "Past Perfect (had done) einfach erklärt: das Frühere von zwei Vergangenem", live: true },
     ],
   },
   {
