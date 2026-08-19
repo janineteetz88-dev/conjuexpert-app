@@ -13892,7 +13892,7 @@ function TourGate({
       s.text ? h("p", { className: "pp-sub" }, s.text) : null,
       h("div", { className: "tour-demo", style: { "--col": "var(--text)" } }, h(TourMock, { kind: s.kind })),
       h("div", { className: "tourdots" }, slides.map((_, k) => h("span", { key: k, className: "tourdot" + (k === i ? " on" : "") }))),
-      h("div", { style: { display: "flex", gap: "10px", width: "100%" } }, i > 0 ? h("button", { onClick: () => setI(i - 1), "aria-label": "back", style: { flex: "0 0 auto", padding: "0 18px", background: "var(--surface)", color: "var(--text)", border: "1px solid var(--border)", borderRadius: "14px", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "18px", cursor: "pointer" } }, "‹") : null, h("button", { className: "tourbtn", style: { flex: 1 }, onClick: () => last ? onDone() : setI(i + 1) }, last ? tr("tour_start") : tr("tour_next")))));
+      h("div", { style: { display: "flex", gap: "10px", width: "100%" } }, i > 0 ? h("button", { onClick: () => setI(i - 1), "aria-label": "back", style: { flex: "0 0 auto", padding: "0 18px", background: "var(--surface)", color: "var(--text)", border: "1px solid var(--border)", borderRadius: "14px", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "18px", cursor: "pointer" } }, "‹") : null, h("button", { className: "tourbtn", style: { flex: 1 }, onClick: () => last ? onDone(true) : setI(i + 1) }, last ? tr("tour_start") : tr("tour_next")))));
 }
 
 /* ---------- Contextual first-open feature hints ----------
@@ -17542,9 +17542,13 @@ function App() {
     setShowOnboard(false);
     if (recall("kunju-tour", null) === null) setShowTour(true);
   }
-  function finishTour() {
+  function finishTour(completed) {
     persist("kunju-tour", true);
     setShowTour(false);
+    // Strikter Vergleich mit true (nicht nur truthy): die Skip-/Schließen-Buttons rufen
+    // onDone direkt als Klick-Handler auf, React übergibt dann das Klick-Event als
+    // Argument — das wäre bei einer reinen Truthy-Prüfung fälschlich "completed".
+    if (window.ceTrack) window.ceTrack(completed === true ? "onboarding_tour_completed" : "onboarding_tour_skipped");
     startTrial();
   }
   // Contextual first-open hints (learn tab · each quiz mode · each Saved area).
@@ -17636,7 +17640,6 @@ function App() {
       setShowPaySuccess(true);
       if (window.ceTrack) {
         const plan = params.get("plan") === "monthly" ? "monthly" : "annual";
-        window.ceTrack("subscribe", { plan });
         window.ceTrack(plan === "monthly" ? "abo_monthly" : "abo_annual");
       }
       window.history.replaceState({}, "", "/");
@@ -17740,6 +17743,9 @@ function App() {
     setShowIOSInstall(false);
   }
   const [showPaywall, setShowPaywall] = useState(false);
+  // Ein zentraler Trigger statt an jeder der ~6 setShowPaywall(true)-Stellen einzeln zu
+  // tracken — feuert zuverlässig, egal welcher Pfad die Paywall öffnet.
+  useEffect(() => { if (showPaywall && window.ceTrack) window.ceTrack("paywall_shown"); }, [showPaywall]);
   const [showAcctPrompt, setShowAcctPrompt] = useState(false);
   const [showQuizLimit, setShowQuizLimit] = useState(false);
   const [showPlanSelect, setShowPlanSelect] = useState(false);
@@ -17790,6 +17796,7 @@ function App() {
       });
       const url = data?.url;
       if (error) throw new Error(error);
+      if (window.ceTrack) window.ceTrack("checkout_started");
       window.location.href = url;
     } catch (e) {
       setToastMsg(tr("pay_error"));
@@ -17803,6 +17810,7 @@ function App() {
     persist("kunju-offer-seen", Date.now());
     setTrialExpiry(exp);
     setShowOffer(false);
+    if (window.ceTrack) window.ceTrack("trial_start");
   }
   const savedDeepLinkRef = useRef(false);
   // Frisches Laden startet „Gemerkt" immer auf der Bibliotheks-Übersicht — nicht
@@ -18263,11 +18271,17 @@ function App() {
     };
   }, []);
   function onActivity() {
-    if (window.ceTrack) window.ceTrack("activity", { tab: tab });
+    // Bewusst KEIN Tracking-Event pro Interaktion hier (jede Quizkarte/jeder
+    // Tab-Wechsel) — würde das Plausible-Kontingent sprengen, ohne eine
+    // konkrete Produktentscheidung zu beantworten. Stattdessen gezielte
+    // Funnel-Events an den Stellen, die wirklich zählen (Trial, Tour,
+    // Quiz-Limit, Paywall, Checkout, Kauf).
     // Free accounts: each quiz card counts toward the 20/day cap.
     // (Merken/vocab practice is Premium-only, so it never reaches the "limited" tier.)
     if (tab === "quiz" && quizTier() === "limited") {
       const used = bumpQuizDay();
+      // === statt >=: Event nur beim exakten Übertritt, nicht bei jeder weiteren Karte danach.
+      if (used === QUIZ_FREE_LIMIT && window.ceTrack) window.ceTrack("quiz_limit_reached");
       if (used >= QUIZ_FREE_LIMIT) setShowQuizLimit(true);
     }
     const prev = daily.count;

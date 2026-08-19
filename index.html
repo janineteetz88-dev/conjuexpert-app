@@ -17,8 +17,11 @@
 <link rel="sitemap" type="application/xml" href="https://conjuexpert.app/sitemap.xml" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
 <!-- Plausible Analytics — cookielos, kein Consent-Banner nötig (DSGVO-Leitplanke).
-     Getrennt vom PostHog-Block unten (der bleibt inaktiv, solange PH_KEY leer ist). -->
+     Getrennt vom PostHog-Block unten (der bleibt inaktiv, solange PH_KEY leer ist).
+     Queue-Shim für Custom Events (trial_start, abo_monthly, abo_annual) — muss vor
+     jedem window.plausible(...)-Aufruf existieren, unabhängig vom (deferred) Skript-Ladezeitpunkt. -->
 <script defer data-domain="conjuexpert.app" src="https://plausible.io/js/script.js"></script>
+<script>window.plausible = window.plausible || function(){ (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
 <meta name="keywords" content="verben konjugieren, spanisch konjugieren, konjugationstrainer, subjuntivo üben, passé composé, irregular verbs, französisch lernen, niederländisch lernen, zeitformen üben, KI Sprachenlernen" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication","name":"ConjuExpert","applicationCategory":"EducationalApplication","operatingSystem":"Web, iOS, Android (PWA)","url":"https://conjuexpert.app/","description":"KI-Konjugationstrainer für Spanisch, Französisch, Englisch, Niederländisch und Deutsch – alle Zeitformen, Quiz aus Lieblingsthemen, Merken.","inLanguage":["de","es","en","nl","fr"],"offers":[{"@type":"Offer","price":"0","priceCurrency":"EUR","name":"Kostenlos"},{"@type":"Offer","price":"2.99","priceCurrency":"EUR","name":"Premium monatlich"},{"@type":"Offer","price":"29.99","priceCurrency":"EUR","name":"Premium jährlich"}]}
@@ -3175,7 +3178,10 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   //     Leer lassen = kein Banner, kein Tracking (aktueller Zustand).
   var PH_KEY = "";
   var PH_HOST = "https://eu.i.posthog.com";
-  window.ceTrack = function(){};                 // no-op bis Consent + PostHog geladen
+  // Conversion-Events (trial_start, abo_monthly, abo_annual) laufen über Plausible
+  // (cookielos, kein Consent nötig) statt über das inaktive PostHog — siehe Skript-Tag
+  // im <head>. Bleibt aktiv, auch wenn PH_KEY unten weiterhin leer ist.
+  window.ceTrack = function(ev, props){ try{ if(window.plausible) window.plausible(ev, props ? {props: props} : undefined); }catch(e){} };
   function loadPostHog(){
     if(!PH_KEY || window.__phLoaded) return; window.__phLoaded=true;
     !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window);
