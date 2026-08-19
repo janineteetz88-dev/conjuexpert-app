@@ -17713,6 +17713,7 @@ function App() {
     const installed = () => {
       setShowInstall(false);
       persist("kunju-install-dismissed", true);
+      if (window.ceTrack) window.ceTrack("pwa_installed");
     };
     window.addEventListener("appinstalled", installed);
     if (isIOS && isSafari) setShowIOSInstall(true);else if (deferredInstall.current) setShowInstall(true);
@@ -17720,6 +17721,15 @@ function App() {
       window.removeEventListener("beforeinstallprompt", handler);
       window.removeEventListener("appinstalled", installed);
     };
+  }, []);
+  // "appinstalled" feuert nur auf Android/Chrome — iOS Safari kennt dieses Event nicht.
+  // Einzig zuverlässiges plattformübergreifendes Signal für "läuft vom Homescreen":
+  // beim Start prüfen, ob die Seite im eigenständigen (installierten) Anzeigemodus
+  // läuft. Deckt iOS indirekt ab und bestätigt gleichzeitig echte Wiederkehr
+  // (nicht nur einen Install-Klick).
+  useEffect(() => {
+    const standalone = window.navigator.standalone === true || !!(window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+    if (standalone && window.ceTrack) window.ceTrack("pwa_launched_standalone");
   }, []);
   async function handleInstall() {
     if (!deferredInstall.current) {
