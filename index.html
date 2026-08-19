@@ -3160,8 +3160,9 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
     .device{ filter:none !important; }
   }
 </style>
-<!-- Cookie-Consent + PostHog (Produkt-Analytics, EU, Opt-in). Solange PH_KEY leer ist:
-     KEIN Banner, KEIN Tracking. Sobald der phc_… Key eingetragen wird, ist es aktiv. -->
+<!-- Cookie-Consent + Meta-Pixel (Werbe-Erfolgsmessung für Meta/Facebook/Instagram-Ads,
+     Opt-in). Ohne Zustimmung: KEIN Banner-Akzeptieren, KEIN Pixel-Laden. Ersetzt den
+     vorherigen PostHog-Block, der nie aktiviert wurde (PH_KEY blieb leer). -->
 <style id="cc-css">
 #cc-banner{position:fixed;left:12px;right:12px;bottom:12px;z-index:2147483000;max-width:520px;margin:0 auto;background:#fffdf8;color:#1b1813;border:1px solid rgba(60,48,24,.2);border-radius:16px;box-shadow:0 20px 54px -18px rgba(30,25,10,.55);padding:15px 17px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:13px;line-height:1.5;display:none}
 #cc-banner.show{display:block}
@@ -3174,27 +3175,45 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 </style>
 <script>
 (function(){
-  // ↓↓↓ HIER den PostHog-Projekt-Key (EU) eintragen — dann ist das Tracking aktiv.
-  //     Leer lassen = kein Banner, kein Tracking (aktueller Zustand).
-  var PH_KEY = "";
-  var PH_HOST = "https://eu.i.posthog.com";
-  // Conversion-Events (trial_start, abo_monthly, abo_annual) laufen über Plausible
-  // (cookielos, kein Consent nötig) statt über das inaktive PostHog — siehe Skript-Tag
-  // im <head>. Bleibt aktiv, auch wenn PH_KEY unten weiterhin leer ist.
+  var FB_PIXEL_ID = "1595092302058552";
+  // Mappt unsere Funnel-Events auf Metas Standard-Events, damit Meta sie für
+  // Anzeigen-Optimierung nutzen kann (nicht nur als Custom Event zählt).
+  var FB_STANDARD = { trial_start: "StartTrial", abo_monthly: "Purchase", abo_annual: "Purchase" };
+  var FB_VALUE = { abo_monthly: 2.99, abo_annual: 29.99 }; // Listenpreis als Näherung; der tatsächlich
+  // gezahlte Preis (z. B. Feedback-Rabatt) ist client-seitig nicht zuverlässig bekannt.
+  // Conversion-Events (trial_start, abo_monthly, abo_annual) laufen bereits cookielos
+  // über Plausible (siehe Skript-Tag im <head>) — unabhängig von dieser Einwilligung.
   window.ceTrack = function(ev, props){ try{ if(window.plausible) window.plausible(ev, props ? {props: props} : undefined); }catch(e){} };
-  function loadPostHog(){
-    if(!PH_KEY || window.__phLoaded) return; window.__phLoaded=true;
-    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window);
-    posthog.init(PH_KEY,{api_host:PH_HOST,person_profiles:"identified_only",capture_pageview:true,autocapture:true,session_recording:{maskAllInputs:true,maskTextSelector:"*"}});
-    window.ceTrack = function(ev,props){ try{ posthog.capture(ev, props||{}); }catch(e){} };
+  function loadMetaPixel(){
+    if(window.__fbLoaded) return; window.__fbLoaded=true;
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', FB_PIXEL_ID);
+    fbq('track', 'PageView');
+    window.ceTrack = function(ev, props){
+      try{ if(window.plausible) window.plausible(ev, props ? {props: props} : undefined); }catch(e){}
+      try{
+        var std = FB_STANDARD[ev];
+        if (std) {
+          var params = props ? Object.assign({}, props) : {};
+          if (FB_VALUE[ev]) { params.value = FB_VALUE[ev]; params.currency = "EUR"; }
+          fbq('track', std, params);
+        } else if (window.fbq) { fbq('trackCustom', ev, props || {}); }
+      }catch(e){}
+    };
   }
   window.ceSet = function(v){ try{localStorage.setItem("ce-consent",v);}catch(e){}
     var b=document.getElementById("cc-banner"); if(b) b.classList.remove("show");
-    if(v==="granted") loadPostHog(); };
+    if(v==="granted") loadMetaPixel(); };
   window.ceOpen = function(){ var b=document.getElementById("cc-banner"); if(b) b.classList.add("show"); };
-  if(!PH_KEY) return;                              // ohne Key: nichts anzeigen, nichts laden
   var c=null; try{c=localStorage.getItem("ce-consent");}catch(e){}
-  if(c==="granted"){ loadPostHog(); }
+  if(c==="granted"){ loadMetaPixel(); }
   else if(c!=="denied"){ document.addEventListener("DOMContentLoaded",function(){ var b=document.getElementById("cc-banner"); if(b) b.classList.add("show"); }); }
 })();
 </script>
@@ -3202,7 +3221,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 <body>
 <div id="cc-banner" role="dialog" aria-label="Datenschutz-Einstellungen">
   <h4>Datenschutz &amp; Cookies</h4>
-  <div>Wir nutzen technisch Notwendiges und – mit deiner Zustimmung – eine <b>Produkt-Statistik</b> (PostHog, EU-Server), um ConjuExpert zu verbessern. Ohne Zustimmung kein Tracking. <a onclick="document.getElementById('overlay-datenschutz').classList.add('open')">Mehr erfahren</a></div>
+  <div>Wir nutzen technisch Notwendiges und – mit deiner Zustimmung – den <b>Meta-Pixel</b> (Meta/Facebook/Instagram), um die Wirkung unserer Werbeanzeigen zu messen. Ohne Zustimmung kein Tracking. <a onclick="document.getElementById('overlay-datenschutz').classList.add('open')">Mehr erfahren</a></div>
   <div id="cc-act">
     <button class="cc-no" onclick="ceSet('denied')">Nur notwendige</button>
     <button class="cc-ok" onclick="ceSet('granted')">Akzeptieren</button>
@@ -3376,11 +3395,16 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
         <td style="padding:8px 10px">OAuth-Login (nur bei Nutzung von „Mit Google anmelden")</td>
         <td style="padding:8px 10px">🇺🇸 USA</td>
       </tr>
+      <tr>
+        <td style="padding:8px 10px"><strong>Meta (Facebook/Instagram)</strong></td>
+        <td style="padding:8px 10px">Werbe-Erfolgsmessung (Meta-Pixel, nur mit Einwilligung)</td>
+        <td style="padding:8px 10px">🇮🇪 Irland / 🇺🇸 USA</td>
+      </tr>
     </tbody>
   </table>
   <h3>6. Cookies, Statistik und Einwilligung</h3>
   <p>Es werden <strong>keine Werbe- oder Tracking-Cookies</strong> gesetzt und keine Daten an Dritte verkauft. Technisch notwendig ist lediglich eine lokale Speicherung (u. a. dein Lernfortschritt und – bei Konto-Nutzung – ein Anmelde-Token); diese ist für den Betrieb erforderlich (Art. 6 Abs. 1 lit. f DSGVO) und benötigt keine Einwilligung.</p>
-  <p>Zur Verbesserung der App nutzen wir – <strong>nur mit deiner Einwilligung</strong> – <strong>PostHog</strong> (Produkt-Analyse, Server in der EU/Frankfurt). Damit verstehen wir, wie ConjuExpert genutzt wird (z. B. besuchte Bereiche und Quiz-Nutzung sowie anonymisierte Sitzungsaufzeichnungen, bei denen alle Eingaben und Texte maskiert werden), um die App zu verbessern. PostHog speichert dafür Informationen auf deinem Gerät (Cookies/lokaler Speicher). Die Erhebung startet <strong>erst nach deiner Zustimmung</strong> im Cookie-Banner (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG); ohne Zustimmung findet kein Tracking statt. Deine Einwilligung kannst du jederzeit über <a onclick="if(window.ceOpen)window.ceOpen()">Cookie-Einstellungen</a> ändern. Es erfolgt keine Weitergabe zu Werbezwecken.</p>
+  <p>Um die Wirksamkeit unserer Werbeanzeigen zu messen, nutzen wir – <strong>nur mit deiner Einwilligung</strong> – den <strong>Meta-Pixel</strong> (Meta Platforms Ireland Ltd., 4 Grand Canal Square, Dublin 2, Irland; Weiterverarbeitung auch durch die Muttergesellschaft Meta Platforms, Inc., USA). Damit sehen wir, ob Besucher, die über eine Meta-Anzeige (Facebook/Instagram) kommen, den Trial starten oder ein Abo abschließen — nicht, wer du bist oder was du in der App tust. Der Meta-Pixel speichert dafür Informationen auf deinem Gerät (Cookies). Die Erhebung startet <strong>erst nach deiner Zustimmung</strong> im Cookie-Banner (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG); ohne Zustimmung findet kein Tracking statt. Deine Einwilligung kannst du jederzeit über <a onclick="if(window.ceOpen)window.ceOpen()">Cookie-Einstellungen</a> ändern. Die Datenübermittlung an die USA ist durch die EU-Standardvertragsklauseln (Art. 46 DSGVO) sowie Metas eigene Garantien abgesichert; weitere Informationen: <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener">Metas Datenrichtlinie</a>.</p>
   <h3>7. Ihre Rechte</h3>
   <p>Sie haben folgende Rechte gemäß DSGVO (Art. 15–22):</p>
   <ul>
