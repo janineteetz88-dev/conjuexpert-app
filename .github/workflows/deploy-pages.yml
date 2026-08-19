@@ -61,7 +61,7 @@ jobs:
           # (emails/*/email-1-welcome.html) — muss deshalb trotzdem live sein.
 
           # Ganze Verzeichnisse, die öffentlich erreichbar sein müssen.
-          DIRS=(engine fonts vendor blog konjugation landing bewertungen)
+          DIRS=(engine fonts vendor blog konjugation landing bewertungen start)
 
           missing=0
           for f in "${FILES[@]}"; do
