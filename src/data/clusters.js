@@ -240,7 +240,7 @@ export const clusters = [
       { slug: "/blog/present-perfect-vs-simple-past", title: "Present Perfect vs. Simple Past: der Klassiker für deutsche Englischlerner", live: true },
       { slug: "/blog/englisch-3-person-s", title: "Das -s in der 3. Person Singular (he works, she goes)", live: true },
       { slug: "/blog/passiv-englisch", title: "Das englische Passiv (be + past participle) verständlich erklärt", live: true },
-      { slug: "/blog/past-perfect-englisch", title: "Past Perfect (had done) einfach erklärt: das Frühere von zwei Vergangenem", live: true },
+      { slug: "/blog/past-perfect-englisch", title: "Past Perfect (had done) einfach erklärt: das Frühere von zwei vergangenen Ereignissen", live: true },
     ],
   },
   {
