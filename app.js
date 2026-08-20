@@ -2418,12 +2418,23 @@
   function delay(ms){ return new Promise(function(r){setTimeout(r,ms);}); }
   async function callWorker(prompt, attempt){
     attempt = attempt || 0;
-    var resp = await fetch(WORKER, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({prompt: prompt, lang: aiLang()})
-    });
-    var d = await resp.json();
+    // Timeout: Ohne Limit konnte ein hängender Mobilfunk-Request die UI dauerhaft
+    // blockieren (z. B. "translating…" beim Sprachwechsel, gesperrtes Eingabefeld).
+    // Nach 25 s wird abgebrochen → die Fehlerpfade der Aufrufer greifen.
+    var ctl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var tmr = ctl ? setTimeout(function(){ try { ctl.abort(); } catch(e){} }, 25000) : null;
+    var resp, d;
+    try {
+      resp = await fetch(WORKER, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({prompt: prompt, lang: aiLang()}),
+        signal: ctl ? ctl.signal : undefined
+      });
+      d = await resp.json();
+    } finally {
+      if (tmr) clearTimeout(tmr);
+    }
     if(!resp.ok){
       if(resp.status===429 && attempt < 5){
         await delay(3000 * (attempt + 1));
@@ -18363,6 +18374,7 @@ function App() {
   }
   const engine = window.CONJ[lang];
   const pendingRef = useRef(null);
+  const switchSeqRef = useRef(0); // entwertet verspätete Übersetzungs-Antworten nach erneutem Sprachwechsel
   function addHistory(lg, vb) {
     setHistory(h => {
       const nx = [{
@@ -18375,6 +18387,8 @@ function App() {
   }
   function switchLang(newLang) {
     if (newLang === lang) return;
+    const seq = ++switchSeqRef.current; // laufende Übersetzung des vorigen Wechsels entwerten
+    setTranslating(false);
     const cur = result && !result.error ? result.infinitive.replace(/^to /, "") : verb.trim().toLowerCase();
     const target = cur ? conceptTranslate(cur, lang, newLang) : null;
     if (target) {
@@ -18389,6 +18403,7 @@ function App() {
         toName = window.CONJ[newLang].name;
       setLang(newLang);
       window.aiComplete(`Translate the verb "${cur}" from ${fromName} to its ${toName} infinitive. Reply with ONLY the single infinitive word in ${toName}, lowercase, no article, no extra text.`).then(txt => {
+        if (switchSeqRef.current !== seq) return; // inzwischen erneut gewechselt — Antwort verwerfen
         const w = String(txt || "").trim().toLowerCase().replace(/^to\s+/, "").split(/\s+/)[0].replace(/[^a-zà-ÿ'’-]/gi, "");
         if (w) {
           setVerb(w);
@@ -18397,7 +18412,7 @@ function App() {
           if (r && !r.error) addHistory(newLang, r.infinitive);
         }
         setTranslating(false);
-      }).catch(() => setTranslating(false));
+      }).catch(() => { if (switchSeqRef.current === seq) setTranslating(false); });
       return;
     }
     setLang(newLang);
