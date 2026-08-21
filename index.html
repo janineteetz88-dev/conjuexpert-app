@@ -19,6 +19,9 @@
 <!-- Plausible Analytics — cookielos, kein Consent-Banner nötig (DSGVO-Leitplanke).
      Getrennt vom PostHog-Block unten (der bleibt inaktiv, solange PH_KEY leer ist). -->
 <script defer data-domain="conjuexpert.app" src="https://plausible.io/js/script.js"></script>
+<!-- Queue-Shim für Custom Events, funktioniert auch bevor script.js (defer) fertig
+     geladen ist. Standard-Snippet laut Plausible-Doku für Custom Events. -->
+<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
 <meta name="keywords" content="verben konjugieren, spanisch konjugieren, konjugationstrainer, subjuntivo üben, passé composé, irregular verbs, französisch lernen, niederländisch lernen, zeitformen üben, KI Sprachenlernen" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication","name":"ConjuExpert","applicationCategory":"EducationalApplication","operatingSystem":"Web, iOS, Android (PWA)","url":"https://conjuexpert.app/","description":"KI-Konjugationstrainer für Spanisch, Französisch, Englisch, Niederländisch und Deutsch – alle Zeitformen, Quiz aus Lieblingsthemen, Merken.","inLanguage":["de","es","en","nl","fr"],"offers":[{"@type":"Offer","price":"0","priceCurrency":"EUR","name":"Kostenlos"},{"@type":"Offer","price":"2.99","priceCurrency":"EUR","name":"Premium monatlich"},{"@type":"Offer","price":"29.99","priceCurrency":"EUR","name":"Premium jährlich"}]}

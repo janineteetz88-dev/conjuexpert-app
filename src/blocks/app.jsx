@@ -5500,6 +5500,17 @@ function App() {
     persist("kunju-offer-seen", Date.now());
     setTrialExpiry(exp);
     setShowOffer(false);
+    try {
+      const qp = new URLSearchParams(window.location.search);
+      window.plausible && window.plausible("Trial Started", {
+        props: {
+          msg: qp.get("msg") || "",
+          utm_source: qp.get("utm_source") || "",
+          utm_campaign: qp.get("utm_campaign") || "",
+          utm_content: qp.get("utm_content") || ""
+        }
+      });
+    } catch (e) {}
   }
   function handleTabSwitch(id) {
     if ((id === "quiz" || id === "saved") && !hasPaidAccess()) { setShowPaywall(true); return; }

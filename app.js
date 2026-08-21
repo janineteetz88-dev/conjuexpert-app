@@ -17790,6 +17790,17 @@ function App() {
       });
       const url = data?.url;
       if (error) throw new Error(error);
+      try {
+        const qp = new URLSearchParams(window.location.search);
+        window.plausible && window.plausible("Checkout Started", {
+          props: {
+            plan: selPlan || "",
+            msg: qp.get("msg") || "",
+            utm_source: qp.get("utm_source") || "",
+            utm_campaign: qp.get("utm_campaign") || ""
+          }
+        });
+      } catch (e2) {}
       window.location.href = url;
     } catch (e) {
       setToastMsg(tr("pay_error"));
@@ -17803,6 +17814,17 @@ function App() {
     persist("kunju-offer-seen", Date.now());
     setTrialExpiry(exp);
     setShowOffer(false);
+    try {
+      const qp = new URLSearchParams(window.location.search);
+      window.plausible && window.plausible("Trial Started", {
+        props: {
+          msg: qp.get("msg") || "",
+          utm_source: qp.get("utm_source") || "",
+          utm_campaign: qp.get("utm_campaign") || "",
+          utm_content: qp.get("utm_content") || ""
+        }
+      });
+    } catch (e) {}
   }
   const savedDeepLinkRef = useRef(false);
   // Frisches Laden startet „Gemerkt" immer auf der Bibliotheks-Übersicht — nicht
