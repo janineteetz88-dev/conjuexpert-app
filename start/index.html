@@ -702,7 +702,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
   </div>
 </div>
 <main id="top">
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="wrap hero-grid">
       <div>
         <div class="eyebrow"><span class="dot"></span><span>bis zu 5 Sprachen parallel lernen</span></div>
@@ -805,7 +805,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
     </div>
   </section>
 
-  <section class="band">
+  <section class="band" id="band">
     <div class="wrap">
       <div class="band-in">
         <span class="g"></span>
@@ -888,6 +888,73 @@ durch deine Lieblingsthemen.</h2>
     // fbq nur vorhanden, wenn Cookie-Consent erteilt und der Meta-Pixel geladen wurde.
     try { if (window.fbq) window.fbq('trackCustom', 'landing_cta_click'); } catch (e) {}
   });
+
+  // ---- Früh-Funnel-Tracking (Janines Anfrage 21.08.): 72% Bounce-Rate,
+  // 10s Ø-Besuchsdauer auf dieser Seite - drei Signale, um "zu langsam"
+  // von "Botschaft überzeugt nicht" zu unterscheiden. ----
+
+  // 1) Echte Ladezeit (LCP) pro Besuch statt nur des einen synthetischen
+  // PageSpeed-Tests. Bucket + Millisekunden, gemeldet erst beim Verlassen
+  // der Seite (LCP-Kandidat kann sich bis dahin noch ändern).
+  try {
+    var lcpValue = 0;
+    var lcpObserver = new PerformanceObserver(function(list) {
+      var entries = list.getEntries();
+      var last = entries[entries.length - 1];
+      if (last) lcpValue = last.renderTime || last.loadTime || last.startTime || 0;
+    });
+    lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+    var lcpReported = false;
+    function reportLCP() {
+      if (lcpReported || !lcpValue || !window.plausible) return;
+      lcpReported = true;
+      var bucket = lcpValue < 2000 ? 'lt2s' : lcpValue < 4000 ? '2to4s' : 'gt4s';
+      window.plausible('page_lcp', { props: { bucket: bucket, ms: Math.round(lcpValue) } });
+    }
+    document.addEventListener('visibilitychange', function() { if (document.visibilityState === 'hidden') reportLCP(); });
+    addEventListener('pagehide', reportLCP);
+  } catch (e) {}
+
+  // 2) Scroll-Tiefe (25/50/75/90%) + Zeit-Buckets (3s/10s/30s). Zusammen
+  // trennen sie "geht, bevor überhaupt was zu sehen war" von "hat gelesen
+  // und sich dann dagegen entschieden".
+  try {
+    var scrollFired = {};
+    function checkScroll() {
+      var total = document.documentElement.scrollHeight - window.innerHeight;
+      if (total <= 0) return;
+      var pct = Math.round(((window.scrollY) / total) * 100);
+      [25, 50, 75, 90].forEach(function(t) {
+        if (pct >= t && !scrollFired[t]) {
+          scrollFired[t] = true;
+          if (window.plausible) window.plausible('scroll_depth', { props: { pct: t } });
+        }
+      });
+    }
+    document.addEventListener('scroll', checkScroll, { passive: true });
+    [3, 10, 30].forEach(function(sec) {
+      setTimeout(function() {
+        if (document.visibilityState !== 'hidden' && window.plausible) {
+          window.plausible('time_on_page', { props: { sec: sec } });
+        }
+      }, sec * 1000);
+    });
+  } catch (e) {}
+
+  // 3) Welchen Abschnitt hat der Besucher tatsächlich gesehen, bevor er ging?
+  // (Kein FAQ auf dieser kurzen Ad-Landingpage - stattdessen hero/pain/preise/band.)
+  try {
+    var sectionsSeen = {};
+    var sectionObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && entry.target.id && !sectionsSeen[entry.target.id]) {
+          sectionsSeen[entry.target.id] = true;
+          if (window.plausible) window.plausible('section_seen', { props: { section: entry.target.id } });
+        }
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll('section[id]').forEach(function(s) { sectionObserver.observe(s); });
+  } catch (e) {}
 })();
 </script>
 
