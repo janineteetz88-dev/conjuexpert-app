@@ -863,6 +863,22 @@ durch deine Lieblingsthemen.</h2>
     }
   } catch (e) {}
 
+  // msg/UTM-Parameter an alle CTA-Links weiterreichen, damit die Zuordnung
+  // beim Wechsel in die eigentliche App (app.js, trial_start/checkout_started)
+  // nicht verloren geht — bisher endete die Kampagnen-Zuordnung genau hier.
+  try {
+    if (params.toString()) {
+      document.querySelectorAll('a.btn, a.btn-primary, a.btn-ghost').forEach(function(a) {
+        try {
+          var url = new URL(a.getAttribute('href'), window.location.href);
+          if (url.hostname !== 'conjuexpert.app') return;
+          params.forEach(function(v, k) { if (!url.searchParams.has(k)) url.searchParams.set(k, v); });
+          a.setAttribute('href', url.toString());
+        } catch (e) {}
+      });
+    }
+  } catch (e) {}
+
   // Ein Klick-Event für jeden CTA-Link auf der Seite — zeigt, wie viele
   // Besucher tatsächlich zur App weiterklicken (Landing-Bounce vs. Klick-Rate).
   document.addEventListener('click', function(e) {

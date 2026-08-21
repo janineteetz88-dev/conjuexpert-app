@@ -17794,6 +17794,16 @@ function App() {
     }
     setShowPlanSelect(true);
   }
+  // Kampagnen-Zuordnung für ceTrack-Events: liest msg/UTM aus der URL, falls
+  // von /start/ weitergereicht (siehe start/index.html) - sonst leeres Objekt.
+  function ceAttrProps() {
+    try {
+      const qp = new URLSearchParams(window.location.search);
+      const props = {};
+      ["msg", "utm_source", "utm_campaign", "utm_content"].forEach(k => { const v = qp.get(k); if (v) props[k] = v; });
+      return props;
+    } catch (e) { return {}; }
+  }
   async function goToStripe() {
     if (!supaUser) {
       setPendingPayment(true);
@@ -17817,7 +17827,7 @@ function App() {
       });
       const url = data?.url;
       if (error) throw new Error(error);
-      if (window.ceTrack) window.ceTrack("checkout_started");
+      if (window.ceTrack) window.ceTrack("checkout_started", ceAttrProps());
       window.location.href = url;
     } catch (e) {
       setToastMsg(tr("pay_error"));
@@ -17831,7 +17841,7 @@ function App() {
     persist("kunju-offer-seen", Date.now());
     setTrialExpiry(exp);
     setShowOffer(false);
-    if (window.ceTrack) window.ceTrack("trial_start");
+    if (window.ceTrack) window.ceTrack("trial_start", ceAttrProps());
   }
   const savedDeepLinkRef = useRef(false);
   // Frisches Laden startet „Gemerkt" immer auf der Bibliotheks-Übersicht — nicht
@@ -18117,7 +18127,7 @@ function App() {
           exp
         });
         persist("kunju-acct-trial", true);
-        if (window.ceTrack) window.ceTrack("trial_start");
+        if (window.ceTrack) window.ceTrack("trial_start", ceAttrProps());
         setTrialExpiry(exp);
         // Bestätigung nach der Konto-Erstellung (E-Mail bestätigt + zurück in der App)
         setToastMsg(tr("acct_created"));
