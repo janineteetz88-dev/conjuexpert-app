@@ -467,6 +467,14 @@ async function main() {
         }
         log(`    ✓ KI-Lektorat ohne Befund: ${a.meta.slug}`);
       } catch (e) {
+        // Leeres OpenAI-Guthaben ist ein bekannter GESAMT-Ausfall (trifft auch
+        // die App) — der Artikel bleibt im Pool und wird nach dem Aufladen
+        // automatisch geprüft. Der Lauf bleibt dafür GRÜN: Eine stündliche
+        // Fehler-Mail für dieselbe, längst gemeldete Ursache hilft niemandem.
+        if (/no credits|insufficient_quota|credit_balance/i.test(String((e && e.message) || ""))) {
+          warn(`KI-Lektorat pausiert (OpenAI-Guthaben leer) → ${a.meta.slug} bleibt im Pool und wird nach dem Aufladen automatisch geprüft`);
+          continue;
+        }
         guardFailures.push(a.meta.slug);
         warn(`KI-Lektorat nicht durchführbar (${e.message}) → sicherheitshalber NICHT veröffentlicht: ${a.meta.slug} (Override: AI_LEKTORAT=0)`);
         continue;
