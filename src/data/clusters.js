@@ -158,6 +158,7 @@ export const clusters = [
       { slug: "/blog/aktiv-lernen-statt-tabellen-auswendig", title: "Konjugationstabellen auswendig lernen? Warum aktives Üben dreimal mehr bringt", live: true },
       { slug: "/blog/verben-lernen-tipps", title: "Verben lernen: 7 Lerntipps, mit denen die Formen endlich sitzen", live: true },
       { slug: "/blog/sprache-lernen-neben-dem-job", title: "Sprache lernen neben dem Job: So bringen 15 Minuten am Tag deine Verben voran", live: true },
+      { slug: "/blog/konjugations-challenges-eigene-uebungssets", title: "Konjugations-Challenges selbst bauen: eigene Übungs-Sets statt Standard-Drills", live: true },
     ],
   },
   {
