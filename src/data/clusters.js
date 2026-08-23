@@ -264,6 +264,7 @@ export const clusters = [
       { slug: "/blog/sprachlern-app-vergleich", title: "Duolingo, Babbel, Busuu & Co.: Was diese Apps wirklich können — und wo sie schweigen (v2)", live: true },
       { slug: "/blog/mit-der-sprache-umgeben", title: "Sich mit der Sprache umgeben: 10 Tipps für zuhause", live: true },
       { slug: "/blog/verbkonjugation-apps-zuverlaessig", title: "Sind Verbkonjugationen in Apps zuverlässig? So testest du dein Tool in zwei Minuten", live: true },
+      { slug: "/blog/kostenlose-konjugations-app-ohne-paywall", title: "Kostenlose Konjugations-App: Wo hört Gratis bei Duolingo & Co. wirklich auf?", live: true },
     ],
   },
   {
