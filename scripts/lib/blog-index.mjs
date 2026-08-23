@@ -507,3 +507,23 @@ export function reconcileBlogCardsFromClusters(
 
   return { html, added, summary };
 }
+
+/* ─── Leitplanke: Notion-Editor-Platzhalter dürfen nie in Karten landen ─────
+ * (gleicher Bug wie in render-guard.mjs für einzelne Artikelseiten — hier
+ * zusätzlich für die /blog-Startseitenkarten, weil reconcileBlogCardsFromClusters
+ * bestehende Karten NIE überschreibt: einmal live gerutschte Platzhalter-Karten
+ * heilen sich sonst nie von selbst.)
+ */
+export function auditBlogIndexHtml(html) {
+  const s = String(html || "");
+  const out = [];
+  const cardRe = /<a\b[^>]*\bclass="post[^"]*"[^>]*\bhref="([^"]*)"[\s\S]*?<\/a>/g;
+  let m;
+  while ((m = cardRe.exec(s))) {
+    const [cardHtml, href] = m;
+    if (/Meta\s*\(für Blog-Engine/i.test(cardHtml)) {
+      out.push(`Platzhaltertext "Meta (für Blog-Engine & Freigabe)" in Karte ${href}`);
+    }
+  }
+  return out;
+}
