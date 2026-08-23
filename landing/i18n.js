@@ -458,7 +458,9 @@
     try { var s = localStorage.getItem('ce-lang'); if (s && SUPPORTED[s]) return s; } catch (e) {}
     var cs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || 'de'];
     for (var i = 0; i < cs.length; i++) { var two = (cs[i] || '').toLowerCase().slice(0, 2); if (SUPPORTED[two]) return two; }
-    return 'de';
+    // Sprache nicht übersetzt (z.B. it/pl/pt/cs/hu/ro): Englisch ist für Deutsch-Lerner
+    // verständlicher als der deutsche Quelltext -> besserer Fallback als 'de'.
+    return 'en';
   }
 
   function apply(lang) {
