@@ -702,11 +702,11 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 </head>
 <body>
 <div id="cc-banner" role="dialog" aria-label="Datenschutz-Einstellungen">
-  <h4>Datenschutz &amp; Cookies</h4>
-  <div>Wir nutzen technisch Notwendiges und – mit deiner Zustimmung – den <b>Meta-Pixel</b> (Meta/Facebook/Instagram), um die Wirkung unserer Werbeanzeigen zu messen. Ohne Zustimmung kein Tracking. <a href="https://conjuexpert.app/datenschutz.html" target="_blank" rel="noopener">Mehr erfahren</a></div>
+  <h4 data-i18n="cc.title">Datenschutz &amp; Cookies</h4>
+  <div data-i18n="cc.body">Wir nutzen technisch Notwendiges und – mit deiner Zustimmung – den <b>Meta-Pixel</b> (Meta/Facebook/Instagram), um die Wirkung unserer Werbeanzeigen zu messen. Ohne Zustimmung kein Tracking. <a href="https://conjuexpert.app/datenschutz.html" target="_blank" rel="noopener">Mehr erfahren</a></div>
   <div id="cc-act">
-    <button class="cc-no" onclick="ceSet('denied')">Nur notwendige</button>
-    <button class="cc-ok" onclick="ceSet('granted')">Akzeptieren</button>
+    <button class="cc-no" onclick="ceSet('denied')" data-i18n="cc.deny">Nur notwendige</button>
+    <button class="cc-ok" onclick="ceSet('granted')" data-i18n="cc.accept">Akzeptieren</button>
   </div>
 </div>
 <main id="top">
