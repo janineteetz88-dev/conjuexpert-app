@@ -39,35 +39,42 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Pinnt die Pages-Source bei jedem Lauf HART auf „GitHub Actions"
-      # (build_type: workflow) und verifiziert das Ergebnis. Hintergrund: In der
-      # Nacht 17.→18.08.2026 wurde die Source auf „Deploy from a branch"
-      # zurückgestellt, wodurch der klassische Branch-Deploy den kompletten
-      # Repo-Root erneut veröffentlichte (KRITISCH-Exposure). Der zunächst
-      # verwendete actions/configure-pages-Schritt (#247) reicht NICHT: Er setzt
-      # build_type nur beim Neuanlegen einer Pages-Site und lässt eine
-      # bestehende Site unangetastet. Deshalb hier ein expliziter API-Call.
-      # Schlägt der PUT oder die Verifikation fehl, bricht der Lauf sichtbar ab,
-      # statt eine stille Sicherheitslücke zu lassen.
-      - name: Pages-Source hart auf „GitHub Actions" pinnen (selbstheilend)
+      # Prüft die Pages-Source bei jedem Lauf und stellt sie, wenn möglich, auf
+      # „GitHub Actions" (build_type: workflow) zurück. Hintergrund: Um den
+      # 18.08.2026 wurde die Source auf „Deploy from a branch" zurückgestellt,
+      # wodurch der klassische Branch-Deploy den kompletten Repo-Root erneut
+      # veröffentlichte (KRITISCH-Exposure). Der zunächst verwendete
+      # actions/configure-pages-Schritt (#247) reicht NICHT: Er setzt build_type
+      # nur beim Neuanlegen einer Pages-Site und lässt eine bestehende Site
+      # unangetastet. Deshalb hier ein expliziter API-Call.
+      # Der eingebaute GITHUB_TOKEN darf build_type NICHT ändern (verifiziert
+      # 25.08.: PUT /pages → HTTP-Fehler). Echte Selbstheilung braucht deshalb
+      # ein Repo-Secret PAGES_ADMIN_TOKEN: fine-grained PAT des Repo-Inhabers,
+      # nur für dieses Repo, Permission „Pages: write". Ohne das Secret kann der
+      # Schritt nur laut warnen. Bewusst KEIN Abbruch bei Fehlschlag: Der
+      # Allowlist-Deploy soll trotzdem laufen (er überschreibt den Voll-Repo-
+      # Deploy im Rennen um das Live-Ergebnis — besser als gar kein Deploy).
+      - name: Pages-Source auf „GitHub Actions" prüfen/pinnen (selbstheilend)
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAGES_ADMIN_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           api="https://api.github.com/repos/${{ github.repository }}/pages"
           hdr=(-H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json")
           current=$(curl -sf "${hdr[@]}" "$api" | jq -r '.build_type')
           echo "Aktuelle Pages-Source (build_type): $current"
-          if [ "$current" != "workflow" ]; then
-            echo "::warning::Pages-Source stand auf '$current' — stelle auf 'workflow' zurück."
-            curl -sf -X PUT "${hdr[@]}" "$api" -d '{"build_type":"workflow"}'
+          if [ "$current" = "workflow" ]; then
+            echo "Pages-Source steht korrekt auf 'workflow' ✅"
+            exit 0
           fi
+          echo "::warning::Pages-Source steht auf '$current' — versuche, auf 'workflow' zurückzustellen."
+          curl -sf -X PUT "${hdr[@]}" "$api" -d '{"build_type":"workflow"}' || true
           verified=$(curl -sf "${hdr[@]}" "$api" | jq -r '.build_type')
-          if [ "$verified" != "workflow" ]; then
-            echo "::error::Pages-Source konnte nicht auf 'workflow' gesetzt werden (steht auf '$verified'). Manuell fixen: Settings → Pages → Source → GitHub Actions."
-            exit 1
+          if [ "$verified" = "workflow" ]; then
+            echo "Zurückgestellt und verifiziert: build_type=workflow ✅"
+          else
+            echo "::error::Pages-Source steht auf '$verified' und konnte mit dem verfügbaren Token NICHT umgestellt werden. Sofort-Fix (1 Klick): Repo-Settings → Pages → Source → 'GitHub Actions'. Dauerhaft: fine-grained PAT (nur dieses Repo, Permission 'Pages: write') als Secret PAGES_ADMIN_TOKEN hinterlegen. Bis dahin racet der klassische Voll-Repo-Deploy bei jedem Push gegen den Allowlist-Build (Sicherheitsrisiko)."
           fi
-          echo "Verifiziert: build_type=workflow ✅"
 
       - name: Publish-Verzeichnis aus Allowlist bauen
         run: |
