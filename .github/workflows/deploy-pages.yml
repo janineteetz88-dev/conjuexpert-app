@@ -39,6 +39,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Pinnt die Pages-Source bei jedem Lauf auf „GitHub Actions" (build_type:
+      # workflow). Hintergrund: In der Nacht 17.→18.08.2026 wurde die Source
+      # wieder auf „Deploy from a branch" zurückgestellt, wodurch der klassische
+      # Branch-Deploy den kompletten Repo-Root erneut veröffentlichte (Exposure
+      # wieder offen, vom Wächter-Audit ab 18.08. gemeldet). Mit diesem Schritt
+      # heilt sich das Deployment selbst: Jeder Lauf stellt die Source zurück,
+      # egal wie sie verstellt wurde.
+      - name: Pages-Source auf „GitHub Actions" pinnen (selbstheilend)
+        uses: actions/configure-pages@v5
+
       - name: Publish-Verzeichnis aus Allowlist bauen
         run: |
           set -euo pipefail
