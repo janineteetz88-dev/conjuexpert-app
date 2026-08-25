@@ -16319,7 +16319,13 @@ function PlanSelect({
     dangerouslySetInnerHTML: {
       __html: icon
     }
-  }), /*#__PURE__*/React.createElement("span", null, text)))), /*#__PURE__*/React.createElement("button", {
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      flex: 1,
+      minWidth: 0,
+      textAlign: "left"
+    }
+  }, text)))), /*#__PURE__*/React.createElement("button", {
     className: "paysuc-cta",
     onClick: onClose
   }, /*#__PURE__*/React.createElement("span", null, "Jetzt loslegen \u2192")))));
@@ -18158,8 +18164,12 @@ function App() {
           if (p?.is_premium) {
             persist("kunju-premium", true);
             setIsPremium(true);
-          } else if (recall("kunju-premium", false)) {
-            // DB says not premium but localStorage says yes → expired/cancelled
+          } else if (recall("kunju-premium", false) && Date.now() - recall("kunju-premium-at", 0) > 5 * 60 * 1000) {
+            // DB says not premium but localStorage says yes → expired/cancelled.
+            // WICHTIG: Frisch aktiviertes Premium (z. B. per Code) hat 5 Minuten
+            // Bestandsschutz — eine Profil-Abfrage, die VOR der Einlösung
+            // gestartet ist, darf den Nutzer nicht zurückstufen und ihm direkt
+            // nach dem Erfolgsbildschirm die Kauf-Paywall zeigen.
             persist("kunju-premium", false);
             setIsPremium(false);
             if (!paywallOnExpiryShown.current) {
@@ -19028,6 +19038,7 @@ function App() {
     supaUser: supaUser,
     onPremium: () => {
       persist("kunju-premium", true);
+      persist("kunju-premium-at", Date.now()); // Bestandsschutz gegen veraltete Profil-Antworten
       setIsPremium(true);
     },
     openCoupon: pendingCoupon
