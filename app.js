@@ -18163,6 +18163,11 @@ function App() {
         }) => {
           if (p?.is_premium) {
             persist("kunju-premium", true);
+            // Bestandsschutz-Stempel auch hier: Kommen zwei Profil-Abfragen in
+            // falscher Reihenfolge zurück (Auth feuert beim Start mehrfach),
+            // darf die verspätete alte Antwort einen bestätigten Premium-Nutzer
+            // nicht zurückstufen und ihm die Kauf-Paywall zeigen.
+            persist("kunju-premium-at", Date.now());
             setIsPremium(true);
           } else if (recall("kunju-premium", false) && Date.now() - recall("kunju-premium-at", 0) > 5 * 60 * 1000) {
             // DB says not premium but localStorage says yes → expired/cancelled.
