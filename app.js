@@ -4838,15 +4838,6 @@ function bumpDaily() {
 
 /* Free-account quiz limit: 20 quiz cards per calendar day (premium = unlimited). */
 const QUIZ_FREE_LIMIT = 20;
-const GUEST_QUIZ_FREE_LIMIT = 3;
-function readGuestQuizCount() {
-  return recall("kunju-guest-quiz", 0);
-}
-function bumpGuestQuizCount() {
-  const n = recall("kunju-guest-quiz", 0) + 1;
-  persist("kunju-guest-quiz", n);
-  return n;
-}
 function readQuizDayCount() {
   const today = new Date().toDateString();
   const q = recall("kunju-quizday", {
@@ -17701,14 +17692,12 @@ function App() {
     return !premExpired && isPremium;
   }
   // Quiz access tier:
-  //   "unlimited"   → Premium or active trial (no daily cap)
-  //   "limited"     → free account (20 quiz cards per day)
-  //   "guest_trial" → anonymous, noch innerhalb der 3 kostenlosen Schnupper-Runden
-  //   "blocked"     → anonymous, Schnupper-Runden aufgebraucht (Konto nötig)
+  //   "unlimited" → Premium or active trial (no daily cap)
+  //   "limited"   → free account (20 quiz cards per day)
+  //   "blocked"   → anonymous (must create a free account first)
   function quizTier() {
     if (hasPaidAccess()) return "unlimited";
     if (supaUser) return "limited";
-    if (readGuestQuizCount() < GUEST_QUIZ_FREE_LIMIT) return "guest_trial";
     return "blocked";
   }
   const [authResolved, setAuthResolved] = useState(false);
@@ -17860,6 +17849,19 @@ function App() {
     setShowOffer(false);
     if (window.ceTrack) window.ceTrack("trial_start", ceAttrProps());
   }
+  // Sofort-Trial für neue, anonyme Besucher: die Onboarding-Tour verspricht seit
+  // Langem "24h Premium, sofort, ganz ohne Konto" (t2_p1_t/t2_p1_d) - bisher lief
+  // der zugehörige Auslöser aber nie (WelcomeOffer-Popup war deaktiviert). Jetzt
+  // tatsächlich eingelöst: läuft genau einmal pro Gerät (kunju-trial-ever-Marker),
+  // nicht erneut nach Ablauf des ersten Trials.
+  useEffect(() => {
+    if (!authResolved) return;
+    if (supaUser) return;
+    if (recall("kunju-trial-ever", false)) return;
+    persist("kunju-trial-ever", true);
+    startTrial();
+    if (window.__toast) window.__toast(tr("guest_trial_unlocked"));
+  }, [authResolved, supaUser]);
   const savedDeepLinkRef = useRef(false);
   // Frisches Laden startet „Gemerkt" immer auf der Bibliotheks-Übersicht — nicht
   // im zuletzt geöffneten Detail (z. B. Challenge-Editor), das sonst klebenbleibt.
@@ -18351,16 +18353,6 @@ function App() {
       // === statt >=: Event nur beim exakten Übertritt, nicht bei jeder weiteren Karte danach.
       if (used === QUIZ_FREE_LIMIT && window.ceTrack) window.ceTrack("quiz_limit_reached");
       if (used >= QUIZ_FREE_LIMIT) setShowQuizLimit(true);
-    }
-    // Gäste ohne Konto: 3 kostenlose Schnupper-Runden im Quiz, danach automatisch
-    // 24 Std. Premium freischalten (Janines Vorgabe: "3x quizzen, dann Glückwunsch").
-    if (tab === "quiz" && quizTier() === "guest_trial") {
-      const used = bumpGuestQuizCount();
-      if (used >= GUEST_QUIZ_FREE_LIMIT) {
-        startTrial();
-        if (window.__toast) window.__toast(tr("guest_trial_unlocked"));
-        if (window.ceTrack) window.ceTrack("guest_trial_unlocked", ceAttrProps());
-      }
     }
     const prev = daily.count;
     const next = bumpDaily();
