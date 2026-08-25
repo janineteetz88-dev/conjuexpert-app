@@ -1,0 +1,35 @@
+# Diese Datei steuert den KLASSISCHEN GitHub-Pages-Build ("Deploy from a
+# branch", Jekyll). Der reguläre Deploy läuft über
+# .github/workflows/deploy-pages.yml (Allowlist-Build via GitHub Actions).
+#
+# Diese Config ist die ZWEITE VERTEIDIGUNGSLINIE: Steht die Pages-Source
+# (wieder) auf "Deploy from a branch", baut GitHub die Site mit Jekyll — und
+# Jekyll schließt hiermit alle internen Pfade vom Publish aus. Dafür wurde
+# .nojekyll bewusst gelöscht (mit .nojekyll würde der klassische Build den
+# kompletten Repo-Root 1:1 ausliefern — genau das war die KRITISCH-Exposure,
+# siehe Notion-Karte "[KRITISCH] Kompletter Repo-Quellcode … öffentlich").
+#
+# Dotfiles/-ordner (.github, .claude, .agents, .gitignore) schließt Jekyll
+# von selbst aus, ebenso node_modules und _config.yml selbst. Alles andere
+# Interne muss HIER stehen — neue interne Top-Level-Dateien/Ordner bitte
+# ergänzen.
+
+exclude:
+  - supabase
+  - docs
+  - scripts
+  - emails
+  - src
+  - social-assets
+  - social-content
+  - node_modules
+  - package.json
+  - package-lock.json
+  - README.md
+  - ARCHITECTURE.md
+  - BLOG-RENDERING.md
+  - SEARCH-CONSOLE-AUTOMATISIERUNG.md
+  - CLAUDE.md
+  - app.jsx
+  - tweaks-panel.jsx
+  - landing/lifestyle/README.md

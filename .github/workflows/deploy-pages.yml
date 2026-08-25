@@ -73,7 +73,7 @@ jobs:
           if [ "$verified" = "workflow" ]; then
             echo "Zurückgestellt und verifiziert: build_type=workflow ✅"
           else
-            echo "::error::Pages-Source steht auf '$verified' und konnte mit dem verfügbaren Token NICHT umgestellt werden. Sofort-Fix (1 Klick): Repo-Settings → Pages → Source → 'GitHub Actions'. Dauerhaft: fine-grained PAT (nur dieses Repo, Permission 'Pages: write') als Secret PAGES_ADMIN_TOKEN hinterlegen. Bis dahin racet der klassische Voll-Repo-Deploy bei jedem Push gegen den Allowlist-Build (Sicherheitsrisiko)."
+            echo "::error::Pages-Source steht auf '$verified' und konnte mit dem verfügbaren Token NICHT umgestellt werden. Sofort-Fix (1 Klick): Repo-Settings → Pages → Source → 'GitHub Actions'. Dauerhaft: fine-grained PAT (nur dieses Repo, Permission 'Pages: write') als Secret PAGES_ADMIN_TOKEN hinterlegen. Bis dahin racet der klassische Voll-Repo-Deploy bei jedem Push gegen den Allowlist-Build — dank Jekyll-Excludes (_config.yml) ohne Quellcode-Exposure, aber mit unminifiziertem Ergebnis."
           fi
 
       - name: Publish-Verzeichnis aus Allowlist bauen
@@ -84,9 +84,14 @@ jobs:
           mkdir -p "$OUT"
 
           # Einzeldateien, die öffentlich erreichbar sein müssen.
+          # (.nojekyll bewusst NICHT dabei: Die Datei wurde aus dem Repo
+          # gelöscht, damit der klassische Branch-Deploy — falls die
+          # Pages-Source je wieder auf "Deploy from a branch" steht — als
+          # Jekyll-Build mit den Ausschlüssen aus _config.yml läuft, statt den
+          # kompletten Repo-Root auszuliefern. Zweite Verteidigungslinie.)
           FILES=(
             index.html app.js manifest.webmanifest sw.js 404.html
-            robots.txt sitemap.xml llms.txt CNAME .nojekyll
+            robots.txt sitemap.xml llms.txt CNAME
             google21132ae6fe839054.html favicon.svg apple-touch-icon.png
             icon-192.png icon-512.png icon-maskable.png
             agb.html datenschutz.html impressum.html barrierefreiheit.html
