@@ -110,7 +110,11 @@
       "rev.emptyP": "Be the first to share your experience!",
       "rev.ctaH2": "Try it yourself now.",
       "rev.ctaP": "Conjugate verbs in 5 languages — with quizzes from your favourite topics. Start free, no account needed.",
-      "rev.ctaBtn": "Open the app for free"
+      "rev.ctaBtn": "Open the app for free",
+      "cc.title": "Privacy &amp; Cookies",
+      "cc.body": "We use technically necessary cookies and — with your consent — the <b>Meta Pixel</b> (Meta/Facebook/Instagram) to measure the impact of our ads. No tracking without your consent. <a href=\"https://conjuexpert.app/datenschutz.html\" target=\"_blank\" rel=\"noopener\">Learn more</a>",
+      "cc.deny": "Necessary only",
+      "cc.accept": "Accept"
     },
     es: {
       "nav.features": "Funciones", "nav.prices": "Precios", "nav.faq": "FAQ", "nav.reviews": "Opiniones", "nav.app": "App", "nav.openApp": "Abrir app",
@@ -219,7 +223,11 @@
       "rev.emptyP": "¡Sé la primera persona en compartir tu experiencia!",
       "rev.ctaH2": "Pruébalo tú mismo ahora.",
       "rev.ctaP": "Conjuga verbos en 5 idiomas — con quizzes sobre tus temas favoritos. Empieza gratis, sin cuenta.",
-      "rev.ctaBtn": "Abrir la app gratis"
+      "rev.ctaBtn": "Abrir la app gratis",
+      "cc.title": "Privacidad y cookies",
+      "cc.body": "Usamos cookies técnicamente necesarias y, con tu consentimiento, el <b>Meta Pixel</b> (Meta/Facebook/Instagram) para medir el impacto de nuestros anuncios. Sin tu consentimiento no hay seguimiento. <a href=\"https://conjuexpert.app/datenschutz.html\" target=\"_blank\" rel=\"noopener\">Más información</a>",
+      "cc.deny": "Solo necesarias",
+      "cc.accept": "Aceptar"
     },
     fr: {
       "nav.features": "Fonctions", "nav.prices": "Tarifs", "nav.faq": "FAQ", "nav.reviews": "Avis", "nav.app": "App", "nav.openApp": "Ouvrir l'app",
@@ -328,7 +336,11 @@
       "rev.emptyP": "Sois la première personne à partager ton expérience !",
       "rev.ctaH2": "Essaie par toi-même maintenant.",
       "rev.ctaP": "Conjugue des verbes en 5 langues — avec des quiz sur tes sujets préférés. Commence gratuitement, sans compte.",
-      "rev.ctaBtn": "Ouvrir l'app gratuitement"
+      "rev.ctaBtn": "Ouvrir l'app gratuitement",
+      "cc.title": "Confidentialité et cookies",
+      "cc.body": "Nous utilisons des cookies techniquement nécessaires et, avec votre consentement, le <b>Meta Pixel</b> (Meta/Facebook/Instagram) pour mesurer l'impact de nos publicités. Aucun suivi sans votre consentement. <a href=\"https://conjuexpert.app/datenschutz.html\" target=\"_blank\" rel=\"noopener\">En savoir plus</a>",
+      "cc.deny": "Nécessaires uniquement",
+      "cc.accept": "Accepter"
     },
     nl: {
       "nav.features": "Functies", "nav.prices": "Prijzen", "nav.faq": "FAQ", "nav.reviews": "Beoordelingen", "nav.app": "App", "nav.openApp": "App openen",
@@ -437,7 +449,11 @@
       "rev.emptyP": "Wees de eerste die zijn ervaring deelt!",
       "rev.ctaH2": "Probeer het nu zelf.",
       "rev.ctaP": "Vervoeg werkwoorden in 5 talen — met quizzen uit je favoriete onderwerpen. Gratis beginnen, geen account nodig.",
-      "rev.ctaBtn": "App gratis openen"
+      "rev.ctaBtn": "App gratis openen",
+      "cc.title": "Privacy &amp; cookies",
+      "cc.body": "We gebruiken technisch noodzakelijke cookies en, met jouw toestemming, de <b>Meta Pixel</b> (Meta/Facebook/Instagram) om de impact van onze advertenties te meten. Geen tracking zonder jouw toestemming. <a href=\"https://conjuexpert.app/datenschutz.html\" target=\"_blank\" rel=\"noopener\">Meer informatie</a>",
+      "cc.deny": "Alleen noodzakelijk",
+      "cc.accept": "Accepteren"
     }
   };
 
