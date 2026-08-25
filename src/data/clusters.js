@@ -217,7 +217,11 @@ export const clusters = [
     lang: "de",
     label: "Methodik",
     color: "#34c759",
-    hub: null,
+    hub: {
+      slug: "/blog/deutsch-verben-konjugieren",
+      title: "Deutsche Verben konjugieren — der große Überblick",
+      live: true,
+    },
     spokes: [
       { slug: "/blog/trennbare-verben-deutsch", title: "Trennbare Verben Deutsch: das Trenn-System", live: true },
       { slug: "/blog/perfekt-haben-oder-sein", title: "Perfekt mit haben oder sein? Die Regel, die wirklich hilft", live: true },
