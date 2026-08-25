@@ -39,15 +39,42 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Pinnt die Pages-Source bei jedem Lauf auf „GitHub Actions" (build_type:
-      # workflow). Hintergrund: In der Nacht 17.→18.08.2026 wurde die Source
-      # wieder auf „Deploy from a branch" zurückgestellt, wodurch der klassische
-      # Branch-Deploy den kompletten Repo-Root erneut veröffentlichte (Exposure
-      # wieder offen, vom Wächter-Audit ab 18.08. gemeldet). Mit diesem Schritt
-      # heilt sich das Deployment selbst: Jeder Lauf stellt die Source zurück,
-      # egal wie sie verstellt wurde.
-      - name: Pages-Source auf „GitHub Actions" pinnen (selbstheilend)
-        uses: actions/configure-pages@v5
+      # Prüft die Pages-Source bei jedem Lauf und stellt sie, wenn möglich, auf
+      # „GitHub Actions" (build_type: workflow) zurück. Hintergrund: Um den
+      # 18.08.2026 wurde die Source auf „Deploy from a branch" zurückgestellt,
+      # wodurch der klassische Branch-Deploy den kompletten Repo-Root erneut
+      # veröffentlichte (KRITISCH-Exposure). Der zunächst verwendete
+      # actions/configure-pages-Schritt (#247) reicht NICHT: Er setzt build_type
+      # nur beim Neuanlegen einer Pages-Site und lässt eine bestehende Site
+      # unangetastet. Deshalb hier ein expliziter API-Call.
+      # Der eingebaute GITHUB_TOKEN darf build_type NICHT ändern (verifiziert
+      # 25.08.: PUT /pages → HTTP-Fehler). Echte Selbstheilung braucht deshalb
+      # ein Repo-Secret PAGES_ADMIN_TOKEN: fine-grained PAT des Repo-Inhabers,
+      # nur für dieses Repo, Permission „Pages: write". Ohne das Secret kann der
+      # Schritt nur laut warnen. Bewusst KEIN Abbruch bei Fehlschlag: Der
+      # Allowlist-Deploy soll trotzdem laufen (er überschreibt den Voll-Repo-
+      # Deploy im Rennen um das Live-Ergebnis — besser als gar kein Deploy).
+      - name: Pages-Source auf „GitHub Actions" prüfen/pinnen (selbstheilend)
+        env:
+          GH_TOKEN: ${{ secrets.PAGES_ADMIN_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/${{ github.repository }}/pages"
+          hdr=(-H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json")
+          current=$(curl -sf "${hdr[@]}" "$api" | jq -r '.build_type')
+          echo "Aktuelle Pages-Source (build_type): $current"
+          if [ "$current" = "workflow" ]; then
+            echo "Pages-Source steht korrekt auf 'workflow' ✅"
+            exit 0
+          fi
+          echo "::warning::Pages-Source steht auf '$current' — versuche, auf 'workflow' zurückzustellen."
+          curl -sf -X PUT "${hdr[@]}" "$api" -d '{"build_type":"workflow"}' || true
+          verified=$(curl -sf "${hdr[@]}" "$api" | jq -r '.build_type')
+          if [ "$verified" = "workflow" ]; then
+            echo "Zurückgestellt und verifiziert: build_type=workflow ✅"
+          else
+            echo "::error::Pages-Source steht auf '$verified' und konnte mit dem verfügbaren Token NICHT umgestellt werden. Sofort-Fix (1 Klick): Repo-Settings → Pages → Source → 'GitHub Actions'. Dauerhaft: fine-grained PAT (nur dieses Repo, Permission 'Pages: write') als Secret PAGES_ADMIN_TOKEN hinterlegen. Bis dahin racet der klassische Voll-Repo-Deploy bei jedem Push gegen den Allowlist-Build — dank Jekyll-Excludes (_config.yml) ohne Quellcode-Exposure, aber mit unminifiziertem Ergebnis."
+          fi
 
       - name: Publish-Verzeichnis aus Allowlist bauen
         run: |
@@ -57,9 +84,14 @@ jobs:
           mkdir -p "$OUT"
 
           # Einzeldateien, die öffentlich erreichbar sein müssen.
+          # (.nojekyll bewusst NICHT dabei: Die Datei wurde aus dem Repo
+          # gelöscht, damit der klassische Branch-Deploy — falls die
+          # Pages-Source je wieder auf "Deploy from a branch" steht — als
+          # Jekyll-Build mit den Ausschlüssen aus _config.yml läuft, statt den
+          # kompletten Repo-Root auszuliefern. Zweite Verteidigungslinie.)
           FILES=(
             index.html app.js manifest.webmanifest sw.js 404.html
-            robots.txt sitemap.xml llms.txt CNAME .nojekyll
+            robots.txt sitemap.xml llms.txt CNAME
             google21132ae6fe839054.html favicon.svg apple-touch-icon.png
             icon-192.png icon-512.png icon-maskable.png
             agb.html datenschutz.html impressum.html barrierefreiheit.html
