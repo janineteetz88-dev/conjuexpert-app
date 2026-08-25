@@ -56,7 +56,15 @@
   window.ceOpen = function(){ var b=document.getElementById("cc-banner"); if(b) b.classList.add("show"); };
   var c=null; try{c=localStorage.getItem("ce-consent");}catch(e){}
   if(c==="granted"){ loadMetaPixel(); }
-  else if(c!=="denied"){ document.addEventListener("DOMContentLoaded",function(){ var b=document.getElementById("cc-banner"); if(b) b.classList.add("show"); }); }
+  else if(c!=="denied"){
+    // Bewusste Verzögerung: bei 92,5% Sofort-Absprung-Rate soll die Seite
+    // (Headline + CTA) erst sichtbar sein, bevor das Banner den Bildschirm
+    // verdeckt. Kein Tracking läuft vor Zustimmung - nur die UI-Anzeige
+    // verschiebt sich, kein Compliance-Unterschied.
+    document.addEventListener("DOMContentLoaded",function(){
+      setTimeout(function(){ var b=document.getElementById("cc-banner"); if(b) b.classList.add("show"); }, 1800);
+    });
+  }
 })();
 </script>
 <style>
