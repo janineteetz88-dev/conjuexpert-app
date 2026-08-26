@@ -36,7 +36,6 @@
 <meta name="twitter:image:alt" content="ConjuExpert – Konjugationstrainer für 5 Sprachen." />
 <link rel="preload" href="/fonts/Jqz55SSPQuCQF3t8uOwiUL-taUTtap9Gayo.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" as="image" href="app-demo-poster.jpg" fetchpriority="high" />
-<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 <link rel="dns-prefetch" href="https://lrhmyboevoxtlvoxnrny.supabase.co" />
 <link rel="stylesheet" href="/fonts/landing.css" />
 
@@ -1228,7 +1227,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.hl-grid'),function(g){ 
 <script src="https://conjuexpert.app/engine/conj-nl.js" defer></script>
 <script src="https://conjuexpert.app/engine/conj-de.js" defer></script>
 <!-- Social Proof: echte Bewertungen aus Supabase (gleiche Quelle wie /bewertungen/) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
+<script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
 <script defer>
 document.addEventListener("DOMContentLoaded", function(){
   if(!window.supabase){ var s0=document.getElementById("stimmen"); if(s0) s0.hidden=true; return; }
