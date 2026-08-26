@@ -43,6 +43,18 @@ Deno.serve(async (req) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
   );
 
+  // Kein Login nötig (auch anonyme Trial-Gäste nutzen das Feature), daher
+  // Rate-Limit über die Client-IP statt user_id — verhindert, dass jemand
+  // beliebigen Text in den geteilten Story-Cache einschleust, der dann an
+  // echte Nutzer ausgespielt wird (libFetch() in app.js).
+  const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown";
+  const { data: attemptAllowed, error: attemptError } = await supaAdmin.rpc(
+    "check_and_record_story_attempt",
+    { p_ip: ip }
+  );
+  if (attemptError) return json({ error: attemptError.message }, 500);
+  if (!attemptAllowed) return json({ error: "Zu viele Anfragen. Bitte später erneut versuchen." }, 429);
+
   const { error } = await supaAdmin.from("texte_stories").insert({
     lang,
     topic,
