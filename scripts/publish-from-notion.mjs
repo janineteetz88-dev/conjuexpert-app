@@ -53,6 +53,7 @@ import {
   upsertBlogCards,
   buildCardFromArticle,
   reconcileBlogCardsFromClusters,
+  auditBlogIndexHtml,
 } from "./lib/blog-index.mjs";
 import { estimateReadTime, blocksToHtml } from "./notion-to-html.mjs";
 
@@ -579,6 +580,16 @@ async function main() {
     } else {
       const rec = reconcileBlogCardsFromClusters(nextIdx, { clusters, GLOBAL_PILLAR }, recOpts);
       nextIdx = rec.html;
+
+      // Leitplanke: nie einen Notion-Editor-Platzhalter in eine Karte schreiben
+      // (gleicher Bug wie schon einmal am 15.08./23.08.2026 live gerutscht —
+      // reconcile überschreibt bestehende Karten nie, daher muss das HIER
+      // abgefangen werden, bevor die Datei geschrieben wird).
+      const indexViolations = auditBlogIndexHtml(nextIdx);
+      if (indexViolations.length) {
+        console.error(`❌  blog/index.html NICHT geschrieben — Platzhalter-Leitplanke verletzt:\n  ${indexViolations.join("\n  ")}`);
+        process.exit(1);
+      }
 
       if (nextIdx !== srcIdx) {
         writeFileSync(BLOG_INDEX_PATH, nextIdx, "utf8");
