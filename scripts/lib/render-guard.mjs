@@ -30,6 +30,8 @@ export function auditRenderedHtml(html, ctx = {}) {
   need(has("blog-chrome.js"), "blog-chrome.js fehlt");
   need(/<html lang="[^"]*"\s+data-lang=/.test(s), "html data-lang fehlt");
   need(has('name="theme-color"'), "theme-color fehlt");
+  need(has('property="og:image"'), "og:image fehlt");
+  need(has('name="twitter:image"'), "twitter:image fehlt");
   need(/<footer[\s>]/.test(s), "Footer fehlt");
 
   // ── Genau EINE sichtbare H1 (kein doppelter Riesen-Titel) ──
