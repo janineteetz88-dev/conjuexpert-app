@@ -454,10 +454,54 @@
       "cc.body": "We gebruiken technisch noodzakelijke cookies en, met jouw toestemming, de <b>Meta Pixel</b> (Meta/Facebook/Instagram) om de impact van onze advertenties te meten. Geen tracking zonder jouw toestemming. <a href=\"https://conjuexpert.app/datenschutz.html\" target=\"_blank\" rel=\"noopener\">Meer informatie</a>",
       "cc.deny": "Alleen noodzakelijk",
       "cc.accept": "Accepteren"
+    },
+    it: {
+      "pain.tag": "Ti suona familiare?", "pain.h2": "È così che ti senti quando impari le lingue?", "pain.sub": "Se una di queste tre frasi potrebbe essere tua, sei nel posto giusto.",
+      "pain.a": "Mi sforzo di imparare vocaboli e regole — ma in una conversazione reale la forma giusta non mi viene in mente.", "pain.b": "Conosco i tempi verbali in teoria. Quando parlo, indovino — e perdo il filo.", "pain.c": "Dopo settimane con un'app per imparare le lingue capisco molto — ma ancora non riesco a parlare con scioltezza.",
+      "doodle.founder": "Questo è esattamente il motivo per cui ho creato l'app! <b class=\"rd-n\">100%!</b>",
+      "pain.lead": "Ed è esattamente qui che entra in gioco <strong>ConjuExpert</strong>.",
+      "pain.bridge": "Con ConjuExpert alleni il passaggio tra comprensione e conversazione. La tua chiave per parlare con scioltezza: il quiz mirato dalla tua lingua preferita alla tua lingua madre.",
+      "pr.tag": "Prezzi", "pr.h2": "Inizia gratis. Passa a Premium quando vuoi di più.",
+      "pr.p": "\"Coniugare\" e \"Imparare\" restano gratuiti. Il piano Premium sblocca \"Quiz\" e \"Salva\" in tutte le 5 lingue.",
+      "pr.freeName": "Piano Ospite", "pr.freeTag": "Senza account — inizia subito", "pr.freeCalc": "gratis per sempre",
+      "pr.freeLi1": "Coniugare — tutti i tempi verbali", "pr.freeLi2": "Imparare — grammatica ed esempi", "pr.freeLi3": "Tutte le 5 lingue", "pr.freeBtn": "Coniuga gratis per sempre",
+      "pr.stdName": "Piano Standard", "pr.stdTag": "Con un account gratuito", "pr.stdCalc": "gratis · account in 10 sec",
+      "pr.stdLi1": "Tutto del piano Ospite e", "pr.stdLi2": "Quiz a carte — 20 carte/giorno", "pr.stdLi3": "Progressi, serie e sfida standard", "pr.stdLi4": "2 giorni di Premium gratis in prova", "pr.stdBtn": "Crea un account gratuito",
+      "pr.badge": "★ Il più scelto", "pr.premName": "Piano Premium", "pr.premTag": "Tutto illimitato — Quiz, liste di vocaboli e le tue sfide personali.",
+      "pr.welcome": "★ 2 mesi gratis", "pr.perYear": "/ anno", "pr.premCalc": "Solo 2,50 €/mese · invece di 35,88 € all'anno",
+      "pr.premLi1": "Tutto del piano Standard e", "pr.premLi2": "Tutte le 6 modalità di quiz · illimitate", "pr.premLi3": "Liste di vocaboli e sfide personali", "pr.premBtn": "Attiva il piano annuale",
+      "doodle.year": "Scegli il piano annuale e ricevi <b class=\"rd-n\">due mesi gratis</b>!",
+      "pr.note": "Preferisci il mensile? 2,99 €/mese – ma senza i 2 mesi gratis. Prova Premium gratis per 2 giorni, disdici quando vuoi, pagamento sicuro con Stripe.",
+      "cc.title": "Privacy e Cookie",
+      "cc.body": "Utilizziamo cookie tecnicamente necessari e — con il tuo consenso — il <b>Meta Pixel</b> (Meta/Facebook/Instagram) per misurare l'efficacia delle nostre inserzioni. Nessun tracciamento senza il tuo consenso. <a href=\"https://conjuexpert.app/datenschutz.html\" target=\"_blank\" rel=\"noopener\">Scopri di più</a>",
+      "cc.deny": "Solo necessari",
+      "cc.accept": "Accetta"
+    },
+    pt: {
+      "pain.tag": "Reconheces-te nisto?", "pain.h2": "É assim que te sentes ao aprender línguas?", "pain.sub": "Se uma destas três frases pudesse ser tua, estás no sítio certo.",
+      "pain.a": "Decoro vocabulário e regras — mas numa conversa real a forma certa simplesmente não me vem à cabeça.", "pain.b": "Conheço os tempos verbais na teoria. Quando falo, adivinho — e perco o fio à meada.", "pain.c": "Depois de semanas com uma app de línguas percebo muito — mas ainda não consigo falar com fluência.",
+      "doodle.founder": "Foi exatamente por isso que criei a app! <b class=\"rd-n\">100%!</b>",
+      "pain.lead": "É exatamente aqui que entra o <strong>ConjuExpert</strong>.",
+      "pain.bridge": "Com o ConjuExpert treinas a passagem entre compreender e falar. A tua chave para falar com fluência: o quiz direcionado da tua língua favorita para a tua língua materna.",
+      "pr.tag": "Preços", "pr.h2": "Começa grátis. Faz upgrade quando quiseres mais.",
+      "pr.p": "\"Conjugar\" e \"Aprender\" continuam gratuitos. O plano Premium desbloqueia \"Quiz\" e \"Guardar\" nas 5 línguas.",
+      "pr.freeName": "Plano Convidado", "pr.freeTag": "Sem conta — começa já", "pr.freeCalc": "grátis para sempre",
+      "pr.freeLi1": "Conjugar — todos os tempos verbais", "pr.freeLi2": "Aprender — gramática e exemplos", "pr.freeLi3": "Todas as 5 línguas", "pr.freeBtn": "Conjugar grátis para sempre",
+      "pr.stdName": "Plano Standard", "pr.stdTag": "Com uma conta gratuita", "pr.stdCalc": "grátis · conta em 10 seg.",
+      "pr.stdLi1": "Tudo do Plano Convidado e", "pr.stdLi2": "Quiz de cartões — 20 cartões/dia", "pr.stdLi3": "Progresso, sequência e desafio standard", "pr.stdLi4": "2 dias de Premium grátis para experimentar", "pr.stdBtn": "Criar conta gratuita",
+      "pr.badge": "★ Mais escolhido", "pr.premName": "Plano Premium", "pr.premTag": "Tudo ilimitado — Quiz, listas de vocabulário e os teus próprios desafios.",
+      "pr.welcome": "★ 2 meses grátis", "pr.perYear": "/ ano", "pr.premCalc": "Apenas 2,50 €/mês · em vez de 35,88 €/ano",
+      "pr.premLi1": "Tudo do Plano Standard e", "pr.premLi2": "Todos os 6 modos de quiz · ilimitados", "pr.premLi3": "Listas de vocabulário e desafios próprios", "pr.premBtn": "Garantir o plano anual",
+      "doodle.year": "Escolhe o plano anual e recebe <b class=\"rd-n\">dois meses grátis</b>!",
+      "pr.note": "Preferes mensal? 2,99 €/mês – mas sem os 2 meses grátis. Experimenta o Premium grátis por 2 dias primeiro, cancela quando quiseres, pagamento seguro via Stripe.",
+      "cc.title": "Privacidade e Cookies",
+      "cc.body": "Utilizamos cookies tecnicamente necessários e — com o teu consentimento — o <b>Meta Pixel</b> (Meta/Facebook/Instagram) para medir o impacto dos nossos anúncios. Sem consentimento, sem rastreio. <a href=\"https://conjuexpert.app/datenschutz.html\" target=\"_blank\" rel=\"noopener\">Saber mais</a>",
+      "cc.deny": "Apenas necessários",
+      "cc.accept": "Aceitar"
     }
   };
 
-  var SUPPORTED = { de: 1, en: 1, es: 1, fr: 1, nl: 1 };
+  var SUPPORTED = { de: 1, en: 1, es: 1, fr: 1, nl: 1, it: 1, pt: 1 };
   var ORIG = {}, ORIG_PH = {};
   var nodes = document.querySelectorAll('[data-i18n]');
   for (var i = 0; i < nodes.length; i++) {
@@ -474,7 +518,7 @@
     try { var s = localStorage.getItem('ce-lang'); if (s && SUPPORTED[s]) return s; } catch (e) {}
     var cs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || 'de'];
     for (var i = 0; i < cs.length; i++) { var two = (cs[i] || '').toLowerCase().slice(0, 2); if (SUPPORTED[two]) return two; }
-    // Sprache nicht übersetzt (z.B. it/pl/pt/cs/hu/ro): Englisch ist für Deutsch-Lerner
+    // Sprache nicht übersetzt (z.B. pl/cs/hu/ro): Englisch ist für Deutsch-Lerner
     // verständlicher als der deutsche Quelltext -> besserer Fallback als 'de'.
     return 'en';
   }

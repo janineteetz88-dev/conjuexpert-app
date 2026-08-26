@@ -838,6 +838,30 @@ durch deine Lieblingsthemen.</h2>
 (function(){
   // Message-Match: ?msg=storyA..D tauscht nur Headline + Subheadline im Hero,
   // Rest der Seite bleibt gleich. Kein Parameter/unbekannter Wert = Standardtext oben.
+  // Message-Match galt bisher nur für die Story-Variante selbst, nicht für die
+  // Sprache: 88% des Traffics dieser Kampagne kommt aus Italien/Portugal, sah
+  // hier aber immer Deutsch (2s Ø-Verweildauer). storyA bekommt deshalb IT/PT-
+  // Varianten; Spracherkennung wie in i18n.js (navigator.languages), Fallback
+  // bleibt Deutsch wie bisher.
+  var STORY_LANGS = {
+    storyA: {
+      de: { h1: 'Nie wieder raten, ob es «ich fange an» oder «ich anfange» heißt.', lead: 'ConjuExpert übt genau die Verbform, bei der du unsicher bist — automatisch angepasst an deine Fehler.' },
+      it: { h1: 'Mai più dubbi se si dice «ich fange an» o «ich anfange».', lead: 'ConjuExpert allena esattamente la forma verbale in cui sei insicuro — adattandosi automaticamente ai tuoi errori.' },
+      pt: { h1: 'Nunca mais na dúvida se se diz «ich fange an» ou «ich anfange».', lead: 'O ConjuExpert treina exatamente a forma verbal em que tens mais dúvidas — adaptando-se automaticamente aos teus erros.' }
+    }
+  };
+  function storyText(msg) {
+    var variants = STORY_LANGS[msg];
+    if (!variants) return null;
+    try {
+      var cs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || 'de'];
+      for (var i = 0; i < cs.length; i++) {
+        var two = (cs[i] || '').toLowerCase().slice(0, 2);
+        if (variants[two]) return variants[two];
+      }
+    } catch (e) {}
+    return variants.de;
+  }
   var STORIES = {
     storyA: {
       h1: 'Nie wieder raten, ob es «ich fange an» oder «ich anfange» heißt.',
@@ -859,7 +883,7 @@ durch deine Lieblingsthemen.</h2>
   try {
     var params = new URLSearchParams(window.location.search);
     var msg = params.get('msg');
-    var story = msg && STORIES[msg];
+    var story = msg && (storyText(msg) || STORIES[msg]);
     if (story) {
       var h1 = document.getElementById('lpH1');
       var lead = document.getElementById('lpLead');
