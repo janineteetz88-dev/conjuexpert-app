@@ -247,6 +247,8 @@ export const clusters = [
       { slug: "/blog/englisch-3-person-s", title: "Das -s in der 3. Person Singular (he works, she goes)", live: true },
       { slug: "/blog/passiv-englisch", title: "Das englische Passiv (be + past participle) verständlich erklärt", live: true },
       { slug: "/blog/past-perfect-englisch", title: "Past Perfect (had done) einfach erklärt: das Frühere von zwei vergangenen Ereignissen", live: true },
+      { slug: "/blog/will-vs-going-to", title: "Die Zukunft im Englischen: will vs. going to", live: true },
+      { slug: "/blog/phrasal-verbs-englisch", title: "Phrasal Verbs: englische Verben mit Partikel meistern", live: true },
     ],
   },
   {
