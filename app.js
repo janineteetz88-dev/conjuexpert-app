@@ -14827,6 +14827,7 @@ function LoginModal({
           }
         });
         if (error) throw error;
+        if (window.ceTrack) window.ceTrack("account_created", ceAttrProps());
         persist("kunju-name", fn);
         setDone(true);
       }
