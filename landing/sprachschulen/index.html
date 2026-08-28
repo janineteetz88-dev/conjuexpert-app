@@ -53,6 +53,8 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(32px,5vw,50px);lin
 .grad-word{background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p.lead{font-size:clamp(16.5px,1.6vw,19px);color:#574f3b;font-weight:500;max-width:56ch;margin:0 0 26px;text-wrap:pretty}
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+.hero-trust{margin:16px 0 0;font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:7px}
+.hero-trust::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);flex:none}
 
 section.block{padding:44px 0;border-top:1px solid var(--border)}
 .sec-tag{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--pink)}
@@ -115,11 +117,12 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
   <section class="hero wrap">
     <span class="eyebrow">Partner werden</span>
     <h1>Übung, die zwischen euren Stunden <span class="grad-word">weitergeht</span>.</h1>
-    <p class="lead">Eure Schüler lernen die Zeitform im Unterricht — und verlieren sie im nächsten Gespräch wieder. ConjuExpert ist das Training dazwischen: eigenes Tempo, eigene Themen, in 5 Sprachen. Drei Wege, wie ihr das euren Schülern gebt.</p>
+    <p class="lead">Eure Schüler lernen die Zeitform im Unterricht — und verlieren sie im nächsten Gespräch wieder. ConjuExpert ist das Training dazwischen: eigenes Tempo, eigene Themen, in 5 Sprachen.</p>
     <div class="hero-cta">
       <a class="btn btn-primary" href="#modelle">Die drei Modelle ansehen</a>
-      <a class="btn btn-ghost" href="#kontakt">Direkt anfragen</a>
+      <a class="btn btn-ghost" href="#kontakt">Unverbindlich anfragen</a>
     </div>
+    <p class="hero-trust">Kein Vertrag, keine Kosten für den Start, keine technische Integration.</p>
   </section>
 
   <section class="block">
@@ -129,7 +132,7 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
         <div class="pain-card"><p>„In einer Gruppe hat jeder ein anderes Niveau. Ich kann nicht für jeden einzeln üben."</p></div>
         <div class="pain-card"><p>„Vokabelhefte motivieren niemanden, freiwillig zu Hause zu üben."</p></div>
       </div>
-      <p class="pain-bridge">Genau hier setzt <strong>ConjuExpert</strong> an — Übung, die sich jedem Schüler individuell anpasst, zwischen euren Stunden.</p>
+      <p class="pain-bridge">Genau hier setzt <strong>ConjuExpert</strong> an: Übung, die sich jedem Schüler einzeln anpasst — etwas, das im Gruppenunterricht strukturell nicht geht.</p>
     </div>
   </section>
 
@@ -138,13 +141,13 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
       <div class="sec-head">
         <span class="sec-tag">Drei Modelle</span>
         <h2>Wählt, was zu euch passt.</h2>
-        <p>Keine Vertragsbindung, kein technischer Aufwand — startet mit dem Modell, das zu eurer Schule passt.</p>
+        <p>Keine Vertragsbindung, kein technischer Aufwand, jederzeit beendbar. Ihr entscheidet, welches Modell zu eurer Schule passt — nicht wir.</p>
       </div>
       <div class="model-grid">
         <div class="model-card">
           <span class="model-n">01</span>
-          <h3>Vorteil für die Schüler</h3>
-          <p class="what">Ihr empfehlt uns, eure Schüler bekommen einen verlängerten Gratis-Zugang.</p>
+          <h3>Ihr empfehlt — eure Schüler sparen</h3>
+          <p class="what">Reine Empfehlung, kein Geld im Spiel. Eure Schüler bekommen einen verlängerten Gratis-Zugang.</p>
           <ul class="model-terms">
             <li><span class="k">Kosten für euch</span><span class="v">0 €</span></li>
             <li><span class="k">Schüler bekommen</span><span class="v">4 Wochen Premium<br>statt 2 Tage</span></li>
@@ -155,8 +158,8 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
         </div>
         <div class="model-card">
           <span class="model-n">02</span>
-          <h3>Vorteil für die Schule</h3>
-          <p class="what">Ihr empfehlt uns aktiv und bekommt eine Anerkennung dafür.</p>
+          <h3>Ihr empfehlt — ihr verdient mit</h3>
+          <p class="what">Gleiche Empfehlung, aber mit direkter Anerkennung für euch statt für die Schüler.</p>
           <ul class="model-terms">
             <li><span class="k">Kosten für euch</span><span class="v">0 €</span></li>
             <li><span class="k">Ihr bekommt</span><span class="v">20 % vom ersten<br>Jahresabo, einmalig</span></li>
@@ -167,8 +170,8 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
         </div>
         <div class="model-card">
           <span class="model-n">03</span>
-          <h3>Nutzungspaket</h3>
-          <p class="what">Ihr kauft ein Kontingent, eure Schüler nutzen Premium komplett kostenfrei.</p>
+          <h3>Ihr investiert — Schüler zahlen nichts</h3>
+          <p class="what">Ihr kauft ein festes Platz-Kontingent, eure Schüler nutzen Premium komplett kostenfrei.</p>
           <ul class="model-terms">
             <li><span class="k">Pilotgröße</span><span class="v">10–15 Plätze / Jahr</span></li>
             <li><span class="k">Preis</span><span class="v">19,99 € / Platz / Jahr</span></li>
@@ -201,6 +204,10 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
           <summary>Wie schnell können wir starten?</summary>
           <div class="qa-body">Sofort — es gibt keine technische Integration. Ihr bekommt einen Code, den eure Schüler beim Kauf oder Einstieg eingeben.</div>
         </details>
+        <details class="qa">
+          <summary>Wo ist der Haken?</summary>
+          <div class="qa-body">Ehrlich: bei Modell 1 und 2 gibt's keinen — ihr empfehlt, es kostet nichts, ihr könnt jederzeit aufhören. Beim Nutzungspaket ist der "Haken", dass ihr vorab zahlt; deshalb starten wir da bewusst klein, mit einem Pilot-Kontingent statt einem großen Paket.</div>
+        </details>
       </div>
     </div>
   </section>
@@ -209,8 +216,8 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
 <section class="band">
   <div class="wrap">
     <div class="band-box" id="kontakt">
-      <h2>Lasst uns sprechen, was für euch passt.</h2>
-      <p>Keins der drei Modelle ist in Stein gemeißelt — wir passen Trial-Länge, Beteiligung oder Paketgröße gern an eure Schule an.</p>
+      <h2>Fragt unverbindlich an — es kostet euch nichts, es rauszufinden.</h2>
+      <p>Keins der drei Modelle ist in Stein gemeißelt — wir passen Trial-Länge, Beteiligung oder Paketgröße gern an eure Schule an. Keine Verkaufs-Tour, einfach eine E-Mail.</p>
       <a class="btn btn-ghost" href="mailto:partner@conjuexpert.app">partner@conjuexpert.app</a>
     </div>
   </div>
