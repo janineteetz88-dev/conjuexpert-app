@@ -25,7 +25,7 @@
  * zur Verifikation; der echte Lauf passiert in CI.
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -40,6 +40,7 @@ import { parseMetaBlock, validateMeta, cleanMetaDescription } from "./lib/meta-b
 import { normalizeFaq } from "./lib/faq.mjs";
 import { renderArticle } from "./lib/render-article.mjs";
 import { auditRenderedHtml } from "./lib/render-guard.mjs";
+import { unlinkMissingBlogLinks } from "./lib/internal-links.mjs";
 import { lintRenderedHtml, hardErrors, htmlToText } from "./lib/standard-lint.mjs";
 import { aiLektorat, htmlForLektorat } from "./lib/ai-lektorat.mjs";
 import { normalizeGermanQuotesHtml } from "./lib/text-polish.mjs";
@@ -400,6 +401,15 @@ async function main() {
   }
 
   // PASS 2: Rendern + schreiben.
+  // Leitplanke gegen tote interne Blog-Links („live:true vor Deploy"-Muster):
+  // Wahrheitsquelle für existierende Ziele ist das Dateisystem plus alles,
+  // was dieser Lauf selbst schreibt — NICHT der live-Status im Tracker.
+  const knownBlogSlugs = new Set([
+    ...readdirSync(join(ROOT, "blog"), { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name),
+    ...toPublish.map((a) => String(a.meta.slug || "").replace(/^\/?blog\//, "").replace(/\/$/, "")),
+  ]);
   const renderedSlugs = [];
   const deployed = []; // { article, slug } für Writeback
   const guardFailures = [];
@@ -422,6 +432,15 @@ async function main() {
 
     // Typografie-Reparatur: „…" / „…&quot; → „…“ (häufigster Entwurfs-Fehler).
     html = normalizeGermanQuotesHtml(html);
+
+    // Tote interne Blog-Links entlinken (Text bleibt): Links auf Artikel, die
+    // weder auf der Platte liegen noch in diesem Lauf geschrieben werden,
+    // gingen für Leser ins 404 (3× vorgekommen, zuletzt 28.08.2026).
+    const { html: unlinkedHtml, removed: deadLinks } = unlinkMissingBlogLinks(html, { knownSlugs: knownBlogSlugs });
+    if (deadLinks.length) {
+      warn(`Tote interne Blog-Links entlinkt in ${a.meta.slug}: ${deadLinks.join(", ")}`);
+    }
+    html = unlinkedHtml;
 
     // Render-Guard: kaputtes HTML wird NIE geschrieben/veröffentlicht.
     const problems = auditRenderedHtml(html, { slug: a.meta.slug });
