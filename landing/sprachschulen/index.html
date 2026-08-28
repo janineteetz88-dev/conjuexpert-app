@@ -110,15 +110,14 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
 .btn-link{font-size:13.5px;color:color-mix(in srgb, var(--bg) 68%, transparent);text-decoration:underline;text-underline-offset:3px}
 .book summary{list-style:none;width:max-content}
 .book summary::-webkit-details-marker{display:none}
-.book-form{margin-top:20px;padding-top:20px;border-top:1px solid color-mix(in srgb, var(--bg) 22%, transparent);display:flex;flex-direction:column;gap:12px;max-width:480px}
-.bf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:520px){.bf-row{grid-template-columns:1fr}}
+.book-form{margin-top:20px;padding-top:20px;border-top:1px solid color-mix(in srgb, var(--bg) 22%, transparent);display:flex;flex-direction:column;gap:12px;max-width:320px}
 .book-form label{display:flex;flex-direction:column;gap:6px;font-size:12.5px;font-weight:600;color:color-mix(in srgb, var(--bg) 78%, transparent)}
-.book-form input,.book-form select,.book-form textarea{font-family:var(--display);font-size:14.5px;padding:10px 12px;border-radius:10px;border:1px solid color-mix(in srgb, var(--bg) 25%, transparent);background:color-mix(in srgb, var(--bg) 10%, transparent);color:var(--bg)}
-.book-form input::placeholder,.book-form textarea::placeholder{color:color-mix(in srgb, var(--bg) 50%, transparent)}
+.book-form input,.book-form select{font-family:var(--display);font-size:14.5px;padding:10px 12px;border-radius:10px;border:1px solid color-mix(in srgb, var(--bg) 25%, transparent);background:color-mix(in srgb, var(--bg) 10%, transparent);color:var(--bg)}
+.book-form input::placeholder{color:color-mix(in srgb, var(--bg) 50%, transparent)}
 .book-form select{color-scheme:dark}
 .book-form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .book-form button{align-self:flex-start;margin-top:4px}
+.bf-hint{margin:0;font-size:12.5px;color:color-mix(in srgb, var(--bg) 62%, transparent);font-weight:500}
 .bf-status{margin:0;font-size:13px;min-height:1.2em}
 .bf-status.ok{color:#7ddc9e}
 .bf-status.err{color:#ff8fa8}
@@ -254,23 +253,21 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
       <p>Keins der drei Modelle ist in Stein gemeißelt — wir passen Trial-Länge, Beteiligung oder Paketgröße gern an eure Schule an. Keine Verkaufs-Tour, einfach ein kurzes Gespräch.</p>
 
       <details class="book">
-        <summary class="btn btn-ghost">20 Min. Kennenlerntermin buchen</summary>
+        <summary class="btn btn-ghost">Rückruf anfragen</summary>
         <form class="book-form" id="bookForm" novalidate>
-          <div class="bf-row">
-            <label>Schule*<input type="text" name="schoolName" required></label>
-            <label>Ansprechpartner:in*<input type="text" name="contactName" required></label>
-          </div>
-          <div class="bf-row">
-            <label>E-Mail*<input type="email" name="email" required></label>
-            <label>Telefon<input type="tel" name="phone"></label>
-          </div>
-          <div class="bf-row">
-            <label>Termin*<select name="slot" required id="bfSlot"><option value="">Bitte wählen…</option></select></label>
-            <label>Interessiert an<select name="interestedModel"><option value="">Weiß ich noch nicht</option><option>Modell 1 — Schüler-Vorteil</option><option>Modell 2 — Schul-Beteiligung</option><option>Modell 3 — Nutzungspaket</option></select></label>
-          </div>
-          <label>Nachricht<textarea name="message" rows="2"></textarea></label>
+          <label>Name / Schule*<input type="text" name="name" required></label>
+          <label>E-Mail*<input type="email" name="email" required></label>
+          <label>Telefon<input type="tel" name="phone" placeholder="optional"></label>
+          <label>Wann passt's?*
+            <select name="preferredDay" required>
+              <option value="">Bitte wählen…</option>
+              <option>Dienstag</option>
+              <option>Donnerstag</option>
+            </select>
+          </label>
+          <p class="bf-hint">Wir rufen zwischen 11:00 und 12:30 Uhr zurück und bestätigen den genauen Zeitpunkt kurz per Mail.</p>
           <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <button class="btn btn-primary" type="submit">Termin anfragen</button>
+          <button class="btn btn-primary" type="submit">Rückruf anfragen</button>
           <p class="bf-status" id="bfStatus" role="status"></p>
         </form>
       </details>
@@ -282,29 +279,6 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
 
 <script>
 (function(){
-  var SLOT_TIMES = ["11:00","11:20","11:40","12:00"];
-  var WEEKDAY_LABEL = {2:"Di", 3:"Mi", 4:"Do"};
-  var sel = document.getElementById('bfSlot');
-  if (sel) {
-    var d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() + 1);
-    var added = 0;
-    while (added < 24) {
-      var wd = d.getDay();
-      if (WEEKDAY_LABEL[wd]) {
-        var iso = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-        var label = WEEKDAY_LABEL[wd] + ', ' + String(d.getDate()).padStart(2,'0') + '.' + String(d.getMonth()+1).padStart(2,'0') + '.';
-        SLOT_TIMES.forEach(function(t){
-          var opt = document.createElement('option');
-          opt.value = iso + '|' + t;
-          opt.textContent = label + ' · ' + t + ' Uhr';
-          sel.appendChild(opt);
-          added++;
-        });
-      }
-      d.setDate(d.getDate() + 1);
-    }
-  }
-
   var form = document.getElementById('bookForm');
   var status = document.getElementById('bfStatus');
   if (!form) return;
@@ -313,19 +287,14 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
     status.textContent = 'Wird gesendet…';
     status.className = 'bf-status';
     var fd = new FormData(form);
-    var slot = String(fd.get('slot') || '').split('|');
     var payload = {
-      schoolName: fd.get('schoolName'),
-      contactName: fd.get('contactName'),
+      name: fd.get('name'),
       email: fd.get('email'),
       phone: fd.get('phone'),
-      slotDate: slot[0] || '',
-      slotTime: slot[1] || '',
-      interestedModel: fd.get('interestedModel'),
-      message: fd.get('message'),
+      preferredDay: fd.get('preferredDay'),
       website: fd.get('website'), // honeypot
     };
-    fetch('https://lrhmyboevoxtlvoxnrny.supabase.co/functions/v1/book-school-call', {
+    fetch('https://lrhmyboevoxtlvoxnrny.supabase.co/functions/v1/request-school-callback', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -337,10 +306,10 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
       .then(function(res){
         if (res.ok) {
           form.reset();
-          status.textContent = 'Danke! Wir bestätigen den Termin per Mail.';
+          status.textContent = 'Danke! Wir melden uns zur Bestätigung.';
           status.className = 'bf-status ok';
         } else {
-          status.textContent = res.data && res.data.error ? res.data.error : 'Termin konnte nicht gebucht werden.';
+          status.textContent = res.data && res.data.error ? res.data.error : 'Anfrage konnte nicht gesendet werden.';
           status.className = 'bf-status err';
         }
       })
