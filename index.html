@@ -413,7 +413,8 @@
   --brand-rainbow: linear-gradient(90deg, #ff3b5c, #ff7a18, #ffc400, #34c759, #0a84ff, #a557ff);
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+html { margin: 0; padding: 0; height: 100%; overflow: hidden; overflow: clip; }
+body { margin: 0; } /* UA-Default (8px) — erzeugte 8px Dokument-Überlauf am Desktop */ /* UA-Default (8px) — erzeugte 8px Dokument-Überlauf am Desktop */
 body {
   font-family: var(--font-body);
   background:
@@ -428,6 +429,7 @@ body {
   height: 100svh;
   height: var(--appvh, 100svh);
   overflow: hidden;
+  overflow: clip; /* verbietet auch Fokus-/Skript-Scroll — Rahmen kann nie verrutschen */
   overscroll-behavior: none;
   color: #14151a;
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility;
@@ -447,6 +449,10 @@ body {
    to the viewport width on iOS Safari instead of falling back to max-width:440px */
 #approot {
   width: 100%;
+  /* Kein Dokument-Überlauf am Desktop: der unter dem Viewport liegende
+     .legal-footer (No-JS-Fallback) und Margin-Versätze erzeugten sonst
+     einen Fenster-Scrollbalken, der je nach Tab kam und ging. */
+  overflow: hidden;
   /* Endhöhe schon beim ersten Paint belegen + body verankert oben (align-items:flex-start)
      -> #approot kann sich nicht mehr re-zentrieren, wenn der React-Inhalt mountet (CLS) */
   min-height: 100vh;
@@ -527,7 +533,8 @@ body {
       0 0 0 12px #0e0f14,
       0 0 0 13px rgba(255,255,255,0.04),
       0 40px 80px -20px rgba(0,0,0,0.7);
-    height: min(93dvh, 900px);
+    height: min(93vh, 900px);
+    height: min(calc(var(--appvh, 100svh) * 0.93), 900px);
     overflow: hidden;
   }
   /* Camera pill */
@@ -566,7 +573,7 @@ body {
   .device::before {
     content: '';
     position: absolute;
-    left: -14px;
+    left: -6px;
     top: 112px;
     width: 4px;
     height: 34px;
@@ -579,7 +586,7 @@ body {
   .device::after {
     content: '';
     position: absolute;
-    right: -14px;
+    right: -6px;
     top: 160px;
     width: 4px;
     height: 68px;
@@ -3079,8 +3086,8 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
       box-shadow: 0 0 0 1px rgba(255,255,255,.09), 0 48px 95px -30px rgba(40,30,10,.7);
     }
     /* Seitentasten: 4px über die Bezel-Außenkante hinaus */
-    .device::before{ display:block !important; background:#1d1811 !important; left:-14px !important; }
-    .device::after{ display:block !important; background:#1d1811 !important; right:-14px !important; }
+    .device::before{ display:block !important; background:#1d1811 !important; left:-6px !important; }
+    .device::after{ display:block !important; background:#1d1811 !important; right:-6px !important; }
   }
   /* untere Leiste: gleichmäßig + klar aktive Pille */
   .tabs-track{ gap:4px !important; }
@@ -3325,7 +3332,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-230"></script>
+<script defer src="/app.js?v=c-sand-231"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
