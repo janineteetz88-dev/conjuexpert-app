@@ -125,7 +125,12 @@ ${body}`;
     ? j.errors.filter((e) => {
         if (!e || !e.zitat || !e.korrektur) return false;
         if (normTxt(e.korrektur) === normTxt(e.zitat)) return false;
-        if (/kein fehler\W*$/i.test(normTxt(e.grund))) return false;
+        // Selbstwiderspruch auch MITTEN in der Begründung fangen — Praxisfall 2:
+        // "... Daher KEIN Fehler im Sinne der Aufgabenstellung." blockierte einen
+        // Artikel, weil der Satz nicht exakt auf "kein Fehler" endete.
+        const g = normTxt(e.grund);
+        if (/kein fehler\W*$/i.test(g)) return false;
+        if (/(daher|deshalb|somit|also)[^.]{0,40}\bkein (echter |wirklicher )?fehler\b|kein fehler im sinne/i.test(g)) return false;
         return true;
       }).slice(0, 20)
     : [];

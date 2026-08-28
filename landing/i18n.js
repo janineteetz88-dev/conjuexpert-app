@@ -4,6 +4,7 @@
 (function () {
   var I18N = {
     en: {
+      "start.cta": "Click here and practice for free →",
       "nav.features": "Features", "nav.prices": "Pricing", "nav.faq": "FAQ", "nav.reviews": "Reviews", "nav.app": "App", "nav.openApp": "Open app",
       "hero.eyebrow": "Learn up to 5 languages in parallel",
       "hero.h1": "Conjugate verbs until they <span class=\"grad-word\">click in conversation</span>.",
@@ -73,8 +74,7 @@
       "pr.stdName": "Standard plan", "pr.stdTag": "With a free account", "pr.stdCalc": "free · account in 10 sec", "pr.stdLi1": "Everything in the Guest plan &amp;", "pr.stdLi2": "Cards quiz — 20 cards/day", "pr.stdLi3": "Progress, streak &amp; standard challenge", "pr.stdLi4": "2 days of Premium free to try", "pr.stdBtn": "Create a free account",
       "pr.badge": "★ Most popular", "pr.premName": "Premium plan", "pr.premTag": "Everything unlimited — Quiz, vocabulary lists &amp; your own challenges.",
       "pr.welcome": "★ 2 months free", "pr.perYear": "/ year", "pr.welcomePrice": "With discount code", "pr.premCalc": "Only 2,50 €/month · instead of 35,88 € a year",
-      "pr.save": "24,99 €/year with a discount code — you'll find out how to get it in the app.",
-      "pr.premLi1": "Everything in the Standard plan &amp;", "pr.premLi2": "All 6 quiz modes · unlimited", "pr.premLi3": "Vocabulary lists &amp; your own challenges", "pr.premBtn": "Get the yearly plan",
+            "pr.premLi1": "Everything in the Standard plan &amp;", "pr.premLi2": "All 6 quiz modes · unlimited", "pr.premLi3": "Vocabulary lists &amp; your own challenges", "pr.premBtn": "Get the yearly plan",
       "pr.note": "Prefer monthly? 2,99 €/month – but without the 2 free months. Try Premium free for 2 days first (with a free account, 24 hours without), cancel anytime, secure payment via Stripe.",
       "faq.tag": "FAQ", "faq.h2": "Frequently asked questions", "faq.sub": "Everything essential about features, pricing and languages.",
       "faq.q1": "What makes ConjuExpert special?",
@@ -117,6 +117,7 @@
       "cc.accept": "Accept"
     },
     es: {
+      "start.cta": "Haz clic aquí y practica gratis →",
       "nav.features": "Funciones", "nav.prices": "Precios", "nav.faq": "FAQ", "nav.reviews": "Opiniones", "nav.app": "App", "nav.openApp": "Abrir app",
       "hero.eyebrow": "Aprende hasta 5 idiomas en paralelo",
       "hero.h1": "Conjuga verbos hasta que te <span class=\"grad-word\">salgan al hablar</span>.",
@@ -186,8 +187,7 @@
       "pr.stdName": "Plan Estándar", "pr.stdTag": "Con una cuenta gratuita", "pr.stdCalc": "gratis · cuenta en 10 s", "pr.stdLi1": "Todo lo del plan Invitado y", "pr.stdLi2": "Quiz de tarjetas — 20/día", "pr.stdLi3": "Progreso, racha y challenge estándar", "pr.stdLi4": "2 días de Premium gratis para probar", "pr.stdBtn": "Crear cuenta gratuita",
       "pr.badge": "★ La opción más popular", "pr.premName": "Plan Premium", "pr.premTag": "Todo ilimitado — Quiz, listas de vocabulario y tus propias challenges.",
       "pr.welcome": "★ 2 meses gratis", "pr.perYear": "/ año", "pr.welcomePrice": "Con código de descuento", "pr.premCalc": "Solo 2,50 €/mes · en vez de 35,88 € al año",
-      "pr.save": "24,99 €/año con código de descuento — cómo conseguirlo lo ves en la app.",
-      "pr.premLi1": "Todo lo del plan Estándar y", "pr.premLi2": "Los 6 modos de quiz · ilimitado", "pr.premLi3": "Listas de vocabulario y tus challenges", "pr.premBtn": "Elegir el plan anual",
+            "pr.premLi1": "Todo lo del plan Estándar y", "pr.premLi2": "Los 6 modos de quiz · ilimitado", "pr.premLi3": "Listas de vocabulario y tus challenges", "pr.premBtn": "Elegir el plan anual",
       "pr.note": "¿Prefieres mensual? 2,99 €/mes – pero sin los 2 meses gratis. Prueba Premium 2 días gratis antes (con cuenta gratuita, 24 horas sin cuenta), cancela cuando quieras, pago seguro con Stripe.",
       "faq.tag": "FAQ", "faq.h2": "Preguntas frecuentes", "faq.sub": "Todo lo importante sobre funciones, precios e idiomas.",
       "faq.q1": "¿Qué tiene de especial ConjuExpert?",
@@ -230,6 +230,7 @@
       "cc.accept": "Aceptar"
     },
     fr: {
+      "start.cta": "Clique ici et entraîne-toi gratuitement →",
       "nav.features": "Fonctions", "nav.prices": "Tarifs", "nav.faq": "FAQ", "nav.reviews": "Avis", "nav.app": "App", "nav.openApp": "Ouvrir l'app",
       "hero.eyebrow": "Apprends jusqu'à 5 langues en parallèle",
       "hero.h1": "Conjugue des verbes jusqu'à ce qu'ils <span class=\"grad-word\">viennent en parlant</span>.",
@@ -299,8 +300,7 @@
       "pr.stdName": "Forfait Standard", "pr.stdTag": "Avec un compte gratuit", "pr.stdCalc": "gratuit · compte en 10 s", "pr.stdLi1": "Tout du forfait Invité et", "pr.stdLi2": "Quiz cartes — 20/jour", "pr.stdLi3": "Progrès, série et challenge standard", "pr.stdLi4": "2 jours de Premium gratuits à tester", "pr.stdBtn": "Créer un compte gratuit",
       "pr.badge": "★ Le choix le plus populaire", "pr.premName": "Forfait Premium", "pr.premTag": "Tout illimité — Quiz, listes de vocabulaire &amp; tes propres challenges.",
       "pr.welcome": "★ 2 mois offerts", "pr.perYear": "/ an", "pr.welcomePrice": "Avec code promo", "pr.premCalc": "Seulement 2,50 €/mois · au lieu de 35,88 € par an",
-      "pr.save": "24,99 €/an avec un code promo — comment l'obtenir, tu le verras dans l'app.",
-      "pr.premLi1": "Tout du forfait Standard et", "pr.premLi2": "Les 6 modes de quiz · illimité", "pr.premLi3": "Listes de vocabulaire &amp; tes challenges", "pr.premBtn": "Choisir le forfait annuel",
+            "pr.premLi1": "Tout du forfait Standard et", "pr.premLi2": "Les 6 modes de quiz · illimité", "pr.premLi3": "Listes de vocabulaire &amp; tes challenges", "pr.premBtn": "Choisir le forfait annuel",
       "pr.note": "Plutôt mensuel ? 2,99 €/mois – mais sans les 2 mois offerts. Teste Premium 2 jours gratuitement d'abord (avec un compte gratuit, 24 heures sans compte), résiliable à tout moment, paiement sécurisé via Stripe.",
       "faq.tag": "FAQ", "faq.h2": "Questions fréquentes", "faq.sub": "L'essentiel sur les fonctions, les prix et les langues.",
       "faq.q1": "Qu'est-ce qui rend ConjuExpert spécial ?",
@@ -343,6 +343,7 @@
       "cc.accept": "Accepter"
     },
     nl: {
+      "start.cta": "Klik hier en oefen gratis →",
       "nav.features": "Functies", "nav.prices": "Prijzen", "nav.faq": "FAQ", "nav.reviews": "Beoordelingen", "nav.app": "App", "nav.openApp": "App openen",
       "hero.eyebrow": "Leer tot 5 talen tegelijk",
       "hero.h1": "Vervoeg werkwoorden tot ze <span class=\"grad-word\">komen als je praat</span>.",
@@ -412,8 +413,7 @@
       "pr.stdName": "Standaard-abonnement", "pr.stdTag": "Met een gratis account", "pr.stdCalc": "gratis · account in 10 sec", "pr.stdLi1": "Alles uit het Gast-abonnement &amp;", "pr.stdLi2": "Kaarten-quiz — 20/dag", "pr.stdLi3": "Voortgang, reeks &amp; standaard-challenge", "pr.stdLi4": "2 dagen Premium gratis proberen", "pr.stdBtn": "Gratis account aanmaken",
       "pr.badge": "★ Populairste keuze", "pr.premName": "Premium", "pr.premTag": "Alles onbeperkt — Quiz, woordenlijsten &amp; eigen challenges.",
       "pr.welcome": "★ 2 maanden gratis", "pr.perYear": "/ jaar", "pr.welcomePrice": "Met kortingscode", "pr.premCalc": "Slechts 2,50 €/maand · in plaats van 35,88 € per jaar",
-      "pr.save": "24,99 €/jaar met kortingscode — hoe je die krijgt, zie je in de app.",
-      "pr.premLi1": "Alles uit het Standaard-abonnement &amp;", "pr.premLi2": "Alle 6 quizmodi · onbeperkt", "pr.premLi3": "Woordenlijsten &amp; eigen challenges", "pr.premBtn": "Kies het jaarabonnement",
+            "pr.premLi1": "Alles uit het Standaard-abonnement &amp;", "pr.premLi2": "Alle 6 quizmodi · onbeperkt", "pr.premLi3": "Woordenlijsten &amp; eigen challenges", "pr.premBtn": "Kies het jaarabonnement",
       "pr.note": "Liever maandelijks? 2,99 €/maand – maar zonder de 2 gratis maanden. Probeer Premium eerst 2 dagen gratis (met gratis account, 24 uur zonder account), altijd opzegbaar, veilig betalen via Stripe.",
       "faq.tag": "FAQ", "faq.h2": "Veelgestelde vragen", "faq.sub": "Alles wat belangrijk is over functies, prijzen en talen.",
       "faq.q1": "Wat maakt ConjuExpert bijzonder?",
@@ -456,6 +456,7 @@
       "cc.accept": "Accepteren"
     },
     it: {
+      "start.cta": "Clicca qui e allenati gratis →",
       "pain.tag": "Ti suona familiare?", "pain.h2": "È così che ti senti quando impari le lingue?", "pain.sub": "Se una di queste tre frasi potrebbe essere tua, sei nel posto giusto.",
       "pain.a": "Mi sforzo di imparare vocaboli e regole — ma in una conversazione reale la forma giusta non mi viene in mente.", "pain.b": "Conosco i tempi verbali in teoria. Quando parlo, indovino — e perdo il filo.", "pain.c": "Dopo settimane con un'app per imparare le lingue capisco molto — ma ancora non riesco a parlare con scioltezza.",
       "doodle.founder": "Questo è esattamente il motivo per cui ho creato l'app! <b class=\"rd-n\">100%!</b>",
@@ -478,6 +479,7 @@
       "cc.accept": "Accetta"
     },
     pt: {
+      "start.cta": "Clica aqui e treina grátis →",
       "pain.tag": "Reconheces-te nisto?", "pain.h2": "É assim que te sentes ao aprender línguas?", "pain.sub": "Se uma destas três frases pudesse ser tua, estás no sítio certo.",
       "pain.a": "Decoro vocabulário e regras — mas numa conversa real a forma certa simplesmente não me vem à cabeça.", "pain.b": "Conheço os tempos verbais na teoria. Quando falo, adivinho — e perco o fio à meada.", "pain.c": "Depois de semanas com uma app de línguas percebo muito — mas ainda não consigo falar com fluência.",
       "doodle.founder": "Foi exatamente por isso que criei a app! <b class=\"rd-n\">100%!</b>",
