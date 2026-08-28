@@ -36,7 +36,7 @@ export const clusters = [
       { slug: "/blog/unregelmaessige-verben-spanisch", title: "Unregelmäßige Verben Spanisch", live: true },
       { slug: "/blog/preterito-spanisch", title: "Pretérito indefinido Spanisch", live: false },
       { slug: "/blog/imperfecto-spanisch", title: "Imperfecto Spanisch", live: false },
-      { slug: "/blog/ser-estar-spanisch", title: "Ser vs. Estar", live: true },
+      { slug: "/blog/ser-vs-estar", title: "Ser vs. Estar", live: true },
       { slug: "/blog/reflexive-verben-spanisch", title: "Reflexive Verben Spanisch", live: false },
     ],
     verbPages: "/konjugation/es/",
