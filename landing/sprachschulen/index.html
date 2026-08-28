@@ -108,6 +108,22 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
 .band-box .btn-ghost{background:var(--bg);border-color:transparent}
 .band-ctas{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
 .btn-link{font-size:13.5px;color:color-mix(in srgb, var(--bg) 68%, transparent);text-decoration:underline;text-underline-offset:3px}
+.book summary{list-style:none;width:max-content}
+.book summary::-webkit-details-marker{display:none}
+.book-form{margin-top:20px;padding-top:20px;border-top:1px solid color-mix(in srgb, var(--bg) 22%, transparent);display:flex;flex-direction:column;gap:12px;max-width:480px}
+.bf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.bf-row{grid-template-columns:1fr}}
+.book-form label{display:flex;flex-direction:column;gap:6px;font-size:12.5px;font-weight:600;color:color-mix(in srgb, var(--bg) 78%, transparent)}
+.book-form input,.book-form select,.book-form textarea{font-family:var(--display);font-size:14.5px;padding:10px 12px;border-radius:10px;border:1px solid color-mix(in srgb, var(--bg) 25%, transparent);background:color-mix(in srgb, var(--bg) 10%, transparent);color:var(--bg)}
+.book-form input::placeholder,.book-form textarea::placeholder{color:color-mix(in srgb, var(--bg) 50%, transparent)}
+.book-form select{color-scheme:dark}
+.book-form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.book-form button{align-self:flex-start;margin-top:4px}
+.bf-status{margin:0;font-size:13px;min-height:1.2em}
+.bf-status.ok{color:#7ddc9e}
+.bf-status.err{color:#ff8fa8}
+.band-mail{margin:16px 0 0;font-size:13.5px;color:color-mix(in srgb, var(--bg) 68%, transparent)}
+.band-mail a{text-decoration:underline;text-underline-offset:3px;color:inherit}
 </style>
 </head>
 <body>
@@ -236,13 +252,105 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
     <div class="band-box" id="kontakt">
       <h2>Fragt unverbindlich an — es kostet euch nichts, es rauszufinden.</h2>
       <p>Keins der drei Modelle ist in Stein gemeißelt — wir passen Trial-Länge, Beteiligung oder Paketgröße gern an eure Schule an. Keine Verkaufs-Tour, einfach ein kurzes Gespräch.</p>
-      <div class="band-ctas">
-        <a class="btn btn-ghost" href="#">15 Min. Termin buchen</a>
-        <a class="btn-link" href="mailto:partner@conjuexpert.app">oder lieber per Mail: partner@conjuexpert.app</a>
-      </div>
+
+      <details class="book">
+        <summary class="btn btn-ghost">20 Min. Kennenlerntermin buchen</summary>
+        <form class="book-form" id="bookForm" novalidate>
+          <div class="bf-row">
+            <label>Schule*<input type="text" name="schoolName" required></label>
+            <label>Ansprechpartner:in*<input type="text" name="contactName" required></label>
+          </div>
+          <div class="bf-row">
+            <label>E-Mail*<input type="email" name="email" required></label>
+            <label>Telefon<input type="tel" name="phone"></label>
+          </div>
+          <div class="bf-row">
+            <label>Termin*<select name="slot" required id="bfSlot"><option value="">Bitte wählen…</option></select></label>
+            <label>Interessiert an<select name="interestedModel"><option value="">Weiß ich noch nicht</option><option>Modell 1 — Schüler-Vorteil</option><option>Modell 2 — Schul-Beteiligung</option><option>Modell 3 — Nutzungspaket</option></select></label>
+          </div>
+          <label>Nachricht<textarea name="message" rows="2"></textarea></label>
+          <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn btn-primary" type="submit">Termin anfragen</button>
+          <p class="bf-status" id="bfStatus" role="status"></p>
+        </form>
+      </details>
+
+      <p class="band-mail">oder lieber per Mail: <a href="mailto:partner@conjuexpert.app">partner@conjuexpert.app</a></p>
     </div>
   </div>
 </section>
+
+<script>
+(function(){
+  var SLOT_TIMES = ["11:00","11:20","11:40","12:00"];
+  var WEEKDAY_LABEL = {2:"Di", 3:"Mi", 4:"Do"};
+  var sel = document.getElementById('bfSlot');
+  if (sel) {
+    var d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() + 1);
+    var added = 0;
+    while (added < 24) {
+      var wd = d.getDay();
+      if (WEEKDAY_LABEL[wd]) {
+        var iso = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+        var label = WEEKDAY_LABEL[wd] + ', ' + String(d.getDate()).padStart(2,'0') + '.' + String(d.getMonth()+1).padStart(2,'0') + '.';
+        SLOT_TIMES.forEach(function(t){
+          var opt = document.createElement('option');
+          opt.value = iso + '|' + t;
+          opt.textContent = label + ' · ' + t + ' Uhr';
+          sel.appendChild(opt);
+          added++;
+        });
+      }
+      d.setDate(d.getDate() + 1);
+    }
+  }
+
+  var form = document.getElementById('bookForm');
+  var status = document.getElementById('bfStatus');
+  if (!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    status.textContent = 'Wird gesendet…';
+    status.className = 'bf-status';
+    var fd = new FormData(form);
+    var slot = String(fd.get('slot') || '').split('|');
+    var payload = {
+      schoolName: fd.get('schoolName'),
+      contactName: fd.get('contactName'),
+      email: fd.get('email'),
+      phone: fd.get('phone'),
+      slotDate: slot[0] || '',
+      slotTime: slot[1] || '',
+      interestedModel: fd.get('interestedModel'),
+      message: fd.get('message'),
+      website: fd.get('website'), // honeypot
+    };
+    fetch('https://lrhmyboevoxtlvoxnrny.supabase.co/functions/v1/book-school-call', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': 'sb_publishable_HJMTA3em7L69hzbQrwgwOA_WsYgyN3P',
+        'Authorization': 'Bearer sb_publishable_HJMTA3em7L69hzbQrwgwOA_WsYgyN3P',
+      },
+      body: JSON.stringify(payload),
+    }).then(function(r){ return r.json().then(function(d){ return {ok: r.ok, data: d}; }); })
+      .then(function(res){
+        if (res.ok) {
+          form.reset();
+          status.textContent = 'Danke! Wir bestätigen den Termin per Mail.';
+          status.className = 'bf-status ok';
+        } else {
+          status.textContent = res.data && res.data.error ? res.data.error : 'Termin konnte nicht gebucht werden.';
+          status.className = 'bf-status err';
+        }
+      })
+      .catch(function(){
+        status.textContent = 'Verbindung fehlgeschlagen — bitte per Mail anfragen.';
+        status.className = 'bf-status err';
+      });
+  });
+})();
+</script>
 
 </body>
 </html>
