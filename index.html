@@ -3,6 +3,25 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<script>
+/* Stabile App-Höhe: --appvh wird EINMAL auf die echte Fensterhöhe gesetzt und
+   auf Touch-Geräten nur bei Breiten-/Orientierungswechsel aktualisiert.
+   Ein-/ausklappende Browserleisten und die Tastatur ändern nur die Höhe —
+   der App-Rahmen bleibt dadurch stehen (kein Layout-Sprung beim Menüwechsel).
+   Desktop (feiner Zeiger) folgt Fenster-Resizes normal. */
+(function(){
+  var w = 0;
+  var coarse = window.matchMedia && matchMedia('(pointer: coarse)').matches;
+  function set(force){
+    if (!force && coarse && window.innerWidth === w) return;
+    w = window.innerWidth;
+    document.documentElement.style.setProperty('--appvh', window.innerHeight + 'px');
+  }
+  set(true);
+  window.addEventListener('resize', function(){ set(false); });
+  window.addEventListener('orientationchange', function(){ setTimeout(function(){ set(true); }, 250); });
+})();
+</script>
 <title>ConjuExpert – Verben konjugieren in 5 Sprachen | KI-Quiz & Lernen</title>
 <link rel="manifest" href="manifest.webmanifest" />
 <meta name="theme-color" content="#f5e4c3" />
@@ -402,8 +421,12 @@ body {
     radial-gradient(1000px 600px at 110% 10%, #e6f0ff 0%, transparent 50%),
     #eef0f4;
   display: flex; align-items: flex-start; justify-content: center;
-  /* iOS Safari: use height (not min-height) + overflow:hidden so the page never grows beyond the viewport */
-  height: 100dvh;
+  /* iOS Safari: use height (not min-height) + overflow:hidden so the page never grows beyond the viewport.
+     STABIL statt dynamisch: --appvh (s. Inline-Script) statt 100dvh — dvh atmete
+     mit der Browserleiste und ließ den Rahmen bei jedem Menüwechsel springen. */
+  height: 100vh;
+  height: 100svh;
+  height: var(--appvh, 100svh);
   overflow: hidden;
   overscroll-behavior: none;
   color: #14151a;
@@ -426,7 +449,8 @@ body {
   width: 100%;
   /* Endhöhe schon beim ersten Paint belegen + body verankert oben (align-items:flex-start)
      -> #approot kann sich nicht mehr re-zentrieren, wenn der React-Inhalt mountet (CLS) */
-  min-height: 100dvh;
+  min-height: 100vh;
+  min-height: var(--appvh, 100svh);
   --bg: #f3f4f8;
   --surface: #ffffff;
   --surface-2: #f7f8fb;
@@ -441,7 +465,8 @@ body {
    empty #root -> mounted .phone transition does not shift the footer (CLS). */
 #root {
   width: 100%;
-  min-height: 100dvh;
+  min-height: 100vh;
+  min-height: var(--appvh, 100svh);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -480,7 +505,8 @@ body {
 .phone {
   width: 100%;
   max-width: min(400px, 100vw);
-  height: 100dvh;
+  height: 100vh;
+  height: var(--appvh, 100svh);
   max-height: 940px;
   background: var(--bg);
   color: var(--text);
@@ -1191,7 +1217,7 @@ body {
 .pinpop .pp-b:active { transform: scale(0.98); }
 .pinpop .pp-skip { display: block; margin: 15px auto 0; border: 0; background: transparent; color: var(--muted); font-family: var(--font-display); font-weight: 600; font-size: 12.5px; cursor: pointer; padding: 5px 10px; border-radius: 999px; }
 .pinpop .pp-skip:hover { color: var(--text); background: var(--surface-2); }
-.pr-pop { max-width: 384px; max-height: calc(100dvh - 32px); overflow: hidden auto; }
+.pr-pop { max-width: 384px; max-height: calc(100vh - 32px); max-height: calc(var(--appvh, 100svh) - 32px); overflow: hidden auto; }
 .pr-table { margin: 16px 0 0; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
 .pr-thead { display: grid; grid-template-columns: 1fr 44px 46px 58px; align-items: center; padding: 9px 11px; background: var(--surface-2); font-family: var(--font-display); font-weight: 700; font-size: 10px; letter-spacing: 0.01em; text-transform: uppercase; }
 .pr-thead .pr-th-anon, .pr-thead .pr-th-konto { text-align: center; color: var(--muted); }
@@ -3299,7 +3325,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-228"></script>
+<script defer src="/app.js?v=c-sand-229"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->

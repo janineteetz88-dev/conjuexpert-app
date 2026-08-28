@@ -14482,7 +14482,7 @@ function UserMenu({
       boxShadow: "0 8px 28px rgba(0,0,0,.13)",
       padding: "8px",
       width: "min(300px, calc(100vw - 20px))",
-      maxHeight: "calc(100dvh - 140px)",
+      maxHeight: "calc(var(--appvh, 100svh) - 140px)",
       overflowY: "auto",
       zIndex: 100000
     }
@@ -14667,7 +14667,7 @@ function GuestMenu({
       boxShadow: "0 8px 28px rgba(0,0,0,.13)",
       padding: "8px",
       width: "min(300px, calc(100vw - 20px))",
-      maxHeight: "calc(100dvh - 140px)",
+      maxHeight: "calc(var(--appvh, 100svh) - 140px)",
       overflowY: "auto",
       zIndex: 100000
     }
@@ -19175,7 +19175,7 @@ class ErrorBoundary extends React.Component {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: "100dvh",
+        minHeight: "var(--appvh, 100svh)",
         padding: "32px 22px",
         textAlign: "center",
         fontFamily: "system-ui,sans-serif",
