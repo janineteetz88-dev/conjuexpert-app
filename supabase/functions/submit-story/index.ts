@@ -47,7 +47,17 @@ Deno.serve(async (req) => {
   // Rate-Limit über die Client-IP statt user_id — verhindert, dass jemand
   // beliebigen Text in den geteilten Story-Cache einschleust, der dann an
   // echte Nutzer ausgespielt wird (libFetch() in app.js).
-  const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown";
+  // X-Forwarded-For ist eine Kette "Client, Proxy1, Proxy2, ...": jeder Hop
+  // haengt seine gesehene Adresse HINTEN an. Der erste Eintrag stammt vom
+  // Client selbst und ist damit beliebig faelschbar (Requests mit eigenem
+  // XFF-Header umgehen sonst das Rate-Limit komplett); der letzte Eintrag
+  // wird von Supabase/Deno Deploys eigenem Edge-Layer gesetzt und ist daher
+  // vertrauenswuerdig.
+  const xffParts = (req.headers.get("x-forwarded-for") || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const ip = xffParts.length ? xffParts[xffParts.length - 1] : "unknown";
   const { data: attemptAllowed, error: attemptError } = await supaAdmin.rpc(
     "check_and_record_story_attempt",
     { p_ip: ip }
