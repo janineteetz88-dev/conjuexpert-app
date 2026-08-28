@@ -77,23 +77,36 @@ async function main() {
   }
 
   console.log(`→ Property : ${SITE_URL}`);
-  console.log(`→ Sitemap  : ${SITEMAP_URL}`);
   console.log(`→ Account  : ${sa.client_email}`);
 
   const token = await getAccessToken(sa);
+  const SITE = SITE_URL.replace(/\/$/, '');
 
-  const endpoint = `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(SITE_URL)}/sitemaps/${encodeURIComponent(SITEMAP_URL)}`;
-  const res = await fetch(endpoint, {
-    method: 'PUT',
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  // Seit dem SEO-Audit (28.08.2026) zusätzlich die abgeleiteten Teil-Sitemaps
+  // (scripts/build-sitemap-split.mjs): Kern-Set und Verbseiten lassen sich in
+  // GSC getrennt überwachen; sitemap.xml bleibt die kanonische Gesamtliste.
+  const urls = SITEMAP_URL !== `${SITE}/sitemap.xml`
+    ? [SITEMAP_URL]
+    : [SITEMAP_URL, `${SITE}/sitemap-core.xml`, `${SITE}/sitemap-verbs.xml`];
 
-  // GSC returns 204 No Content on success.
-  if (res.status === 204 || res.ok) {
-    console.log('✓ Sitemap submitted to Google Search Console.');
-    return;
+  let failed = 0;
+  for (const url of urls) {
+    console.log(`→ Sitemap  : ${url}`);
+    const endpoint = `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(SITE_URL)}/sitemaps/${encodeURIComponent(url)}`;
+    const res = await fetch(endpoint, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    // GSC returns 204 No Content on success.
+    if (res.status === 204 || res.ok) {
+      console.log('  ✓ submitted');
+    } else {
+      failed++;
+      console.error(`  ✗ Submit failed (${res.status}): ${await res.text()}`);
+    }
   }
-  fail(`Submit failed (${res.status}): ${await res.text()}`);
+  if (failed) fail(`${failed} von ${urls.length} Sitemap-Submits fehlgeschlagen.`);
+  console.log('✓ Alle Sitemaps an die Google Search Console übermittelt.');
 }
 
 main().catch((e) => fail(e.stack || String(e)));

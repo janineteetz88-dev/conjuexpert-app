@@ -22,6 +22,7 @@ import {
   pickRelated, geoCss, SPEAKABLE,
 } from './geo-blocks.mjs';
 import { socialRow } from './lib/social.mjs';
+import { buildSitemapSplit } from './build-sitemap-split.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -610,6 +611,7 @@ function updateSitemap(newUrls) {
   </url>`).join('');
   xml = xml.replace('</urlset>', entries + '\n</urlset>');
   fs.writeFileSync(sitemapPath, xml);
+  buildSitemapSplit(ROOT);
 }
 
 // ── Reflexive (ES) + gezielte Einzel-Verben ─────────────────────────────────
