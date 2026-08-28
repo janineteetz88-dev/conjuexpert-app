@@ -72,12 +72,12 @@ export function auxWordFor(lang, perfect3) {
 export function verbTypeDe(isIrr) { return isIrr ? 'unregelmäßiges' : 'regelmäßiges'; }
 
 // ── FAQ (Fragen + Antworten, rein aus verlässlichen Formen) ──────────────────
-export function buildFaq({ lang, verb, meaning, verbType, native, forms, auxWord }) {
+export function buildFaq({ lang, verb, meaning, verbType, langAdj, meaningIsEnglish = false, forms, auxWord }) {
   const { pron3, present3, past3, perfect3, pastLabel, perfectLabel } = forms;
   const faq = [];
   faq.push({
     q: `Ist „${verb}" ein regelmäßiges oder unregelmäßiges Verb?`,
-    a: `„${verb}" ist ein ${verbType} ${native}-Verb${meaning ? ` und bedeutet „${meaning}"` : ''}.`,
+    a: `„${verb}" ist ein ${verbType} ${langAdj} Verb${meaning ? ` und bedeutet${meaningIsEnglish ? ' auf Englisch' : ''} „${meaning}"` : ''}.`,
   });
   if (present3) faq.push({
     q: `Wie wird „${verb}" in der 3. Person Singular konjugiert?`,
@@ -108,11 +108,11 @@ export function buildFaq({ lang, verb, meaning, verbType, native, forms, auxWord
 // zitiert (Snippet / LLM-Antwort), wird die Quelle mitzitiert. Der Hinweis steht
 // unbedingt drin — auch wenn einzelne Formen fehlen.
 const SITE_URL = 'https://conjuexpert.app';
-export function tldrHtml({ lang, verb, verbType, native, meaning, forms, site = SITE_URL }) {
+export function tldrHtml({ lang, verb, verbType, langAdj, meaning, meaningIsEnglish = false, forms, site = SITE_URL }) {
   const { pron3, present3, past3, perfect3, pastLabel, perfectLabel } = forms;
   const link = `${site}/?lang=${lang}&verb=${encodeURIComponent(verb)}&utm_source=seo&utm_medium=summary`;
   const parts = [
-    `„${verb}" ist ein ${verbType} ${native}-Verb${meaning ? ` (Bedeutung: „${meaning}")` : ''}.`,
+    `„${verb}" ist ein ${verbType} ${langAdj} Verb${meaning ? ` (Bedeutung${meaningIsEnglish ? ' auf Englisch' : ''}: „${meaning}")` : ''}.`,
     present3 ? `Präsens: <strong>${pron3} ${present3}</strong>.` : '',
     past3 ? `${pastLabel}: <strong>${pron3} ${past3}</strong>.` : '',
     perfect3 ? `${perfectLabel}: <strong>${pron3} ${perfect3}</strong>.` : '',

@@ -29,3 +29,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://conjuexpert.app/sitemap.xml
+Sitemap: https://conjuexpert.app/sitemap-core.xml
+Sitemap: https://conjuexpert.app/sitemap-verbs.xml

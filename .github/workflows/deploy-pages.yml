@@ -91,7 +91,7 @@ jobs:
           # kompletten Repo-Root auszuliefern. Zweite Verteidigungslinie.)
           FILES=(
             index.html app.js manifest.webmanifest sw.js 404.html
-            robots.txt sitemap.xml llms.txt CNAME
+            robots.txt sitemap.xml sitemap-core.xml sitemap-verbs.xml llms.txt CNAME
             google21132ae6fe839054.html favicon.svg apple-touch-icon.png
             icon-192.png icon-512.png icon-maskable.png
             agb.html datenschutz.html impressum.html barrierefreiheit.html

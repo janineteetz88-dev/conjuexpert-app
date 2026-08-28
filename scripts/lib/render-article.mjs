@@ -208,6 +208,12 @@ function buildJsonLd({ meta, title, description, url, dateIso, faqItems, crumbTr
         name: "ConjuExpert",
         url: `${BASE_URL}/`,
         logo: { "@type": "ImageObject", url: `${BASE_URL}/icon-192.png` },
+        sameAs: [
+          "https://www.instagram.com/conjuexpert.app/",
+          "https://www.tiktok.com/@jane.von.conjuexpe",
+          "https://www.youtube.com/@ConjuExpertApp",
+          "https://www.facebook.com/profile.php?id=61592183729019",
+        ],
       },
       mainEntityOfPage: url,
     },
