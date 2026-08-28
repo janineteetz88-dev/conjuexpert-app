@@ -4,6 +4,7 @@
 (function () {
   var I18N = {
     en: {
+      "start.cta": "Click here and practice for free →",
       "nav.features": "Features", "nav.prices": "Pricing", "nav.faq": "FAQ", "nav.reviews": "Reviews", "nav.app": "App", "nav.openApp": "Open app",
       "hero.eyebrow": "Learn up to 5 languages in parallel",
       "hero.h1": "Conjugate verbs until they <span class=\"grad-word\">click in conversation</span>.",
@@ -116,6 +117,7 @@
       "cc.accept": "Accept"
     },
     es: {
+      "start.cta": "Haz clic aquí y practica gratis →",
       "nav.features": "Funciones", "nav.prices": "Precios", "nav.faq": "FAQ", "nav.reviews": "Opiniones", "nav.app": "App", "nav.openApp": "Abrir app",
       "hero.eyebrow": "Aprende hasta 5 idiomas en paralelo",
       "hero.h1": "Conjuga verbos hasta que te <span class=\"grad-word\">salgan al hablar</span>.",
@@ -228,6 +230,7 @@
       "cc.accept": "Aceptar"
     },
     fr: {
+      "start.cta": "Clique ici et entraîne-toi gratuitement →",
       "nav.features": "Fonctions", "nav.prices": "Tarifs", "nav.faq": "FAQ", "nav.reviews": "Avis", "nav.app": "App", "nav.openApp": "Ouvrir l'app",
       "hero.eyebrow": "Apprends jusqu'à 5 langues en parallèle",
       "hero.h1": "Conjugue des verbes jusqu'à ce qu'ils <span class=\"grad-word\">viennent en parlant</span>.",
@@ -340,6 +343,7 @@
       "cc.accept": "Accepter"
     },
     nl: {
+      "start.cta": "Klik hier en oefen gratis →",
       "nav.features": "Functies", "nav.prices": "Prijzen", "nav.faq": "FAQ", "nav.reviews": "Beoordelingen", "nav.app": "App", "nav.openApp": "App openen",
       "hero.eyebrow": "Leer tot 5 talen tegelijk",
       "hero.h1": "Vervoeg werkwoorden tot ze <span class=\"grad-word\">komen als je praat</span>.",
@@ -452,6 +456,7 @@
       "cc.accept": "Accepteren"
     },
     it: {
+      "start.cta": "Clicca qui e allenati gratis →",
       "pain.tag": "Ti suona familiare?", "pain.h2": "È così che ti senti quando impari le lingue?", "pain.sub": "Se una di queste tre frasi potrebbe essere tua, sei nel posto giusto.",
       "pain.a": "Mi sforzo di imparare vocaboli e regole — ma in una conversazione reale la forma giusta non mi viene in mente.", "pain.b": "Conosco i tempi verbali in teoria. Quando parlo, indovino — e perdo il filo.", "pain.c": "Dopo settimane con un'app per imparare le lingue capisco molto — ma ancora non riesco a parlare con scioltezza.",
       "doodle.founder": "Questo è esattamente il motivo per cui ho creato l'app! <b class=\"rd-n\">100%!</b>",
@@ -474,6 +479,7 @@
       "cc.accept": "Accetta"
     },
     pt: {
+      "start.cta": "Clica aqui e treina grátis →",
       "pain.tag": "Reconheces-te nisto?", "pain.h2": "É assim que te sentes ao aprender línguas?", "pain.sub": "Se uma destas três frases pudesse ser tua, estás no sítio certo.",
       "pain.a": "Decoro vocabulário e regras — mas numa conversa real a forma certa simplesmente não me vem à cabeça.", "pain.b": "Conheço os tempos verbais na teoria. Quando falo, adivinho — e perco o fio à meada.", "pain.c": "Depois de semanas com uma app de línguas percebo muito — mas ainda não consigo falar com fluência.",
       "doodle.founder": "Foi exatamente por isso que criei a app! <b class=\"rd-n\">100%!</b>",
