@@ -32,6 +32,7 @@ const SITE = "https://conjuexpert.app";
 
 const LANG_NAME = { de: "Deutsch", es: "Spanisch", en: "Englisch", fr: "Französisch", nl: "Niederländisch" };
 const LANG_NATIVE = { de: "Deutsch", es: "Español", en: "English", fr: "Français", nl: "Nederlands" };
+const LANG_ADJ = { de: "deutsches", es: "spanisches", en: "englisches", fr: "französisches", nl: "niederländisches" };
 
 // Engines einmalig laden (für die deterministischen GEO-Formen).
 const ENGINES = {};
@@ -351,13 +352,16 @@ function injectGeo(html, lang, verb) {
   const verbType = verbTypeDe(isIrr);
   const forms = extractForms(conjugated, conjugated.pronouns);
   const auxWord = auxWordFor(lang, forms.perfect3);
-  const native = LANG_NATIVE[lang] || lang;
+  const langAdj = LANG_ADJ[lang] || lang;
   const langName = LANG_NAME[lang] || lang;
-  const mm = html.match(/bedeutet\s+„([^"“”]+?)["“”]/);
+  // Gloss aus der Intro parsen — seit der Migration (28.08.2026) deutsch,
+  // auf de-Seiten englisch mit "auf Englisch"-Präfix.
+  const mm = html.match(/bedeutet(?:\s+auf\s+Englisch)?\s+„([^"“”]+?)["“”]/);
   const meaning = mm ? mm[1].trim() : "";
+  const meaningIsEnglish = lang === "de";
 
-  const tldrBlock = tldrHtml({ lang, verb, verbType, native, meaning, forms, site: SITE });
-  const faq = buildFaq({ lang, verb, meaning, verbType, native, forms, auxWord });
+  const tldrBlock = tldrHtml({ lang, verb, verbType, langAdj, meaning, meaningIsEnglish, forms, site: SITE });
+  const faq = buildFaq({ lang, verb, meaning, verbType, langAdj, meaningIsEnglish, forms, auxWord });
   const faqHtml = faqSectionHtml(verb, faq);
   const related = pickRelated(ROOT, lang, verb);
   const relatedHtml = relatedSectionHtml({ lang, verb, langName, related, site: SITE });

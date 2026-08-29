@@ -22,6 +22,7 @@ import {
   pickRelated, geoCss, SPEAKABLE,
 } from './geo-blocks.mjs';
 import { socialRow } from './lib/social.mjs';
+import { buildSitemapSplit } from './build-sitemap-split.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -37,12 +38,26 @@ const VERB_IMAGES_FILE = path.join(__dirname, 'verb-images.json');
 const SITE = 'https://conjuexpert.app';
 
 const LANG_META = {
-  es: { name: 'Spanisch', native: 'Español', flag: '🇪🇸', pronLabel: ['yo','tú','él/ella','nosotros','vosotros','ellos/ellas'], mainTenses: ['present','past','imperfect','future','subjunctive'], ctaVerb: 'konjugieren üben' },
-  fr: { name: 'Französisch', native: 'Français', flag: '🇫🇷', pronLabel: ['je','tu','il/elle','nous','vous','ils/elles'], mainTenses: ['present','past','imperfect','future','conditional'], ctaVerb: 'konjugieren üben' },
-  de: { name: 'Deutsch', native: 'Deutsch', flag: '🇩🇪', pronLabel: ['ich','du','er/sie/es','wir','ihr','sie/Sie'], mainTenses: ['present','past','future'], ctaVerb: 'konjugieren üben' },
-  nl: { name: 'Niederländisch', native: 'Nederlands', flag: '🇳🇱', pronLabel: ['ik','jij/je','hij/zij','wij/we','jullie','zij/ze'], mainTenses: ['present','past','future'], ctaVerb: 'vervoegen oefenen' },
-  en: { name: 'Englisch', native: 'English', flag: '🇬🇧', pronLabel: ['I','you','he/she/it','we','you (pl)','they'], mainTenses: ['present','past','future','perfect'], ctaVerb: 'conjugate & practise' },
+  es: { name: 'Spanisch', native: 'Español', adj: 'spanisches', flag: '🇪🇸', pronLabel: ['yo','tú','él/ella','nosotros','vosotros','ellos/ellas'], mainTenses: ['present','past','imperfect','future','subjunctive'], ctaVerb: 'konjugieren üben' },
+  fr: { name: 'Französisch', native: 'Français', adj: 'französisches', flag: '🇫🇷', pronLabel: ['je','tu','il/elle','nous','vous','ils/elles'], mainTenses: ['present','past','imperfect','future','conditional'], ctaVerb: 'konjugieren üben' },
+  de: { name: 'Deutsch', native: 'Deutsch', adj: 'deutsches', flag: '🇩🇪', pronLabel: ['ich','du','er/sie/es','wir','ihr','sie/Sie'], mainTenses: ['present','past','future'], ctaVerb: 'konjugieren üben' },
+  nl: { name: 'Niederländisch', native: 'Nederlands', adj: 'niederländisches', flag: '🇳🇱', pronLabel: ['ik','jij/je','hij/zij','wij/we','jullie','zij/ze'], mainTenses: ['present','past','future'], ctaVerb: 'vervoegen oefenen' },
+  en: { name: 'Englisch', native: 'English', adj: 'englisches', flag: '🇬🇧', pronLabel: ['I','you','he/she/it','we','you (pl)','they'], mainTenses: ['present','past','future','perfect'], ctaVerb: 'conjugate & practise' },
 };
+
+// Deutsche Verb-Bedeutungen (Migration 28.08.2026): erst Mapping, dann AI.
+// Die Seiten sind deutschsprachig — englische Glosse („to go") wirkten
+// maschinell und sind Teil des „Gefunden – zurzeit nicht indexiert"-Befunds.
+const MEANINGS_DE = JSON.parse(
+  fs.readFileSync(path.join(__dirname, 'lib/verb-meanings-de.json'), 'utf8'),
+);
+
+async function getMeaningDe(lang, verb, meaningEn) {
+  const known = MEANINGS_DE[`${lang}/${verb}`];
+  if (known) return known;
+  const raw = await ai(`Was bedeutet das ${LANG_META[lang].adj} Verb "${verb}" (englisch: "${meaningEn}") auf Deutsch? Antworte NUR mit der deutschen Bedeutung als Infinitiv, maximal 3 Wörter, mehrere Bedeutungen durch Komma getrennt, ohne Punkt am Ende.`);
+  return raw.trim().replace(/\.$/, '');
+}
 
 // ── Engine loader ────────────────────────────────────────────────────────────
 
@@ -293,7 +308,11 @@ function examplesHTML(examples, tenses, tenseLabels) {
   return blocks;
 }
 
-function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, heroImage, related = [] }) {
+function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, meaningDe, heroImage, related = [] }) {
+  // Sichtbarer Gloss: deutsch (Seiten sind deutschsprachig). Nur auf de-Seiten
+  // bleibt der englische Gloss — dort explizit als solcher gekennzeichnet.
+  const displayMeaning = lang === 'de' ? meaning : (meaningDe || meaning);
+  const meaningIsEnglish = lang === 'de';
   const meta = LANG_META[lang];
   const isIrr = (eng.irregulars || []).includes(verb);
   const pronouns = conjugated.pronouns || meta.pronLabel;
@@ -329,7 +348,7 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
   const heroImgHtml = heroImage ? `
 <figure class="hero-img">
   <img src="${heroImage.url}"
-       alt="${verb} auf ${meta.name} konjugieren — ${meaning} (${verbType} Verb)"
+       alt="${verb} auf ${meta.name} konjugieren — ${displayMeaning} (${verbType} Verb)"
        title="${verb} ${meta.name} konjugieren — alle Zeitformen"
        loading="lazy" width="760" height="420">
   <figcaption>Foto von <a href="${heroImage.authorUrl}" target="_blank" rel="noopener">${heroImage.authorName}</a> auf <a href="${heroImage.sourceUrl}" target="_blank" rel="noopener">${heroImage.sourceName}</a></figcaption>
@@ -339,7 +358,7 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": `${verb} ${meta.name} konjugieren — alle Zeitformen`,
-    "description": `Vollständige Konjugationstabelle für „${verb}" auf ${meta.name} (${verbTypeEn}). Alle Zeitformen mit Beispielsätzen und Geschichte.`,
+    "description": `Vollständige Konjugationstabelle für „${verb}" auf ${meta.name} (${isIrr ? 'unregelmäßig' : 'regelmäßig'}). Alle Zeitformen mit Beispielsätzen und Geschichte.`,
     "url": `${SITE}/konjugation/${lang}/${verb}/`,
     "inLanguage": "de",
     "image": heroImage?.url || null,
@@ -360,8 +379,8 @@ function renderPage({ lang, verb, eng, conjugated, examples, story, meaning, her
   // ── GEO/AI-Citation blocks (deterministisch, keine KI) ──────────────────────
   const forms = extractForms(conjugated, pronouns);
   const auxWord = auxWordFor(lang, forms.perfect3);
-  const tldrBlock = tldrHtml({ lang, verb, verbType, native: meta.native, meaning, forms, site: SITE });
-  const faq = buildFaq({ lang, verb, meaning, verbType, native: meta.native, forms, auxWord });
+  const tldrBlock = tldrHtml({ lang, verb, verbType, langAdj: meta.adj, meaning: displayMeaning, meaningIsEnglish, forms, site: SITE });
+  const faq = buildFaq({ lang, verb, meaning: displayMeaning, verbType, langAdj: meta.adj, meaningIsEnglish, forms, auxWord });
   const faqLdJson = faqLd(faq);
   const faqHtml = faqSectionHtml(verb, faq);
   const relatedHtml = relatedSectionHtml({ lang, verb, langName: meta.name, related, site: SITE });
@@ -513,7 +532,7 @@ ${geoCss()}
       <span class="badge ${isIrr ? 'badge-irr' : 'badge-reg'}">${isIrr ? '⚡ unregelmäßig' : '✓ regelmäßig'}</span>
     </div>
     <p class="verb-intro">
-      <strong>${verb}</strong> bedeutet „${meaning}" und ist ein ${verbType} ${meta.native}-Verb.
+      <strong>${verb}</strong> bedeutet${meaningIsEnglish ? ' auf Englisch' : ''} „${displayMeaning}" und ist ein ${verbType} ${meta.adj} Verb.
       Hier findest du alle Zeitformen, natürliche Beispielsätze und eine kurze Geschichte — perfekt zum Lernen und Merken.
     </p>
   </div>
@@ -592,6 +611,7 @@ function updateSitemap(newUrls) {
   </url>`).join('');
   xml = xml.replace('</urlset>', entries + '\n</urlset>');
   fs.writeFileSync(sitemapPath, xml);
+  buildSitemapSplit(ROOT);
 }
 
 // ── Reflexive (ES) + gezielte Einzel-Verben ─────────────────────────────────
@@ -648,7 +668,8 @@ async function main() {
       }
 
       const meaning = await getMeaning(lang, verb, trans);
-      console.log(`  meaning: "${meaning}"`);
+      const meaningDe = lang === 'de' ? null : await getMeaningDe(lang, verb, meaning);
+      console.log(`  meaning: "${meaning}"${meaningDe ? ` / de: "${meaningDe}"` : ''}`);
 
       const mainTenseIds = LANG_META[lang].mainTenses;
       const [examples, story, heroImage] = await Promise.all([
@@ -660,7 +681,7 @@ async function main() {
       console.log(`  examples: ${Object.keys(examples).length} tenses, story: ${story ? 'yes' : 'none'}`);
 
       const related = pickRelated(ROOT, lang, verb);
-      const html = renderPage({ lang, verb, eng, conjugated, examples, story, meaning, heroImage, related });
+      const html = renderPage({ lang, verb, eng, conjugated, examples, story, meaning, meaningDe, heroImage, related });
 
       const outDir = path.join(ROOT, 'konjugation', lang, verb);
       fs.mkdirSync(outDir, { recursive: true });

@@ -713,11 +713,11 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
   <section class="hero" id="hero">
     <div class="wrap hero-grid">
       <div>
-        <div class="eyebrow"><span class="dot"></span><span>bis zu 5 Sprachen parallel lernen</span></div>
+        <div class="eyebrow"><span class="dot"></span><span data-i18n="hero.eyebrow">bis zu 5 Sprachen parallel lernen</span></div>
         <h1 id="lpH1">Ich will, dass mir bei „anfangen", „aufhören", „mitmachen" nie wieder ein Zweifel kommt.</h1>
         <p class="lead" id="lpLead">ConjuExpert übt automatisch genau die Form, bei der du unsicher bist — bis der Zweifel weg ist. Kostenlos, ohne Anmeldung.</p>
-        <p class="hero-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span><span class="rb-mark">Direkt im Browser</span> · installierbar · ohne Anmeldung testen</span></p>
-        <a class="btn btn-primary" href="https://conjuexpert.app" id="heroCta" style="margin-top:22px;display:inline-flex"><span class="g"></span><span class="l">Hier klicken und kostenlos üben →</span></a>
+        <p class="hero-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="hero.meta"><span class="rb-mark">Direkt im Browser</span> · installierbar · ohne Anmeldung testen</span></p>
+        <a class="btn btn-primary" href="https://conjuexpert.app" id="heroCta" style="margin-top:22px;display:inline-flex"><span class="g"></span><span class="l" data-i18n="start.cta">Hier klicken und kostenlos üben →</span></a>
       </div>
       <div class="hero-shot">
         <div class="phone-wrap">
@@ -820,7 +820,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         <h2>Lerne deine Lieblingssprache—
 durch deine Lieblingsthemen.</h2>
         <p>Quizzen und Wörter verinnerlichen: in 5 Sprachen, direkt im Browser, kostenlos starten.</p>
-        <a class="btn btn-ghost" href="https://conjuexpert.app">Hier klicken und kostenlos üben →</a>
+        <a class="btn btn-ghost" href="https://conjuexpert.app" data-i18n="start.cta">Hier klicken und kostenlos üben →</a>
       </div>
     </div>
   </section>
@@ -847,7 +847,11 @@ durch deine Lieblingsthemen.</h2>
     storyA: {
       de: { h1: 'Ich will, dass mir bei „anfangen", „aufhören", „mitmachen" nie wieder ein Zweifel kommt.', lead: 'ConjuExpert übt automatisch genau die Form, bei der du unsicher bist — bis der Zweifel weg ist. Kostenlos, ohne Anmeldung.' },
       it: { h1: 'Voglio che con «anfangen», «aufhören», «mitmachen» non mi venga mai più un dubbio.', lead: 'ConjuExpert allena automaticamente esattamente la forma in cui sei insicuro — finché il dubbio non sparisce. Gratis, senza registrazione.' },
-      pt: { h1: 'Quero que com «anfangen», «aufhören», «mitmachen» nunca mais me surja uma dúvida.', lead: 'O ConjuExpert treina automaticamente exatamente a forma em que tens dúvidas — até a dúvida desaparecer. Grátis, sem registo.' }
+      pt: { h1: 'Quero que com «anfangen», «aufhören», «mitmachen» nunca mais me surja uma dúvida.', lead: 'O ConjuExpert treina automaticamente exatamente a forma em que tens dúvidas — até a dúvida desaparecer. Grátis, sem registo.' },
+      en: { h1: 'I want «anfangen», «aufhören», «mitmachen» to never leave me in doubt again.', lead: 'ConjuExpert automatically drills exactly the form you’re unsure about — until the doubt is gone. Free, no sign-up.' },
+      es: { h1: 'Quiero que con «anfangen», «aufhören», «mitmachen» no me vuelva a surgir nunca más una duda.', lead: 'ConjuExpert entrena automáticamente justo la forma en la que tienes dudas — hasta que desaparezcan. Gratis, sin registro.' },
+      fr: { h1: 'Je veux qu’avec «anfangen», «aufhören», «mitmachen», je n’aie plus jamais un doute.', lead: 'ConjuExpert entraîne automatiquement exactement la forme où tu doutes — jusqu’à ce que le doute disparaisse. Gratuit, sans inscription.' },
+      nl: { h1: 'Ik wil dat ik bij «anfangen», «aufhören», «mitmachen» nooit meer twijfel.', lead: 'ConjuExpert oefent automatisch precies de vorm waar je onzeker over bent — tot de twijfel weg is. Gratis, zonder aanmelden.' }
     }
   };
   function storyText(msg) {

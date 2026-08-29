@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ConjuExpert für Sprachschulen — Partner werden</title>
+<meta name="description" content="Drei Wege, wie eure Sprachschule ConjuExpert-Übung zwischen den Stunden anbietet — für Schüler oder für die Schule selbst." />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" type="image/png" href="../../icon-192.png" />
+<link rel="preload" href="/fonts/Jqz55SSPQuCQF3t8uOwiUL-taUTtap9Gayo.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="/fonts/landing.css" />
+<style>
+:root{
+  --display:"Schibsted Grotesk",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --bg:#f4eede;--ink:#211d15;--muted:#8b8068;--surface:#fffdf6;--surface-2:#ece3d0;
+  --border:rgba(60,48,24,.12);--espresso:#2c2823;--selbg:#211d15;--selfg:#fdf8ec;
+  --shadow:0 22px 48px -26px rgba(70,55,25,.4);--shadow-sm:0 6px 18px -12px rgba(70,55,25,.32);
+  --pink:#e71583;--green:#1a9b46;
+  --brand-rainbow:linear-gradient(90deg,#ff3b5c,#ff7a18,#ffc400,#34c759,#00bcd4,#0a84ff,#a557ff);
+  --maxw:880px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{font-family:var(--display);color:var(--ink);line-height:1.55;background:var(--bg);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono)}
+img{max-width:100%;display:block}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--display);font-weight:700;font-size:16px;padding:15px 24px;border-radius:16px;border:1.5px solid transparent;cursor:pointer;white-space:nowrap;transition:transform .18s,box-shadow .18s}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn-primary{color:var(--selfg);background:linear-gradient(var(--selbg),var(--selbg)) padding-box,var(--brand-rainbow) border-box;border:1.5px solid transparent;box-shadow:0 14px 30px -14px rgba(30,22,8,.55)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{background:var(--surface);color:var(--ink);border:1.5px solid var(--border);box-shadow:var(--shadow-sm)}
+:focus-visible{outline:3px solid #0a84ff;outline-offset:3px;border-radius:14px}
+
+header.nav{position:sticky;top:0;z-index:20;background:rgba(244,238,222,.9);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--border)}
+header.nav::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--brand-rainbow)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:66px;position:relative}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{width:28px;height:28px;flex:none}
+.brand-name{font-weight:600;font-size:18px;letter-spacing:-.02em}
+.brand-name b{font-weight:800}
+.audience-tag{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-left:1px solid var(--border);padding-left:12px;margin-left:2px}
+.draft-flag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:1px dashed var(--border);padding:5px 10px;border-radius:999px}
+.draft-flag .dot{width:5px;height:5px;border-radius:50%;background:var(--pink)}
+@media(max-width:640px){.audience-tag{display:none}.brand-name{font-size:15.5px}.nav .btn{padding:10px 14px;font-size:13.5px}}
+
+.hero{padding:56px 0 46px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:var(--surface);border:1px solid var(--border);padding:8px 14px;border-radius:999px;box-shadow:var(--shadow-sm)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(32px,5vw,50px);line-height:1.06;letter-spacing:-.03em;margin:18px 0 16px;text-wrap:balance;max-width:16ch}
+.grad-word{background:var(--brand-rainbow);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{font-size:clamp(16.5px,1.6vw,19px);color:#574f3b;font-weight:500;max-width:56ch;margin:0 0 26px;text-wrap:pretty}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+.hero-trust{margin:16px 0 0;font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:7px}
+.hero-trust::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);flex:none}
+
+section.block{padding:44px 0;border-top:1px solid var(--border)}
+.founder-in{display:grid;grid-template-columns:.8fr 1.2fr;gap:32px;align-items:center}
+.founder-photo{width:100%;height:100%;aspect-ratio:4/3.2;object-fit:cover;border-radius:20px;box-shadow:var(--shadow-sm);border:1px solid var(--border);transform:scaleX(-1)}
+.founder-text p{font-size:15.8px;color:#463f2e;line-height:1.6;margin:12px 0 0;text-wrap:pretty}
+.founder-text a{color:var(--pink);font-weight:700}
+@media(max-width:700px){.founder-in{grid-template-columns:1fr;gap:20px}.founder-photo{aspect-ratio:16/10}}
+
+.demo-in{display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px}
+.phone-wrap{position:relative;width:230px}
+.phone{position:relative;z-index:1;width:230px;border-radius:34px;background:#0c0e16;box-shadow:var(--shadow),0 0 0 8px #0c0e16,0 0 0 10px rgba(255,255,255,.06);overflow:hidden}
+.phone video{display:block;width:100%}
+.demo-cap{max-width:44ch;color:var(--muted);font-size:15px;line-height:1.55;margin:0}
+.sec-tag{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--pink)}
+.sec-head{max-width:640px;margin:0 0 30px}
+.sec-head h2{font-family:var(--display);font-weight:700;font-size:clamp(24px,3.4vw,32px);letter-spacing:-.025em;line-height:1.1;margin:10px 0 10px;text-wrap:balance}
+.sec-head p{font-size:16px;color:var(--muted);margin:0;text-wrap:pretty}
+
+/* pain */
+.pain-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:760px){.pain-cards{grid-template-columns:1fr}}
+.pain-card{position:relative;padding:22px 20px 20px;border-radius:18px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.pain-card::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;border-radius:18px 18px 0 0;background:var(--brand-rainbow)}
+.pain-card p{margin:0;font-family:var(--display);font-weight:600;font-size:15.5px;line-height:1.45;color:var(--ink)}
+.pain-bridge{margin-top:26px;font-size:17px;font-weight:600;color:var(--ink);max-width:56ch}
+.pain-bridge strong{font-weight:800}
+
+/* model cards */
+.model-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch}
+@media(max-width:820px){.model-grid{grid-template-columns:1fr;max-width:440px}}
+.model-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px 22px 22px;box-shadow:var(--shadow-sm)}
+.model-n{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--pink)}
+.model-card h3{font-family:var(--display);font-weight:800;font-size:18.5px;margin:6px 0 8px}
+.model-card .what{font-size:14px;color:var(--muted);margin:0 0 16px;min-height:56px}
+.model-terms{margin:0 0 16px;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px;font-size:13.8px;flex:1}
+.model-terms li{display:flex;justify-content:space-between;gap:10px;padding-top:9px;border-top:1px solid var(--border)}
+.model-terms li:first-child{border-top:0;padding-top:0}
+.model-terms .k{color:var(--muted)}
+.model-terms .v{font-weight:700;text-align:right}
+.model-note{font-size:12px;color:var(--muted);font-style:italic}
+
+/* faq */
+.faq{max-width:680px}
+.qa{border-bottom:1px solid var(--border);padding:16px 0}
+.qa summary{cursor:pointer;font-weight:700;font-size:15.5px;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::after{content:"+";font-weight:400;color:var(--muted);font-size:20px}
+.qa[open] summary::after{content:"–"}
+.qa .qa-body{margin:10px 0 0;font-size:14.8px;color:var(--muted);line-height:1.55;max-width:60ch}
+
+/* closing */
+.band{padding:50px 0 70px}
+.band-box{background:var(--ink);color:var(--bg);border-radius:22px;padding:38px 34px;position:relative;overflow:hidden}
+.band-box::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--brand-rainbow)}
+.band-box h2{margin:0 0 10px;font-size:clamp(22px,3vw,28px);letter-spacing:-.02em}
+.band-box p{margin:0 0 22px;color:color-mix(in srgb, var(--bg) 74%, transparent);max-width:52ch;font-size:15.5px}
+.band-box .btn-ghost{background:var(--bg);border-color:transparent}
+.band-ctas{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.btn-link{font-size:13.5px;color:color-mix(in srgb, var(--bg) 68%, transparent);text-decoration:underline;text-underline-offset:3px}
+.book summary{list-style:none;width:max-content}
+.book summary::-webkit-details-marker{display:none}
+.book-form{margin-top:20px;padding-top:20px;border-top:1px solid color-mix(in srgb, var(--bg) 22%, transparent);display:flex;flex-direction:column;gap:12px;max-width:320px}
+.book-form label{display:flex;flex-direction:column;gap:6px;font-size:12.5px;font-weight:600;color:color-mix(in srgb, var(--bg) 78%, transparent)}
+.book-form input,.book-form select{font-family:var(--display);font-size:14.5px;padding:10px 12px;border-radius:10px;border:1px solid color-mix(in srgb, var(--bg) 25%, transparent);background:color-mix(in srgb, var(--bg) 10%, transparent);color:var(--bg)}
+.book-form input::placeholder{color:color-mix(in srgb, var(--bg) 50%, transparent)}
+.book-form select{color-scheme:dark}
+.book-form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.book-form button{align-self:flex-start;margin-top:4px}
+.bf-hint{margin:0;font-size:12.5px;color:color-mix(in srgb, var(--bg) 62%, transparent);font-weight:500}
+.bf-status{margin:0;font-size:13px;min-height:1.2em}
+.bf-status.ok{color:#7ddc9e}
+.bf-status.err{color:#ff8fa8}
+.band-mail{margin:16px 0 0;font-size:13.5px;color:color-mix(in srgb, var(--bg) 68%, transparent)}
+.band-mail a{text-decoration:underline;text-underline-offset:3px;color:inherit}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="2.5" y="16" width="3" height="11" rx="1.5" fill="#ff3b5c"/><rect x="6.5" y="12" width="3" height="15" rx="1.5" fill="#ff7a18"/><rect x="10.5" y="8" width="3" height="19" rx="1.5" fill="#ffc400"/><rect x="14.5" y="5" width="3" height="22" rx="1.5" fill="#34c759"/><rect x="18.5" y="8" width="3" height="19" rx="1.5" fill="#00bcd4"/><rect x="22.5" y="12" width="3" height="15" rx="1.5" fill="#0a84ff"/><rect x="26.5" y="16" width="3" height="11" rx="1.5" fill="#a557ff"/></svg><span class="brand-name">Conju<b>Expert</b></span></a>
+    <span class="audience-tag">Für Sprachschulen</span>
+    <span class="draft-flag" style="margin-left:auto"><span class="dot"></span>Entwurf — Konditionen in Abstimmung</span>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap">
+    <span class="eyebrow">Partner werden</span>
+    <h1>Verben, die sitzen. Schüler, die <span class="grad-word">bleiben</span>.</h1>
+    <p class="lead">Wer zwischen den Stunden übt und merkt, dass er vorankommt, hört nicht auf — das ist der Unterschied zwischen einer Anmeldung und einem Stammschüler. ConjuExpert übernimmt genau das Dazwischen: eigenes Tempo, eigene Themen, in 5 Sprachen.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#modelle">Die drei Modelle ansehen</a>
+      <a class="btn btn-ghost" href="#kontakt">Unverbindlich anfragen</a>
+    </div>
+    <p class="hero-trust">Kein Vertrag, keine Kosten für den Start, keine technische Integration.</p>
+  </section>
+
+  <section class="block founder">
+    <div class="wrap founder-in">
+      <picture><source srcset="/blog/img/gruenderin-janine-kreiser.webp" type="image/webp"><img class="founder-photo" src="/blog/img/gruenderin-janine-kreiser.jpg" alt="Janine Kreiser, Gründerin von ConjuExpert" width="760" height="440" loading="lazy" /></picture>
+      <div class="founder-text">
+        <span class="sec-tag">Wer dahintersteckt</span>
+        <p>Ich bin Janine. Vor ConjuExpert saßen wir acht Wochen auf Gran Canaria — mein Mann Basti, unsere zwei Kinder und ich, mit einem Ziel: Basti sollte endlich Spanisch können. Nicht fließend, nur genug, um sich durchzuschlagen. Es gab keine App, die trainierte, was uns wirklich fehlte — also baute ich uns eine, am Küchentisch, als HTML-Bastelei für den Urlaub. Basti kämpfte wochenlang mit dem Subjuntivo, ich mit <em>tengo</em> statt <em>teno</em>. Irgendwann saßen die Formen bei uns beiden — und aus der Urlaubs-App wurde ConjuExpert, weil unsere Sprachlehrerin gerade Niederländisch lernte und meine beste Freundin Französisch.</p>
+        <p>Was ich seitdem weiß: Übung, die zum eigenen Tempo passt, ist der Unterschied zwischen Aufgeben und Dranbleiben — bei uns genauso wie bei euren Schülern. <a href="/blog/unsere-geschichte/">Die ganze Geschichte gibt's hier →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block demo">
+    <div class="wrap demo-in">
+      <div class="phone-wrap">
+        <div class="phone"><video autoplay muted loop playsinline webkit-playsinline preload="auto" poster="/landing/app-demo-poster.jpg" aria-label="ConjuExpert in Aktion: ein Verb live konjugieren"><source src="/landing/app-demo.mp4" type="video/mp4"></video></div>
+      </div>
+      <p class="demo-cap">Genau das üben eure Schüler zwischen den Stunden — Konjugationstabellen wie im Unterricht, nur als Quiz statt als Blatt Papier.</p>
+      <a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l">Jetzt selbst ausprobieren</span></a>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="pain-cards">
+        <div class="pain-card"><p>„Ich erkläre den Subjuntivo zum dritten Mal — im nächsten Gespräch ist er wieder weg."</p></div>
+        <div class="pain-card"><p>„In einer Gruppe hat jeder ein anderes Niveau. Ich kann nicht für jeden einzeln üben."</p></div>
+        <div class="pain-card"><p>„Vokabelhefte motivieren niemanden, freiwillig zu Hause zu üben."</p></div>
+      </div>
+      <p class="pain-bridge">Genau hier setzt <strong>ConjuExpert</strong> an: Übung, die sich jedem Schüler einzeln anpasst — etwas, das im Gruppenunterricht strukturell nicht geht.</p>
+    </div>
+  </section>
+
+  <section class="block" id="modelle">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-tag">Drei Modelle</span>
+        <h2>Wählt, was zu euch passt.</h2>
+        <p>Keine Vertragsbindung, kein technischer Aufwand, jederzeit beendbar. Ihr entscheidet, welches Modell zu eurer Schule passt — nicht wir.</p>
+      </div>
+      <div class="model-grid">
+        <div class="model-card">
+          <span class="model-n">01</span>
+          <h3>Ihr empfehlt — eure Schüler sparen</h3>
+          <p class="what">Reine Empfehlung, kein Geld im Spiel. Eure Schüler bekommen einen verlängerten Gratis-Zugang.</p>
+          <ul class="model-terms">
+            <li><span class="k">Kosten für euch</span><span class="v">0 €</span></li>
+            <li><span class="k">Schüler bekommen</span><span class="v">4 Wochen Premium<br>statt 2 Tage</span></li>
+            <li><span class="k">Aufwand</span><span class="v">Code weitergeben</span></li>
+            <li><span class="k">Nutzen für euch</span><span class="v">Weniger Kursabbrecher,<br>modernes Image</span></li>
+          </ul>
+          <span class="model-note">Konditionen: Vorschlag</span>
+        </div>
+        <div class="model-card">
+          <span class="model-n">02</span>
+          <h3>Ihr empfehlt — ihr verdient mit</h3>
+          <p class="what">Gleiche Empfehlung, aber mit direkter Anerkennung für euch statt für die Schüler.</p>
+          <ul class="model-terms">
+            <li><span class="k">Kosten für euch</span><span class="v">0 €</span></li>
+            <li><span class="k">Ihr bekommt</span><span class="v">20 % vom ersten<br>Jahresabo, einmalig</span></li>
+            <li><span class="k">Aufwand</span><span class="v">Code weitergeben</span></li>
+            <li><span class="k">Nutzen für euch</span><span class="v">Direkte Einnahme pro<br>vermitteltem Schüler</span></li>
+          </ul>
+          <span class="model-note">Konditionen: Vorschlag</span>
+        </div>
+        <div class="model-card">
+          <span class="model-n">03</span>
+          <h3>Ihr investiert — Schüler zahlen nichts</h3>
+          <p class="what">Ihr kauft ein festes Platz-Kontingent, eure Schüler nutzen Premium komplett kostenfrei.</p>
+          <ul class="model-terms">
+            <li><span class="k">Pilotgröße</span><span class="v">10–15 Plätze / Jahr</span></li>
+            <li><span class="k">Preis</span><span class="v">19,99 € / Platz / Jahr</span></li>
+            <li><span class="k">Aufwand</span><span class="v">Codes verteilen</span></li>
+            <li><span class="k">Nutzen für euch</span><span class="v">Eigenes Kurs-Add-on,<br>volle Kontrolle</span></li>
+            <li><span class="k">Euer Logo</span><span class="v">Sichtbar beim Einlösen<br>eures Codes in der App</span></li>
+            <li><span class="k">Bonus bei früher Zusage</span><span class="v">Bevorzugter Partner<br>in eurer Region (15 km)</span></li>
+          </ul>
+          <span class="model-note">Konditionen: Vorschlag</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-tag">FAQ</span>
+        <h2>Kurz beantwortet</h2>
+      </div>
+      <div class="faq">
+        <details class="qa" open>
+          <summary>Ersetzt das unseren Unterricht?</summary>
+          <div class="qa-body">Nein. ConjuExpert ist Übung zwischen den Stunden — eure Lehrkräfte bleiben für das zuständig, was eine App nicht kann: echtes Sprechen im Unterricht.</div>
+        </details>
+        <details class="qa">
+          <summary>Was kostet das die Schule?</summary>
+          <div class="qa-body">Bei Modell 1 und 2 nichts — ihr empfehlt nur weiter. Beim Nutzungspaket kauft ihr ein festes Platz-Kontingent für ein Jahr.</div>
+        </details>
+        <details class="qa">
+          <summary>Wie schnell können wir starten?</summary>
+          <div class="qa-body">Sofort — es gibt keine technische Integration. Ihr bekommt einen Code, den eure Schüler beim Kauf oder Einstieg eingeben.</div>
+        </details>
+        <details class="qa">
+          <summary>Wo ist der Haken?</summary>
+          <div class="qa-body">Ehrlich: bei Modell 1 und 2 gibt's keinen — ihr empfehlt, es kostet nichts, ihr könnt jederzeit aufhören. Beim Nutzungspaket ist der "Haken", dass ihr vorab zahlt; deshalb starten wir da bewusst klein, mit einem Pilot-Kontingent statt einem großen Paket.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="band">
+  <div class="wrap">
+    <div class="band-box" id="kontakt">
+      <h2>Fragt unverbindlich an — es kostet euch nichts, es rauszufinden.</h2>
+      <p>Keins der drei Modelle ist in Stein gemeißelt — wir passen Trial-Länge, Beteiligung oder Paketgröße gern an eure Schule an. Keine Verkaufs-Tour, einfach ein kurzes Gespräch.</p>
+
+      <details class="book">
+        <summary class="btn btn-ghost">Rückruf anfragen</summary>
+        <form class="book-form" id="bookForm" novalidate>
+          <label>Name / Schule*<input type="text" name="name" required></label>
+          <label>E-Mail*<input type="email" name="email" required></label>
+          <label>Telefon<input type="tel" name="phone" placeholder="optional"></label>
+          <label>Wann passt's?*
+            <select name="preferredDay" required>
+              <option value="">Bitte wählen…</option>
+              <option>Dienstag</option>
+              <option>Donnerstag</option>
+            </select>
+          </label>
+          <p class="bf-hint">Wir rufen zwischen 11:00 und 12:30 Uhr zurück und bestätigen den genauen Zeitpunkt kurz per Mail.</p>
+          <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn btn-primary" type="submit">Rückruf anfragen</button>
+          <p class="bf-status" id="bfStatus" role="status"></p>
+        </form>
+      </details>
+
+      <p class="band-mail">oder lieber per Mail: <a href="mailto:partner@conjuexpert.app">partner@conjuexpert.app</a></p>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var form = document.getElementById('bookForm');
+  var status = document.getElementById('bfStatus');
+  if (!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    status.textContent = 'Wird gesendet…';
+    status.className = 'bf-status';
+    var fd = new FormData(form);
+    var payload = {
+      name: fd.get('name'),
+      email: fd.get('email'),
+      phone: fd.get('phone'),
+      preferredDay: fd.get('preferredDay'),
+      website: fd.get('website'), // honeypot
+    };
+    fetch('https://lrhmyboevoxtlvoxnrny.supabase.co/functions/v1/request-school-callback', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': 'sb_publishable_HJMTA3em7L69hzbQrwgwOA_WsYgyN3P',
+        'Authorization': 'Bearer sb_publishable_HJMTA3em7L69hzbQrwgwOA_WsYgyN3P',
+      },
+      body: JSON.stringify(payload),
+    }).then(function(r){ return r.json().then(function(d){ return {ok: r.ok, data: d}; }); })
+      .then(function(res){
+        if (res.ok) {
+          form.reset();
+          status.textContent = 'Danke! Wir melden uns zur Bestätigung.';
+          status.className = 'bf-status ok';
+        } else {
+          status.textContent = res.data && res.data.error ? res.data.error : 'Anfrage konnte nicht gesendet werden.';
+          status.className = 'bf-status err';
+        }
+      })
+      .catch(function(){
+        status.textContent = 'Verbindung fehlgeschlagen — bitte per Mail anfragen.';
+        status.className = 'bf-status err';
+      });
+  });
+})();
+</script>
+
+</body>
+</html>

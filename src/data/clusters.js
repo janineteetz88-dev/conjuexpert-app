@@ -125,6 +125,8 @@ export const clusters = [
       { slug: "/blog/trennbare-verben-niederlaendisch", title: "Trennbare Verben im Niederländischen: das Bumerang-Präfix (opstaan, meenemen)", live: true },
       { slug: "/blog/zukunft-zullen-niederlaendisch", title: "Die Zukunft im Niederländischen: zullen + Infinitiv", live: true },
       { slug: "/blog/niederlaendisch-praesens-t-regel", title: "Das niederländische Präsens: Stamm + t-Regel (ik werk, jij werkt)", live: true },
+      { slug: "/blog/imperfectum-niederlaendisch", title: "Das Imperfectum der schwachen Verben (-te/-de) im Niederländischen", live: true },
+      { slug: "/blog/wichtigste-verben-niederlaendisch", title: "Die wichtigsten niederländischen Verben: zijn, hebben, gaan, kunnen", live: true },
     ],
   },
   {
@@ -186,6 +188,7 @@ export const clusters = [
       { slug: "/blog/imperativo-spanisch", title: "Der Imperativo: Befehle und Bitten auf Spanisch souverän geben", live: true },
       { slug: "/blog/conjuguemos-fuer-erwachsene", title: "Conjuguemos für Erwachsene: Stärken und Grenzen", live: true },
       { slug: "/blog/subjuntivo-bilden-endungen", title: "Subjuntivo bilden — die spanischen Endungen Schritt für Schritt", live: true },
+      { slug: "/blog/gustar-spanisch", title: "gustar & Co.: die umgekehrte Konstruktion verstehen", live: true },
     ],
   },
   {
@@ -228,6 +231,7 @@ export const clusters = [
       { slug: "/blog/perfekt-oder-praeteritum", title: "Perfekt oder Präteritum? Wann Deutsche welche Vergangenheit nutzen", live: true },
       { slug: "/blog/modalverben-deutsch", title: "Modalverben Deutsch: können, müssen, dürfen & Co. sicher einsetzen", live: true },
       { slug: "/blog/reflexive-verben-deutsch", title: "Reflexive Verben Deutsch: mich, dich, sich – und wann es „mir\" statt „mich\" heißt", live: true },
+      { slug: "/blog/partizip-ii", title: "Partizip II bilden: die Regel, starke Verben und ihre Ausnahmen", live: true },
     ],
   },
   {
@@ -249,6 +253,7 @@ export const clusters = [
       { slug: "/blog/past-perfect-englisch", title: "Past Perfect (had done) einfach erklärt: das Frühere von zwei vergangenen Ereignissen", live: true },
       { slug: "/blog/will-vs-going-to", title: "Die Zukunft im Englischen: will vs. going to", live: true },
       { slug: "/blog/phrasal-verbs-englisch", title: "Phrasal Verbs: englische Verben mit Partikel meistern", live: true },
+      { slug: "/blog/gerund-oder-infinitiv", title: "Gerund oder Infinitiv? enjoy doing vs. want to do (Englisch)", live: true },
     ],
   },
   {

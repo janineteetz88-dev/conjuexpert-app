@@ -41,6 +41,7 @@ import { normalizeFaq } from "./lib/faq.mjs";
 import { renderArticle } from "./lib/render-article.mjs";
 import { auditRenderedHtml } from "./lib/render-guard.mjs";
 import { unlinkMissingBlogLinks } from "./lib/internal-links.mjs";
+import { buildSitemapSplit } from "./build-sitemap-split.mjs";
 import { lintRenderedHtml, hardErrors, htmlToText } from "./lib/standard-lint.mjs";
 import { aiLektorat, htmlForLektorat } from "./lib/ai-lektorat.mjs";
 import { normalizeGermanQuotesHtml } from "./lib/text-polish.mjs";
@@ -544,6 +545,8 @@ async function main() {
     } else if (nextMap !== srcMap) {
       writeFileSync(SITEMAP_PATH, nextMap, "utf8");
       log(`\n🗺️   sitemap.xml: ${added} neue <url> ergänzt`);
+      const split = buildSitemapSplit(ROOT);
+      log(`🗺️   Teil-Sitemaps aktualisiert (core: ${split.core}, verbs: ${split.verbs})`);
     } else {
       log(`\n🗺️   sitemap.xml unverändert (alle Slugs bereits vorhanden)`);
     }
