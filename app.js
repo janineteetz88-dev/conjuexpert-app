@@ -14835,7 +14835,7 @@ function LoginModal({
           }
         });
         if (error) throw error;
-        if (window.ceTrack) window.ceTrack("account_created", ceAttrProps());
+        if (window.ceTrack) window.ceTrack("account_created", window.ceAttrProps ? window.ceAttrProps() : undefined);
         persist("kunju-name", fn);
         setDone(true);
       }
@@ -17811,14 +17811,9 @@ function App() {
   }
   // Kampagnen-Zuordnung für ceTrack-Events: liest msg/UTM aus der URL, falls
   // von /start/ weitergereicht (siehe start/index.html) - sonst leeres Objekt.
-  function ceAttrProps() {
-    try {
-      const qp = new URLSearchParams(window.location.search);
-      const props = {};
-      ["msg", "utm_source", "utm_campaign", "utm_content"].forEach(k => { const v = qp.get(k); if (v) props[k] = v; });
-      return props;
-    } catch (e) { return {}; }
-  }
+  // Global definiert (index.html) statt lokal, da mehrere getrennte
+  // Komponenten-Scopes in app.js sie brauchen (siehe Bug-Historie).
+  const ceAttrProps = window.ceAttrProps || function() { return {}; };
   async function goToStripe() {
     if (!supaUser) {
       setPendingPayment(true);

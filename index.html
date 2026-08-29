@@ -3217,6 +3217,18 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
   // Conversion-Events (trial_start, abo_monthly, abo_annual) laufen bereits cookielos
   // über Plausible (siehe Skript-Tag im <head>) — unabhängig von dieser Einwilligung.
   window.ceTrack = function(ev, props){ try{ if(window.plausible) window.plausible(ev, props ? {props: props} : undefined); }catch(e){} };
+  // Global statt lokal pro Komponente: app.js hat mehrere getrennte Komponenten-Scopes,
+  // eine lokale ceAttrProps()-Definition in einer Komponente ist in anderen nicht sichtbar
+  // (siehe Bug: "ceAttrProps is not defined" im Premium-Signup-Flow, ließ die Konto-Erstellung
+  // dort abstürzen statt zum Checkout weiterzuleiten).
+  window.ceAttrProps = function(){
+    try {
+      var qp = new URLSearchParams(window.location.search);
+      var props = {};
+      ["msg", "utm_source", "utm_campaign", "utm_content"].forEach(function(k){ var v = qp.get(k); if (v) props[k] = v; });
+      return props;
+    } catch (e) { return {}; }
+  };
   function loadMetaPixel(){
     if(window.__fbLoaded) return; window.__fbLoaded=true;
     !function(f,b,e,v,n,t,s)
