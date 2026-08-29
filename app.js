@@ -17817,6 +17817,7 @@ function App() {
   // tracken — feuert zuverlässig, egal welcher Pfad die Paywall öffnet.
   useEffect(() => { if (showPaywall && window.ceTrack) window.ceTrack("paywall_shown"); }, [showPaywall]);
   const [showAcctPrompt, setShowAcctPrompt] = useState(false);
+  const [acctNudgeMilestone, setAcctNudgeMilestone] = useState(null);
   const [showQuizLimit, setShowQuizLimit] = useState(false);
   const [showPlanSelect, setShowPlanSelect] = useState(false);
   const [planPrefillCode, setPlanPrefillCode] = useState("");
@@ -18404,6 +18405,26 @@ function App() {
       // === statt >=: Event nur beim exakten Übertritt, nicht bei jeder weiteren Karte danach.
       if (used === QUIZ_FREE_LIMIT && window.ceTrack) window.ceTrack("quiz_limit_reached");
       if (used >= QUIZ_FREE_LIMIT) setShowQuizLimit(true);
+    }
+    // Proaktiver Konto-Anstoß: die Konto-Sheet sprang bisher nur reaktiv auf
+    // (Wand treffen — Gemerkt-Tab, Quiz-Limit, Trial-Ende). Für anonyme Gäste
+    // im noch aktiven Trial zeigen wir sie jetzt zusätzlich einmalig nach
+    // echter Mini-Leistung im Quiz — motivierter Moment statt kalter Abbruch
+    // erst am Trial-Ende. Genau einmal pro Gerät (kunju-acct-nudge-shown).
+    if (
+      tab === "quiz" &&
+      !supaUser &&
+      trialExpiry && Date.now() < trialExpiry &&
+      !recall("kunju-acct-nudge-shown", false)
+    ) {
+      const n = (recall("kunju-guest-quiz-count", 0) || 0) + 1;
+      persist("kunju-guest-quiz-count", n);
+      if (n >= 5) {
+        persist("kunju-acct-nudge-shown", true);
+        setAcctNudgeMilestone(n);
+        setShowAcctPrompt(true);
+        if (window.ceTrack) window.ceTrack("acct_nudge_shown", ceAttrProps());
+      }
     }
     const prev = daily.count;
     const next = bumpDaily();
@@ -19054,17 +19075,25 @@ function App() {
   }), showAcctPrompt && /*#__PURE__*/React.createElement(PaywallSheet, {
     // Läuft der Gast-Trial NOCH, darf hier nicht "Test ist vorbei" stehen —
     // das Sheet öffnet sich auch über die BonusBar (aktives Antippen des
-    // Angebots) und würde sonst eine falsche Aussage zeigen.
+    // Angebots) und würde sonst eine falsche Aussage zeigen. Kam der Anstoß
+    // proaktiv nach einer Mini-Leistung (acctNudgeMilestone gesetzt), zeigt
+    // die Überschrift stattdessen die erreichte Zahl statt der generischen Aussage.
     lock: trialExpiry && Date.now() < trialExpiry ? tr("ap_lock_a") : tr("ap_lock"),
-    title: trialExpiry && Date.now() < trialExpiry ? tr("ap_h1_a") : tr("ap_h1"),
+    title: acctNudgeMilestone
+      ? tr("ap_h1_m", { n: acctNudgeMilestone })
+      : trialExpiry && Date.now() < trialExpiry ? tr("ap_h1_a") : tr("ap_h1"),
     sub: tr("ap_sub"),
     rows: [[tr("ap_feat1"), ""], [tr("ap_feat2"), ""], [tr("ap_feat3"), ""]],
     cta: tr("ap_cta"),
     onUpgrade: () => {
       setShowAcctPrompt(false);
+      setAcctNudgeMilestone(null);
       setShowLogin(true);
     },
-    onClose: () => setShowAcctPrompt(false)
+    onClose: () => {
+      setShowAcctPrompt(false);
+      setAcctNudgeMilestone(null);
+    }
   }), showQuizLimit && /*#__PURE__*/React.createElement(PaywallSheet, {
     lock: tr("ql_lock"),
     title: tr("ql_h1"),
