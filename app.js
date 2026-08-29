@@ -7019,7 +7019,15 @@ function QuizView({
       className: "rep-link",
       style: { display: "inline-flex" },
       onClick: () => { setCloze({ loading: true }); fetchCloze(q, 0); }
-    }, tr("cloze_retry")));
+    }, tr("cloze_retry")), " · ", /*#__PURE__*/React.createElement("button", {
+      // Auch OHNE Satz melden können — "es kam ewig kein KI-Satz" ist
+      // genau das Feedback, das wir sehen wollen (Janine, 31.08.).
+      className: "rep-link",
+      style: { display: "inline-flex" },
+      onClick: () => window.__openReport && window.__openReport({ kind: "sentence", lang: lang, sentence: "(kein KI-Satz erschienen — Generierung aufgegeben)", translation: "", verb: q && q.verb, tense: q && q.tenseLabel, pronoun: q && q.pronoun, onPurge: () => {
+        try { if (q) { setCloze({ loading: true }); fetchCloze(q, 0); } } catch (e) {}
+      } })
+    }, tr("report_link")));
   }
   // „Fehler melden"-Link unter KI-Beispielsätzen
   function reportBtn() {
