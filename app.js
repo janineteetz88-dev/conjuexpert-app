@@ -7611,7 +7611,11 @@ function QuizView({
         wl.forEach(w => { const r = mk(w); if (r.test(g)) { g = g.replace(r, "…"); ok = true; } });
         return ok ? g : null;
       };
-      verifySentence(targetName, full, qq.answer, nativeName, j && j.n ? String(j.n).trim() : "", qq.pronoun).then(v => {
+      // Pronomen-Subjekt-Regel NICHT bei Imperativen: Imperative haben kein
+      // ausgesprochenes Subjekt — der Prüfer "reparierte" sonst "Stört bitte
+      // nicht …" zu "Stört ihr bitte nicht …", was der Imperativ-Wächter
+      // zu Recht ablehnt → alle Versuche verbrannten, Karte blieb ohne Satz.
+      verifySentence(targetName, full, qq.answer, nativeName, j && j.n ? String(j.n).trim() : "", imperativeCard ? null : qq.pronoun).then(v => {
         if (!silent && clozeTokenRef.current !== myTok) return;
         if (v === null) {
           if (attempt < 2) fetchCloze(qq, attempt + 1, curTopic, silent); else !silent && setCloze({ error: true });
