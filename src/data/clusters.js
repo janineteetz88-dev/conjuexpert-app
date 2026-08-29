@@ -231,6 +231,7 @@ export const clusters = [
       { slug: "/blog/perfekt-oder-praeteritum", title: "Perfekt oder Präteritum? Wann Deutsche welche Vergangenheit nutzen", live: true },
       { slug: "/blog/modalverben-deutsch", title: "Modalverben Deutsch: können, müssen, dürfen & Co. sicher einsetzen", live: true },
       { slug: "/blog/reflexive-verben-deutsch", title: "Reflexive Verben Deutsch: mich, dich, sich – und wann es „mir\" statt „mich\" heißt", live: true },
+      { slug: "/blog/partizip-ii", title: "Partizip II bilden: die Regel, starke Verben und ihre Ausnahmen", live: true },
     ],
   },
   {
