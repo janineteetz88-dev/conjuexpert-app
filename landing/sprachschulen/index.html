@@ -62,6 +62,12 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
 .founder-text p{font-size:15.8px;color:#463f2e;line-height:1.6;margin:12px 0 0;text-wrap:pretty}
 .founder-text a{color:var(--pink);font-weight:700}
 @media(max-width:700px){.founder-in{grid-template-columns:1fr;gap:20px}.founder-photo{aspect-ratio:16/10}}
+
+.demo-in{display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px}
+.phone-wrap{position:relative;width:230px}
+.phone{position:relative;z-index:1;width:230px;border-radius:34px;background:#0c0e16;box-shadow:var(--shadow),0 0 0 8px #0c0e16,0 0 0 10px rgba(255,255,255,.06);overflow:hidden}
+.phone video{display:block;width:100%}
+.demo-cap{max-width:44ch;color:var(--muted);font-size:15px;line-height:1.55;margin:0}
 .sec-tag{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--pink)}
 .sec-head{max-width:640px;margin:0 0 30px}
 .sec-head h2{font-family:var(--display);font-weight:700;font-size:clamp(24px,3.4vw,32px);letter-spacing:-.025em;line-height:1.1;margin:10px 0 10px;text-wrap:balance}
@@ -155,6 +161,16 @@ section.block{padding:44px 0;border-top:1px solid var(--border)}
         <p>Ich bin Janine. Vor ConjuExpert saßen wir acht Wochen auf Gran Canaria — mein Mann Basti, unsere zwei Kinder und ich, mit einem Ziel: Basti sollte endlich Spanisch können. Nicht fließend, nur genug, um sich durchzuschlagen. Es gab keine App, die trainierte, was uns wirklich fehlte — also baute ich uns eine, am Küchentisch, als HTML-Bastelei für den Urlaub. Basti kämpfte wochenlang mit dem Subjuntivo, ich mit <em>tengo</em> statt <em>teno</em>. Irgendwann saßen die Formen bei uns beiden — und aus der Urlaubs-App wurde ConjuExpert, weil unsere Sprachlehrerin gerade Niederländisch lernte und meine beste Freundin Französisch.</p>
         <p>Was ich seitdem weiß: Übung, die zum eigenen Tempo passt, ist der Unterschied zwischen Aufgeben und Dranbleiben — bei uns genauso wie bei euren Schülern. <a href="/blog/unsere-geschichte/">Die ganze Geschichte gibt's hier →</a></p>
       </div>
+    </div>
+  </section>
+
+  <section class="block demo">
+    <div class="wrap demo-in">
+      <div class="phone-wrap">
+        <div class="phone"><video autoplay muted loop playsinline webkit-playsinline preload="auto" poster="/landing/app-demo-poster.jpg" aria-label="ConjuExpert in Aktion: ein Verb live konjugieren"><source src="/landing/app-demo.mp4" type="video/mp4"></video></div>
+      </div>
+      <p class="demo-cap">Genau das üben eure Schüler zwischen den Stunden — Konjugationstabellen wie im Unterricht, nur als Quiz statt als Blatt Papier.</p>
+      <a class="btn btn-primary" href="https://conjuexpert.app"><span class="g"></span><span class="l">Jetzt selbst ausprobieren</span></a>
     </div>
   </section>
 
