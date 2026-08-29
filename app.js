@@ -3164,6 +3164,7 @@ function _extends() { return _extends = Object.assign ? Object.assign.bind() : f
 const {
   useState,
   useEffect,
+  useLayoutEffect,
   useRef,
   useMemo
 } = React;
@@ -3607,6 +3608,21 @@ function clampMenuPos(wrapEl) {
     return null;
   }
 }
+/* Panel-Position nachführen, solange das Menü offen ist: Nach "Alle"/"Keine"
+   ändert sich die Zeilen-Geometrie (die Filterzeile gleitet per CSS-Transition
+   an ihre neue Position), aber das absolut positionierte Panel behielte seinen
+   beim Öffnen gemessenen Offset — und ragte aus dem Rahmen ("Dropdown hüpft
+   aus dem Bild", 29.08.). Eine einzelne Sofort-Messung erwischt noch die alte
+   Geometrie, deshalb zeitversetzt nachklemmen, bis die Animation steht. */
+function useMenuReclamp(open, wrapRef, setMpos, dep) {
+  useLayoutEffect(() => {
+    if (!open) return;
+    const clamp = () => { if (wrapRef.current) setMpos(clampMenuPos(wrapRef.current)); };
+    clamp();
+    const ts = [setTimeout(clamp, 150), setTimeout(clamp, 400), setTimeout(clamp, 800)];
+    return () => ts.forEach(clearTimeout);
+  }, [open, dep]);
+}
 function TenseDropdown({
   lang,
   tenses,
@@ -3622,6 +3638,7 @@ function TenseDropdown({
   const wrapRef = useRef(null);
   const [mpos, setMpos] = useState(null);
   const onCount = tenses.filter(t => isOn(t.id)).length;
+  useMenuReclamp(open, wrapRef, setMpos, onCount);
   const cur = single ? (tenses.find(t => isOn(t.id)) || {}).label : null;
   const summary = single ? cur || "—" : onCount === tenses.length || onCount === 0 ? tr("all_tenses") : onCount + " / " + tenses.length;
   return /*#__PURE__*/React.createElement("div", {
@@ -3741,6 +3758,11 @@ function MultiDropdown({
   }
   const onCount = options.filter(o => isOn(o.id)).length;
   const summary = onCount === options.length || onCount === 0 ? tr("all_themes") : onCount + " / " + options.length;
+  // Position bei JEDER Auswahl-Änderung neu klemmen, solange das Menü offen
+  // ist: "Alle"/"Keine" ändert die Knopf-Beschriftung, das Layout fließt um,
+  // der Knopf verrutscht — mit dem beim Öffnen eingefrorenen Offset hüpfte
+  // das Panel sonst aus dem Bild (Janine, 01.09.).
+  useMenuReclamp(open, wrapRef, setMpos, onCount);
   return /*#__PURE__*/React.createElement("div", {
     className: "tdwrap",
     ref: wrapRef,
