@@ -126,6 +126,7 @@ export const clusters = [
       { slug: "/blog/zukunft-zullen-niederlaendisch", title: "Die Zukunft im Niederländischen: zullen + Infinitiv", live: true },
       { slug: "/blog/niederlaendisch-praesens-t-regel", title: "Das niederländische Präsens: Stamm + t-Regel (ik werk, jij werkt)", live: true },
       { slug: "/blog/imperfectum-niederlaendisch", title: "Das Imperfectum der schwachen Verben (-te/-de) im Niederländischen", live: true },
+      { slug: "/blog/wichtigste-verben-niederlaendisch", title: "Die wichtigsten niederländischen Verben: zijn, hebben, gaan, kunnen", live: true },
     ],
   },
   {
@@ -187,6 +188,7 @@ export const clusters = [
       { slug: "/blog/imperativo-spanisch", title: "Der Imperativo: Befehle und Bitten auf Spanisch souverän geben", live: true },
       { slug: "/blog/conjuguemos-fuer-erwachsene", title: "Conjuguemos für Erwachsene: Stärken und Grenzen", live: true },
       { slug: "/blog/subjuntivo-bilden-endungen", title: "Subjuntivo bilden — die spanischen Endungen Schritt für Schritt", live: true },
+      { slug: "/blog/gustar-spanisch", title: "gustar & Co.: die umgekehrte Konstruktion verstehen", live: true },
     ],
   },
   {
