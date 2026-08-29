@@ -63,7 +63,7 @@ Deno.serve(async (req) => {
 
   const { data: promo, error: promoError } = await supaAdmin
     .from("promo_codes")
-    .select("code, months, active, max_uses, current_uses, expires_at")
+    .select("code, months, days, active, max_uses, current_uses, expires_at")
     .eq("code", code.trim().toUpperCase())
     .eq("active", true)
     .single();
@@ -123,7 +123,11 @@ Deno.serve(async (req) => {
     });
   }
 
-  const premiumUntil = promo.months
+  // Wochen-/Tage-genaue Codes (days) haben Vorrang vor Monats-Codes (months);
+  // ohne beides gilt der Code als zeitlich unbegrenzt (2099).
+  const premiumUntil = promo.days
+    ? new Date(Date.now() + promo.days * 24 * 60 * 60 * 1000).toISOString()
+    : promo.months
     ? new Date(Date.now() + promo.months * 30 * 24 * 60 * 60 * 1000).toISOString()
     : "2099-12-31T00:00:00.000Z";
 
