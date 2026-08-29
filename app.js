@@ -18091,9 +18091,10 @@ function App() {
   // Loggt sich jemand ein, während gerade ein Conversion-Nudge offen liegt
   // (z. B. über den Header-Login statt über den Nudge-Button), diesen Nudge
   // sofort schließen — „Hol dir ein Konto" ergibt für Eingeloggte keinen Sinn.
-  // Hilfe- und Kachel-Tipp bleiben stehen (gelten auch für Konto-Nutzer).
+  // Hilfe-, Kachel- und Homescreen-Tipp (p2) bleiben stehen (gelten auch für
+  // Konto-Nutzer).
   useEffect(() => {
-    if (supaUser && journey && ["p1", "p2", "p3", "tend", "p8"].indexOf(journey) >= 0) {
+    if (supaUser && journey && ["p1", "p3", "tend", "p8"].indexOf(journey) >= 0) {
       setJourney(null);
     }
   }, [supaUser, journey]);
@@ -18421,11 +18422,12 @@ function App() {
       persist("kunju-acts", acts);
       if (acts >= 8) setJourney(j => j || "reorder");
     }
-    if (supaUser) return; // P1/P2 target anonymous schnupperer
     const r = recall("kunju-jrounds", 0) + 1;
     persist("kunju-jrounds", r);
     const standalone = window.navigator.standalone === true || !!(window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
-    if (r === 5 && !recall("kunju-j-p1", false)) {
+    // P1 (Konto-Hinweis) nur für anonyme Schnupperer; der Homescreen-Tipp (P2)
+    // gilt für ALLE, solange die App nicht schon vom Homescreen läuft.
+    if (!supaUser && r === 5 && !recall("kunju-j-p1", false)) {
       setJourney(j => j || "p1");
     } else if (r >= 12 && !standalone && !recall("kunju-j-p2", false) && !recall("kunju-install-dismissed", false)) {
       setJourney(j => j || "p2");

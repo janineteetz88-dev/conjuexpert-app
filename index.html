@@ -779,6 +779,15 @@ body {
 #approot[data-theme="dark"] .offlinebar { color: #ffb068; }
 .content { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; background: color-mix(in srgb, var(--lang-color, transparent) 8%, var(--bg)); transition: background 0.4s; }
 .content::-webkit-scrollbar { width: 0; }
+/* Maus-Geräte (Desktop): schmaler sichtbarer Scrollbalken im Inhaltsbereich —
+   am Handy bleibt er versteckt (Overlay-Scroll reicht dort), aber mit der Maus
+   fehlte sonst jede Greif- und Orientierungsmöglichkeit. */
+@media (pointer: fine) {
+  .content, .zt-board { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--text) 28%, transparent) transparent; }
+  .content::-webkit-scrollbar, .zt-board::-webkit-scrollbar { width: 8px; }
+  .content::-webkit-scrollbar-thumb, .zt-board::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--text) 28%, transparent); border-radius: 999px; }
+  .content::-webkit-scrollbar-track, .zt-board::-webkit-scrollbar-track { background: transparent; }
+}
 .legal-appfoot { flex: none; text-align: center; padding: 8px 14px calc(9px + env(safe-area-inset-bottom, 0px)); margin-top: 0; font-size: 11px; line-height: 1.5; color: var(--muted); background: var(--surface); border-top: 1px solid var(--border); }
 .legal-appfoot a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; padding: 4px 2px; white-space: nowrap; }
 .legal-appfoot a:hover { color: var(--text); }
@@ -3350,7 +3359,7 @@ body > .tweaks-panel, .tweaks-panel { font-family: var(--font-body); }
 
 
 <script defer src="/vendor/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p"></script>
-<script defer src="/app.js?v=c-sand-235"></script>
+<script defer src="/app.js?v=c-sand-236"></script>
 
 
 <!-- App-Bundle: /app.js ist die alleinige Quelle der React-App (Engine + Übersetzungen + UI). Frühere Inline-Blöcke entfernt — sie kollidierten mit app.js (__TwkCheck) und ließen #root leer. NICHT npm run build:app ausführen. -->
