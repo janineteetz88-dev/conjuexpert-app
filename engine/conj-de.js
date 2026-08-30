@@ -248,7 +248,11 @@
     return tenses;
   }
   function stemOf(verb) { if (verb.endsWith("en")) return verb.slice(0, -2); if (verb.endsWith("n")) return verb.slice(0, -1); return null; }
-  function needsE(stem) { return /([dt]|[^aeioulrmnh][mn])$/.test(stem); }
+  // e-Einschub: nach d/t und nach Konsonant+n/m (atmen→atmete, öffnen→öffnete).
+  // Das h in der Ausschlussklasse schützt wohnen/lehnen (wohnte) — es darf aber
+  // nicht die ch-Stämme mitfangen: zeichnen/rechnen brauchen den Einschub
+  // (zeichnete, du rechnest, gezeichnet — nicht "zeichnte"/"gerechnt").
+  function needsE(stem) { return /([dt]|[^aeioulrmnh][mn]|ch[nm])$/.test(stem); }
 
   function presentForms(verb, du, er) {
     const stem = stemOf(verb), e = needsE(stem) ? "e" : "";

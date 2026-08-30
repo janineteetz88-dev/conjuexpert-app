@@ -244,7 +244,10 @@
     return tenses;
   }
   function stemOf(verb) { if (verb.endsWith("en")) return verb.slice(0, -2); if (verb.endsWith("n")) return verb.slice(0, -1); return null; }
-  function needsE(stem) { return /([dt]|[^aeioulrmnh][mn])$/.test(stem); }
+  // e-Einschub auch bei ch-Stämmen (zeichnen→zeichnete, rechnen→du rechnest) —
+  // die wohnen-Ausnahme (h) darf die ch-Digraphe nicht mitfangen. Muss mit
+  // engine/conj-de.js identisch bleiben.
+  function needsE(stem) { return /([dt]|[^aeioulrmnh][mn]|ch[nm])$/.test(stem); }
 
   function presentForms(verb, du, er) {
     const stem = stemOf(verb), e = needsE(stem) ? "e" : "";
@@ -19312,6 +19315,10 @@ if ("serviceWorker" in navigator) {
     // Wort-Übersetzungs-Cache ebenso: wtr → wtr2 (alte Einträge konnten
     // erfundene Scheinwörter wie "partieren" enthalten).
     Object.keys(localStorage).filter(function (k) { return k.indexOf("kunju-wtr-") === 0; }).forEach(function (k) { localStorage.removeItem(k); });
+    // Gezielter Purge: DE-Sätze zu ch-Stamm-Verben (zeichnen, rechnen, …)
+    // konnten falsche Formen ("zeichnten") aus der Engine vor dem
+    // e-Einschub-Fix enthalten — nur diese Einträge verwerfen.
+    Object.keys(localStorage).filter(function (k) { return /^kunju-cloze28-de-([^-]*chn[^-]*|tragen|stopfen)-/.test(k); }).forEach(function (k) { localStorage.removeItem(k); });
   } catch (e) {}
 })();
 ;(function(){try{var s=document.getElementById('app-splash');if(!s)return;requestAnimationFrame(function(){requestAnimationFrame(function(){s.style.opacity='0';setTimeout(function(){if(s&&s.parentNode)s.parentNode.removeChild(s);},400);});});}catch(e){}})();
