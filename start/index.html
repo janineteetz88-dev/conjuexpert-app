@@ -727,6 +727,16 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
     </div>
   </section>
 
+<section class="block" id="feedbackTestimonials" style="display:none;padding-top:6px">
+    <div class="wrap">
+      <div class="pain-cards">
+        <figure class="pain-card reveal rv-l" data-d="1"><blockquote>★★★★★ „I really love the app! The best is the function where you get your own stories out of your favorite topics and saved words. Its awesome — using it every free second I get."<br><small>— Jon</small></blockquote></figure>
+        <figure class="pain-card reveal pop" data-d="2"><blockquote>★★★★★ „Cooles Tool, macht süchtig — durch die individuelle Zielsetzungsfunktion bleibe ich seit Tagen am Ball!"<br><small>— Mandy</small></blockquote></figure>
+        <figure class="pain-card reveal rv-r" data-d="3"><blockquote>★★★★ „Coole App, moderne Lernmethodik. Ich habe mich für das monatliche Abo entschieden."<br><small>— Wolfgang S.</small></blockquote></figure>
+      </div>
+    </div>
+  </section>
+
 <section class="block pain" id="pain">
     <div class="wrap">
       <div class="pain-head reveal">
@@ -886,7 +896,8 @@ durch deine Lieblingsthemen.</h2>
     feedback30: {
       h1: '30 Tage Premium testen — kostenlos, mit Konto und Code.',
       lead: 'Leg dir ein kostenloses Konto an, gib beim Einlösen den Code FEEDBACK30 ein und übe 30 Tage mit allen Premium-Funktionen. Kein Abo, keine Kreditkarte — wir wollen dafür nur dein ehrliches Feedback.',
-      cta: 'Kostenloses Konto + 30 Tage Premium sichern'
+      cta: 'Kostenloses Konto + 30 Tage Premium sichern',
+      redeemCode: 'FEEDBACK30'
     }
   };
   try {
@@ -902,6 +913,30 @@ durch deine Lieblingsthemen.</h2>
         document.querySelectorAll('[data-i18n="start.cta"]').forEach(function(el) {
           var span = el.querySelector('.l');
           (span || el).textContent = story.cta;
+        });
+      }
+      if (msg === 'feedback30') {
+        // Nur für diese Variante sichtbar, damit der separat laufende
+        // Struktur-Test (start/ vs. start-mitte/ vs. start-kurz/) nicht durch
+        // eine zusätzliche Sektion verfälscht wird.
+        var tst = document.getElementById('feedbackTestimonials');
+        if (tst) tst.style.display = '';
+      }
+      if (story.redeemCode) {
+        // Führt direkt zur Konto-Erstellung mit vorausgefülltem Coupon statt in
+        // den normalen Gast-Modus — der Button verspricht das Konto, also soll
+        // der Klick auch genau dort landen (Message-Match). data-i18n sitzt je
+        // nach Button mal auf dem <a> selbst, mal auf einem inneren <span> —
+        // deshalb über closest('a') immer den echten Link-Tag treffen, nicht
+        // versehentlich ein href-Attribut auf dem span setzen (wirkungslos).
+        document.querySelectorAll('[data-i18n="start.cta"]').forEach(function(el) {
+          var a = el.closest('a');
+          if (!a) return;
+          try {
+            var url = new URL(a.getAttribute('href'), window.location.href);
+            url.searchParams.set('redeem', story.redeemCode);
+            a.setAttribute('href', url.toString());
+          } catch (e) {}
         });
       }
       if (window.plausible) window.plausible('landing_view', { props: { variant: msg } });

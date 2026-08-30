@@ -18710,6 +18710,24 @@ function App() {
     url.searchParams.delete("checkout");
     window.history.replaceState({}, "", url.pathname + url.search + url.hash);
   }, []);
+  // Deep-Link von der Feedback30-Landingpage: ?redeem=CODE → direkt Konto-
+  // Erstellung mit vorausgefülltem Coupon öffnen, statt in den Gast-Modus.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const rc = (params.get("redeem") || "").trim().toUpperCase();
+    if (!rc) return;
+    setShowOnboard(false);
+    setShowTour(false);
+    openPlanSelectWithCode(rc);
+    if (!supaUser) {
+      setPendingCoupon(true);
+      setShowPlanSelect(false);
+      setShowLogin(true);
+    }
+    const url = new URL(window.location.href);
+    url.searchParams.delete("redeem");
+    window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+  }, []);
   // Deep-Link aus den Lifecycle-Mails: ?feedback=1 → Feedback-Formular öffnen.
   // Merkt nur den Wunsch; der Opener unten wartet auf aufgelöste Auth.
   useEffect(() => {
