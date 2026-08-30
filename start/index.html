@@ -882,6 +882,11 @@ durch deine Lieblingsthemen.</h2>
     storyD: {
       h1: 'Grammatik verstanden ist nicht dasselbe wie sie sprechen können.',
       lead: 'ConjuExpert trainiert aktives Abrufen, bis die Formen im Gespräch da sind — nicht nur auf dem Papier.'
+    },
+    feedback30: {
+      h1: '30 Tage Premium testen — kostenlos, mit Konto und Code.',
+      lead: 'Leg dir ein kostenloses Konto an, gib beim Einlösen den Code FEEDBACK30 ein und übe 30 Tage mit allen Premium-Funktionen. Kein Abo, keine Kreditkarte — wir wollen dafür nur dein ehrliches Feedback.',
+      cta: 'Kostenloses Konto + 30 Tage Premium sichern'
     }
   };
   try {
@@ -893,6 +898,12 @@ durch deine Lieblingsthemen.</h2>
       var lead = document.getElementById('lpLead');
       if (h1) h1.textContent = story.h1;
       if (lead) lead.textContent = story.lead;
+      if (story.cta) {
+        document.querySelectorAll('a.btn, a.btn-primary, a.btn-ghost').forEach(function(a) {
+          var span = a.querySelector('.l');
+          (span || a).textContent = story.cta;
+        });
+      }
       if (window.plausible) window.plausible('landing_view', { props: { variant: msg } });
     } else if (window.plausible) {
       window.plausible('landing_view', { props: { variant: 'default' } });
