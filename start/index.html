@@ -899,9 +899,9 @@ durch deine Lieblingsthemen.</h2>
       if (h1) h1.textContent = story.h1;
       if (lead) lead.textContent = story.lead;
       if (story.cta) {
-        document.querySelectorAll('a.btn, a.btn-primary, a.btn-ghost').forEach(function(a) {
-          var span = a.querySelector('.l');
-          (span || a).textContent = story.cta;
+        document.querySelectorAll('[data-i18n="start.cta"]').forEach(function(el) {
+          var span = el.querySelector('.l');
+          (span || el).textContent = story.cta;
         });
       }
       if (window.plausible) window.plausible('landing_view', { props: { variant: msg } });
