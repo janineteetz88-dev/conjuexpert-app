@@ -189,6 +189,7 @@ export const clusters = [
       { slug: "/blog/conjuguemos-fuer-erwachsene", title: "Conjuguemos für Erwachsene: Stärken und Grenzen", live: true },
       { slug: "/blog/subjuntivo-bilden-endungen", title: "Subjuntivo bilden — die spanischen Endungen Schritt für Schritt", live: true },
       { slug: "/blog/gustar-spanisch", title: "gustar & Co.: die umgekehrte Konstruktion verstehen", live: true },
+      { slug: "/blog/subjuntivo-imperfecto-spanisch", title: "Subjuntivo Imperfecto: hablara oder hablase – wann du die zweite Subjuntivo-Stufe brauchst", live: true },
     ],
   },
   {
@@ -254,6 +255,7 @@ export const clusters = [
       { slug: "/blog/will-vs-going-to", title: "Die Zukunft im Englischen: will vs. going to", live: true },
       { slug: "/blog/phrasal-verbs-englisch", title: "Phrasal Verbs: englische Verben mit Partikel meistern", live: true },
       { slug: "/blog/gerund-oder-infinitiv", title: "Gerund oder Infinitiv? enjoy doing vs. want to do (Englisch)", live: true },
+      { slug: "/blog/modalverben-englisch", title: "Englische Modalverben: can, could, must, should sicher nutzen", live: true },
     ],
   },
   {
