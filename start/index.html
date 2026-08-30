@@ -713,8 +713,13 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
   <section class="hero" id="hero">
     <div class="wrap hero-grid">
       <div>
+        <div id="founderIntro" style="display:none;align-items:center;gap:12px;margin-bottom:16px">
+          <picture><source srcset="../landing/lifestyle/gruenderin-janine-avatar.webp" type="image/webp"><img src="../landing/lifestyle/gruenderin-janine-avatar.jpg" alt="Shani, Gründerin von ConjuExpert" width="56" height="56" style="border-radius:50%;border:2px solid var(--ink);object-fit:cover;display:block" loading="eager"></picture>
+          <strong style="font-size:17px">Hallo, ich bin Shani 👋</strong>
+        </div>
         <div class="eyebrow"><span class="dot"></span><span data-i18n="hero.eyebrow">bis zu 5 Sprachen parallel lernen</span></div>
         <h1 id="lpH1">Ich will, dass mir bei „anfangen", „aufhören", „mitmachen" nie wieder ein Zweifel kommt.</h1>
+        <p id="lpCallout" style="display:none;font-weight:800;font-size:19px;margin:10px 0 2px"></p>
         <p class="lead" id="lpLead">ConjuExpert übt automatisch genau die Form, bei der du unsicher bist — bis der Zweifel weg ist. Kostenlos, ohne Anmeldung.</p>
         <p class="hero-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="hero.meta"><span class="rb-mark">Direkt im Browser</span> · installierbar · ohne Anmeldung testen</span></p>
         <a class="btn btn-primary" href="https://conjuexpert.app" id="heroCta" style="margin-top:22px;display:inline-flex"><span class="g"></span><span class="l" data-i18n="start.cta">Hier klicken und kostenlos üben →</span></a>
@@ -894,10 +899,12 @@ durch deine Lieblingsthemen.</h2>
       lead: 'ConjuExpert trainiert aktives Abrufen, bis die Formen im Gespräch da sind — nicht nur auf dem Papier.'
     },
     feedback30: {
-      h1: '30 Tage Premium testen — kostenlos, mit Konto und Code.',
-      lead: 'Leg dir ein kostenloses Konto an, gib beim Einlösen den Code FEEDBACK30 ein und übe 30 Tage mit allen Premium-Funktionen. Kein Abo, keine Kreditkarte — wir wollen dafür nur dein ehrliches Feedback.',
+      h1: 'Ich habe ConjuExpert gegründet, weil mir beim Spanischlernen genau das gefehlt hat.',
+      callout: 'Ich suche 100 Tester!',
+      lead: 'Leg dir ein kostenloses Konto an, gib den Code FEEDBACK30 ein und übe 30 Tage mit allen Premium-Funktionen — kostenlos, kein Abo. Sag mir danach ehrlich, wo es hakt.',
       cta: 'Kostenloses Konto + 30 Tage Premium sichern',
-      redeemCode: 'FEEDBACK30'
+      redeemCode: 'FEEDBACK30',
+      founderIntro: true
     }
   };
   try {
@@ -909,6 +916,14 @@ durch deine Lieblingsthemen.</h2>
       var lead = document.getElementById('lpLead');
       if (h1) h1.textContent = story.h1;
       if (lead) lead.textContent = story.lead;
+      if (story.founderIntro) {
+        var fi = document.getElementById('founderIntro');
+        if (fi) fi.style.display = 'flex';
+      }
+      if (story.callout) {
+        var co = document.getElementById('lpCallout');
+        if (co) { co.textContent = story.callout; co.style.display = 'block'; }
+      }
       if (story.cta) {
         document.querySelectorAll('[data-i18n="start.cta"]').forEach(function(el) {
           var span = el.querySelector('.l');
