@@ -127,6 +127,7 @@ export const clusters = [
       { slug: "/blog/niederlaendisch-praesens-t-regel", title: "Das niederländische Präsens: Stamm + t-Regel (ik werk, jij werkt)", live: true },
       { slug: "/blog/imperfectum-niederlaendisch", title: "Das Imperfectum der schwachen Verben (-te/-de) im Niederländischen", live: true },
       { slug: "/blog/wichtigste-verben-niederlaendisch", title: "Die wichtigsten niederländischen Verben: zijn, hebben, gaan, kunnen", live: true },
+      { slug: "/blog/modalverben-niederlaendisch", title: "Niederländische Modalverben: kunnen, moeten, mogen, willen", live: true },
     ],
   },
   {
@@ -256,6 +257,7 @@ export const clusters = [
       { slug: "/blog/phrasal-verbs-englisch", title: "Phrasal Verbs: englische Verben mit Partikel meistern", live: true },
       { slug: "/blog/gerund-oder-infinitiv", title: "Gerund oder Infinitiv? enjoy doing vs. want to do (Englisch)", live: true },
       { slug: "/blog/modalverben-englisch", title: "Englische Modalverben: can, could, must, should sicher nutzen", live: true },
+      { slug: "/blog/conditionals-englisch", title: "Conditionals (if-Sätze): Typ 1, 2 und 3 verstehen", live: true },
     ],
   },
   {
@@ -312,6 +314,16 @@ export const clusters = [
     hub: null,
     spokes: [
       { slug: "/blog/reflexive-verben-franzoesisch", title: "Reflexive Verben im Französischen (se lever, s'appeler)", live: true },
+    ],
+  },
+  {
+    id: "nl-anwendung",
+    lang: "nl",
+    label: "Niederländisch",
+    color: "#30c95a",
+    hub: null,
+    spokes: [
+      { slug: "/blog/smalltalk-verben-niederlaendisch", title: "Niederländische Verben für Smalltalk: Die 4 Fragen, auf die es ankommt", live: true },
     ],
   },
 ];
