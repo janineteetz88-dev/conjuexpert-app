@@ -128,6 +128,7 @@ export const clusters = [
       { slug: "/blog/imperfectum-niederlaendisch", title: "Das Imperfectum der schwachen Verben (-te/-de) im Niederländischen", live: true },
       { slug: "/blog/wichtigste-verben-niederlaendisch", title: "Die wichtigsten niederländischen Verben: zijn, hebben, gaan, kunnen", live: true },
       { slug: "/blog/modalverben-niederlaendisch", title: "Niederländische Modalverben: kunnen, moeten, mogen, willen", live: true },
+      { slug: "/blog/smalltalk-verben-niederlaendisch", title: "Niederländische Verben für Smalltalk: Die 4 Fragen, auf die es ankommt", live: true },
     ],
   },
   {
@@ -314,16 +315,6 @@ export const clusters = [
     hub: null,
     spokes: [
       { slug: "/blog/reflexive-verben-franzoesisch", title: "Reflexive Verben im Französischen (se lever, s'appeler)", live: true },
-    ],
-  },
-  {
-    id: "nl-anwendung",
-    lang: "nl",
-    label: "Niederländisch",
-    color: "#30c95a",
-    hub: null,
-    spokes: [
-      { slug: "/blog/smalltalk-verben-niederlaendisch", title: "Niederländische Verben für Smalltalk: Die 4 Fragen, auf die es ankommt", live: true },
     ],
   },
 ];
