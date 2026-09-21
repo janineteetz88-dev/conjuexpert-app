@@ -76,89 +76,25 @@ jobs:
             echo "::error::Pages-Source steht auf '$verified' und konnte mit dem verfügbaren Token NICHT umgestellt werden. Sofort-Fix (1 Klick): Repo-Settings → Pages → Source → 'GitHub Actions'. Dauerhaft: fine-grained PAT (nur dieses Repo, Permission 'Pages: write') als Secret PAGES_ADMIN_TOKEN hinterlegen. Bis dahin racet der klassische Voll-Repo-Deploy bei jedem Push gegen den Allowlist-Build — dank Jekyll-Excludes (_config.yml) ohne Quellcode-Exposure, aber mit unminifiziertem Ergebnis."
           fi
 
-      - name: Publish-Verzeichnis aus Allowlist bauen
-        run: |
-          set -euo pipefail
-          OUT="_site"
-          rm -rf "$OUT"
-          mkdir -p "$OUT"
-
-          # Einzeldateien, die öffentlich erreichbar sein müssen.
-          # (.nojekyll bewusst NICHT dabei: Die Datei wurde aus dem Repo
-          # gelöscht, damit der klassische Branch-Deploy — falls die
-          # Pages-Source je wieder auf "Deploy from a branch" steht — als
-          # Jekyll-Build mit den Ausschlüssen aus _config.yml läuft, statt den
-          # kompletten Repo-Root auszuliefern. Zweite Verteidigungslinie.)
-          FILES=(
-            index.html app.js manifest.webmanifest sw.js 404.html
-            robots.txt sitemap.xml sitemap-core.xml sitemap-verbs.xml llms.txt CNAME
-            google21132ae6fe839054.html favicon.svg apple-touch-icon.png
-            icon-192.png icon-512.png icon-maskable.png
-            agb.html datenschutz.html impressum.html barrierefreiheit.html
-            bildnachweise.html back-to-app.js
-            logo-wordmark.png
-          )
-          # logo-wordmark.png wird nicht von der Site selbst verlinkt, aber
-          # per absoluter URL in den Transaktions-Mails eingebettet
-          # (emails/*/email-1-welcome.html) — muss deshalb trotzdem live sein.
-
-          # Ganze Verzeichnisse, die öffentlich erreichbar sein müssen.
-          DIRS=(engine fonts vendor blog konjugation landing bewertungen start)
-
-          missing=0
-          for f in "${FILES[@]}"; do
-            if [ -f "$f" ]; then
-              cp "$f" "$OUT/"
-            else
-              echo "::warning::Allowlist-Datei fehlt im Repo, übersprungen: $f"
-            fi
-          done
-          for d in "${DIRS[@]}"; do
-            if [ -d "$d" ]; then
-              cp -r "$d" "$OUT/"
-            else
-              echo "::error::Allowlist-Verzeichnis fehlt im Repo: $d"
-              missing=1
-            fi
-          done
-          # Diese 3 Dateien sind für App-Start bzw. SEO essenziell — ohne sie
-          # lieber hart abbrechen als eine kaputte Seite deployen.
-          for critical in index.html app.js sw.js; do
-            [ -f "$OUT/$critical" ] || { echo "::error::Kritische Datei fehlt: $critical"; missing=1; }
-          done
-          [ "$missing" -eq 0 ] || exit 1
-
-          {
-            echo "## Deploy-Allowlist — Publish-Verzeichnis"
-            echo ""
-            echo "- Dateien gesamt: $(find "$OUT" -type f | wc -l)"
-            echo "- Größe: $(du -sh "$OUT" | cut -f1)"
-            echo ""
-            echo "### NICHT enthalten (bewusst ausgeschlossen)"
-            echo ""
-            comm -23 <(ls -A | sort) <(printf '%s\n' "${FILES[@]}" "${DIRS[@]}" | sort) | sed 's/^/- /'
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      # PageSpeed Insights (18.08.2026) zeigte auf Mobil FCP 3,8s / LCP 4,7s (rot)
-      # bei TBT 10ms / CLS 0 (grün) — reine Downloadgröße vor dem ersten Render war
-      # der Engpass, nicht Interaktivität. Minifiziert NUR die Kopie in _site, die
-      # Quelldateien im Repo (app.js, index.html) bleiben unverändert und direkt
-      # editierbar — siehe scripts/minify-for-deploy.mjs.
-      - name: Node.js einrichten (für Minifizierung)
+      - name: Node.js einrichten
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: JS/CSS im Publish-Verzeichnis minifizieren
+      # Baut das öffentliche Publish-Verzeichnis `_site` aus der ALLOWLIST in
+      # scripts/build-site.mjs — der EINZIGEN Quelle der Wahrheit, die auch der
+      # externe Cloudflare-Pages-Build (`npm ci && npm run build:site`) nutzt.
+      # Das Skript kopiert nur die freigegebenen Dateien/Ordner (sensible Pfade
+      # wie /supabase/, /docs/, /scripts/, /package.json bleiben so aus dem
+      # Live-Verzeichnis) und minifiziert JS/CSS NUR in der _site-Kopie; die
+      # Quelldateien im Repo bleiben unverändert und direkt editierbar.
+      # PageSpeed (18.08.2026): reine Downloadgröße vor dem ersten Render war der
+      # Engpass — deshalb die Minifizierung.
+      - name: Publish-Verzeichnis bauen (Allowlist + Minifizierung)
         run: |
           set -euo pipefail
           npm ci
-          {
-            echo "### Minifizierung (nur im Publish-Verzeichnis, Quelldateien unverändert)"
-            echo '```'
-            node scripts/minify-for-deploy.mjs _site
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
+          npm run build:site
 
       - uses: actions/upload-pages-artifact@v3
         with:

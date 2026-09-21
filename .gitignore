@@ -6,6 +6,9 @@
 .env
 .env.*
 node_modules/
+# Publish-Verzeichnis aus `npm run build:site` — wird bei jedem Deploy frisch
+# gebaut und nie committet.
+_site/
 scripts/_preview/out/
 scripts/social/**/.capframes/
 scripts/social/**/.frames
