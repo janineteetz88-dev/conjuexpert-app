@@ -719,6 +719,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
         </div>
         <div class="eyebrow"><span class="dot"></span><span data-i18n="hero.eyebrow">bis zu 5 Sprachen parallel lernen</span></div>
         <h1 id="lpH1">Ich will, dass mir bei „anfangen", „aufhören", „mitmachen" nie wieder ein Zweifel kommt.</h1>
+        <p id="lpStory" style="display:none;font-size:16px;line-height:1.5;margin:12px 0"></p>
         <p id="lpCallout" style="display:none;font-weight:800;font-size:19px;margin:10px 0 2px"></p>
         <p class="lead" id="lpLead">ConjuExpert übt automatisch genau die Form, bei der du unsicher bist — bis der Zweifel weg ist. Kostenlos, ohne Anmeldung.</p>
         <p class="hero-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="hero.meta"><span class="rb-mark">Direkt im Browser</span> · installierbar · ohne Anmeldung testen</span></p>
@@ -726,7 +727,7 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
       </div>
       <div class="hero-shot">
         <div class="phone-wrap">
-          <div class="phone"><img src="../landing/app-demo-poster.jpg" alt="ConjuExpert in Aktion: ein Verb live konjugieren" loading="eager" fetchpriority="high" style="width:100%;height:100%;object-fit:cover" /></div>
+          <div class="phone"><video src="../landing/app-demo.mp4" poster="../landing/app-demo-poster.jpg" aria-label="ConjuExpert in Aktion: ein Verb live konjugieren" autoplay muted loop playsinline preload="auto" style="width:100%;height:100%;object-fit:cover"></video></div>
         </div>
       </div>
     </div>
@@ -734,10 +735,8 @@ footer{padding:56px 0 44px;border-top:1px solid var(--border)}
 
 <section class="block" id="feedbackTestimonials" style="display:none;padding-top:6px">
     <div class="wrap">
-      <div class="pain-cards">
-        <figure class="pain-card reveal rv-l" data-d="1"><blockquote>★★★★★ „I really love the app! The best is the function where you get your own stories out of your favorite topics and saved words. Its awesome — using it every free second I get."<br><small>— Jon</small></blockquote></figure>
-        <figure class="pain-card reveal pop" data-d="2"><blockquote>★★★★★ „Cooles Tool, macht süchtig — durch die individuelle Zielsetzungsfunktion bleibe ich seit Tagen am Ball!"<br><small>— Mandy</small></blockquote></figure>
-        <figure class="pain-card reveal rv-r" data-d="3"><blockquote>★★★★ „Coole App, moderne Lernmethodik. Ich habe mich für das monatliche Abo entschieden."<br><small>— Wolfgang S.</small></blockquote></figure>
+      <div id="testiCarousel" style="max-width:520px;margin:0 auto;min-height:150px;position:relative">
+        <figure class="pain-card reveal" id="testiCard" style="margin:0;opacity:1;transform:none;transition:opacity .4s ease"><blockquote id="testiBody">Lädt…</blockquote></figure>
       </div>
     </div>
   </section>
@@ -899,14 +898,47 @@ durch deine Lieblingsthemen.</h2>
       lead: 'ConjuExpert trainiert aktives Abrufen, bis die Formen im Gespräch da sind — nicht nur auf dem Papier.'
     },
     feedback30: {
-      h1: 'Ich habe ConjuExpert gegründet, weil mir beim Spanischlernen genau das gefehlt hat.',
-      callout: 'Ich suche 100 Tester!',
+      eyebrow: 'Gebaut für Sprachschulen · jetzt für dich',
+      h1: 'Ich habe ConjuExpert für Sprachschulen gebaut.',
+      story: 'Damit Schüler:innen zwischen dem Unterricht gezielt genau die Verbform üben können, bei der sie unsicher sind. Jetzt will ich wissen: Hilft dir das auch ganz persönlich beim Deutschlernen? Bevor ich weiter für Schulen baue, brauche ich ehrliches Feedback von echten Nutzern wie dir.',
+      callout: 'Hilfst du mit? Ich suche 100 Tester!',
       lead: 'Leg dir ein kostenloses Konto an, gib den Code FEEDBACK30 ein und übe 30 Tage mit allen Premium-Funktionen — kostenlos, kein Abo. Sag mir danach ehrlich, wo es hakt.',
       cta: 'Kostenloses Konto + 30 Tage Premium sichern',
       redeemCode: 'FEEDBACK30',
       founderIntro: true
     }
   };
+  // Echte Bewertungen aus der reviews-Tabelle (Sterne + Zitat unverändert,
+  // nur leicht gekürzt) — läuft nur auf der feedback30-Variante durch.
+  var TESTIMONIALS = [
+    { stars: 5, body: 'I really love the app! The best is the function where you get your own stories out of your favorite topics and saved words. Its awesome — using it every free second I get.', name: 'Jon' },
+    { stars: 5, body: 'Die App ist wirklich gut durchdacht. Die Spiele machen süchtig, und durch die individuelle Zielsetzung bleibe ich seit Tagen am Ball!', name: 'Mandy' },
+    { stars: 4, body: 'Coole App. Mir gefällt der Aufbau und die Quiz-Varianten gut — merkt man, dass sich das Team mit moderner Lernmethodik beschäftigt hat.', name: 'Richard Wagner' },
+    { stars: 5, body: 'Llevo un tiempo usando la aplicación y me gusta mucho. Los juegos son variados — ¡lo que más disfruto son los retos!', name: 'Miguelle' },
+    { stars: 5, body: 'Ich übe jetzt seit 7 Tagen straight. Ich habe echt das Gefühl, vorwärtszukommen — durch die Challenge.', name: 'Mira' },
+    { stars: 5, body: 'Gefällt mir gut, mag die Spielefunktionen alle. Finde die Kurzgeschichten mit den eigenen Themen sehr hilfreich. Fetzt mir!', name: 'anna schmu' },
+    { stars: 4, body: 'Cooles Design, Handling leicht verstanden. Bin gespannt, welche Features noch kommen.', name: 'Roy' },
+    { stars: 3, body: 'Modernes Design, für mich fast zu viele Funktionen — aber die automatische Merkliste zu meinem Thema finde ich richtig gut. Ich hab mich fürs Abo entschieden.', name: 'Wolfgang S.' }
+  ];
+  function startTestimonialCarousel() {
+    var body = document.getElementById('testiBody');
+    var card = document.getElementById('testiCard');
+    if (!body || !card) return;
+    var i = 0;
+    function render() {
+      var t = TESTIMONIALS[i];
+      body.innerHTML = '★★★★★'.slice(0, t.stars) + ' „' + t.body + '"<br><small>— ' + t.name + '</small>';
+    }
+    render();
+    setInterval(function() {
+      card.style.opacity = '0';
+      setTimeout(function() {
+        i = (i + 1) % TESTIMONIALS.length;
+        render();
+        card.style.opacity = '1';
+      }, 400);
+    }, 4500);
+  }
   try {
     var params = new URLSearchParams(window.location.search);
     var msg = params.get('msg');
@@ -916,6 +948,14 @@ durch deine Lieblingsthemen.</h2>
       var lead = document.getElementById('lpLead');
       if (h1) h1.textContent = story.h1;
       if (lead) lead.textContent = story.lead;
+      if (story.eyebrow) {
+        var eb = document.querySelector('[data-i18n="hero.eyebrow"]');
+        if (eb) eb.textContent = story.eyebrow;
+      }
+      if (story.story) {
+        var st = document.getElementById('lpStory');
+        if (st) { st.textContent = story.story; st.style.display = 'block'; }
+      }
       if (story.founderIntro) {
         var fi = document.getElementById('founderIntro');
         if (fi) fi.style.display = 'flex';
@@ -936,6 +976,7 @@ durch deine Lieblingsthemen.</h2>
         // eine zusätzliche Sektion verfälscht wird.
         var tst = document.getElementById('feedbackTestimonials');
         if (tst) tst.style.display = '';
+        startTestimonialCarousel();
       }
       if (story.redeemCode) {
         // Führt direkt zur Konto-Erstellung mit vorausgefülltem Coupon statt in
