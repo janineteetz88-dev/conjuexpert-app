@@ -2,6 +2,7 @@
   "type": "module",
   "scripts": {
     "build:app": "node scripts/build-index.mjs",
+    "build:site": "node scripts/build-site.mjs",
     "check:quiz": "node scripts/check-quiz.mjs",
     "test": "node --test scripts/lib/*.test.mjs",
     "lint:blog": "node scripts/lint-blog-standard.mjs",
