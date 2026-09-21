@@ -129,6 +129,7 @@ export const clusters = [
       { slug: "/blog/wichtigste-verben-niederlaendisch", title: "Die wichtigsten niederländischen Verben: zijn, hebben, gaan, kunnen", live: true },
       { slug: "/blog/modalverben-niederlaendisch", title: "Niederländische Modalverben: kunnen, moeten, mogen, willen", live: true },
       { slug: "/blog/smalltalk-verben-niederlaendisch", title: "Niederländische Verben für Smalltalk: Die 4 Fragen, auf die es ankommt", live: true },
+      { slug: "/blog/zou-conditionaal-niederlaendisch", title: "Zou + Infinitiv: Höflichkeit und Irreales im Niederländischen (der Conditionaal)", live: true },
     ],
   },
   {
@@ -216,6 +217,7 @@ export const clusters = [
       { slug: "/blog/conditionnel-franzoesisch", title: "Le conditionnel: höflich bitten und Irreales ausdrücken", live: true },
       { slug: "/blog/reverso-vs-conjuexpert", title: "Reverso vs. ConjuExpert: Wo liegen die Unterschiede?", live: true },
       { slug: "/blog/imperatif-franzoesisch", title: "L'impératif: Aufforderungen und Bitten auf Französisch", live: true },
+      { slug: "/blog/passiv-franzoesisch", title: "Das Passiv im Französischen: la voix passive einfach erklärt (être + participe passé)", live: true },
     ],
   },
   {
@@ -259,6 +261,7 @@ export const clusters = [
       { slug: "/blog/gerund-oder-infinitiv", title: "Gerund oder Infinitiv? enjoy doing vs. want to do (Englisch)", live: true },
       { slug: "/blog/modalverben-englisch", title: "Englische Modalverben: can, could, must, should sicher nutzen", live: true },
       { slug: "/blog/conditionals-englisch", title: "Conditionals (if-Sätze): Typ 1, 2 und 3 verstehen", live: true },
+      { slug: "/blog/present-perfect-continuous", title: "Present Perfect Continuous: I have been waiting — Bildung, since/for und der typische Deutsch-Fehler", live: true },
     ],
   },
   {
