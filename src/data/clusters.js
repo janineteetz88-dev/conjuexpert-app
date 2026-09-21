@@ -127,6 +127,9 @@ export const clusters = [
       { slug: "/blog/niederlaendisch-praesens-t-regel", title: "Das niederländische Präsens: Stamm + t-Regel (ik werk, jij werkt)", live: true },
       { slug: "/blog/imperfectum-niederlaendisch", title: "Das Imperfectum der schwachen Verben (-te/-de) im Niederländischen", live: true },
       { slug: "/blog/wichtigste-verben-niederlaendisch", title: "Die wichtigsten niederländischen Verben: zijn, hebben, gaan, kunnen", live: true },
+      { slug: "/blog/modalverben-niederlaendisch", title: "Niederländische Modalverben: kunnen, moeten, mogen, willen", live: true },
+      { slug: "/blog/smalltalk-verben-niederlaendisch", title: "Niederländische Verben für Smalltalk: Die 4 Fragen, auf die es ankommt", live: true },
+      { slug: "/blog/zou-conditionaal-niederlaendisch", title: "Zou + Infinitiv: Höflichkeit und Irreales im Niederländischen (der Conditionaal)", live: true },
     ],
   },
   {
@@ -214,6 +217,7 @@ export const clusters = [
       { slug: "/blog/conditionnel-franzoesisch", title: "Le conditionnel: höflich bitten und Irreales ausdrücken", live: true },
       { slug: "/blog/reverso-vs-conjuexpert", title: "Reverso vs. ConjuExpert: Wo liegen die Unterschiede?", live: true },
       { slug: "/blog/imperatif-franzoesisch", title: "L'impératif: Aufforderungen und Bitten auf Französisch", live: true },
+      { slug: "/blog/passiv-franzoesisch", title: "Das Passiv im Französischen: la voix passive einfach erklärt (être + participe passé)", live: true },
     ],
   },
   {
@@ -256,6 +260,8 @@ export const clusters = [
       { slug: "/blog/phrasal-verbs-englisch", title: "Phrasal Verbs: englische Verben mit Partikel meistern", live: true },
       { slug: "/blog/gerund-oder-infinitiv", title: "Gerund oder Infinitiv? enjoy doing vs. want to do (Englisch)", live: true },
       { slug: "/blog/modalverben-englisch", title: "Englische Modalverben: can, could, must, should sicher nutzen", live: true },
+      { slug: "/blog/conditionals-englisch", title: "Conditionals (if-Sätze): Typ 1, 2 und 3 verstehen", live: true },
+      { slug: "/blog/present-perfect-continuous", title: "Present Perfect Continuous: I have been waiting — Bildung, since/for und der typische Deutsch-Fehler", live: true },
     ],
   },
   {
@@ -265,7 +271,7 @@ export const clusters = [
     color: "#34c759",
     hub: null,
     spokes: [
-      { slug: "/blog/unsere-geschichte", title: "Wie ConjuExpert entstand — die Gründerstory (v2)", live: true },
+      { slug: "/blog/unsere-geschichte", title: "Wie ConjuExpert entstand — die Gründerstory", live: true },
     ],
   },
   {
@@ -275,7 +281,7 @@ export const clusters = [
     color: "#34c759",
     hub: null,
     spokes: [
-      { slug: "/blog/sprachlern-app-vergleich", title: "Duolingo, Babbel, Busuu & Co.: Was diese Apps wirklich können — und wo sie schweigen (v2)", live: true },
+      { slug: "/blog/sprachlern-app-vergleich", title: "Duolingo, Babbel, Busuu & Co.: Was diese Apps wirklich können — und wo sie schweigen", live: true },
       { slug: "/blog/mit-der-sprache-umgeben", title: "Sich mit der Sprache umgeben: 10 Tipps für zuhause", live: true },
       { slug: "/blog/verbkonjugation-apps-zuverlaessig", title: "Sind Verbkonjugationen in Apps zuverlässig? So testest du dein Tool in zwei Minuten", live: true },
       { slug: "/blog/kostenlose-konjugations-app-ohne-paywall", title: "Kostenlose Konjugations-App: Wo hört Gratis bei Duolingo & Co. wirklich auf?", live: true },

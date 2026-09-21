@@ -63,10 +63,17 @@ function generateCrumbs(type, cluster, spoke) {
 }
 
 function generateRelated(cluster, currentSpoke) {
-  const siblings = cluster.spokes.filter(
-    (s) => s.live && s.slug !== currentSpoke.slug
-  );
-  const cards = siblings.slice(0, 3);
+  const live = cluster.spokes.filter((s) => s.live);
+  const idx = live.findIndex((s) => s.slug === currentSpoke.slug);
+  let cards;
+  if (idx === -1 || live.length <= 4) {
+    cards = live.filter((s) => s.slug !== currentSpoke.slug).slice(0, 3);
+  } else {
+    // Rotierend: die 3 auf den aktuellen Spoke folgenden Geschwister (mit
+    // Umbruch ans Listenende) — so bekommt JEDER Spoke eingehende
+    // Weiterlesen-Links, nicht nur die ersten drei der Liste.
+    cards = [1, 2, 3].map((k) => live[(idx + k) % live.length]);
+  }
   if (cards.length === 0) return null;
 
   const color = cluster.color;
