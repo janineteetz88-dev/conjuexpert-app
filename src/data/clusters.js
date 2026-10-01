@@ -147,6 +147,7 @@ export const clusters = [
       { slug: "/blog/feynman-methode-grammatik", title: "Die Feynman-Methode für Grammatik — erklär es, dann kannst du es", live: true },
       { slug: "/blog/interleaving-sprachenlernen", title: "Interleaving beim Sprachenlernen: warum du Verben und Zeiten mischen solltest statt zu pauken", live: true },
       { slug: "/blog/duolingo-erklaert-keine-grammatik", title: "Duolingo erklärt keine Grammatik — was tun?", live: true },
+      { slug: "/blog/wie-lange-taeglich-ueben", title: "Wie lange täglich üben? Warum 10 Minuten am Tag 2 Stunden am Wochenende schlagen", live: true },
     ],
   },
   {
@@ -193,6 +194,7 @@ export const clusters = [
       { slug: "/blog/subjuntivo-bilden-endungen", title: "Subjuntivo bilden — die spanischen Endungen Schritt für Schritt", live: true },
       { slug: "/blog/gustar-spanisch", title: "gustar & Co.: die umgekehrte Konstruktion verstehen", live: true },
       { slug: "/blog/subjuntivo-imperfecto-spanisch", title: "Subjuntivo Imperfecto: hablara oder hablase – wann du die zweite Subjuntivo-Stufe brauchst", live: true },
+      { slug: "/blog/pluscuamperfecto-spanisch", title: "Pretérito Pluscuamperfecto: había hablado — die spanische Vor-Vergangenheit", live: true },
     ],
   },
   {
@@ -237,6 +239,7 @@ export const clusters = [
       { slug: "/blog/modalverben-deutsch", title: "Modalverben Deutsch: können, müssen, dürfen & Co. sicher einsetzen", live: true },
       { slug: "/blog/reflexive-verben-deutsch", title: "Reflexive Verben Deutsch: mich, dich, sich – und wann es „mir\" statt „mich\" heißt", live: true },
       { slug: "/blog/partizip-ii", title: "Partizip II bilden: die Regel, starke Verben und ihre Ausnahmen", live: true },
+      { slug: "/blog/konjunktiv-2-deutsch", title: "Konjunktiv II: hätte, wäre, würde — höflich und irreal auf Deutsch", live: true },
     ],
   },
   {
