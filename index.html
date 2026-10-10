@@ -2141,6 +2141,11 @@ body {
 .tourpop .pp-sub { margin-bottom: 2px; }
 .tourhead-row { display: flex; align-items: center; gap: 11px; width: 100%; margin-bottom: 7px; }
 .tourbadge { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 19px; color: #fff; flex: none; box-shadow: var(--shadow-sm); }
+/* Onboarding-Tour: feste Höhen, damit Punkte + Button beim Slide-Wechsel NICHT mehr auf eine andere Höhe springen. Mock-Bühne und Beschreibungstext (je Slide 1–3 Zeilen) bekommen reservierte Höhen, dadurch ist jeder Slide gleich hoch. */
+.tourstage { width: 100%; height: 196px; display: flex; flex-direction: column; justify-content: center; }
+.tourcard .namesub { min-height: 63px; display: flex; align-items: center; justify-content: center; }
+/* Button-/Label-Text nicht versehentlich (blau) markierbar beim Tippen/Doppeltippen */
+.namebtn, .namebtn .cta-label, .tourbadge, .tourdots, .namehead { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 /* Contextual first-open feature hints */
 .hintcard { padding-top: 26px; }
 .hintlist { list-style: none; margin: 14px 0 20px; padding: 0; width: 100%; display: flex; flex-direction: column; gap: 11px; text-align: left; }
