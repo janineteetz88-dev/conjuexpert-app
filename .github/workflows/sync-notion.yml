@@ -65,6 +65,14 @@ jobs:
             node scripts/publish-from-notion.mjs
           fi
 
+      # Breadcrumbs + Weiterlesen-Block in alle Artikel rendern (idempotent).
+      # Ohne diesen Schritt gehen neue Artikel als Orphans live (kein
+      # Weiterlesen-Block, keine eingehenden Karten) — musste am 20.09. und
+      # 11.10. jeweils manuell nachgezogen werden.
+      - name: Cluster-Navigation prerendern
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run != true }}
+        run: node scripts/prerender-blog-nav.mjs blog/*/index.html
+
       - name: Änderungen committen und pushen
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run != true }}
         run: |
