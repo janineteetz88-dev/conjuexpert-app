@@ -131,6 +131,7 @@ export const clusters = [
       { slug: "/blog/smalltalk-verben-niederlaendisch", title: "Niederländische Verben für Smalltalk: Die 4 Fragen, auf die es ankommt", live: true },
       { slug: "/blog/zou-conditionaal-niederlaendisch", title: "Zou + Infinitiv: Höflichkeit und Irreales im Niederländischen (der Conditionaal)", live: true },
       { slug: "/blog/plusquamperfekt-niederlaendisch", title: "Voltooid verleden tijd: ik had gewerkt — das niederländische Plusquamperfekt", live: true },
+      { slug: "/blog/imperativ-niederlaendisch", title: "Der Imperativ im Niederländischen: kom, ga, wees — Befehle und Bitten", live: true },
     ],
   },
   {
@@ -222,6 +223,7 @@ export const clusters = [
       { slug: "/blog/imperatif-franzoesisch", title: "L'impératif: Aufforderungen und Bitten auf Französisch", live: true },
       { slug: "/blog/passiv-franzoesisch", title: "Das Passiv im Französischen: la voix passive einfach erklärt (être + participe passé)", live: true },
       { slug: "/blog/plus-que-parfait-franzoesisch", title: "Plus-que-parfait: j'avais parlé — die französische Vor-Vergangenheit", live: true },
+      { slug: "/blog/si-saetze-franzoesisch", title: "Si-Sätze im Französischen: Typ 1, 2 und 3 — mit Imparfait und Conditionnel", live: true },
     ],
   },
   {
@@ -268,6 +270,7 @@ export const clusters = [
       { slug: "/blog/conditionals-englisch", title: "Conditionals (if-Sätze): Typ 1, 2 und 3 verstehen", live: true },
       { slug: "/blog/present-perfect-continuous", title: "Present Perfect Continuous: I have been waiting — Bildung, since/for und der typische Deutsch-Fehler", live: true },
       { slug: "/blog/past-continuous-vs-simple-past", title: "Past Continuous vs. Simple Past: I was doing oder I did?", live: true },
+      { slug: "/blog/reported-speech-englisch", title: "Reported Speech: die Zeitverschiebung (backshift) im Englischen meistern", live: true },
     ],
   },
   {
