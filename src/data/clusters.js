@@ -245,6 +245,7 @@ export const clusters = [
       { slug: "/blog/partizip-ii", title: "Partizip II bilden: die Regel, starke Verben und ihre Ausnahmen", live: true },
       { slug: "/blog/konjunktiv-2-deutsch", title: "Konjunktiv II: hätte, wäre, würde — höflich und irreal auf Deutsch", live: true },
       { slug: "/blog/passiv-deutsch", title: "Das Passiv im Deutschen: wird gemacht oder ist gemacht?", live: true },
+      { slug: "/blog/plusquamperfekt-deutsch", title: "Das Plusquamperfekt: ich hatte gegessen, bevor … — die deutsche Vor-Vergangenheit", live: true },
     ],
   },
   {
